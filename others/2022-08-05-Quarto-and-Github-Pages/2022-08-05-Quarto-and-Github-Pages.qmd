@@ -1,0 +1,159 @@
+---
+title: "Quarto and GitHub Pages"
+author: "stesiam"
+description: |
+  Hosting your Quarto site with GitHub Pages.
+categories: [Quarto, Github Pages, Website]
+image: article.png
+fig-cap-location: bottom
+date: "2022-08-05"
+toc: true
+toc-title: Table of contents
+toc-location: left
+citation: true
+slug: stesiam2022firstarticle
+title-block-banner: true
+nocite: '@*'
+csl: apa-6th-edition
+bibliography: references.bib
+format: 
+  html:
+    code-link: true
+execute:
+  echo: true
+  freeze: true
+editor_options: 
+  markdown: 
+    wrap: 80
+---
+
+# Implementation
+
+## Step 1 : Adding a .nojekyll file
+
+GitHub supports natively Jekyll sites. In case someone wants to host a website
+by using a different framework has to create that file. So simple as that.
+
+If you are working local you can use this command :
+
+``` bash
+cd path/to/project
+touch .nojekyll
+```
+
+Note : You do not need to write anything on your .nokekyll file.
+
+## Step 2 : Specify Quarto's output directory
+
+And here comes my main troubleshooting with Github Pages. As a new user I came
+up that Github gives an already named specified folder for output (named
+"docs"). On Quarto, when you render your website the default directory that
+includes all the parts of your website) is named "\_site".
+
+::: column-margin
+<center>
+
+![Quarto's Logo](quarto.png)
+
+</center>
+:::
+
+In order to solve that you can go to your `quarto.yml` file and specify under
+the project category, your output directory like this :
+
+``` yml
+project:
+  type: website
+  output-dir: docs
+```
+
+If you are not sure you can always check [my
+repository](https://github.com/stesiam/stesiam.github.io) to see how I did it.
+
+## Step 3 : Render and Push to GitHub
+
+Here I will split on two conditions. In case your project is already on GItHub
+and if it's not.
+
+::: column-margin
+<center>
+
+![Github's Logo](github_logo.png)
+
+</center>
+:::
+
+At this point you have done the most crucial part but there is a little bit
+more. Now, you have to render your website.
+
+After you have done that you can commit your changes like that :
+
+``` bash
+cd path/to/project
+
+git add .
+git commit -m "Initial commit"
+```
+
+And push your changes to your repository on GitHub.
+
+``` bash
+git push -u origin gh-pages
+```
+
+## Step 4 : Change the settings of your repository
+
+Last step, to make your page working is to go to the settings of your website
+repository. <br> <br>
+<center>
+![](settings_github.png){width="500"} 
+</center>
+<br>
+
+And set docs as your output directory : <br>
+<center>
+![](set_directory_github.png){width="500"} 
+</center>
+<br>
+
+
+Now, your project should be "GitHub Pages -ready". If your site is not live, you should check if something else is
+set up wrongly or you are missing something. There is one article by Beatriz
+Milz, who explains the procedure of creating a Quarto website [@milz2022quarto].
+Although, have in mind that the aforementioned article uses Netlify instead of
+GitHub Pages which is the main subject of this article.
+
+# Alternatives to Github Pages
+
+The most known one is [Netlify](https://www.netlify.com/) and is being used by
+many users. Except for the fact that is free with some limitations that are
+unlocked on their premium plans, I think that it is also a viable option.
+
+::: column-margin
+<center>
+
+![Netlify's Logo](netlify_logo.png)
+
+</center>
+:::
+
+The main advantage is that I can specify the directory of my output This
+simplifies even more our procedure to publish our website. Also, on
+[Netlify](https://www.netlify.com/), I do not need to create a .nojekyll file,
+as I did on this site's repository[^1].
+
+[^1]: My site is using [GitHub Pages](https://pages.github.com/), instead of
+    Netlify.
+
+## Last updated on {.appendix .unnumbered .unlisted}
+
+```{r,echo=FALSE}
+Sys.Date()
+```
+
+## Acknowledgments {.appendix .unnumbered .unlisted}
+
+Thumbnail image made with the help of <a href="https://www.gimp.org/">GIMP</a>.
+Also, I used the logos of <a href="https://quarto.org/">Quarto</a>,
+<a href="https://pages.github.com/">Github Pages</a> and
+<a href="https://www.netlify.com/">Netlify</a>.
