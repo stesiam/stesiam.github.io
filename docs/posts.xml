@@ -10,7 +10,104 @@
 <atom:link href="https://www.stesiam.github.io/posts.xml" rel="self" type="application/rss+xml"/>
 <description></description>
 <generator>quarto-1.0.18</generator>
-<lastBuildDate>Tue, 09 Aug 2022 21:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 02 Oct 2022 21:00:00 GMT</lastBuildDate>
+<item>
+  <title>Verify your commits !</title>
+  <dc:creator>stesiam</dc:creator>
+  <link>https://www.stesiam.github.io/others/2022-10-03-Verified-Commits/2022-10-03-Verified-Commits.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>It’s not a long time ago that I have started to use Git. I am constantly discovering new things. All this time I was reading articles, posts on Stackoverflow etc. One day I was watchsaw a <code>Verified</code> badge on someones’ repository commit history.</p>
+<p>Then the first questions arised.</p>
+<blockquote class="blockquote">
+<p>“What is that ?” <br> “Why I don’t have it ?” <br> “Do I need that ?”</p>
+</blockquote>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+SSH vs GitHub for commit
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In reality, when you have make a commit via your GitHub account your commit is indeed marked as verified but the majority of the users is working locally thus they have set SSH. Those are in need to set up GPG in order to sign their commits and push their changes.</p>
+</div>
+</div>
+</section>
+<section id="what-if-i-do-not-verify" class="level2">
+<h2 class="anchored" data-anchor-id="what-if-i-do-not-verify">What if I do not verify</h2>
+<p>THe thing is that I realised</p>
+<p>A</p>
+<p>But then</p>
+</section>
+<section id="create-pgp-key" class="level2">
+<h2 class="anchored" data-anchor-id="create-pgp-key">Create PGP key</h2>
+<p>GitHub has a wonderful explanation , so I won’t bother you to say the same things. You can see their guide <a href="https://docs.github.com/en/authentication/managing-commit-signature-verification/generating-a-new-gpg-key">here</a></p>
+<p>For brevity, I will make a TL;DR version :</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"></span></code></pre></div>
+</section>
+<section id="signing-your-commits" class="level2">
+<h2 class="anchored" data-anchor-id="signing-your-commits">Signing your commits</h2>
+<p>After that you can continue your usual workflow with Git with just a little change. Now you have to sign your commits. To do that you have to set the option <code>-S</code> as follows :</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;">git</span> commit <span class="at" style="color: #657422;">-S</span> <span class="at" style="color: #657422;">-m</span> <span class="st" style="color: #20794D;">"Edit something"</span></span></code></pre></div>
+<p>Then, you will be prompted to a new window in order to complete the password of your GPG key. And here it is, my first verified commit :</p>
+<div class="quarto-figure quarto-figure-center" style="border: 2px solid #555;">
+<figure class="figure">
+<p><img src="https://www.stesiam.github.io/others/2022-10-03-Verified-Commits/images/verified_commit.png" class="img-fluid figure-img" width="486"></p>
+<p></p><figcaption class="figure-caption">Verified Commit on GitHub</figcaption><p></p>
+</figure>
+</div>
+<p>Let’s take a closer look :</p>
+<div class="quarto-figure quarto-figure-center" style="border: 2px solid #555;">
+<figure class="figure">
+<p><img src="https://www.stesiam.github.io/others/2022-10-03-Verified-Commits/images/verify_icon.png" class="img-fluid figure-img" width="200"></p>
+<p></p><figcaption class="figure-caption">Verified Commit on GitHub</figcaption><p></p>
+</figure>
+</div>
+<p>But there is more. On GitHub settings (Settings &gt; SSH and GPG keys) there is also the option to warn others if a commit is not signed. If I enable it :</p>
+<div class="quarto-figure quarto-figure-center" style="border: 2px solid #555;">
+<figure class="figure">
+<p><img src="https://www.stesiam.github.io/others/2022-10-03-Verified-Commits/images/vigilant_mode.png" class="img-fluid figure-img" width="423"></p>
+<p></p><figcaption class="figure-caption">Settings for unsigned commits</figcaption><p></p>
+</figure>
+</div>
+<p>then it marks all my unsigned commits (before and after the change) as unverified, as a warning to others. I guess it’s good if someones’ intention is to use only signed commits.</p>
+<div class="quarto-figure quarto-figure-center" style="border: 2px solid #555;">
+<figure class="figure">
+<p><img src="https://www.stesiam.github.io/others/2022-10-03-Verified-Commits/images/unverified_commits.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Settings for unsigned commits</figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="to-sum-up" class="level2">
+<h2 class="anchored" data-anchor-id="to-sum-up">To sum up</h2>
+<p>In GitHub, <code>Commit</code> = Sign + Commit</p>
+<p>Locally, <br> - <code>bash git commit -m "..."</code> = Commit <br> - <code>bash git commit -S -m "..."</code> = Sign + Commit</p>
+</section>
+<section id="sources" class="level2">
+<h2 class="anchored" data-anchor-id="sources">Sources</h2>
+<ol type="1">
+<li><a href="https://docs.github.com/en/authentication/managing-commit-signature-verification/generating-a-new-gpg-key">Github Documentation Page for GPG keys</a></li>
+<li><a href="https://docs.github.com/en/authentication/managing-commit-signature-verification/adding-a-gpg-key-to-your-github-account">Adding a GPG key to your GitHub account</a></li>
+</ol>
+
+
+</section>
+
+ ]]></description>
+  <category>GPG</category>
+  <category>Quarto</category>
+  <guid>https://www.stesiam.github.io/others/2022-10-03-Verified-Commits/2022-10-03-Verified-Commits.html</guid>
+  <pubDate>Sun, 02 Oct 2022 21:00:00 GMT</pubDate>
+  <media:content url="https://www.stesiam.github.io/others/2022-10-03-Verified-Commits/images/verify_icon.png" medium="image" type="image/png" height="86" width="144"/>
+</item>
 <item>
   <title>List of Quarto Websites</title>
   <dc:creator>stesiam</dc:creator>
@@ -109,108 +206,6 @@ stesiam. 2022. <span>“List of Quarto Websites.”</span> August 10, 2022.
   <guid>https://www.stesiam.github.io/others/2022-08-10-List-of-Quarto-Sites/2022-08-10-List-of-Quarto-Sites.html</guid>
   <pubDate>Tue, 09 Aug 2022 21:00:00 GMT</pubDate>
   <media:content url="https://www.stesiam.github.io/others/2022-08-10-List-of-Quarto-Sites/quarto.png" medium="image" type="image/png" height="35" width="144"/>
-</item>
-<item>
-  <title>Quarto and GitHub Pages</title>
-  <dc:creator>stesiam</dc:creator>
-  <link>https://www.stesiam.github.io/others/2022-08-05-Quarto-and-Github-Pages/2022-08-05-Quarto-and-Github-Pages.html</link>
-  <description><![CDATA[ <section id="implementation" class="level1 page-columns page-full"><h1>Implementation</h1>
-<section id="step-1-adding-a-.nojekyll-file" class="level2"><h2 class="anchored" data-anchor-id="step-1-adding-a-.nojekyll-file">Step 1 : Adding a .nojekyll file</h2>
-<p>GitHub supports natively Jekyll sites. In case someone wants to host a website by using a different framework has to create that file. So simple as that.</p>
-<p>If you are working local you can use this command :</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="bu" style="color: null;">cd</span> path/to/project</span>
-<span id="cb1-2"><span class="fu" style="color: #4758AB;">touch</span> .nojekyll</span></code></pre></div>
-<p>Note : You do not need to write anything on your .nokekyll file.</p>
-</section><section id="step-2-specify-quartos-output-directory" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="step-2-specify-quartos-output-directory">Step 2 : Specify Quarto’s output directory</h2>
-<p>And here comes my main troubleshooting with Github Pages. As a new user I came up that Github gives an already named specified folder for output (named “docs”). On Quarto, when you render your website the default directory that includes all the parts of your website) is named “_site”.</p>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<center>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="https://www.stesiam.github.io/others/2022-08-05-Quarto-and-Github-Pages/quarto.png" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Quarto’s Logo</figcaption><p></p>
-</figure>
-</div>
-</center>
-</div></div><p>In order to solve that you can go to your <code>quarto.yml</code> file and specify under the project category, your output directory like this :</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode yml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><span class="fu" style="color: #4758AB;">project</span><span class="kw" style="color: #003B4F;">:</span></span>
-<span id="cb2-2"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">type</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> website</span></span>
-<span id="cb2-3"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">output-dir</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> docs</span></span></code></pre></div>
-<p>If you are not sure you can always check <a href="https://github.com/stesiam/stesiam.github.io">my repository</a> to see how I did it.</p>
-</section><section id="step-3-render-and-push-to-github" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="step-3-render-and-push-to-github">Step 3 : Render and Push to GitHub</h2>
-<p>At this point you have done the most crucial part but there is a little bit more. Now, you have to render your website.</p>
-<p>After you have done that you can commit your changes like that :</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="bu" style="color: null;">cd</span> path/to/project</span>
-<span id="cb3-2"></span>
-<span id="cb3-3"><span class="fu" style="color: #4758AB;">git</span> add .</span>
-<span id="cb3-4"><span class="fu" style="color: #4758AB;">git</span> commit <span class="at" style="color: #657422;">-m</span> <span class="st" style="color: #20794D;">"Initial commit"</span></span></code></pre></div>
-<p>And push your changes to your repository on GitHub.</p>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<center>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="https://www.stesiam.github.io/others/2022-08-05-Quarto-and-Github-Pages/github_logo.png" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Github’s Logo</figcaption><p></p>
-</figure>
-</div>
-</center>
-</div></div><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="fu" style="color: #4758AB;">git</span> push <span class="at" style="color: #657422;">-u</span> origin gh-pages</span></code></pre></div>
-</section><section id="step-4-change-the-settings-of-your-repository" class="level2"><h2 class="anchored" data-anchor-id="step-4-change-the-settings-of-your-repository">Step 4 : Change the settings of your repository</h2>
-Last step, to make your page working is to go to the settings of your website repository. <br><br><center>
-<img src="https://www.stesiam.github.io/others/2022-08-05-Quarto-and-Github-Pages/settings_github.png" class="img-fluid" width="500">
-</center>
-<p><br></p>
-And set docs as your output directory : <br><center>
-<img src="https://www.stesiam.github.io/others/2022-08-05-Quarto-and-Github-Pages/set_directory_github.png" class="img-fluid" width="500">
-</center>
-<p><br></p>
-<p>Now, your project should be “GitHub Pages -ready”. If your site is not live, you should check if something else is set up wrongly or you are missing something. There is one article by Beatriz Milz, who explains the procedure of creating a Quarto website <span class="citation" data-cites="milz2022quarto">(Milz, 2022)</span>. Although, have in mind that the aforementioned article uses Netlify instead of GitHub Pages which is the main subject of this article.</p>
-</section></section><section id="alternatives-to-github-pages" class="level1 page-columns page-full"><h1>Alternatives to Github Pages</h1>
-<p>The most known one is <a href="https://www.netlify.com/">Netlify</a> and is being used by many users. Except for the fact that is free with some limitations that are unlocked on their premium plans, I think that it is also a viable option.</p>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<center>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="https://www.stesiam.github.io/others/2022-08-05-Quarto-and-Github-Pages/netlify_logo.png" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Netlify’s Logo</figcaption><p></p>
-</figure>
-</div>
-</center>
-</div></div><p>The main advantage is that I can specify the directory of my output This simplifies even more our procedure to publish our website. Also, on <a href="https://www.netlify.com/">Netlify</a>, I do not need to create a .nojekyll file, as I did on this site’s repository<sup>1</sup>.</p>
-</section><div id="quarto-appendix" class="default"><section id="last-updated-on" class="level2 appendix unnumbered unlisted"><h2 class="quarto-appendix-heading">Last updated on</h2><div class="quarto-appendix-contents">
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "2022-08-08"</code></pre>
-</div>
-</div>
-</div></section><section id="acknowledgments" class="level2 appendix unnumbered unlisted"><h2 class="quarto-appendix-heading">Acknowledgments</h2><div class="quarto-appendix-contents">
-<p>Thumbnail image made with the help of <a href="https://www.gimp.org/">GIMP</a>. Also, I used the logos of <a href="https://quarto.org/">Quarto</a>, <a href="https://pages.github.com/">Github Pages</a> and <a href="https://www.netlify.com/">Netlify</a>.</p>
-
-
-
-</div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2">
-<div id="ref-milz2022quarto" class="csl-entry">
-Milz, B. (2022, June 5). Creating a blog with Quarto in 10 steps. Retrieved from <a href="https://beamilz.com/posts/2022-06-05-creating-a-blog-with-quarto/en/">https://beamilz.com/posts/2022-06-05-creating-a-blog-with-quarto/en/</a>
-</div>
-</div></section><section class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-<ol>
-<li id="fn1"><p>My site is using <a href="https://pages.github.com/">GitHub Pages</a>, instead of Netlify.↩︎</p></li>
-</ol></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{stesiam2022,
-  author = {stesiam},
-  title = {Quarto and {GitHub} {Pages}},
-  date = {2022-08-05},
-  url = {https://www.stesiam.github.io/others/2022-08-05-Quarto-and-Github-Pages/2022-08-05-Quarto-and-Github-Pages.html},
-  langid = {en}
-}
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-stesiam2022" class="csl-entry quarto-appendix-citeas">
-stesiam. (2022, August 5). Quarto and GitHub Pages. Retrieved from <a href="https://www.stesiam.github.io/others/2022-08-05-Quarto-and-Github-Pages/2022-08-05-Quarto-and-Github-Pages.html">https://www.stesiam.github.io/others/2022-08-05-Quarto-and-Github-Pages/2022-08-05-Quarto-and-Github-Pages.html</a>
-</div></div></section></div> ]]></description>
-  <category>Quarto</category>
-  <category>Github Pages</category>
-  <category>Website</category>
-  <guid>https://www.stesiam.github.io/others/2022-08-05-Quarto-and-Github-Pages/2022-08-05-Quarto-and-Github-Pages.html</guid>
-  <pubDate>Thu, 04 Aug 2022 21:00:00 GMT</pubDate>
-  <media:content url="https://www.stesiam.github.io/others/2022-08-05-Quarto-and-Github-Pages/article.png" medium="image" type="image/png" height="92" width="144"/>
 </item>
 <item>
   <title>Hello, World</title>

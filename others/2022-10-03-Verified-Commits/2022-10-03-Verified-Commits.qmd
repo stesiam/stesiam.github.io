@@ -1,0 +1,107 @@
+---
+title: "Verify your commits !"
+author: "stesiam"
+description: "Add a signature to your GH commits"
+categories: [GPG, Quarto]
+image: images/verify_icon.png
+fig-cap-location: bottom
+date: "2022-10-03"
+toc: true
+toc-title: Table of contents
+toc-location: left
+title-block-banner: true
+nocite: '@*'
+format: 
+  html:
+    freeze: true
+    code-link: true
+execute:
+  echo: true
+editor_options: 
+  markdown: 
+    wrap: 80
+---
+
+## Introduction
+
+It's not a long time ago that I have started to use Git. I am constantly
+discovering new things. All this time I was reading articles, posts on
+Stackoverflow etc. One day I was watchsaw a `Verified` badge on someones'
+repository commit history.
+
+Then the first questions arised.
+
+> "What is that ?" <br> "Why I don't have it ?" <br> "Do I need that ?"
+
+:::{.callout-tip}
+## SSH vs GitHub for commit
+
+In reality, when you have make a commit via your GitHub account your commit is indeed marked as verified but the majority of the users is working locally thus they have set SSH. Those are in need to set up GPG in order to sign their commits and push their changes.
+:::
+
+## What if I do not verify
+
+THe thing is that I realised 
+
+A 
+
+But then 
+
+## Create PGP key
+
+GitHub has a wonderful explanation , so I won't bother you to say the same things.
+You can see their guide
+[here](https://docs.github.com/en/authentication/managing-commit-signature-verification/generating-a-new-gpg-key)
+
+For brevity, I will make a TL;DR version :
+
+``` bash
+
+
+```
+
+## Signing your commits
+
+After that you can continue your usual workflow with Git with just a little
+change. Now you have to sign your commits. To do that you have to set the option
+`-S` as follows :
+
+``` bash
+git commit -S -m "Edit something"
+```
+
+Then, you will be prompted to a new window in order to complete the password of
+your GPG key. And here it is, my first verified commit :
+
+![Verified Commit on
+GitHub](images/verified_commit.png){style="border: 2px solid #555;" width="486"}
+
+Let's take a closer look :
+
+![Verified Commit on GitHub](images/verify_icon.png){style="border: 2px solid #555;" width="200"}
+
+But there is more. On GitHub settings (Settings \> SSH and GPG keys) there is
+also the option to warn others if a commit is not signed. If I enable it :
+
+![Settings for unsigned commits](images/vigilant_mode.png){style="border: 2px solid #555;" width="423"}
+
+then it marks all my unsigned commits (before and after the change) as
+unverified, as a warning to others. I guess it's good if someones' intention is
+to use only signed commits.
+
+![Settings for unsigned commits](images/unverified_commits.png){style="border: 2px solid #555;"}
+
+## To sum up
+
+In GitHub, `Commit` = Sign + Commit
+
+Locally, <br>
+- ```bash git commit -m "..." ``` = Commit <br>
+- ```bash git commit -S -m "..."``` = Sign + Commit    
+
+## Sources
+
+1.  [Github Documentation Page for GPG
+    keys](https://docs.github.com/en/authentication/managing-commit-signature-verification/generating-a-new-gpg-key)
+2.  [Adding a GPG key to your GitHub
+    account](https://docs.github.com/en/authentication/managing-commit-signature-verification/adding-a-gpg-key-to-your-github-account)
