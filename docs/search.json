@@ -25,7 +25,7 @@
     "href": "notebooks.html",
     "title": "ML Notebooks",
     "section": "",
-    "text": "No matching items"
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\nR\n\n\nEDA\n\n\nGreek Parliament\n\n\n\n\nAn EDA on Greek MPs over the years (1981-2019).\n\n\n\n\n\n\nOct 10, 2022\n\n\nstesiam\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "blog/2022-07-27-hello/27-07-2022-hello.html",
@@ -110,6 +110,76 @@
     "title": "All posts",
     "section": "",
     "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\nGPG\n\n\nQuarto\n\n\n\n\nAdd a signature to your GH commits\n\n\n\n\n\n\nOct 3, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\nQuarto\n\n\n\n\nA collection of other Quarto sites and articles about Quarto.\n\n\n\n\n\n\nAug 10, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\nfirst article\n\n\n\n\nMy first article on my Quarto website.\n\n\n\n\n\n\nJul 27, 2022\n\n\nstesiam\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html",
+    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html",
+    "title": "Most elected members on Greek Parliament",
+    "section": "",
+    "text": "Introduction\n\nPrerequisites    2.1 Import Libraries    2.2 Import Dataset    2.3 Preview Dataset    2.4 Structure of Dataset \n\n\nElected parties \n\n\nMost elected members of parliament \n\n\nMost elected members per party    5.1 KKE    5.2 ND    5.3 PASOK    5.4 SYRIZA \n\n\nReferences"
+  },
+  {
+    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#import-libraries",
+    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#import-libraries",
+    "title": "Most elected members on Greek Parliament",
+    "section": "Import Libraries",
+    "text": "Import Libraries\nFirst and foremost, we have to load our libraries.\n\nShow the code# General purpose R libraries\nlibrary(tidyverse)\nlibrary(kableExtra)\n\n\n# Graphs\nlibrary(ggplot2)\n\n\n# Other settings\noptions(digits=2) # print only 2 decimals"
+  },
+  {
+    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#import-dataset",
+    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#import-dataset",
+    "title": "Most elected members on Greek Parliament",
+    "section": "Import dataset",
+    "text": "Import dataset\nAfter loading R libraries, then I will load my data.\n\nShow the codeparliament <- read_csv(\"data/greek_parliament.csv\")"
+  },
+  {
+    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#preview-dataset",
+    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#preview-dataset",
+    "title": "Most elected members on Greek Parliament",
+    "section": "Preview Dataset",
+    "text": "Preview Dataset\n\nShow the codepreview_dataset = head(parliament, 10)\nkbl(preview_dataset, \n    align = 'c',\n    booktabs = T,\n    centering = T,\n    valign = T) %>%\n  kable_paper() %>%\n  scroll_box(width = \"600px\", height = \"250px\")\n\n\n\n\nTable 1:  Preview Dataset (first 6 rows) \n \n FullName \n    Party \n    Constituency \n    Term \n  \n\n\n Agorastis Vasileios \n    PA.SO.K. (Panhellenic Socialist Movement) \n    Larissa \n    3 \n  \n\n Akrita Sylva - Kaiti \n    PA.SO.K. (Panhellenic Socialist Movement) \n    Athens B \n    3 \n  \n\n Akritidis Nikolaos \n    PA.SO.K. (Panhellenic Socialist Movement) \n    Thessaloniki A \n    3 \n  \n\n Akrivakis Alexandros \n    PA.SO.K. (Panhellenic Socialist Movement) \n    Viotia \n    3 \n  \n\n Alevras Ioannis \n    PA.SO.K. (Panhellenic Socialist Movement) \n    Athens A \n    3 \n  \n\n Alexandris Efstathios (Stathis) \n    PA.SO.K. (Panhellenic Socialist Movement) \n    Athens B \n    3 \n  \n\n Alexiadis Konstantinos \n    PA.SO.K. (Panhellenic Socialist Movement) \n    Trikala \n    3 \n  \n\n Alexiou Thomas \n    NEA DIMOKRATIA \n    Xanthi \n    3 \n  \n\n Allamanis Stylianos \n    NEA DIMOKRATIA \n    Karditsa \n    3 \n  \n\n Amanatidis Konstantinos \n    PA.SO.K. (Panhellenic Socialist Movement) \n    Thessaloniki B \n    3"
+  },
+  {
+    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#structure-of-dataset",
+    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#structure-of-dataset",
+    "title": "Most elected members on Greek Parliament",
+    "section": "Structure of Dataset",
+    "text": "Structure of Dataset\n\n\n\n\n\n\n\nVariable\nProperty\nDescription\n\n\n\nFull Name\n\nqualitative  (nominal)\nSurname and name of the member of parliament\n\n\nParty\n\nqualitative  (nominal)\nThe party on which the MP got elected\n\n\nConstituency\n\nqualitative  (nominal)\nMP got elected on this area\n\n\nTerm\n\nqualitative  (ordinal)\nTPlenum term\n\n\n\nThus, my sample has 4 variables, of which 7 are quantitative and 10 are quantitative properties, of which 8 are nominal and the rest ones (Education, Month) are ordinal."
+  },
+  {
+    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#recoding-variables",
+    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#recoding-variables",
+    "title": "Most elected members on Greek Parliament",
+    "section": "Recoding variables",
+    "text": "Recoding variables\n\nShow the codetable(parliament$Party)\n\n\n\nShow the code## Recoding parliament$Party\nparliament$Party[parliament$Party == \"ANEXARTITOI DIMOKRATIKOI VOULEFTES\"] <- \"ADP\"\nparliament$Party[parliament$Party == \"ANEXARTITOI ELLINES (Independent Hellenes)\"] <- \"ANEL\"\nparliament$Party[parliament$Party == \"ANEXARTITOI ELLINES (Independent Hellenes) National Patriotic Democratic Alliance\"]<- \"ANEL\"\nparliament$Party[parliament$Party == \"Coalition of the Left and Progress\"] <- \"SYRIZA\"\nparliament$Party[parliament$Party == \"Communist Party of Greece (Interior)\"] <- \"KKE (interior)\"\nparliament$Party[parliament$Party == \"DEMOCRATIC COALITION (Panhellenic Socialist Movement Democratic Left )\"] <- \"PASOK\"\nparliament$Party[parliament$Party == \"DHM.AR (Democratic Left)\"] <- \"DHMAR\"\nparliament$Party[parliament$Party == \"DI.ANA.\"] <- \"DIANA\"\nparliament$Party[parliament$Party == \"DI.K.KI.\"] <- \"DIKKI\"\nparliament$Party[parliament$Party == \"INDEPENDENT\"] <- \"INDEPENDENT\"\nparliament$Party[parliament$Party == \"KOMMOUNISTIKO KOMMA ELLADAS\"] <- \"KKE\"\nparliament$Party[parliament$Party == \"LA.O.S.\"] <- \"LAOS\"\nparliament$Party[parliament$Party == \"LAIKI ENOTITA\"] <- \"LAE\"\nparliament$Party[parliament$Party == \"LAIKOS SYNDESMOS - CHRYSI AVGI (People’s Association – Golden Dawn)\"] <- \"XA\"\nparliament$Party[parliament$Party == \"NEA DIMOKRATIA\"] <- \"ND\"\nparliament$Party[parliament$Party == \"PA.SO.K. (Panhellenic Socialist Movement)\"] <- \"PASOK\"\nparliament$Party[parliament$Party == \"POL.A.\"] <- \"POLA\"\nparliament$Party[parliament$Party == \"SYNASPISMOS RIZOSPASTIKIS ARISTERAS\"] <- \"SYRIZA\"\nparliament$Party[parliament$Party == \"TO POTAMI (The River)\"] <- \"POTAMI\"\nparliament$Party[parliament$Party == \"ΟΟ.ΕΟ.\"] <- \"ΟΟ.ΕΟ\""
+  },
+  {
+    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#kke",
+    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#kke",
+    "title": "Most elected members on Greek Parliament",
+    "section": "KKE",
+    "text": "KKE\n\nShow the codeparliament %>% filter(Party == \"KKE\") %>%\n  select(FullName) %>% table() %>% sort(decreasing = TRUE) %>% head(n=5) %>% kbl()\n\n\n\n\n . \n    Freq \n  \n\n\n Papariga Alexandra \n    10 \n  \n\n Kanelli Garyfallia (Liana) \n    8 \n  \n\n Skyllakos Antonios \n    7 \n  \n\n Gkiokas Ioannis \n    6 \n  \n\n Karathanasopoulos Nikolaos \n    6"
+  },
+  {
+    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#nd",
+    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#nd",
+    "title": "Most elected members on Greek Parliament",
+    "section": "ND",
+    "text": "ND\n\nShow the codeparliament %>% filter(Party == \"ND\") %>%\n  select(FullName) %>% table() %>% sort(decreasing = TRUE) %>% head(n=5) %>% kbl()\n\n\n\n\n . \n    Freq \n  \n\n\n Karamanlis Konstantinos \n    13 \n  \n\n Kefalogiannis Emmanouil \n    12 \n  \n\n Meimarakis Evangelos - Vasileios \n    12 \n  \n\n Polydoras Vyron \n    12 \n  \n\n Lampropoulos Ioannis \n    11"
+  },
+  {
+    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#pasok",
+    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#pasok",
+    "title": "Most elected members on Greek Parliament",
+    "section": "PASOK",
+    "text": "PASOK\n\nShow the codeparliament %>% filter(Party == \"PASOK\") %>%\n  select(FullName) %>% table() %>% sort(decreasing = TRUE) %>% head(n=5) %>% kbl()\n\n\n\n\n . \n    Freq \n  \n\n\n Kaklamanis Apostolos \n    13 \n  \n\n Papandreou Georgios \n    13 \n  \n\n Skandalidis Konstantinos \n    12 \n  \n\n Chrysochoidis Michail \n    11 \n  \n\n Pagkalos Theodoros \n    11"
+  },
+  {
+    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#syriza",
+    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#syriza",
+    "title": "Most elected members on Greek Parliament",
+    "section": "SYRIZA",
+    "text": "SYRIZA\n\nShow the codeparliament %>% filter(Party == \"SYRIZA\") %>%\n  select(FullName) %>% table() %>% sort(decreasing = TRUE) %>% head(n=5) %>% kbl()\n\n\n\n\n . \n    Freq \n  \n\n\n Dragasakis Ioannis \n    9 \n  \n\n Dritsas Theodoros \n    6 \n  \n\n Kourakis Anastasios (Tasos) \n    6 \n  \n\n Kouvelis Fotios - Fanourios \n    6 \n  \n\n Apostolou Evangelos \n    5"
   },
   {
     "objectID": "shiny.html",

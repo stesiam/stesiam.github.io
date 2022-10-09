@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.18">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="stesiam">
+<meta name="dcterms.date" content="2022-10-10">
+<meta name="description" content="An EDA on Greek MPs over the years (1981-2019).">
+<title>stesiam - Most elected members on Greek Parliament</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Rplot1.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": true,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script><link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="stesiam - Most elected members on Greek Parliament">
+<meta property="og:description" content="An EDA on Greek MPs over the years (1981-2019).">
+<meta property="og:image" content="https://www.stesiam.github.io/notebooks/2022-10-10-Surnames-Greek-Parliament/images/houses-of-parliament.jpg">
+<meta property="og:site-name" content="stesiam">
+</head>
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">stesiam</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item">
+    <a class="nav-link" href="../../index.html">Home</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts.html">All Posts</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../notebooks.html">ML Notebooks</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../shiny.html">Shiny Projects</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html">Blog</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../greek.html">Greek Posts</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html">CV</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/stesiam"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../posts.xml"><i class="bi bi-rss" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+<div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <div class="quarto-title-block"><div><h1 class="title">Most elected members on Greek Parliament</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button" data-quarto-source-url="https://github.com/stesiam/stesiam.github.io/blob/main/notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.qmd">View Source</a></li></ul></div></div>
+                  <div>
+        <div class="description">
+          <p>An EDA on Greek MPs over the years (1981-2019).</p>
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">R</div>
+                <div class="quarto-category">EDA</div>
+                <div class="quarto-category">Greek Parliament</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>stesiam </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">October 10, 2022</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><nav id="TOC" role="doc-toc"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li>
+<a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites">Prerequisites</a>
+  <ul class="collapse">
+<li><a href="#import-libraries" id="toc-import-libraries" class="nav-link" data-scroll-target="#import-libraries">Import Libraries</a></li>
+  <li><a href="#import-dataset" id="toc-import-dataset" class="nav-link" data-scroll-target="#import-dataset">Import dataset</a></li>
+  <li><a href="#preview-dataset" id="toc-preview-dataset" class="nav-link" data-scroll-target="#preview-dataset">Preview Dataset</a></li>
+  <li><a href="#structure-of-dataset" id="toc-structure-of-dataset" class="nav-link" data-scroll-target="#structure-of-dataset">Structure of Dataset</a></li>
+  <li><a href="#recoding-variables" id="toc-recoding-variables" class="nav-link" data-scroll-target="#recoding-variables">Recoding variables</a></li>
+  </ul>
+</li>
+  <li><a href="#most-elected-members-of-parliament" id="toc-most-elected-members-of-parliament" class="nav-link" data-scroll-target="#most-elected-members-of-parliament">Most elected members of parliament</a></li>
+  <li>
+<a href="#most-elected-members-based-on-party" id="toc-most-elected-members-based-on-party" class="nav-link" data-scroll-target="#most-elected-members-based-on-party">Most elected members based on party</a>
+  <ul class="collapse">
+<li><a href="#kke" id="toc-kke" class="nav-link" data-scroll-target="#kke">KKE</a></li>
+  <li><a href="#nd" id="toc-nd" class="nav-link" data-scroll-target="#nd">ND</a></li>
+  <li><a href="#pasok" id="toc-pasok" class="nav-link" data-scroll-target="#pasok">PASOK</a></li>
+  <li><a href="#syriza" id="toc-syriza" class="nav-link" data-scroll-target="#syriza">SYRIZA</a></li>
+  </ul>
+</li>
+  <li><a href="#acknowledgments" id="toc-acknowledgments" class="nav-link" data-scroll-target="#acknowledgments">Acknowledgments</a></li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/stesiam/stesiam.github.io/edit/main/notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/stesiam/stesiam.github.io/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content"><section id="table-of-contents" class="level1 unlisted"><h1 class="unlisted">Table of Contents</h1>
+<ol type="1">
+<li><a href="#introduction">Introduction</a></li>
+<li>
+<a href="#prerequisites">Prerequisites</a> <br> &nbsp; 2.1 <a href="#import-libraries">Import Libraries</a> <br> &nbsp; 2.2 <a href="#import-dataset">Import Dataset</a> <br> &nbsp; 2.3 <a href="#preview-dataset">Preview Dataset</a> <br> &nbsp; 2.4 <a href="#structure-of-dataset">Structure of Dataset</a> <br>
+</li>
+<li>
+<a href="#elected-parties">Elected parties</a> <br>
+</li>
+<li>
+<a href="#most-elected-members-of-parliament">Most elected members of parliament</a> <br>
+</li>
+<li>
+<a href="#most-elected-members-per-party">Most elected members per party</a> <br> &nbsp; 5.1 <a href="#kke">KKE</a> <br> &nbsp; 5.2 <a href="#nd">ND</a> <br> &nbsp; 5.3 <a href="#pasok">PASOK</a> <br> &nbsp; 5.4 <a href="#syriza">SYRIZA</a> <br>
+</li>
+<li>
+<a href="#references">References</a>
+<hr>
+</li>
+</ol></section><section id="introduction" class="level1"><h1>Introduction</h1>
+</section><section id="prerequisites" class="level1"><h1>Prerequisites</h1>
+<section id="import-libraries" class="level2"><h2 class="anchored" data-anchor-id="import-libraries">Import Libraries</h2>
+<p>First and foremost, we have to load our libraries.</p>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># General purpose R libraries</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://haozhu233.github.io/kableExtra/">kableExtra</a></span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Graphs</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Other settings</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>digits<span class="op">=</span><span class="fl">2</span><span class="op">)</span> <span class="co"># print only 2 decimals</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section><section id="import-dataset" class="level2"><h2 class="anchored" data-anchor-id="import-dataset">Import dataset</h2>
+<p>After loading R libraries, then I will load my data.</p>
+<div class="cell" data-hash="2022-10-10-Surnames-Greek-Parliament_cache/html/Import dataset_fcd9a7fddccc0f2dff4d0c1cbab5086d">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">parliament</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"data/greek_parliament.csv"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section><section id="preview-dataset" class="level2"><h2 class="anchored" data-anchor-id="preview-dataset">Preview Dataset</h2>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">preview_dataset</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">parliament</span>, <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="va">preview_dataset</span>, </span>
+<span>    align <span class="op">=</span> <span class="st">'c'</span>,</span>
+<span>    booktabs <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>    centering <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>    valign <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_classic.html">kable_paper</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/scroll_box.html">scroll_box</a></span><span class="op">(</span>width <span class="op">=</span> <span class="st">"600px"</span>, height <span class="op">=</span> <span class="st">"250px"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div id="tbl-preview-dataset" class="anchored">
+
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:250px; overflow-x: scroll; width:600px; "><table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Table 1:  Preview Dataset (first 6 rows) </caption>
+ <thead><tr>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> FullName </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> Party </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> Constituency </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> Term </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:center;"> Agorastis Vasileios </td>
+   <td style="text-align:center;"> PA.SO.K. (Panhellenic Socialist Movement) </td>
+   <td style="text-align:center;"> Larissa </td>
+   <td style="text-align:center;"> 3 </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> Akrita Sylva - Kaiti </td>
+   <td style="text-align:center;"> PA.SO.K. (Panhellenic Socialist Movement) </td>
+   <td style="text-align:center;"> Athens B </td>
+   <td style="text-align:center;"> 3 </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> Akritidis Nikolaos </td>
+   <td style="text-align:center;"> PA.SO.K. (Panhellenic Socialist Movement) </td>
+   <td style="text-align:center;"> Thessaloniki A </td>
+   <td style="text-align:center;"> 3 </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> Akrivakis Alexandros </td>
+   <td style="text-align:center;"> PA.SO.K. (Panhellenic Socialist Movement) </td>
+   <td style="text-align:center;"> Viotia </td>
+   <td style="text-align:center;"> 3 </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> Alevras Ioannis </td>
+   <td style="text-align:center;"> PA.SO.K. (Panhellenic Socialist Movement) </td>
+   <td style="text-align:center;"> Athens A </td>
+   <td style="text-align:center;"> 3 </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> Alexandris Efstathios (Stathis) </td>
+   <td style="text-align:center;"> PA.SO.K. (Panhellenic Socialist Movement) </td>
+   <td style="text-align:center;"> Athens B </td>
+   <td style="text-align:center;"> 3 </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> Alexiadis Konstantinos </td>
+   <td style="text-align:center;"> PA.SO.K. (Panhellenic Socialist Movement) </td>
+   <td style="text-align:center;"> Trikala </td>
+   <td style="text-align:center;"> 3 </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> Alexiou Thomas </td>
+   <td style="text-align:center;"> NEA DIMOKRATIA </td>
+   <td style="text-align:center;"> Xanthi </td>
+   <td style="text-align:center;"> 3 </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> Allamanis Stylianos </td>
+   <td style="text-align:center;"> NEA DIMOKRATIA </td>
+   <td style="text-align:center;"> Karditsa </td>
+   <td style="text-align:center;"> 3 </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> Amanatidis Konstantinos </td>
+   <td style="text-align:center;"> PA.SO.K. (Panhellenic Socialist Movement) </td>
+   <td style="text-align:center;"> Thessaloniki B </td>
+   <td style="text-align:center;"> 3 </td>
+  </tr>
+</tbody>
+</table></div>
+
+</div>
+</div>
+</div>
+</section><section id="structure-of-dataset" class="level2"><h2 class="anchored" data-anchor-id="structure-of-dataset">Structure of Dataset</h2>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: center;">Variable</th>
+<th style="text-align: center;">Property</th>
+<th style="text-align: center;">Description</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>Full Name</code></td>
+<td style="text-align: center;">
+<em>qualitative</em> <br> (nominal)</td>
+<td style="text-align: center;">Surname and name of the member of parliament</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>Party</code></td>
+<td style="text-align: center;">
+<em>qualitative</em> <br> (nominal)</td>
+<td style="text-align: center;">The party on which the MP got elected</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>Constituency</code></td>
+<td style="text-align: center;">
+<em>qualitative</em> <br> (nominal)</td>
+<td style="text-align: center;">MP got elected on this area</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>Term</code></td>
+<td style="text-align: center;">
+<em>qualitative</em> <br> (ordinal)</td>
+<td style="text-align: center;">TPlenum term</td>
+</tr>
+</tbody>
+</table>
+<p>Thus, my sample has 4 variables, of which 7 are quantitative and 10 are quantitative properties, of which 8 are nominal and the rest ones (<code>Education</code>, <code>Month</code>) are ordinal.</p>
+</section><section id="recoding-variables" class="level2"><h2 class="anchored" data-anchor-id="recoding-variables">Recoding variables</h2>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Recoding parliament$Party</span></span>
+<span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span><span class="op">[</span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span> <span class="op">==</span> <span class="st">"ANEXARTITOI DIMOKRATIKOI VOULEFTES"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"ADP"</span></span>
+<span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span><span class="op">[</span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span> <span class="op">==</span> <span class="st">"ANEXARTITOI ELLINES (Independent Hellenes)"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"ANEL"</span></span>
+<span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span><span class="op">[</span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span> <span class="op">==</span> <span class="st">"ANEXARTITOI ELLINES (Independent Hellenes) National Patriotic Democratic Alliance"</span><span class="op">]</span><span class="op">&lt;-</span> <span class="st">"ANEL"</span></span>
+<span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span><span class="op">[</span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span> <span class="op">==</span> <span class="st">"Coalition of the Left and Progress"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"SYRIZA"</span></span>
+<span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span><span class="op">[</span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span> <span class="op">==</span> <span class="st">"Communist Party of Greece (Interior)"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"KKE (interior)"</span></span>
+<span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span><span class="op">[</span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span> <span class="op">==</span> <span class="st">"DEMOCRATIC COALITION (Panhellenic Socialist Movement Democratic Left )"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"PASOK"</span></span>
+<span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span><span class="op">[</span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span> <span class="op">==</span> <span class="st">"DHM.AR (Democratic Left)"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"DHMAR"</span></span>
+<span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span><span class="op">[</span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span> <span class="op">==</span> <span class="st">"DI.ANA."</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"DIANA"</span></span>
+<span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span><span class="op">[</span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span> <span class="op">==</span> <span class="st">"DI.K.KI."</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"DIKKI"</span></span>
+<span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span><span class="op">[</span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span> <span class="op">==</span> <span class="st">"INDEPENDENT"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"INDEPENDENT"</span></span>
+<span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span><span class="op">[</span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span> <span class="op">==</span> <span class="st">"KOMMOUNISTIKO KOMMA ELLADAS"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"KKE"</span></span>
+<span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span><span class="op">[</span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span> <span class="op">==</span> <span class="st">"LA.O.S."</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"LAOS"</span></span>
+<span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span><span class="op">[</span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span> <span class="op">==</span> <span class="st">"LAIKI ENOTITA"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"LAE"</span></span>
+<span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span><span class="op">[</span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span> <span class="op">==</span> <span class="st">"LAIKOS SYNDESMOS - CHRYSI AVGI (People’s Association – Golden Dawn)"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"XA"</span></span>
+<span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span><span class="op">[</span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span> <span class="op">==</span> <span class="st">"NEA DIMOKRATIA"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"ND"</span></span>
+<span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span><span class="op">[</span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span> <span class="op">==</span> <span class="st">"PA.SO.K. (Panhellenic Socialist Movement)"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"PASOK"</span></span>
+<span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span><span class="op">[</span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span> <span class="op">==</span> <span class="st">"POL.A."</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"POLA"</span></span>
+<span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span><span class="op">[</span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span> <span class="op">==</span> <span class="st">"SYNASPISMOS RIZOSPASTIKIS ARISTERAS"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"SYRIZA"</span></span>
+<span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span><span class="op">[</span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span> <span class="op">==</span> <span class="st">"TO POTAMI (The River)"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"POTAMI"</span></span>
+<span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span><span class="op">[</span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span> <span class="op">==</span> <span class="st">"ΟΟ.ΕΟ."</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"ΟΟ.ΕΟ"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section></section><section id="most-elected-members-of-parliament" class="level1"><h1>Most elected members of parliament</h1>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">parliament</span><span class="op">$</span><span class="va">FullName</span><span class="op">)</span><span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">parliament</span><span class="op">$</span><span class="va">Freq</span>, decreasing <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">30</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> Var1 </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Kaklamanis Apostolos </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Karamanlis Konstantinos </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Papandreou Georgios </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Polydoras Vyron </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kefalogiannis Emmanouil </td>
+   <td style="text-align:right;"> 12 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Meimarakis Evangelos - Vasileios </td>
+   <td style="text-align:right;"> 12 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Skandalidis Konstantinos </td>
+   <td style="text-align:right;"> 12 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Chrysochoidis Michail </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kastanidis Charalampos </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kostopoulos Dimitrios </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Lampropoulos Ioannis </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Nikolopoulos Nikolaos </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Pagkalos Theodoros </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Samaras Antonios </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Stamatis Dimitrios </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Basiakos Evangelos </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Benaki - Psarouda Anna Evangelou </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Chatzigakis Sotirios </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kammenos Panagiotis (Panos) </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Lianis Georgios </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Markogiannakis Christos </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Papariga Alexandra </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Petsalnikos Philippos </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Sioufas Dimitrios </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Skoulakis Emmanouil </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Tragakis Ioannis </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Venizelos Evangelos </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Bakoyannis Theodora (Dora) </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Davakis Athanasios </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Dragasakis Ioannis </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</section><section id="most-elected-members-based-on-party" class="level1"><h1>Most elected members based on party</h1>
+<p>The parties are getting represented on alphabetical order.</p>
+<section id="kke" class="level2"><h2 class="anchored" data-anchor-id="kke">KKE</h2>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">parliament</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Party</span> <span class="op">==</span> <span class="st">"KKE"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">FullName</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span>decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Papariga Alexandra </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kanelli Garyfallia (Liana) </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Skyllakos Antonios </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Gkiokas Ioannis </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Karathanasopoulos Nikolaos </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</section><section id="nd" class="level2"><h2 class="anchored" data-anchor-id="nd">ND</h2>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">parliament</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Party</span> <span class="op">==</span> <span class="st">"ND"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">FullName</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span>decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Karamanlis Konstantinos </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kefalogiannis Emmanouil </td>
+   <td style="text-align:right;"> 12 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Meimarakis Evangelos - Vasileios </td>
+   <td style="text-align:right;"> 12 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Polydoras Vyron </td>
+   <td style="text-align:right;"> 12 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Lampropoulos Ioannis </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</section><section id="pasok" class="level2"><h2 class="anchored" data-anchor-id="pasok">PASOK</h2>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">parliament</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Party</span> <span class="op">==</span> <span class="st">"PASOK"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">FullName</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span>decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Kaklamanis Apostolos </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Papandreou Georgios </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Skandalidis Konstantinos </td>
+   <td style="text-align:right;"> 12 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Chrysochoidis Michail </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Pagkalos Theodoros </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</section><section id="syriza" class="level2"><h2 class="anchored" data-anchor-id="syriza">SYRIZA</h2>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">parliament</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Party</span> <span class="op">==</span> <span class="st">"SYRIZA"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">FullName</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span>decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Dragasakis Ioannis </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Dritsas Theodoros </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kourakis Anastasios (Tasos) </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kouvelis Fotios - Fanourios </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Apostolou Evangelos </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</section></section><div id="quarto-appendix" class="default"><section id="acknowledgments" class="level1 appendix"><h2 class="quarto-appendix-heading">Acknowledgments</h2><div class="quarto-appendix-contents">
+<p>Image by <a href="https://pixabay.com/users/leonhard_niederwimmer-1131094/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=7402132">Leonhard Niederwimmer</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=7402132">Pixabay</a> <br></p>
+<p>Data are from <a href="https://github.com/stesiam/Greek-MPs-Dataset">mine repository on GitHub</a>. Original data are from <a href="https://www.hellenicparliament.gr"> Hellenic’s Parliament website</a></p>
+
+
+
+</div></section><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="doc-bibliography">
+<div id="ref-R-purrr" class="csl-entry" role="doc-biblioentry">
+Henry, L., &amp; Wickham, H. (2020). <em>Purrr: Functional programming tools</em>. Retrieved from <a href="https://CRAN.R-project.org/package=purrr">https://CRAN.R-project.org/package=purrr</a>
+</div>
+<div id="ref-R-tibble" class="csl-entry" role="doc-biblioentry">
+Müller, K., &amp; Wickham, H. (2022). <em>Tibble: Simple data frames</em>. Retrieved from <a href="https://CRAN.R-project.org/package=tibble">https://CRAN.R-project.org/package=tibble</a>
+</div>
+<div id="ref-R-base" class="csl-entry" role="doc-biblioentry">
+R Core Team. (2021). <em>R: A language and environment for statistical computing</em>. Vienna, Austria: R Foundation for Statistical Computing. Retrieved from <a href="https://www.R-project.org/">https://www.R-project.org/</a>
+</div>
+<div id="ref-ggplot22016" class="csl-entry" role="doc-biblioentry">
+Wickham, H. (2016). <em>ggplot2: Elegant graphics for data analysis</em>. Springer-Verlag New York. Retrieved from <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>
+</div>
+<div id="ref-R-stringr" class="csl-entry" role="doc-biblioentry">
+Wickham, H. (2019). <em>Stringr: Simple, consistent wrappers for common string operations</em>. Retrieved from <a href="https://CRAN.R-project.org/package=stringr">https://CRAN.R-project.org/package=stringr</a>
+</div>
+<div id="ref-R-forcats" class="csl-entry" role="doc-biblioentry">
+Wickham, H. (2022a). <em>Forcats: Tools for working with categorical variables (factors)</em>. Retrieved from <a href="https://CRAN.R-project.org/package=forcats">https://CRAN.R-project.org/package=forcats</a>
+</div>
+<div id="ref-R-tidyverse" class="csl-entry" role="doc-biblioentry">
+Wickham, H. (2022b). <em>Tidyverse: Easily install and load the tidyverse</em>. Retrieved from <a href="https://CRAN.R-project.org/package=tidyverse">https://CRAN.R-project.org/package=tidyverse</a>
+</div>
+<div id="ref-tidyverse2019" class="csl-entry" role="doc-biblioentry">
+Wickham, H., Averick, M., Bryan, J., Chang, W., McGowan, L. D., François, R., … Yutani, H. (2019). Welcome to the <span class="nocase">tidyverse</span>. <em>Journal of Open Source Software</em>, <em>4</em>(43), 1686. <a href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>
+</div>
+<div id="ref-R-ggplot2" class="csl-entry" role="doc-biblioentry">
+Wickham, H., Chang, W., Henry, L., Pedersen, T. L., Takahashi, K., Wilke, C., … Dunnington, D. (2022). <em>ggplot2: Create elegant data visualisations using the grammar of graphics</em>. Retrieved from <a href="https://CRAN.R-project.org/package=ggplot2">https://CRAN.R-project.org/package=ggplot2</a>
+</div>
+<div id="ref-R-dplyr" class="csl-entry" role="doc-biblioentry">
+Wickham, H., François, R., Henry, L., &amp; Müller, K. (2022). <em>Dplyr: A grammar of data manipulation</em>. Retrieved from <a href="https://CRAN.R-project.org/package=dplyr">https://CRAN.R-project.org/package=dplyr</a>
+</div>
+<div id="ref-R-tidyr" class="csl-entry" role="doc-biblioentry">
+Wickham, H., &amp; Girlich, M. (2022). <em>Tidyr: Tidy messy data</em>. Retrieved from <a href="https://CRAN.R-project.org/package=tidyr">https://CRAN.R-project.org/package=tidyr</a>
+</div>
+<div id="ref-R-readr" class="csl-entry" role="doc-biblioentry">
+Wickham, H., Hester, J., &amp; Bryan, J. (2022). <em>Readr: Read rectangular text data</em>. Retrieved from <a href="https://CRAN.R-project.org/package=readr">https://CRAN.R-project.org/package=readr</a>
+</div>
+<div id="ref-R-kableExtra" class="csl-entry" role="doc-biblioentry">
+Zhu, H. (2021). <em>kableExtra: Construct complex table with kable and pipe syntax</em>. Retrieved from <a href="https://CRAN.R-project.org/package=kableExtra">https://CRAN.R-project.org/package=kableExtra</a>
+</div>
+</div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{stesiam2022,
+  author = {stesiam},
+  title = {Most Elected Members on {Greek} {Parliament}},
+  date = {2022-10-10},
+  url = {https://www.stesiam.github.io/notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-stesiam2022" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
+stesiam. (2022, October 10). Most elected members on Greek Parliament.
+Retrieved from <a href="https://www.stesiam.github.io/notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html">https://www.stesiam.github.io/notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html</a>
+</div></div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    toggleBodyColorMode(window.document.querySelector("link#quarto-bootstrap"));
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script><script src="https://giscus.app/client.js" data-repo="stesiam/stesiam.github.io" data-repo-id="R_kgDOHuiNDg" data-category="Comments" data-category-id="DIC_kwDOHuiNDs4CQeAf" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

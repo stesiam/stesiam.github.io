@@ -1,0 +1,205 @@
+---
+title: "Most elected members on Greek Parliament"
+author: "stesiam"
+description: |
+  An EDA on Greek MPs over the years (1981-2019).
+categories: [R, EDA, Greek Parliament]
+image: images/houses-of-parliament.jpg
+fig-cap-location: bottom
+date: "2022-10-10"
+toc: true
+freeze: true
+toc-title: Table of contents
+toc-location: left
+citation: true
+slug: stesiam2022parliament
+title-block-banner: true
+nocite: '@*'
+csl: apa-6th-edition
+bibliography: [packages.bib, references.bib]
+format: 
+  html:
+    code-link: true
+    code-fold: true
+    code-summary: "Show the code"
+    code-tools: 
+      source: repo
+execute:
+  echo: true
+editor_options: 
+  markdown: 
+    wrap: 80
+---
+
+# Table of Contents {.unlisted}
+
+1. [Introduction](#introduction)
+2. [Prerequisites](#prerequisites) <br>
+&nbsp; 2.1 [Import Libraries](#import-libraries) <br>
+&nbsp; 2.2 [Import Dataset](#import-dataset) <br>
+&nbsp; 2.3 [Preview Dataset](#preview-dataset) <br>
+&nbsp; 2.4 [Structure of Dataset](#structure-of-dataset) <br>
+3. [Elected parties](#elected-parties) <br>
+4. [Most elected members of parliament](#most-elected-members-of-parliament) <br>
+5. [Most elected members per party](#most-elected-members-per-party) <br>
+&nbsp; 5.1 [KKE](#kke) <br>
+&nbsp; 5.2 [ND](#nd) <br>
+&nbsp; 5.3 [PASOK](#pasok) <br>
+&nbsp; 5.4 [SYRIZA](#syriza) <br>
+6. [References](#references)
+<hr>
+
+# Introduction
+
+
+
+
+# Prerequisites
+
+## Import Libraries
+
+First and foremost, we have to load our libraries. 
+
+```{r Import R Libraries, message=FALSE, results='hide', echo=TRUE, warning=FALSE}
+# General purpose R libraries
+library(tidyverse)
+library(kableExtra)
+
+
+# Graphs
+library(ggplot2)
+
+
+# Other settings
+options(digits=2) # print only 2 decimals
+
+```
+
+```{r, include=FALSE}
+knitr::write_bib(.packages(), file = 'packages.bib')
+```
+
+## Import dataset
+
+After loading R libraries, then I will load my data. 
+
+```{r Import dataset, cache=TRUE, message=FALSE,results='hide',echo=TRUE}
+parliament <- read_csv("data/greek_parliament.csv")
+```
+
+
+
+## Preview Dataset
+
+```{r Preview Data}
+#| label: tbl-preview-dataset
+#| tbl-cap: "Preview Dataset (first 6 rows)"
+
+preview_dataset = head(parliament, 10)
+kbl(preview_dataset, 
+    align = 'c',
+    booktabs = T,
+    centering = T,
+    valign = T) %>%
+  kable_paper() %>%
+  scroll_box(width = "600px", height = "250px")
+```
+
+
+## Structure of Dataset
+
+| Variable    | Property                           | Description     |
+| :----:      |    :----:                          |    :----: |
+| `Full Name`       | *qualitative*  <br> (nominal)  | Surname and name of the member of parliament  |
+| `Party`       | *qualitative*   <br> (nominal)     | The party on which the MP got elected |
+| `Constituency`   | *qualitative*   <br> (nominal)     | MP got elected on this area |
+| `Term`   | *qualitative*   <br> (ordinal)     | TPlenum term    |
+
+Thus, my sample has `r ncol(parliament)` variables, of which 7 are quantitative and 10 are quantitative properties, of which 8 are nominal and the rest ones (`Education`, `Month`) are ordinal.
+
+## Recoding variables
+
+```{r, results='hide'}
+table(parliament$Party)
+```
+
+```{r}
+## Recoding parliament$Party
+parliament$Party[parliament$Party == "ANEXARTITOI DIMOKRATIKOI VOULEFTES"] <- "ADP"
+parliament$Party[parliament$Party == "ANEXARTITOI ELLINES (Independent Hellenes)"] <- "ANEL"
+parliament$Party[parliament$Party == "ANEXARTITOI ELLINES (Independent Hellenes) National Patriotic Democratic Alliance"]<- "ANEL"
+parliament$Party[parliament$Party == "Coalition of the Left and Progress"] <- "SYRIZA"
+parliament$Party[parliament$Party == "Communist Party of Greece (Interior)"] <- "KKE (interior)"
+parliament$Party[parliament$Party == "DEMOCRATIC COALITION (Panhellenic Socialist Movement Democratic Left )"] <- "PASOK"
+parliament$Party[parliament$Party == "DHM.AR (Democratic Left)"] <- "DHMAR"
+parliament$Party[parliament$Party == "DI.ANA."] <- "DIANA"
+parliament$Party[parliament$Party == "DI.K.KI."] <- "DIKKI"
+parliament$Party[parliament$Party == "INDEPENDENT"] <- "INDEPENDENT"
+parliament$Party[parliament$Party == "KOMMOUNISTIKO KOMMA ELLADAS"] <- "KKE"
+parliament$Party[parliament$Party == "LA.O.S."] <- "LAOS"
+parliament$Party[parliament$Party == "LAIKI ENOTITA"] <- "LAE"
+parliament$Party[parliament$Party == "LAIKOS SYNDESMOS - CHRYSI AVGI (People’s Association – Golden Dawn)"] <- "XA"
+parliament$Party[parliament$Party == "NEA DIMOKRATIA"] <- "ND"
+parliament$Party[parliament$Party == "PA.SO.K. (Panhellenic Socialist Movement)"] <- "PASOK"
+parliament$Party[parliament$Party == "POL.A."] <- "POLA"
+parliament$Party[parliament$Party == "SYNASPISMOS RIZOSPASTIKIS ARISTERAS"] <- "SYRIZA"
+parliament$Party[parliament$Party == "TO POTAMI (The River)"] <- "POTAMI"
+parliament$Party[parliament$Party == "ΟΟ.ΕΟ."] <- "ΟΟ.ΕΟ"
+```
+
+
+
+
+# Most elected members of parliament
+
+```{r, warning=FALSE}
+table(parliament$FullName)%>% sort(parliament$Freq, decreasing = T) %>% head(n=30) %>% kbl()
+```
+
+
+# Most elected members based on party
+
+
+The parties are getting represented on alphabetical order.
+
+
+## KKE
+
+```{r}
+parliament %>% filter(Party == "KKE") %>%
+  select(FullName) %>% table() %>% sort(decreasing = TRUE) %>% head(n=5) %>% kbl()
+```
+
+## ND
+
+
+```{r}
+parliament %>% filter(Party == "ND") %>%
+  select(FullName) %>% table() %>% sort(decreasing = TRUE) %>% head(n=5) %>% kbl()
+```
+
+
+## PASOK
+
+
+```{r}
+parliament %>% filter(Party == "PASOK") %>%
+  select(FullName) %>% table() %>% sort(decreasing = TRUE) %>% head(n=5) %>% kbl()
+```
+
+
+
+## SYRIZA
+
+```{r}
+parliament %>% filter(Party == "SYRIZA") %>%
+  select(FullName) %>% table() %>% sort(decreasing = TRUE) %>% head(n=5) %>% kbl()
+```
+
+
+
+# Acknowledgments {.appendix}
+
+Image by <a href="https://pixabay.com/users/leonhard_niederwimmer-1131094/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=7402132">Leonhard Niederwimmer</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=7402132">Pixabay</a> <br>
+
+Data are from <a href="https://github.com/stesiam/Greek-MPs-Dataset">mine repository on GitHub</a>. Original data are from <a href="https://www.hellenicparliament.gr"> Hellenic's Parliament website</a>
