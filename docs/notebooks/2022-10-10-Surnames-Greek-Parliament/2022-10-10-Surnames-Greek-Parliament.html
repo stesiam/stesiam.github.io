@@ -239,6 +239,7 @@ div.csl-indent {
   <li><a href="#recoding-variables" id="toc-recoding-variables" class="nav-link" data-scroll-target="#recoding-variables">Recoding variables</a></li>
   </ul>
 </li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
   <li><a href="#most-elected-members-of-parliament" id="toc-most-elected-members-of-parliament" class="nav-link" data-scroll-target="#most-elected-members-of-parliament">Most elected members of parliament</a></li>
   <li>
 <a href="#most-elected-members-based-on-party" id="toc-most-elected-members-based-on-party" class="nav-link" data-scroll-target="#most-elected-members-based-on-party">Most elected members based on party</a>
@@ -279,6 +280,10 @@ div.csl-indent {
 <hr>
 </li>
 </ol></section><section id="introduction" class="level1"><h1>Introduction</h1>
+<p>And here we go…</p>
+<p>My first notebook on my website and I’d like to be a little special. I didn’t want to just take a ready-made dataset and apply a machine learning technique (I will do this in the next articles). So, I decided to make my own with the help of <a href="hellenicparliament.gr/">hellenic’s parliament website</a>.</p>
+<p>The Greek political scene has particularly preoccupied global public opinion in recent years, due to the Greek economic crisis. A part of it was spent on the reasons that caused it. The causes of the Greek crisis are many and a point of contention to this day. In this article we will deal essentially with one of the points of criticism. The election of the same persons.</p>
+<p>With this notebook I will try to analyze whether this claim is valid by counting how many times someone has been elected to the Greek parliament. In addition, I will study the obsession with the same persons at the party level, but also at the local level (constituencies).</p>
 </section><section id="prerequisites" class="level1"><h1>Prerequisites</h1>
 <section id="import-libraries" class="level2"><h2 class="anchored" data-anchor-id="import-libraries">Import Libraries</h2>
 <p>First and foremost, we have to load our libraries.</p>
@@ -459,7 +464,8 @@ div.csl-indent {
 <span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span><span class="op">[</span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span> <span class="op">==</span> <span class="st">"ΟΟ.ΕΟ."</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"ΟΟ.ΕΟ"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section></section><section id="most-elected-members-of-parliament" class="level1"><h1>Most elected members of parliament</h1>
+</section></section><section id="section" class="level1"><h1></h1>
+</section><section id="most-elected-members-of-parliament" class="level1"><h1>Most elected members of parliament</h1>
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">parliament</span><span class="op">$</span><span class="va">FullName</span><span class="op">)</span><span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">parliament</span><span class="op">$</span><span class="va">Freq</span>, decreasing <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">15</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
