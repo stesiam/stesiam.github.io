@@ -22,7 +22,7 @@
 Prerequisites <br> &nbsp; 2.1 Import Libraries <br> &nbsp; 2.2 Import Dataset <br> &nbsp; 2.3 Preview Dataset <br> &nbsp; 2.4 Structure of Dataset <br> &nbsp; 2.5 Recoding variables <br>
 </li>
 <li>
-Elected parties <br>
+Parliament over the years <br>
 </li>
 <li>
 Most elected members of parliament <br>
@@ -54,7 +54,7 @@ References
 <span></span>
 <span><span class="co" style="color: #5E5E5E;"># Graphs</span></span>
 <span><span class="kw" style="color: #003B4F;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op" style="color: #5E5E5E;">)</span></span>
-<span></span>
+<span><span class="kw" style="color: #003B4F;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;"><a href="https://github.com/erocoar/ggpol">ggpol</a></span><span class="op" style="color: #5E5E5E;">)</span> </span>
 <span></span>
 <span><span class="co" style="color: #5E5E5E;"># Other settings</span></span>
 <span><span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op" style="color: #5E5E5E;">(</span>digits<span class="op" style="color: #5E5E5E;">=</span><span class="fl" style="color: #AD0000;">2</span><span class="op" style="color: #5E5E5E;">)</span> <span class="co" style="color: #5E5E5E;"># print only 2 decimals</span></span></code></pre></div>
@@ -223,10 +223,58 @@ References
 <span><span class="va" style="color: #111111;">parliament</span><span class="op" style="color: #5E5E5E;">$</span><span class="va" style="color: #111111;">Party</span><span class="op" style="color: #5E5E5E;">[</span><span class="va" style="color: #111111;">parliament</span><span class="op" style="color: #5E5E5E;">$</span><span class="va" style="color: #111111;">Party</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"ΟΟ.ΕΟ."</span><span class="op" style="color: #5E5E5E;">]</span> <span class="op" style="color: #5E5E5E;">&lt;-</span> <span class="st" style="color: #20794D;">"ΟΟ.ΕΟ"</span></span></code></pre></div>
 </details>
 </div>
-</section></section><section id="section" class="level1"><h1></h1>
+</section></section><section id="parliament-over-the-years" class="level1"><h1>Parliament over the years</h1>
+<p>Now, I will make a short sum-up of the electoral resuts over the years. It is important to share that I made it thanks to <a href="https://datavizstory.com/a-parliament-diagram-in-r/">this post</a> and <code>ggpol</code> package. As I am planning to do this procedure for many electoral terms I will convert the as a function.</p>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;">make_parliament_plot</span> <span class="op" style="color: #5E5E5E;">&lt;-</span> <span class="kw" style="color: #003B4F;">function</span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">term</span>, <span class="va" style="color: #111111;">custom_title</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">{</span></span>
+<span></span>
+<span><span class="va" style="color: #111111;">custom</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">parliament</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">Term</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="va" style="color: #111111;">term</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">Party</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>  <span class="fu" style="color: #4758AB;">`colnames&lt;-`</span><span class="op" style="color: #5E5E5E;">(</span><span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">""</span>,<span class="st" style="color: #20794D;">"Party"</span>, <span class="st" style="color: #20794D;">"Seats"</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">)</span></span>
+<span></span>
+<span><span class="va" style="color: #111111;">colors</span><span class="op" style="color: #5E5E5E;">&lt;-</span><span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"#f72100"</span>,<span class="st" style="color: #20794D;">"#10459c"</span>,<span class="st" style="color: #20794D;">"#26d43a"</span><span class="op" style="color: #5E5E5E;">)</span></span>
+<span></span>
+<span><span class="va" style="color: #111111;">custom</span><span class="op" style="color: #5E5E5E;">$</span><span class="va" style="color: #111111;">legend</span> <span class="op" style="color: #5E5E5E;">&lt;-</span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">custom</span><span class="op" style="color: #5E5E5E;">$</span><span class="va" style="color: #111111;">Party</span>,<span class="st" style="color: #20794D;">" ("</span>, <span class="va" style="color: #111111;">custom</span><span class="op" style="color: #5E5E5E;">$</span><span class="va" style="color: #111111;">Seats</span>,<span class="st" style="color: #20794D;">")"</span><span class="op" style="color: #5E5E5E;">)</span></span>
+<span></span>
+<span><span class="co" style="color: #5E5E5E;">#draw a parliament diagram </span></span>
+<span><span class="va" style="color: #111111;">p</span><span class="op" style="color: #5E5E5E;">&lt;-</span><span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">custom</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span> </span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/pkg/ggpol/man/geom_parliament.html">geom_parliament</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op" style="color: #5E5E5E;">(</span>seats <span class="op" style="color: #5E5E5E;">=</span><span class="va" style="color: #111111;">Seats</span>, fill <span class="op" style="color: #5E5E5E;">=</span>  <span class="va" style="color: #111111;">Party</span><span class="op" style="color: #5E5E5E;">)</span>, color <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"white"</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span> </span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual</a></span><span class="op" style="color: #5E5E5E;">(</span>values <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">colors</span> , labels <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">custom</span><span class="op" style="color: #5E5E5E;">$</span><span class="va" style="color: #111111;">legend</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html">coord_fixed</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span> </span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op" style="color: #5E5E5E;">(</span>title  <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">custom_title</span>,</span>
+<span>       caption <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Source: stesiam | stesiam.github.io, 2022"</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op" style="color: #5E5E5E;">(</span>title <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op" style="color: #5E5E5E;">(</span>size <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">18</span><span class="op" style="color: #5E5E5E;">)</span>,</span>
+<span>        plot.title <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op" style="color: #5E5E5E;">(</span>hjust <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">0.5</span>,size <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">14</span>,face <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">'bold'</span><span class="op" style="color: #5E5E5E;">)</span>,</span>
+<span>        plot.subtitle <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op" style="color: #5E5E5E;">(</span>hjust <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">0.5</span><span class="op" style="color: #5E5E5E;">)</span>,</span>
+<span>        plot.caption <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op" style="color: #5E5E5E;">(</span>vjust <span class="op" style="color: #5E5E5E;">=</span> <span class="op" style="color: #5E5E5E;">-</span><span class="fl" style="color: #AD0000;">3</span>,hjust <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">0.9</span>, size <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">8</span><span class="op" style="color: #5E5E5E;">)</span>,    </span>
+<span>        legend.position <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">'bottom'</span>,</span>
+<span>        legend.direction <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"horizontal"</span>,</span>
+<span>        legend.spacing.y <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="fl" style="color: #AD0000;">0.1</span>,<span class="st" style="color: #20794D;">"cm"</span><span class="op" style="color: #5E5E5E;">)</span>,</span>
+<span>        legend.spacing.x <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="fl" style="color: #AD0000;">0.1</span>,<span class="st" style="color: #20794D;">"cm"</span><span class="op" style="color: #5E5E5E;">)</span>,</span>
+<span>        legend.key.size <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="fl" style="color: #AD0000;">0.8</span>, <span class="st" style="color: #20794D;">'lines'</span><span class="op" style="color: #5E5E5E;">)</span>,</span>
+<span>        legend.text <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op" style="color: #5E5E5E;">(</span>margin <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/element.html">margin</a></span><span class="op" style="color: #5E5E5E;">(</span>r <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">1</span>, unit <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">'cm'</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">)</span>,</span>
+<span>        legend.text.align <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">0</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">+</span></span>
+<span>        <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/guides.html">guides</a></span><span class="op" style="color: #5E5E5E;">(</span>fill<span class="op" style="color: #5E5E5E;">=</span><span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html">guide_legend</a></span><span class="op" style="color: #5E5E5E;">(</span>nrow<span class="op" style="color: #5E5E5E;">=</span><span class="fl" style="color: #AD0000;">3</span>,byrow<span class="op" style="color: #5E5E5E;">=</span><span class="cn" style="color: #8f5902;">TRUE</span>,reverse <span class="op" style="color: #5E5E5E;">=</span> <span class="cn" style="color: #8f5902;">TRUE</span>,title<span class="op" style="color: #5E5E5E;">=</span><span class="cn" style="color: #8f5902;">NULL</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">)</span></span>
+<span></span>
+<span><span class="kw" style="color: #003B4F;"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">p</span><span class="op" style="color: #5E5E5E;">)</span></span>
+<span><span class="op" style="color: #5E5E5E;">}</span></span></code></pre></div>
+</details>
+</div>
+<div class="panel-tabset">
+<ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" aria-controls="tabset-1-1" aria-selected="true">3rd Term</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="fl" style="color: #AD0000;">3</span>, <span class="st" style="color: #20794D;">"Greek Parliament (1981-1985)"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+</details><div class="cell-output-display">
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
 </section><section id="most-elected-members-of-parliament" class="level1"><h1>Most elected members of parliament</h1>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">parliament</span><span class="op" style="color: #5E5E5E;">$</span><span class="va" style="color: #111111;">FullName</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">parliament</span><span class="op" style="color: #5E5E5E;">$</span><span class="va" style="color: #111111;">Freq</span>, decreasing <span class="op" style="color: #5E5E5E;">=</span> <span class="cn" style="color: #8f5902;">T</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op" style="color: #5E5E5E;">(</span>n<span class="op" style="color: #5E5E5E;">=</span><span class="fl" style="color: #AD0000;">15</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">parliament</span><span class="op" style="color: #5E5E5E;">$</span><span class="va" style="color: #111111;">FullName</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">parliament</span><span class="op" style="color: #5E5E5E;">$</span><span class="va" style="color: #111111;">Freq</span>, decreasing <span class="op" style="color: #5E5E5E;">=</span> <span class="cn" style="color: #8f5902;">T</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op" style="color: #5E5E5E;">(</span>n<span class="op" style="color: #5E5E5E;">=</span><span class="fl" style="color: #AD0000;">15</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -303,7 +351,7 @@ References
 <p>The parties are getting represented on alphabetical order.</p>
 <section id="kke" class="level2"><h2 class="anchored" data-anchor-id="kke">KKE</h2>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;">parliament</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">Party</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"KKE"</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;">parliament</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">Party</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"KKE"</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">FullName</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op" style="color: #5E5E5E;">(</span>decreasing <span class="op" style="color: #5E5E5E;">=</span> <span class="cn" style="color: #8f5902;">TRUE</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op" style="color: #5E5E5E;">(</span>n<span class="op" style="color: #5E5E5E;">=</span><span class="fl" style="color: #AD0000;">5</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
@@ -339,7 +387,7 @@ References
 </div>
 </section><section id="nd" class="level2"><h2 class="anchored" data-anchor-id="nd">ND</h2>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;">parliament</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">Party</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"ND"</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;">parliament</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">Party</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"ND"</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">FullName</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op" style="color: #5E5E5E;">(</span>decreasing <span class="op" style="color: #5E5E5E;">=</span> <span class="cn" style="color: #8f5902;">TRUE</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op" style="color: #5E5E5E;">(</span>n<span class="op" style="color: #5E5E5E;">=</span><span class="fl" style="color: #AD0000;">5</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
@@ -375,7 +423,7 @@ References
 </div>
 </section><section id="pasok" class="level2"><h2 class="anchored" data-anchor-id="pasok">PASOK</h2>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;">parliament</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">Party</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"PASOK"</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;">parliament</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">Party</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"PASOK"</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">FullName</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op" style="color: #5E5E5E;">(</span>decreasing <span class="op" style="color: #5E5E5E;">=</span> <span class="cn" style="color: #8f5902;">TRUE</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op" style="color: #5E5E5E;">(</span>n<span class="op" style="color: #5E5E5E;">=</span><span class="fl" style="color: #AD0000;">5</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
@@ -411,7 +459,7 @@ References
 </div>
 </section><section id="syriza" class="level2"><h2 class="anchored" data-anchor-id="syriza">SYRIZA</h2>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;">parliament</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">Party</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"SYRIZA"</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;">parliament</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">Party</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"SYRIZA"</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">FullName</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op" style="color: #5E5E5E;">(</span>decreasing <span class="op" style="color: #5E5E5E;">=</span> <span class="cn" style="color: #8f5902;">TRUE</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op" style="color: #5E5E5E;">(</span>n<span class="op" style="color: #5E5E5E;">=</span><span class="fl" style="color: #AD0000;">5</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
@@ -448,19 +496,19 @@ References
 </section></section><section id="most-elected-members-based-on-constituency" class="level1"><h1>Most elected members based on constituency</h1>
 <p>A function for constituencies.</p>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;">constituency_freqs</span> <span class="op" style="color: #5E5E5E;">&lt;-</span> <span class="kw" style="color: #003B4F;">function</span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">input_constituency</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">{</span></span>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;">constituency_freqs</span> <span class="op" style="color: #5E5E5E;">&lt;-</span> <span class="kw" style="color: #003B4F;">function</span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">input_constituency</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">{</span></span>
 <span><span class="va" style="color: #111111;">parliament</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">Constituency</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="va" style="color: #111111;">input_constituency</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">FullName</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op" style="color: #5E5E5E;">(</span>decreasing <span class="op" style="color: #5E5E5E;">=</span> <span class="cn" style="color: #8f5902;">TRUE</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op" style="color: #5E5E5E;">(</span>n<span class="op" style="color: #5E5E5E;">=</span><span class="fl" style="color: #AD0000;">5</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span></span>
 <span><span class="op" style="color: #5E5E5E;">}</span></span></code></pre></div>
 </details>
 </div>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co" style="color: #5E5E5E;">#unique(parliament$Constituency) %&gt;% sort()</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co" style="color: #5E5E5E;">#unique(parliament$Constituency) %&gt;% sort()</span></span></code></pre></div>
 </details>
 </div>
 <section id="state" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="state">State</h2>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"State"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"State"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -496,16 +544,16 @@ References
 </section><section id="attica" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="attica">Attica</h2>
 <div class="panel-tabset">
 <ul class="nav nav-tabs">
-<li class="nav-item"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" aria-controls="tabset-1-1" aria-selected="true">Athens A</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" aria-controls="tabset-1-2" aria-selected="false">Athens B</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" aria-controls="tabset-1-3" aria-selected="false">Piraeus A</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" aria-controls="tabset-1-4" aria-selected="false">Piraeus B</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" aria-controls="tabset-1-5" aria-selected="false">Of Attica (rest)</a></li>
+<li class="nav-item"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" aria-controls="tabset-2-1" aria-selected="true">Athens A</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" aria-controls="tabset-2-2" aria-selected="false">Athens B</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" aria-controls="tabset-2-3" aria-selected="false">Piraeus A</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-2-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-4" aria-controls="tabset-2-4" aria-selected="false">Piraeus B</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-2-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-5" aria-controls="tabset-2-5" aria-selected="false">Of Attica (rest)</a></li>
 </ul>
 <div class="tab-content">
-<div id="tabset-1-1" class="tab-pane active" aria-labelledby="tabset-1-1-tab">
+<div id="tabset-2-1" class="tab-pane active" aria-labelledby="tabset-2-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Athens A"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Athens A"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -539,9 +587,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-1-2" class="tab-pane" aria-labelledby="tabset-1-2-tab">
+<div id="tabset-2-2" class="tab-pane" aria-labelledby="tabset-2-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Athens B"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Athens B"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -575,9 +623,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-1-3" class="tab-pane" aria-labelledby="tabset-1-3-tab">
+<div id="tabset-2-3" class="tab-pane" aria-labelledby="tabset-2-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Piraeus A"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb18" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Piraeus A"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -611,9 +659,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-1-4" class="tab-pane" aria-labelledby="tabset-1-4-tab">
+<div id="tabset-2-4" class="tab-pane" aria-labelledby="tabset-2-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Piraeus B"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb19" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Piraeus B"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -647,9 +695,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-1-5" class="tab-pane" aria-labelledby="tabset-1-5-tab">
+<div id="tabset-2-5" class="tab-pane" aria-labelledby="tabset-2-5-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb18" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Of Attica (rest)"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb20" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Of Attica (rest)"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -688,15 +736,15 @@ References
 </section><section id="central-greece" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="central-greece">Central Greece</h2>
 <div class="panel-tabset">
 <ul class="nav nav-tabs">
-<li class="nav-item"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" aria-controls="tabset-2-1" aria-selected="true">Viotia</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" aria-controls="tabset-2-2" aria-selected="false">Evrytania</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" aria-controls="tabset-2-3" aria-selected="false">Fokida</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-2-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-4" aria-controls="tabset-2-4" aria-selected="false">Fthiotida</a></li>
+<li class="nav-item"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" aria-controls="tabset-3-1" aria-selected="true">Viotia</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" aria-controls="tabset-3-2" aria-selected="false">Evrytania</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" aria-controls="tabset-3-3" aria-selected="false">Fokida</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-3-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-4" aria-controls="tabset-3-4" aria-selected="false">Fthiotida</a></li>
 </ul>
 <div class="tab-content">
-<div id="tabset-2-1" class="tab-pane active" aria-labelledby="tabset-2-1-tab">
+<div id="tabset-3-1" class="tab-pane active" aria-labelledby="tabset-3-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb19" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Viotia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb21" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Viotia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -730,9 +778,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-2-2" class="tab-pane" aria-labelledby="tabset-2-2-tab">
+<div id="tabset-3-2" class="tab-pane" aria-labelledby="tabset-3-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb20" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Evrytania"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb22" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Evrytania"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -766,9 +814,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-2-3" class="tab-pane" aria-labelledby="tabset-2-3-tab">
+<div id="tabset-3-3" class="tab-pane" aria-labelledby="tabset-3-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb21" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Fokida"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb23" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Fokida"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -802,9 +850,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-2-4" class="tab-pane" aria-labelledby="tabset-2-4-tab">
+<div id="tabset-3-4" class="tab-pane" aria-labelledby="tabset-3-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb22" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Fthiotida"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb24" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Fthiotida"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -843,18 +891,18 @@ References
 </section><section id="central-macedonia" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="central-macedonia">Central Macedonia</h2>
 <div class="panel-tabset">
 <ul class="nav nav-tabs">
-<li class="nav-item"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" aria-controls="tabset-3-1" aria-selected="true">Thessaloniki A</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" aria-controls="tabset-3-2" aria-selected="false">Thessaloniki B</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" aria-controls="tabset-3-3" aria-selected="false">Kilkis</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-3-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-4" aria-controls="tabset-3-4" aria-selected="false">Pella</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-3-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-5" aria-controls="tabset-3-5" aria-selected="false">Pieria</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-3-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-6" aria-controls="tabset-3-6" aria-selected="false">Serres</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-3-7-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-7" aria-controls="tabset-3-7" aria-selected="false">Halkidiki</a></li>
+<li class="nav-item"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" aria-controls="tabset-4-1" aria-selected="true">Thessaloniki A</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" aria-controls="tabset-4-2" aria-selected="false">Thessaloniki B</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-4-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-3" aria-controls="tabset-4-3" aria-selected="false">Kilkis</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-4-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-4" aria-controls="tabset-4-4" aria-selected="false">Pella</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-4-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-5" aria-controls="tabset-4-5" aria-selected="false">Pieria</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-4-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-6" aria-controls="tabset-4-6" aria-selected="false">Serres</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-4-7-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-7" aria-controls="tabset-4-7" aria-selected="false">Halkidiki</a></li>
 </ul>
 <div class="tab-content">
-<div id="tabset-3-1" class="tab-pane active" aria-labelledby="tabset-3-1-tab">
+<div id="tabset-4-1" class="tab-pane active" aria-labelledby="tabset-4-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb23" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Thessaloniki A"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb25" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Thessaloniki A"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -888,9 +936,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-3-2" class="tab-pane" aria-labelledby="tabset-3-2-tab">
+<div id="tabset-4-2" class="tab-pane" aria-labelledby="tabset-4-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb24" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Thessaloniki B"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb26" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Thessaloniki B"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -924,9 +972,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-3-3" class="tab-pane" aria-labelledby="tabset-3-3-tab">
+<div id="tabset-4-3" class="tab-pane" aria-labelledby="tabset-4-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb25" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Kilkis"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb27" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Kilkis"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -960,9 +1008,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-3-4" class="tab-pane" aria-labelledby="tabset-3-4-tab">
+<div id="tabset-4-4" class="tab-pane" aria-labelledby="tabset-4-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb26" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Pella"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb28" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Pella"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -996,9 +1044,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-3-5" class="tab-pane" aria-labelledby="tabset-3-5-tab">
+<div id="tabset-4-5" class="tab-pane" aria-labelledby="tabset-4-5-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb27" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Pieria"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb29" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Pieria"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -1032,9 +1080,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-3-6" class="tab-pane" aria-labelledby="tabset-3-6-tab">
+<div id="tabset-4-6" class="tab-pane" aria-labelledby="tabset-4-6-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb28" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Serres"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb30" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Serres"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -1068,9 +1116,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-3-7" class="tab-pane" aria-labelledby="tabset-3-7-tab">
+<div id="tabset-4-7" class="tab-pane" aria-labelledby="tabset-4-7-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb29" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Halkidiki"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb31" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Halkidiki"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -1109,15 +1157,15 @@ References
 </section><section id="crete" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="crete">Crete</h2>
 <div class="panel-tabset">
 <ul class="nav nav-tabs">
-<li class="nav-item"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" aria-controls="tabset-4-1" aria-selected="true">Chania</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" aria-controls="tabset-4-2" aria-selected="false">Heraklion</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-4-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-3" aria-controls="tabset-4-3" aria-selected="false">Lasithi</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-4-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-4" aria-controls="tabset-4-4" aria-selected="false">Rethymno</a></li>
+<li class="nav-item"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" aria-controls="tabset-5-1" aria-selected="true">Chania</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" aria-controls="tabset-5-2" aria-selected="false">Heraklion</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-5-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-3" aria-controls="tabset-5-3" aria-selected="false">Lasithi</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-5-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-4" aria-controls="tabset-5-4" aria-selected="false">Rethymno</a></li>
 </ul>
 <div class="tab-content">
-<div id="tabset-4-1" class="tab-pane active" aria-labelledby="tabset-4-1-tab">
+<div id="tabset-5-1" class="tab-pane active" aria-labelledby="tabset-5-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb30" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Chania"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb32" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Chania"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -1151,9 +1199,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-4-2" class="tab-pane" aria-labelledby="tabset-4-2-tab">
+<div id="tabset-5-2" class="tab-pane" aria-labelledby="tabset-5-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb31" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Irakleio"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb33" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Irakleio"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -1165,9 +1213,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-4-3" class="tab-pane" aria-labelledby="tabset-4-3-tab">
+<div id="tabset-5-3" class="tab-pane" aria-labelledby="tabset-5-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb32" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Lasithi"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb34" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Lasithi"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -1201,9 +1249,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-4-4" class="tab-pane" aria-labelledby="tabset-4-4-tab">
+<div id="tabset-5-4" class="tab-pane" aria-labelledby="tabset-5-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb33" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Rethymno"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb35" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Rethymno"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -1242,16 +1290,16 @@ References
 </section><section id="eastern-macedonia-and-thrace" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="eastern-macedonia-and-thrace">Eastern Macedonia and Thrace</h2>
 <div class="panel-tabset">
 <ul class="nav nav-tabs">
-<li class="nav-item"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" aria-controls="tabset-5-1" aria-selected="true">Drama</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" aria-controls="tabset-5-2" aria-selected="false">Evros</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-5-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-3" aria-controls="tabset-5-3" aria-selected="false">Kavala</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-5-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-4" aria-controls="tabset-5-4" aria-selected="false">Xanthi</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-5-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-5" aria-controls="tabset-5-5" aria-selected="false">Rodopi</a></li>
+<li class="nav-item"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" aria-controls="tabset-6-1" aria-selected="true">Drama</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" aria-controls="tabset-6-2" aria-selected="false">Evros</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-6-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-3" aria-controls="tabset-6-3" aria-selected="false">Kavala</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-6-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-4" aria-controls="tabset-6-4" aria-selected="false">Xanthi</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-6-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-5" aria-controls="tabset-6-5" aria-selected="false">Rodopi</a></li>
 </ul>
 <div class="tab-content">
-<div id="tabset-5-1" class="tab-pane active" aria-labelledby="tabset-5-1-tab">
+<div id="tabset-6-1" class="tab-pane active" aria-labelledby="tabset-6-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb34" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Drama"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb36" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Drama"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -1285,9 +1333,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-5-2" class="tab-pane" aria-labelledby="tabset-5-2-tab">
+<div id="tabset-6-2" class="tab-pane" aria-labelledby="tabset-6-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb35" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Evros"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb37" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Evros"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -1321,9 +1369,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-5-3" class="tab-pane" aria-labelledby="tabset-5-3-tab">
+<div id="tabset-6-3" class="tab-pane" aria-labelledby="tabset-6-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb36" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Kavala"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb38" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Kavala"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -1357,9 +1405,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-5-4" class="tab-pane" aria-labelledby="tabset-5-4-tab">
+<div id="tabset-6-4" class="tab-pane" aria-labelledby="tabset-6-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb37" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Xanthi"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb39" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Xanthi"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -1393,9 +1441,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-5-5" class="tab-pane" aria-labelledby="tabset-5-5-tab">
+<div id="tabset-6-5" class="tab-pane" aria-labelledby="tabset-6-5-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb38" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Rodopi"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb40" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Rodopi"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -1434,15 +1482,15 @@ References
 </section><section id="epirus" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="epirus">Epirus</h2>
 <div class="panel-tabset">
 <ul class="nav nav-tabs">
-<li class="nav-item"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" aria-controls="tabset-6-1" aria-selected="true">Arta</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" aria-controls="tabset-6-2" aria-selected="false">Ioannina</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-6-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-3" aria-controls="tabset-6-3" aria-selected="false">Preveza</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-6-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-4" aria-controls="tabset-6-4" aria-selected="false">Thesprotia</a></li>
+<li class="nav-item"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" aria-controls="tabset-7-1" aria-selected="true">Arta</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-7-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-2" aria-controls="tabset-7-2" aria-selected="false">Ioannina</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-7-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-3" aria-controls="tabset-7-3" aria-selected="false">Preveza</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-7-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-4" aria-controls="tabset-7-4" aria-selected="false">Thesprotia</a></li>
 </ul>
 <div class="tab-content">
-<div id="tabset-6-1" class="tab-pane active" aria-labelledby="tabset-6-1-tab">
+<div id="tabset-7-1" class="tab-pane active" aria-labelledby="tabset-7-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb39" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Arta"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb41" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Arta"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -1476,9 +1524,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-6-2" class="tab-pane" aria-labelledby="tabset-6-2-tab">
+<div id="tabset-7-2" class="tab-pane" aria-labelledby="tabset-7-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb40" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Ioannina"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb42" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Ioannina"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -1512,9 +1560,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-6-3" class="tab-pane" aria-labelledby="tabset-6-3-tab">
+<div id="tabset-7-3" class="tab-pane" aria-labelledby="tabset-7-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb41" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Preveza"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb43" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Preveza"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -1548,9 +1596,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-6-4" class="tab-pane" aria-labelledby="tabset-6-4-tab">
+<div id="tabset-7-4" class="tab-pane" aria-labelledby="tabset-7-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb42" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Thesprotia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb44" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Thesprotia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -1589,15 +1637,15 @@ References
 </section><section id="ionian-islands" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="ionian-islands">Ionian Islands</h2>
 <div class="panel-tabset">
 <ul class="nav nav-tabs">
-<li class="nav-item"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" aria-controls="tabset-7-1" aria-selected="true">Corfu</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-7-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-2" aria-controls="tabset-7-2" aria-selected="false">Kefallonia</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-7-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-3" aria-controls="tabset-7-3" aria-selected="false">Lefkada</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-7-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-4" aria-controls="tabset-7-4" aria-selected="false">Zakynthos</a></li>
+<li class="nav-item"><a class="nav-link active" id="tabset-8-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-1" aria-controls="tabset-8-1" aria-selected="true">Corfu</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-8-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-2" aria-controls="tabset-8-2" aria-selected="false">Kefallonia</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-8-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-3" aria-controls="tabset-8-3" aria-selected="false">Lefkada</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-8-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-4" aria-controls="tabset-8-4" aria-selected="false">Zakynthos</a></li>
 </ul>
 <div class="tab-content">
-<div id="tabset-7-1" class="tab-pane active" aria-labelledby="tabset-7-1-tab">
+<div id="tabset-8-1" class="tab-pane active" aria-labelledby="tabset-8-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb43" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Corfu"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb45" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Corfu"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -1631,9 +1679,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-7-2" class="tab-pane" aria-labelledby="tabset-7-2-tab">
+<div id="tabset-8-2" class="tab-pane" aria-labelledby="tabset-8-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb44" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Kefallonia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb46" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Kefallonia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -1667,9 +1715,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-7-3" class="tab-pane" aria-labelledby="tabset-7-3-tab">
+<div id="tabset-8-3" class="tab-pane" aria-labelledby="tabset-8-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb45" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Lefkada"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb47" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Lefkada"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -1703,9 +1751,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-7-4" class="tab-pane" aria-labelledby="tabset-7-4-tab">
+<div id="tabset-8-4" class="tab-pane" aria-labelledby="tabset-8-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb46" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Zakynthos"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb48" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Zakynthos"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -1744,14 +1792,14 @@ References
 </section><section id="north-aegean" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="north-aegean">North Aegean</h2>
 <div class="panel-tabset">
 <ul class="nav nav-tabs">
-<li class="nav-item"><a class="nav-link active" id="tabset-8-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-1" aria-controls="tabset-8-1" aria-selected="true">Chios</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-8-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-2" aria-controls="tabset-8-2" aria-selected="false">Lesvos</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-8-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-3" aria-controls="tabset-8-3" aria-selected="false">Samos</a></li>
+<li class="nav-item"><a class="nav-link active" id="tabset-9-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-1" aria-controls="tabset-9-1" aria-selected="true">Chios</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-9-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-2" aria-controls="tabset-9-2" aria-selected="false">Lesvos</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-9-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-3" aria-controls="tabset-9-3" aria-selected="false">Samos</a></li>
 </ul>
 <div class="tab-content">
-<div id="tabset-8-1" class="tab-pane active" aria-labelledby="tabset-8-1-tab">
+<div id="tabset-9-1" class="tab-pane active" aria-labelledby="tabset-9-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb47" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Chios"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb49" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Chios"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -1785,9 +1833,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-8-2" class="tab-pane" aria-labelledby="tabset-8-2-tab">
+<div id="tabset-9-2" class="tab-pane" aria-labelledby="tabset-9-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb48" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Lesvos"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb50" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Lesvos"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -1821,9 +1869,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-8-3" class="tab-pane" aria-labelledby="tabset-8-3-tab">
+<div id="tabset-9-3" class="tab-pane" aria-labelledby="tabset-9-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb49" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Samos"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb51" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Samos"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -1862,16 +1910,16 @@ References
 </section><section id="peloponnese" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="peloponnese">Peloponnese</h2>
 <div class="panel-tabset">
 <ul class="nav nav-tabs">
-<li class="nav-item"><a class="nav-link active" id="tabset-9-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-1" aria-controls="tabset-9-1" aria-selected="true">Argolida</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-9-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-2" aria-controls="tabset-9-2" aria-selected="false">Arkadia</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-9-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-3" aria-controls="tabset-9-3" aria-selected="false">Korinthia</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-9-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-4" aria-controls="tabset-9-4" aria-selected="false">Lakonia</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-9-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-5" aria-controls="tabset-9-5" aria-selected="false">Messinia</a></li>
+<li class="nav-item"><a class="nav-link active" id="tabset-10-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-1" aria-controls="tabset-10-1" aria-selected="true">Argolida</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-10-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-2" aria-controls="tabset-10-2" aria-selected="false">Arkadia</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-10-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-3" aria-controls="tabset-10-3" aria-selected="false">Korinthia</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-10-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-4" aria-controls="tabset-10-4" aria-selected="false">Lakonia</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-10-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-5" aria-controls="tabset-10-5" aria-selected="false">Messinia</a></li>
 </ul>
 <div class="tab-content">
-<div id="tabset-9-1" class="tab-pane active" aria-labelledby="tabset-9-1-tab">
+<div id="tabset-10-1" class="tab-pane active" aria-labelledby="tabset-10-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb50" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Argolida"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb52" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Argolida"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -1905,9 +1953,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-9-2" class="tab-pane" aria-labelledby="tabset-9-2-tab">
+<div id="tabset-10-2" class="tab-pane" aria-labelledby="tabset-10-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb51" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Arcadia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb53" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Arcadia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -1941,9 +1989,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-9-3" class="tab-pane" aria-labelledby="tabset-9-3-tab">
+<div id="tabset-10-3" class="tab-pane" aria-labelledby="tabset-10-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb52" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Korinthia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb54" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Korinthia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -1977,9 +2025,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-9-4" class="tab-pane" aria-labelledby="tabset-9-4-tab">
+<div id="tabset-10-4" class="tab-pane" aria-labelledby="tabset-10-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb53" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Lakonia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb55" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Lakonia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -2013,9 +2061,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-9-5" class="tab-pane" aria-labelledby="tabset-9-5-tab">
+<div id="tabset-10-5" class="tab-pane" aria-labelledby="tabset-10-5-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb54" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Messinia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb56" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Messinia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -2054,13 +2102,13 @@ References
 </section><section id="south-aegean" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="south-aegean">South Aegean</h2>
 <div class="panel-tabset">
 <ul class="nav nav-tabs">
-<li class="nav-item"><a class="nav-link active" id="tabset-10-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-1" aria-controls="tabset-10-1" aria-selected="true">Dodecanese Islands</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-10-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-2" aria-controls="tabset-10-2" aria-selected="false">Cyclades</a></li>
+<li class="nav-item"><a class="nav-link active" id="tabset-11-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-1" aria-controls="tabset-11-1" aria-selected="true">Dodecanese Islands</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-11-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-2" aria-controls="tabset-11-2" aria-selected="false">Cyclades</a></li>
 </ul>
 <div class="tab-content">
-<div id="tabset-10-1" class="tab-pane active" aria-labelledby="tabset-10-1-tab">
+<div id="tabset-11-1" class="tab-pane active" aria-labelledby="tabset-11-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb55" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Dodecanese Islands"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb57" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Dodecanese Islands"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -2094,9 +2142,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-10-2" class="tab-pane" aria-labelledby="tabset-10-2-tab">
+<div id="tabset-11-2" class="tab-pane" aria-labelledby="tabset-11-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb56" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Cyclades"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb58" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Cyclades"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -2135,15 +2183,15 @@ References
 </section><section id="thessaly" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="thessaly">Thessaly</h2>
 <div class="panel-tabset">
 <ul class="nav nav-tabs">
-<li class="nav-item"><a class="nav-link active" id="tabset-11-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-1" aria-controls="tabset-11-1" aria-selected="true">Karditsa</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-11-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-2" aria-controls="tabset-11-2" aria-selected="false">Larissa</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-11-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-3" aria-controls="tabset-11-3" aria-selected="false">Magnesia</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-11-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-4" aria-controls="tabset-11-4" aria-selected="false">Trikala</a></li>
+<li class="nav-item"><a class="nav-link active" id="tabset-12-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-1" aria-controls="tabset-12-1" aria-selected="true">Karditsa</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-12-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-2" aria-controls="tabset-12-2" aria-selected="false">Larissa</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-12-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-3" aria-controls="tabset-12-3" aria-selected="false">Magnesia</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-12-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-4" aria-controls="tabset-12-4" aria-selected="false">Trikala</a></li>
 </ul>
 <div class="tab-content">
-<div id="tabset-11-1" class="tab-pane active" aria-labelledby="tabset-11-1-tab">
+<div id="tabset-12-1" class="tab-pane active" aria-labelledby="tabset-12-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb57" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Karditsa"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb59" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Karditsa"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -2177,9 +2225,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-11-2" class="tab-pane" aria-labelledby="tabset-11-2-tab">
+<div id="tabset-12-2" class="tab-pane" aria-labelledby="tabset-12-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb58" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Larissa"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb60" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Larissa"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -2213,9 +2261,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-11-3" class="tab-pane" aria-labelledby="tabset-11-3-tab">
+<div id="tabset-12-3" class="tab-pane" aria-labelledby="tabset-12-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb59" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Magnesia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb61" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Magnesia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -2249,9 +2297,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-11-4" class="tab-pane" aria-labelledby="tabset-11-4-tab">
+<div id="tabset-12-4" class="tab-pane" aria-labelledby="tabset-12-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb60" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Trikala"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb62" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Trikala"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -2290,14 +2338,14 @@ References
 </section><section id="western-greece" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="western-greece">Western Greece</h2>
 <div class="panel-tabset">
 <ul class="nav nav-tabs">
-<li class="nav-item"><a class="nav-link active" id="tabset-12-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-1" aria-controls="tabset-12-1" aria-selected="true">Achaia</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-12-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-2" aria-controls="tabset-12-2" aria-selected="false">Aitoloakarnania</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-12-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-3" aria-controls="tabset-12-3" aria-selected="false">Ileia</a></li>
+<li class="nav-item"><a class="nav-link active" id="tabset-13-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-13-1" aria-controls="tabset-13-1" aria-selected="true">Achaia</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-13-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-13-2" aria-controls="tabset-13-2" aria-selected="false">Aitoloakarnania</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-13-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-13-3" aria-controls="tabset-13-3" aria-selected="false">Ileia</a></li>
 </ul>
 <div class="tab-content">
-<div id="tabset-12-1" class="tab-pane active" aria-labelledby="tabset-12-1-tab">
+<div id="tabset-13-1" class="tab-pane active" aria-labelledby="tabset-13-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb61" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Achaia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb63" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Achaia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -2331,9 +2379,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-12-2" class="tab-pane" aria-labelledby="tabset-12-2-tab">
+<div id="tabset-13-2" class="tab-pane" aria-labelledby="tabset-13-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb62" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Aitoloakarnania"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb64" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Aitoloakarnania"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -2345,9 +2393,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-12-3" class="tab-pane" aria-labelledby="tabset-12-3-tab">
+<div id="tabset-13-3" class="tab-pane" aria-labelledby="tabset-13-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb63" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Ileia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb65" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Ileia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -2386,15 +2434,15 @@ References
 </section><section id="western-macedonia" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="western-macedonia">Western Macedonia</h2>
 <div class="panel-tabset">
 <ul class="nav nav-tabs">
-<li class="nav-item"><a class="nav-link active" id="tabset-13-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-13-1" aria-controls="tabset-13-1" aria-selected="true">Florina</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-13-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-13-2" aria-controls="tabset-13-2" aria-selected="false">Grevena</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-13-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-13-3" aria-controls="tabset-13-3" aria-selected="false">Kastoria</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-13-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-13-4" aria-controls="tabset-13-4" aria-selected="false">Kozani</a></li>
+<li class="nav-item"><a class="nav-link active" id="tabset-14-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-14-1" aria-controls="tabset-14-1" aria-selected="true">Florina</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-14-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-14-2" aria-controls="tabset-14-2" aria-selected="false">Grevena</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-14-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-14-3" aria-controls="tabset-14-3" aria-selected="false">Kastoria</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-14-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-14-4" aria-controls="tabset-14-4" aria-selected="false">Kozani</a></li>
 </ul>
 <div class="tab-content">
-<div id="tabset-13-1" class="tab-pane active" aria-labelledby="tabset-13-1-tab">
+<div id="tabset-14-1" class="tab-pane active" aria-labelledby="tabset-14-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb64" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Florina"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb66" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Florina"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -2428,9 +2476,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-13-2" class="tab-pane" aria-labelledby="tabset-13-2-tab">
+<div id="tabset-14-2" class="tab-pane" aria-labelledby="tabset-14-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb65" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Grevena"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb67" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Grevena"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -2464,9 +2512,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-13-3" class="tab-pane" aria-labelledby="tabset-13-3-tab">
+<div id="tabset-14-3" class="tab-pane" aria-labelledby="tabset-14-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb66" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Kastoria"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb68" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Kastoria"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -2500,9 +2548,9 @@ References
 </div>
 </div>
 </div>
-<div id="tabset-13-4" class="tab-pane" aria-labelledby="tabset-13-4-tab">
+<div id="tabset-14-4" class="tab-pane" aria-labelledby="tabset-14-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb67" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Kozani"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb69" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Kozani"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -2553,6 +2601,9 @@ Müller, K., &amp; Wickham, H. (2022). <em>Tibble: Simple data frames</em>. Retr
 </div>
 <div id="ref-R-base" class="csl-entry">
 R Core Team. (2021). <em>R: A language and environment for statistical computing</em>. Vienna, Austria: R Foundation for Statistical Computing. Retrieved from <a href="https://www.R-project.org/">https://www.R-project.org/</a>
+</div>
+<div id="ref-R-ggpol" class="csl-entry">
+Tiedemann, F. (2020). <em>Ggpol: Visualizing social science data with ggplot2</em>. Retrieved from <a href="https://github.com/erocoar/ggpol">https://github.com/erocoar/ggpol</a>
 </div>
 <div id="ref-ggplot22016" class="csl-entry">
 Wickham, H. (2016). <em>ggplot2: Elegant graphics for data analysis</em>. Springer-Verlag New York. Retrieved from <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>

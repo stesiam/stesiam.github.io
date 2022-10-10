@@ -40,7 +40,7 @@ editor_options:
 &nbsp; 2.3 [Preview Dataset](#preview-dataset) <br>
 &nbsp; 2.4 [Structure of Dataset](#structure-of-dataset) <br>
 &nbsp; 2.5 [Recoding variables](#recoding-variables) <br>
-3. [Elected parties](#elected-parties) <br>
+3. [Parliament over the years](#parliament-over-the-years) <br>
 4. [Most elected members of parliament](#most-elected-members-of-parliament) <br>
 5. [Most elected members per party](#most-elected-members-per-party) <br>
 &nbsp; 5.1 [KKE](#kke) <br>
@@ -89,11 +89,10 @@ library(kableExtra)
 
 # Graphs
 library(ggplot2)
-
+library(ggpol) 
 
 # Other settings
 options(digits=2) # print only 2 decimals
-
 ```
 
 ```{r, include=FALSE}
@@ -169,7 +168,56 @@ parliament$Party[parliament$Party == "ΟΟ.ΕΟ."] <- "ΟΟ.ΕΟ"
 ```
 
 
-# 
+# Parliament over the years
+
+Now, I will make a short sum-up of the electoral resuts over the years. It is important to share that I made it thanks to [this post](https://datavizstory.com/a-parliament-diagram-in-r/) and `ggpol` package. As I am planning to do this procedure for many electoral terms I will convert the as a function.
+
+```{r}
+make_parliament_plot <- function(term, custom_title, custom1, custom2){
+
+custom = parliament %>% filter(Term == term) %>% select(Party) %>% table() %>% t() %>% as.data.frame() %>%  `colnames<-`(c("","Party", "Seats"))
+
+colors<-c("#f72100","#10459c","#26d43a")
+
+custom$legend <- paste0(custom$Party," (", custom$Seats,")")
+
+#draw a parliament diagram 
+p<-ggplot(custom) + 
+  geom_parliament(aes(seats =Seats, fill =  Party), color = "white") + 
+  scale_fill_manual(values = colors , labels = custom$legend) +
+  coord_fixed() + 
+  theme_void()+
+  labs(title  = custom_title,
+       caption = "Source: stesiam | stesiam.github.io, 2022")+
+  theme(title = element_text(size = 18),
+        plot.title = element_text(hjust = 0.5,size = 14,face = 'bold'),
+        plot.subtitle = element_text(hjust = 0.5),
+        plot.caption = element_text(vjust = -3,hjust = 0.9, size = 8),    
+        legend.position = 'bottom',
+        legend.direction = "horizontal",
+        legend.spacing.y = unit(0.1,"cm"),
+        legend.spacing.x = unit(0.1,"cm"),
+        legend.key.size = unit(0.8, 'lines'),
+        legend.text = element_text(margin = margin(r = 1, unit = 'cm')),
+        legend.text.align = 0)+
+        guides(fill=guide_legend(nrow=3,byrow=TRUE,reverse = TRUE,title=NULL))
+
+return(p)
+}
+```
+
+
+
+::: {.panel-tabset}
+
+## 3rd Term
+
+```{r}
+make_parliament_plot(3, "Greek Parliament (1981-1985)")
+```
+
+
+:::
 
 
 # Most elected members of parliament
