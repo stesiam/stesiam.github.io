@@ -6,8 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="stesiam">
 <meta name="dcterms.date" content="2022-10-10">
-<meta name="description" content="An EDA on Greek MPs over the years (1981-2019).">
-<title>stesiam - Most elected members on Greek Parliament</title>
+<meta name="description" content="Let’s explore the MPs that got elected the most over the years (1981-2019).">
+<title>stesiam - EDA on Greek Parliament (Part I)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -135,8 +135,8 @@ div.csl-indent {
   }
 }</script><script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script><link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 <link rel="stylesheet" href="../../styles.css">
-<meta property="og:title" content="stesiam - Most elected members on Greek Parliament">
-<meta property="og:description" content="An EDA on Greek MPs over the years (1981-2019).">
+<meta property="og:title" content="stesiam - EDA on Greek Parliament (Part I)">
+<meta property="og:description" content="Let’s explore the MPs that got elected the most over the years (1981-2019).">
 <meta property="og:image" content="https://www.stesiam.github.io/notebooks/2022-10-10-Surnames-Greek-Parliament/images/houses-of-parliament.jpg">
 <meta property="og:site-name" content="stesiam">
 </head>
@@ -189,10 +189,10 @@ div.csl-indent {
       </div> <!-- /container-fluid -->
     </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full"><div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <div class="quarto-title-block"><div><h1 class="title">Most elected members on Greek Parliament</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button" data-quarto-source-url="https://github.com/stesiam/stesiam.github.io/blob/main/notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.qmd">View Source</a></li></ul></div></div>
+      <div class="quarto-title-block"><div><h1 class="title">EDA on Greek Parliament (Part I)</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button" data-quarto-source-url="https://github.com/stesiam/stesiam.github.io/blob/main/notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.qmd">View Source</a></li></ul></div></div>
                   <div>
         <div class="description">
-          <p>An EDA on Greek MPs over the years (1981-2019).</p>
+          <p>Let’s explore the MPs that got elected the most over the years (1981-2019).</p>
         </div>
       </div>
                           <div class="quarto-categories">
@@ -249,6 +249,7 @@ div.csl-indent {
   <li><a href="#syriza" id="toc-syriza" class="nav-link" data-scroll-target="#syriza">SYRIZA</a></li>
   </ul>
 </li>
+  <li><a href="#most-elected-members-based-on-constituency" id="toc-most-elected-members-based-on-constituency" class="nav-link" data-scroll-target="#most-elected-members-based-on-constituency">Most elected members based on constituency</a></li>
   <li><a href="#acknowledgments" id="toc-acknowledgments" class="nav-link" data-scroll-target="#acknowledgments">Acknowledgments</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/stesiam/stesiam.github.io/edit/main/notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/stesiam/stesiam.github.io/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
 </nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
@@ -258,7 +259,7 @@ div.csl-indent {
 <ol type="1">
 <li><a href="#introduction">Introduction</a></li>
 <li>
-<a href="#prerequisites">Prerequisites</a> <br> &nbsp; 2.1 <a href="#import-libraries">Import Libraries</a> <br> &nbsp; 2.2 <a href="#import-dataset">Import Dataset</a> <br> &nbsp; 2.3 <a href="#preview-dataset">Preview Dataset</a> <br> &nbsp; 2.4 <a href="#structure-of-dataset">Structure of Dataset</a> <br>
+<a href="#prerequisites">Prerequisites</a> <br> &nbsp; 2.1 <a href="#import-libraries">Import Libraries</a> <br> &nbsp; 2.2 <a href="#import-dataset">Import Dataset</a> <br> &nbsp; 2.3 <a href="#preview-dataset">Preview Dataset</a> <br> &nbsp; 2.4 <a href="#structure-of-dataset">Structure of Dataset</a> <br> &nbsp; 2.5 <a href="#recoding-variables">Recoding variables</a> <br>
 </li>
 <li>
 <a href="#elected-parties">Elected parties</a> <br>
@@ -269,6 +270,10 @@ div.csl-indent {
 <li>
 <a href="#most-elected-members-per-party">Most elected members per party</a> <br> &nbsp; 5.1 <a href="#kke">KKE</a> <br> &nbsp; 5.2 <a href="#nd">ND</a> <br> &nbsp; 5.3 <a href="#pasok">PASOK</a> <br> &nbsp; 5.4 <a href="#syriza">SYRIZA</a> <br>
 </li>
+<li>
+<a href="#most-elected-members-per-constituency">Most elected members per constituency</a> <br> &nbsp; 6.1 <a href="#attica">Attica</a> <br> &nbsp; 6.2 <a href="#attica">Central Greece</a> <br> &nbsp; 6.3 <a href="#attica">Central Macedonia</a> <br> &nbsp; 6.4 <a href="#attica">Crete</a> <br> &nbsp; 6.5 <a href="#attica">Eastern Macedonia and Thrace</a> <br> &nbsp; 6.6 <a href="#attica">Epirus</a> <br> &nbsp; 6.7 <a href="#attica">Ionian Islands</a> <br> &nbsp; 6.8 <a href="#attica">North Aegean</a> <br> &nbsp; 6.9 <a href="#attica">Peloponnese</a> <br> &nbsp; 6.10 <a href="#attica">South Aegean</a> <br> &nbsp; 6.11 <a href="#attica">Thessaly</a> <br> &nbsp; 6.12 <a href="#attica">Western Greece</a> <br> &nbsp; 6.13 <a href="#">Western Macedonia</a> <br>
+</li>
+<li><a href="#acknowledgements">Acknowledgements</a></li>
 <li>
 <a href="#references">References</a>
 <hr>
@@ -456,7 +461,7 @@ div.csl-indent {
 </div>
 </section></section><section id="most-elected-members-of-parliament" class="level1"><h1>Most elected members of parliament</h1>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">parliament</span><span class="op">$</span><span class="va">FullName</span><span class="op">)</span><span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">parliament</span><span class="op">$</span><span class="va">Freq</span>, decreasing <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">30</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">parliament</span><span class="op">$</span><span class="va">FullName</span><span class="op">)</span><span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">parliament</span><span class="op">$</span><span class="va">Freq</span>, decreasing <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">15</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 
 <table>
@@ -524,66 +529,6 @@ div.csl-indent {
 <tr>
 <td style="text-align:left;"> Stamatis Dimitrios </td>
    <td style="text-align:right;"> 11 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Basiakos Evangelos </td>
-   <td style="text-align:right;"> 10 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Benaki - Psarouda Anna Evangelou </td>
-   <td style="text-align:right;"> 10 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Chatzigakis Sotirios </td>
-   <td style="text-align:right;"> 10 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kammenos Panagiotis (Panos) </td>
-   <td style="text-align:right;"> 10 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Lianis Georgios </td>
-   <td style="text-align:right;"> 10 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Markogiannakis Christos </td>
-   <td style="text-align:right;"> 10 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Papariga Alexandra </td>
-   <td style="text-align:right;"> 10 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Petsalnikos Philippos </td>
-   <td style="text-align:right;"> 10 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Sioufas Dimitrios </td>
-   <td style="text-align:right;"> 10 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Skoulakis Emmanouil </td>
-   <td style="text-align:right;"> 10 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Tragakis Ioannis </td>
-   <td style="text-align:right;"> 10 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Venizelos Evangelos </td>
-   <td style="text-align:right;"> 10 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Bakoyannis Theodora (Dora) </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Davakis Athanasios </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Dragasakis Ioannis </td>
-   <td style="text-align:right;"> 9 </td>
   </tr>
 </tbody>
 </table>
@@ -735,6 +680,2099 @@ div.csl-indent {
 </table>
 </div>
 </div>
+</section></section><section id="most-elected-members-based-on-constituency" class="level1"><h1>Most elected members based on constituency</h1>
+<p>A function for constituencies.</p>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">constituency_freqs</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input_constituency</span><span class="op">)</span><span class="op">{</span></span>
+<span><span class="va">parliament</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Constituency</span> <span class="op">==</span> <span class="va">input_constituency</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">FullName</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span>decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#unique(parliament$Constituency) %&gt;% sort()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="state" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="state">State</h2>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"State"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Merkouri Amalia - Maria (Melina) </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Pappas Christos </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Tsaldaris Athanasios Konstantinou </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Alevras Ioannis </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Evert Miltiadis </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</section><section id="attica" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="attica">Attica</h2>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Athens A</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Athens B</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Piraeus A</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">Piraeus B</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false">Of Attica (rest)</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Athens A"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Benaki - Psarouda Anna Evangelou </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kanelli Garyfallia (Liana) </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Voulgarakis Georgios </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Papantoniou Ioannis (Giannos) </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Peponis Anastasios </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Athens B"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Kaklamanis Apostolos </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Polydoras Vyron </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Meimarakis Evangelos - Vasileios </td>
+   <td style="text-align:right;"> 12 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Giakoumatos Gerasimos </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kammenos Panagiotis (Panos) </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Piraeus A"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Melas Panagiotis </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Simitis Kostas Georgiou </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Benteniotis Emmanouil </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Dritsas Theodoros </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kalos Georgios </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Piraeus B"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Tragakis Ioannis </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Niotis Grigorios </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Diamantidis Ioannis </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kritikos Panagiotis </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Nerantzis Anastasios </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Of Attica (rest)"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Pagkalos Theodoros </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Papailias Ilias </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Vrettos Konstantinos (Ntinos) </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Katsigiannis Christos </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Stavrou Apostolos Evangelou </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="central-greece" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="central-greece">Central Greece</h2>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Viotia</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Evrytania</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">Fokida</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-4" role="tab" aria-controls="tabset-2-4" aria-selected="false">Fthiotida</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Viotia"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Basiakos Evangelos </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Katsimpardis Georgios </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Tsiplakos Aristeidis </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Akrivakis Alexandros </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Apostolidis Loukas </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Evrytania"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Bakoyannis Theodora (Dora) </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kontogeorgos Konstantinos </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Karanikas Ilias </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Tsigaridas Konstantinos </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kotsias Thomas </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Fokida"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Gkelestathis Nikolaos </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Arvanitis Fotios </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Bougas Ioannis Dimitriou </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kostopanagiotou Ilias </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Mandreka Aspasia </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-2-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-4-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Fthiotida"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Alampanos Dimitrios </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Giannopoulos Athanasios </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Staikouras Christos </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Drosogiannis Antonios </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Xarchas Athanasios </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="central-macedonia" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="central-macedonia">Central Macedonia</h2>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">Thessaloniki A</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Thessaloniki B</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" role="tab" aria-controls="tabset-3-3" aria-selected="false">Kilkis</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-4" role="tab" aria-controls="tabset-3-4" aria-selected="false">Pella</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-5" role="tab" aria-controls="tabset-3-5" aria-selected="false">Pieria</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-6" role="tab" aria-controls="tabset-3-6" aria-selected="false">Serres</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-7-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-7" role="tab" aria-controls="tabset-3-7" aria-selected="false">Halkidiki</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Thessaloniki A"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Karamanlis Konstantinos </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kastanidis Charalampos </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Venizelos Evangelos </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Papathemelis Stylianos - Angelos </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kalafatis Stavros Athanasios </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Thessaloniki B"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Geranidis Vasileios </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Karaoglou Theodoros </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Tzitzikostas Georgios </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Glavinas Ioannis </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Salagkoudis Georgios </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Kilkis"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Parastatidis Theodoros </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Floridis Georgios </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Georgantas Georgios Pavlos </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kiltidis Konstantinos </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Passalidis Theodoros </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-3-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-4-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Pella"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Karasmanis Georgios </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Tzakri Theodora E. </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Fountoukidou - Theodoridou Parthena </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Paschalidis Georgios </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Vyzovitis Christos </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-3-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-5-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Pieria"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Koukodimos Konstantinos </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kakkalos Nikolaos </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Konstantopoulos Georgios </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Terzopoulos Georgios </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Arseni Maria </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-3-6" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-6-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Serres"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Karamanlis Achillefs Georgiou </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kollia-Tsaroucha Maria </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Damianidis Alexandros </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Leontaridis Theofilos </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Anthopoulos Ioannis </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-3-7" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-7-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Halkidiki"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Drivelegkas Ioannis </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Pachtas Christos </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Giovanoudas Varsamis </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Vagionas Georgios </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Igglezi Aikaterini </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="crete" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="crete">Crete</h2>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true">Chania</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false">Heraklion</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-3" role="tab" aria-controls="tabset-4-3" aria-selected="false">Lasithi</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-4" role="tab" aria-controls="tabset-4-4" aria-selected="false">Rethymno</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Chania"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Markogiannakis Christos </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Skoulakis Emmanouil </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Valyrakis Ioan. Iosif </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Michelogiannis Iosif </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Stathakis Georgios </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Irakleio"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:right;"> x </th>
+  </tr></thead>
+<tbody><tr></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-4-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-3-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Lasithi"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Plakiotakis Ioannis </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Ioannidis Foivos </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Karchimakis Michail </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Chatzinakis Emmanouil </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kounenos Ioannis </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-4-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-4-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Rethymno"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Kefalogiannis Ioannis </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Loukakis Manolis </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Xanthos Andreas </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kefalogiannis Ioannis Ach. </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Othonas Emmanouil </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="eastern-macedonia-and-thrace" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="eastern-macedonia-and-thrace">Eastern Macedonia and Thrace</h2>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true">Drama</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false">Evros</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-3" role="tab" aria-controls="tabset-5-3" aria-selected="false">Kavala</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-4" role="tab" aria-controls="tabset-5-4" aria-selected="false">Xanthi</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-5" role="tab" aria-controls="tabset-5-5" aria-selected="false">Rodopi</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Drama"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Konstantinou Floros </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Damianos Theodoros </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Aidonis Christos </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Evmoiridis Konstantinos </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kyriazidis Dimitrios </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Evros"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Chatzinikolaou Panagiotis </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Fotiadis Apostolos </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Dermentzopoulos Alexandros </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Dimoschakis Theofanis </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Gerontopoulos Kyriakos </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-5-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-3-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Kavala"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Tsaklidis Ioannis </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kalantzis Georgios </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Panagiotopoulos Georgios </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Panagiotopoulos Nikolaos </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Papadopoulos Ilias </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-5-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-4-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Xanthi"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Sgouridis Panagiotis Sgouri </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kontos Alexandros </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Zeimpek Chousein </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kourtidis Evangelos </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Pavlakakis Georgios </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-5-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-5-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Rodopi"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Stylianidis Evripidis </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Chatzi Osman Achmet </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kara Giousouf Aichan </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Achmet Ilchan S </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Moustafa Moustafa </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="epirus" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="epirus">Epirus</h2>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true">Arta</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false">Ioannina</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-3" role="tab" aria-controls="tabset-6-3" aria-selected="false">Preveza</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-4" role="tab" aria-controls="tabset-6-4" aria-selected="false">Thesprotia</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Arta"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Papageorgiou Georgios Ioanni </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Gerovasili Olga </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Koliopanos Theodoros </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kontaxis Athanasios </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Oikonomidis Panagiotis </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Ioannina"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Papoulias Karolos </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Tassoulas Constantine An. </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Argyris Evangelos </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kalogiannis Stavros </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Moraitis Georgios </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-6-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-3-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Preveza"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Karamoutsos Spyros </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Tryfonidis Georgios Panagioti </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Barkas Konstantinos </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kaldi Meropi </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Papachristos Evangelos </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-6-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-4-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Thesprotia"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Papadopoulos Alexandros (Alekos) Konstantinou </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Vezdrevanis Ilias </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Bezas Antonios </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Giogiakas Vasileios </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Katsis Marios </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="ionian-islands" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="ionian-islands">Ionian Islands</h2>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" role="tab" aria-controls="tabset-7-1" aria-selected="true">Corfu</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-2" role="tab" aria-controls="tabset-7-2" aria-selected="false">Kefallonia</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-3" role="tab" aria-controls="tabset-7-3" aria-selected="false">Lefkada</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-4" role="tab" aria-controls="tabset-7-4" aria-selected="false">Zakynthos</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-7-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-7-1-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Corfu"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Drys Georgios </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Dendias Nikolaos - Georgios </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kaloudis Spyridon </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Gkerekou Angeliki </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Gkikas Sotirios </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-7-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-2-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Kefallonia"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Theopeftatou Afroditi </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Benetatos Panagis </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kalafatis Alexandros </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Messaris Gerasimos </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Tritsis Antonios </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-7-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-3-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Lefkada"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Ktenas Georgios </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Soldatos Theodoros </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Aravanis Gerasimos </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Grigoris Stayros </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kavvadas Athanasios </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-7-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-4-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb46"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Zakynthos"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Kontonis Charalampos-Stavros </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Klavdianos Georgios </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Palaiothodoros Dimitrios </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Varvarigos Dimitrios </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Gasparos Dionysios </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="north-aegean" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="north-aegean">North Aegean</h2>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-8-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-1" role="tab" aria-controls="tabset-8-1" aria-selected="true">Chios</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-2" role="tab" aria-controls="tabset-8-2" aria-selected="false">Lesvos</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-3" role="tab" aria-controls="tabset-8-3" aria-selected="false">Samos</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-8-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-8-1-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Chios"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Kotsakas Antonios </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Misailidis Georgios </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Tsouri Elpida </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Varinos Athanasios </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Michailidis Andreas </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-8-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-2-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb48"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Lesvos"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Sifounakis Nikolaos </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Vounatsos Dimitrios </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Korakas Efstratios </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Skopelitis Stavros </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Giannellis - Theodosiadis Ioannis </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-8-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-3-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Samos"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Karaminas Konstantinos </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Choulis Nikolaos </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Sevastakis Dimitrios </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Thalassinos Thalassinos Petrou </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Vardikos Pythagoras </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="peloponnese" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="peloponnese">Peloponnese</h2>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-9-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-1" role="tab" aria-controls="tabset-9-1" aria-selected="true">Argolida</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-9-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-2" role="tab" aria-controls="tabset-9-2" aria-selected="false">Arkadia</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-9-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-3" role="tab" aria-controls="tabset-9-3" aria-selected="false">Korinthia</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-9-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-4" role="tab" aria-controls="tabset-9-4" aria-selected="false">Lakonia</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-9-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-5" role="tab" aria-controls="tabset-9-5" aria-selected="false">Messinia</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-9-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-9-1-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb50"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Argolida"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Maniatis Ioannis </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Papadimitriou Elisavet (Elsa) </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Andrianos Ioannis </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Sotiropoulos Vasileios </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Melidis Ioannis </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-9-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-9-2-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb51"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Arcadia"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Reppas Dimitrios </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kostopoulos Dimitrios </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Tatoulis Petros Panagioti </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Konstantinopoulos Odysseas </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Lykourentzos Andreas </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-9-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-9-3-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb52"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Korinthia"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Dimas Stavros </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Papaligouras Anastasios - Petros Panagioti </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Pottakis Ioannis </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kotsonis Theodoros </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Dimas Christos </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-9-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-9-4-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb53"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Lakonia"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Davakis Athanasios </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Grigorakos Leonidas </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Fountas Paraskevas </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Stathopoulos Ioannis </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Giatrakos Konstantinos </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-9-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-9-5-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb54"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Messinia"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Lampropoulos Ioannis </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Samaras Antonios </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Anastasopoulos Nikolaos </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kalantzakos Aristeidis </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Katsilieris Petros </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="south-aegean" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="south-aegean">South Aegean</h2>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-10-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-1" role="tab" aria-controls="tabset-10-1" aria-selected="true">Dodecanese Islands</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-10-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-2" role="tab" aria-controls="tabset-10-2" aria-selected="false">Cyclades</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-10-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-10-1-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb55"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Dodecanese Islands"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Pavlidis Aristotelis </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Sfyriou Kosmas </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Karamarios Anastasios Emmanouil </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kremastinos Dimitrios </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Skandalidis Konstantinos </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-10-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-10-2-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb56"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Cyclades"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Chomatas Ioannis </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Vroutsis Ioannis </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Levogiannis Nikolaos </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Papazoi Elisavet </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Syrmalenios Nikolaos </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="thessaly" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="thessaly">Thessaly</h2>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-11-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-1" role="tab" aria-controls="tabset-11-1" aria-selected="true">Karditsa</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-11-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-2" role="tab" aria-controls="tabset-11-2" aria-selected="false">Larissa</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-11-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-3" role="tab" aria-controls="tabset-11-3" aria-selected="false">Magnesia</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-11-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-4" role="tab" aria-controls="tabset-11-4" aria-selected="false">Trikala</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-11-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-11-1-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb57"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Karditsa"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Sioufas Dimitrios </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Taliadouros Spyridon </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Tsiaras Konstantinos </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Anagnostopoulos Theodoros </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Sotirlis Dimitrios </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-11-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-11-2-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb58"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Larissa"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Katsaros Nikos </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Charakopoulos Maximos </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Skyllakos Antonios </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Souflias Georgios </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Adamopoulos Georgios </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-11-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-11-3-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb59"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Magnesia"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Sourlas Georgios Ioanni </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Nakos Athanasios </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Zakolikos Pafsanias </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Zisi Rodoula </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Gkatzis Nikolaos Filippou </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-11-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-11-4-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb60"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Trikala"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Chatzigakis Sotirios </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Oikonomou Christos </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Ziagkas Ioannis </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Skrekas Konstantinos </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Skrekas Theodoros </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="western-greece" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="western-greece">Western Greece</h2>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-12-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-1" role="tab" aria-controls="tabset-12-1" aria-selected="true">Achaia</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-12-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-2" role="tab" aria-controls="tabset-12-2" aria-selected="false">Aitoloakarnania</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-12-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-3" role="tab" aria-controls="tabset-12-3" aria-selected="false">Ileia</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-12-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-12-1-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb61"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Achaia"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Nikolopoulos Nikolaos </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Papandreou Georgios </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Karathanasopoulos Nikolaos </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Spiliotopoulos Spilios </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Thoma Maria </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-12-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-12-2-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb62"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Aitoloakarnania"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:right;"> x </th>
+  </tr></thead>
+<tbody><tr></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-12-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-12-3-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb63"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Ileia"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Georgakopoulos Dimitrios </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Koutsoukos Giannis </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Skoularikis Ioannis </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kontogiannopoulos Vasileios </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Tzavaras Konstantinos </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="western-macedonia" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="western-macedonia">Western Macedonia</h2>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-13-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-13-1" role="tab" aria-controls="tabset-13-1" aria-selected="true">Florina</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-13-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-13-2" role="tab" aria-controls="tabset-13-2" aria-selected="false">Grevena</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-13-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-13-3" role="tab" aria-controls="tabset-13-3" aria-selected="false">Kastoria</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-13-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-13-4" role="tab" aria-controls="tabset-13-4" aria-selected="false">Kozani</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-13-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-13-1-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb64"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Florina"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Lianis Georgios </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Konstantinidis Efstathios </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Papathanasiou Charalampos </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Antoniadis Ioannis </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kortsaris Nikolaos </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-13-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-13-2-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb65"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Grevena"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Konstantinidis Ioannis </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Krikelis Anastasios </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Kopsacheilis Timoleon </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Tataridis Kyriakos </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Folias Christos Sotiriou </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-13-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-13-3-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb66"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Kastoria"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Petsalnikos Philippos </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Simaioforidis Konstantinos </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Antoniou Maria </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Angelis Anestis </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Diamantopoulos Evangelos </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-13-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-13-4-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb67"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Kozani"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table>
+<thead><tr>
+<th style="text-align:left;"> . </th>
+   <th style="text-align:right;"> Freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Kasapidis Georgios </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Lotidis Lazaros </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Papadopoulos Michalis </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Papakonstantinou Michalis </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Konstantinidis Konstantinos </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
 </section></section><div id="quarto-appendix" class="default"><section id="acknowledgments" class="level1 appendix"><h2 class="quarto-appendix-heading">Acknowledgments</h2><div class="quarto-appendix-contents">
 <p>Image by <a href="https://pixabay.com/users/leonhard_niederwimmer-1131094/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=7402132">Leonhard Niederwimmer</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=7402132">Pixabay</a> <br></p>
 <p>Data are from <a href="https://github.com/stesiam/Greek-MPs-Dataset">mine repository on GitHub</a>. Original data are from <a href="https://www.hellenicparliament.gr"> Hellenic’s Parliament website</a></p>
@@ -783,14 +2821,14 @@ Zhu, H. (2021). <em>kableExtra: Construct complex table with kable and pipe synt
 </div>
 </div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{stesiam2022,
   author = {stesiam},
-  title = {Most Elected Members on {Greek} {Parliament}},
+  title = {EDA on {Greek} {Parliament} {(Part} {I)}},
   date = {2022-10-10},
   url = {https://www.stesiam.github.io/notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html},
   langid = {en}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-stesiam2022" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
-stesiam. (2022, October 10). Most elected members on Greek Parliament.
-Retrieved from <a href="https://www.stesiam.github.io/notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html">https://www.stesiam.github.io/notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html</a>
+stesiam. (2022, October 10). EDA on Greek Parliament (Part I). Retrieved
+from <a href="https://www.stesiam.github.io/notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html">https://www.stesiam.github.io/notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html</a>
 </div></div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

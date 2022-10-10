@@ -1,8 +1,8 @@
 ---
-title: "Most elected members on Greek Parliament"
+title: "EDA on Greek Parliament (Part I)"
 author: "stesiam"
 description: |
-  An EDA on Greek MPs over the years (1981-2019).
+  Let's explore the MPs that got elected the most over the years (1981-2019).
 categories: [R, EDA, Greek Parliament]
 image: images/houses-of-parliament.jpg
 fig-cap-location: bottom
@@ -39,6 +39,7 @@ editor_options:
 &nbsp; 2.2 [Import Dataset](#import-dataset) <br>
 &nbsp; 2.3 [Preview Dataset](#preview-dataset) <br>
 &nbsp; 2.4 [Structure of Dataset](#structure-of-dataset) <br>
+&nbsp; 2.5 [Recoding variables](#recoding-variables) <br>
 3. [Elected parties](#elected-parties) <br>
 4. [Most elected members of parliament](#most-elected-members-of-parliament) <br>
 5. [Most elected members per party](#most-elected-members-per-party) <br>
@@ -46,7 +47,22 @@ editor_options:
 &nbsp; 5.2 [ND](#nd) <br>
 &nbsp; 5.3 [PASOK](#pasok) <br>
 &nbsp; 5.4 [SYRIZA](#syriza) <br>
-6. [References](#references)
+6. [Most elected members per constituency](#most-elected-members-per-constituency) <br>
+&nbsp; 6.1 [Attica](#attica) <br>
+&nbsp; 6.2 [Central Greece](#attica) <br>
+&nbsp; 6.3 [Central Macedonia](#attica) <br>
+&nbsp; 6.4 [Crete](#attica) <br>
+&nbsp; 6.5 [Eastern Macedonia and Thrace](#attica) <br>
+&nbsp; 6.6 [Epirus](#attica) <br>
+&nbsp; 6.7 [Ionian Islands](#attica) <br>
+&nbsp; 6.8 [North Aegean](#attica) <br>
+&nbsp; 6.9 [Peloponnese](#attica) <br>
+&nbsp; 6.10 [South Aegean](#attica) <br>
+&nbsp; 6.11 [Thessaly](#attica) <br>
+&nbsp; 6.12 [Western Greece](#attica) <br>
+&nbsp; 6.13 [Western Macedonia](#) <br>
+7. [Acknowledgements](#acknowledgements)
+8. [References](#references)
 <hr>
 
 # Introduction
@@ -148,12 +164,10 @@ parliament$Party[parliament$Party == "ΟΟ.ΕΟ."] <- "ΟΟ.ΕΟ"
 ```
 
 
-
-
 # Most elected members of parliament
 
 ```{r, warning=FALSE}
-table(parliament$FullName)%>% sort(parliament$Freq, decreasing = T) %>% head(n=30) %>% kbl()
+table(parliament$FullName)%>% sort(parliament$Freq, decreasing = T) %>% head(n=15) %>% kbl()
 ```
 
 
@@ -195,6 +209,445 @@ parliament %>% filter(Party == "PASOK") %>%
 parliament %>% filter(Party == "SYRIZA") %>%
   select(FullName) %>% table() %>% sort(decreasing = TRUE) %>% head(n=5) %>% kbl()
 ```
+
+# Most elected members based on constituency
+
+A function for constituencies.
+
+```{r}
+constituency_freqs <- function(input_constituency){
+parliament %>% filter(Constituency == input_constituency) %>%
+  select(FullName) %>% table() %>% sort(decreasing = TRUE) %>% head(n=5) %>% kbl()
+}
+```
+
+```{r}
+#unique(parliament$Constituency) %>% sort()
+```
+## State {.unlisted}
+
+```{r}
+constituency_freqs("State")
+```
+
+## Attica {.unlisted}
+
+::: {.panel-tabset}
+
+### Athens A
+
+```{r}
+constituency_freqs("Athens A")
+```
+
+
+### Athens B
+
+```{r}
+constituency_freqs("Athens B")
+```
+
+### Piraeus A
+
+```{r}
+constituency_freqs("Piraeus A")
+```
+
+### Piraeus B
+
+```{r}
+constituency_freqs("Piraeus B")
+```
+
+### Of Attica (rest)
+
+```{r}
+constituency_freqs("Of Attica (rest)")
+```
+
+:::
+
+## Central Greece {.unlisted}
+
+::: {.panel-tabset}
+### Viotia
+
+```{r}
+constituency_freqs("Viotia")
+```
+
+### Evrytania
+
+```{r}
+constituency_freqs("Evrytania")
+```
+
+
+### Fokida
+
+```{r}
+constituency_freqs("Fokida")
+```
+
+### Fthiotida
+
+```{r}
+constituency_freqs("Fthiotida")
+```
+
+:::
+
+## Central Macedonia {.unlisted}
+
+::: {.panel-tabset}
+
+### Thessaloniki A
+
+```{r}
+constituency_freqs("Thessaloniki A")
+```
+
+### Thessaloniki B
+
+```{r}
+constituency_freqs("Thessaloniki B")
+```
+
+### Kilkis
+
+```{r}
+constituency_freqs("Kilkis")
+```
+
+### Pella
+
+```{r}
+constituency_freqs("Pella")
+```
+
+### Pieria
+
+```{r}
+constituency_freqs("Pieria")
+```
+
+### Serres
+
+```{r}
+constituency_freqs("Serres")
+```
+
+### Halkidiki
+
+```{r}
+constituency_freqs("Halkidiki")
+```
+
+:::
+
+
+## Crete {.unlisted}
+
+::: {.panel-tabset}
+
+### Chania
+
+```{r}
+constituency_freqs("Chania")
+```
+
+### Heraklion
+
+```{r}
+constituency_freqs("Irakleio")
+```
+
+### Lasithi
+
+```{r}
+constituency_freqs("Lasithi")
+```
+
+### Rethymno
+
+```{r}
+constituency_freqs("Rethymno")
+```
+
+:::
+
+
+## Eastern Macedonia and Thrace {.unlisted}
+
+::: {.panel-tabset}
+
+### Drama 
+
+```{r}
+constituency_freqs("Drama")
+```
+
+### Evros
+
+```{r}
+constituency_freqs("Evros")
+```
+
+### Kavala 
+
+```{r}
+constituency_freqs("Kavala")
+```
+
+### Xanthi
+
+```{r}
+constituency_freqs("Xanthi")
+```
+
+### Rodopi
+
+```{r}
+constituency_freqs("Rodopi")
+```
+
+:::
+
+## Epirus {.unlisted}
+
+::: {.panel-tabset}
+
+### Arta
+
+```{r}
+constituency_freqs("Arta")
+```
+
+### Ioannina
+
+```{r}
+constituency_freqs("Ioannina")
+```
+
+### Preveza
+
+```{r}
+constituency_freqs("Preveza")
+```
+
+### Thesprotia
+
+```{r}
+constituency_freqs("Thesprotia")
+```
+
+:::
+
+
+## Ionian Islands {.unlisted}
+
+::: {.panel-tabset}
+
+### Corfu
+
+```{r}
+constituency_freqs("Corfu")
+```
+
+### Kefallonia
+
+```{r}
+constituency_freqs("Kefallonia")
+```
+
+### Lefkada
+
+```{r}
+constituency_freqs("Lefkada")
+```
+
+### Zakynthos
+
+```{r}
+constituency_freqs("Zakynthos")
+```
+
+
+:::
+
+
+
+## North Aegean {.unlisted}
+
+::: {.panel-tabset}
+
+### Chios
+
+```{r}
+constituency_freqs("Chios")
+```
+
+### Lesvos
+
+```{r}
+constituency_freqs("Lesvos")
+```
+
+### Samos
+
+```{r}
+constituency_freqs("Samos")
+```
+
+:::
+
+
+## Peloponnese {.unlisted}
+
+::: {.panel-tabset}
+
+### Argolida
+
+```{r}
+constituency_freqs("Argolida")
+```
+
+
+### Arkadia
+
+```{r}
+constituency_freqs("Arcadia")
+```
+
+
+### Korinthia
+
+```{r}
+constituency_freqs("Korinthia")
+```
+
+
+### Lakonia
+
+```{r}
+constituency_freqs("Lakonia")
+```
+
+
+### Messinia
+
+```{r}
+constituency_freqs("Messinia")
+```
+
+ 
+:::
+
+
+
+## South Aegean  {.unlisted}
+
+::: {.panel-tabset}
+
+### Dodecanese Islands
+
+```{r}
+constituency_freqs("Dodecanese Islands")
+```
+
+### Cyclades
+
+```{r}
+constituency_freqs("Cyclades")
+```
+:::
+
+## Thessaly {.unlisted}
+
+::: {.panel-tabset}
+
+
+### Karditsa
+
+```{r}
+constituency_freqs("Karditsa")
+```
+
+### Larissa
+
+```{r}
+constituency_freqs("Larissa")
+```
+
+### Magnesia
+
+```{r}
+constituency_freqs("Magnesia")
+```
+
+### Trikala
+
+```{r}
+constituency_freqs("Trikala")
+```
+
+:::
+
+## Western Greece {.unlisted}
+
+::: {.panel-tabset}
+
+### Achaia
+
+```{r}
+constituency_freqs("Achaia")
+```
+
+
+### Aitoloakarnania
+
+```{r}
+constituency_freqs("Aitoloakarnania")
+```
+
+
+### Ileia
+
+```{r}
+constituency_freqs("Ileia")
+```
+:::
+
+
+## Western Macedonia {.unlisted}
+
+::: {.panel-tabset}
+
+
+### Florina
+
+```{r}
+constituency_freqs("Florina")
+```
+
+### Grevena
+
+```{r}
+constituency_freqs("Grevena")
+```
+
+### Kastoria
+
+```{r}
+constituency_freqs("Kastoria")
+```
+
+### Kozani
+```{r}
+constituency_freqs("Kozani")
+```
+
+:::
 
 
 
