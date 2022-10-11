@@ -1,5 +1,5 @@
 ---
-title: "EDA on Greek Parliament (Part I)"
+title: "EDA on Greek Parliament"
 author: "stesiam"
 description: |
   Let's explore the MPs that got elected the most over the years (1981-2019).
@@ -135,7 +135,7 @@ kbl(preview_dataset,
 | `Constituency`   | *qualitative*   <br> (nominal)     | MP got elected on this area |
 | `Term`   | *qualitative*   <br> (ordinal)     | TPlenum term    |
 
-Thus, my sample has `r ncol(parliament)` variables, of which 7 are quantitative and 10 are quantitative properties, of which 8 are nominal and the rest ones (`Education`, `Month`) are ordinal.
+Thus, my sample has `r ncol(parliament)` variables, of which 0 are quantitative and 4 are quantitative properties, of which 3 are nominal and the rest one (`Term`) is ordinal.
 
 ## Recoding variables
 
@@ -173,7 +173,7 @@ parliament$Party[parliament$Party == "ΟΟ.ΕΟ."] <- "ΟΟ.ΕΟ"
 Now, I will make a short sum-up of the electoral resuts over the years. It is important to share that I made it thanks to [this post](https://datavizstory.com/a-parliament-diagram-in-r/) and `ggpol` package. As I am planning to do this procedure for many electoral terms I will convert the as a function.
 
 ```{r}
-make_parliament_plot <- function(term, custom_title, custom1, custom2){
+make_parliament_plot <- function(term, custom_title){
 
 custom = parliament %>% filter(Term == term) %>% select(Party) %>% table() %>% t() %>% as.data.frame() %>%  `colnames<-`(c("","Party", "Seats"))
 
@@ -215,37 +215,58 @@ return(p)
 ```{r}
 make_parliament_plot(3, "Greek Parliament (1981-1985)")
 ```
-
-
 :::
 
 
 # Most elected members of parliament
 
 ```{r, warning=FALSE}
-table(parliament$FullName)%>% sort(parliament$Freq, decreasing = T) %>% head(n=15) %>% kbl()
+#| layout-valign: bottom
+#| fig-cap: "Most elected MPs"
+
+df = table(parliament$FullName)%>% sort(decreasing = T) %>% as.data.frame() %>% filter(Freq>=11)
+
+ggplot(data = df, aes(x = reorder(Var1 , Freq), y = Freq))+
+  geom_bar(stat = "identity",width = 0.88) +
+  geom_text(aes(label=Freq), hjust = 1.5, vjust=0.5, color="white", size=4)+
+  theme_minimal() +
+  scale_fill_grey() +
+  ggtitle("Most elected MPs on Greek Parliament (1981 - 2019)") +
+  coord_flip()
+  
 ```
 
 
 # Most elected members based on party
 
+Μέχρι τώρα είδαμε τα πιο εκλέξιμα μέλη στην ιστορία της μεταπολίτευσης. Ωστόσο, θα είχε ιδιαίτερο ενδριαφέρον να μελετήσουμε το ίδιο χαρακτηριστικό ανά κόμμα. Μία τέτοια ανάλυση για να έχει νόημα απαιτεί μακροχρόνια παρουσία για το κάποιο κόμμα στη Βουλή, οπότε παρακάτω παρουσιάζω τα κόμματα που έχουν τις περισσότερες συμμετοχές στη βουλή. Τέλος, παρατηρώ ότι θα υπάρξει μία σειρά παρόμοιων διαγραμμάτων με ελάχιστες αλλαγές (π.χ. φιλτράρισμα βάσης δεδομένων με βάση το κόμμα και ίσως αλλαγή χρώματος), συνεπώς η χρήση μίας συνάρτησης αποτελεί τον ενδεδειγμένο τρόπο για να συνεχίσω την ανάλυσή μου. Με αυτόν τον τρόπο προσπαθώ να μην επαναλάβω τον ίδιο κώδικα, ακολουθώντας μία σημαντική αρχή του προγραμματισμού (DRY - Don't repeat yourself).
 
-The parties are getting represented on alphabetical order.
+```{r}
+party_plot <- function(party, party_color, times_elected_min){
+  party_df = parliament %>% filter(Party == party) %>%
+  select(FullName) %>% table() %>% sort(decreasing = TRUE) %>% as.data.frame() %>% filter(Freq >= times_elected_min) %>% `colnames<-`(c("Full_Name", "Freq"))
+  
+ggplot(data = party_df, aes(x = reorder(Full_Name , Freq), y = Freq))+
+  geom_bar(stat = "identity",width = 0.88, fill = party_color) +
+  geom_text(aes(label=Freq), hjust = 1.5, vjust=0.5, color="white", size=4)+
+  theme_minimal() +
+  ggtitle("Most elected member") +
+  coord_flip()
+}
+```
 
+Οι αναλύσεις ανά κόμμα παρουσιάζονται με αλφαβητική σειρά :
 
 ## KKE
 
 ```{r}
-parliament %>% filter(Party == "KKE") %>%
-  select(FullName) %>% table() %>% sort(decreasing = TRUE) %>% head(n=5) %>% kbl()
+party_plot("KKE", "#FF6666", times_elected_min = 5)
 ```
 
 ## ND
 
-
 ```{r}
-parliament %>% filter(Party == "ND") %>%
-  select(FullName) %>% table() %>% sort(decreasing = TRUE) %>% head(n=5) %>% kbl()
+party_plot("ND", "#0492c2", times_elected_min = 10)
 ```
 
 
@@ -253,17 +274,12 @@ parliament %>% filter(Party == "ND") %>%
 
 
 ```{r}
-parliament %>% filter(Party == "PASOK") %>%
-  select(FullName) %>% table() %>% sort(decreasing = TRUE) %>% head(n=5) %>% kbl()
+party_plot("PASOK", "#95bb72", times_elected_min = 10)
 ```
-
-
-
 ## SYRIZA
 
 ```{r}
-parliament %>% filter(Party == "SYRIZA") %>%
-  select(FullName) %>% table() %>% sort(decreasing = TRUE) %>% head(n=5) %>% kbl()
+party_plot("SYRIZA", "#e27bb1", times_elected_min = 5)
 ```
 
 # Most elected members based on constituency
