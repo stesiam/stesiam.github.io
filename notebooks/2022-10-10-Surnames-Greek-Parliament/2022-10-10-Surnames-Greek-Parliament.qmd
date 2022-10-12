@@ -42,25 +42,25 @@ editor_options:
 &nbsp; 2.5 [Recoding variables](#recoding-variables) <br>
 3. [Parliament over the years](#parliament-over-the-years) <br>
 4. [Most elected members of parliament](#most-elected-members-of-parliament) <br>
-5. [Most elected members per party](#most-elected-members-per-party) <br>
+5. [Most elected members by party](#most-elected-members-by-party) <br>
 &nbsp; 5.1 [KKE](#kke) <br>
 &nbsp; 5.2 [ND](#nd) <br>
 &nbsp; 5.3 [PASOK](#pasok) <br>
 &nbsp; 5.4 [SYRIZA](#syriza) <br>
 6. [Most elected members per constituency](#most-elected-members-per-constituency) <br>
 &nbsp; 6.1 [Attica](#attica) <br>
-&nbsp; 6.2 [Central Greece](#attica) <br>
-&nbsp; 6.3 [Central Macedonia](#attica) <br>
-&nbsp; 6.4 [Crete](#attica) <br>
-&nbsp; 6.5 [Eastern Macedonia and Thrace](#attica) <br>
-&nbsp; 6.6 [Epirus](#attica) <br>
-&nbsp; 6.7 [Ionian Islands](#attica) <br>
-&nbsp; 6.8 [North Aegean](#attica) <br>
-&nbsp; 6.9 [Peloponnese](#attica) <br>
-&nbsp; 6.10 [South Aegean](#attica) <br>
-&nbsp; 6.11 [Thessaly](#attica) <br>
-&nbsp; 6.12 [Western Greece](#attica) <br>
-&nbsp; 6.13 [Western Macedonia](#) <br>
+&nbsp; 6.2 [Central Greece](#central-greece) <br>
+&nbsp; 6.3 [Central Macedonia](#central-macenodia) <br>
+&nbsp; 6.4 [Crete](#crete) <br>
+&nbsp; 6.5 [Eastern Macedonia and Thrace](#eastern-macedonia-and-thrace) <br>
+&nbsp; 6.6 [Epirus](#epirus) <br>
+&nbsp; 6.7 [Ionian Islands](#ionian-islands) <br>
+&nbsp; 6.8 [North Aegean](#north-aegean) <br>
+&nbsp; 6.9 [Peloponnese](#pelopponnese) <br>
+&nbsp; 6.10 [South Aegean](#south-aegean) <br>
+&nbsp; 6.11 [Thessaly](#thessaly) <br>
+&nbsp; 6.12 [Western Greece](#western-greece) <br>
+&nbsp; 6.13 [Western Macedonia](#western-macedonia) <br>
 7. [Acknowledgements](#acknowledgements)
 8. [References](#references)
 <hr>
@@ -172,6 +172,8 @@ parliament$Party[parliament$Party == "ΟΟ.ΕΟ."] <- "ΟΟ.ΕΟ"
 
 Now, I will make a short sum-up of the electoral resuts over the years. It is important to share that I made it thanks to [this post](https://datavizstory.com/a-parliament-diagram-in-r/) and `ggpol` package. As I am planning to do this procedure for many electoral terms I will convert the as a function.
 
+
+
 ```{r}
 make_parliament_plot <- function(term, custom_title){
 
@@ -231,15 +233,22 @@ ggplot(data = df, aes(x = reorder(Var1 , Freq), y = Freq))+
   geom_text(aes(label=Freq), hjust = 1.5, vjust=0.5, color="white", size=4)+
   theme_minimal() +
   scale_fill_grey() +
-  ggtitle("Most elected MPs on Greek Parliament (1981 - 2019)") +
+  labs(title = "Most elected MPs on Greek Parliament (1981 - 2019)",
+       subtitle = "",
+       caption = "Source: stesiam | stesiam.github.io, 2022") +
   coord_flip()
   
 ```
 
 
-# Most elected members based on party
+# Most elected members by party
 
-Μέχρι τώρα είδαμε τα πιο εκλέξιμα μέλη στην ιστορία της μεταπολίτευσης. Ωστόσο, θα είχε ιδιαίτερο ενδριαφέρον να μελετήσουμε το ίδιο χαρακτηριστικό ανά κόμμα. Μία τέτοια ανάλυση για να έχει νόημα απαιτεί μακροχρόνια παρουσία για το κάποιο κόμμα στη Βουλή, οπότε παρακάτω παρουσιάζω τα κόμματα που έχουν τις περισσότερες συμμετοχές στη βουλή. Τέλος, παρατηρώ ότι θα υπάρξει μία σειρά παρόμοιων διαγραμμάτων με ελάχιστες αλλαγές (π.χ. φιλτράρισμα βάσης δεδομένων με βάση το κόμμα και ίσως αλλαγή χρώματος), συνεπώς η χρήση μίας συνάρτησης αποτελεί τον ενδεδειγμένο τρόπο για να συνεχίσω την ανάλυσή μου. Με αυτόν τον τρόπο προσπαθώ να μην επαναλάβω τον ίδιο κώδικα, ακολουθώντας μία σημαντική αρχή του προγραμματισμού (DRY - Don't repeat yourself).
+So far we have seen the most elected members of Greek parliament for the period 1981-2019. Ιt would be particularly interesting to study the same feature by party. However, finding the most elected member per party can be challenging on parties with relatively low representation on Greek parliament. That is the reason for choosing only some of those.
+
+Concerning the implementation part, I see that I will make some visualizations with minimum changes (e.g., filter dataset based on party, change color, etc.) so, the creation of a function is justified. That way, I will not repeat same code, following one of the principles of programming (DRY - Don't Repeat Yourself).
+
+
+
 
 ```{r}
 party_plot <- function(party, party_color, times_elected_min){
@@ -250,12 +259,14 @@ ggplot(data = party_df, aes(x = reorder(Full_Name , Freq), y = Freq))+
   geom_bar(stat = "identity",width = 0.88, fill = party_color) +
   geom_text(aes(label=Freq), hjust = 1.5, vjust=0.5, color="white", size=4)+
   theme_minimal() +
-  ggtitle("Most elected member") +
+   labs(title = "Most elected MPs",
+       subtitle = "",
+       caption = "Source: stesiam | stesiam.github.io, 2022") +
   coord_flip()
 }
 ```
 
-Οι αναλύσεις ανά κόμμα παρουσιάζονται με αλφαβητική σειρά :
+The visualizations are presented in alphabetical order.
 
 ## KKE
 
@@ -284,7 +295,16 @@ party_plot("SYRIZA", "#e27bb1", times_elected_min = 5)
 
 # Most elected members based on constituency
 
-A function for constituencies.
+So far we have seen :
+
+- the composition of Greek Parliament 
+- the most elected MPs on national level and 
+- the most elected MPs on party level
+
+The last part of my analysis will investigate the most popular MPs on local level (per profecture).
+
+Obviously, the same logic applies to party charts (same processes with minor changes), so the use of a function is almost mandatory (over fifty -50- cases !).
+
 
 ```{r}
 constituency_freqs <- function(input_constituency){
@@ -720,6 +740,9 @@ constituency_freqs("Kozani")
 ```
 
 :::
+
+# Conclusion
+
 
 
 

@@ -242,7 +242,7 @@ div.csl-indent {
   <li><a href="#parliament-over-the-years" id="toc-parliament-over-the-years" class="nav-link" data-scroll-target="#parliament-over-the-years">Parliament over the years</a></li>
   <li><a href="#most-elected-members-of-parliament" id="toc-most-elected-members-of-parliament" class="nav-link" data-scroll-target="#most-elected-members-of-parliament">Most elected members of parliament</a></li>
   <li>
-<a href="#most-elected-members-based-on-party" id="toc-most-elected-members-based-on-party" class="nav-link" data-scroll-target="#most-elected-members-based-on-party">Most elected members based on party</a>
+<a href="#most-elected-members-by-party" id="toc-most-elected-members-by-party" class="nav-link" data-scroll-target="#most-elected-members-by-party">Most elected members by party</a>
   <ul class="collapse">
 <li><a href="#kke" id="toc-kke" class="nav-link" data-scroll-target="#kke">KKE</a></li>
   <li><a href="#nd" id="toc-nd" class="nav-link" data-scroll-target="#nd">ND</a></li>
@@ -251,6 +251,7 @@ div.csl-indent {
   </ul>
 </li>
   <li><a href="#most-elected-members-based-on-constituency" id="toc-most-elected-members-based-on-constituency" class="nav-link" data-scroll-target="#most-elected-members-based-on-constituency">Most elected members based on constituency</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   <li><a href="#acknowledgments" id="toc-acknowledgments" class="nav-link" data-scroll-target="#acknowledgments">Acknowledgments</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/stesiam/stesiam.github.io/edit/main/notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/stesiam/stesiam.github.io/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
 </nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
@@ -269,10 +270,10 @@ div.csl-indent {
 <a href="#most-elected-members-of-parliament">Most elected members of parliament</a> <br>
 </li>
 <li>
-<a href="#most-elected-members-per-party">Most elected members per party</a> <br> &nbsp; 5.1 <a href="#kke">KKE</a> <br> &nbsp; 5.2 <a href="#nd">ND</a> <br> &nbsp; 5.3 <a href="#pasok">PASOK</a> <br> &nbsp; 5.4 <a href="#syriza">SYRIZA</a> <br>
+<a href="#most-elected-members-by-party">Most elected members by party</a> <br> &nbsp; 5.1 <a href="#kke">KKE</a> <br> &nbsp; 5.2 <a href="#nd">ND</a> <br> &nbsp; 5.3 <a href="#pasok">PASOK</a> <br> &nbsp; 5.4 <a href="#syriza">SYRIZA</a> <br>
 </li>
 <li>
-<a href="#most-elected-members-per-constituency">Most elected members per constituency</a> <br> &nbsp; 6.1 <a href="#attica">Attica</a> <br> &nbsp; 6.2 <a href="#attica">Central Greece</a> <br> &nbsp; 6.3 <a href="#attica">Central Macedonia</a> <br> &nbsp; 6.4 <a href="#attica">Crete</a> <br> &nbsp; 6.5 <a href="#attica">Eastern Macedonia and Thrace</a> <br> &nbsp; 6.6 <a href="#attica">Epirus</a> <br> &nbsp; 6.7 <a href="#attica">Ionian Islands</a> <br> &nbsp; 6.8 <a href="#attica">North Aegean</a> <br> &nbsp; 6.9 <a href="#attica">Peloponnese</a> <br> &nbsp; 6.10 <a href="#attica">South Aegean</a> <br> &nbsp; 6.11 <a href="#attica">Thessaly</a> <br> &nbsp; 6.12 <a href="#attica">Western Greece</a> <br> &nbsp; 6.13 <a href="#">Western Macedonia</a> <br>
+<a href="#most-elected-members-per-constituency">Most elected members per constituency</a> <br> &nbsp; 6.1 <a href="#attica">Attica</a> <br> &nbsp; 6.2 <a href="#central-greece">Central Greece</a> <br> &nbsp; 6.3 <a href="#central-macenodia">Central Macedonia</a> <br> &nbsp; 6.4 <a href="#crete">Crete</a> <br> &nbsp; 6.5 <a href="#eastern-macedonia-and-thrace">Eastern Macedonia and Thrace</a> <br> &nbsp; 6.6 <a href="#epirus">Epirus</a> <br> &nbsp; 6.7 <a href="#ionian-islands">Ionian Islands</a> <br> &nbsp; 6.8 <a href="#north-aegean">North Aegean</a> <br> &nbsp; 6.9 <a href="#pelopponnese">Peloponnese</a> <br> &nbsp; 6.10 <a href="#south-aegean">South Aegean</a> <br> &nbsp; 6.11 <a href="#thessaly">Thessaly</a> <br> &nbsp; 6.12 <a href="#western-greece">Western Greece</a> <br> &nbsp; 6.13 <a href="#western-macedonia">Western Macedonia</a> <br>
 </li>
 <li><a href="#acknowledgements">Acknowledgements</a></li>
 <li>
@@ -522,7 +523,9 @@ div.csl-indent {
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label<span class="op">=</span><span class="va">Freq</span><span class="op">)</span>, hjust <span class="op">=</span> <span class="fl">1.5</span>, vjust<span class="op">=</span><span class="fl">0.5</span>, color<span class="op">=</span><span class="st">"white"</span>, size<span class="op">=</span><span class="fl">4</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_grey.html">scale_fill_grey</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Most elected MPs on Greek Parliament (1981 - 2019)"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Most elected MPs on Greek Parliament (1981 - 2019)"</span>,</span>
+<span>       subtitle <span class="op">=</span> <span class="st">""</span>,</span>
+<span>       caption <span class="op">=</span> <span class="st">"Source: stesiam | stesiam.github.io, 2022"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -532,8 +535,9 @@ div.csl-indent {
 </div>
 </div>
 </div>
-</section><section id="most-elected-members-based-on-party" class="level1"><h1>Most elected members based on party</h1>
-<p>Μέχρι τώρα είδαμε τα πιο εκλέξιμα μέλη στην ιστορία της μεταπολίτευσης. Ωστόσο, θα είχε ιδιαίτερο ενδριαφέρον να μελετήσουμε το ίδιο χαρακτηριστικό ανά κόμμα. Μία τέτοια ανάλυση για να έχει νόημα απαιτεί μακροχρόνια παρουσία για το κάποιο κόμμα στη Βουλή, οπότε παρακάτω παρουσιάζω τα κόμματα που έχουν τις περισσότερες συμμετοχές στη βουλή. Τέλος, παρατηρώ ότι θα υπάρξει μία σειρά παρόμοιων διαγραμμάτων με ελάχιστες αλλαγές (π.χ. φιλτράρισμα βάσης δεδομένων με βάση το κόμμα και ίσως αλλαγή χρώματος), συνεπώς η χρήση μίας συνάρτησης αποτελεί τον ενδεδειγμένο τρόπο για να συνεχίσω την ανάλυσή μου. Με αυτόν τον τρόπο προσπαθώ να μην επαναλάβω τον ίδιο κώδικα, ακολουθώντας μία σημαντική αρχή του προγραμματισμού (DRY - Don’t repeat yourself).</p>
+</section><section id="most-elected-members-by-party" class="level1"><h1>Most elected members by party</h1>
+<p>So far we have seen the most elected members of Greek parliament for the period 1981-2019. Ιt would be particularly interesting to study the same feature by party. However, finding the most elected member per party can be challenging on parties with relatively low representation on Greek parliament. That is the reason for choosing only some of those.</p>
+<p>Concerning the implementation part, I see that I will make some visualizations with minimum changes (e.g., filter dataset based on party, change color, etc.) so, the creation of a function is justified. That way, I will not repeat same code, following one of the principles of programming (DRY - Don’t Repeat Yourself).</p>
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">party_plot</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">party</span>, <span class="va">party_color</span>, <span class="va">times_elected_min</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="va">party_df</span> <span class="op">=</span> <span class="va">parliament</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Party</span> <span class="op">==</span> <span class="va">party</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -543,12 +547,14 @@ div.csl-indent {
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"identity"</span>,width <span class="op">=</span> <span class="fl">0.88</span>, fill <span class="op">=</span> <span class="va">party_color</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label<span class="op">=</span><span class="va">Freq</span><span class="op">)</span>, hjust <span class="op">=</span> <span class="fl">1.5</span>, vjust<span class="op">=</span><span class="fl">0.5</span>, color<span class="op">=</span><span class="st">"white"</span>, size<span class="op">=</span><span class="fl">4</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Most elected member"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Most elected MPs"</span>,</span>
+<span>       subtitle <span class="op">=</span> <span class="st">""</span>,</span>
+<span>       caption <span class="op">=</span> <span class="st">"Source: stesiam | stesiam.github.io, 2022"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>Οι αναλύσεις ανά κόμμα παρουσιάζονται με αλφαβητική σειρά :</p>
+<p>The visualizations are presented in alphabetical order.</p>
 <section id="kke" class="level2"><h2 class="anchored" data-anchor-id="kke">KKE</h2>
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">party_plot</span><span class="op">(</span><span class="st">"KKE"</span>, <span class="st">"#FF6666"</span>, times_elected_min <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -578,7 +584,14 @@ div.csl-indent {
 </div>
 </div>
 </section></section><section id="most-elected-members-based-on-constituency" class="level1"><h1>Most elected members based on constituency</h1>
-<p>A function for constituencies.</p>
+<p>So far we have seen :</p>
+<ul>
+<li>the composition of Greek Parliament</li>
+<li>the most elected MPs on national level and</li>
+<li>the most elected MPs on party level</li>
+</ul>
+<p>The last part of my analysis will investigate the most popular MPs on local level (per profecture).</p>
+<p>Obviously, the same logic applies to party charts (same processes with minor changes), so the use of a function is almost mandatory (over fifty -50- cases !).</p>
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">constituency_freqs</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input_constituency</span><span class="op">)</span><span class="op">{</span></span>
 <span><span class="va">parliament</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Constituency</span> <span class="op">==</span> <span class="va">input_constituency</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -2670,7 +2683,8 @@ div.csl-indent {
 </div>
 </div>
 </div>
-</section></section><div id="quarto-appendix" class="default"><section id="acknowledgments" class="level1 appendix"><h2 class="quarto-appendix-heading">Acknowledgments</h2><div class="quarto-appendix-contents">
+</section></section><section id="conclusion" class="level1"><h1>Conclusion</h1>
+</section><div id="quarto-appendix" class="default"><section id="acknowledgments" class="level1 appendix"><h2 class="quarto-appendix-heading">Acknowledgments</h2><div class="quarto-appendix-contents">
 <p>Image by <a href="https://pixabay.com/users/leonhard_niederwimmer-1131094/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=7402132">Leonhard Niederwimmer</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=7402132">Pixabay</a> <br></p>
 <p>Data are from <a href="https://github.com/stesiam/Greek-MPs-Dataset">mine repository on GitHub</a>. Original data are from <a href="https://www.hellenicparliament.gr"> Hellenic’s Parliament website</a></p>
 
