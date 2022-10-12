@@ -55,6 +55,7 @@ References
 <span><span class="co" style="color: #5E5E5E;"># Graphs</span></span>
 <span><span class="kw" style="color: #003B4F;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op" style="color: #5E5E5E;">)</span></span>
 <span><span class="kw" style="color: #003B4F;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;"><a href="https://github.com/erocoar/ggpol">ggpol</a></span><span class="op" style="color: #5E5E5E;">)</span> </span>
+<span><span class="kw" style="color: #003B4F;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;"><a href="https://wilkelab.org/ggtext/">ggtext</a></span><span class="op" style="color: #5E5E5E;">)</span></span>
 <span></span>
 <span><span class="co" style="color: #5E5E5E;"># Other settings</span></span>
 <span><span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op" style="color: #5E5E5E;">(</span>digits<span class="op" style="color: #5E5E5E;">=</span><span class="fl" style="color: #AD0000;">2</span><span class="op" style="color: #5E5E5E;">)</span> <span class="co" style="color: #5E5E5E;"># print only 2 decimals</span></span></code></pre></div>
@@ -225,6 +226,8 @@ References
 </div>
 </section></section><section id="parliament-over-the-years" class="level1"><h1>Parliament over the years</h1>
 <p>Now, I will make a short sum-up of the electoral resuts over the years. It is important to share that I made it thanks to <a href="https://datavizstory.com/a-parliament-diagram-in-r/">this post</a> and <code>ggpol</code> package. As I am planning to do this procedure for many electoral terms I will convert the as a function.</p>
+<p>Arguments like <code>term</code> and <code>custom_title</code> are vital to create reproducible plots for all the terms. Although a main problem is the colors. On the aforementioned post it was about only one term. We knew how many parties we had, so we knew what colors to set and how many. If we try that on many terms (on which the number of parties can vary from 3 to 8) an error will come up which will say “Hey, you have set 3 colors but I see that you have 8 values (parties)”. This was a real obstacle for me.</p>
+<p>After some tries and misses I came up with the concept of <strong>dynamic arguments</strong>. …</p>
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;">make_parliament_plot</span> <span class="op" style="color: #5E5E5E;">&lt;-</span> <span class="kw" style="color: #003B4F;">function</span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">term</span>, <span class="va" style="color: #111111;">custom_title</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">{</span></span>
 <span></span>
@@ -260,7 +263,23 @@ References
 </details>
 </div>
 <div class="panel-tabset">
-<ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" aria-controls="tabset-1-1" aria-selected="true">3rd Term</a></li></ul>
+<ul class="nav nav-tabs">
+<li class="nav-item"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" aria-controls="tabset-1-1" aria-selected="true">3rd Term</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" aria-controls="tabset-1-2" aria-selected="false">4th Term</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" aria-controls="tabset-1-3" aria-selected="false">5th Term</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" aria-controls="tabset-1-4" aria-selected="false">6th Term</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" aria-controls="tabset-1-5" aria-selected="false">7th Term</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-1-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-6" aria-controls="tabset-1-6" aria-selected="false">8th Term</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-1-7-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-7" aria-controls="tabset-1-7" aria-selected="false">9th Term</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-1-8-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-8" aria-controls="tabset-1-8" aria-selected="false">10th Term</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-1-9-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-9" aria-controls="tabset-1-9" aria-selected="false">11th Term</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-1-10-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-10" aria-controls="tabset-1-10" aria-selected="false">12th Term</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-1-11-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-11" aria-controls="tabset-1-11" aria-selected="false">13th Term</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-1-12-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-12" aria-controls="tabset-1-12" aria-selected="false">14th Term</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-1-13-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-13" aria-controls="tabset-1-13" aria-selected="false">15th Term</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-1-14-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-14" aria-controls="tabset-1-14" aria-selected="false">16th Term</a></li>
+<li class="nav-item"><a class="nav-link" id="tabset-1-15-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-15" aria-controls="tabset-1-15" aria-selected="false">17th Term</a></li>
+</ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" aria-labelledby="tabset-1-1-tab">
 <div class="cell">
@@ -269,6 +288,48 @@ References
 <p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+</div>
+<div id="tabset-1-2" class="tab-pane" aria-labelledby="tabset-1-2-tab">
+
+</div>
+<div id="tabset-1-3" class="tab-pane" aria-labelledby="tabset-1-3-tab">
+
+</div>
+<div id="tabset-1-4" class="tab-pane" aria-labelledby="tabset-1-4-tab">
+
+</div>
+<div id="tabset-1-5" class="tab-pane" aria-labelledby="tabset-1-5-tab">
+
+</div>
+<div id="tabset-1-6" class="tab-pane" aria-labelledby="tabset-1-6-tab">
+
+</div>
+<div id="tabset-1-7" class="tab-pane" aria-labelledby="tabset-1-7-tab">
+
+</div>
+<div id="tabset-1-8" class="tab-pane" aria-labelledby="tabset-1-8-tab">
+
+</div>
+<div id="tabset-1-9" class="tab-pane" aria-labelledby="tabset-1-9-tab">
+
+</div>
+<div id="tabset-1-10" class="tab-pane" aria-labelledby="tabset-1-10-tab">
+
+</div>
+<div id="tabset-1-11" class="tab-pane" aria-labelledby="tabset-1-11-tab">
+
+</div>
+<div id="tabset-1-12" class="tab-pane" aria-labelledby="tabset-1-12-tab">
+
+</div>
+<div id="tabset-1-13" class="tab-pane" aria-labelledby="tabset-1-13-tab">
+
+</div>
+<div id="tabset-1-14" class="tab-pane" aria-labelledby="tabset-1-14-tab">
+
+</div>
+<div id="tabset-1-15" class="tab-pane" aria-labelledby="tabset-1-15-tab">
+
 </div>
 </div>
 </div>
@@ -281,9 +342,20 @@ References
 <span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op" style="color: #5E5E5E;">(</span>label<span class="op" style="color: #5E5E5E;">=</span><span class="va" style="color: #111111;">Freq</span><span class="op" style="color: #5E5E5E;">)</span>, hjust <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">1.5</span>, vjust<span class="op" style="color: #5E5E5E;">=</span><span class="fl" style="color: #AD0000;">0.5</span>, color<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"white"</span>, size<span class="op" style="color: #5E5E5E;">=</span><span class="fl" style="color: #AD0000;">4</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">+</span></span>
 <span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
 <span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/scale_grey.html">scale_fill_grey</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
-<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op" style="color: #5E5E5E;">(</span>title <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Most elected MPs on Greek Parliament (1981 - 2019)"</span>,</span>
-<span>       subtitle <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">""</span>,</span>
-<span>       caption <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Source: stesiam | stesiam.github.io, 2022"</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op" style="color: #5E5E5E;">(</span>title <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Most elected MPs on Greek Parliament (1981 - 2019) &lt;br&gt;</span></span>
+<span><span class="st" style="color: #20794D;">       &lt;span style = 'font-size:10pt'&gt; A list that shows the most elected members of parliament (elected 11 times or more). &lt;br&gt; The following ones are members of &lt;span style = 'color:blue;'&gt;ND&lt;/span&gt;,  or &lt;span style = 'color:darkgreen;'&gt;PASOK&lt;/span&gt;&lt;/span&gt;."</span>,</span>
+<span>       caption <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Source: **stesiam** | stesiam.github.io, 2022"</span>,</span>
+<span>       x <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Times elected"</span>,</span>
+<span>       y <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Members of Parliament"</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
+<span>    <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op" style="color: #5E5E5E;">(</span></span>
+<span>    plot.title.position <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"plot"</span>,</span>
+<span>    plot.title <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://wilkelab.org/ggtext/reference/element_textbox.html">element_textbox_simple</a></span><span class="op" style="color: #5E5E5E;">(</span></span>
+<span>      size <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">14</span>,</span>
+<span>      lineheight <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">1</span>,</span>
+<span>      padding <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/element.html">margin</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="fl" style="color: #AD0000;">5.5</span>, <span class="fl" style="color: #AD0000;">5.5</span>, <span class="fl" style="color: #AD0000;">5.5</span>, <span class="fl" style="color: #AD0000;">5.5</span><span class="op" style="color: #5E5E5E;">)</span>,</span>
+<span>      margin <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/element.html">margin</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="fl" style="color: #AD0000;">0</span>, <span class="fl" style="color: #AD0000;">0</span>, <span class="fl" style="color: #AD0000;">5.5</span>, <span class="fl" style="color: #AD0000;">0</span><span class="op" style="color: #5E5E5E;">)</span>,</span>
+<span>      fill <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"cornsilk"</span></span>
+<span>    <span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">+</span></span>
 <span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -295,7 +367,15 @@ References
 </div>
 </section><section id="most-elected-members-by-party" class="level1"><h1>Most elected members by party</h1>
 <p>So far we have seen the most elected members of Greek parliament for the period 1981-2019. Ιt would be particularly interesting to study the same feature by party. However, finding the most elected member per party can be challenging on parties with relatively low representation on Greek parliament. That is the reason for choosing only some of those.</p>
-<p>Concerning the implementation part, I see that I will make some visualizations with minimum changes (e.g., filter dataset based on party, change color, etc.) so, the creation of a function is justified. That way, I will not repeat same code, following one of the principles of programming (DRY - Don’t Repeat Yourself).</p>
+<p>Concerning the implementation part, I see that I will make some visualizations with minimum changes (e.g., filter dataset based on party, change color, etc.) so, the creation of a function is justified. That way, I will not repeat same code, following one of the principles of programming (DRY - Don’t Repeat Yourself). On the following function we can see that I set 3 variables :</p>
+<ul>
+<li>
+<code>Party</code> : I have to specify which data to filter</li>
+<li>
+<code>color</code> : In order to customize color of my barplots to be similar to each party’s color</li>
+<li>
+<code>times_elected_min</code> : A argument that I added up later. The problem with its absence is that I have to deal with parties that elect for example 150 MPs and some others just 10. If I set a universal number of elections to visualize I will have diagrams with many problems. Let’s suppose that I set a big value (e.g., 10). Then I would visualize my data for <em>ND</em> and <em>PASOK</em>, although parties with relatively low number of MPs would have only one or noone to show (<em>KKE</em> &amp; <em>SYRIZA</em>, respectively). On the other hand if I set a low value I create a new problem as there will be many MPs of and it creates the need to edit many more things (like width of bars). An argument like <code>times_elected_min</code> can adapt the specific characteristics of each party.</li>
+</ul>
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;">party_plot</span> <span class="op" style="color: #5E5E5E;">&lt;-</span> <span class="kw" style="color: #003B4F;">function</span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">party</span>, <span class="va" style="color: #111111;">party_color</span>, <span class="va" style="color: #111111;">times_elected_min</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">{</span></span>
 <span>  <span class="va" style="color: #111111;">party_df</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">parliament</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">Party</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="va" style="color: #111111;">party</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -2487,6 +2567,9 @@ Wickham, H., &amp; Girlich, M. (2022). <em>Tidyr: Tidy messy data</em>. Retrieve
 </div>
 <div id="ref-R-readr" class="csl-entry">
 Wickham, H., Hester, J., &amp; Bryan, J. (2022). <em>Readr: Read rectangular text data</em>. Retrieved from <a href="https://CRAN.R-project.org/package=readr">https://CRAN.R-project.org/package=readr</a>
+</div>
+<div id="ref-R-ggtext" class="csl-entry">
+Wilke, C. O., &amp; Wiernik, B. M. (2022). <em>Ggtext: Improved text rendering support for ggplot2</em>. Retrieved from <a href="https://wilkelab.org/ggtext/">https://wilkelab.org/ggtext/</a>
 </div>
 <div id="ref-R-kableExtra" class="csl-entry">
 Zhu, H. (2021). <em>kableExtra: Construct complex table with kable and pipe syntax</em>. Retrieved from <a href="https://CRAN.R-project.org/package=kableExtra">https://CRAN.R-project.org/package=kableExtra</a>
