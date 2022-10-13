@@ -112,172 +112,277 @@
     "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\nR\n\n\nEDA\n\n\nGreek Parliament\n\n\n\n\nLet’s explore the MPs that got elected the most over the years (1981-2019).\n\n\n\n\n\n\nOct 10, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\nGPG\n\n\nQuarto\n\n\n\n\nAdd a signature to your GH commits\n\n\n\n\n\n\nOct 3, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\nQuarto\n\n\n\n\nA collection of other Quarto sites and articles about Quarto.\n\n\n\n\n\n\nAug 10, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\nfirst article\n\n\n\n\nMy first article on my Quarto website.\n\n\n\n\n\n\nJul 27, 2022\n\n\nstesiam\n\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html",
-    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html",
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html",
     "title": "EDA on Greek Parliament",
     "section": "",
     "text": "Introduction\n\nPrerequisites    2.1 Import Libraries    2.2 Import Dataset    2.3 Preview Dataset    2.4 Structure of Dataset    2.5 Recoding variables \n\n\nParliament over the years \n\n\nMost elected members of parliament \n\n\nMost elected members by party    5.1 KKE    5.2 ND    5.3 PASOK    5.4 SYRIZA \n\n\nMost elected members per constituency    6.1 Attica    6.2 Central Greece    6.3 Central Macedonia    6.4 Crete    6.5 Eastern Macedonia and Thrace    6.6 Epirus    6.7 Ionian Islands    6.8 North Aegean    6.9 Peloponnese    6.10 South Aegean    6.11 Thessaly    6.12 Western Greece    6.13 Western Macedonia \n\nAcknowledgements\n\nReferences"
   },
   {
-    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#import-libraries",
-    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#import-libraries",
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#import-libraries",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#import-libraries",
     "title": "EDA on Greek Parliament",
     "section": "Import Libraries",
     "text": "Import Libraries\nFirst and foremost, we have to load our libraries.\n\nShow the code# General purpose R libraries\nlibrary(tidyverse)\nlibrary(kableExtra)\n\n\n# Graphs\nlibrary(ggplot2)\nlibrary(ggpol) \nlibrary(ggtext)\n\n# Other settings\noptions(digits=2) # print only 2 decimals"
   },
   {
-    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#import-dataset",
-    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#import-dataset",
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#import-dataset",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#import-dataset",
     "title": "EDA on Greek Parliament",
     "section": "Import dataset",
     "text": "Import dataset\nAfter loading R libraries, then I will load my data.\n\nShow the codeparliament <- read_csv(\"data/greek_parliament.csv\")"
   },
   {
-    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#preview-dataset",
-    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#preview-dataset",
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#preview-dataset",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#preview-dataset",
     "title": "EDA on Greek Parliament",
     "section": "Preview Dataset",
     "text": "Preview Dataset\n\nShow the codepreview_dataset = head(parliament, 10)\nkbl(preview_dataset, \n    align = 'c',\n    booktabs = T,\n    centering = T,\n    valign = T) %>%\n  kable_paper() %>%\n  scroll_box(width = \"600px\", height = \"250px\")\n\n\n\n\nTable 1:  Preview Dataset (first 6 rows) \n \n FullName \n    Party \n    Constituency \n    Term \n  \n\n\n Agorastis Vasileios \n    PA.SO.K. (Panhellenic Socialist Movement) \n    Larissa \n    3 \n  \n\n Akrita Sylva - Kaiti \n    PA.SO.K. (Panhellenic Socialist Movement) \n    Athens B \n    3 \n  \n\n Akritidis Nikolaos \n    PA.SO.K. (Panhellenic Socialist Movement) \n    Thessaloniki A \n    3 \n  \n\n Akrivakis Alexandros \n    PA.SO.K. (Panhellenic Socialist Movement) \n    Viotia \n    3 \n  \n\n Alevras Ioannis \n    PA.SO.K. (Panhellenic Socialist Movement) \n    Athens A \n    3 \n  \n\n Alexandris Efstathios (Stathis) \n    PA.SO.K. (Panhellenic Socialist Movement) \n    Athens B \n    3 \n  \n\n Alexiadis Konstantinos \n    PA.SO.K. (Panhellenic Socialist Movement) \n    Trikala \n    3 \n  \n\n Alexiou Thomas \n    NEA DIMOKRATIA \n    Xanthi \n    3 \n  \n\n Allamanis Stylianos \n    NEA DIMOKRATIA \n    Karditsa \n    3 \n  \n\n Amanatidis Konstantinos \n    PA.SO.K. (Panhellenic Socialist Movement) \n    Thessaloniki B \n    3"
   },
   {
-    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#structure-of-dataset",
-    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#structure-of-dataset",
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#structure-of-dataset",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#structure-of-dataset",
     "title": "EDA on Greek Parliament",
     "section": "Structure of Dataset",
-    "text": "Structure of Dataset\n\n\n\n\n\n\n\nVariable\nProperty\nDescription\n\n\n\nFull Name\n\nqualitative  (nominal)\nSurname and name of the member of parliament\n\n\nParty\n\nqualitative  (nominal)\nThe party on which the MP got elected\n\n\nConstituency\n\nqualitative  (nominal)\nMP got elected on this area\n\n\nTerm\n\nqualitative  (ordinal)\nTPlenum term\n\n\n\nThus, my sample has 4 variables, of which 0 are quantitative and 4 are quantitative properties, of which 3 are nominal and the rest one (Term) is ordinal."
+    "text": "Structure of Dataset\n\n\n\n\n\n\n\nVariable\nProperty\nDescription\n\n\n\nFull Name\n\nqualitative  (nominal)\nSurname and name of the member of parliament\n\n\nParty\n\nqualitative  (nominal)\nThe party on which the MP got elected\n\n\nConstituency\n\nqualitative  (nominal)\nMP got elected on this area\n\n\nTerm\n\nqualitative  (ordinal)\nPlenum term\n\n\n\nThus, my sample has 4 variables, of which 0 are quantitative and 4 are quantitative properties, of which 3 are nominal and the rest one (Term) is ordinal."
   },
   {
-    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#recoding-variables",
-    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#recoding-variables",
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#recoding-variables",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#recoding-variables",
     "title": "EDA on Greek Parliament",
     "section": "Recoding variables",
     "text": "Recoding variables\n\nShow the codetable(parliament$Party)\n\n\n\nShow the code## Recoding parliament$Party\nparliament$Party[parliament$Party == \"ANEXARTITOI DIMOKRATIKOI VOULEFTES\"] <- \"ADP\"\nparliament$Party[parliament$Party == \"ANEXARTITOI ELLINES (Independent Hellenes)\"] <- \"ANEL\"\nparliament$Party[parliament$Party == \"ANEXARTITOI ELLINES (Independent Hellenes) National Patriotic Democratic Alliance\"]<- \"ANEL\"\nparliament$Party[parliament$Party == \"Coalition of the Left and Progress\"] <- \"SYRIZA\"\nparliament$Party[parliament$Party == \"Communist Party of Greece (Interior)\"] <- \"KKE (interior)\"\nparliament$Party[parliament$Party == \"DEMOCRATIC COALITION (Panhellenic Socialist Movement Democratic Left )\"] <- \"PASOK\"\nparliament$Party[parliament$Party == \"DHM.AR (Democratic Left)\"] <- \"DHMAR\"\nparliament$Party[parliament$Party == \"DI.ANA.\"] <- \"DIANA\"\nparliament$Party[parliament$Party == \"DI.K.KI.\"] <- \"DIKKI\"\nparliament$Party[parliament$Party == \"INDEPENDENT\"] <- \"INDEPENDENT\"\nparliament$Party[parliament$Party == \"KOMMOUNISTIKO KOMMA ELLADAS\"] <- \"KKE\"\nparliament$Party[parliament$Party == \"LA.O.S.\"] <- \"LAOS\"\nparliament$Party[parliament$Party == \"LAIKI ENOTITA\"] <- \"LAE\"\nparliament$Party[parliament$Party == \"LAIKOS SYNDESMOS - CHRYSI AVGI (People’s Association – Golden Dawn)\"] <- \"XA\"\nparliament$Party[parliament$Party == \"NEA DIMOKRATIA\"] <- \"ND\"\nparliament$Party[parliament$Party == \"PA.SO.K. (Panhellenic Socialist Movement)\"] <- \"PASOK\"\nparliament$Party[parliament$Party == \"POL.A.\"] <- \"POLA\"\nparliament$Party[parliament$Party == \"SYNASPISMOS RIZOSPASTIKIS ARISTERAS\"] <- \"SYRIZA\"\nparliament$Party[parliament$Party == \"TO POTAMI (The River)\"] <- \"POTAMI\"\nparliament$Party[parliament$Party == \"ΟΟ.ΕΟ.\"] <- \"ΟΟ.ΕΟ\""
   },
   {
-    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#kke",
-    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#kke",
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#rd-term",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#rd-term",
+    "title": "EDA on Greek Parliament",
+    "section": "3rd Term",
+    "text": "3rd Term\n\nShow the codemake_parliament_plot(3, \"Greek Parliament (1981-1985)\", \"#f72100\",\"#10459c\",\"#26d43a\")"
+  },
+  {
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term",
+    "title": "EDA on Greek Parliament",
+    "section": "4th Term",
+    "text": "4th Term\n\nShow the codemake_parliament_plot(4, \"Greek Parliament (1985-1989)\", \"#cccccc\",\"#f72100\",\"#900603\",\"#10459c\",\"#26d43a\")"
+  },
+  {
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term-1",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term-1",
+    "title": "EDA on Greek Parliament",
+    "section": "5th Term",
+    "text": "5th Term\n\nShow the codemake_parliament_plot(5, \"Greek Parliament (Jun,1989 - Nov,1989)\", \"#d6b85a\",\"#cccccc\",\"#10459c\",\"#26d43a\",\"#FFC0CB\")"
+  },
+  {
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term-2",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term-2",
+    "title": "EDA on Greek Parliament",
+    "section": "6th Term",
+    "text": "6th Term\n\nShow the codemake_parliament_plot(6, \"Greek Parliament (Nov,1989 - Apr,1990)\",\"#cccccc\",\"#10459c\",\"#26d43a\",\"#FFC0CB\",\"#cefad0\")"
+  },
+  {
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term-3",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term-3",
+    "title": "EDA on Greek Parliament",
+    "section": "7th Term",
+    "text": "7th Term\n\nShow the codemake_parliament_plot(7, \"Greek Parliament (Apr,1990 - Oct,1993)\", \"#cccccc\", \"#f72100\", \"#10459c\",\"#26d43a\",\"#FFC0CB\",\"#cefad0\")"
+  },
+  {
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term-4",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term-4",
+    "title": "EDA on Greek Parliament",
+    "section": "8th Term",
+    "text": "8th Term\n\nShow the codemake_parliament_plot(8, \"Greek Parliament (Apr,1990 - Oct,1993)\", \"#f72100\", \"#10459c\",\"#26d43a\",\"#3944bc\")"
+  },
+  {
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term-5",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term-5",
+    "title": "EDA on Greek Parliament",
+    "section": "9th Term",
+    "text": "9th Term\n\nShow the codemake_parliament_plot(9, \"Greek Parliament (Oct,1993 - Aug,1996)\", \"#FFA500\", \"#cccccc\",\"#10459c\",\"#3944bc\",\"#26d43a\", \"#FFC0CB\")"
+  },
+  {
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term-6",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term-6",
+    "title": "EDA on Greek Parliament",
+    "section": "10th Term",
+    "text": "10th Term\n\nShow the codemake_parliament_plot(10, \"Greek Parliament (2000 - 2004)\", \"#cccccc\",\"#f72100\",\"#3944bc\",\"#26d43a\", \"#FFC0CB\")"
+  },
+  {
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term-7",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term-7",
+    "title": "EDA on Greek Parliament",
+    "section": "11th Term",
+    "text": "11th Term\n\nShow the codemake_parliament_plot(11, \"Greek Parliament (2004 - 2007)\", \"#cccccc\",\"#f72100\",\"#3944bc\",\"#26d43a\", \"#FFC0CB\")"
+  },
+  {
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term-8",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term-8",
+    "title": "EDA on Greek Parliament",
+    "section": "12th Term",
+    "text": "12th Term\n\nShow the codemake_parliament_plot(12, \"Greek Parliament (2007 - 2009)\", \"#f72100\",\"#1E3F66\",\"#3944bc\",\"#26d43a\", \"#FFC0CB\")"
+  },
+  {
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term-9",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term-9",
+    "title": "EDA on Greek Parliament",
+    "section": "13th Term",
+    "text": "13th Term\n\nShow the codemake_parliament_plot(13, \"Greek Parliament (2009 - May,2012)\", \"#bcd2e8\", \"#680c07\",\"#000000\",\"#f72100\",\"#1E3F66\",\"#3944bc\",\"#26d43a\", \"#FFC0CB\")"
+  },
+  {
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term-10",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term-10",
+    "title": "EDA on Greek Parliament",
+    "section": "14th Term",
+    "text": "14th Term\n\nShow the codemake_parliament_plot(14, \"Greek Parliament (May,2012 - Jun,2012)\", \"#bcd2e8\", \"#680c07\",\"#f72100\",\"#3944bc\",\"#26d43a\", \"#FFC0CB\", \"#000000\")"
+  },
+  {
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term-11",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term-11",
+    "title": "EDA on Greek Parliament",
+    "section": "15th Term",
+    "text": "15th Term\n\nShow the codemake_parliament_plot(15, \"Greek Parliament (Jun,2012 - Jan,2015)\", \"#65350f\", \"#bcd2e8\", \"#680c07\",\"#cccccc\",\"#f72100\",\"#3944bc\", \"#26d43a\", \"#FFC0CB\", \"#000000\")"
+  },
+  {
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term-12",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term-12",
+    "title": "EDA on Greek Parliament",
+    "section": "16th Term",
+    "text": "16th Term\n\nShow the codemake_parliament_plot(16, \"Greek Parliament (Jan, 2015 - Aug,2015)\", \"#bcd2e8\", \"#f72100\",\"#7a1712\",\"#3944bc\",\"#26d43a\", \"#00ccd3\", \"#FFC0CB\", \"#000000\")"
+  },
+  {
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term-13",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#th-term-13",
+    "title": "EDA on Greek Parliament",
+    "section": "17th Term",
+    "text": "17th Term\n:::{.callout-warning} As you can see on the next plot there are many MPs that are classified as independent (according to Hellenic’s Parliament website). Many of them are members of parties “ANEL” and “Enosi Kentroon”. However, a large wave of departures from the parties led to not fulfilling the conditions to be considered as parliamentary parties. For that reason members of these parties (that did not left) are considere independent.\n\n\nShow the codemake_parliament_plot(17, \"Greek Parliament (Sep,2015 - 2019)\", \"#cccccc\", \"#f72100\",\"#3944bc\",\"#26d43a\",\"#00ccd3\", \"#FFC0CB\",\"#000000\")"
+  },
+  {
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#kke",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#kke",
     "title": "EDA on Greek Parliament",
     "section": "KKE",
     "text": "KKE\n\nShow the codeparty_plot(\"KKE\", \"#FF6666\", times_elected_min = 5)"
   },
   {
-    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#nd",
-    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#nd",
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#nd",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#nd",
     "title": "EDA on Greek Parliament",
     "section": "ND",
     "text": "ND\n\nShow the codeparty_plot(\"ND\", \"#0492c2\", times_elected_min = 10)"
   },
   {
-    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#pasok",
-    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#pasok",
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#pasok",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#pasok",
     "title": "EDA on Greek Parliament",
     "section": "PASOK",
     "text": "PASOK\n\nShow the codeparty_plot(\"PASOK\", \"#95bb72\", times_elected_min = 10)"
   },
   {
-    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#syriza",
-    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#syriza",
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#syriza",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#syriza",
     "title": "EDA on Greek Parliament",
     "section": "SYRIZA",
     "text": "SYRIZA\n\nShow the codeparty_plot(\"SYRIZA\", \"#e27bb1\", times_elected_min = 5)"
   },
   {
-    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#state",
-    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#state",
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#state",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#state",
     "title": "EDA on Greek Parliament",
     "section": "State",
-    "text": "State\n\nShow the codeconstituency_freqs(\"State\")\n\n\n\n\n . \n    Freq \n  \n\n\n Merkouri Amalia - Maria (Melina) \n    4 \n  \n\n Pappas Christos \n    4 \n  \n\n Tsaldaris Athanasios Konstantinou \n    4 \n  \n\n Alevras Ioannis \n    3 \n  \n\n Evert Miltiadis \n    3"
+    "text": "State\n\nShow the codeconstituency_freqs(\"State\", 3)"
   },
   {
-    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#attica",
-    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#attica",
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#attica",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#attica",
     "title": "EDA on Greek Parliament",
     "section": "Attica",
-    "text": "Attica\n\n\nAthens A\nAthens B\nPiraeus A\nPiraeus B\nOf Attica (rest)\n\n\n\n\nShow the codeconstituency_freqs(\"Athens A\")\n\n\n\n\n . \n    Freq \n  \n\n\n Benaki - Psarouda Anna Evangelou \n    9 \n  \n\n Kanelli Garyfallia (Liana) \n    8 \n  \n\n Voulgarakis Georgios \n    8 \n  \n\n Papantoniou Ioannis (Giannos) \n    7 \n  \n\n Peponis Anastasios \n    7 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Athens B\")\n\n\n\n\n . \n    Freq \n  \n\n\n Kaklamanis Apostolos \n    13 \n  \n\n Polydoras Vyron \n    13 \n  \n\n Meimarakis Evangelos - Vasileios \n    12 \n  \n\n Giakoumatos Gerasimos \n    9 \n  \n\n Kammenos Panagiotis (Panos) \n    9 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Piraeus A\")\n\n\n\n\n . \n    Freq \n  \n\n\n Melas Panagiotis \n    9 \n  \n\n Simitis Kostas Georgiou \n    9 \n  \n\n Benteniotis Emmanouil \n    6 \n  \n\n Dritsas Theodoros \n    6 \n  \n\n Kalos Georgios \n    6 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Piraeus B\")\n\n\n\n\n . \n    Freq \n  \n\n\n Tragakis Ioannis \n    10 \n  \n\n Niotis Grigorios \n    9 \n  \n\n Diamantidis Ioannis \n    8 \n  \n\n Kritikos Panagiotis \n    8 \n  \n\n Nerantzis Anastasios \n    8 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Of Attica (rest)\")\n\n\n\n\n . \n    Freq \n  \n\n\n Pagkalos Theodoros \n    11 \n  \n\n Papailias Ilias \n    9 \n  \n\n Vrettos Konstantinos (Ntinos) \n    9 \n  \n\n Katsigiannis Christos \n    6 \n  \n\n Stavrou Apostolos Evangelou \n    6"
+    "text": "Attica\n\n\nAthens A\nAthens B\nPiraeus A\nPiraeus B\nOf Attica (rest)\n\n\n\n\nShow the codeconstituency_freqs(\"Athens A\",5)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Athens B\",7)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Piraeus A\",5)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Piraeus B\",5)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Of Attica (rest)\",5)"
   },
   {
-    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#central-greece",
-    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#central-greece",
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#central-greece",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#central-greece",
     "title": "EDA on Greek Parliament",
     "section": "Central Greece",
-    "text": "Central Greece\n\n\nViotia\nEvrytania\nFokida\nFthiotida\n\n\n\n\nShow the codeconstituency_freqs(\"Viotia\")\n\n\n\n\n . \n    Freq \n  \n\n\n Basiakos Evangelos \n    10 \n  \n\n Katsimpardis Georgios \n    7 \n  \n\n Tsiplakos Aristeidis \n    7 \n  \n\n Akrivakis Alexandros \n    6 \n  \n\n Apostolidis Loukas \n    5 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Evrytania\")\n\n\n\n\n . \n    Freq \n  \n\n\n Bakoyannis Theodora (Dora) \n    3 \n  \n\n Kontogeorgos Konstantinos \n    3 \n  \n\n Karanikas Ilias \n    2 \n  \n\n Tsigaridas Konstantinos \n    2 \n  \n\n Kotsias Thomas \n    1 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Fokida\")\n\n\n\n\n . \n    Freq \n  \n\n\n Gkelestathis Nikolaos \n    8 \n  \n\n Arvanitis Fotios \n    4 \n  \n\n Bougas Ioannis Dimitriou \n    2 \n  \n\n Kostopanagiotou Ilias \n    2 \n  \n\n Mandreka Aspasia \n    2 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Fthiotida\")\n\n\n\n\n . \n    Freq \n  \n\n\n Alampanos Dimitrios \n    6 \n  \n\n Giannopoulos Athanasios \n    6 \n  \n\n Staikouras Christos \n    6 \n  \n\n Drosogiannis Antonios \n    5 \n  \n\n Xarchas Athanasios \n    5"
+    "text": "Central Greece\n\n\nViotia\nEvrytania\nFokida\nFthiotida\n\n\n\n\nShow the codeconstituency_freqs(\"Viotia\",5)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Evrytania\",2)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Fokida\",2)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Fthiotida\",3)"
   },
   {
-    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#central-macedonia",
-    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#central-macedonia",
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#central-macedonia",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#central-macedonia",
     "title": "EDA on Greek Parliament",
     "section": "Central Macedonia",
-    "text": "Central Macedonia\n\n\nThessaloniki A\nThessaloniki B\nKilkis\nPella\nPieria\nSerres\nHalkidiki\n\n\n\n\nShow the codeconstituency_freqs(\"Thessaloniki A\")\n\n\n\n\n . \n    Freq \n  \n\n\n Karamanlis Konstantinos \n    13 \n  \n\n Kastanidis Charalampos \n    11 \n  \n\n Venizelos Evangelos \n    10 \n  \n\n Papathemelis Stylianos - Angelos \n    9 \n  \n\n Kalafatis Stavros Athanasios \n    8 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Thessaloniki B\")\n\n\n\n\n . \n    Freq \n  \n\n\n Geranidis Vasileios \n    9 \n  \n\n Karaoglou Theodoros \n    7 \n  \n\n Tzitzikostas Georgios \n    7 \n  \n\n Glavinas Ioannis \n    6 \n  \n\n Salagkoudis Georgios \n    6 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Kilkis\")\n\n\n\n\n . \n    Freq \n  \n\n\n Parastatidis Theodoros \n    5 \n  \n\n Floridis Georgios \n    4 \n  \n\n Georgantas Georgios Pavlos \n    4 \n  \n\n Kiltidis Konstantinos \n    4 \n  \n\n Passalidis Theodoros \n    4 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Pella\")\n\n\n\n\n . \n    Freq \n  \n\n\n Karasmanis Georgios \n    9 \n  \n\n Tzakri Theodora E. \n    7 \n  \n\n Fountoukidou - Theodoridou Parthena \n    6 \n  \n\n Paschalidis Georgios \n    6 \n  \n\n Vyzovitis Christos \n    5 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Pieria\")\n\n\n\n\n . \n    Freq \n  \n\n\n Koukodimos Konstantinos \n    6 \n  \n\n Kakkalos Nikolaos \n    5 \n  \n\n Konstantopoulos Georgios \n    5 \n  \n\n Terzopoulos Georgios \n    5 \n  \n\n Arseni Maria \n    4 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Serres\")\n\n\n\n\n . \n    Freq \n  \n\n\n Karamanlis Achillefs Georgiou \n    9 \n  \n\n Kollia-Tsaroucha Maria \n    8 \n  \n\n Damianidis Alexandros \n    7 \n  \n\n Leontaridis Theofilos \n    7 \n  \n\n Anthopoulos Ioannis \n    6 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Halkidiki\")\n\n\n\n\n . \n    Freq \n  \n\n\n Drivelegkas Ioannis \n    7 \n  \n\n Pachtas Christos \n    6 \n  \n\n Giovanoudas Varsamis \n    5 \n  \n\n Vagionas Georgios \n    5 \n  \n\n Igglezi Aikaterini \n    4"
+    "text": "Central Macedonia\n\n\nThessaloniki A\nThessaloniki B\nKilkis\nPella\nPieria\nSerres\nHalkidiki\n\n\n\n\nShow the codeconstituency_freqs(\"Thessaloniki A\",6)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Thessaloniki B\",6)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Kilkis\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Pella\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Pieria\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Serres\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Halkidiki\",3)"
   },
   {
-    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#crete",
-    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#crete",
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#crete",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#crete",
     "title": "EDA on Greek Parliament",
     "section": "Crete",
-    "text": "Crete\n\n\nChania\nHeraklion\nLasithi\nRethymno\n\n\n\n\nShow the codeconstituency_freqs(\"Chania\")\n\n\n\n\n . \n    Freq \n  \n\n\n Markogiannakis Christos \n    10 \n  \n\n Skoulakis Emmanouil \n    10 \n  \n\n Valyrakis Ioan. Iosif \n    9 \n  \n\n Michelogiannis Iosif \n    4 \n  \n\n Stathakis Georgios \n    4 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Irakleio\")\n\n\n\n\n x \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Lasithi\")\n\n\n\n\n . \n    Freq \n  \n\n\n Plakiotakis Ioannis \n    7 \n  \n\n Ioannidis Foivos \n    5 \n  \n\n Karchimakis Michail \n    5 \n  \n\n Chatzinakis Emmanouil \n    3 \n  \n\n Kounenos Ioannis \n    3 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Rethymno\")\n\n\n\n\n . \n    Freq \n  \n\n\n Kefalogiannis Ioannis \n    9 \n  \n\n Loukakis Manolis \n    5 \n  \n\n Xanthos Andreas \n    4 \n  \n\n Kefalogiannis Ioannis Ach. \n    3 \n  \n\n Othonas Emmanouil \n    3"
+    "text": "Crete\n\n\nChania\nHeraklion\nLasithi\nRethymno\n\n\n\n\nShow the codeconstituency_freqs(\"Chania\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Irakleio\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Lasithi\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Rethymno\",3)"
   },
   {
-    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#eastern-macedonia-and-thrace",
-    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#eastern-macedonia-and-thrace",
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#eastern-macedonia-and-thrace",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#eastern-macedonia-and-thrace",
     "title": "EDA on Greek Parliament",
     "section": "Eastern Macedonia and Thrace",
-    "text": "Eastern Macedonia and Thrace\n\n\nDrama\nEvros\nKavala\nXanthi\nRodopi\n\n\n\n\nShow the codeconstituency_freqs(\"Drama\")\n\n\n\n\n . \n    Freq \n  \n\n\n Konstantinou Floros \n    7 \n  \n\n Damianos Theodoros \n    6 \n  \n\n Aidonis Christos \n    5 \n  \n\n Evmoiridis Konstantinos \n    4 \n  \n\n Kyriazidis Dimitrios \n    4 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Evros\")\n\n\n\n\n . \n    Freq \n  \n\n\n Chatzinikolaou Panagiotis \n    6 \n  \n\n Fotiadis Apostolos \n    6 \n  \n\n Dermentzopoulos Alexandros \n    5 \n  \n\n Dimoschakis Theofanis \n    5 \n  \n\n Gerontopoulos Kyriakos \n    5 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Kavala\")\n\n\n\n\n . \n    Freq \n  \n\n\n Tsaklidis Ioannis \n    9 \n  \n\n Kalantzis Georgios \n    7 \n  \n\n Panagiotopoulos Georgios \n    7 \n  \n\n Panagiotopoulos Nikolaos \n    6 \n  \n\n Papadopoulos Ilias \n    5 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Xanthi\")\n\n\n\n\n . \n    Freq \n  \n\n\n Sgouridis Panagiotis Sgouri \n    8 \n  \n\n Kontos Alexandros \n    7 \n  \n\n Zeimpek Chousein \n    4 \n  \n\n Kourtidis Evangelos \n    3 \n  \n\n Pavlakakis Georgios \n    3 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Rodopi\")\n\n\n\n\n . \n    Freq \n  \n\n\n Stylianidis Evripidis \n    7 \n  \n\n Chatzi Osman Achmet \n    4 \n  \n\n Kara Giousouf Aichan \n    4 \n  \n\n Achmet Ilchan S \n    3 \n  \n\n Moustafa Moustafa \n    3"
+    "text": "Eastern Macedonia and Thrace\n\n\nDrama\nEvros\nKavala\nXanthi\nRodopi\n\n\n\n\nShow the codeconstituency_freqs(\"Drama\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Evros\",4)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Kavala\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Xanthi\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Rodopi\",3)"
   },
   {
-    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#epirus",
-    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#epirus",
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#epirus",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#epirus",
     "title": "EDA on Greek Parliament",
     "section": "Epirus",
-    "text": "Epirus\n\n\nArta\nIoannina\nPreveza\nThesprotia\n\n\n\n\nShow the codeconstituency_freqs(\"Arta\")\n\n\n\n\n . \n    Freq \n  \n\n\n Papageorgiou Georgios Ioanni \n    5 \n  \n\n Gerovasili Olga \n    4 \n  \n\n Koliopanos Theodoros \n    4 \n  \n\n Kontaxis Athanasios \n    4 \n  \n\n Oikonomidis Panagiotis \n    4 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Ioannina\")\n\n\n\n\n . \n    Freq \n  \n\n\n Papoulias Karolos \n    8 \n  \n\n Tassoulas Constantine An. \n    8 \n  \n\n Argyris Evangelos \n    6 \n  \n\n Kalogiannis Stavros \n    6 \n  \n\n Moraitis Georgios \n    5 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Preveza\")\n\n\n\n\n . \n    Freq \n  \n\n\n Karamoutsos Spyros \n    4 \n  \n\n Tryfonidis Georgios Panagioti \n    4 \n  \n\n Barkas Konstantinos \n    3 \n  \n\n Kaldi Meropi \n    3 \n  \n\n Papachristos Evangelos \n    3 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Thesprotia\")\n\n\n\n\n . \n    Freq \n  \n\n\n Papadopoulos Alexandros (Alekos) Konstantinou \n    6 \n  \n\n Vezdrevanis Ilias \n    6 \n  \n\n Bezas Antonios \n    5 \n  \n\n Giogiakas Vasileios \n    2 \n  \n\n Katsis Marios \n    2"
+    "text": "Epirus\n\n\nArta\nIoannina\nPreveza\nThesprotia\n\n\n\n\nShow the codeconstituency_freqs(\"Arta\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Ioannina\",4)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Preveza\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Thesprotia\",3)"
   },
   {
-    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#ionian-islands",
-    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#ionian-islands",
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#ionian-islands",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#ionian-islands",
     "title": "EDA on Greek Parliament",
     "section": "Ionian Islands",
-    "text": "Ionian Islands\n\n\nCorfu\nKefallonia\nLefkada\nZakynthos\n\n\n\n\nShow the codeconstituency_freqs(\"Corfu\")\n\n\n\n\n . \n    Freq \n  \n\n\n Drys Georgios \n    6 \n  \n\n Dendias Nikolaos - Georgios \n    5 \n  \n\n Kaloudis Spyridon \n    5 \n  \n\n Gkerekou Angeliki \n    4 \n  \n\n Gkikas Sotirios \n    4 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Kefallonia\")\n\n\n\n\n . \n    Freq \n  \n\n\n Theopeftatou Afroditi \n    4 \n  \n\n Benetatos Panagis \n    2 \n  \n\n Kalafatis Alexandros \n    2 \n  \n\n Messaris Gerasimos \n    2 \n  \n\n Tritsis Antonios \n    2 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Lefkada\")\n\n\n\n\n . \n    Freq \n  \n\n\n Ktenas Georgios \n    3 \n  \n\n Soldatos Theodoros \n    3 \n  \n\n Aravanis Gerasimos \n    1 \n  \n\n Grigoris Stayros \n    1 \n  \n\n Kavvadas Athanasios \n    1 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Zakynthos\")\n\n\n\n\n . \n    Freq \n  \n\n\n Kontonis Charalampos-Stavros \n    3 \n  \n\n Klavdianos Georgios \n    2 \n  \n\n Palaiothodoros Dimitrios \n    2 \n  \n\n Varvarigos Dimitrios \n    2 \n  \n\n Gasparos Dionysios \n    1"
+    "text": "Ionian Islands\n\n\nCorfu\nKefallonia\nLefkada\nZakynthos\n\n\n\n\nShow the codeconstituency_freqs(\"Corfu\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Kefallonia\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Lefkada\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Zakynthos\",3)"
   },
   {
-    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#north-aegean",
-    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#north-aegean",
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#north-aegean",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#north-aegean",
     "title": "EDA on Greek Parliament",
     "section": "North Aegean",
-    "text": "North Aegean\n\n\nChios\nLesvos\nSamos\n\n\n\n\nShow the codeconstituency_freqs(\"Chios\")\n\n\n\n\n . \n    Freq \n  \n\n\n Kotsakas Antonios \n    5 \n  \n\n Misailidis Georgios \n    5 \n  \n\n Tsouri Elpida \n    4 \n  \n\n Varinos Athanasios \n    3 \n  \n\n Michailidis Andreas \n    2 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Lesvos\")\n\n\n\n\n . \n    Freq \n  \n\n\n Sifounakis Nikolaos \n    8 \n  \n\n Vounatsos Dimitrios \n    6 \n  \n\n Korakas Efstratios \n    5 \n  \n\n Skopelitis Stavros \n    5 \n  \n\n Giannellis - Theodosiadis Ioannis \n    4 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Samos\")\n\n\n\n\n . \n    Freq \n  \n\n\n Karaminas Konstantinos \n    3 \n  \n\n Choulis Nikolaos \n    2 \n  \n\n Sevastakis Dimitrios \n    2 \n  \n\n Thalassinos Thalassinos Petrou \n    2 \n  \n\n Vardikos Pythagoras \n    2"
+    "text": "North Aegean\n\n\nChios\nLesvos\nSamos\n\n\n\n\nShow the codeconstituency_freqs(\"Chios\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Lesvos\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Samos\",3)"
   },
   {
-    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#peloponnese",
-    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#peloponnese",
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#peloponnese",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#peloponnese",
     "title": "EDA on Greek Parliament",
     "section": "Peloponnese",
-    "text": "Peloponnese\n\n\nArgolida\nArkadia\nKorinthia\nLakonia\nMessinia\n\n\n\n\nShow the codeconstituency_freqs(\"Argolida\")\n\n\n\n\n . \n    Freq \n  \n\n\n Maniatis Ioannis \n    6 \n  \n\n Papadimitriou Elisavet (Elsa) \n    6 \n  \n\n Andrianos Ioannis \n    5 \n  \n\n Sotiropoulos Vasileios \n    5 \n  \n\n Melidis Ioannis \n    4 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Arcadia\")\n\n\n\n\n . \n    Freq \n  \n\n\n Reppas Dimitrios \n    9 \n  \n\n Kostopoulos Dimitrios \n    6 \n  \n\n Tatoulis Petros Panagioti \n    6 \n  \n\n Konstantinopoulos Odysseas \n    5 \n  \n\n Lykourentzos Andreas \n    5 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Korinthia\")\n\n\n\n\n . \n    Freq \n  \n\n\n Dimas Stavros \n    8 \n  \n\n Papaligouras Anastasios - Petros Panagioti \n    7 \n  \n\n Pottakis Ioannis \n    7 \n  \n\n Kotsonis Theodoros \n    5 \n  \n\n Dimas Christos \n    4 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Lakonia\")\n\n\n\n\n . \n    Freq \n  \n\n\n Davakis Athanasios \n    9 \n  \n\n Grigorakos Leonidas \n    8 \n  \n\n Fountas Paraskevas \n    7 \n  \n\n Stathopoulos Ioannis \n    6 \n  \n\n Giatrakos Konstantinos \n    5 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Messinia\")\n\n\n\n\n . \n    Freq \n  \n\n\n Lampropoulos Ioannis \n    11 \n  \n\n Samaras Antonios \n    11 \n  \n\n Anastasopoulos Nikolaos \n    6 \n  \n\n Kalantzakos Aristeidis \n    6 \n  \n\n Katsilieris Petros \n    6"
+    "text": "Peloponnese\n\n\nArgolida\nArkadia\nKorinthia\nLakonia\nMessinia\n\n\n\n\nShow the codeconstituency_freqs(\"Argolida\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Arcadia\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Korinthia\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Lakonia\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Messinia\",3)"
   },
   {
-    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#south-aegean",
-    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#south-aegean",
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#south-aegean",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#south-aegean",
     "title": "EDA on Greek Parliament",
     "section": "South Aegean",
-    "text": "South Aegean\n\n\nDodecanese Islands\nCyclades\n\n\n\n\nShow the codeconstituency_freqs(\"Dodecanese Islands\")\n\n\n\n\n . \n    Freq \n  \n\n\n Pavlidis Aristotelis \n    9 \n  \n\n Sfyriou Kosmas \n    7 \n  \n\n Karamarios Anastasios Emmanouil \n    6 \n  \n\n Kremastinos Dimitrios \n    6 \n  \n\n Skandalidis Konstantinos \n    5 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Cyclades\")\n\n\n\n\n . \n    Freq \n  \n\n\n Chomatas Ioannis \n    6 \n  \n\n Vroutsis Ioannis \n    6 \n  \n\n Levogiannis Nikolaos \n    5 \n  \n\n Papazoi Elisavet \n    5 \n  \n\n Syrmalenios Nikolaos \n    5"
+    "text": "South Aegean\n\n\nDodecanese Islands\nCyclades\n\n\n\n\nShow the codeconstituency_freqs(\"Dodecanese Islands\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Cyclades\",3)"
   },
   {
-    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#thessaly",
-    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#thessaly",
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#thessaly",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#thessaly",
     "title": "EDA on Greek Parliament",
     "section": "Thessaly",
-    "text": "Thessaly\n\n\nKarditsa\nLarissa\nMagnesia\nTrikala\n\n\n\n\nShow the codeconstituency_freqs(\"Karditsa\")\n\n\n\n\n . \n    Freq \n  \n\n\n Sioufas Dimitrios \n    9 \n  \n\n Taliadouros Spyridon \n    9 \n  \n\n Tsiaras Konstantinos \n    7 \n  \n\n Anagnostopoulos Theodoros \n    6 \n  \n\n Sotirlis Dimitrios \n    5 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Larissa\")\n\n\n\n\n . \n    Freq \n  \n\n\n Katsaros Nikos \n    8 \n  \n\n Charakopoulos Maximos \n    7 \n  \n\n Skyllakos Antonios \n    7 \n  \n\n Souflias Georgios \n    7 \n  \n\n Adamopoulos Georgios \n    5 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Magnesia\")\n\n\n\n\n . \n    Freq \n  \n\n\n Sourlas Georgios Ioanni \n    9 \n  \n\n Nakos Athanasios \n    7 \n  \n\n Zakolikos Pafsanias \n    6 \n  \n\n Zisi Rodoula \n    6 \n  \n\n Gkatzis Nikolaos Filippou \n    4 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Trikala\")\n\n\n\n\n . \n    Freq \n  \n\n\n Chatzigakis Sotirios \n    10 \n  \n\n Oikonomou Christos \n    7 \n  \n\n Ziagkas Ioannis \n    5 \n  \n\n Skrekas Konstantinos \n    4 \n  \n\n Skrekas Theodoros \n    4"
+    "text": "Thessaly\n\n\nKarditsa\nLarissa\nMagnesia\nTrikala\n\n\n\n\nShow the codeconstituency_freqs(\"Karditsa\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Larissa\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Magnesia\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Trikala\",3)"
   },
   {
-    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#western-greece",
-    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#western-greece",
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#western-greece",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#western-greece",
     "title": "EDA on Greek Parliament",
     "section": "Western Greece",
-    "text": "Western Greece\n\n\nAchaia\nAitoloakarnania\nIleia\n\n\n\n\nShow the codeconstituency_freqs(\"Achaia\")\n\n\n\n\n . \n    Freq \n  \n\n\n Nikolopoulos Nikolaos \n    11 \n  \n\n Papandreou Georgios \n    9 \n  \n\n Karathanasopoulos Nikolaos \n    6 \n  \n\n Spiliotopoulos Spilios \n    6 \n  \n\n Thoma Maria \n    6 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Aitoloakarnania\")\n\n\n\n\n x \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Ileia\")\n\n\n\n\n . \n    Freq \n  \n\n\n Georgakopoulos Dimitrios \n    8 \n  \n\n Koutsoukos Giannis \n    7 \n  \n\n Skoularikis Ioannis \n    7 \n  \n\n Kontogiannopoulos Vasileios \n    6 \n  \n\n Tzavaras Konstantinos \n    6"
+    "text": "Western Greece\n\n\nAchaia\nAitoloakarnania\nIleia\n\n\n\n\nShow the codeconstituency_freqs(\"Achaia\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Aitoloakarnania\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Ileia\",3)"
   },
   {
-    "objectID": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#western-macedonia",
-    "href": "notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html#western-macedonia",
+    "objectID": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#western-macedonia",
+    "href": "notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#western-macedonia",
     "title": "EDA on Greek Parliament",
     "section": "Western Macedonia",
-    "text": "Western Macedonia\n\n\nFlorina\nGrevena\nKastoria\nKozani\n\n\n\n\nShow the codeconstituency_freqs(\"Florina\")\n\n\n\n\n . \n    Freq \n  \n\n\n Lianis Georgios \n    9 \n  \n\n Konstantinidis Efstathios \n    4 \n  \n\n Papathanasiou Charalampos \n    4 \n  \n\n Antoniadis Ioannis \n    2 \n  \n\n Kortsaris Nikolaos \n    2 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Grevena\")\n\n\n\n\n . \n    Freq \n  \n\n\n Konstantinidis Ioannis \n    4 \n  \n\n Krikelis Anastasios \n    4 \n  \n\n Kopsacheilis Timoleon \n    3 \n  \n\n Tataridis Kyriakos \n    3 \n  \n\n Folias Christos Sotiriou \n    2 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Kastoria\")\n\n\n\n\n . \n    Freq \n  \n\n\n Petsalnikos Philippos \n    10 \n  \n\n Simaioforidis Konstantinos \n    5 \n  \n\n Antoniou Maria \n    4 \n  \n\n Angelis Anestis \n    2 \n  \n\n Diamantopoulos Evangelos \n    2 \n  \n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Kozani\")\n\n\n\n\n . \n    Freq \n  \n\n\n Kasapidis Georgios \n    7 \n  \n\n Lotidis Lazaros \n    7 \n  \n\n Papadopoulos Michalis \n    5 \n  \n\n Papakonstantinou Michalis \n    5 \n  \n\n Konstantinidis Konstantinos \n    4"
+    "text": "Western Macedonia\n\n\nFlorina\nGrevena\nKastoria\nKozani\n\n\n\n\nShow the codeconstituency_freqs(\"Florina\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Grevena\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Kastoria\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Kozani\",3)"
   },
   {
     "objectID": "shiny.html",

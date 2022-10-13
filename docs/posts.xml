@@ -14,7 +14,7 @@
 <item>
   <title>EDA on Greek Parliament</title>
   <dc:creator>stesiam</dc:creator>
-  <link>https://www.stesiam.github.io/notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html</link>
+  <link>https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html</link>
   <description><![CDATA[ <section id="table-of-contents" class="level1 unlisted"><h1 class="unlisted">Table of Contents</h1>
 <ol type="1">
 <li>Introduction</li>
@@ -63,7 +63,7 @@ References
 </div>
 </section><section id="import-dataset" class="level2"><h2 class="anchored" data-anchor-id="import-dataset">Import dataset</h2>
 <p>After loading R libraries, then I will load my data.</p>
-<div class="cell" data-hash="2022-10-10-Surnames-Greek-Parliament_cache/html/Import dataset_fcd9a7fddccc0f2dff4d0c1cbab5086d">
+<div class="cell" data-hash="2022-10-10-EDA-Greek-Parliament_cache/html/Import dataset_ac9040f94dee535cb4bed0ad361abd19">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;">parliament</span> <span class="op" style="color: #5E5E5E;">&lt;-</span> <span class="fu" style="color: #4758AB;"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"data/greek_parliament.csv"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details>
 </div>
@@ -190,7 +190,7 @@ References
 <td style="text-align: center;"><code>Term</code></td>
 <td style="text-align: center;">
 <em>qualitative</em> <br> (ordinal)</td>
-<td style="text-align: center;">TPlenum term</td>
+<td style="text-align: center;">Plenum term</td>
 </tr>
 </tbody>
 </table>
@@ -227,13 +227,13 @@ References
 </section></section><section id="parliament-over-the-years" class="level1"><h1>Parliament over the years</h1>
 <p>Now, I will make a short sum-up of the electoral resuts over the years. It is important to share that I made it thanks to <a href="https://datavizstory.com/a-parliament-diagram-in-r/">this post</a> and <code>ggpol</code> package. As I am planning to do this procedure for many electoral terms I will convert the as a function.</p>
 <p>Arguments like <code>term</code> and <code>custom_title</code> are vital to create reproducible plots for all the terms. Although a main problem is the colors. On the aforementioned post it was about only one term. We knew how many parties we had, so we knew what colors to set and how many. If we try that on many terms (on which the number of parties can vary from 3 to 8) an error will come up which will say “Hey, you have set 3 colors but I see that you have 8 values (parties)”. This was a real obstacle for me.</p>
-<p>After some tries and misses I came up with the concept of <strong>dynamic arguments</strong>. …</p>
+<p>After some tries and misses I came up with the concept of <strong>dynamic arguments</strong>.</p>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;">make_parliament_plot</span> <span class="op" style="color: #5E5E5E;">&lt;-</span> <span class="kw" style="color: #003B4F;">function</span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">term</span>, <span class="va" style="color: #111111;">custom_title</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">{</span></span>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;">make_parliament_plot</span> <span class="op" style="color: #5E5E5E;">&lt;-</span> <span class="kw" style="color: #003B4F;">function</span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">term</span>, <span class="va" style="color: #111111;">custom_title</span>, <span class="va" style="color: #111111;">...</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">{</span></span>
 <span></span>
 <span><span class="va" style="color: #111111;">custom</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">parliament</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">Term</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="va" style="color: #111111;">term</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">Party</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>  <span class="fu" style="color: #4758AB;">`colnames&lt;-`</span><span class="op" style="color: #5E5E5E;">(</span><span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">""</span>,<span class="st" style="color: #20794D;">"Party"</span>, <span class="st" style="color: #20794D;">"Seats"</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">)</span></span>
 <span></span>
-<span><span class="va" style="color: #111111;">colors</span><span class="op" style="color: #5E5E5E;">&lt;-</span><span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"#f72100"</span>,<span class="st" style="color: #20794D;">"#10459c"</span>,<span class="st" style="color: #20794D;">"#26d43a"</span><span class="op" style="color: #5E5E5E;">)</span></span>
+<span><span class="va" style="color: #111111;">colors</span><span class="op" style="color: #5E5E5E;">&lt;-</span><span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">...</span><span class="op" style="color: #5E5E5E;">)</span></span>
 <span></span>
 <span><span class="va" style="color: #111111;">custom</span><span class="op" style="color: #5E5E5E;">$</span><span class="va" style="color: #111111;">legend</span> <span class="op" style="color: #5E5E5E;">&lt;-</span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">custom</span><span class="op" style="color: #5E5E5E;">$</span><span class="va" style="color: #111111;">Party</span>,<span class="st" style="color: #20794D;">" ("</span>, <span class="va" style="color: #111111;">custom</span><span class="op" style="color: #5E5E5E;">$</span><span class="va" style="color: #111111;">Seats</span>,<span class="st" style="color: #20794D;">")"</span><span class="op" style="color: #5E5E5E;">)</span></span>
 <span></span>
@@ -262,80 +262,131 @@ References
 <span><span class="op" style="color: #5E5E5E;">}</span></span></code></pre></div>
 </details>
 </div>
-<div class="panel-tabset">
-<ul class="nav nav-tabs">
-<li class="nav-item"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" aria-controls="tabset-1-1" aria-selected="true">3rd Term</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" aria-controls="tabset-1-2" aria-selected="false">4th Term</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" aria-controls="tabset-1-3" aria-selected="false">5th Term</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" aria-controls="tabset-1-4" aria-selected="false">6th Term</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" aria-controls="tabset-1-5" aria-selected="false">7th Term</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-1-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-6" aria-controls="tabset-1-6" aria-selected="false">8th Term</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-1-7-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-7" aria-controls="tabset-1-7" aria-selected="false">9th Term</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-1-8-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-8" aria-controls="tabset-1-8" aria-selected="false">10th Term</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-1-9-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-9" aria-controls="tabset-1-9" aria-selected="false">11th Term</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-1-10-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-10" aria-controls="tabset-1-10" aria-selected="false">12th Term</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-1-11-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-11" aria-controls="tabset-1-11" aria-selected="false">13th Term</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-1-12-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-12" aria-controls="tabset-1-12" aria-selected="false">14th Term</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-1-13-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-13" aria-controls="tabset-1-13" aria-selected="false">15th Term</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-1-14-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-14" aria-controls="tabset-1-14" aria-selected="false">16th Term</a></li>
-<li class="nav-item"><a class="nav-link" id="tabset-1-15-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-15" aria-controls="tabset-1-15" aria-selected="false">17th Term</a></li>
-</ul>
-<div class="tab-content">
-<div id="tabset-1-1" class="tab-pane active" aria-labelledby="tabset-1-1-tab">
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note that till this moment I have not figure out how to change the position of the parties in an efficient way (in a function) that will somehow represent their potitical view. The next visualizations of the parliament are exclusively about how many MPs got elected by each party.</p>
+</div>
+</div>
+<p>::: {.panel-tabset}</p>
+<section id="rd-term" class="level2"><h2 class="anchored" data-anchor-id="rd-term">3rd Term</h2>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="fl" style="color: #AD0000;">3</span>, <span class="st" style="color: #20794D;">"Greek Parliament (1981-1985)"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="fl" style="color: #AD0000;">3</span>, <span class="st" style="color: #20794D;">"Greek Parliament (1981-1985)"</span>, <span class="st" style="color: #20794D;">"#f72100"</span>,<span class="st" style="color: #20794D;">"#10459c"</span>,<span class="st" style="color: #20794D;">"#26d43a"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-</div>
-<div id="tabset-1-2" class="tab-pane" aria-labelledby="tabset-1-2-tab">
-
-</div>
-<div id="tabset-1-3" class="tab-pane" aria-labelledby="tabset-1-3-tab">
-
-</div>
-<div id="tabset-1-4" class="tab-pane" aria-labelledby="tabset-1-4-tab">
-
-</div>
-<div id="tabset-1-5" class="tab-pane" aria-labelledby="tabset-1-5-tab">
-
-</div>
-<div id="tabset-1-6" class="tab-pane" aria-labelledby="tabset-1-6-tab">
-
-</div>
-<div id="tabset-1-7" class="tab-pane" aria-labelledby="tabset-1-7-tab">
-
-</div>
-<div id="tabset-1-8" class="tab-pane" aria-labelledby="tabset-1-8-tab">
-
-</div>
-<div id="tabset-1-9" class="tab-pane" aria-labelledby="tabset-1-9-tab">
-
-</div>
-<div id="tabset-1-10" class="tab-pane" aria-labelledby="tabset-1-10-tab">
-
-</div>
-<div id="tabset-1-11" class="tab-pane" aria-labelledby="tabset-1-11-tab">
-
-</div>
-<div id="tabset-1-12" class="tab-pane" aria-labelledby="tabset-1-12-tab">
-
-</div>
-<div id="tabset-1-13" class="tab-pane" aria-labelledby="tabset-1-13-tab">
-
-</div>
-<div id="tabset-1-14" class="tab-pane" aria-labelledby="tabset-1-14-tab">
-
-</div>
-<div id="tabset-1-15" class="tab-pane" aria-labelledby="tabset-1-15-tab">
-
-</div>
-</div>
-</div>
-</section><section id="most-elected-members-of-parliament" class="level1"><h1>Most elected members of parliament</h1>
+</section><section id="th-term" class="level2"><h2 class="anchored" data-anchor-id="th-term">4th Term</h2>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;">df</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">parliament</span><span class="op" style="color: #5E5E5E;">$</span><span class="va" style="color: #111111;">FullName</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op" style="color: #5E5E5E;">(</span>decreasing <span class="op" style="color: #5E5E5E;">=</span> <span class="cn" style="color: #8f5902;">T</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">Freq</span><span class="op" style="color: #5E5E5E;">&gt;=</span><span class="fl" style="color: #AD0000;">11</span><span class="op" style="color: #5E5E5E;">)</span></span>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="fl" style="color: #AD0000;">4</span>, <span class="st" style="color: #20794D;">"Greek Parliament (1985-1989)"</span>, <span class="st" style="color: #20794D;">"#cccccc"</span>,<span class="st" style="color: #20794D;">"#f72100"</span>,<span class="st" style="color: #20794D;">"#900603"</span>,<span class="st" style="color: #20794D;">"#10459c"</span>,<span class="st" style="color: #20794D;">"#26d43a"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+</details><div class="cell-output-display">
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="th-term-1" class="level2"><h2 class="anchored" data-anchor-id="th-term-1">5th Term</h2>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="fl" style="color: #AD0000;">5</span>, <span class="st" style="color: #20794D;">"Greek Parliament (Jun,1989 - Nov,1989)"</span>, <span class="st" style="color: #20794D;">"#d6b85a"</span>,<span class="st" style="color: #20794D;">"#cccccc"</span>,<span class="st" style="color: #20794D;">"#10459c"</span>,<span class="st" style="color: #20794D;">"#26d43a"</span>,<span class="st" style="color: #20794D;">"#FFC0CB"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+</details><div class="cell-output-display">
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="th-term-2" class="level2"><h2 class="anchored" data-anchor-id="th-term-2">6th Term</h2>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="fl" style="color: #AD0000;">6</span>, <span class="st" style="color: #20794D;">"Greek Parliament (Nov,1989 - Apr,1990)"</span>,<span class="st" style="color: #20794D;">"#cccccc"</span>,<span class="st" style="color: #20794D;">"#10459c"</span>,<span class="st" style="color: #20794D;">"#26d43a"</span>,<span class="st" style="color: #20794D;">"#FFC0CB"</span>,<span class="st" style="color: #20794D;">"#cefad0"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+</details><div class="cell-output-display">
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="th-term-3" class="level2"><h2 class="anchored" data-anchor-id="th-term-3">7th Term</h2>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="fl" style="color: #AD0000;">7</span>, <span class="st" style="color: #20794D;">"Greek Parliament (Apr,1990 - Oct,1993)"</span>, <span class="st" style="color: #20794D;">"#cccccc"</span>, <span class="st" style="color: #20794D;">"#f72100"</span>, <span class="st" style="color: #20794D;">"#10459c"</span>,<span class="st" style="color: #20794D;">"#26d43a"</span>,<span class="st" style="color: #20794D;">"#FFC0CB"</span>,<span class="st" style="color: #20794D;">"#cefad0"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+</details><div class="cell-output-display">
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="th-term-4" class="level2"><h2 class="anchored" data-anchor-id="th-term-4">8th Term</h2>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="fl" style="color: #AD0000;">8</span>, <span class="st" style="color: #20794D;">"Greek Parliament (Apr,1990 - Oct,1993)"</span>, <span class="st" style="color: #20794D;">"#f72100"</span>, <span class="st" style="color: #20794D;">"#10459c"</span>,<span class="st" style="color: #20794D;">"#26d43a"</span>,<span class="st" style="color: #20794D;">"#3944bc"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+</details><div class="cell-output-display">
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="th-term-5" class="level2"><h2 class="anchored" data-anchor-id="th-term-5">9th Term</h2>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="fl" style="color: #AD0000;">9</span>, <span class="st" style="color: #20794D;">"Greek Parliament (Oct,1993 - Aug,1996)"</span>, <span class="st" style="color: #20794D;">"#FFA500"</span>, <span class="st" style="color: #20794D;">"#cccccc"</span>,<span class="st" style="color: #20794D;">"#10459c"</span>,<span class="st" style="color: #20794D;">"#3944bc"</span>,<span class="st" style="color: #20794D;">"#26d43a"</span>, <span class="st" style="color: #20794D;">"#FFC0CB"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+</details><div class="cell-output-display">
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="th-term-6" class="level2"><h2 class="anchored" data-anchor-id="th-term-6">10th Term</h2>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="fl" style="color: #AD0000;">10</span>, <span class="st" style="color: #20794D;">"Greek Parliament (2000 - 2004)"</span>, <span class="st" style="color: #20794D;">"#cccccc"</span>,<span class="st" style="color: #20794D;">"#f72100"</span>,<span class="st" style="color: #20794D;">"#3944bc"</span>,<span class="st" style="color: #20794D;">"#26d43a"</span>, <span class="st" style="color: #20794D;">"#FFC0CB"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+</details><div class="cell-output-display">
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="th-term-7" class="level2"><h2 class="anchored" data-anchor-id="th-term-7">11th Term</h2>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="fl" style="color: #AD0000;">11</span>, <span class="st" style="color: #20794D;">"Greek Parliament (2004 - 2007)"</span>, <span class="st" style="color: #20794D;">"#cccccc"</span>,<span class="st" style="color: #20794D;">"#f72100"</span>,<span class="st" style="color: #20794D;">"#3944bc"</span>,<span class="st" style="color: #20794D;">"#26d43a"</span>, <span class="st" style="color: #20794D;">"#FFC0CB"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+</details><div class="cell-output-display">
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="th-term-8" class="level2"><h2 class="anchored" data-anchor-id="th-term-8">12th Term</h2>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="fl" style="color: #AD0000;">12</span>, <span class="st" style="color: #20794D;">"Greek Parliament (2007 - 2009)"</span>, <span class="st" style="color: #20794D;">"#f72100"</span>,<span class="st" style="color: #20794D;">"#1E3F66"</span>,<span class="st" style="color: #20794D;">"#3944bc"</span>,<span class="st" style="color: #20794D;">"#26d43a"</span>, <span class="st" style="color: #20794D;">"#FFC0CB"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+</details><div class="cell-output-display">
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="th-term-9" class="level2"><h2 class="anchored" data-anchor-id="th-term-9">13th Term</h2>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="fl" style="color: #AD0000;">13</span>, <span class="st" style="color: #20794D;">"Greek Parliament (2009 - May,2012)"</span>, <span class="st" style="color: #20794D;">"#bcd2e8"</span>, <span class="st" style="color: #20794D;">"#680c07"</span>,<span class="st" style="color: #20794D;">"#000000"</span>,<span class="st" style="color: #20794D;">"#f72100"</span>,<span class="st" style="color: #20794D;">"#1E3F66"</span>,<span class="st" style="color: #20794D;">"#3944bc"</span>,<span class="st" style="color: #20794D;">"#26d43a"</span>, <span class="st" style="color: #20794D;">"#FFC0CB"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+</details><div class="cell-output-display">
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="th-term-10" class="level2"><h2 class="anchored" data-anchor-id="th-term-10">14th Term</h2>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb18" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="fl" style="color: #AD0000;">14</span>, <span class="st" style="color: #20794D;">"Greek Parliament (May,2012 - Jun,2012)"</span>, <span class="st" style="color: #20794D;">"#bcd2e8"</span>, <span class="st" style="color: #20794D;">"#680c07"</span>,<span class="st" style="color: #20794D;">"#f72100"</span>,<span class="st" style="color: #20794D;">"#3944bc"</span>,<span class="st" style="color: #20794D;">"#26d43a"</span>, <span class="st" style="color: #20794D;">"#FFC0CB"</span>, <span class="st" style="color: #20794D;">"#000000"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+</details><div class="cell-output-display">
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="th-term-11" class="level2"><h2 class="anchored" data-anchor-id="th-term-11">15th Term</h2>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb19" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="fl" style="color: #AD0000;">15</span>, <span class="st" style="color: #20794D;">"Greek Parliament (Jun,2012 - Jan,2015)"</span>, <span class="st" style="color: #20794D;">"#65350f"</span>, <span class="st" style="color: #20794D;">"#bcd2e8"</span>, <span class="st" style="color: #20794D;">"#680c07"</span>,<span class="st" style="color: #20794D;">"#cccccc"</span>,<span class="st" style="color: #20794D;">"#f72100"</span>,<span class="st" style="color: #20794D;">"#3944bc"</span>, <span class="st" style="color: #20794D;">"#26d43a"</span>, <span class="st" style="color: #20794D;">"#FFC0CB"</span>, <span class="st" style="color: #20794D;">"#000000"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+</details><div class="cell-output-display">
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="th-term-12" class="level2"><h2 class="anchored" data-anchor-id="th-term-12">16th Term</h2>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb20" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="fl" style="color: #AD0000;">16</span>, <span class="st" style="color: #20794D;">"Greek Parliament (Jan, 2015 - Aug,2015)"</span>, <span class="st" style="color: #20794D;">"#bcd2e8"</span>, <span class="st" style="color: #20794D;">"#f72100"</span>,<span class="st" style="color: #20794D;">"#7a1712"</span>,<span class="st" style="color: #20794D;">"#3944bc"</span>,<span class="st" style="color: #20794D;">"#26d43a"</span>, <span class="st" style="color: #20794D;">"#00ccd3"</span>, <span class="st" style="color: #20794D;">"#FFC0CB"</span>, <span class="st" style="color: #20794D;">"#000000"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+</details><div class="cell-output-display">
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="th-term-13" class="level2"><h2 class="anchored" data-anchor-id="th-term-13">17th Term</h2>
+<p>:::{.callout-warning} As you can see on the next plot there are many MPs that are classified as independent (according to Hellenic’s Parliament website). Many of them are members of parties “ANEL” and “Enosi Kentroon”. However, a large wave of departures from the parties led to not fulfilling the conditions to be considered as parliamentary parties. For that reason members of these parties (that did not left) are considere independent.</p>
+<div class="panel-tabset">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb21" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="fl" style="color: #AD0000;">17</span>, <span class="st" style="color: #20794D;">"Greek Parliament (Sep,2015 - 2019)"</span>, <span class="st" style="color: #20794D;">"#cccccc"</span>, <span class="st" style="color: #20794D;">"#f72100"</span>,<span class="st" style="color: #20794D;">"#3944bc"</span>,<span class="st" style="color: #20794D;">"#26d43a"</span>,<span class="st" style="color: #20794D;">"#00ccd3"</span>, <span class="st" style="color: #20794D;">"#FFC0CB"</span>,<span class="st" style="color: #20794D;">"#000000"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+</details><div class="cell-output-display">
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+</section></section><section id="most-elected-members-of-parliament" class="level1"><h1>Most elected members of parliament</h1>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb22" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;">df</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">parliament</span><span class="op" style="color: #5E5E5E;">$</span><span class="va" style="color: #111111;">FullName</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op" style="color: #5E5E5E;">(</span>decreasing <span class="op" style="color: #5E5E5E;">=</span> <span class="cn" style="color: #8f5902;">T</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">Freq</span><span class="op" style="color: #5E5E5E;">&gt;=</span><span class="fl" style="color: #AD0000;">11</span><span class="op" style="color: #5E5E5E;">)</span></span>
 <span></span>
 <span><span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op" style="color: #5E5E5E;">(</span>data <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">df</span>, <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op" style="color: #5E5E5E;">(</span>x <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">Var1</span> , <span class="va" style="color: #111111;">Freq</span><span class="op" style="color: #5E5E5E;">)</span>, y <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">Freq</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">+</span></span>
 <span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op" style="color: #5E5E5E;">(</span>stat <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"identity"</span>,width <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">0.88</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
@@ -359,7 +410,7 @@ References
 <span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
 <p></p><figcaption class="figure-caption">Most elected MPs</figcaption><p></p>
 </figure>
 </div>
@@ -377,7 +428,7 @@ References
 <code>times_elected_min</code> : A argument that I added up later. The problem with its absence is that I have to deal with parties that elect for example 150 MPs and some others just 10. If I set a universal number of elections to visualize I will have diagrams with many problems. Let’s suppose that I set a big value (e.g., 10). Then I would visualize my data for <em>ND</em> and <em>PASOK</em>, although parties with relatively low number of MPs would have only one or noone to show (<em>KKE</em> &amp; <em>SYRIZA</em>, respectively). On the other hand if I set a low value I create a new problem as there will be many MPs of and it creates the need to edit many more things (like width of bars). An argument like <code>times_elected_min</code> can adapt the specific characteristics of each party.</li>
 </ul>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;">party_plot</span> <span class="op" style="color: #5E5E5E;">&lt;-</span> <span class="kw" style="color: #003B4F;">function</span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">party</span>, <span class="va" style="color: #111111;">party_color</span>, <span class="va" style="color: #111111;">times_elected_min</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">{</span></span>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb23" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;">party_plot</span> <span class="op" style="color: #5E5E5E;">&lt;-</span> <span class="kw" style="color: #003B4F;">function</span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">party</span>, <span class="va" style="color: #111111;">party_color</span>, <span class="va" style="color: #111111;">times_elected_min</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">{</span></span>
 <span>  <span class="va" style="color: #111111;">party_df</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">parliament</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">Party</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="va" style="color: #111111;">party</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">FullName</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op" style="color: #5E5E5E;">(</span>decreasing <span class="op" style="color: #5E5E5E;">=</span> <span class="cn" style="color: #8f5902;">TRUE</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">Freq</span> <span class="op" style="color: #5E5E5E;">&gt;=</span> <span class="va" style="color: #111111;">times_elected_min</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;">`colnames&lt;-`</span><span class="op" style="color: #5E5E5E;">(</span><span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Full_Name"</span>, <span class="st" style="color: #20794D;">"Freq"</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">)</span></span>
 <span>  </span>
@@ -395,33 +446,33 @@ References
 <p>The visualizations are presented in alphabetical order.</p>
 <section id="kke" class="level2"><h2 class="anchored" data-anchor-id="kke">KKE</h2>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">party_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"KKE"</span>, <span class="st" style="color: #20794D;">"#FF6666"</span>, times_elected_min <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">5</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb24" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">party_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"KKE"</span>, <span class="st" style="color: #20794D;">"#FF6666"</span>, times_elected_min <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">5</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section><section id="nd" class="level2"><h2 class="anchored" data-anchor-id="nd">ND</h2>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">party_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"ND"</span>, <span class="st" style="color: #20794D;">"#0492c2"</span>, times_elected_min <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">10</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb25" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">party_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"ND"</span>, <span class="st" style="color: #20794D;">"#0492c2"</span>, times_elected_min <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">10</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section><section id="pasok" class="level2"><h2 class="anchored" data-anchor-id="pasok">PASOK</h2>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">party_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"PASOK"</span>, <span class="st" style="color: #20794D;">"#95bb72"</span>, times_elected_min <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">10</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb26" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">party_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"PASOK"</span>, <span class="st" style="color: #20794D;">"#95bb72"</span>, times_elected_min <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">10</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section><section id="syriza" class="level2"><h2 class="anchored" data-anchor-id="syriza">SYRIZA</h2>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">party_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"SYRIZA"</span>, <span class="st" style="color: #20794D;">"#e27bb1"</span>, times_elected_min <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">5</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb27" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">party_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"SYRIZA"</span>, <span class="st" style="color: #20794D;">"#e27bb1"</span>, times_elected_min <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">5</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-</section></section><section id="most-elected-members-based-on-constituency" class="level1"><h1>Most elected members based on constituency</h1>
+</section></section><section id="most-elected-members-based-per-constituency" class="level1"><h1>Most elected members based per constituency</h1>
 <p>So far we have seen :</p>
 <ul>
 <li>the composition of Greek Parliament</li>
@@ -430,50 +481,33 @@ References
 </ul>
 <p>The last part of my analysis will investigate the most popular MPs on local level (per profecture).</p>
 <p>Obviously, the same logic applies to party charts (same processes with minor changes), so the use of a function is almost mandatory (over fifty -50- cases !).</p>
+<p>On my previous workflow I used table() function in order to take frequencies. That’s one easy way to go. Although I didn’t figured out to add characteristics from other columns (like party of the MP). Fir that reason I took the decision to use count() instead of table.</p>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;">constituency_freqs</span> <span class="op" style="color: #5E5E5E;">&lt;-</span> <span class="kw" style="color: #003B4F;">function</span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">input_constituency</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">{</span></span>
-<span><span class="va" style="color: #111111;">parliament</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">Constituency</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="va" style="color: #111111;">input_constituency</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">FullName</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op" style="color: #5E5E5E;">(</span>decreasing <span class="op" style="color: #5E5E5E;">=</span> <span class="cn" style="color: #8f5902;">TRUE</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op" style="color: #5E5E5E;">(</span>n<span class="op" style="color: #5E5E5E;">=</span><span class="fl" style="color: #AD0000;">5</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span></span>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb28" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;">constituency_freqs</span> <span class="op" style="color: #5E5E5E;">&lt;-</span> <span class="kw" style="color: #003B4F;">function</span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">input_constituency</span>, <span class="va" style="color: #111111;">min_times_elected</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">{</span></span>
+<span><span class="va" style="color: #111111;">cont_df</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">parliament</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">Constituency</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="va" style="color: #111111;">input_constituency</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">FullName</span>, <span class="va" style="color: #111111;">Party</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">n</span> <span class="op" style="color: #5E5E5E;">&gt;=</span> <span class="va" style="color: #111111;">min_times_elected</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span></span>
+<span>  </span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op" style="color: #5E5E5E;">(</span>data <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">cont_df</span>, <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op" style="color: #5E5E5E;">(</span>x <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">FullName</span>, <span class="va" style="color: #111111;">n</span><span class="op" style="color: #5E5E5E;">)</span>, y <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">n</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op" style="color: #5E5E5E;">(</span>stat <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"identity"</span>,width <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">0.88</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op" style="color: #5E5E5E;">(</span>label<span class="op" style="color: #5E5E5E;">=</span><span class="va" style="color: #111111;">n</span><span class="op" style="color: #5E5E5E;">)</span>, hjust <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">1.5</span>, vjust<span class="op" style="color: #5E5E5E;">=</span><span class="fl" style="color: #AD0000;">0.5</span>, color<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"white"</span>, size<span class="op" style="color: #5E5E5E;">=</span><span class="fl" style="color: #AD0000;">4</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
+<span>   <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op" style="color: #5E5E5E;">(</span>title <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Most elected MPs"</span>,</span>
+<span>       subtitle <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">""</span>,</span>
+<span>       caption <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Source: stesiam | stesiam.github.io, 2022"</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span></span>
 <span><span class="op" style="color: #5E5E5E;">}</span></span></code></pre></div>
 </details>
 </div>
+<p>Now I have frequencies and the party for every MP. That will be useful on my diagrams.</p>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co" style="color: #5E5E5E;">#unique(parliament$Constituency) %&gt;% sort()</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb29" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co" style="color: #5E5E5E;">#unique(parliament$Constituency) %&gt;% sort()</span></span></code></pre></div>
 </details>
 </div>
 <section id="state" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="state">State</h2>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"State"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb30" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"State"</span>, <span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Merkouri Amalia - Maria (Melina) </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Pappas Christos </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Tsaldaris Athanasios Konstantinou </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Alevras Ioannis </td>
-   <td style="text-align:right;"> 3 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Evert Miltiadis </td>
-   <td style="text-align:right;"> 3 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section><section id="attica" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="attica">Attica</h2>
@@ -488,181 +522,41 @@ References
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" aria-labelledby="tabset-2-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Athens A"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb31" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Athens A"</span>,<span class="fl" style="color: #AD0000;">5</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Benaki - Psarouda Anna Evangelou </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kanelli Garyfallia (Liana) </td>
-   <td style="text-align:right;"> 8 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Voulgarakis Georgios </td>
-   <td style="text-align:right;"> 8 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Papantoniou Ioannis (Giannos) </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Peponis Anastasios </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-2-2" class="tab-pane" aria-labelledby="tabset-2-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb18" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Athens B"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb32" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Athens B"</span>,<span class="fl" style="color: #AD0000;">7</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Kaklamanis Apostolos </td>
-   <td style="text-align:right;"> 13 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Polydoras Vyron </td>
-   <td style="text-align:right;"> 13 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Meimarakis Evangelos - Vasileios </td>
-   <td style="text-align:right;"> 12 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Giakoumatos Gerasimos </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kammenos Panagiotis (Panos) </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-2-3" class="tab-pane" aria-labelledby="tabset-2-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb19" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Piraeus A"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb33" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Piraeus A"</span>,<span class="fl" style="color: #AD0000;">5</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Melas Panagiotis </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Simitis Kostas Georgiou </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Benteniotis Emmanouil </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Dritsas Theodoros </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kalos Georgios </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-2-4" class="tab-pane" aria-labelledby="tabset-2-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb20" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Piraeus B"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb34" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Piraeus B"</span>,<span class="fl" style="color: #AD0000;">5</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Tragakis Ioannis </td>
-   <td style="text-align:right;"> 10 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Niotis Grigorios </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Diamantidis Ioannis </td>
-   <td style="text-align:right;"> 8 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kritikos Panagiotis </td>
-   <td style="text-align:right;"> 8 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Nerantzis Anastasios </td>
-   <td style="text-align:right;"> 8 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-2-5" class="tab-pane" aria-labelledby="tabset-2-5-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb21" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Of Attica (rest)"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb35" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Of Attica (rest)"</span>,<span class="fl" style="color: #AD0000;">5</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Pagkalos Theodoros </td>
-   <td style="text-align:right;"> 11 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Papailias Ilias </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Vrettos Konstantinos (Ntinos) </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Katsigiannis Christos </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Stavrou Apostolos Evangelou </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -679,145 +573,33 @@ References
 <div class="tab-content">
 <div id="tabset-3-1" class="tab-pane active" aria-labelledby="tabset-3-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb22" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Viotia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb36" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Viotia"</span>,<span class="fl" style="color: #AD0000;">5</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Basiakos Evangelos </td>
-   <td style="text-align:right;"> 10 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Katsimpardis Georgios </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Tsiplakos Aristeidis </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Akrivakis Alexandros </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Apostolidis Loukas </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-3-2" class="tab-pane" aria-labelledby="tabset-3-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb23" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Evrytania"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb37" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Evrytania"</span>,<span class="fl" style="color: #AD0000;">2</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Bakoyannis Theodora (Dora) </td>
-   <td style="text-align:right;"> 3 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kontogeorgos Konstantinos </td>
-   <td style="text-align:right;"> 3 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Karanikas Ilias </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Tsigaridas Konstantinos </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kotsias Thomas </td>
-   <td style="text-align:right;"> 1 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-3-3" class="tab-pane" aria-labelledby="tabset-3-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb24" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Fokida"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb38" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Fokida"</span>,<span class="fl" style="color: #AD0000;">2</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Gkelestathis Nikolaos </td>
-   <td style="text-align:right;"> 8 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Arvanitis Fotios </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Bougas Ioannis Dimitriou </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kostopanagiotou Ilias </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Mandreka Aspasia </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-3-4" class="tab-pane" aria-labelledby="tabset-3-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb25" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Fthiotida"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb39" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Fthiotida"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Alampanos Dimitrios </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Giannopoulos Athanasios </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Staikouras Christos </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Drosogiannis Antonios </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Xarchas Athanasios </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -837,253 +619,57 @@ References
 <div class="tab-content">
 <div id="tabset-4-1" class="tab-pane active" aria-labelledby="tabset-4-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb26" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Thessaloniki A"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb40" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Thessaloniki A"</span>,<span class="fl" style="color: #AD0000;">6</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Karamanlis Konstantinos </td>
-   <td style="text-align:right;"> 13 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kastanidis Charalampos </td>
-   <td style="text-align:right;"> 11 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Venizelos Evangelos </td>
-   <td style="text-align:right;"> 10 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Papathemelis Stylianos - Angelos </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kalafatis Stavros Athanasios </td>
-   <td style="text-align:right;"> 8 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-4-2" class="tab-pane" aria-labelledby="tabset-4-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb27" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Thessaloniki B"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb41" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Thessaloniki B"</span>,<span class="fl" style="color: #AD0000;">6</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Geranidis Vasileios </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Karaoglou Theodoros </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Tzitzikostas Georgios </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Glavinas Ioannis </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Salagkoudis Georgios </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-4-3" class="tab-pane" aria-labelledby="tabset-4-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb28" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Kilkis"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb42" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Kilkis"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Parastatidis Theodoros </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Floridis Georgios </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Georgantas Georgios Pavlos </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kiltidis Konstantinos </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Passalidis Theodoros </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-4-4" class="tab-pane" aria-labelledby="tabset-4-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb29" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Pella"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb43" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Pella"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Karasmanis Georgios </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Tzakri Theodora E. </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Fountoukidou - Theodoridou Parthena </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Paschalidis Georgios </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Vyzovitis Christos </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-4-5" class="tab-pane" aria-labelledby="tabset-4-5-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb30" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Pieria"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb44" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Pieria"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Koukodimos Konstantinos </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kakkalos Nikolaos </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Konstantopoulos Georgios </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Terzopoulos Georgios </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Arseni Maria </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-4-6" class="tab-pane" aria-labelledby="tabset-4-6-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb31" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Serres"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb45" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Serres"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Karamanlis Achillefs Georgiou </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kollia-Tsaroucha Maria </td>
-   <td style="text-align:right;"> 8 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Damianidis Alexandros </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Leontaridis Theofilos </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Anthopoulos Ioannis </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-4-7" class="tab-pane" aria-labelledby="tabset-4-7-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb32" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Halkidiki"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb46" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Halkidiki"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Drivelegkas Ioannis </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Pachtas Christos </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Giovanoudas Varsamis </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Vagionas Georgios </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Igglezi Aikaterini </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -1100,123 +686,33 @@ References
 <div class="tab-content">
 <div id="tabset-5-1" class="tab-pane active" aria-labelledby="tabset-5-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb33" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Chania"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb47" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Chania"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Markogiannakis Christos </td>
-   <td style="text-align:right;"> 10 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Skoulakis Emmanouil </td>
-   <td style="text-align:right;"> 10 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Valyrakis Ioan. Iosif </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Michelogiannis Iosif </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Stathakis Georgios </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-5-2" class="tab-pane" aria-labelledby="tabset-5-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb34" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Irakleio"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb48" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Irakleio"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:right;"> x </th>
-  </tr></thead>
-<tbody><tr></tr></tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-46-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-5-3" class="tab-pane" aria-labelledby="tabset-5-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb35" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Lasithi"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb49" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Lasithi"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Plakiotakis Ioannis </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Ioannidis Foivos </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Karchimakis Michail </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Chatzinakis Emmanouil </td>
-   <td style="text-align:right;"> 3 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kounenos Ioannis </td>
-   <td style="text-align:right;"> 3 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-5-4" class="tab-pane" aria-labelledby="tabset-5-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb36" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Rethymno"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb50" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Rethymno"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Kefalogiannis Ioannis </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Loukakis Manolis </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Xanthos Andreas </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kefalogiannis Ioannis Ach. </td>
-   <td style="text-align:right;"> 3 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Othonas Emmanouil </td>
-   <td style="text-align:right;"> 3 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-48-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -1234,181 +730,41 @@ References
 <div class="tab-content">
 <div id="tabset-6-1" class="tab-pane active" aria-labelledby="tabset-6-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb37" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Drama"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb51" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Drama"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Konstantinou Floros </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Damianos Theodoros </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Aidonis Christos </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Evmoiridis Konstantinos </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kyriazidis Dimitrios </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-6-2" class="tab-pane" aria-labelledby="tabset-6-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb38" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Evros"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb52" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Evros"</span>,<span class="fl" style="color: #AD0000;">4</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Chatzinikolaou Panagiotis </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Fotiadis Apostolos </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Dermentzopoulos Alexandros </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Dimoschakis Theofanis </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Gerontopoulos Kyriakos </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-6-3" class="tab-pane" aria-labelledby="tabset-6-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb39" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Kavala"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb53" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Kavala"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Tsaklidis Ioannis </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kalantzis Georgios </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Panagiotopoulos Georgios </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Panagiotopoulos Nikolaos </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Papadopoulos Ilias </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-51-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-6-4" class="tab-pane" aria-labelledby="tabset-6-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb40" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Xanthi"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb54" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Xanthi"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Sgouridis Panagiotis Sgouri </td>
-   <td style="text-align:right;"> 8 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kontos Alexandros </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Zeimpek Chousein </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kourtidis Evangelos </td>
-   <td style="text-align:right;"> 3 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Pavlakakis Georgios </td>
-   <td style="text-align:right;"> 3 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-52-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-6-5" class="tab-pane" aria-labelledby="tabset-6-5-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb41" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Rodopi"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb55" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Rodopi"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Stylianidis Evripidis </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Chatzi Osman Achmet </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kara Giousouf Aichan </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Achmet Ilchan S </td>
-   <td style="text-align:right;"> 3 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Moustafa Moustafa </td>
-   <td style="text-align:right;"> 3 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-53-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -1425,145 +781,33 @@ References
 <div class="tab-content">
 <div id="tabset-7-1" class="tab-pane active" aria-labelledby="tabset-7-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb42" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Arta"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb56" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Arta"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Papageorgiou Georgios Ioanni </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Gerovasili Olga </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Koliopanos Theodoros </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kontaxis Athanasios </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Oikonomidis Panagiotis </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-54-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-7-2" class="tab-pane" aria-labelledby="tabset-7-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb43" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Ioannina"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb57" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Ioannina"</span>,<span class="fl" style="color: #AD0000;">4</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Papoulias Karolos </td>
-   <td style="text-align:right;"> 8 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Tassoulas Constantine An. </td>
-   <td style="text-align:right;"> 8 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Argyris Evangelos </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kalogiannis Stavros </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Moraitis Georgios </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-55-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-7-3" class="tab-pane" aria-labelledby="tabset-7-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb44" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Preveza"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb58" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Preveza"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Karamoutsos Spyros </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Tryfonidis Georgios Panagioti </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Barkas Konstantinos </td>
-   <td style="text-align:right;"> 3 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kaldi Meropi </td>
-   <td style="text-align:right;"> 3 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Papachristos Evangelos </td>
-   <td style="text-align:right;"> 3 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-56-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-7-4" class="tab-pane" aria-labelledby="tabset-7-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb45" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Thesprotia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb59" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Thesprotia"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Papadopoulos Alexandros (Alekos) Konstantinou </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Vezdrevanis Ilias </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Bezas Antonios </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Giogiakas Vasileios </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Katsis Marios </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-57-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -1580,145 +824,33 @@ References
 <div class="tab-content">
 <div id="tabset-8-1" class="tab-pane active" aria-labelledby="tabset-8-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb46" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Corfu"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb60" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Corfu"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Drys Georgios </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Dendias Nikolaos - Georgios </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kaloudis Spyridon </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Gkerekou Angeliki </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Gkikas Sotirios </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-58-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-8-2" class="tab-pane" aria-labelledby="tabset-8-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb47" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Kefallonia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb61" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Kefallonia"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Theopeftatou Afroditi </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Benetatos Panagis </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kalafatis Alexandros </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Messaris Gerasimos </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Tritsis Antonios </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-59-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-8-3" class="tab-pane" aria-labelledby="tabset-8-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb48" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Lefkada"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb62" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Lefkada"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Ktenas Georgios </td>
-   <td style="text-align:right;"> 3 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Soldatos Theodoros </td>
-   <td style="text-align:right;"> 3 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Aravanis Gerasimos </td>
-   <td style="text-align:right;"> 1 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Grigoris Stayros </td>
-   <td style="text-align:right;"> 1 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kavvadas Athanasios </td>
-   <td style="text-align:right;"> 1 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-60-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-8-4" class="tab-pane" aria-labelledby="tabset-8-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb49" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Zakynthos"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb63" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Zakynthos"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Kontonis Charalampos-Stavros </td>
-   <td style="text-align:right;"> 3 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Klavdianos Georgios </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Palaiothodoros Dimitrios </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Varvarigos Dimitrios </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Gasparos Dionysios </td>
-   <td style="text-align:right;"> 1 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-61-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -1734,109 +866,25 @@ References
 <div class="tab-content">
 <div id="tabset-9-1" class="tab-pane active" aria-labelledby="tabset-9-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb50" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Chios"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb64" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Chios"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Kotsakas Antonios </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Misailidis Georgios </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Tsouri Elpida </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Varinos Athanasios </td>
-   <td style="text-align:right;"> 3 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Michailidis Andreas </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-62-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-9-2" class="tab-pane" aria-labelledby="tabset-9-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb51" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Lesvos"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb65" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Lesvos"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Sifounakis Nikolaos </td>
-   <td style="text-align:right;"> 8 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Vounatsos Dimitrios </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Korakas Efstratios </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Skopelitis Stavros </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Giannellis - Theodosiadis Ioannis </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-63-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-9-3" class="tab-pane" aria-labelledby="tabset-9-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb52" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Samos"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb66" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Samos"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Karaminas Konstantinos </td>
-   <td style="text-align:right;"> 3 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Choulis Nikolaos </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Sevastakis Dimitrios </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Thalassinos Thalassinos Petrou </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Vardikos Pythagoras </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-64-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -1854,181 +902,41 @@ References
 <div class="tab-content">
 <div id="tabset-10-1" class="tab-pane active" aria-labelledby="tabset-10-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb53" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Argolida"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb67" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Argolida"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Maniatis Ioannis </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Papadimitriou Elisavet (Elsa) </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Andrianos Ioannis </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Sotiropoulos Vasileios </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Melidis Ioannis </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-65-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-10-2" class="tab-pane" aria-labelledby="tabset-10-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb54" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Arcadia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb68" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Arcadia"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Reppas Dimitrios </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kostopoulos Dimitrios </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Tatoulis Petros Panagioti </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Konstantinopoulos Odysseas </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Lykourentzos Andreas </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-66-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-10-3" class="tab-pane" aria-labelledby="tabset-10-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb55" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Korinthia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb69" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Korinthia"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Dimas Stavros </td>
-   <td style="text-align:right;"> 8 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Papaligouras Anastasios - Petros Panagioti </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Pottakis Ioannis </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kotsonis Theodoros </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Dimas Christos </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-67-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-10-4" class="tab-pane" aria-labelledby="tabset-10-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb56" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Lakonia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb70" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Lakonia"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Davakis Athanasios </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Grigorakos Leonidas </td>
-   <td style="text-align:right;"> 8 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Fountas Paraskevas </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Stathopoulos Ioannis </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Giatrakos Konstantinos </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-68-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-10-5" class="tab-pane" aria-labelledby="tabset-10-5-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb57" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Messinia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb71" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Messinia"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Lampropoulos Ioannis </td>
-   <td style="text-align:right;"> 11 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Samaras Antonios </td>
-   <td style="text-align:right;"> 11 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Anastasopoulos Nikolaos </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kalantzakos Aristeidis </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Katsilieris Petros </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-69-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -2043,73 +951,17 @@ References
 <div class="tab-content">
 <div id="tabset-11-1" class="tab-pane active" aria-labelledby="tabset-11-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb58" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Dodecanese Islands"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb72" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Dodecanese Islands"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Pavlidis Aristotelis </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Sfyriou Kosmas </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Karamarios Anastasios Emmanouil </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kremastinos Dimitrios </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Skandalidis Konstantinos </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-70-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-11-2" class="tab-pane" aria-labelledby="tabset-11-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb59" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Cyclades"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb73" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Cyclades"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Chomatas Ioannis </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Vroutsis Ioannis </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Levogiannis Nikolaos </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Papazoi Elisavet </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Syrmalenios Nikolaos </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-71-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -2126,145 +978,33 @@ References
 <div class="tab-content">
 <div id="tabset-12-1" class="tab-pane active" aria-labelledby="tabset-12-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb60" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Karditsa"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb74" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Karditsa"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Sioufas Dimitrios </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Taliadouros Spyridon </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Tsiaras Konstantinos </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Anagnostopoulos Theodoros </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Sotirlis Dimitrios </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-72-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-12-2" class="tab-pane" aria-labelledby="tabset-12-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb61" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Larissa"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb75" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Larissa"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Katsaros Nikos </td>
-   <td style="text-align:right;"> 8 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Charakopoulos Maximos </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Skyllakos Antonios </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Souflias Georgios </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Adamopoulos Georgios </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-73-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-12-3" class="tab-pane" aria-labelledby="tabset-12-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb62" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Magnesia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb76" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Magnesia"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Sourlas Georgios Ioanni </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Nakos Athanasios </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Zakolikos Pafsanias </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Zisi Rodoula </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Gkatzis Nikolaos Filippou </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-74-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-12-4" class="tab-pane" aria-labelledby="tabset-12-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb63" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Trikala"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb77" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Trikala"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Chatzigakis Sotirios </td>
-   <td style="text-align:right;"> 10 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Oikonomou Christos </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Ziagkas Ioannis </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Skrekas Konstantinos </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Skrekas Theodoros </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-75-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -2280,87 +1020,25 @@ References
 <div class="tab-content">
 <div id="tabset-13-1" class="tab-pane active" aria-labelledby="tabset-13-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb64" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Achaia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb78" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Achaia"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Nikolopoulos Nikolaos </td>
-   <td style="text-align:right;"> 11 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Papandreou Georgios </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Karathanasopoulos Nikolaos </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Spiliotopoulos Spilios </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Thoma Maria </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-76-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-13-2" class="tab-pane" aria-labelledby="tabset-13-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb65" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Aitoloakarnania"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb79" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Aitoloakarnania"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:right;"> x </th>
-  </tr></thead>
-<tbody><tr></tr></tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-77-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-13-3" class="tab-pane" aria-labelledby="tabset-13-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb66" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Ileia"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb80" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Ileia"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Georgakopoulos Dimitrios </td>
-   <td style="text-align:right;"> 8 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Koutsoukos Giannis </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Skoularikis Ioannis </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kontogiannopoulos Vasileios </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Tzavaras Konstantinos </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-78-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -2377,152 +1055,39 @@ References
 <div class="tab-content">
 <div id="tabset-14-1" class="tab-pane active" aria-labelledby="tabset-14-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb67" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Florina"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb81" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Florina"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Lianis Georgios </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Konstantinidis Efstathios </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Papathanasiou Charalampos </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Antoniadis Ioannis </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kortsaris Nikolaos </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-79-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-14-2" class="tab-pane" aria-labelledby="tabset-14-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb68" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Grevena"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb82" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Grevena"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Konstantinidis Ioannis </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Krikelis Anastasios </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Kopsacheilis Timoleon </td>
-   <td style="text-align:right;"> 3 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Tataridis Kyriakos </td>
-   <td style="text-align:right;"> 3 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Folias Christos Sotiriou </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-80-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-14-3" class="tab-pane" aria-labelledby="tabset-14-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb69" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Kastoria"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb83" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Kastoria"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Petsalnikos Philippos </td>
-   <td style="text-align:right;"> 10 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Simaioforidis Konstantinos </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Antoniou Maria </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Angelis Anestis </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Diamantopoulos Evangelos </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-81-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-14-4" class="tab-pane" aria-labelledby="tabset-14-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb70" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Kozani"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb84" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Kozani"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-
-<table>
-<thead><tr>
-<th style="text-align:left;"> . </th>
-   <th style="text-align:right;"> Freq </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Kasapidis Georgios </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Lotidis Lazaros </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Papadopoulos Michalis </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Papakonstantinou Michalis </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Konstantinidis Konstantinos </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-</tbody>
-</table>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-82-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 </div>
 </div>
-</section></section><section id="conclusion" class="level1"><h1>Conclusion</h1>
-</section><div id="quarto-appendix" class="default"><section id="acknowledgments" class="level1 appendix"><h2 class="quarto-appendix-heading">Acknowledgments</h2><div class="quarto-appendix-contents">
+</section></section><div id="quarto-appendix" class="default"><section id="acknowledgments" class="level1 appendix"><h2 class="quarto-appendix-heading">Acknowledgments</h2><div class="quarto-appendix-contents">
 <p>Image by <a href="https://pixabay.com/users/leonhard_niederwimmer-1131094/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=7402132">Leonhard Niederwimmer</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=7402132">Pixabay</a> <br></p>
 <p>Data are from <a href="https://github.com/stesiam/Greek-MPs-Dataset">mine repository on GitHub</a>. Original data are from <a href="https://www.hellenicparliament.gr"> Hellenic’s Parliament website</a></p>
 
@@ -2578,18 +1143,18 @@ Zhu, H. (2021). <em>kableExtra: Construct complex table with kable and pipe synt
   author = {stesiam},
   title = {EDA on {Greek} {Parliament}},
   date = {2022-10-10},
-  url = {https://www.stesiam.github.io/notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html},
+  url = {https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-stesiam2022" class="csl-entry quarto-appendix-citeas">
-stesiam. (2022, October 10). EDA on Greek Parliament. Retrieved from <a href="https://www.stesiam.github.io/notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html">https://www.stesiam.github.io/notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html</a>
+stesiam. (2022, October 10). EDA on Greek Parliament. Retrieved from <a href="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html">https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html</a>
 </div></div></section></div> ]]></description>
   <category>R</category>
   <category>EDA</category>
   <category>Greek Parliament</category>
-  <guid>https://www.stesiam.github.io/notebooks/2022-10-10-Surnames-Greek-Parliament/2022-10-10-Surnames-Greek-Parliament.html</guid>
+  <guid>https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html</guid>
   <pubDate>Sun, 09 Oct 2022 21:00:00 GMT</pubDate>
-  <media:content url="https://www.stesiam.github.io/notebooks/2022-10-10-Surnames-Greek-Parliament/images/houses-of-parliament.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/images/houses-of-parliament.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Verify your commits !</title>

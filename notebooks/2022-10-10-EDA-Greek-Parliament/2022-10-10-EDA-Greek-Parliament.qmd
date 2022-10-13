@@ -1,0 +1,883 @@
+---
+title: "EDA on Greek Parliament"
+author: "stesiam"
+description: |
+  Let's explore the MPs that got elected the most over the years (1981-2019).
+categories: [R, EDA, Greek Parliament]
+image: images/houses-of-parliament.jpg
+fig-cap-location: bottom
+date: "2022-10-10"
+toc: true
+freeze: true
+toc-title: Table of contents
+toc-location: left
+citation: true
+slug: stesiam2022parliament
+title-block-banner: true
+nocite: '@*'
+csl: apa-6th-edition
+bibliography: [packages.bib, references.bib]
+format: 
+  html:
+    code-link: true
+    code-fold: true
+    code-summary: "Show the code"
+    code-tools: 
+      source: repo
+execute:
+  echo: true
+editor_options: 
+  markdown: 
+    wrap: 80
+---
+
+# Table of Contents {.unlisted}
+
+1. [Introduction](#introduction)
+2. [Prerequisites](#prerequisites) <br>
+&nbsp; 2.1 [Import Libraries](#import-libraries) <br>
+&nbsp; 2.2 [Import Dataset](#import-dataset) <br>
+&nbsp; 2.3 [Preview Dataset](#preview-dataset) <br>
+&nbsp; 2.4 [Structure of Dataset](#structure-of-dataset) <br>
+&nbsp; 2.5 [Recoding variables](#recoding-variables) <br>
+3. [Parliament over the years](#parliament-over-the-years) <br>
+4. [Most elected members of parliament](#most-elected-members-of-parliament) <br>
+5. [Most elected members by party](#most-elected-members-by-party) <br>
+&nbsp; 5.1 [KKE](#kke) <br>
+&nbsp; 5.2 [ND](#nd) <br>
+&nbsp; 5.3 [PASOK](#pasok) <br>
+&nbsp; 5.4 [SYRIZA](#syriza) <br>
+6. [Most elected members per constituency](#most-elected-members-per-constituency) <br>
+&nbsp; 6.1 [Attica](#attica) <br>
+&nbsp; 6.2 [Central Greece](#central-greece) <br>
+&nbsp; 6.3 [Central Macedonia](#central-macenodia) <br>
+&nbsp; 6.4 [Crete](#crete) <br>
+&nbsp; 6.5 [Eastern Macedonia and Thrace](#eastern-macedonia-and-thrace) <br>
+&nbsp; 6.6 [Epirus](#epirus) <br>
+&nbsp; 6.7 [Ionian Islands](#ionian-islands) <br>
+&nbsp; 6.8 [North Aegean](#north-aegean) <br>
+&nbsp; 6.9 [Peloponnese](#pelopponnese) <br>
+&nbsp; 6.10 [South Aegean](#south-aegean) <br>
+&nbsp; 6.11 [Thessaly](#thessaly) <br>
+&nbsp; 6.12 [Western Greece](#western-greece) <br>
+&nbsp; 6.13 [Western Macedonia](#western-macedonia) <br>
+7. [Acknowledgements](#acknowledgements)
+8. [References](#references)
+<hr>
+
+# Introduction
+
+And here we go...
+
+My first notebook on my website and I'd like to be a little special. I didn't want to just take a ready-made dataset and apply a machine learning technique (I will do this in the next articles). So, I decided to make my own with the help of [hellenic's parliament website](hellenicparliament.gr/).
+
+The Greek political scene has particularly preoccupied global public opinion in recent years, due to the Greek economic crisis. A part of it was spent on the reasons that caused it. The causes of the Greek crisis are many and a point of contention to this day. In this article we will deal essentially with one of the points of criticism. The election of the same persons.
+
+With this notebook I will try to analyze whether this claim is valid by counting how many times someone has been elected to the Greek parliament. In addition, I will study the obsession with the same persons at the party level, but also at the local level (constituencies).
+
+# Prerequisites
+
+## Import Libraries
+
+First and foremost, we have to load our libraries. 
+
+```{r Import R Libraries, message=FALSE, results='hide', echo=TRUE, warning=FALSE}
+# General purpose R libraries
+library(tidyverse)
+library(kableExtra)
+
+
+# Graphs
+library(ggplot2)
+library(ggpol) 
+library(ggtext)
+
+# Other settings
+options(digits=2) # print only 2 decimals
+```
+
+```{r, include=FALSE}
+knitr::write_bib(.packages(), file = 'packages.bib')
+```
+
+## Import dataset
+
+After loading R libraries, then I will load my data. 
+
+```{r Import dataset, cache=TRUE, message=FALSE,results='hide',echo=TRUE}
+parliament <- read_csv("data/greek_parliament.csv")
+```
+
+
+
+## Preview Dataset
+
+```{r Preview Data}
+#| label: tbl-preview-dataset
+#| tbl-cap: "Preview Dataset (first 6 rows)"
+
+preview_dataset = head(parliament, 10)
+kbl(preview_dataset, 
+    align = 'c',
+    booktabs = T,
+    centering = T,
+    valign = T) %>%
+  kable_paper() %>%
+  scroll_box(width = "600px", height = "250px")
+```
+
+
+## Structure of Dataset
+
+| Variable    | Property                           | Description     |
+| :----:      |    :----:                          |    :----: |
+| `Full Name`       | *qualitative*  <br> (nominal)  | Surname and name of the member of parliament  |
+| `Party`       | *qualitative*   <br> (nominal)     | The party on which the MP got elected |
+| `Constituency`   | *qualitative*   <br> (nominal)     | MP got elected on this area |
+| `Term`   | *qualitative*   <br> (ordinal)     | Plenum term    |
+
+Thus, my sample has `r ncol(parliament)` variables, of which 0 are quantitative and 4 are quantitative properties, of which 3 are nominal and the rest one (`Term`) is ordinal.
+
+## Recoding variables
+
+```{r, results='hide'}
+table(parliament$Party)
+```
+
+```{r}
+## Recoding parliament$Party
+parliament$Party[parliament$Party == "ANEXARTITOI DIMOKRATIKOI VOULEFTES"] <- "ADP"
+parliament$Party[parliament$Party == "ANEXARTITOI ELLINES (Independent Hellenes)"] <- "ANEL"
+parliament$Party[parliament$Party == "ANEXARTITOI ELLINES (Independent Hellenes) National Patriotic Democratic Alliance"]<- "ANEL"
+parliament$Party[parliament$Party == "Coalition of the Left and Progress"] <- "SYRIZA"
+parliament$Party[parliament$Party == "Communist Party of Greece (Interior)"] <- "KKE (interior)"
+parliament$Party[parliament$Party == "DEMOCRATIC COALITION (Panhellenic Socialist Movement Democratic Left )"] <- "PASOK"
+parliament$Party[parliament$Party == "DHM.AR (Democratic Left)"] <- "DHMAR"
+parliament$Party[parliament$Party == "DI.ANA."] <- "DIANA"
+parliament$Party[parliament$Party == "DI.K.KI."] <- "DIKKI"
+parliament$Party[parliament$Party == "INDEPENDENT"] <- "INDEPENDENT"
+parliament$Party[parliament$Party == "KOMMOUNISTIKO KOMMA ELLADAS"] <- "KKE"
+parliament$Party[parliament$Party == "LA.O.S."] <- "LAOS"
+parliament$Party[parliament$Party == "LAIKI ENOTITA"] <- "LAE"
+parliament$Party[parliament$Party == "LAIKOS SYNDESMOS - CHRYSI AVGI (People’s Association – Golden Dawn)"] <- "XA"
+parliament$Party[parliament$Party == "NEA DIMOKRATIA"] <- "ND"
+parliament$Party[parliament$Party == "PA.SO.K. (Panhellenic Socialist Movement)"] <- "PASOK"
+parliament$Party[parliament$Party == "POL.A."] <- "POLA"
+parliament$Party[parliament$Party == "SYNASPISMOS RIZOSPASTIKIS ARISTERAS"] <- "SYRIZA"
+parliament$Party[parliament$Party == "TO POTAMI (The River)"] <- "POTAMI"
+parliament$Party[parliament$Party == "ΟΟ.ΕΟ."] <- "ΟΟ.ΕΟ"
+```
+
+
+# Parliament over the years
+
+Now, I will make a short sum-up of the electoral resuts over the years. It is important to share that I made it thanks to [this post](https://datavizstory.com/a-parliament-diagram-in-r/) and `ggpol` package. As I am planning to do this procedure for many electoral terms I will convert the as a function.
+
+Arguments like `term` and `custom_title` are vital to create reproducible plots for all the terms. Although a main problem is the colors. On the aforementioned post it was about only one term. We knew how many parties we had, so we knew what colors to set and how many. If we try that on many terms (on which the number of parties can vary from 3 to 8) an error will come up which will say "Hey, you have set 3 colors but I see that you have 8 values (parties)". This was a real obstacle for me.
+
+After some tries and misses I came up with the concept of **dynamic arguments**. 
+
+```{r}
+make_parliament_plot <- function(term, custom_title, ...){
+
+custom = parliament %>% filter(Term == term) %>% select(Party) %>% table() %>% t() %>% as.data.frame() %>%  `colnames<-`(c("","Party", "Seats"))
+
+colors<-c(...)
+
+custom$legend <- paste0(custom$Party," (", custom$Seats,")")
+
+#draw a parliament diagram 
+p<-ggplot(custom) + 
+  geom_parliament(aes(seats =Seats, fill =  Party), color = "white") + 
+  scale_fill_manual(values = colors , labels = custom$legend) +
+  coord_fixed() + 
+  theme_void()+
+  labs(title  = custom_title,
+       caption = "Source: stesiam | stesiam.github.io, 2022")+
+  theme(title = element_text(size = 18),
+        plot.title = element_text(hjust = 0.5,size = 14,face = 'bold'),
+        plot.subtitle = element_text(hjust = 0.5),
+        plot.caption = element_text(vjust = -3,hjust = 0.9, size = 8),    
+        legend.position = 'bottom',
+        legend.direction = "horizontal",
+        legend.spacing.y = unit(0.1,"cm"),
+        legend.spacing.x = unit(0.1,"cm"),
+        legend.key.size = unit(0.8, 'lines'),
+        legend.text = element_text(margin = margin(r = 1, unit = 'cm')),
+        legend.text.align = 0)+
+        guides(fill=guide_legend(nrow=3,byrow=TRUE,reverse = TRUE,title=NULL))
+
+return(p)
+}
+```
+
+:::{.callout-note}
+Note that till this moment I have not figure out how to change the position of the parties in an efficient way (in a function) that will somehow represent their potitical view. The next visualizations of the parliament are exclusively about how many MPs got elected by each party.
+:::
+
+::: {.panel-tabset}
+
+## 3rd Term
+
+```{r}
+make_parliament_plot(3, "Greek Parliament (1981-1985)", "#f72100","#10459c","#26d43a")
+```
+
+## 4th Term
+
+```{r}
+make_parliament_plot(4, "Greek Parliament (1985-1989)", "#cccccc","#f72100","#900603","#10459c","#26d43a")
+```
+
+
+## 5th Term
+
+```{r}
+make_parliament_plot(5, "Greek Parliament (Jun,1989 - Nov,1989)", "#d6b85a","#cccccc","#10459c","#26d43a","#FFC0CB")
+```
+
+## 6th Term
+
+
+```{r}
+make_parliament_plot(6, "Greek Parliament (Nov,1989 - Apr,1990)","#cccccc","#10459c","#26d43a","#FFC0CB","#cefad0")
+```
+
+## 7th Term
+
+```{r}
+make_parliament_plot(7, "Greek Parliament (Apr,1990 - Oct,1993)", "#cccccc", "#f72100", "#10459c","#26d43a","#FFC0CB","#cefad0")
+```
+
+
+## 8th Term
+
+```{r}
+make_parliament_plot(8, "Greek Parliament (Apr,1990 - Oct,1993)", "#f72100", "#10459c","#26d43a","#3944bc")
+```
+
+
+
+## 9th Term
+
+```{r}
+make_parliament_plot(9, "Greek Parliament (Oct,1993 - Aug,1996)", "#FFA500", "#cccccc","#10459c","#3944bc","#26d43a", "#FFC0CB")
+```
+
+
+
+## 10th Term
+
+
+```{r}
+make_parliament_plot(10, "Greek Parliament (2000 - 2004)", "#cccccc","#f72100","#3944bc","#26d43a", "#FFC0CB")
+```
+
+## 11th Term
+
+
+```{r}
+make_parliament_plot(11, "Greek Parliament (2004 - 2007)", "#cccccc","#f72100","#3944bc","#26d43a", "#FFC0CB")
+```
+
+## 12th Term
+
+
+```{r}
+make_parliament_plot(12, "Greek Parliament (2007 - 2009)", "#f72100","#1E3F66","#3944bc","#26d43a", "#FFC0CB")
+```
+
+## 13th Term
+
+
+```{r}
+make_parliament_plot(13, "Greek Parliament (2009 - May,2012)", "#bcd2e8", "#680c07","#000000","#f72100","#1E3F66","#3944bc","#26d43a", "#FFC0CB")
+```
+
+## 14th Term
+
+
+```{r}
+make_parliament_plot(14, "Greek Parliament (May,2012 - Jun,2012)", "#bcd2e8", "#680c07","#f72100","#3944bc","#26d43a", "#FFC0CB", "#000000")
+```
+
+## 15th Term
+
+
+```{r}
+make_parliament_plot(15, "Greek Parliament (Jun,2012 - Jan,2015)", "#65350f", "#bcd2e8", "#680c07","#cccccc","#f72100","#3944bc", "#26d43a", "#FFC0CB", "#000000")
+```
+## 16th Term
+
+
+```{r}
+make_parliament_plot(16, "Greek Parliament (Jan, 2015 - Aug,2015)", "#bcd2e8", "#f72100","#7a1712","#3944bc","#26d43a", "#00ccd3", "#FFC0CB", "#000000")
+```
+## 17th Term
+
+:::{.callout-warning}
+As you can see on the next plot there are many MPs that are classified as independent (according to Hellenic's Parliament website). Many of them are members of parties "ANEL" and "Enosi Kentroon". However, a large wave of departures from the parties led to not fulfilling the conditions to be considered as parliamentary parties. For that reason members of these parties (that did not left) are considere independent.
+
+::: {.panel-tabset}
+
+```{r}
+make_parliament_plot(17, "Greek Parliament (Sep,2015 - 2019)", "#cccccc", "#f72100","#3944bc","#26d43a","#00ccd3", "#FFC0CB","#000000")
+```
+:::
+
+
+# Most elected members of parliament
+
+```{r, warning=FALSE}
+#| layout-valign: bottom
+#| fig-cap: "Most elected MPs"
+
+df = table(parliament$FullName)%>% sort(decreasing = T) %>% as.data.frame() %>% filter(Freq>=11)
+
+ggplot(data = df, aes(x = reorder(Var1 , Freq), y = Freq))+
+  geom_bar(stat = "identity",width = 0.88) +
+  geom_text(aes(label=Freq), hjust = 1.5, vjust=0.5, color="white", size=4)+
+  theme_minimal() +
+  scale_fill_grey() +
+  labs(title = "Most elected MPs on Greek Parliament (1981 - 2019) <br>
+       <span style = 'font-size:10pt'> A list that shows the most elected members of parliament (elected 11 times or more). <br> The following ones are members of <span style = 'color:blue;'>ND</span>,  or <span style = 'color:darkgreen;'>PASOK</span></span>.",
+       caption = "Source: **stesiam** | stesiam.github.io, 2022",
+       x = "Times elected",
+       y = "Members of Parliament") +
+    theme(
+    plot.title.position = "plot",
+    plot.title = element_textbox_simple(
+      size = 14,
+      lineheight = 1,
+      padding = margin(5.5, 5.5, 5.5, 5.5),
+      margin = margin(0, 0, 5.5, 0),
+      fill = "cornsilk"
+    ))+
+  coord_flip()
+  
+```
+
+
+# Most elected members by party
+
+So far we have seen the most elected members of Greek parliament for the period 1981-2019. Ιt would be particularly interesting to study the same feature by party. However, finding the most elected member per party can be challenging on parties with relatively low representation on Greek parliament. That is the reason for choosing only some of those.
+
+Concerning the implementation part, I see that I will make some visualizations with minimum changes (e.g., filter dataset based on party, change color, etc.) so, the creation of a function is justified. That way, I will not repeat same code, following one of the principles of programming (DRY - Don't Repeat Yourself). On the following function we can see that I set 3 variables :
+
+- `Party` : I have to specify which data to filter
+- `color` : In order to customize color of my barplots to be similar to each party's color
+- `times_elected_min` : A argument that I added up later. The problem with its absence is that I have to deal with parties that elect for example 150 MPs and some others just 10. If I set a universal number of elections to visualize I will have diagrams with many problems. Let's suppose that I set a big value (e.g., 10). Then I would visualize my data for *ND* and *PASOK*, although parties with relatively low number of MPs would have only one or noone to show (*KKE* \& *SYRIZA*, respectively). On the other hand if I set a low value I create a new problem as there will be many MPs of and it creates the need to edit many more things (like width of bars). An argument like `times_elected_min` can adapt the specific characteristics of each party.
+
+
+
+```{r}
+party_plot <- function(party, party_color, times_elected_min){
+  party_df = parliament %>% filter(Party == party) %>%
+  select(FullName) %>% table() %>% sort(decreasing = TRUE) %>% as.data.frame() %>% filter(Freq >= times_elected_min) %>% `colnames<-`(c("Full_Name", "Freq"))
+  
+ggplot(data = party_df, aes(x = reorder(Full_Name , Freq), y = Freq))+
+  geom_bar(stat = "identity",width = 0.88, fill = party_color) +
+  geom_text(aes(label=Freq), hjust = 1.5, vjust=0.5, color="white", size=4)+
+  theme_minimal() +
+   labs(title = "Most elected MPs",
+       subtitle = "",
+       caption = "Source: stesiam | stesiam.github.io, 2022") +
+  coord_flip()
+}
+```
+
+The visualizations are presented in alphabetical order.
+
+## KKE
+
+```{r}
+party_plot("KKE", "#FF6666", times_elected_min = 5)
+```
+
+## ND
+
+```{r}
+party_plot("ND", "#0492c2", times_elected_min = 10)
+```
+
+
+## PASOK
+
+
+```{r}
+party_plot("PASOK", "#95bb72", times_elected_min = 10)
+```
+## SYRIZA
+
+```{r}
+party_plot("SYRIZA", "#e27bb1", times_elected_min = 5)
+```
+
+# Most elected members based per constituency
+
+So far we have seen :
+
+- the composition of Greek Parliament 
+- the most elected MPs on national level and 
+- the most elected MPs on party level
+
+The last part of my analysis will investigate the most popular MPs on local level (per profecture).
+
+Obviously, the same logic applies to party charts (same processes with minor changes), so the use of a function is almost mandatory (over fifty -50- cases !). 
+
+On my previous workflow I used  table() function in order to take frequencies. That's one easy way to go. Although I didn't figured out to add characteristics from other columns (like party of the MP). Fir that reason I took the decision  to use count() instead of table.
+
+
+```{r}
+constituency_freqs <- function(input_constituency, min_times_elected){
+cont_df = parliament %>% filter(Constituency == input_constituency) %>%
+  count(FullName, Party) %>% filter(n >= min_times_elected) %>% as.data.frame()
+  
+  ggplot(data = cont_df, aes(x = reorder(FullName, n), y = n))+
+  geom_bar(stat = "identity",width = 0.88) +
+  geom_text(aes(label=n), hjust = 1.5, vjust=0.5, color="white", size=4)+
+  theme_minimal() +
+   labs(title = "Most elected MPs",
+       subtitle = "",
+       caption = "Source: stesiam | stesiam.github.io, 2022") +
+  coord_flip()
+}
+```
+
+Now I have frequencies and the party for every MP. That will be useful on my diagrams.
+
+```{r}
+#unique(parliament$Constituency) %>% sort()
+```
+
+## State {.unlisted}
+
+```{r}
+constituency_freqs("State", 3)
+```
+
+## Attica {.unlisted}
+
+::: {.panel-tabset}
+
+### Athens A
+
+```{r}
+constituency_freqs("Athens A",5)
+```
+
+
+### Athens B
+
+```{r}
+constituency_freqs("Athens B",7)
+```
+
+### Piraeus A
+
+```{r}
+constituency_freqs("Piraeus A",5)
+```
+
+### Piraeus B
+
+```{r}
+constituency_freqs("Piraeus B",5)
+```
+
+### Of Attica (rest)
+
+```{r}
+constituency_freqs("Of Attica (rest)",5)
+```
+
+:::
+
+## Central Greece {.unlisted}
+
+::: {.panel-tabset}
+### Viotia
+
+```{r}
+constituency_freqs("Viotia",5)
+```
+
+### Evrytania
+
+```{r}
+constituency_freqs("Evrytania",2)
+```
+
+
+### Fokida
+
+```{r}
+constituency_freqs("Fokida",2)
+```
+
+### Fthiotida
+
+```{r}
+constituency_freqs("Fthiotida",3)
+```
+
+:::
+
+## Central Macedonia {.unlisted}
+
+::: {.panel-tabset}
+
+### Thessaloniki A
+
+```{r}
+constituency_freqs("Thessaloniki A",6)
+```
+
+### Thessaloniki B
+
+```{r}
+constituency_freqs("Thessaloniki B",6)
+```
+
+### Kilkis
+
+```{r}
+constituency_freqs("Kilkis",3)
+```
+
+### Pella
+
+```{r}
+constituency_freqs("Pella",3)
+```
+
+### Pieria
+
+```{r}
+constituency_freqs("Pieria",3)
+```
+
+### Serres
+
+```{r}
+constituency_freqs("Serres",3)
+```
+
+### Halkidiki
+
+```{r}
+constituency_freqs("Halkidiki",3)
+```
+
+:::
+
+
+## Crete {.unlisted}
+
+::: {.panel-tabset}
+
+### Chania
+
+```{r}
+constituency_freqs("Chania",3)
+```
+
+### Heraklion
+
+```{r}
+constituency_freqs("Irakleio",3)
+```
+
+### Lasithi
+
+```{r}
+constituency_freqs("Lasithi",3)
+```
+
+### Rethymno
+
+```{r}
+constituency_freqs("Rethymno",3)
+```
+
+:::
+
+
+## Eastern Macedonia and Thrace {.unlisted}
+
+::: {.panel-tabset}
+
+### Drama 
+
+```{r}
+constituency_freqs("Drama",3)
+```
+
+### Evros
+
+```{r}
+constituency_freqs("Evros",4)
+```
+
+### Kavala 
+
+```{r}
+constituency_freqs("Kavala",3)
+```
+
+### Xanthi
+
+```{r}
+constituency_freqs("Xanthi",3)
+```
+
+### Rodopi
+
+```{r}
+constituency_freqs("Rodopi",3)
+```
+
+:::
+
+## Epirus {.unlisted}
+
+::: {.panel-tabset}
+
+### Arta
+
+```{r}
+constituency_freqs("Arta",3)
+```
+
+### Ioannina
+
+```{r}
+constituency_freqs("Ioannina",4)
+```
+
+### Preveza
+
+```{r}
+constituency_freqs("Preveza",3)
+```
+
+### Thesprotia
+
+```{r}
+constituency_freqs("Thesprotia",3)
+```
+
+:::
+
+
+## Ionian Islands {.unlisted}
+
+::: {.panel-tabset}
+
+### Corfu
+
+```{r}
+constituency_freqs("Corfu",3)
+```
+
+### Kefallonia
+
+```{r}
+constituency_freqs("Kefallonia",3)
+```
+
+### Lefkada
+
+```{r}
+constituency_freqs("Lefkada",3)
+```
+
+### Zakynthos
+
+```{r}
+constituency_freqs("Zakynthos",3)
+```
+
+
+:::
+
+
+
+## North Aegean {.unlisted}
+
+::: {.panel-tabset}
+
+### Chios
+
+```{r}
+constituency_freqs("Chios",3)
+```
+
+### Lesvos
+
+```{r}
+constituency_freqs("Lesvos",3)
+```
+
+### Samos
+
+```{r}
+constituency_freqs("Samos",3)
+```
+
+:::
+
+
+## Peloponnese {.unlisted}
+
+::: {.panel-tabset}
+
+### Argolida
+
+```{r}
+constituency_freqs("Argolida",3)
+```
+
+
+### Arkadia
+
+```{r}
+constituency_freqs("Arcadia",3)
+```
+
+
+### Korinthia
+
+```{r}
+constituency_freqs("Korinthia",3)
+```
+
+
+### Lakonia
+
+```{r}
+constituency_freqs("Lakonia",3)
+```
+
+
+### Messinia
+
+```{r}
+constituency_freqs("Messinia",3)
+```
+
+ 
+:::
+
+
+
+## South Aegean  {.unlisted}
+
+::: {.panel-tabset}
+
+### Dodecanese Islands
+
+```{r}
+constituency_freqs("Dodecanese Islands",3)
+```
+
+### Cyclades
+
+```{r}
+constituency_freqs("Cyclades",3)
+```
+:::
+
+## Thessaly {.unlisted}
+
+::: {.panel-tabset}
+
+
+### Karditsa
+
+```{r}
+constituency_freqs("Karditsa",3)
+```
+
+### Larissa
+
+```{r}
+constituency_freqs("Larissa",3)
+```
+
+### Magnesia
+
+```{r}
+constituency_freqs("Magnesia",3)
+```
+
+### Trikala
+
+```{r}
+constituency_freqs("Trikala",3)
+```
+
+:::
+
+## Western Greece {.unlisted}
+
+::: {.panel-tabset}
+
+### Achaia
+
+```{r}
+constituency_freqs("Achaia",3)
+```
+
+
+### Aitoloakarnania
+
+```{r}
+constituency_freqs("Aitoloakarnania",3)
+```
+
+
+### Ileia
+
+```{r}
+constituency_freqs("Ileia",3)
+```
+:::
+
+
+## Western Macedonia {.unlisted}
+
+::: {.panel-tabset}
+
+
+### Florina
+
+```{r}
+constituency_freqs("Florina",3)
+```
+
+### Grevena
+
+```{r}
+constituency_freqs("Grevena",3)
+```
+
+### Kastoria
+
+```{r}
+constituency_freqs("Kastoria",3)
+```
+
+### Kozani
+```{r}
+constituency_freqs("Kozani",3)
+```
+
+:::
+
+
+# Acknowledgments {.appendix}
+
+Image by <a href="https://pixabay.com/users/leonhard_niederwimmer-1131094/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=7402132">Leonhard Niederwimmer</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=7402132">Pixabay</a> <br>
+
+Data are from <a href="https://github.com/stesiam/Greek-MPs-Dataset">mine repository on GitHub</a>. Original data are from <a href="https://www.hellenicparliament.gr"> Hellenic's Parliament website</a>
