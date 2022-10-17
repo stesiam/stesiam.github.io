@@ -328,17 +328,20 @@ make_parliament_plot(17, "Greek Parliament (Sep,2015 - 2019)", "#cccccc", "#f721
 
 # Most elected members of parliament
 
-```{r, warning=FALSE}
+```{r, warning=FALSE, fig.height= 10,fig}
 #| layout-valign: bottom
 #| fig-cap: "Most elected MPs"
 
-df = table(parliament$FullName)%>% sort(decreasing = T) %>% as.data.frame() %>% filter(Freq>=11)
+#total_times_elected_freqs <- function(input_constituency, min_times_elected){
+total_times_elected_freqs_df = parliament %>%  count(FullName, Party) %>% filter(n >= 9) %>% as.data.frame()
+  
+#df = table(parliament$FullName)%>% sort(decreasing = T) %>% as.data.frame() %>% filter(Freq>=11)
 
-ggplot(data = df, aes(x = reorder(Var1 , Freq), y = Freq))+
+ggplot(data = total_times_elected_freqs_df, aes(x = reorder(FullName, n), y = n, fill = Party ))+
   geom_bar(stat = "identity",width = 0.88) +
-  geom_text(aes(label=Freq), hjust = 1.5, vjust=0.5, color="white", size=4)+
+  geom_text(aes(label=n), hjust = 1.5, vjust=0.5, color="white", size=4)+
   theme_minimal() +
-  scale_fill_grey() +
+  scale_fill_manual(values = c("KKE" = "#FF6666","ND" = "#0492c2", "PASOK" = "#95bb72", "SYRIZA" = "#e27bb1")) +
   labs(title = "Most elected MPs on Greek Parliament (1981 - 2019) <br>
        <span style = 'font-size:10pt'> A list that shows the most elected members of parliament (elected 11 times or more). <br> The following ones are members of <span style = 'color:blue;'>ND</span>,  or <span style = 'color:darkgreen;'>PASOK</span></span>.",
        caption = "Source: **stesiam** | stesiam.github.io, 2022",
@@ -433,8 +436,9 @@ constituency_freqs <- function(input_constituency, min_times_elected){
 cont_df = parliament %>% filter(Constituency == input_constituency) %>%
   count(FullName, Party) %>% filter(n >= min_times_elected) %>% as.data.frame()
   
-  ggplot(data = cont_df, aes(x = reorder(FullName, n), y = n))+
+  ggplot(data = cont_df, aes(x = reorder(FullName, n), y = n, fill = Party ))+
   geom_bar(stat = "identity",width = 0.88) +
+  scale_fill_manual(values = c("ANEL" = "#bcd2e8", "INDEPENDENT" = "#cccccc","KKE"="#e3242b","ND" = "#10459c", "PASOK" = "#26d43a", "SYRIZA" = "#FFC0CB","XA" = "#000000")) +
   geom_text(aes(label=n), hjust = 1.5, vjust=0.5, color="white", size=4)+
   theme_minimal() +
    labs(title = "Most elected MPs",
@@ -585,7 +589,7 @@ constituency_freqs("Chania",3)
 ### Heraklion
 
 ```{r}
-constituency_freqs("Irakleio",3)
+#constituency_freqs("Irakleio",3)
 ```
 
 ### Lasithi
@@ -833,7 +837,7 @@ constituency_freqs("Achaia",3)
 ### Aitoloakarnania
 
 ```{r}
-constituency_freqs("Aitoloakarnania",3)
+#constituency_freqs("Aitoloakarnania",3)
 ```
 
 

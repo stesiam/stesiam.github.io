@@ -431,13 +431,16 @@ Warning
 </div>
 </section><section id="most-elected-members-of-parliament" class="level1"><h1>Most elected members of parliament</h1>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb22" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;">df</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">parliament</span><span class="op" style="color: #5E5E5E;">$</span><span class="va" style="color: #111111;">FullName</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op" style="color: #5E5E5E;">(</span>decreasing <span class="op" style="color: #5E5E5E;">=</span> <span class="cn" style="color: #8f5902;">T</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">Freq</span><span class="op" style="color: #5E5E5E;">&gt;=</span><span class="fl" style="color: #AD0000;">11</span><span class="op" style="color: #5E5E5E;">)</span></span>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb22" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co" style="color: #5E5E5E;">#total_times_elected_freqs &lt;- function(input_constituency, min_times_elected){</span></span>
+<span><span class="va" style="color: #111111;">total_times_elected_freqs_df</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">parliament</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>  <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">FullName</span>, <span class="va" style="color: #111111;">Party</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">n</span> <span class="op" style="color: #5E5E5E;">&gt;=</span> <span class="fl" style="color: #AD0000;">9</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span></span>
+<span>  </span>
+<span><span class="co" style="color: #5E5E5E;">#df = table(parliament$FullName)%&gt;% sort(decreasing = T) %&gt;% as.data.frame() %&gt;% filter(Freq&gt;=11)</span></span>
 <span></span>
-<span><span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op" style="color: #5E5E5E;">(</span>data <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">df</span>, <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op" style="color: #5E5E5E;">(</span>x <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">Var1</span> , <span class="va" style="color: #111111;">Freq</span><span class="op" style="color: #5E5E5E;">)</span>, y <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">Freq</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">+</span></span>
+<span><span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op" style="color: #5E5E5E;">(</span>data <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">total_times_elected_freqs_df</span>, <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op" style="color: #5E5E5E;">(</span>x <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">FullName</span>, <span class="va" style="color: #111111;">n</span><span class="op" style="color: #5E5E5E;">)</span>, y <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">n</span>, fill <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">Party</span> <span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">+</span></span>
 <span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op" style="color: #5E5E5E;">(</span>stat <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"identity"</span>,width <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">0.88</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
-<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op" style="color: #5E5E5E;">(</span>label<span class="op" style="color: #5E5E5E;">=</span><span class="va" style="color: #111111;">Freq</span><span class="op" style="color: #5E5E5E;">)</span>, hjust <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">1.5</span>, vjust<span class="op" style="color: #5E5E5E;">=</span><span class="fl" style="color: #AD0000;">0.5</span>, color<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"white"</span>, size<span class="op" style="color: #5E5E5E;">=</span><span class="fl" style="color: #AD0000;">4</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op" style="color: #5E5E5E;">(</span>label<span class="op" style="color: #5E5E5E;">=</span><span class="va" style="color: #111111;">n</span><span class="op" style="color: #5E5E5E;">)</span>, hjust <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">1.5</span>, vjust<span class="op" style="color: #5E5E5E;">=</span><span class="fl" style="color: #AD0000;">0.5</span>, color<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"white"</span>, size<span class="op" style="color: #5E5E5E;">=</span><span class="fl" style="color: #AD0000;">4</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">+</span></span>
 <span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
-<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/scale_grey.html">scale_fill_grey</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual</a></span><span class="op" style="color: #5E5E5E;">(</span>values <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"KKE"</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"#FF6666"</span>,<span class="st" style="color: #20794D;">"ND"</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"#0492c2"</span>, <span class="st" style="color: #20794D;">"PASOK"</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"#95bb72"</span>, <span class="st" style="color: #20794D;">"SYRIZA"</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"#e27bb1"</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
 <span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op" style="color: #5E5E5E;">(</span>title <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Most elected MPs on Greek Parliament (1981 - 2019) &lt;br&gt;</span></span>
 <span><span class="st" style="color: #20794D;">       &lt;span style = 'font-size:10pt'&gt; A list that shows the most elected members of parliament (elected 11 times or more). &lt;br&gt; The following ones are members of &lt;span style = 'color:blue;'&gt;ND&lt;/span&gt;,  or &lt;span style = 'color:darkgreen;'&gt;PASOK&lt;/span&gt;&lt;/span&gt;."</span>,</span>
 <span>       caption <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Source: **stesiam** | stesiam.github.io, 2022"</span>,</span>
@@ -455,7 +458,7 @@ Warning
 <span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/fig-1.png" class="img-fluid figure-img" width="672"></p>
 <p></p><figcaption class="figure-caption">Most elected MPs</figcaption><p></p>
 </figure>
 </div>
@@ -493,28 +496,28 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb24" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">party_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"KKE"</span>, <span class="st" style="color: #20794D;">"#FF6666"</span>, times_elected_min <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">5</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section><section id="nd" class="level2"><h2 class="anchored" data-anchor-id="nd">ND</h2>
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb25" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">party_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"ND"</span>, <span class="st" style="color: #20794D;">"#0492c2"</span>, times_elected_min <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">10</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section><section id="pasok" class="level2"><h2 class="anchored" data-anchor-id="pasok">PASOK</h2>
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb26" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">party_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"PASOK"</span>, <span class="st" style="color: #20794D;">"#95bb72"</span>, times_elected_min <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">10</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section><section id="syriza" class="level2"><h2 class="anchored" data-anchor-id="syriza">SYRIZA</h2>
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb27" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">party_plot</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"SYRIZA"</span>, <span class="st" style="color: #20794D;">"#e27bb1"</span>, times_elected_min <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">5</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section></section><section id="most-elected-members-based-per-constituency" class="level1"><h1>Most elected members based per constituency</h1>
@@ -532,8 +535,9 @@ Warning
 <span><span class="va" style="color: #111111;">cont_df</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">parliament</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">Constituency</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="va" style="color: #111111;">input_constituency</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">FullName</span>, <span class="va" style="color: #111111;">Party</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">n</span> <span class="op" style="color: #5E5E5E;">&gt;=</span> <span class="va" style="color: #111111;">min_times_elected</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span></span>
 <span>  </span>
-<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op" style="color: #5E5E5E;">(</span>data <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">cont_df</span>, <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op" style="color: #5E5E5E;">(</span>x <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">FullName</span>, <span class="va" style="color: #111111;">n</span><span class="op" style="color: #5E5E5E;">)</span>, y <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">n</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op" style="color: #5E5E5E;">(</span>data <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">cont_df</span>, <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op" style="color: #5E5E5E;">(</span>x <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">FullName</span>, <span class="va" style="color: #111111;">n</span><span class="op" style="color: #5E5E5E;">)</span>, y <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">n</span>, fill <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">Party</span> <span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">+</span></span>
 <span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op" style="color: #5E5E5E;">(</span>stat <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"identity"</span>,width <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">0.88</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual</a></span><span class="op" style="color: #5E5E5E;">(</span>values <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"ANEL"</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"#bcd2e8"</span>, <span class="st" style="color: #20794D;">"INDEPENDENT"</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"#cccccc"</span>,<span class="st" style="color: #20794D;">"KKE"</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"#e3242b"</span>,<span class="st" style="color: #20794D;">"ND"</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"#10459c"</span>, <span class="st" style="color: #20794D;">"PASOK"</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"#26d43a"</span>, <span class="st" style="color: #20794D;">"SYRIZA"</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"#FFC0CB"</span>,<span class="st" style="color: #20794D;">"XA"</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"#000000"</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
 <span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op" style="color: #5E5E5E;">(</span>label<span class="op" style="color: #5E5E5E;">=</span><span class="va" style="color: #111111;">n</span><span class="op" style="color: #5E5E5E;">)</span>, hjust <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">1.5</span>, vjust<span class="op" style="color: #5E5E5E;">=</span><span class="fl" style="color: #AD0000;">0.5</span>, color<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"white"</span>, size<span class="op" style="color: #5E5E5E;">=</span><span class="fl" style="color: #AD0000;">4</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">+</span></span>
 <span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
 <span>   <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op" style="color: #5E5E5E;">(</span>title <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Most elected MPs"</span>,</span>
@@ -552,7 +556,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb30" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"State"</span>, <span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section><section id="attica" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="attica">Attica</h2>
@@ -569,7 +573,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb31" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Athens A"</span>,<span class="fl" style="color: #AD0000;">5</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -577,7 +581,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb32" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Athens B"</span>,<span class="fl" style="color: #AD0000;">7</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -585,7 +589,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb33" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Piraeus A"</span>,<span class="fl" style="color: #AD0000;">5</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -593,7 +597,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb34" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Piraeus B"</span>,<span class="fl" style="color: #AD0000;">5</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -601,7 +605,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb35" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Of Attica (rest)"</span>,<span class="fl" style="color: #AD0000;">5</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -620,7 +624,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb36" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Viotia"</span>,<span class="fl" style="color: #AD0000;">5</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -628,7 +632,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb37" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Evrytania"</span>,<span class="fl" style="color: #AD0000;">2</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -636,7 +640,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb38" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Fokida"</span>,<span class="fl" style="color: #AD0000;">2</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -644,7 +648,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb39" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Fthiotida"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -666,7 +670,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb40" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Thessaloniki A"</span>,<span class="fl" style="color: #AD0000;">6</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -674,7 +678,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb41" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Thessaloniki B"</span>,<span class="fl" style="color: #AD0000;">6</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -682,7 +686,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb42" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Kilkis"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -690,7 +694,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb43" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Pella"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -698,7 +702,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb44" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Pieria"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -706,7 +710,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb45" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Serres"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -714,7 +718,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb46" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Halkidiki"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -733,23 +737,21 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb47" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Chania"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-5-2" class="tab-pane" aria-labelledby="tabset-5-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb48" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Irakleio"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
-</details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-46-1.png" class="img-fluid" width="672"></p>
-</div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb48" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co" style="color: #5E5E5E;">#constituency_freqs("Irakleio",3)</span></span></code></pre></div>
+</details>
 </div>
 </div>
 <div id="tabset-5-3" class="tab-pane" aria-labelledby="tabset-5-3-tab">
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb49" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Lasithi"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-46-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -757,7 +759,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb50" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Rethymno"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-48-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -777,7 +779,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb51" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Drama"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-48-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -785,7 +787,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb52" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Evros"</span>,<span class="fl" style="color: #AD0000;">4</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -793,7 +795,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb53" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Kavala"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-51-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -801,7 +803,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb54" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Xanthi"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-52-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-51-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -809,7 +811,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb55" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Rodopi"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-53-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-52-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -828,7 +830,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb56" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Arta"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-54-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-53-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -836,7 +838,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb57" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Ioannina"</span>,<span class="fl" style="color: #AD0000;">4</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-55-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-54-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -844,7 +846,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb58" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Preveza"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-56-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-55-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -852,7 +854,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb59" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Thesprotia"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-57-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-56-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -871,7 +873,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb60" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Corfu"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-58-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-57-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -879,7 +881,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb61" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Kefallonia"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-59-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-58-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -887,7 +889,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb62" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Lefkada"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-60-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-59-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -895,7 +897,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb63" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Zakynthos"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-61-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-60-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -913,7 +915,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb64" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Chios"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-62-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-61-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -921,7 +923,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb65" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Lesvos"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-63-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-62-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -929,7 +931,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb66" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Samos"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-64-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-63-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -949,7 +951,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb67" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Argolida"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-65-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-64-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -957,7 +959,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb68" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Arcadia"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-66-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-65-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -965,7 +967,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb69" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Korinthia"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-67-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-66-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -973,7 +975,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb70" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Lakonia"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-68-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-67-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -981,7 +983,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb71" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Messinia"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-69-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-68-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -998,7 +1000,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb72" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Dodecanese Islands"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-70-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-69-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -1006,7 +1008,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb73" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Cyclades"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-71-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-70-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -1025,7 +1027,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb74" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Karditsa"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-72-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-71-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -1033,7 +1035,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb75" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Larissa"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-73-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-72-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -1041,7 +1043,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb76" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Magnesia"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-74-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-73-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -1049,7 +1051,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb77" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Trikala"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-75-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-74-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -1067,23 +1069,21 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb78" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Achaia"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-76-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-75-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-13-2" class="tab-pane" aria-labelledby="tabset-13-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb79" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Aitoloakarnania"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
-</details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-77-1.png" class="img-fluid" width="672"></p>
-</div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb79" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co" style="color: #5E5E5E;">#constituency_freqs("Aitoloakarnania",3)</span></span></code></pre></div>
+</details>
 </div>
 </div>
 <div id="tabset-13-3" class="tab-pane" aria-labelledby="tabset-13-3-tab">
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb80" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Ileia"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-78-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-77-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -1102,7 +1102,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb81" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Florina"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-79-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-78-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -1110,7 +1110,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb82" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Grevena"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-80-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-79-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -1118,7 +1118,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb83" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Kastoria"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-81-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-80-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -1126,7 +1126,7 @@ Warning
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb84" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;">constituency_freqs</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"Kozani"</span>,<span class="fl" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-82-1.png" class="img-fluid" width="672"></p>
+<p><img src="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/unnamed-chunk-81-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
