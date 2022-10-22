@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.18">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="stesiam">
+<meta name="dcterms.date" content="2022-10-22">
+<meta name="description" content="Make a prediction about the future value of Greece’s unemployment using ARIMA model.">
+<title>stesiam - Forecasting Unemployment in Greece</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Rplot1.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": true,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script><link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+<link href="../../site_libs/tabwid-1.1.0/tabwid.css" rel="stylesheet">
+<link href="../../site_libs/tabwid-1.1.0/scrool.css" rel="stylesheet">
+<script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script><script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="stesiam - Forecasting Unemployment in Greece">
+<meta property="og:description" content="Make a prediction about the future value of Greece’s unemployment using ARIMA model.">
+<meta property="og:image" content="https://www.stesiam.github.io/notebooks/2022-10-22-Forecasting-Unemployment-Greece/unemployment.jpg">
+<meta property="og:site-name" content="stesiam">
+</head>
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">stesiam</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item">
+    <a class="nav-link" href="../../index.html">Home</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts.html">All Posts</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../notebooks.html">ML Notebooks</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../shiny.html">Shiny Projects</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html">Blog</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../greek.html">Greek Posts</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html">CV</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/stesiam"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../posts.xml"><i class="bi bi-rss" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+<div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <div class="quarto-title-block"><div><h1 class="title">Forecasting Unemployment in Greece</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button" data-quarto-source-url="https://github.com/stesiam/stesiam.github.io/blob/main/notebooks/2022-10-22-Forecasting-Unemployment-Greece/2022-10-22-Unemployment-Greece.qmd">View Source</a></li></ul></div></div>
+                  <div>
+        <div class="description">
+          <p>Make a prediction about the future value of Greece’s unemployment using ARIMA model.</p>
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">R</div>
+                <div class="quarto-category">Time Series</div>
+                <div class="quarto-category">ARIMA</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>stesiam </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">October 22, 2022</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><nav id="TOC" role="doc-toc"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li>
+<a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
+  <ul class="collapse">
+<li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background">Background</a></li>
+  <li><a href="#time-series" id="toc-time-series" class="nav-link" data-scroll-target="#time-series">Time series</a></li>
+  <li><a href="#procedure" id="toc-procedure" class="nav-link" data-scroll-target="#procedure">Procedure</a></li>
+  <li><a href="#short-answer" id="toc-short-answer" class="nav-link" data-scroll-target="#short-answer">Short Answer</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites">Prerequisites</a>
+  <ul class="collapse">
+<li><a href="#import-libraries" id="toc-import-libraries" class="nav-link" data-scroll-target="#import-libraries">Import Libraries</a></li>
+  <li><a href="#import-dataset" id="toc-import-dataset" class="nav-link" data-scroll-target="#import-dataset">Import dataset</a></li>
+  <li><a href="#preview-dataset" id="toc-preview-dataset" class="nav-link" data-scroll-target="#preview-dataset">Preview Dataset</a></li>
+  <li><a href="#dataset-structure" id="toc-dataset-structure" class="nav-link" data-scroll-target="#dataset-structure">Dataset Structure</a></li>
+  <li><a href="#time-series-preprocessing" id="toc-time-series-preprocessing" class="nav-link" data-scroll-target="#time-series-preprocessing">Time Series Preprocessing</a></li>
+  </ul>
+</li>
+  <li><a href="#missing-values" id="toc-missing-values" class="nav-link" data-scroll-target="#missing-values">Missing Values</a></li>
+  <li><a href="#descriptive-statistics" id="toc-descriptive-statistics" class="nav-link" data-scroll-target="#descriptive-statistics">Descriptive Statistics</a></li>
+  <li>
+<a href="#examine-stationarity" id="toc-examine-stationarity" class="nav-link" data-scroll-target="#examine-stationarity">Examine stationarity</a>
+  <ul class="collapse">
+<li><a href="#definition-of-stationarity" id="toc-definition-of-stationarity" class="nav-link" data-scroll-target="#definition-of-stationarity">Definition of stationarity</a></li>
+  <li><a href="#examine-stationarity-graphically" id="toc-examine-stationarity-graphically" class="nav-link" data-scroll-target="#examine-stationarity-graphically">Examine Stationarity Graphically</a></li>
+  <li>
+<a href="#examine-stationarity-with-statistical-tests" id="toc-examine-stationarity-with-statistical-tests" class="nav-link" data-scroll-target="#examine-stationarity-with-statistical-tests">Examine Stationarity with Statistical tests</a>
+  <ul class="collapse">
+<li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#adf-test" id="toc-adf-test" class="nav-link" data-scroll-target="#adf-test">ADF test</a></li>
+  <li><a href="#pp-test" id="toc-pp-test" class="nav-link" data-scroll-target="#pp-test">PP test</a></li>
+  <li><a href="#kpss-test" id="toc-kpss-test" class="nav-link" data-scroll-target="#kpss-test">KPSS test</a></li>
+  </ul>
+</li>
+  </ul>
+</li>
+  <li><a href="#identify-model" id="toc-identify-model" class="nav-link" data-scroll-target="#identify-model">Identify Model</a></li>
+  <li><a href="#build-time-series-model" id="toc-build-time-series-model" class="nav-link" data-scroll-target="#build-time-series-model">Build Time Series Model</a></li>
+  <li><a href="#compare-models" id="toc-compare-models" class="nav-link" data-scroll-target="#compare-models">Compare Models</a></li>
+  <li><a href="#checking-best-models" id="toc-checking-best-models" class="nav-link" data-scroll-target="#checking-best-models">Checking best models</a></li>
+  <li>
+<a href="#forecast-future-unemployment" id="toc-forecast-future-unemployment" class="nav-link" data-scroll-target="#forecast-future-unemployment">Forecast Future Unemployment</a>
+  <ul class="collapse">
+<li><a href="#arima-021-forecasts" id="toc-arima-021-forecasts" class="nav-link" data-scroll-target="#arima-021-forecasts">ARIMA (0,2,1) forecasts</a></li>
+  <li><a href="#arima-921-forecasts" id="toc-arima-921-forecasts" class="nav-link" data-scroll-target="#arima-921-forecasts">ARIMA (9,2,1) forecasts</a></li>
+  </ul>
+</li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/stesiam/stesiam.github.io/edit/main/notebooks/2022-10-22-Forecasting-Unemployment-Greece/2022-10-22-Unemployment-Greece.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/stesiam/stesiam.github.io/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content"><section id="table-of-contents" class="level1 unlisted"><h1 class="unlisted">Table of Contents</h1>
+<hr>
+<ol type="1">
+<li>
+<a href="#introduction">Introduction</a> <br>
+</li>
+<li>
+<a href="#prerequisites">Prerequisites</a> <br> &nbsp; 2.1 <a href="#import-libraries">Import Libraries</a> <br> &nbsp; 2.2 <a href="#import-dataset">Import Dataset</a> <br> &nbsp; 2.3 <a href="#preview-dataset">Preview Datasset</a> <br> &nbsp; 2.4 <a href="#dataset-structure">Dataset Structure</a> <br> &nbsp; 2.5 <a href="#time-series-preprocessing">Time Series Preprocessing</a> <br>
+</li>
+<li>
+<a href="#missing-values">Missing Values</a> <br>
+</li>
+<li>
+<a href="#descriptive-statistics">Descriptive Statistics</a> <br>
+</li>
+<li>
+<a href="#examine-stationarity">Examine Stationarity</a> <br> &nbsp; 5.1 <a href="#definition-of-stationarity">Definition of stationarity</a> <br> &nbsp; 5.2 <a href="#examine-stationarity-graphically">Examine Stationarity Graphically</a> <br> &nbsp; 5.3 <a href="#examine-stationarity-with-statistical-tests">Examine Stationarity with Statistical Tests</a> <br> &nbsp; &nbsp; 5.3.1 <a href="#adf-test">ADF test</a> <br> &nbsp; &nbsp; 5.3.2 <a href="#pp-test">PP test</a> <br> &nbsp; &nbsp; 5.3.3 <a href="#kpss-test">KPSS test</a> <br>
+</li>
+<li>
+<a href="#identify-model">Identify Model</a> <br>
+</li>
+<li>
+<a href="#build-time-series-model">Build Time Series Model</a> <br>
+</li>
+<li>
+<a href="#compare-models">Compare Models</a> <br>
+</li>
+<li>
+<a href="#forecast-future-unemployment">Forecast Future Unemployment</a> <br> &nbsp; 9.1 <a href="#arima-021-forecasts">ARIMA (0,2,1) forecasts</a> <br> &nbsp; 9.2 <a href="#arima-921-forecastst">ARIMA (9,2,1) forecasts</a> <br>
+</li>
+<li><a href="#results">Results</a></li>
+</ol>
+<hr></section><section id="introduction" class="level1"><h1>Introduction</h1>
+<p>[…editing…]</p>
+<section id="background" class="level2"><h2 class="anchored" data-anchor-id="background">Background</h2>
+</section><section id="time-series" class="level2"><h2 class="anchored" data-anchor-id="time-series">Time series</h2>
+</section><section id="procedure" class="level2"><h2 class="anchored" data-anchor-id="procedure">Procedure</h2>
+</section><section id="short-answer" class="level2"><h2 class="anchored" data-anchor-id="short-answer">Short Answer</h2>
+<p>If you are in a hurry, I predicted that unemployment on Greece is expected to further reduce. It will range between 10% - 13% in February, 2023.</p>
+</section></section><section id="prerequisites" class="level1"><h1>Prerequisites</h1>
+<section id="import-libraries" class="level2"><h2 class="anchored" data-anchor-id="import-libraries">Import Libraries</h2>
+<p>For this analysis we will need standard libraries for importing and processing my data, such as readr <span class="citation" data-cites="R-readr">(<a href="#ref-R-readr" role="doc-biblioref">Wickham, Hester, &amp; Bryan, 2022</a>)</span> and dplyr <span class="citation" data-cites="R-dplyr">(<a href="#ref-R-dplyr" role="doc-biblioref">Wickham, François, Henry, &amp; Müller, 2022</a>)</span>. The kableExtra <span class="citation" data-cites="R-kableExtra">(<a href="#ref-R-kableExtra" role="doc-biblioref">Zhu, 2021</a>)</span> package was used to print the results in table format, while the flextable <span class="citation" data-cites="R-flextable">(<a href="#ref-R-flextable" role="doc-biblioref">Gohel &amp; Skintzos, 2022</a>)</span> package was used to print the results of the Dickey-Fuller and KPSS tests.</p>
+<p>Then, due to the nature of the data (time series) it was deemed necessary to use relevant libraries such as lubridate<span class="citation" data-cites="R-lubridate">(<a href="#ref-R-lubridate" role="doc-biblioref">Spinu, Grolemund, &amp; Wickham, 2021</a>)</span>, tseries<span class="citation" data-cites="R-tseries">(<a href="#ref-R-tseries" role="doc-biblioref">Trapletti &amp; Hornik, 2022</a>)</span> &amp; forecast<span class="citation" data-cites="R-forecast">(<a href="#ref-R-forecast" role="doc-biblioref">R. Hyndman et al., 2022</a>)</span> packages.</p>
+<p>Finally, the ggplot2 <span class="citation" data-cites="R-ggplot2">(<a href="#ref-R-ggplot2" role="doc-biblioref">Wickham, Chang, et al., 2022</a>)</span> package was used to create some visualizations, as well as an auxiliary package, ggtext <span class="citation" data-cites="R-ggtext">(<a href="#ref-R-ggtext" role="doc-biblioref">Wilke &amp; Wiernik, 2022</a>)</span>, for further formatting those.</p>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># General purpose R libraries</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org">readr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://haozhu233.github.io/kableExtra/">kableExtra</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ardata-fr.github.io/flextable-book/">flextable</a></span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Graphs</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://wilkelab.org/ggtext/">ggtext</a></span><span class="op">)</span> <span class="co"># Add support for HTML/CSS on ggplot</span></span>
+<span></span>
+<span><span class="co"># Time Series </span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org">lubridate</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">tseries</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://pkg.robjhyndman.com/forecast/">forecast</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Other settings</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>digits<span class="op">=</span><span class="fl">2</span><span class="op">)</span> <span class="co"># print only 2 decimals</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section><section id="import-dataset" class="level2"><h2 class="anchored" data-anchor-id="import-dataset">Import dataset</h2>
+<p>After loading the libraries I am able to use the commands of the readr package to import my data. My data is in .csv format, so I’ll use the <code><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv()</a></code> command <span class="citation" data-cites="R-readr">(<a href="#ref-R-readr" role="doc-biblioref">Wickham, Hester, et al., 2022</a>)</span> to import them.</p>
+<p>Additionally, I choose not to include EA-19 values (as I investigate Greece’s unemployment).</p>
+<div class="cell" data-hash="2022-10-22-Unemployment-Greece_cache/html/Import dataset_845f1e509127e8e1192a3c67b571b8ad">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">unemployment</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"data/unemployment.csv"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">LOCATION</span>, <span class="va">TIME</span>, <span class="va">Value</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">LOCATION</span> <span class="op">!=</span> <span class="st">"EA19"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section><section id="preview-dataset" class="level2"><h2 class="anchored" data-anchor-id="preview-dataset">Preview Dataset</h2>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#| label: tbl-preview-dataset</span></span>
+<span><span class="co">#| tbl-cap: "Preview Dataset (first 6 rows)"</span></span>
+<span><span class="co">#| </span></span>
+<span><span class="va">preview_dataset</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">unemployment</span>, <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="va">preview_dataset</span>, </span>
+<span>    align <span class="op">=</span> <span class="st">'c'</span>,</span>
+<span>    booktabs <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>    centering <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>    valign <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_classic.html">kable_paper</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/scroll_box.html">scroll_box</a></span><span class="op">(</span>width <span class="op">=</span> <span class="st">"600px"</span>, height <span class="op">=</span> <span class="st">"250px"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:250px; overflow-x: scroll; width:600px; "><table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
+<thead><tr>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> LOCATION </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> TIME </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> Value </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:center;"> GRC </td>
+   <td style="text-align:center;"> 1998-04 </td>
+   <td style="text-align:center;"> 11 </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> GRC </td>
+   <td style="text-align:center;"> 1998-05 </td>
+   <td style="text-align:center;"> 11 </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> GRC </td>
+   <td style="text-align:center;"> 1998-06 </td>
+   <td style="text-align:center;"> 11 </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> GRC </td>
+   <td style="text-align:center;"> 1998-07 </td>
+   <td style="text-align:center;"> 11 </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> GRC </td>
+   <td style="text-align:center;"> 1998-08 </td>
+   <td style="text-align:center;"> 11 </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> GRC </td>
+   <td style="text-align:center;"> 1998-09 </td>
+   <td style="text-align:center;"> 11 </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> GRC </td>
+   <td style="text-align:center;"> 1998-10 </td>
+   <td style="text-align:center;"> 11 </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> GRC </td>
+   <td style="text-align:center;"> 1998-11 </td>
+   <td style="text-align:center;"> 11 </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> GRC </td>
+   <td style="text-align:center;"> 1998-12 </td>
+   <td style="text-align:center;"> 11 </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> GRC </td>
+   <td style="text-align:center;"> 1999-01 </td>
+   <td style="text-align:center;"> 11 </td>
+  </tr>
+</tbody>
+</table></div>
+
+</div>
+</div>
+</section><section id="dataset-structure" class="level2"><h2 class="anchored" data-anchor-id="dataset-structure">Dataset Structure</h2>
+<p>Our dataset is consisted by 3 variables (columns). More specifically, concerning my variables, are as follows :</p>
+<table class="table">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 33%">
+<col style="width: 45%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: center;">Variable</th>
+<th style="text-align: center;">Property</th>
+<th style="text-align: center;">Description</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>LOCATION</code></td>
+<td style="text-align: center;">
+<em>qualitative</em> <br> (nominal)</td>
+<td style="text-align: center;">Specific country’s statistics</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>TIME</code></td>
+<td style="text-align: center;">
+<em>qualitative</em> <br> (ordinal)</td>
+<td style="text-align: center;">Month of the reported data</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>Value</code></td>
+<td style="text-align: center;">
+<em>quantitative</em> <br> (continuous)</td>
+<td style="text-align: center;">Unemployment at the given Time and Country</td>
+</tr>
+</tbody>
+</table>
+<p>Thus, my sample has 3 variables, of which 2 are qualitative and 1 is quantitative property.</p>
+</section><section id="time-series-preprocessing" class="level2"><h2 class="anchored" data-anchor-id="time-series-preprocessing">Time Series Preprocessing</h2>
+<p>The <code>TIME</code> variable needs to be a Date variable which is not fulfilled on our case.</p>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">unemployment</span>, <span class="va">class</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">F</span>, position <span class="op">=</span> <span class="st">"center"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead><tr>
+<th style="text-align:left;">   </th>
+   <th style="text-align:left;"> x </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> LOCATION </td>
+   <td style="text-align:left;"> character </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> TIME </td>
+   <td style="text-align:left;"> character </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Value </td>
+   <td style="text-align:left;"> numeric </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>So, above I see that I have dates in a format “YYYY-MM” (Year - Month) and they are considered as characters. With the help of <code>lubridate</code> package I will convert my time series on a Date format.</p>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">unemployment</span><span class="op">$</span><span class="va">TIME</span> <span class="op">&lt;-</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html">ym</a></span><span class="op">(</span><span class="va">unemployment</span><span class="op">$</span><span class="va">TIME</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>And let’s check again :</p>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">unemployment</span>, <span class="va">class</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">F</span>, position <span class="op">=</span> <span class="st">"center"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead><tr>
+<th style="text-align:left;">   </th>
+   <th style="text-align:left;"> x </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> LOCATION </td>
+   <td style="text-align:left;"> character </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> TIME </td>
+   <td style="text-align:left;"> Date </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Value </td>
+   <td style="text-align:left;"> numeric </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>And now I got the Date format. I am able to continue my analysis.</p>
+</section></section><section id="missing-values" class="level1"><h1>Missing Values</h1>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">unemployment</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Good news! On this dataset there are 0 missing values, in total.</p>
+<p>In case the dataset had missing values, I would first look at which variables those were.In a second phase, it might be necessary to replace the missing values.</p>
+</section><section id="descriptive-statistics" class="level1"><h1>Descriptive Statistics</h1>
+<p>The unemployment data for Greece refer to the period from April 1998 το August 2022. Regarding Europe we have data from January 2000 to August 2022.</p>
+<p>The last 20 years have seen particularly large changes mainly in Greece, due to the domestic economic crisis. There is a noticeable change between September 2010 (10.1%) and September 2013 (28.1 %), in terms of unemployment in Greece. For the record, below you can find a table with the months that presented the highest unemployment in Greece. As you will notice the five highest values were observed in 2013.</p>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">unemployment</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">LOCATION</span> <span class="op">==</span> <span class="st">"GRC"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">TIME</span>, <span class="va">Value</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">Value</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">F</span>, position <span class="op">=</span> <span class="st">"center"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead><tr>
+<th style="text-align:left;">   </th>
+   <th style="text-align:left;"> TIME </th>
+   <th style="text-align:right;"> Value </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> 289 </td>
+   <td style="text-align:left;"> 2013-11-01 </td>
+   <td style="text-align:right;"> 28 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> 290 </td>
+   <td style="text-align:left;"> 2013-04-01 </td>
+   <td style="text-align:right;"> 28 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> 291 </td>
+   <td style="text-align:left;"> 2013-05-01 </td>
+   <td style="text-align:right;"> 28 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> 292 </td>
+   <td style="text-align:left;"> 2013-07-01 </td>
+   <td style="text-align:right;"> 28 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> 293 </td>
+   <td style="text-align:left;"> 2013-09-01 </td>
+   <td style="text-align:right;"> 28 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Accordingly, the highest unemployment rates observed at the European level are the following:</p>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">unemployment</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">LOCATION</span> <span class="op">==</span> <span class="st">"EU27_2020"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">TIME</span>, <span class="va">Value</span><span class="op">)</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">Value</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">F</span>, position <span class="op">=</span> <span class="st">"center"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead><tr>
+<th style="text-align:left;">   </th>
+   <th style="text-align:left;"> TIME </th>
+   <th style="text-align:right;"> Value </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> 268 </td>
+   <td style="text-align:left;"> 2013-06-01 </td>
+   <td style="text-align:right;"> 12 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> 269 </td>
+   <td style="text-align:left;"> 2013-01-01 </td>
+   <td style="text-align:right;"> 12 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> 270 </td>
+   <td style="text-align:left;"> 2013-02-01 </td>
+   <td style="text-align:right;"> 12 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> 271 </td>
+   <td style="text-align:left;"> 2013-03-01 </td>
+   <td style="text-align:right;"> 12 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> 272 </td>
+   <td style="text-align:left;"> 2013-04-01 </td>
+   <td style="text-align:right;"> 12 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The lowest unemployment ever recorded in Greece was in the period of 2008:</p>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">unemployment</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">LOCATION</span> <span class="op">==</span> <span class="st">"GRC"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">TIME</span>, <span class="va">Value</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">Value</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">F</span>, position <span class="op">=</span> <span class="st">"center"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead><tr>
+<th style="text-align:left;"> TIME </th>
+   <th style="text-align:right;"> Value </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> 2008-05-01 </td>
+   <td style="text-align:right;"> 7.4 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> 2008-06-01 </td>
+   <td style="text-align:right;"> 7.6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> 2008-07-01 </td>
+   <td style="text-align:right;"> 7.6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> 2008-10-01 </td>
+   <td style="text-align:right;"> 7.6 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> 2008-01-01 </td>
+   <td style="text-align:right;"> 7.7 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>On the other hand, at the moment in Europe we are at the lowest levels of the last 20 years, with unemployment hovering around 6%.</p>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">unemployment</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">LOCATION</span> <span class="op">==</span> <span class="st">"EU27_2020"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">TIME</span>, <span class="va">Value</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">Value</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">F</span>, position <span class="op">=</span> <span class="st">"center"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead><tr>
+<th style="text-align:left;"> TIME </th>
+   <th style="text-align:right;"> Value </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> 2022-07-01 </td>
+   <td style="text-align:right;"> 6.0 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> 2022-08-01 </td>
+   <td style="text-align:right;"> 6.0 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> 2022-04-01 </td>
+   <td style="text-align:right;"> 6.1 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> 2022-05-01 </td>
+   <td style="text-align:right;"> 6.1 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> 2022-06-01 </td>
+   <td style="text-align:right;"> 6.1 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Finally, it is evident that in the case of Greece the changes are more intense than in Europe.</p>
+<p>All of the above can be summarized by the following graph:</p>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">grc_unemployment</span> <span class="op">&lt;-</span> <span class="va">unemployment</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">LOCATION</span> <span class="op">==</span> <span class="st">"GRC"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">unemployment</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span> <span class="va">TIME</span>, y<span class="op">=</span><span class="va">Value</span>, color <span class="op">=</span> <span class="va">LOCATION</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="st">"2010-11-03"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"#000000"</span>, size <span class="op">=</span> <span class="fl">1</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span><span class="op">(</span>values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'black'</span>, <span class="st">'dodgerblue2'</span>, <span class="st">'orange'</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html">scale_x_date</a></span><span class="op">(</span>date_labels <span class="op">=</span> <span class="st">"%m-%Y"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="2022-10-22-Unemployment-Greece_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="examine-stationarity" class="level1"><h1>Examine stationarity</h1>
+<section id="definition-of-stationarity" class="level2"><h2 class="anchored" data-anchor-id="definition-of-stationarity">Definition of stationarity</h2>
+<p>An important concept in studying time series is stationarity. A time series is called stationary <span class="citation" data-cites="appliedtimeseriespenn">(<a href="#ref-appliedtimeseriespenn" role="doc-biblioref"><span>“Applied Time Series Analysis,”</span> n.d.</a>)</span> if: </p>
+<ol type="1">
+<li>
+<span class="math inline">E(X_t) = \text{constant}</span> </li>
+<li>
+<span class="math inline">Var(X_t) = \text{constant}</span> </li>
+<li><span class="math inline">Cov(X_t, X_s) = \text{constant}</span></li>
+</ol></section><section id="examine-stationarity-graphically" class="level2"><h2 class="anchored" data-anchor-id="examine-stationarity-graphically">Examine Stationarity Graphically</h2>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Level</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">First Diff.</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Second Diff.</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p>It is apparent that there is a big variation on the values of unemployment. This time series is not stationary and the differencing is justified.</p>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">grc_unemployment</span><span class="op">$</span><span class="va">Value</span>,type <span class="op">=</span> <span class="st">"l"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="2022-10-22-Unemployment-Greece_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>Here we can see a big improvement in comparison with original data. I have some concerns about points close to 150 (mildly upwards trend) and 250 (outlier).</p>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">grc_unemployment_diff1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/diff.html">diff</a></span><span class="op">(</span><span class="va">grc_unemployment</span><span class="op">$</span><span class="va">Value</span>, differences <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">grc_unemployment_diff1</span>,type <span class="op">=</span> <span class="st">"l"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="2022-10-22-Unemployment-Greece_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<p>Given the concerns of above, I made also a second difference plot. It seems to solve the problem on points close to 150.</p>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">grc_unemployment_diff2</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/diff.html">diff</a></span><span class="op">(</span><span class="va">grc_unemployment</span><span class="op">$</span><span class="va">Value</span>, differences <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">grc_unemployment_diff2</span>, type <span class="op">=</span> <span class="st">"l"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="2022-10-22-Unemployment-Greece_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="examine-stationarity-with-statistical-tests" class="level2"><h2 class="anchored" data-anchor-id="examine-stationarity-with-statistical-tests">Examine Stationarity with Statistical tests</h2>
+<p>The graphical interpretation of stationarity can be beneficial for a quick assessment on topic of stationarity. However it can be considered a subjective metric, which leads on a non consistent decision (someone may consider the second figure as stationary and some others not.</p>
+<p>Thankfully, there are some statistical tests which can help us on our decisions. Some commonly used are :</p>
+<ul>
+<li>
+<strong>Augmented Dickey-Fuller</strong> (ADF) test</li>
+<li>
+<strong>Phillips- Perron</strong> (PP) test</li>
+<li>
+<strong>Kwiatkowski-Phillips-Schmidt-Shin</strong> (KPSS) test</li>
+</ul>
+<section id="summary" class="level3"><h3 class="anchored" data-anchor-id="summary">Summary</h3>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">summary_stationarity_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>                             <span class="st">"Type"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"levels"</span>, <span class="st">"Diff(GRC)"</span>, <span class="st">"Diff2(GRC)"</span><span class="op">)</span>,</span>
+<span>                             <span class="st">"ADF test"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Non Stationary"</span>, <span class="st">"Stationary"</span>, <span class="st">"Stationary"</span><span class="op">)</span>,</span>
+<span>                              <span class="st">"PP test"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Non Stationary"</span>, <span class="st">"Stationary"</span>, <span class="st">"Stationary"</span><span class="op">)</span>,</span>
+<span>                             <span class="st">"KPSS test"</span> <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Non Stationary"</span>, <span class="st">"Non Stationary"</span>, <span class="st">"Stationary"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">summary_stationarity_results</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead><tr>
+<th style="text-align:left;"> Type </th>
+   <th style="text-align:left;"> ADF.test </th>
+   <th style="text-align:left;"> PP.test </th>
+   <th style="text-align:left;"> KPSS.test </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> levels </td>
+   <td style="text-align:left;"> Non Stationary </td>
+   <td style="text-align:left;"> Non Stationary </td>
+   <td style="text-align:left;"> Non Stationary </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Diff(GRC) </td>
+   <td style="text-align:left;"> Stationary </td>
+   <td style="text-align:left;"> Stationary </td>
+   <td style="text-align:left;"> Non Stationary </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Diff2(GRC) </td>
+   <td style="text-align:left;"> Stationary </td>
+   <td style="text-align:left;"> Stationary </td>
+   <td style="text-align:left;"> Stationary </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</section><section id="adf-test" class="level3"><h3 class="anchored" data-anchor-id="adf-test">ADF test</h3>
+<p><span class="math display">
+\begin{array}{l}
+H_0 : \text{Time series is not stationary} \\
+H_1 : \text{Alternatively}
+\end{array}
+\equiv
+\begin{array}{l}
+H_0 : \text{There is a unit root} \\
+H_1 : \text{Alternatively}
+\end{array}
+</span></p>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/tseries/man/adf.test.html">adf.test</a></span><span class="op">(</span><span class="va">grc_unemployment</span><span class="op">$</span><span class="va">Value</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://davidgohel.github.io/flextable/reference/as_flextable.html">as_flextable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<div class="tabwid">
+<style>.cl-88b372c2{}.cl-889b40c6{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-88a3ddd0{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-88a3ddee{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-88a42e16{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-88a42e34{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-88a42e3e{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-88a42e48{width:2.596in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-88a42e52{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-88a42e5c{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-88a42e66{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-88a42e70{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-88a42e7a{width:2.596in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-88a42e84{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-88a42e85{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-88a42e98{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-88a42e99{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-88a42ea2{width:2.596in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-88a42eac{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<table class="cl-88b372c2">
+<thead><tr style="overflow-wrap:break-word;">
+<td class="cl-88a42e16"><p class="cl-88a3ddd0"><span class="cl-889b40c6">statistic</span></p></td>
+<td class="cl-88a42e34"><p class="cl-88a3ddd0"><span class="cl-889b40c6">p.value</span></p></td>
+<td class="cl-88a42e3e"><p class="cl-88a3ddd0"><span class="cl-889b40c6">parameter</span></p></td>
+<td class="cl-88a42e48"><p class="cl-88a3ddee"><span class="cl-889b40c6">method</span></p></td>
+<td class="cl-88a42e52"><p class="cl-88a3ddee"><span class="cl-889b40c6">alternative</span></p></td>
+</tr></thead>
+<tbody><tr style="overflow-wrap:break-word;">
+<td class="cl-88a42e5c"><p class="cl-88a3ddd0"><span class="cl-889b40c6">-0.9</span></p></td>
+<td class="cl-88a42e66"><p class="cl-88a3ddd0"><span class="cl-889b40c6">0.9485</span><span class="cl-889b40c6">   </span></p></td>
+<td class="cl-88a42e70"><p class="cl-88a3ddd0"><span class="cl-889b40c6">6.0</span></p></td>
+<td class="cl-88a42e7a"><p class="cl-88a3ddee"><span class="cl-889b40c6">Augmented Dickey-Fuller Test</span></p></td>
+<td class="cl-88a42e84"><p class="cl-88a3ddee"><span class="cl-889b40c6">stationary</span></p></td>
+</tr></tbody>
+<tfoot><tr style="overflow-wrap:break-word;"><td colspan="5" class="cl-88a42e85"><p class="cl-88a3ddee"><span class="cl-889b40c6">Signif. codes: 0 &lt;= '***' &lt; 0.001 &lt; '**' &lt; 0.01 &lt; '*' &lt; 0.05</span></p></td></tr></tfoot>
+</table>
+</div>
+</div>
+</div>
+<p>Συνεπώς, είναι προφανές από τα αποτελέσματα του στατιστικού ελέγχου Dickey Fuller ότι η χρονοσειρά μου δεν είναι στάσιμη. Θα πρέπει να εφαρμόσω τον έλεγχο Dickey-Fuller στις δοαφορές.</p>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/tseries/man/adf.test.html">adf.test</a></span><span class="op">(</span><span class="va">grc_unemployment_diff1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://davidgohel.github.io/flextable/reference/as_flextable.html">as_flextable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<div class="tabwid">
+<style>.cl-890f66b8{}.cl-88fe83ca{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-8905fd26{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-8905fd4e{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-89062c2e{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89062c4c{width:0.993in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89062c4d{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89062c56{width:2.596in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89062c60{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89062c6a{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89062c74{width:0.993in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89062c7e{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89062c88{width:2.596in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89062c92{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89062c9c{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89062ca6{width:0.993in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89062ca7{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89062cb0{width:2.596in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89062cba{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<table class="cl-890f66b8">
+<thead><tr style="overflow-wrap:break-word;">
+<td class="cl-89062c2e"><p class="cl-8905fd26"><span class="cl-88fe83ca">statistic</span></p></td>
+<td class="cl-89062c4c"><p class="cl-8905fd26"><span class="cl-88fe83ca">p.value</span></p></td>
+<td class="cl-89062c4d"><p class="cl-8905fd26"><span class="cl-88fe83ca">parameter</span></p></td>
+<td class="cl-89062c56"><p class="cl-8905fd4e"><span class="cl-88fe83ca">method</span></p></td>
+<td class="cl-89062c60"><p class="cl-8905fd4e"><span class="cl-88fe83ca">alternative</span></p></td>
+</tr></thead>
+<tbody><tr style="overflow-wrap:break-word;">
+<td class="cl-89062c6a"><p class="cl-8905fd26"><span class="cl-88fe83ca">-3.5</span></p></td>
+<td class="cl-89062c74"><p class="cl-8905fd26"><span class="cl-88fe83ca">0.0424</span><span class="cl-88fe83ca">  *</span></p></td>
+<td class="cl-89062c7e"><p class="cl-8905fd26"><span class="cl-88fe83ca">6.0</span></p></td>
+<td class="cl-89062c88"><p class="cl-8905fd4e"><span class="cl-88fe83ca">Augmented Dickey-Fuller Test</span></p></td>
+<td class="cl-89062c92"><p class="cl-8905fd4e"><span class="cl-88fe83ca">stationary</span></p></td>
+</tr></tbody>
+<tfoot><tr style="overflow-wrap:break-word;"><td colspan="5" class="cl-89062c9c"><p class="cl-8905fd4e"><span class="cl-88fe83ca">Signif. codes: 0 &lt;= '***' &lt; 0.001 &lt; '**' &lt; 0.01 &lt; '*' &lt; 0.05</span></p></td></tr></tfoot>
+</table>
+</div>
+</div>
+</div>
+<p>And finally the results for the second differences are :</p>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/tseries/man/adf.test.html">adf.test</a></span><span class="op">(</span><span class="va">grc_unemployment_diff2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://davidgohel.github.io/flextable/reference/as_flextable.html">as_flextable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stderr">
+<pre><code>Warning in adf.test(grc_unemployment_diff2): p-value smaller than printed p-
+value</code></pre>
+</div>
+<div class="cell-output-display">
+
+<div class="tabwid">
+<style>.cl-8964142e{}.cl-8952273c{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-895a5560{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-895a557e{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-895a8580{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-895a859e{width:1.021in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-895a85a8{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-895a85b2{width:2.596in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-895a85c6{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-895a85d0{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-895a85da{width:1.021in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-895a85db{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-895a85e4{width:2.596in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-895a85ee{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-895a85ef{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-895a85f8{width:1.021in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-895a8602{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-895a8603{width:2.596in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-895a860c{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<table class="cl-8964142e">
+<thead><tr style="overflow-wrap:break-word;">
+<td class="cl-895a8580"><p class="cl-895a5560"><span class="cl-8952273c">statistic</span></p></td>
+<td class="cl-895a859e"><p class="cl-895a5560"><span class="cl-8952273c">p.value</span></p></td>
+<td class="cl-895a85a8"><p class="cl-895a5560"><span class="cl-8952273c">parameter</span></p></td>
+<td class="cl-895a85b2"><p class="cl-895a557e"><span class="cl-8952273c">method</span></p></td>
+<td class="cl-895a85c6"><p class="cl-895a557e"><span class="cl-8952273c">alternative</span></p></td>
+</tr></thead>
+<tbody><tr style="overflow-wrap:break-word;">
+<td class="cl-895a85d0"><p class="cl-895a5560"><span class="cl-8952273c">-9.5</span></p></td>
+<td class="cl-895a85da"><p class="cl-895a5560"><span class="cl-8952273c">0.0100</span><span class="cl-8952273c"> **</span></p></td>
+<td class="cl-895a85db"><p class="cl-895a5560"><span class="cl-8952273c">6.0</span></p></td>
+<td class="cl-895a85e4"><p class="cl-895a557e"><span class="cl-8952273c">Augmented Dickey-Fuller Test</span></p></td>
+<td class="cl-895a85ee"><p class="cl-895a557e"><span class="cl-8952273c">stationary</span></p></td>
+</tr></tbody>
+<tfoot><tr style="overflow-wrap:break-word;"><td colspan="5" class="cl-895a85ef"><p class="cl-895a557e"><span class="cl-8952273c">Signif. codes: 0 &lt;= '***' &lt; 0.001 &lt; '**' &lt; 0.01 &lt; '*' &lt; 0.05</span></p></td></tr></tfoot>
+</table>
+</div>
+</div>
+</div>
+</section><section id="pp-test" class="level3"><h3 class="anchored" data-anchor-id="pp-test">PP test</h3>
+<p><span class="math display">
+\begin{array}{l}
+H_0 : \text{Time series is not stationary} \\
+H_1 : \text{Alternatively}
+\end{array}
+\equiv
+\begin{array}{l}
+H_0 : \text{There is a unit root} \\
+H_1 : \text{Alternatively}
+\end{array}
+</span></p>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/tseries/man/pp.test.html">pp.test</a></span><span class="op">(</span><span class="va">grc_unemployment</span><span class="op">$</span><span class="va">Value</span>,<span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://davidgohel.github.io/flextable/reference/as_flextable.html">as_flextable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<div class="tabwid">
+<style>.cl-89bb6a08{}.cl-89a86818{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-89afbcbc{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-89afbcda{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-89afea8e{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89afeaac{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89afeaad{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89afeab6{width:2.514in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89afeac0{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89afeaca{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89afead4{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89afeade{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89afeae8{width:2.514in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89afeaf2{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89afeafc{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89afeafd{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89afeb06{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89afeb10{width:2.514in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-89afeb11{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<table class="cl-89bb6a08">
+<thead><tr style="overflow-wrap:break-word;">
+<td class="cl-89afea8e"><p class="cl-89afbcbc"><span class="cl-89a86818">statistic</span></p></td>
+<td class="cl-89afeaac"><p class="cl-89afbcbc"><span class="cl-89a86818">p.value</span></p></td>
+<td class="cl-89afeaad"><p class="cl-89afbcbc"><span class="cl-89a86818">parameter</span></p></td>
+<td class="cl-89afeab6"><p class="cl-89afbcda"><span class="cl-89a86818">method</span></p></td>
+<td class="cl-89afeac0"><p class="cl-89afbcda"><span class="cl-89a86818">alternative</span></p></td>
+</tr></thead>
+<tbody><tr style="overflow-wrap:break-word;">
+<td class="cl-89afeaca"><p class="cl-89afbcbc"><span class="cl-89a86818">0.2</span></p></td>
+<td class="cl-89afead4"><p class="cl-89afbcbc"><span class="cl-89a86818">0.9900</span><span class="cl-89a86818">   </span></p></td>
+<td class="cl-89afeade"><p class="cl-89afbcbc"><span class="cl-89a86818">5.0</span></p></td>
+<td class="cl-89afeae8"><p class="cl-89afbcda"><span class="cl-89a86818">Phillips-Perron Unit Root Test</span></p></td>
+<td class="cl-89afeaf2"><p class="cl-89afbcda"><span class="cl-89a86818">stationary</span></p></td>
+</tr></tbody>
+<tfoot><tr style="overflow-wrap:break-word;"><td colspan="5" class="cl-89afeafc"><p class="cl-89afbcda"><span class="cl-89a86818">Signif. codes: 0 &lt;= '***' &lt; 0.001 &lt; '**' &lt; 0.01 &lt; '*' &lt; 0.05</span></p></td></tr></tfoot>
+</table>
+</div>
+</div>
+</div>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/tseries/man/pp.test.html">pp.test</a></span><span class="op">(</span><span class="va">grc_unemployment_diff1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://davidgohel.github.io/flextable/reference/as_flextable.html">as_flextable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<div class="tabwid">
+<style>.cl-8a1c69fc{}.cl-8a08b632{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-8a128432{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-8a128450{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-8a12b182{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a12b196{width:1.021in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a12b1a0{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a12b1aa{width:2.514in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a12b1b4{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a12b1be{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a12b1d2{width:1.021in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a12b1d3{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a12b1dc{width:2.514in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a12b1e6{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a12b1f0{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a12b1fa{width:1.021in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a12b204{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a12b20e{width:2.514in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a12b20f{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<table class="cl-8a1c69fc">
+<thead><tr style="overflow-wrap:break-word;">
+<td class="cl-8a12b182"><p class="cl-8a128432"><span class="cl-8a08b632">statistic</span></p></td>
+<td class="cl-8a12b196"><p class="cl-8a128432"><span class="cl-8a08b632">p.value</span></p></td>
+<td class="cl-8a12b1a0"><p class="cl-8a128432"><span class="cl-8a08b632">parameter</span></p></td>
+<td class="cl-8a12b1aa"><p class="cl-8a128450"><span class="cl-8a08b632">method</span></p></td>
+<td class="cl-8a12b1b4"><p class="cl-8a128450"><span class="cl-8a08b632">alternative</span></p></td>
+</tr></thead>
+<tbody><tr style="overflow-wrap:break-word;">
+<td class="cl-8a12b1be"><p class="cl-8a128432"><span class="cl-8a08b632">-279.8</span></p></td>
+<td class="cl-8a12b1d2"><p class="cl-8a128432"><span class="cl-8a08b632">0.0100</span><span class="cl-8a08b632"> **</span></p></td>
+<td class="cl-8a12b1d3"><p class="cl-8a128432"><span class="cl-8a08b632">5.0</span></p></td>
+<td class="cl-8a12b1dc"><p class="cl-8a128450"><span class="cl-8a08b632">Phillips-Perron Unit Root Test</span></p></td>
+<td class="cl-8a12b1e6"><p class="cl-8a128450"><span class="cl-8a08b632">stationary</span></p></td>
+</tr></tbody>
+<tfoot><tr style="overflow-wrap:break-word;"><td colspan="5" class="cl-8a12b1f0"><p class="cl-8a128450"><span class="cl-8a08b632">Signif. codes: 0 &lt;= '***' &lt; 0.001 &lt; '**' &lt; 0.01 &lt; '*' &lt; 0.05</span></p></td></tr></tfoot>
+</table>
+</div>
+</div>
+</div>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/tseries/man/pp.test.html">pp.test</a></span><span class="op">(</span><span class="va">grc_unemployment_diff2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://davidgohel.github.io/flextable/reference/as_flextable.html">as_flextable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<div class="tabwid">
+<style>.cl-8a7313c4{}.cl-8a626e02{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-8a6a07f2{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-8a6a0810{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-8a6a62ce{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a6a62f6{width:1.021in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a6a630a{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a6a6314{width:2.514in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a6a631e{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a6a6328{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a6a6329{width:1.021in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a6a6346{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a6a6350{width:2.514in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a6a635a{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a6a6364{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a6a636e{width:1.021in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a6a636f{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a6a6382{width:2.514in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8a6a638c{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<table class="cl-8a7313c4">
+<thead><tr style="overflow-wrap:break-word;">
+<td class="cl-8a6a62ce"><p class="cl-8a6a07f2"><span class="cl-8a626e02">statistic</span></p></td>
+<td class="cl-8a6a62f6"><p class="cl-8a6a07f2"><span class="cl-8a626e02">p.value</span></p></td>
+<td class="cl-8a6a630a"><p class="cl-8a6a07f2"><span class="cl-8a626e02">parameter</span></p></td>
+<td class="cl-8a6a6314"><p class="cl-8a6a0810"><span class="cl-8a626e02">method</span></p></td>
+<td class="cl-8a6a631e"><p class="cl-8a6a0810"><span class="cl-8a626e02">alternative</span></p></td>
+</tr></thead>
+<tbody><tr style="overflow-wrap:break-word;">
+<td class="cl-8a6a6328"><p class="cl-8a6a07f2"><span class="cl-8a626e02">-337.1</span></p></td>
+<td class="cl-8a6a6329"><p class="cl-8a6a07f2"><span class="cl-8a626e02">0.0100</span><span class="cl-8a626e02"> **</span></p></td>
+<td class="cl-8a6a6346"><p class="cl-8a6a07f2"><span class="cl-8a626e02">5.0</span></p></td>
+<td class="cl-8a6a6350"><p class="cl-8a6a0810"><span class="cl-8a626e02">Phillips-Perron Unit Root Test</span></p></td>
+<td class="cl-8a6a635a"><p class="cl-8a6a0810"><span class="cl-8a626e02">stationary</span></p></td>
+</tr></tbody>
+<tfoot><tr style="overflow-wrap:break-word;"><td colspan="5" class="cl-8a6a6364"><p class="cl-8a6a0810"><span class="cl-8a626e02">Signif. codes: 0 &lt;= '***' &lt; 0.001 &lt; '**' &lt; 0.01 &lt; '*' &lt; 0.05</span></p></td></tr></tfoot>
+</table>
+</div>
+</div>
+</div>
+</section><section id="kpss-test" class="level3"><h3 class="anchored" data-anchor-id="kpss-test">KPSS test</h3>
+<p><span class="math display">
+\begin{array}{l}
+H_0 : \text{Time series is stationary} \\
+H_1 : \text{Alternatively}
+\end{array}
+\equiv
+\begin{array}{l}
+H_0 : \text{There is not  unit root} \\
+H_1 : \text{Alternatively}
+\end{array}
+</span></p>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/tseries/man/kpss.test.html">kpss.test</a></span><span class="op">(</span><span class="va">grc_unemployment</span><span class="op">$</span><span class="va">Value</span>,<span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://davidgohel.github.io/flextable/reference/as_flextable.html">as_flextable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<div class="tabwid">
+<style>.cl-8ac305b4{}.cl-8ab25fe8{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-8aba15b2{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-8aba15da{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-8aba61e8{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8aba6206{width:1.021in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8aba6210{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8aba6224{width:2.701in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8aba622e{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8aba622f{width:1.021in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8aba6238{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8aba6242{width:2.701in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8aba624c{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8aba6256{width:1.021in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8aba6260{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8aba626a{width:2.701in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<table class="cl-8ac305b4">
+<thead><tr style="overflow-wrap:break-word;">
+<td class="cl-8aba61e8"><p class="cl-8aba15b2"><span class="cl-8ab25fe8">statistic</span></p></td>
+<td class="cl-8aba6206"><p class="cl-8aba15b2"><span class="cl-8ab25fe8">p.value</span></p></td>
+<td class="cl-8aba6210"><p class="cl-8aba15b2"><span class="cl-8ab25fe8">parameter</span></p></td>
+<td class="cl-8aba6224"><p class="cl-8aba15da"><span class="cl-8ab25fe8">method</span></p></td>
+</tr></thead>
+<tbody><tr style="overflow-wrap:break-word;">
+<td class="cl-8aba622e"><p class="cl-8aba15b2"><span class="cl-8ab25fe8">2.5</span></p></td>
+<td class="cl-8aba622f"><p class="cl-8aba15b2"><span class="cl-8ab25fe8">0.0100</span><span class="cl-8ab25fe8"> **</span></p></td>
+<td class="cl-8aba6238"><p class="cl-8aba15b2"><span class="cl-8ab25fe8">5.0</span></p></td>
+<td class="cl-8aba6242"><p class="cl-8aba15da"><span class="cl-8ab25fe8">KPSS Test for Level Stationarity</span></p></td>
+</tr></tbody>
+<tfoot><tr style="overflow-wrap:break-word;"><td colspan="4" class="cl-8aba624c"><p class="cl-8aba15da"><span class="cl-8ab25fe8">Signif. codes: 0 &lt;= '***' &lt; 0.001 &lt; '**' &lt; 0.01 &lt; '*' &lt; 0.05</span></p></td></tr></tfoot>
+</table>
+</div>
+</div>
+</div>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/tseries/man/kpss.test.html">kpss.test</a></span><span class="op">(</span><span class="va">grc_unemployment_diff1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://davidgohel.github.io/flextable/reference/as_flextable.html">as_flextable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<div class="tabwid">
+<style>.cl-8b224416{}.cl-8b0c48dc{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-8b15362c{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-8b15364a{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-8b1580aa{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b1580c8{width:0.993in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b1580c9{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b1580dc{width:2.701in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b1580e6{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b1580f0{width:0.993in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b1580fa{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b158104{width:2.701in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b158105{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b158118{width:0.993in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b158119{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b158122{width:2.701in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<table class="cl-8b224416">
+<thead><tr style="overflow-wrap:break-word;">
+<td class="cl-8b1580aa"><p class="cl-8b15362c"><span class="cl-8b0c48dc">statistic</span></p></td>
+<td class="cl-8b1580c8"><p class="cl-8b15362c"><span class="cl-8b0c48dc">p.value</span></p></td>
+<td class="cl-8b1580c9"><p class="cl-8b15362c"><span class="cl-8b0c48dc">parameter</span></p></td>
+<td class="cl-8b1580dc"><p class="cl-8b15364a"><span class="cl-8b0c48dc">method</span></p></td>
+</tr></thead>
+<tbody><tr style="overflow-wrap:break-word;">
+<td class="cl-8b1580e6"><p class="cl-8b15362c"><span class="cl-8b0c48dc">0.6</span></p></td>
+<td class="cl-8b1580f0"><p class="cl-8b15362c"><span class="cl-8b0c48dc">0.0231</span><span class="cl-8b0c48dc">  *</span></p></td>
+<td class="cl-8b1580fa"><p class="cl-8b15362c"><span class="cl-8b0c48dc">5.0</span></p></td>
+<td class="cl-8b158104"><p class="cl-8b15364a"><span class="cl-8b0c48dc">KPSS Test for Level Stationarity</span></p></td>
+</tr></tbody>
+<tfoot><tr style="overflow-wrap:break-word;"><td colspan="4" class="cl-8b158105"><p class="cl-8b15364a"><span class="cl-8b0c48dc">Signif. codes: 0 &lt;= '***' &lt; 0.001 &lt; '**' &lt; 0.01 &lt; '*' &lt; 0.05</span></p></td></tr></tfoot>
+</table>
+</div>
+</div>
+</div>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/tseries/man/kpss.test.html">kpss.test</a></span><span class="op">(</span><span class="va">grc_unemployment_diff2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://davidgohel.github.io/flextable/reference/as_flextable.html">as_flextable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<div class="tabwid">
+<style>.cl-8b7823d6{}.cl-8b671852{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-8b6e4172{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-8b6e4190{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-8b6e6cce{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b6e6ce2{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b6e6cec{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b6e6cf6{width:2.701in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b6e6d00{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b6e6d0a{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b6e6d14{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b6e6d1e{width:2.701in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b6e6d28{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b6e6d29{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b6e6d32{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b6e6d3c{width:2.701in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
+<table class="cl-8b7823d6">
+<thead><tr style="overflow-wrap:break-word;">
+<td class="cl-8b6e6cce"><p class="cl-8b6e4172"><span class="cl-8b671852">statistic</span></p></td>
+<td class="cl-8b6e6ce2"><p class="cl-8b6e4172"><span class="cl-8b671852">p.value</span></p></td>
+<td class="cl-8b6e6cec"><p class="cl-8b6e4172"><span class="cl-8b671852">parameter</span></p></td>
+<td class="cl-8b6e6cf6"><p class="cl-8b6e4190"><span class="cl-8b671852">method</span></p></td>
+</tr></thead>
+<tbody><tr style="overflow-wrap:break-word;">
+<td class="cl-8b6e6d00"><p class="cl-8b6e4172"><span class="cl-8b671852">0.0</span></p></td>
+<td class="cl-8b6e6d0a"><p class="cl-8b6e4172"><span class="cl-8b671852">0.1000</span><span class="cl-8b671852">  .</span></p></td>
+<td class="cl-8b6e6d14"><p class="cl-8b6e4172"><span class="cl-8b671852">5.0</span></p></td>
+<td class="cl-8b6e6d1e"><p class="cl-8b6e4190"><span class="cl-8b671852">KPSS Test for Level Stationarity</span></p></td>
+</tr></tbody>
+<tfoot><tr style="overflow-wrap:break-word;"><td colspan="4" class="cl-8b6e6d28"><p class="cl-8b6e4190"><span class="cl-8b671852">Signif. codes: 0 &lt;= '***' &lt; 0.001 &lt; '**' &lt; 0.01 &lt; '*' &lt; 0.05</span></p></td></tr></tfoot>
+</table>
+</div>
+</div>
+</div>
+</section></section></section><section id="identify-model" class="level1"><h1>Identify Model</h1>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Levels</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">First Diff.</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">Second Diff.</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/acf.html">acf</a></span><span class="op">(</span><span class="va">grc_unemployment</span><span class="op">$</span><span class="va">Value</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/acf.html">pacf</a></span><span class="op">(</span><span class="va">grc_unemployment</span><span class="op">$</span><span class="va">Value</span> <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="2022-10-22-Unemployment-Greece_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/acf.html">acf</a></span><span class="op">(</span><span class="va">grc_unemployment_diff1</span> <span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/acf.html">pacf</a></span><span class="op">(</span><span class="va">grc_unemployment_diff1</span> <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="2022-10-22-Unemployment-Greece_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/acf.html">acf</a></span><span class="op">(</span><span class="va">grc_unemployment_diff2</span> <span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/acf.html">pacf</a></span><span class="op">(</span><span class="va">grc_unemployment_diff2</span> <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="2022-10-22-Unemployment-Greece_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="build-time-series-model" class="level1"><h1>Build Time Series Model</h1>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">Automated model</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">ARIMA candidate 1</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" role="tab" aria-controls="tabset-3-3" aria-selected="false">ARIMA candidate 2</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-4" role="tab" aria-controls="tabset-3-4" aria-selected="false">ARIMA candidate 3</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">grc_unemployment</span> <span class="op">=</span> <span class="va">grc_unemployment</span><span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Value</span><span class="op">)</span></span>
+<span><span class="va">auto_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://pkg.robjhyndman.com/forecast/reference/auto.arima.html">auto.arima</a></span><span class="op">(</span><span class="va">grc_unemployment</span>, trace <span class="op">=</span> <span class="cn">T</span>,seasonal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>
+ Fitting models using approximations to speed things up...
+
+ ARIMA(2,2,2)                    : 302
+ ARIMA(0,2,0)                    : 474
+ ARIMA(1,2,0)                    : 405
+ ARIMA(0,2,1)                    : 298
+ ARIMA(1,2,1)                    : 301
+ ARIMA(0,2,2)                    : 300
+ ARIMA(1,2,2)                    : 302
+
+ Now re-fitting the best model(s) without approximations...
+
+ ARIMA(0,2,1)                    : 297
+
+ Best model: ARIMA(0,2,1)                    </code></pre>
+</div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">auto_model</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>Series: grc_unemployment 
+ARIMA(0,2,1) 
+
+Coefficients:
+         ma1
+      -0.908
+s.e.   0.023
+
+sigma^2 = 0.16:  log likelihood = -146
+AIC=297   AICc=297   BIC=304</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">arimaModel_1</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/arima.html">arima</a></span><span class="op">(</span><span class="va">grc_unemployment</span>, order<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">arimaModel_1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+arima(x = grc_unemployment, order = c(0, 1, 2))
+
+Coefficients:
+        ma1    ma2
+      0.145  0.076
+s.e.  0.059  0.057
+
+sigma^2 estimated as 0.171:  log likelihood = -157,  aic = 320</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">arimaModel_2</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/arima.html">arima</a></span><span class="op">(</span><span class="va">grc_unemployment</span>, order<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">arimaModel_2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+arima(x = grc_unemployment, order = c(1, 1, 2))
+
+Coefficients:
+        ar1     ma1    ma2
+      0.971  -0.905  0.017
+s.e.  0.019   0.067  0.063
+
+sigma^2 estimated as 0.157:  log likelihood = -144,  aic = 296</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-3-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-4-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">arimaModel_3</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/arima.html">arima</a></span><span class="op">(</span><span class="va">grc_unemployment</span>, order<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">9</span>,<span class="fl">2</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">arimaModel_3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+arima(x = grc_unemployment, order = c(9, 2, 1))
+
+Coefficients:
+        ar1    ar2    ar3    ar4    ar5    ar6     ar7     ar8     ar9    ma1
+      -0.79  -0.71  -0.67  -0.69  -0.59  -0.38  -0.316  -0.446  -0.270  -0.15
+s.e.   0.17   0.15   0.15   0.14   0.14   0.12   0.088   0.072   0.069   0.18
+
+sigma^2 estimated as 0.139:  log likelihood = -127,  aic = 276</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="compare-models" class="level1"><h1>Compare Models</h1>
+<p>After building some ARIMA models, I should decide which is the best one to make my estimations. One metric to evaluate those models is <strong>AIC</strong> (Akaike Information Criterion). The lower the value of AIC, the better my model.</p>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">accuracy_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>                             <span class="st">"Name of Model"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Auto Model"</span>, <span class="st">"ARIMA Candidate #1"</span>, <span class="st">"ARIMA Candidate #2"</span>, <span class="st">"ARIMA Candidate #3"</span><span class="op">)</span>,</span>
+<span>                             Model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ARIMA(0,2,1)"</span>, <span class="st">"ARIMA(0,1,2)"</span>, <span class="st">"ARIMA(1,1,2)"</span>, <span class="st">"ARIMA(9,2,1)"</span><span class="op">)</span>,</span>
+<span>                             AIC <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">auto_model</span><span class="op">$</span><span class="va">aic</span>, <span class="va">arimaModel_1</span><span class="op">$</span><span class="va">aic</span>, <span class="va">arimaModel_2</span><span class="op">$</span><span class="va">aic</span>, <span class="va">arimaModel_3</span><span class="op">$</span><span class="va">aic</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">accuracy_table</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead><tr>
+<th style="text-align:left;"> Name.of.Model </th>
+   <th style="text-align:left;"> Model </th>
+   <th style="text-align:right;"> AIC </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Auto Model </td>
+   <td style="text-align:left;"> ARIMA(0,2,1) </td>
+   <td style="text-align:right;"> 297 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> ARIMA Candidate #1 </td>
+   <td style="text-align:left;"> ARIMA(0,1,2) </td>
+   <td style="text-align:right;"> 320 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> ARIMA Candidate #2 </td>
+   <td style="text-align:left;"> ARIMA(1,1,2) </td>
+   <td style="text-align:right;"> 296 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> ARIMA Candidate #3 </td>
+   <td style="text-align:left;"> ARIMA(9,2,1) </td>
+   <td style="text-align:right;"> 276 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>So, the best model is the Auto Model (ARIMA(9,2,1)), which has the lowest AIC value.</p>
+</section><section id="checking-best-models" class="level1"><h1>Checking best models</h1>
+</section><section id="forecast-future-unemployment" class="level1"><h1>Forecast Future Unemployment</h1>
+<p>Previously, I identify which is the best model. Now, I will use this model in order to predict unemployment for the next 6 months. It should be recalled that the last available value was from August of 2022 (12.2%). Therefore, I will make a prediction for unemployment in Greece until February 2023.</p>
+<section id="arima-021-forecasts" class="level2"><h2 class="anchored" data-anchor-id="arima-021-forecasts">ARIMA (0,2,1) forecasts</h2>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/forecast.html">forecast</a></span><span class="op">(</span><span class="va">auto_model</span>,<span class="fl">6</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="2022-10-22-Unemployment-Greece_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid" width="672"></p>
+</div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/forecast.html">forecast</a></span><span class="op">(</span><span class="va">auto_model</span>,<span class="fl">6</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_classic.html">kable_paper</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
+<thead><tr>
+<th style="text-align:left;">   </th>
+   <th style="text-align:right;"> Point Forecast </th>
+   <th style="text-align:right;"> Lo 80 </th>
+   <th style="text-align:right;"> Hi 80 </th>
+   <th style="text-align:right;"> Lo 95 </th>
+   <th style="text-align:right;"> Hi 95 </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> 294 </td>
+   <td style="text-align:right;"> 12 </td>
+   <td style="text-align:right;"> 11.5 </td>
+   <td style="text-align:right;"> 13 </td>
+   <td style="text-align:right;"> 11.2 </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> 295 </td>
+   <td style="text-align:right;"> 12 </td>
+   <td style="text-align:right;"> 11.1 </td>
+   <td style="text-align:right;"> 13 </td>
+   <td style="text-align:right;"> 10.7 </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> 296 </td>
+   <td style="text-align:right;"> 12 </td>
+   <td style="text-align:right;"> 10.7 </td>
+   <td style="text-align:right;"> 13 </td>
+   <td style="text-align:right;"> 10.2 </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> 297 </td>
+   <td style="text-align:right;"> 12 </td>
+   <td style="text-align:right;"> 10.3 </td>
+   <td style="text-align:right;"> 13 </td>
+   <td style="text-align:right;"> 9.7 </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> 298 </td>
+   <td style="text-align:right;"> 11 </td>
+   <td style="text-align:right;"> 10.0 </td>
+   <td style="text-align:right;"> 13 </td>
+   <td style="text-align:right;"> 9.2 </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> 299 </td>
+   <td style="text-align:right;"> 11 </td>
+   <td style="text-align:right;"> 9.6 </td>
+   <td style="text-align:right;"> 13 </td>
+   <td style="text-align:right;"> 8.8 </td>
+   <td style="text-align:right;"> 14 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</section><section id="arima-921-forecasts" class="level2"><h2 class="anchored" data-anchor-id="arima-921-forecasts">ARIMA (9,2,1) forecasts</h2>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/forecast.html">forecast</a></span><span class="op">(</span><span class="va">arimaModel_3</span>,<span class="fl">6</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="2022-10-22-Unemployment-Greece_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" width="672"></p>
+</div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/forecast.html">forecast</a></span><span class="op">(</span><span class="va">arimaModel_3</span>,<span class="fl">6</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_classic.html">kable_paper</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
+<thead><tr>
+<th style="text-align:left;">   </th>
+   <th style="text-align:right;"> Point Forecast </th>
+   <th style="text-align:right;"> Lo 80 </th>
+   <th style="text-align:right;"> Hi 80 </th>
+   <th style="text-align:right;"> Lo 95 </th>
+   <th style="text-align:right;"> Hi 95 </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> 294 </td>
+   <td style="text-align:right;"> 12 </td>
+   <td style="text-align:right;"> 11 </td>
+   <td style="text-align:right;"> 12 </td>
+   <td style="text-align:right;"> 11.1 </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> 295 </td>
+   <td style="text-align:right;"> 12 </td>
+   <td style="text-align:right;"> 11 </td>
+   <td style="text-align:right;"> 13 </td>
+   <td style="text-align:right;"> 10.9 </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> 296 </td>
+   <td style="text-align:right;"> 12 </td>
+   <td style="text-align:right;"> 11 </td>
+   <td style="text-align:right;"> 13 </td>
+   <td style="text-align:right;"> 10.7 </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> 297 </td>
+   <td style="text-align:right;"> 12 </td>
+   <td style="text-align:right;"> 11 </td>
+   <td style="text-align:right;"> 13 </td>
+   <td style="text-align:right;"> 10.1 </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> 298 </td>
+   <td style="text-align:right;"> 12 </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 13 </td>
+   <td style="text-align:right;"> 9.8 </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> 299 </td>
+   <td style="text-align:right;"> 12 </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 13 </td>
+   <td style="text-align:right;"> 9.4 </td>
+   <td style="text-align:right;"> 14 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</section></section><section id="results" class="level1"><h1>Results</h1>
+<p>Given the diagram as well as the forecast table (of the best performing model, candidate #3), I conclude that a reduction in unemployment in Greece is expected in the next period of time (in the next six months). More specifically, <strong>Greece’s unemployment</strong> in <strong>February 2023</strong> will range between <strong>10%</strong> (9.4%) and <strong>13%</strong> (14%) with an <strong>80%</strong> (95%) probability (based on <strong>ARIMA(9,2,1)</strong> model).</p>
+</section><div id="quarto-appendix" class="default"><section id="acknowledgements" class="level1 appendix unlisted"><h2 class="quarto-appendix-heading">Acknowledgements</h2><div class="quarto-appendix-contents">
+<p>Image by <a href="https://pixabay.com/users/publicdomainpictures-14/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=19907">PublicDomainPictures</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=19907">Pixabay</a></p>
+
+
+
+</div></section><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="doc-bibliography">
+<div id="ref-appliedtimeseriespenn" class="csl-entry" role="doc-biblioentry">
+Applied time series analysis. (n.d.). Retrieved October 19, 2022, from <a href="https://online.stat.psu.edu/stat510/">https://online.stat.psu.edu/stat510/</a>
+</div>
+<div id="ref-R-flextable" class="csl-entry" role="doc-biblioentry">
+Gohel, D., &amp; Skintzos, P. (2022). <em>Flextable: Functions for tabular reporting</em>. Retrieved from <a href="https://CRAN.R-project.org/package=flextable">https://CRAN.R-project.org/package=flextable</a>
+</div>
+<div id="ref-lubridate2011" class="csl-entry" role="doc-biblioentry">
+Grolemund, G., &amp; Wickham, H. (2011). Dates and times made easy with <span class="nocase">lubridate</span>. <em>Journal of Statistical Software</em>, <em>40</em>(3), 1–25. Retrieved from <a href="https://www.jstatsoft.org/v40/i03/">https://www.jstatsoft.org/v40/i03/</a>
+</div>
+<div id="ref-hyndman2018forecasting" class="csl-entry" role="doc-biblioentry">
+Hyndman, R. J., &amp; Athanasopoulos, G. (2018). <em>Forecasting: Principles and practice</em>. OTexts.
+</div>
+<div id="ref-forecast2008" class="csl-entry" role="doc-biblioentry">
+Hyndman, R. J., &amp; Khandakar, Y. (2008). Automatic time series forecasting: The forecast package for <span>R</span>. <em>Journal of Statistical Software</em>, <em>26</em>(3), 1–22. <a href="https://doi.org/10.18637/jss.v027.i03">https://doi.org/10.18637/jss.v027.i03</a>
+</div>
+<div id="ref-R-forecast" class="csl-entry" role="doc-biblioentry">
+Hyndman, R., Athanasopoulos, G., Bergmeir, C., Caceres, G., Chhay, L., Kuroptev, K., … Yasmeen, F. (2022). <em>Forecast: Forecasting functions for time series and linear models</em>. Retrieved from <a href="https://CRAN.R-project.org/package=forecast">https://CRAN.R-project.org/package=forecast</a>
+</div>
+<div id="ref-oecd2022" class="csl-entry" role="doc-biblioentry">
+OECD. (2022). Unemployment rate (indicator). Retrieved October 14, 2022, from <a href="https://doi:%2010.1787/52570002-en">doi: 10.1787/52570002-en</a>
+</div>
+<div id="ref-R-base" class="csl-entry" role="doc-biblioentry">
+R Core Team. (2021). <em>R: A language and environment for statistical computing</em>. Vienna, Austria: R Foundation for Statistical Computing. Retrieved from <a href="https://www.R-project.org/">https://www.R-project.org/</a>
+</div>
+<div id="ref-krgraphgallerytimeseries" class="csl-entry" role="doc-biblioentry">
+R Graph Gallery. (2018). Time series. <em>URL Https://r-Graph-Gallery.com/Time-Series.html</em>.
+</div>
+<div id="ref-R-lubridate" class="csl-entry" role="doc-biblioentry">
+Spinu, V., Grolemund, G., &amp; Wickham, H. (2021). <em>Lubridate: Make dealing with dates a little easier</em>. Retrieved from <a href="https://CRAN.R-project.org/package=lubridate">https://CRAN.R-project.org/package=lubridate</a>
+</div>
+<div id="ref-R-tseries" class="csl-entry" role="doc-biblioentry">
+Trapletti, A., &amp; Hornik, K. (2022). <em>Tseries: Time series analysis and computational finance</em>. Retrieved from <a href="https://CRAN.R-project.org/package=tseries">https://CRAN.R-project.org/package=tseries</a>
+</div>
+<div id="ref-ggplot22016" class="csl-entry" role="doc-biblioentry">
+Wickham, H. (2016). <em>ggplot2: Elegant graphics for data analysis</em>. Springer-Verlag New York. Retrieved from <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>
+</div>
+<div id="ref-R-ggplot2" class="csl-entry" role="doc-biblioentry">
+Wickham, H., Chang, W., Henry, L., Pedersen, T. L., Takahashi, K., Wilke, C., … Dunnington, D. (2022). <em>ggplot2: Create elegant data visualisations using the grammar of graphics</em>. Retrieved from <a href="https://CRAN.R-project.org/package=ggplot2">https://CRAN.R-project.org/package=ggplot2</a>
+</div>
+<div id="ref-R-dplyr" class="csl-entry" role="doc-biblioentry">
+Wickham, H., François, R., Henry, L., &amp; Müller, K. (2022). <em>Dplyr: A grammar of data manipulation</em>. Retrieved from <a href="https://CRAN.R-project.org/package=dplyr">https://CRAN.R-project.org/package=dplyr</a>
+</div>
+<div id="ref-R-readr" class="csl-entry" role="doc-biblioentry">
+Wickham, H., Hester, J., &amp; Bryan, J. (2022). <em>Readr: Read rectangular text data</em>. Retrieved from <a href="https://CRAN.R-project.org/package=readr">https://CRAN.R-project.org/package=readr</a>
+</div>
+<div id="ref-R-ggtext" class="csl-entry" role="doc-biblioentry">
+Wilke, C. O., &amp; Wiernik, B. M. (2022). <em>Ggtext: Improved text rendering support for ggplot2</em>. Retrieved from <a href="https://wilkelab.org/ggtext/">https://wilkelab.org/ggtext/</a>
+</div>
+<div id="ref-R-kableExtra" class="csl-entry" role="doc-biblioentry">
+Zhu, H. (2021). <em>kableExtra: Construct complex table with kable and pipe syntax</em>. Retrieved from <a href="https://CRAN.R-project.org/package=kableExtra">https://CRAN.R-project.org/package=kableExtra</a>
+</div>
+</div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{stesiam2022,
+  author = {stesiam},
+  title = {Forecasting {Unemployment} in {Greece}},
+  date = {2022-10-22},
+  url = {https://www.stesiam.github.io/notebooks/2022-10-22-Forecasting-Unemployment-Greece/2022-10-22-Unemployment-Greece.html},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-stesiam2022" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
+stesiam. (2022, October 22). Forecasting Unemployment in Greece.
+Retrieved from <a href="https://www.stesiam.github.io/notebooks/2022-10-22-Forecasting-Unemployment-Greece/2022-10-22-Unemployment-Greece.html">https://www.stesiam.github.io/notebooks/2022-10-22-Forecasting-Unemployment-Greece/2022-10-22-Unemployment-Greece.html</a>
+</div></div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    toggleBodyColorMode(window.document.querySelector("link#quarto-bootstrap"));
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script><script src="https://giscus.app/client.js" data-repo="stesiam/stesiam.github.io" data-repo-id="R_kgDOHuiNDg" data-category="Comments" data-category-id="DIC_kwDOHuiNDs4CQeAf" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
