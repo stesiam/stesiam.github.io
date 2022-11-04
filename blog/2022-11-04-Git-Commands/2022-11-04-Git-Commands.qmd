@@ -29,7 +29,41 @@ editor_options:
 
 ## Introduction
 
-Edit
+### Version control systems
+
+```{r Import libraries, echo=FALSE, warning=FALSE, message=FALSE}
+library(readr)
+library(dplyr)
+library(lubridate)
+library(ggplot2)
+```
+
+
+
+```{r Import data, echo=FALSE, message=FALSE, warning=FALSE}
+trends_vcs <- read_csv("multiTimeline.csv", 
+    skip = 2)
+
+trends_vcs$Month <- lubridate::ym(trends_vcs$Month)
+
+
+trends_vcs_tidy = tidyr::pivot_longer(trends_vcs, !Month, names_to = "VCS", values_to = "counts")
+```
+
+```{r, fig.width= 7}
+trends_vcs_tidy %>%
+  ggplot(aes(x= Month, y = counts)) +
+  geom_line(aes(color = VCS)) +
+  labs(title = "Trends on Version Control Systems",
+              subtitle = "Compare trends of Git and SVN (Subversion) from 2004 to 2022",
+              caption = "Data source: Google Trends") +
+  theme_classic()
+```
+
+
+
+### The case of Git
+
 
 
 ## Git initial settings
@@ -52,6 +86,7 @@ Here is the output on my machine :
 
 
 ## Beginner's workflow
+
 
 | Git command | Description  |
 | :---: | :---:|
