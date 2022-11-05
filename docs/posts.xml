@@ -16,7 +16,13 @@
   <dc:creator>stesiam</dc:creator>
   <link>https://www.stesiam.github.io/blog/2022-11-04-Git-Commands/2022-11-04-Git-Commands.html</link>
   <description><![CDATA[ <section id="introduction" class="level2"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<section id="version-control-systems" class="level3"><h3 class="anchored" data-anchor-id="version-control-systems">Version control systems</h3>
+<section id="what-is-version-control-system" class="level3"><h3 class="anchored" data-anchor-id="what-is-version-control-system">What is Version Control System</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="https://www.stesiam.github.io/blog/2022-11-04-Git-Commands/workflow_without_vcs.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Workflow without Version Control System</figcaption><p></p>
+</figure>
+</div>
+</section><section id="popularity-of-vcs" class="level3"><h3 class="anchored" data-anchor-id="popularity-of-vcs">Popularity of VCS</h3>
 <div class="cell">
 
 </div>
@@ -24,14 +30,14 @@
 
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;">trends_vcs_tidy</span> <span class="op" style="color: #5E5E5E;">%&gt;%</span></span>
+<details><summary>Code</summary><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;">trends_vcs_tidy</span> <span class="op" style="color: #5E5E5E;">%&gt;%</span></span>
 <span>  <span class="fu" style="color: #4758AB;">ggplot</span><span class="op" style="color: #5E5E5E;">(</span><span class="fu" style="color: #4758AB;">aes</span><span class="op" style="color: #5E5E5E;">(</span>x<span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">Month</span>, y <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">counts</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
 <span>  <span class="fu" style="color: #4758AB;">geom_line</span><span class="op" style="color: #5E5E5E;">(</span><span class="fu" style="color: #4758AB;">aes</span><span class="op" style="color: #5E5E5E;">(</span>color <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">VCS</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
 <span>  <span class="fu" style="color: #4758AB;">labs</span><span class="op" style="color: #5E5E5E;">(</span>title <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Trends on Version Control Systems"</span>,</span>
 <span>              subtitle <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Compare trends of Git and SVN (Subversion) from 2004 to 2022"</span>,</span>
 <span>              caption <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Data source: Google Trends"</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
 <span>  <span class="fu" style="color: #4758AB;">theme_classic</span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
-<div class="cell-output-display">
+</details><div class="cell-output-display">
 <p><img src="https://www.stesiam.github.io/blog/2022-11-04-Git-Commands/2022-11-04-Git-Commands_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
@@ -39,6 +45,19 @@
 </section></section><section id="git-initial-settings" class="level2"><h2 class="anchored" data-anchor-id="git-initial-settings">Git initial settings</h2>
 <div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;">git</span> config <span class="at" style="color: #657422;">--global</span> user.name <span class="st" style="color: #20794D;">"YourName"</span></span>
 <span id="cb2-2"><span class="fu" style="color: #4758AB;">git</span> config <span class="at" style="color: #657422;">--global</span> user.email your_email</span></code></pre></div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you are planning to host your repository on GitHub, you may want to hide your casual email. In that case GitHUb offers a <code>noreply</code> email for this purpose. You can read more <a href="https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address">here</a>.</p>
+</div>
+</div>
 <p>and you can verify your settings by using the following command :</p>
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;">git</span> config <span class="at" style="color: #657422;">--list</span></span></code></pre></div>
 <p>Here is the output on my machine :</p>
