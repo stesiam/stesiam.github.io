@@ -40,6 +40,7 @@ editor_options:
 &nbsp; 2.3 [Preview Dataset](#preview-dataset) <br>
 &nbsp; 2.4 [Structure of Dataset](#structure-of-dataset) <br>
 &nbsp; 2.5 [Recoding variables](#recoding-variables) <br>
+&nbsp; 2.6 [Setting colors](#setting-colors) <br>
 3. [Parliament over the years](#parliament-over-the-years) <br>
 4. [Most elected members of parliament](#most-elected-members-of-parliament) <br>
 5. [Most elected members by party](#most-elected-members-by-party) <br>
@@ -167,6 +168,19 @@ parliament$Party[parliament$Party == "SYNASPISMOS RIZOSPASTIKIS ARISTERAS"] <- "
 parliament$Party[parliament$Party == "TO POTAMI (The River)"] <- "POTAMI"
 parliament$Party[parliament$Party == "ΟΟ.ΕΟ."] <- "ΟΟ.ΕΟ"
 ```
+
+## Setting colors
+
+A few days after, I decided that there should be a consistency in the choice of colors. That's the reason of this section. Set a hex color for each party. 
+
+```{r}
+kke_color = "#FF6666"
+nd_color = "#0492c2"
+pasok_color = "#95bb72"
+syriza_color = "#e27bb1"
+
+```
+
 
 
 # Parliament over the years
@@ -341,7 +355,7 @@ ggplot(data = total_times_elected_freqs_df, aes(x = reorder(FullName, n), y = n,
   geom_bar(stat = "identity",width = 0.88) +
   geom_text(aes(label=n), hjust = 1.5, vjust=0.5, color="white", size=4)+
   theme_minimal() +
-  scale_fill_manual(values = c("KKE" = "#FF6666","ND" = "#0492c2", "PASOK" = "#95bb72", "SYRIZA" = "#e27bb1")) +
+  scale_fill_manual(values = c("KKE" = kke_color,"ND" = nd_color, "PASOK" = pasok_color, "SYRIZA" = syriza_color)) +
   labs(title = "Most elected MPs on Greek Parliament (1981 - 2019) <br>
        <span style = 'font-size:10pt'> A list that shows the most elected members of parliament (elected 11 times or more). <br> The following ones are members of <span style = 'color:blue;'>ND</span>,  or <span style = 'color:darkgreen;'>PASOK</span></span>.",
        caption = "Source: **stesiam** | stesiam.github.io, 2022",
@@ -438,7 +452,7 @@ cont_df = parliament %>% filter(Constituency == input_constituency) %>%
   
   ggplot(data = cont_df, aes(x = reorder(FullName, n), y = n, fill = Party ))+
   geom_bar(stat = "identity",width = 0.88) +
-  scale_fill_manual(values = c("ANEL" = "#bcd2e8", "INDEPENDENT" = "#cccccc","KKE"="#e3242b","ND" = "#10459c", "PASOK" = "#26d43a", "SYRIZA" = "#FFC0CB","XA" = "#000000")) +
+  scale_fill_manual(values = c("ANEL" = "#bcd2e8", "INDEPENDENT" = "#cccccc","KKE"=kke_color,"ND" = nd_color, "PASOK" = pasok_color, "SYRIZA" = syriza_color,"XA" = "#000000")) +
   geom_text(aes(label=n), hjust = 1.5, vjust=0.5, color="white", size=4)+
   theme_minimal() +
    labs(title = "Most elected MPs",
