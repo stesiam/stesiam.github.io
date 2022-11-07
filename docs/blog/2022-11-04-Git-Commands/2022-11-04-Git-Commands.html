@@ -6,8 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="stesiam">
 <meta name="dcterms.date" content="2022-11-04">
-<meta name="description" content="An article that brings together the most common Git commands. In addition, some configuration setttings of Git are analyzed.">
-<title>stesiam - Git commands overview</title>
+<meta name="description" content="An article that brings together some configuration setttings of Git. A beginner’s approach to Git.">
+<title>stesiam - Git Series (Part I - Configuration)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -139,8 +139,8 @@ div.csl-indent {
     "search-submit-button-title": "Submit"
   }
 }</script><link rel="stylesheet" href="../../styles.css">
-<meta property="og:title" content="stesiam - Git commands overview">
-<meta property="og:description" content="An article that brings together the most common Git commands. In addition, some configuration setttings of Git are analyzed.">
+<meta property="og:title" content="stesiam - Git Series (Part I - Configuration)">
+<meta property="og:description" content="An article that brings together some configuration setttings of Git. A beginner's approach to Git.">
 <meta property="og:image" content="https://www.stesiam.github.io/blog/2022-11-04-Git-Commands/git_new.png">
 <meta property="og:site-name" content="stesiam">
 <meta property="og:image:height" content="370">
@@ -205,10 +205,10 @@ div.csl-indent {
       </div> <!-- /container-fluid -->
     </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full"><div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Git commands overview</h1>
+      <h1 class="title">Git Series (Part I - Configuration)</h1>
                   <div>
         <div class="description">
-          An article that brings together the most common Git commands. In addition, some configuration setttings of Git are analyzed.
+          An article that brings together some configuration setttings of Git. A beginner’s approach to Git.
         </div>
       </div>
                           <div class="quarto-categories">
@@ -251,12 +251,16 @@ div.csl-indent {
   <li><a href="#the-case-of-git" id="toc-the-case-of-git" class="nav-link" data-scroll-target="#the-case-of-git">The case of Git</a></li>
   </ul>
 </li>
-  <li><a href="#git-initial-settings" id="toc-git-initial-settings" class="nav-link" data-scroll-target="#git-initial-settings">Git initial settings</a></li>
-  <li><a href="#beginners-workflow" id="toc-beginners-workflow" class="nav-link" data-scroll-target="#beginners-workflow">Beginner’s workflow</a></li>
-  <li><a href="#work-with-branches" id="toc-work-with-branches" class="nav-link" data-scroll-target="#work-with-branches">Work with branches</a></li>
-  <li><a href="#working-with-others" id="toc-working-with-others" class="nav-link" data-scroll-target="#working-with-others">Working with others</a></li>
-  <li><a href="#git-and-github" id="toc-git-and-github" class="nav-link" data-scroll-target="#git-and-github">Git and GitHub</a></li>
-  <li><a href="#other-topics" id="toc-other-topics" class="nav-link" data-scroll-target="#other-topics">Other topics</a></li>
+  <li>
+<a href="#git-settings" id="toc-git-settings" class="nav-link" data-scroll-target="#git-settings">Git settings</a>
+  <ul class="collapse">
+<li><a href="#set-up-name-email" id="toc-set-up-name-email" class="nav-link" data-scroll-target="#set-up-name-email">Set up Name &amp; Email</a></li>
+  <li><a href="#set-editor" id="toc-set-editor" class="nav-link" data-scroll-target="#set-editor">Set editor</a></li>
+  <li><a href="#merge-method" id="toc-merge-method" class="nav-link" data-scroll-target="#merge-method">Merge method</a></li>
+  <li><a href="#check-your-settings" id="toc-check-your-settings" class="nav-link" data-scroll-target="#check-your-settings">Check your settings</a></li>
+  </ul>
+</li>
+  <li><a href="#to-sum-up" id="toc-to-sum-up" class="nav-link" data-scroll-target="#to-sum-up">To sum up</a></li>
   <li><a href="#acknowledgements" id="toc-acknowledgements" class="nav-link" data-scroll-target="#acknowledgements">Acknowledgements</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/stesiam/stesiam.github.io/edit/main/blog/2022-11-04-Git-Commands/2022-11-04-Git-Commands.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/stesiam/stesiam.github.io/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
 </nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
@@ -289,9 +293,15 @@ div.csl-indent {
 </div>
 </div>
 </section><section id="the-case-of-git" class="level3"><h3 class="anchored" data-anchor-id="the-case-of-git">The case of Git</h3>
-</section></section><section id="git-initial-settings" class="level2"><h2 class="anchored" data-anchor-id="git-initial-settings">Git initial settings</h2>
+</section></section><section id="git-settings" class="level2"><h2 class="anchored" data-anchor-id="git-settings">Git settings</h2>
+<section id="set-up-name-email" class="level3"><h3 class="anchored" data-anchor-id="set-up-name-email">Set up Name &amp; Email</h3>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Terminal</strong></pre>
+</div>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.name <span class="st">"YourName"</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.email your_email</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <div class="callout-note callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -302,41 +312,48 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>If you are planning to host your repository on GitHub, you may want to hide your casual email. In that case GitHUb offers a <code>noreply</code> email for this purpose. You can read more <a href="https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address">here</a>.</p>
+<p>If you are planning to host your repository on GitHub, you may want to hide your casual email. In that case GitHub offers a <code>noreply</code> email for this purpose. You can read more <a href="https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address">here</a>.</p>
 </div>
 </div>
-<p>and you can verify your settings by using the following command :</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--list</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section><section id="set-editor" class="level3"><h3 class="anchored" data-anchor-id="set-editor">Set editor</h3>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> core.editor <span class="st">"vim"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="merge-method" class="level3"><h3 class="anchored" data-anchor-id="merge-method">Merge method</h3>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> merge.ff false</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="check-your-settings" class="level3"><h3 class="anchored" data-anchor-id="check-your-settings">Check your settings</h3>
+<p>You can verify your settings by using the following command :</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--list</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>Here is the output on my machine :</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="git-config-output.png" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption">Output of git-config command</figcaption><p></p>
 </figure>
 </div>
-</section><section id="beginners-workflow" class="level2"><h2 class="anchored" data-anchor-id="beginners-workflow">Beginner’s workflow</h2>
-<table class="table">
-<thead><tr class="header">
-<th style="text-align: center;">Git command</th>
-<th style="text-align: center;">Description</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">git init</td>
-<td style="text-align: center;">Title</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">git add</td>
-<td style="text-align: center;">Text</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">git commit</td>
-<td style="text-align: center;">Text</td>
-</tr>
-</tbody>
-</table></section><section id="work-with-branches" class="level2"><h2 class="anchored" data-anchor-id="work-with-branches">Work with branches</h2>
-</section><section id="working-with-others" class="level2"><h2 class="anchored" data-anchor-id="working-with-others">Working with others</h2>
-</section><section id="git-and-github" class="level2"><h2 class="anchored" data-anchor-id="git-and-github">Git and GitHub</h2>
-</section><section id="other-topics" class="level2"><h2 class="anchored" data-anchor-id="other-topics">Other topics</h2>
+</section></section><section id="to-sum-up" class="level2"><h2 class="anchored" data-anchor-id="to-sum-up">To sum up</h2>
+<p>All the above</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.name <span class="st">"YourName"</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.email your_email</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> core.editor <span class="st">"editor_name"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Also, you can find Git config’s documentation <a href="https://git-scm.com/docs/git-config">here</a>.</p>
 </section><div id="quarto-appendix" class="default"><section id="acknowledgements" class="level2 appendix"><h2 class="quarto-appendix-heading">Acknowledgements</h2><div class="quarto-appendix-contents">
 <p>Image by <a href="https://pixabay.com/users/skorec-16694100/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=7522129">Daniel Skovran</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=7522129">Pixabay</a></p>
 
@@ -348,13 +365,14 @@ Chacon, S., &amp; Straub, B. (2014). <em>Pro git</em>. Springer Nature.
 </div>
 </div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{stesiam2022,
   author = {stesiam},
-  title = {Git Commands Overview},
+  title = {Git {Series} {(Part} {I} - {Configuration)}},
   date = {2022-11-04},
   url = {https://www.stesiam.github.io/2022-11-04-Git-Commands.html},
   langid = {en}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-stesiam2022" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
-stesiam. (2022, November 4). Git commands overview. Retrieved from <a href="https://www.stesiam.github.io/2022-11-04-Git-Commands.html">https://www.stesiam.github.io/2022-11-04-Git-Commands.html</a>
+stesiam. (2022, November 4). Git Series (Part I - Configuration).
+Retrieved from <a href="https://www.stesiam.github.io/2022-11-04-Git-Commands.html">https://www.stesiam.github.io/2022-11-04-Git-Commands.html</a>
 </div></div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

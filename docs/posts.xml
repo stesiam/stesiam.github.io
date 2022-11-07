@@ -12,7 +12,7 @@
 <generator>quarto-1.2.253</generator>
 <lastBuildDate>Thu, 03 Nov 2022 22:00:00 GMT</lastBuildDate>
 <item>
-  <title>Git commands overview</title>
+  <title>Git Series (Part I - Configuration)</title>
   <dc:creator>stesiam</dc:creator>
   <link>https://www.stesiam.github.io/blog/2022-11-04-Git-Commands/2022-11-04-Git-Commands.html</link>
   <description><![CDATA[ <section id="introduction" class="level2"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
@@ -42,9 +42,15 @@
 </div>
 </div>
 </section><section id="the-case-of-git" class="level3"><h3 class="anchored" data-anchor-id="the-case-of-git">The case of Git</h3>
-</section></section><section id="git-initial-settings" class="level2"><h2 class="anchored" data-anchor-id="git-initial-settings">Git initial settings</h2>
+</section></section><section id="git-settings" class="level2"><h2 class="anchored" data-anchor-id="git-settings">Git settings</h2>
+<section id="set-up-name-email" class="level3"><h3 class="anchored" data-anchor-id="set-up-name-email">Set up Name &amp; Email</h3>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Terminal</strong></pre>
+</div>
 <div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;">git</span> config <span class="at" style="color: #657422;">--global</span> user.name <span class="st" style="color: #20794D;">"YourName"</span></span>
 <span id="cb2-2"><span class="fu" style="color: #4758AB;">git</span> config <span class="at" style="color: #657422;">--global</span> user.email your_email</span></code></pre></div>
+</div>
 <div class="callout-note callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -55,41 +61,48 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>If you are planning to host your repository on GitHub, you may want to hide your casual email. In that case GitHUb offers a <code>noreply</code> email for this purpose. You can read more <a href="https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address">here</a>.</p>
+<p>If you are planning to host your repository on GitHub, you may want to hide your casual email. In that case GitHub offers a <code>noreply</code> email for this purpose. You can read more <a href="https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address">here</a>.</p>
 </div>
 </div>
-<p>and you can verify your settings by using the following command :</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;">git</span> config <span class="at" style="color: #657422;">--list</span></span></code></pre></div>
+</section><section id="set-editor" class="level3"><h3 class="anchored" data-anchor-id="set-editor">Set editor</h3>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;">git</span> config <span class="at" style="color: #657422;">--global</span> core.editor <span class="st" style="color: #20794D;">"vim"</span></span></code></pre></div>
+</div>
+</section><section id="merge-method" class="level3"><h3 class="anchored" data-anchor-id="merge-method">Merge method</h3>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="fu" style="color: #4758AB;">git</span> config <span class="at" style="color: #657422;">--global</span> merge.ff false</span></code></pre></div>
+</div>
+</section><section id="check-your-settings" class="level3"><h3 class="anchored" data-anchor-id="check-your-settings">Check your settings</h3>
+<p>You can verify your settings by using the following command :</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="fu" style="color: #4758AB;">git</span> config <span class="at" style="color: #657422;">--list</span></span></code></pre></div>
+</div>
 <p>Here is the output on my machine :</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="https://www.stesiam.github.io/blog/2022-11-04-Git-Commands/git-config-output.png" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption">Output of git-config command</figcaption><p></p>
 </figure>
 </div>
-</section><section id="beginners-workflow" class="level2"><h2 class="anchored" data-anchor-id="beginners-workflow">Beginner’s workflow</h2>
-<table class="table">
-<thead><tr class="header">
-<th style="text-align: center;">Git command</th>
-<th style="text-align: center;">Description</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">git init</td>
-<td style="text-align: center;">Title</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">git add</td>
-<td style="text-align: center;">Text</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">git commit</td>
-<td style="text-align: center;">Text</td>
-</tr>
-</tbody>
-</table></section><section id="work-with-branches" class="level2"><h2 class="anchored" data-anchor-id="work-with-branches">Work with branches</h2>
-</section><section id="working-with-others" class="level2"><h2 class="anchored" data-anchor-id="working-with-others">Working with others</h2>
-</section><section id="git-and-github" class="level2"><h2 class="anchored" data-anchor-id="git-and-github">Git and GitHub</h2>
-</section><section id="other-topics" class="level2"><h2 class="anchored" data-anchor-id="other-topics">Other topics</h2>
+</section></section><section id="to-sum-up" class="level2"><h2 class="anchored" data-anchor-id="to-sum-up">To sum up</h2>
+<p>All the above</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="fu" style="color: #4758AB;">git</span> config <span class="at" style="color: #657422;">--global</span> user.name <span class="st" style="color: #20794D;">"YourName"</span></span>
+<span id="cb6-2"><span class="fu" style="color: #4758AB;">git</span> config <span class="at" style="color: #657422;">--global</span> user.email your_email</span>
+<span id="cb6-3"><span class="fu" style="color: #4758AB;">git</span> config <span class="at" style="color: #657422;">--global</span> core.editor <span class="st" style="color: #20794D;">"editor_name"</span></span></code></pre></div>
+</div>
+<p>Also, you can find Git config’s documentation <a href="https://git-scm.com/docs/git-config">here</a>.</p>
 </section><div id="quarto-appendix" class="default"><section id="acknowledgements" class="level2 appendix"><h2 class="quarto-appendix-heading">Acknowledgements</h2><div class="quarto-appendix-contents">
 <p>Image by <a href="https://pixabay.com/users/skorec-16694100/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=7522129">Daniel Skovran</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=7522129">Pixabay</a></p>
 
@@ -101,13 +114,14 @@ Chacon, S., &amp; Straub, B. (2014). <em>Pro git</em>. Springer Nature.
 </div>
 </div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{stesiam2022,
   author = {stesiam},
-  title = {Git Commands Overview},
+  title = {Git {Series} {(Part} {I} - {Configuration)}},
   date = {2022-11-04},
   url = {https://www.stesiam.github.io/2022-11-04-Git-Commands.html},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-stesiam2022" class="csl-entry quarto-appendix-citeas">
-stesiam. (2022, November 4). Git commands overview. Retrieved from <a href="https://www.stesiam.github.io/2022-11-04-Git-Commands.html">https://www.stesiam.github.io/2022-11-04-Git-Commands.html</a>
+stesiam. (2022, November 4). Git Series (Part I - Configuration).
+Retrieved from <a href="https://www.stesiam.github.io/2022-11-04-Git-Commands.html">https://www.stesiam.github.io/2022-11-04-Git-Commands.html</a>
 </div></div></section></div> ]]></description>
   <category>Git</category>
   <guid>https://www.stesiam.github.io/blog/2022-11-04-Git-Commands/2022-11-04-Git-Commands.html</guid>

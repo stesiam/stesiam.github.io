@@ -1,7 +1,7 @@
 ---
-title: "Git commands overview"
+title: "Git Series (Part I - Configuration)"
 author: "stesiam"
-description: "An article that brings together the most common Git commands. In addition, some configuration setttings of Git are analyzed."
+description: "An article that brings together some configuration setttings of Git. A beginner's approach to Git."
 categories: [Git]
 fig-cap-location: bottom
 date: "2022-11-04"
@@ -72,20 +72,39 @@ trends_vcs_tidy %>%
 
 
 
-## Git initial settings
+## Git settings
 
-```bash
+### Set up Name & Email
+
+```{.bash filename="Terminal"}
 git config --global user.name "YourName"
 git config --global user.email your_email
 ```
 
 :::{.callout-note}
-If you are planning to host your repository on GitHub, you may want to hide your casual email. In that case GitHUb offers a `noreply` email for this purpose. You can read more [here](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address).
+If you are planning to host your repository on GitHub, you may want to hide your casual email. In that case GitHub offers a `noreply` email for this purpose. You can read more [here](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address).
 :::
 
-and you can verify your settings by using the following command :
 
-```bash
+### Set editor
+
+```{.bash filename="Terminal"}
+git config --global core.editor "vim"
+```
+
+
+### Merge method
+
+```{.bash filename="Terminal"}
+git config --global merge.ff false
+```
+
+
+### Check your settings
+
+You can verify your settings by using the following command :
+
+```{.bash filename="Terminal"}
 git config --list
 ```
 
@@ -95,31 +114,17 @@ Here is the output on my machine :
 ![Output of git-config command](git-config-output.png)
 
 
-## Beginner's workflow
+## To sum up
 
+All the above
 
-| Git command | Description  |
-| :---: | :---:|
-| git init     | Title       |
-| git add   | Text           |
-| git commit  | Text         |
+```{.bash filename="Terminal"}
+git config --global user.name "YourName"
+git config --global user.email your_email
+git config --global core.editor "editor_name"
+```
 
-## Work with branches
-
-
-
-
-## Working with others
-
-
-
-
-## Git and GitHub
-
-
-## Other topics
-
-
+Also, you can find Git config's documentation [here](https://git-scm.com/docs/git-config).
 
 
 ## Acknowledgements {.appendix}
