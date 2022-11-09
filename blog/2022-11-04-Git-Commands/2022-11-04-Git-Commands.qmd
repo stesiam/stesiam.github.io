@@ -37,6 +37,8 @@ editor_options:
 
 ### Popularity of VCS
 
+The concept of Versioning 
+
 ```{r Import libraries, echo=FALSE, warning=FALSE, message=FALSE}
 library(readr)
 library(dplyr)
@@ -66,15 +68,28 @@ trends_vcs_tidy %>%
   theme_classic()
 ```
 
+Όπως είδαμε παραπάνω το Git αποτελεί το εργαλείο που κυριαρχεί. όταν θέλουμε να κάνουμε versioning σε μία εργασία μας ή σε ένα 
 
 
-### The case of Git
+### Benefits
+
+
+
+
+
+### Drawbacks
+
+
 
 
 
 ## Git settings
 
 ### Set up Name & Email
+
+So, you decided to start Git without setting Name and Email? 
+
+You may think of it again. In case you try to commit without setting a Name and email. Git will not commit your changes, without prior setting those.
 
 ```{.bash filename="Terminal"}
 git config --global user.name "YourName"
@@ -88,16 +103,35 @@ If you are planning to host your repository on GitHub, you may want to hide your
 
 ### Set editor
 
+
+
 ```{.bash filename="Terminal"}
-git config --global core.editor "vim"
+git config --global core.editor "editor_name"
+```
+
+
+| Editor     | Command | 
+| :---        |    :----:   |
+| Atom     | Title       |
+| Vim   | Text        |
+
+### Default branch name to main
+
+Τον Οκτώβριο του 2020 το GitHub αποφάσισε να αλλάξει το προεπιλεγμένο όνομα του branch από master σε main. Συνεπώς, καλό θα ήταν να κάνουμε και αυτή την αλλαγή και στο local περιβάλλον μας, ως εξής.
+
+```{.bash filename="Terminal"}
+git config --global init.defaultBranch main
 ```
 
 
 ### Merge method
 
+
+
 ```{.bash filename="Terminal"}
 git config --global merge.ff false
 ```
+
 
 
 ### Check your settings
@@ -111,18 +145,36 @@ git config --list
 Here is the output on my machine :
 
 
-![Output of git-config command](git-config-output.png)
+![Output of git-config command](git_config_output.png)
 
 
 ## To sum up
 
-All the above
+All the above can be summed up on the following list of commands.
 
 ```{.bash filename="Terminal"}
 git config --global user.name "YourName"
 git config --global user.email your_email
 git config --global core.editor "editor_name"
+git config --global init.defaultBranch main
+git config --global merge.ff false
+
+# check git config settings
+
+git config --list --show-origin
 ```
+
+Of course you can access your git config file on your Home directory (at least on Ubuntu installation). 
+
+:::{.callout-warning}
+Note that the .gitconfig file, which contains our settings, may not be visible in the Home directory. In general, files whose names begin with a period are not displayed. However, if everything has been done correctly, it's probably there. For example, in Ubuntu you should choose to show hidden files.
+:::
+
+In case you open that file you will see probably something like the above :
+
+<script src="https://gist.github.com/stesiam/c6a172f7322a9b6e0d74b29f08f9f4be.js"></script>
+
+## More about git config
 
 Also, you can find Git config's documentation [here](https://git-scm.com/docs/git-config).
 

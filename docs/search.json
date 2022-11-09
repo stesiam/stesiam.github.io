@@ -109,21 +109,28 @@
     "href": "blog/2022-11-04-Git-Commands/2022-11-04-Git-Commands.html",
     "title": "Git Series (Part I - Configuration)",
     "section": "",
-    "text": "Workflow without Version Control System\n\n\n\n\n\n\n\n\n\n\nCodetrends_vcs_tidy %>%\n  ggplot(aes(x= Month, y = counts)) +\n  geom_line(aes(color = VCS)) +\n  labs(title = \"Trends on Version Control Systems\",\n              subtitle = \"Compare trends of Git and SVN (Subversion) from 2004 to 2022\",\n              caption = \"Data source: Google Trends\") +\n  theme_classic()"
+    "text": "Workflow without Version Control System\n\n\n\nThe concept of Versioning\n\n\n\n\n\n\n\nCodetrends_vcs_tidy %>%\n  ggplot(aes(x= Month, y = counts)) +\n  geom_line(aes(color = VCS)) +\n  labs(title = \"Trends on Version Control Systems\",\n              subtitle = \"Compare trends of Git and SVN (Subversion) from 2004 to 2022\",\n              caption = \"Data source: Google Trends\") +\n  theme_classic()\n\n\n\n\nΌπως είδαμε παραπάνω το Git αποτελεί το εργαλείο που κυριαρχεί. όταν θέλουμε να κάνουμε versioning σε μία εργασία μας ή σε ένα"
   },
   {
     "objectID": "blog/2022-11-04-Git-Commands/2022-11-04-Git-Commands.html#git-settings",
     "href": "blog/2022-11-04-Git-Commands/2022-11-04-Git-Commands.html#git-settings",
     "title": "Git Series (Part I - Configuration)",
     "section": "Git settings",
-    "text": "Git settings\nSet up Name & Email\n\n\nTerminal\n\ngit config --global user.name \"YourName\"\ngit config --global user.email your_email\n\n\n\n\n\n\n\nNote\n\n\n\nIf you are planning to host your repository on GitHub, you may want to hide your casual email. In that case GitHub offers a noreply email for this purpose. You can read more here.\n\n\nSet editor\n\n\nTerminal\n\ngit config --global core.editor \"vim\"\n\nMerge method\n\n\nTerminal\n\ngit config --global merge.ff false\n\nCheck your settings\nYou can verify your settings by using the following command :\n\n\nTerminal\n\ngit config --list\n\nHere is the output on my machine :\n\n\nOutput of git-config command"
+    "text": "Git settings\nSet up Name & Email\nSo, you decided to start Git without setting Name and Email?\nYou may think of it again. In case you try to commit without setting a Name and email. Git will not commit your changes, without prior setting those.\n\n\nTerminal\n\ngit config --global user.name \"YourName\"\ngit config --global user.email your_email\n\n\n\n\n\n\n\nNote\n\n\n\nIf you are planning to host your repository on GitHub, you may want to hide your casual email. In that case GitHub offers a noreply email for this purpose. You can read more here.\n\n\nSet editor\n\n\nTerminal\n\ngit config --global core.editor \"editor_name\"\n\n\n\nEditor\nCommand\n\n\n\nAtom\nTitle\n\n\nVim\nText\n\n\nDefault branch name to main\nΤον Οκτώβριο του 2020 το GitHub αποφάσισε να αλλάξει το προεπιλεγμένο όνομα του branch από master σε main. Συνεπώς, καλό θα ήταν να κάνουμε και αυτή την αλλαγή και στο local περιβάλλον μας, ως εξής.\n\n\nTerminal\n\ngit config --global init.defaultBranch main\n\nMerge method\n\n\nTerminal\n\ngit config --global merge.ff false\n\nCheck your settings\nYou can verify your settings by using the following command :\n\n\nTerminal\n\ngit config --list\n\nHere is the output on my machine :\n\n\nOutput of git-config command"
   },
   {
     "objectID": "blog/2022-11-04-Git-Commands/2022-11-04-Git-Commands.html#to-sum-up",
     "href": "blog/2022-11-04-Git-Commands/2022-11-04-Git-Commands.html#to-sum-up",
     "title": "Git Series (Part I - Configuration)",
     "section": "To sum up",
-    "text": "To sum up\nAll the above\n\n\nTerminal\n\ngit config --global user.name \"YourName\"\ngit config --global user.email your_email\ngit config --global core.editor \"editor_name\"\n\nAlso, you can find Git config’s documentation here."
+    "text": "To sum up\nAll the above can be summed up on the following list of commands.\n\n\nTerminal\n\ngit config --global user.name \"YourName\"\ngit config --global user.email your_email\ngit config --global core.editor \"editor_name\"\ngit config --global init.defaultBranch main\ngit config --global merge.ff false\n\n# check git config settings\n\ngit config --list --show-origin\n\nOf course you can access your git config file on your Home directory (at least on Ubuntu installation).\n\n\n\n\n\n\nWarning\n\n\n\nNote that the .gitconfig file, which contains our settings, may not be visible in the Home directory. In general, files whose names begin with a period are not displayed. However, if everything has been done correctly, it’s probably there. For example, in Ubuntu you should choose to show hidden files.\n\n\nIn case you open that file you will see probably something like the above :"
+  },
+  {
+    "objectID": "blog/2022-11-04-Git-Commands/2022-11-04-Git-Commands.html#more-about-git-config",
+    "href": "blog/2022-11-04-Git-Commands/2022-11-04-Git-Commands.html#more-about-git-config",
+    "title": "Git Series (Part I - Configuration)",
+    "section": "More about git config",
+    "text": "More about git config\nAlso, you can find Git config’s documentation here."
   },
   {
     "objectID": "blog/2022-11-04-Git-Commands/2022-11-04-Git-Commands.html#acknowledgements",
