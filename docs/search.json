@@ -126,13 +126,6 @@
     "text": "To sum up\nA summary of the commands we used to configure Git :\n\n\nTerminal\n\ngit config --global user.name \"YourName\"\ngit config --global user.email your_email\ngit config --global core.editor \"editor_name\"\ngit config --global init.defaultBranch main\ngit config --global merge.ff false\n\n# Add PGP key to your commits\n\ngpg --list-secret-keys --keyid-format LONG\ngit config user.signingkey key_id\ngit config commit.gpgsign true\n\n# check git config settings\n\ngit config --list --show-origin\n\nOf course you can access your git config file on your Home directory (at least on Ubuntu installation).\n\n\n\n\n\n\nWarning\n\n\n\nNote that the .gitconfig file, which contains our settings, may not be visible in the Home directory. In general, files whose names begin with a period are not displayed. However, if everything has been done correctly, it’s probably there. For example, in Ubuntu you should choose to show hidden files.\n\n\nIn case you open that file you will see probably something like the above :"
   },
   {
-    "objectID": "blog/2022-11-04-Git-Commands/2022-11-04-Git-Commands.html#more-about-git-config",
-    "href": "blog/2022-11-04-Git-Commands/2022-11-04-Git-Commands.html#more-about-git-config",
-    "title": "Git Series (Part I - Configuration)",
-    "section": "More about git config",
-    "text": "More about git config\nAlso, you can find Git config’s documentation here."
-  },
-  {
     "objectID": "blog/2022-11-04-Git-Commands/2022-11-04-Git-Commands.html#acknowledgements",
     "href": "blog/2022-11-04-Git-Commands/2022-11-04-Git-Commands.html#acknowledgements",
     "title": "Git Series (Part I - Configuration)",
@@ -460,12 +453,5 @@
     "title": "Shiny Apps",
     "section": "Shiny Distributions",
     "text": "Shiny Distributions\nA Shiny App to showcase various distributions and their characteristics.\n Website |  Repository"
-  },
-  {
-    "objectID": "blog/2022-11-04-Git-Commands/2022-11-04-Git-Commands.html#auto-sign-your-commits",
-    "href": "blog/2022-11-04-Git-Commands/2022-11-04-Git-Commands.html#auto-sign-your-commits",
-    "title": "Git Series (Part I - Configuration)",
-    "section": "Auto-sign your commits",
-    "text": "Auto-sign your commits\nΣε προηγούμενο άρθρο είδαμε πώς να υπογράφουμε τα commits μας καθώς και τους λόγους που επιβάλλεται να το κάνουμε αυτό. Με λίγα λόγια, φτιάξαμε ένα GPG key το οποίο προσθέσαμε στον λογιαριασμό μας στο GitHub και για να υπογράφω τα commits θα έπρεπε πλέον αντί του git commit -m \"something\", να γράφω git commit -S -m \"something\". Βέβαια η συγκεκριμένη μέθοδος είχε κάποια προβλήματα. Όμως κάποιες φορές (δυστυχώς) ξεχνούσα να υπογράφω τα commits. Ωστόσο, υπάρχει τρόπος να είμαι ξέγνιαστος και ως προς αυτό το κομμάτι. Αρχικά θα θέσω ως key_id το public key του PGP που δημιούργησα και στη συνέχεια θα\n\n\n\n\n\n\nWarning\n\n\n\nΑν δεν έχετε ένα GPG key, μπορείτε να δείτε τον συγκεκριμένο οδηγό προκειμένου να παράξετε ένα PGP key. Επίσης, ανάλογα της hosting platform for ypur code, you can add : \n\n\nGitHub and GPG keys \n\n\nBitBucket and GPG keys \n\nGitLab and GPG keys\n\n\n\n\n\nTerminal\n\ngpg --list-secret-keys --keyid-format LONG\ngit config user.signingkey key_id\ngit config commit.gpgsign true\n\nCheck your settings\nΑφού κάνουμε τις παραπάνω ρυθμίσεις του Git μας,μπορούμε να έχουμε μία σύνοψη των αλλαγών - ρυθμίσεων με την αντίστοιχη εντολή :\n\n\nTerminal\n\ngit config --list\n\nHere is the output on my machine :\n\n\nOutput of git-config command\n\n\nΣτη παραπάνω εικόνα φαίνεται συνοψίζονται οι επιλογές που έγιναν στο συγκεκριμένο άρθρο. Είναι αυτές που χρησιμοποιώ και εγώ μέχρι στιγμής. Ωστόσο, ο κάθε χρήστης έχει διαφορετικές ανάγκες και για αυτό καλό θα ήταν αν θέλετε να ανακαλύψετε και άλλες δυαντότητες του git config να μπείτε στη σελίδα που έχει αναλυτικό dockumentation."
   }
 ]
