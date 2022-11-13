@@ -10,7 +10,167 @@
 <atom:link href="https://www.stesiam.github.io/posts.xml" rel="self" type="application/rss+xml"/>
 <description></description>
 <generator>quarto-1.2.253</generator>
-<lastBuildDate>Thu, 03 Nov 2022 22:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 12 Nov 2022 22:00:00 GMT</lastBuildDate>
+<item>
+  <title>Install LightGBM and CatBoost on Ubuntu 22.04</title>
+  <dc:creator>stesiam</dc:creator>
+  <link>https://www.stesiam.github.io/blog/2022-11-13-Install-LightGBM-CatBoost-Ubuntu/2022-11-13-Install-LightGBM-CatBoost-Ubuntu.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>When someone starts with Machine Learning he usually starts to build some simple models as logistic regression, naive Bayes, linear regression etc. And those alone are already enough for most use cases, as their simplicity is productivity-friendly and comes up with adequate accuracy. However, in enterprise level, accuracy can be important for a lot of reasons. Gradient Boosting Machines are some algorithms which outperform the aforementioned methods and are not complex enough to use them. Of course, before we build the model with (e.g.&nbsp;tidymodels) we have to install them.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.stesiam.github.io/blog/2022-11-13-Install-LightGBM-CatBoost-Ubuntu/images/missing_lightgbm_install.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Error - Missing LightGBM install</figcaption><p></p>
+</figure>
+</div>
+<p>Thus, on this article I gather all that information.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Installation Guides</th>
+<th style="text-align: center;">Source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">LightGBM</td>
+<td style="text-align: center;"><a href="https://lightgbm.readthedocs.io/en/v3.3.2/Installation-Guide.html">Link</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">CatBoost</td>
+<td style="text-align: center;"><a href="https://catboost.ai/en/docs/concepts/installation">Link</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">XGBoost</td>
+<td style="text-align: center;"><a href="https://xgboost.readthedocs.io/en/stable/install.html">Link</a></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="lightgbm" class="level2">
+<h2 class="anchored" data-anchor-id="lightgbm">LightGBM</h2>
+<section id="option-1.-install-r-package" class="level3">
+<h3 class="anchored" data-anchor-id="option-1.-install-r-package">Option 1. Install R Package</h3>
+<p>If you are reading this blog, the most possible scenario in that you are using R too. The most easy way to install the corresponding R package :</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>R code</strong></pre>
+</div>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">start_time_lightgbm <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">Sys.time</span>()</span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;">install.packages</span>(<span class="st" style="color: #20794D;">"lightgbm"</span>, <span class="at" style="color: #657422;">repos =</span> <span class="st" style="color: #20794D;">"https://cran.r-project.org"</span>)</span>
+<span id="cb1-3">end_time_lightgbm <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">Sys.time</span>()</span></code></pre></div>
+</div>
+</section>
+<section id="option-2.-cmake" class="level3">
+<h3 class="anchored" data-anchor-id="option-2.-cmake">Option 2. CMAKE</h3>
+<p>The LightGBM <a href="https://lightgbm.readthedocs.io/en/latest/Installation-Guide.html#linux">documentation</a> are referring to this method of installation.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;">sudo</span> apt install cmake</span></code></pre></div>
+</div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Terminal</strong></pre>
+</div>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;">git</span> clone <span class="at" style="color: #657422;">--recursive</span> https://github.com/microsoft/LightGBM</span>
+<span id="cb3-2"><span class="bu" style="color: null;">cd</span> LightGBM</span>
+<span id="cb3-3"><span class="fu" style="color: #4758AB;">mkdir</span> build</span>
+<span id="cb3-4"><span class="bu" style="color: null;">cd</span> build</span>
+<span id="cb3-5"><span class="fu" style="color: #4758AB;">cmake</span> ..</span>
+<span id="cb3-6"><span class="fu" style="color: #4758AB;">make</span> <span class="at" style="color: #657422;">-j4</span></span></code></pre></div>
+</div>
+</section>
+</section>
+<section id="catboost" class="level2">
+<h2 class="anchored" data-anchor-id="catboost">CatBoost</h2>
+<p>Their <a href="https://github.com/catboost/catboost/releases">realeases</a>.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>R code</strong></pre>
+</div>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="fu" style="color: #4758AB;">install.packages</span>(<span class="st" style="color: #20794D;">"devtools"</span>)</span></code></pre></div>
+</div>
+<p>On my occassion, when I tried to install <code>devtools</code> had an error status. According to my error status I had to add packages <code>libharfbuzz-dev</code> and <code>libfribidi-dev</code>. After that, my devtools installation completed without errors.</p>
+<p><img src="https://www.stesiam.github.io/blog/2022-11-13-Install-LightGBM-CatBoost-Ubuntu/images/error_message_devtools_install.png" class="img-fluid"></p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>R code</strong></pre>
+</div>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">start_time_catboost <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">Sys.time</span>()</span>
+<span id="cb5-2">devtools<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">install_url</span>(<span class="st" style="color: #20794D;">"https://github.com/catboost/catboost/releases/download/v1.1.1/catboost-R-Linux-1.1.1.tgz"</span>[, <span class="at" style="color: #657422;">INSTALL_opts =</span> <span class="fu" style="color: #4758AB;">c</span>(<span class="st" style="color: #20794D;">"--no-multiarch"</span>, <span class="st" style="color: #20794D;">"--no-test-load"</span>)])</span>
+<span id="cb5-3">end_time_catboost <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">Sys.time</span>()</span></code></pre></div>
+</div>
+</section>
+<section id="xgboost" class="level2">
+<h2 class="anchored" data-anchor-id="xgboost">XGBoost</h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>R code</strong></pre>
+</div>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1">start_time_xgboost <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">Sys.time</span>()</span>
+<span id="cb6-2"><span class="fu" style="color: #4758AB;">install.packages</span>(<span class="st" style="color: #20794D;">"xgboost"</span>)</span>
+<span id="cb6-3">end_time_xgboost <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">Sys.time</span>()</span></code></pre></div>
+</div>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">ML Model</th>
+<th style="text-align: center;">Method</th>
+<th style="text-align: center;">Installation time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">LightGBM</td>
+<td style="text-align: center;">R package</td>
+<td style="text-align: center;">7.79 min.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">CatBoost</td>
+<td style="text-align: center;">R package (w/o devtools)</td>
+<td style="text-align: center;">2.1 min.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">XGBoost</td>
+<td style="text-align: center;">R package</td>
+<td style="text-align: center;">6.16 min.</td>
+</tr>
+</tbody>
+</table>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{stesiam2022,
+  author = {stesiam},
+  title = {Install {LightGBM} and {CatBoost} on {Ubuntu} 22.04},
+  date = {2022-11-13},
+  url = {https://www.stesiam.github.io/2022-11-13-Install-LightGBM-CatBoost-Ubuntu.html},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-stesiam2022" class="csl-entry quarto-appendix-citeas">
+stesiam. (2022, November 13). Install LightGBM and CatBoost on Ubuntu
+22.04. Retrieved from <a href="https://www.stesiam.github.io/2022-11-13-Install-LightGBM-CatBoost-Ubuntu.html">https://www.stesiam.github.io/2022-11-13-Install-LightGBM-CatBoost-Ubuntu.html</a>
+</div></div></section></div> ]]></description>
+  <category>Linux</category>
+  <category>LightGBM</category>
+  <category>CatBoost</category>
+  <category>XGBoost</category>
+  <guid>https://www.stesiam.github.io/blog/2022-11-13-Install-LightGBM-CatBoost-Ubuntu/2022-11-13-Install-LightGBM-CatBoost-Ubuntu.html</guid>
+  <pubDate>Sat, 12 Nov 2022 22:00:00 GMT</pubDate>
+  <media:content url="https://www.stesiam.github.io/blog/2022-11-13-Install-LightGBM-CatBoost-Ubuntu/installation_ubuntu.png" medium="image" type="image/png"/>
+</item>
 <item>
   <title>Git Series (Part I - Configuration)</title>
   <dc:creator>stesiam</dc:creator>

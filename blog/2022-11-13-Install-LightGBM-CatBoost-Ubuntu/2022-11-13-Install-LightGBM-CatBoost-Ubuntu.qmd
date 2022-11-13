@@ -1,0 +1,115 @@
+---
+title: "Install LightGBM and CatBoost on Ubuntu 22.04"
+author: "stesiam"
+description: "Install high performance algorithms (LightGBM, CatBoost & XGBoost) on your Linux device"
+categories: [Linux, LightGBM, CatBoost, XGBoost]
+fig-cap-location: bottom
+date: "2022-11-13"
+freeze: true
+image: installation_ubuntu.png
+image-alt: "LightGBM and CatBoost on Ubuntu 22.04" 
+toc: true
+toc-title: Table of contents
+toc-location: left
+title-block-banner: true
+citation: true
+nocite: '@*'
+csl: apa-6th-edition
+bibliography: references.bib
+format: 
+  html:
+    freeze: true
+    code-link: true
+    code-fold: true
+execute:
+  echo: true
+editor_options: 
+  markdown: 
+    wrap: 80
+---
+
+## Introduction
+
+When someone starts with Machine Learning he usually starts to build some simple models as logistic regression, naive Bayes, linear regression etc. And those alone are already enough for most use cases, as their simplicity is productivity-friendly and comes up with adequate accuracy. However, in enterprise level, accuracy can be important for a lot of reasons. Gradient Boosting Machines are some algorithms which outperform the aforementioned methods and are not complex enough to use them. Of course, before we build the model with (e.g. tidymodels) we have to install them. 
+
+![Error - Missing LightGBM install](images/missing_lightgbm_install.png)
+
+
+Thus, on this article I gather all that information.
+
+| Installation Guides | Source |
+| :---: |   :---:    |
+| LightGBM |  [Link](https://lightgbm.readthedocs.io/en/v3.3.2/Installation-Guide.html)  |
+| CatBoost |  [Link](https://catboost.ai/en/docs/concepts/installation)  |
+| XGBoost  |  [Link](https://xgboost.readthedocs.io/en/stable/install.html)  |
+
+## LightGBM
+
+### Option 1. Install R Package
+
+If you are reading this blog, the most possible scenario in that you are using R too. The most easy way to install the corresponding R package :
+
+```{.r filename="R code"}
+start_time_lightgbm <- Sys.time()
+install.packages("lightgbm", repos = "https://cran.r-project.org")
+end_time_lightgbm <- Sys.time()
+```
+
+
+### Option 2. CMAKE
+
+The LightGBM [documentation](https://lightgbm.readthedocs.io/en/latest/Installation-Guide.html#linux) are referring to this method of installation. 
+
+```{.bash filename="Terminal"}
+sudo apt install cmake
+```
+
+```{.bash filename="Terminal"}
+git clone --recursive https://github.com/microsoft/LightGBM
+cd LightGBM
+mkdir build
+cd build
+cmake ..
+make -j4
+```
+
+
+
+## CatBoost
+
+Their [realeases](https://github.com/catboost/catboost/releases).
+
+```{.r filename="R code"}
+install.packages("devtools")
+```
+
+On my occassion, when I tried to install `devtools` had an error status. According to my error status I had to add packages `libharfbuzz-dev` and `libfribidi-dev`. After that, my devtools installation completed without errors.
+
+![](images/error_message_devtools_install.png) 
+
+```{.r filename="R code"}
+start_time_catboost <- Sys.time()
+devtools::install_url("https://github.com/catboost/catboost/releases/download/v1.1.1/catboost-R-Linux-1.1.1.tgz"[, INSTALL_opts = c("--no-multiarch", "--no-test-load")])
+end_time_catboost <- Sys.time()
+```
+
+
+## XGBoost
+
+
+```{.r filename="R code"}
+start_time_xgboost <- Sys.time()
+install.packages("xgboost")
+end_time_xgboost <- Sys.time()
+```
+
+
+
+## Summary 
+
+| ML Model | Method |  Installation time |
+| :---: | :---: | :---:    |
+| LightGBM | R package  | 7.79 min.  |
+| CatBoost | R package (w/o devtools)  | 2.1 min.  |
+| XGBoost  | R package  |6.16 min. |
+
