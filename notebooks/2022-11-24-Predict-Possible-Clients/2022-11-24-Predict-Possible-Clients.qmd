@@ -1,0 +1,1217 @@
+---
+title: "Predict Possible Interested Clients"
+author: "stesiam"
+description: |
+  Build a classification machine learning model (using LightGBM & XGBoost) in order to classify people based on their interest to have a term deposit or not.
+categories: [R, Classification, Tidymodels]
+fig-cap-location: bottom
+date: "2022-11-24"
+freeze: true
+image: client_predict.jpg
+toc: true
+toc-title: Table of contents
+toc-location: left
+citation: true
+slug: stesiam2022
+title-block-banner: true
+nocite: '@*'
+csl: apa-6th-edition
+bibliography: [packages.bib, references.bib]
+format: 
+  html:
+    code-link: true
+    code-fold: true
+    code-summary: "Show the code"
+    code-tools: 
+      source: repo
+execute:
+  echo: true
+editor_options: 
+  markdown: 
+    wrap: 80
+---
+
+# Table of Contents {.unlisted}
+
+1. [Introduction](#introduction)
+2. [Prerequisites](#prerequisites) <br>
+&nbsp; 2.1 [Import Libraries](#import-libraries) <br>
+&nbsp; 2.2 [Import Dataset](#import-dataset) <br>
+&nbsp; 2.3 [Preview Dataset](#preview-dataset) <br>
+&nbsp; 2.4 [Dataset Structure](#dataset-structure) <br>
+&nbsp; 2.5 [Custon Functions](#custom-functions) <br>
+3. [EDA with R](#eda-with-r) <br>
+&nbsp; 3.1 [Missing Values](#missing-values) <br>
+&nbsp; 3.2 [Univariate Analysis](#univariate-analysis) <br>
+&nbsp; &nbsp; &nbsp; 3.2.1 [Qualitative variables](#qualitative-variables) <br>
+&nbsp; &nbsp; &nbsp; 3.2.2 [Quantitative variables](#quantitative-variables) <br>
+&nbsp; 3.3 [Bivariate Analysis](#bivariate-analysis) <br>
+&nbsp; &nbsp; &nbsp; 3.3.1 [Qualitative variables](#qualitative-variables-1) <br>
+&nbsp; &nbsp; &nbsp; 3.3.2 [Quantitative variables](#quantitative-variables-1) <br>
+4. [Building Model](#building-model) <br>
+&nbsp; 4.1 [Split train/test Dataset](#split-train-test-dataset) <br>
+&nbsp; 4.2 [Recipes](#recipes) <br>
+&nbsp; 4.3 [Create Validation Set](#create-validation-set) <br>
+&nbsp; 4.4 [Specify Models](#specify-models) <br>
+&nbsp; 4.5 [Hyperparameters tuning](#hyperparameters-tuning) <br>
+&nbsp; 4.6 [Fit Resamples](#fit-resamples) <br>
+&nbsp; 4.7 [Evaluate Model](#evaluate-model) <br>
+&nbsp; 4.8 [Last Fit](#last-fit) <br>
+5. [Results](#results) <br>
+
+<hr>
+
+# Introduction
+
+On this article, I will make a ML model, in order to predict the costumers of a bank that are interested on having a term deposit. To achieve this goal I will use some Boosting algorithms (XGBoost and LightGBM). The data is from UCI website [@Dua2019] and the dataset that I worked with is "Bank Marketing" [@moro2014data].
+
+But first let's explain some things.
+
+> What is a term deposit ?
+
+Generally, we are saving our money in a bank account but we are promising to not withdraw them for a specific amount of time. 
+
+
+> And why someone to do that ?
+
+It is apparent that term deposits have a major disadvantage over regular ones in terms of capital availability. Of course, people will not have motive to do that without anything in return. For that reason, the banks usually offer higher interest for that kind of accounts. For example, Piraeus Bank (a bank in Greece) offers double interest rate on term deposits compared to regular ones.
+
+
+So, we can assume that there will be a serious interest for that product mostly on people with significant amount of savings ($>1000$) and do not have large, extraordinary expenses (loan, kids, etc.). 
+
+# Prerequisites
+
+## Import libraries
+
+For this analysis we will need standard libraries for importing and processing my data, such as readr [@R-readr] and dplyr [@R-dplyr]. The kableExtra [@R-kableExtra] package was used to print the results in table format. Concerning general purpose R libraries, I also used gridExtra in order to show ggplot items side to side. 
+
+On its basis this analysis is about to predict if someone is interested or not to have a term deposit. Thus, we need to build a ML model. The all-in-one solution package tidymodels is crucial to this. Although, there are some concerns about our data (imbalanced predicted value and our implementation of LightGBM. Thankfully, these are solved by bonsai and treesnip packages, respectively.
+
+Finally, the ggplot2 [@R-ggplot2] package was used to create some visualizations, as well as an auxiliary package, ggtext [@R-ggtext], for further formatting those.
+
+```{r Import R Libraries, message=FALSE, results='hide', echo=TRUE}
+# General purpose R libraries
+library(readr)
+library(dplyr)
+library(forcats)
+library(kableExtra)
+library(gridExtra)
+
+# Build ML models
+library(tidymodels)
+
+# Graphs
+library(ggplot2)
+library(ggtext) # Add support for HTML/CSS on ggplot
+
+# Other R packages
+library(fontawesome)
+
+
+# Build ML models
+
+library(tidymodels)
+library(bonsai)
+library(themis)
+
+# Other settings
+options(digits=4) # print only 4 decimals
+options(warn = -1)
+```
+
+```{r, include=FALSE}
+# Add loaded libraries to bibliography section
+
+knitr::write_bib(.packages(), file = 'packages.bib')
+```
+
+## Import dataset
+
+After loading R libraries, then I will load my data. The initial source of my dataset has various versions of the same dataset. I will use the smaller one, as the fitting process on Boosting algorithms it is more time consuming in comparison with other methods (e.g. Logistic Regression, k-Nearest Neighbors etc.).
+
+```{r Import dataset, cache=TRUE, message=FALSE,results='hide',echo=TRUE}
+bank_dataset <- read_delim("bank_dataset_files/bank.csv",  delim = ";", escape_double = FALSE, trim_ws = TRUE)
+```
+
+## Preview dataset
+
+Here we can see a small chunk of my dataset (first 10 rows / observations) just to understand the dataset's structure and type of variables.
+
+```{r Preview Data}
+
+#| label: tbl-preview-dataset
+#| tbl-cap: "Preview Dataset (first 6 rows)"
+#| 
+preview_bank_dataset = head(bank_dataset, 10)
+kbl(preview_bank_dataset, 
+    align = 'c',
+    booktabs = T,
+    centering = T,
+    valign = T) %>%
+  kable_paper() %>%
+  scroll_box(width = "600px", height = "250px")
+```
+
+
+## Dataset structure
+
+Before we do any analysis we have to define what kind of data we have available. We can assess this type of information by looking on the values of each variable. Generally, we can classify our variables, depending their values, as follows :
+
+<center>
+```{mermaid, echo = FALSE}
+graph TD;
+  A(Type of variables) --> B(Quantitative)
+  A(Type of variables) --> C(Qualitative)
+  B --> D(Discrete)
+  B --> E(Continuous)
+  C --> J(Nominal)
+  C --> G(Ordinal)
+```
+</center>
+
+Our dataset is consisted by `r ncol(bank_dataset)` variables (columns) and `r length(bank_dataset$y)` observations (rows). More specifically, concerning my variables, are as follows :
+
+| Variable    | Property                           | Description     |
+| :----:      |    :----:                          |    :----: |
+| `Age`       | *quantitative*  <br> (continuous)  | The age of the respondent  |
+| `Job`       | *qualitative*   <br> (nominal)     | The sector of employment of the respondent |
+| `Marital`   | *qualitative*   <br> (nominal)     | The marital status of the respondent      |
+| `Education` | *qualitative*   <br> (ordinal)     | The higher education level that the respondent has ever reached  |
+| `Default`   | *qualitative*   <br> (nominal)     | has credit in default? |
+| `Balance`   | *quantitative*  <br> (continuous)  | Average yearly balance, in euros |
+| `Housing`   | *qualitative*   <br> (nominal)     | Has housing loan? |
+| `Loan`      | *qualitative*   <br> (nominal)     | Has personal loan? |
+| `Contact`   | *qualitative*   <br> (nominal)     | Contact communication type |
+| `Month`     | *qualitative*    <br> (ordinal)    | Last contact day of the month|
+| `Duration`  | *quantitative*   <br> (continuous) | Last contact duration, in seconds (numeric)|
+| `Campaign`  | *quantitative* |  Number of contacts performed during this campaign and for this client |
+| `pdays`     | *quantitative*  | Number of days that passed by after the client was last contacted from a previous campaign |
+| `pprevious` | *quantitative*  |  Number of contacts performed before this campaign and for this client |
+| `poutcome`  | *qualitative*  (nominal)  | Outcome of the previous marketing campaign |
+| `Deposit`   | *qualitative*  <br> (nominal)  | Has the client subscribed a term deposit? |
+
+Thus, my sample has `r ncol(bank_dataset)` variables, of which 7 are quantitative and 10 are quantitative properties, of which 8 are nominal and the rest ones (`Education`, `Month`) are ordinal.
+
+
+```{r}
+bank_dataset$y = as.factor(bank_dataset$y)
+```
+
+
+## Custom functions
+
+> So, I have a basic idea about my data. Can we start analyzing our data?
+
+It depends. If you want to do a simple analysis then yes. Although most of the times this is not the case. Probably there is the need for repetitive actions. In order to not repeat ourselves we need to define some actions, prior to our analysis.
+
+On this occasion, I found beneficial the definition of a function for qualitative data.
+
+```{r}
+univariate_qualitative = function(variable, title_plot){
+table = bank_dataset %>%
+    select(variable) %>%
+    table() %>%
+    prop.table() %>%
+    as.data.frame() %>%
+    magrittr::set_colnames(c("Var1", "Freq"))
+  
+plot =  ggplot(data = table, aes(x = fct_reorder(Var1,Freq, .desc = T), fill=Var1, y = Freq)) + 
+     geom_bar(stat = "identity")+
+     scale_fill_hue(c = 40) +
+     geom_text(aes(label = sprintf("%.2f %%", Freq*100),  stat="identity",
+        vjust = -.1)) +
+     labs(
+       title = title_plot,
+       caption = "Bank Marketing Dataset from <b>UCI</b>",
+       x = "Response",
+       y = "Observations"
+        ) +
+     theme_classic() +
+     theme(legend.position = "none",
+        axis.text.x = element_text(angle = 30, vjust = 0.5),
+        plot.caption = element_markdown(lineheight = 1.2),
+        plot.title = element_text(hjust = 0.5),)
+  
+return(plot)
+}
+```
+
+I will do the same for univariate numeric data. 
+
+```{r}
+univ_quanti = function(variable_sel){
+  ggplot(bank_dataset, aes(x = variable_sel )) +
+  geom_histogram(x = variable_sel, stat = "count") +
+  scale_fill_hue(c = 40) +
+  labs(
+    title = "Age Distribution of Respondents",
+    caption = "Bank Marketing Dataset from <b>UCI</b>",
+    x = "Age of Respondent",
+    y = "Observations"
+  ) +
+  theme_classic() + 
+  theme(
+    plot.caption = element_markdown(lineheight = 1.2),
+    plot.title = element_text(hjust = 0.5))
+}
+```
+
+
+# EDA with R
+
+## Missing Values
+
+```{r, results='hide'}
+how_many_nas = sum(is.na(bank_dataset))
+```
+
+On this dataset there are `r how_many_nas` missing values, in total. So, there is no need for imputation.
+
+
+## Univariate analysis
+
+### Qualitative variables
+
+::: {.panel-tabset}
+
+#### Job
+
+```{r Figure : Job, fig.align='center'}
+univariate_qualitative("job", "Job of Respondent")
+```
+
+
+####  Marital status
+
+```{r Figure : Marital Status, fig.align='center'}
+univariate_qualitative("marital", "Marital Status of the respondent")
+```
+
+
+
+
+
+#### Education
+
+```{r Figure : Education, fig.align='center'}
+univariate_qualitative("education", "Educational Backgroung")
+```
+
+#### Default
+
+```{r Figure : Default, fig.align='center'}
+univariate_qualitative("default", "Has credit in default ?")
+```
+
+####  Housing 
+
+```{r Figure : Housing, fig.align='center'}
+univariate_qualitative("housing", "Has housing loan?")
+```
+
+
+#### Loan 
+
+```{r Figure : Loan, fig.align='center'}
+univariate_qualitative("loan", "Has personal loan ?")
+```
+
+
+#### Contact
+
+```{r Figure : Contact , fig.align='center'}
+univariate_qualitative("contact", "Type of Contact")
+```
+
+
+#### Month
+
+```{r Figure : Month , fig.align='center'}
+options(digits =2)
+
+perc_month = table(bank_dataset$month) %>%
+  prop.table() %>%
+  sort(decreasing = T) %>%
+  as.data.frame()
+
+num_month = table(bank_dataset$month) %>%
+  sort(decreasing = T) %>%
+  as.data.frame()
+
+perc_month %>%
+    ggplot(aes(x = factor(Var1, level = c('jan', 'feb', 'mar', 'apr','may','jun','jul','aug','sep', 'oct', 'nov', 'dec')), y = Freq)) + 
+  geom_bar(stat = "identity")+
+  scale_fill_hue(c = 40) +
+  geom_text(aes(label = sprintf("%.2f", Freq*100),  stat="identity",
+        vjust = -.25)) +
+  labs(
+    title = "Calls per month",
+    caption = "Bank Marketing Dataset from <b>UCI</b>",
+    x = "Response",
+    y = "Observations"
+  ) +
+  theme_classic() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(vjust = 0.5),
+        plot.caption = element_markdown(lineheight = 1.2),
+        plot.title = element_text(hjust = 0.5))
+```
+
+
+#### poutcome
+
+```{r Figure : poutcome}
+univariate_qualitative("poutcome", "Outcome of previous approach")
+```
+
+#### Deposit 
+
+
+```{r Figure : Output Variable (Deposit Account (Y/N)), fig.align='center'}
+univariate_qualitative("y", "How many people made a deposit account ?")
+```
+
+:::
+
+### Quantitative variables
+
+::: {.panel-tabset}
+
+
+#### Age 
+
+```{r Figure : Age, fig.align='center', fig.height=4}
+ggplot(bank_dataset, aes(x = age )) +
+  geom_bar() +
+  scale_fill_hue(c = 40) +
+  labs(
+    title = "Age Distribution of Respondents",
+    caption = "Bank Marketing Dataset from <b>UCI</b>",
+    x = "Age of Respondent",
+    y = "Observations"
+  ) +
+  theme_classic() + 
+  theme(
+    plot.caption = element_markdown(lineheight = 1.2),
+    plot.title = element_text(hjust = 0.5))
+
+# NOTE : In order to make HTML tags to work I need to specify element on theme command.
+```
+
+
+#### Balance
+
+```{r Figure : Balance, fig.align='center'}
+ggplot(bank_dataset, aes(x=balance)) + 
+  geom_histogram(bins = 20) +
+  scale_fill_hue(c = 40) +
+  labs(
+    title = "Average yearly balance",
+    caption = " Bank Marketing Data Set from <b>UCI</b>",
+    x = "Response",
+    y = "Observations"
+  ) +
+  theme_bw() +
+  theme(legend.position = "none",
+        plot.caption = element_markdown(lineheight = 1.2),
+        plot.title = element_text(hjust = 0.5))
+```
+
+
+####  Duration
+
+```{r}
+ggplot(bank_dataset, aes(x=duration, fill=duration)) + 
+  geom_histogram( ) +
+  scale_fill_hue(c = 40) +
+  theme_bw() +
+  labs(
+    title = "How many people made a deposit account ?",
+    caption = "Data from the 1974 Motor Trend US magazine.",
+    x = "Response",
+    y = "Observations"
+  ) +
+  theme_classic() +
+  theme(legend.position = "none")
+```
+
+
+####  Campaign
+
+```{r Figure : Campaign - Num of Approaches to specific person, fig.align='center'}
+ggplot(bank_dataset, aes(x= campaign, fill=campaign )) + 
+  geom_bar() +
+  scale_fill_hue(c = 40) +
+  theme_bw() +
+  labs(
+    title = "Number of Approaches to a specific person",
+    x = "# of Approaches",
+    y = "Observations"
+  ) + 
+  theme_classic()
+```
+
+:::
+
+
+
+## Bivariate analysis
+
+On the previous section I learned a lot about my dataset. Now, I have to reveal relationships between my variables. Visualizing those relationships will make it even easier to explain our results. In order to make the right plots on the right occasions I used the book "Datavis with R" ([Chapter 4 : Bivariate Graphs](https://rkabacoff.github.io/datavis/Bivariate.html)). 
+
+
+### Qualitative variables
+
+::: {.panel-tabset}
+
+#### Job
+
+
+```{r, warning=FALSE, message=FALSE}
+plotjob <- bank_dataset %>%
+  group_by(job, y) %>%
+  summarize(n = n()) %>% 
+  mutate(pct = n/sum(n),
+         lbl = scales::percent(pct))
+
+plot_job = ggplot(plotjob, 
+       aes(x = fct_reorder(job, pct),
+           y = pct,
+           fill = y)) + 
+  geom_bar(stat = "identity",
+           position = "fill") +
+  geom_text(aes(label = lbl), 
+            size = 3, 
+            position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(y = "Percent", 
+       fill = "Drive Train",
+       x = "Class",
+       title = "Job of Respondent by Interest to Term Deposit") +
+  theme_classic() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 30, vjust = 0.5),
+        plot.caption = element_markdown(lineheight = 1.2),
+        plot.title = element_text(hjust = 0.5))
+
+plot_job
+```
+
+#### Marital status
+
+```{r}
+plot_marital1 <- ggplot(bank_dataset, 
+       aes(x = marital, 
+           fill = y)) + 
+       scale_fill_hue(c = 40) +
+       theme_bw() +
+       geom_bar(position = position_dodge(preserve = "single"))
+```
+
+```{r, warning=FALSE, message=FALSE}
+plotmarital <- bank_dataset %>%
+  group_by(marital, y) %>%
+  summarize(n = n()) %>% 
+  mutate(pct = n/sum(n),
+         lbl = scales::percent(pct))
+
+plot_marital2 = ggplot(plotmarital, 
+       aes(x = marital,
+           y = pct,
+           fill = y)) + 
+  geom_bar(stat = "identity",
+           position = "fill") +
+  geom_text(aes(label = lbl), 
+            size = 3, 
+            position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(y = "Percent", 
+       fill = "Drive Train",
+       x = "Class",
+       title = "Marital Status by Interest to Term Deposit") +
+  theme_classic() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 30, vjust = 0.5),
+        plot.caption = element_markdown(lineheight = 1.2),
+        plot.title = element_text(hjust = 0.5))
+```
+
+```{r}
+gridExtra::grid.arrange(plot_marital1, plot_marital2, nrow =1)
+```
+
+
+#### Education
+
+```{r}
+plot_education1 <- ggplot(bank_dataset, 
+       aes(x = education, 
+           fill = y)) + 
+       scale_fill_hue(c = 40) +
+       theme_bw() +
+       geom_bar(position = position_dodge(preserve = "single"))
+```
+
+```{r, message=FALSE, warning=FALSE}
+plot_education2 = bank_dataset %>%
+  group_by(education, y) %>%
+  summarize(n = n()) %>% 
+  mutate(pct = n/sum(n),
+         lbl = scales::percent(pct)) %>%
+    ggplot(aes(x = education,
+           y = pct,
+           fill = y)) + 
+  geom_bar(stat = "identity",
+           position = "fill") +
+  geom_text(aes(label = lbl), 
+            size = 3, 
+            position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(y = "Percent", 
+       fill = "Drive Train",
+       x = "Class",
+       title = "Educational Background by Interest to Term Deposit") +
+  theme_classic() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 30, vjust = 0.5),
+        plot.caption = element_markdown(lineheight = 1.2),
+        plot.title = element_text(hjust = 0.5))
+```
+
+```{r}
+gridExtra::grid.arrange(plot_education1, plot_education2, nrow =1)
+```
+
+
+#### Default
+
+```{r}
+plot_default1 <- ggplot(bank_dataset, 
+       aes(x = default, 
+           fill = y)) + 
+        scale_fill_hue(c = 40) +
+        theme_bw() +
+  geom_bar(position = position_dodge(preserve = "single"))
+```
+
+```{r}
+plot_default2 = bank_dataset %>%
+  group_by(default, y) %>%
+  summarize(n = n()) %>% 
+  mutate(pct = n/sum(n),
+         lbl = scales::percent(pct)) %>%
+    ggplot(aes(x = default,
+           y = pct,
+           fill = y)) + 
+  geom_bar(stat = "identity",
+           position = "fill") +
+  geom_text(aes(label = lbl), 
+            size = 3, 
+            position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(y = "Percent", 
+       fill = "Drive Train",
+       x = "Class",
+       title = "Has credit in default ?") +
+  theme_classic() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 30, vjust = 0.5),
+        plot.caption = element_markdown(lineheight = 1.2),
+        plot.title = element_text(hjust = 0.5))
+```
+
+
+
+```{r}
+gridExtra::grid.arrange(plot_default1, plot_default2, nrow =1)
+```
+
+#### Housing
+
+```{r}
+plot_housing1 <- ggplot(bank_dataset, 
+       aes(x = housing, 
+           fill = y)) + 
+       scale_fill_hue(c = 40) +
+       theme_bw() +
+  geom_bar(position = position_dodge(preserve = "single"))
+```
+
+
+```{r}
+plot_housing2 = bank_dataset %>%
+  group_by(housing, y) %>%
+  summarize(n = n()) %>% 
+  mutate(pct = n/sum(n),
+         lbl = scales::percent(pct)) %>%
+    ggplot(aes(x = housing,
+           y = pct,
+           fill = y)) + 
+  geom_bar(stat = "identity",
+           position = "fill") +
+  geom_text(aes(label = lbl), 
+            size = 3, 
+            position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(y = "Percent", 
+       fill = "Drive Train",
+       x = "Class",
+       title = "Has housing loan ?") +
+  theme_classic() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 30, vjust = 0.5),
+        plot.caption = element_markdown(lineheight = 1.2),
+        plot.title = element_text(hjust = 0.5))
+```
+
+```{r}
+gridExtra::grid.arrange(plot_housing1, plot_housing2, nrow =1)
+```
+
+
+
+
+#### Loan
+
+```{r}
+plot_loan1 <- ggplot(bank_dataset, 
+       aes(x = loan, 
+           fill = y)) + 
+      scale_fill_hue(c = 40) +
+      theme_bw() +
+      geom_bar(position = position_dodge(preserve = "single"))
+```
+
+
+```{r}
+plot_loan2 = bank_dataset %>%
+  group_by(loan, y) %>%
+  summarize(n = n()) %>% 
+  mutate(pct = n/sum(n),
+         lbl = scales::percent(pct)) %>%
+    ggplot(aes(x = loan,
+           y = pct,
+           fill = y)) + 
+  geom_bar(stat = "identity",
+           position = "fill") +
+  geom_text(aes(label = lbl), 
+            size = 3, 
+            position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(y = "Percent", 
+       fill = "Interested",
+       x = "Class",
+       title = "Has personal loan ?") +
+  theme_classic() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 30, vjust = 0.5),
+        plot.caption = element_markdown(lineheight = 1.2),
+        plot.title = element_text(hjust = 0.5))
+```
+
+```{r}
+gridExtra::grid.arrange(plot_loan1, plot_loan2, nrow =1)
+```
+
+#### Contact
+
+
+```{r}
+plot_contact1 <- ggplot(bank_dataset, 
+       aes(x = contact, 
+           fill = y)) + 
+        scale_fill_hue(c = 40) +
+        theme_bw() +
+  geom_bar(position = position_dodge(preserve = "single"))
+```
+
+```{r}
+plot_contact2 = bank_dataset %>%
+  group_by(contact, y) %>%
+  summarize(n = n()) %>% 
+  mutate(pct = n/sum(n),
+         lbl = scales::percent(pct)) %>%
+    ggplot(aes(x = contact,
+           y = pct,
+           fill = y)) + 
+  geom_bar(stat = "identity",
+           position = "fill") +
+  geom_text(aes(label = lbl), 
+            size = 3, 
+            position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(y = "Percent", 
+       fill = "Interested",
+       x = "Class",
+       title = "Forms of contact") +
+  theme_classic() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 30, vjust = 0.5),
+        plot.caption = element_markdown(lineheight = 1.2),
+        plot.title = element_text(hjust = 0.5))
+```
+
+```{r}
+gridExtra::grid.arrange(plot_contact1, plot_contact2, nrow =1)
+```
+
+
+#### Month
+
+```{r}
+plot_month1 <- ggplot(bank_dataset, 
+       aes(x = factor(month, level = c('jan', 'feb', 'mar', 'apr','may','jun','jul','aug','sep', 'oct', 'nov', 'dec')), 
+           fill = y)) + 
+       scale_fill_hue(c = 40) +
+       theme_bw() +
+  geom_bar(position = position_dodge(preserve = "single"))
+```
+
+```{r}
+plot_month2 <- ggplot(bank_dataset, 
+       aes(x = factor(month, level = c('jan', 'feb', 'mar', 'apr','may','jun','jul','aug','sep', 'oct', 'nov', 'dec')), fill = y)) + 
+       geom_bar(position = "fill") +
+  scale_fill_brewer(palette = "Set2") +
+  theme_minimal()
+```
+
+```{r}
+gridExtra::grid.arrange(plot_month1, plot_month2, nrow =1)
+```
+
+#### poutcome
+
+```{r}
+plot_poutcome1 <- ggplot(bank_dataset, 
+       aes(x = poutcome, 
+           fill = y)) + 
+       scale_fill_hue(c = 40) +
+       theme_bw() +
+  geom_bar(position = position_dodge(preserve = "single"))
+```
+
+```{r, message=FALSE}
+plot_poutcome2 = bank_dataset %>%
+  group_by(poutcome, y) %>%
+  summarize(n = n()) %>% 
+  mutate(pct = n/sum(n),
+         lbl = scales::percent(pct)) %>%
+   ggplot(aes(x = poutcome,
+           y = pct,
+           fill = y)) + 
+  geom_bar(stat = "identity",
+           position = "fill") +
+  geom_text(aes(label = lbl), 
+            size = 3, 
+            position = position_stack(vjust = 0.5)) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(y = "Percent", 
+       fill = "Interested",
+       x = "Class",
+       title = "Previous Campaign outcome") +
+  theme_classic() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 30, vjust = 0.5),
+        plot.caption = element_markdown(lineheight = 1.2),
+        plot.title = element_text(hjust = 0.5))
+```
+
+```{r}
+gridExtra::grid.arrange(plot_poutcome1, plot_poutcome2, nrow =1)
+```
+
+:::
+
+
+### Quantitative variables
+
+::: {.panel-tabset}
+
+#### Age 
+
+```{r}
+bank_dataset %>%
+ggplot(aes(x=y, y=age, fill=y)) +
+  geom_boxplot() +
+  scale_fill_hue(c = 40) +
+  theme_classic() +
+  labs(
+     title = "Age & Desire of Bank Deposit Account" 
+  )
+```
+
+#### Balance
+
+```{r, warning=FALSE, message=FALSE}
+
+plot1 = bank_dataset[bank_dataset$balance < 15000, ] %>%
+ggplot(aes(x = balance, 
+           fill = y)) + 
+        scale_fill_hue(c = 40) +
+        theme_bw() +
+  geom_histogram(bins=15)
+
+plot1
+```
+
+
+#### Duration
+
+```{r}
+ggplot(bank_dataset, 
+       aes(x = duration, 
+           fill = y)) + 
+       scale_fill_hue(c = 40) +
+       theme_bw() +
+  geom_histogram()
+```
+
+
+#### Campaign
+
+```{r}
+ggplot(bank_dataset, 
+       aes(x = campaign, 
+           fill = y)) + 
+       scale_fill_hue(c = 40) +
+       theme_bw() +
+  geom_histogram()
+```
+:::
+
+# Building model
+
+In R there are two fairly well-known libraries when it comes to model generation, [caret](https://topepo.github.io/caret/) and [tidymodels](https://www.tidymodels.org/). On one hand, caret is pretty simple to use, has lots of sources, guides, explanatory articles. On the other hand, tidymodels is an all-in-one solution but has less documentation, articles compared to caret.
+
+
+## Split train/test dataset
+
+
+Our first step is to split our dataset on 2 parts. Each of those will be used for a different purpose. The first part's (train dataset) purpose is to build our model. The other part (test dataset) will be used to evaluate our model's performance. 
+
+
+```{r}
+set.seed(123)
+bank_dataset_split <- initial_split(bank_dataset,
+                                prop = 0.75,
+                                strata = y)
+
+# Create training data
+bank_train <- bank_dataset_split %>%
+                    training()
+
+# Create testing data
+bank_test <- bank_dataset_split %>%
+                    testing()
+```
+
+
+
+::: {.panel-tabset}
+
+### Train dataset
+
+```{r}
+head(bank_train) %>%
+  kbl(toprule = T,align = 'c',booktabs = T)  %>%
+  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
+```
+
+
+### Test dataset
+
+```{r}
+head(bank_test) %>%
+  kbl(toprule = T,align = 'c',booktabs = T)  %>%
+  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
+```
+
+:::
+
+## Recipes
+
+An important part in the process of model building is preprocessing.
+Depending of model type and data structure, I have to do the necessary changes. The *tidymodels* offers some ready-made preprocessing functions which make the whole process piece of cake.
+
+
+In instance, the dataset I am working right now has imbalanced response variable (term deposit interest). For that reason, I used the recipe `step_smote()` from *themis* package. 
+
+
+```{r}
+bank_recipe <- recipes::recipe(y~., 
+                               data = bank_train) %>%
+  step_rm(poutcome) %>%
+  step_corr(all_numeric(), threshold = 0.75) %>%
+  step_dummy(all_nominal(), -all_outcomes()) %>% prep() %>%
+  step_smote(y) %>%
+  prep()
+
+```
+
+Let's preview our dataset after applying our recipes :
+
+```{r}
+#| label: tbl-recipes-df
+#| tbl-cap: "Dataset after `recipes`"
+
+bank_recipe %>%
+  prep() %>%
+  juice() %>%
+  head() %>%
+  kbl() %>%
+  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
+```
+
+## Create validation set
+
+> So, how good is the model? Not so fast...
+
+We could actually build the model and evaluate its performance. The problem with that approach is the sample. 
+
+```{r}
+cv_folds <- recipes::bake(
+  bank_recipe,
+  new_data = bank_train) %>%
+  rsample::vfold_cv(v = 5, strata = y)
+```
+
+## Specify models
+
+
+Next, parsnip helps us to specify our models. Initially, I will define a LightGBM model,
+
+```{r}
+lightgbm_model<- parsnip::boost_tree(
+ mode = "classification",
+ trees = 100,
+ min_n = tune(),
+ learn_rate = tune(),
+ tree_depth = tune()) %>%
+set_engine("lightgbm", loss_function = "squarederror")
+```
+
+and an XGBoost one.
+
+```{r}
+xgboost_model<- parsnip::boost_tree(
+ mode = "classification",
+ trees = 100,
+ min_n = tune(),
+ learn_rate = tune(),
+ tree_depth = tune()) %>%
+ set_engine("xgboost")
+```
+
+
+## Hyperparameters tuning
+
+Now, we are specifying the hyperpaterers' values and a grid to check whicη combination of those are performing better according to our desired metric (in our case ROC). This has to be done for both, LightGBM 
+
+```{r}
+lightgbm_params <- dials::parameters(
+ min_n(),
+ tree_depth(range = c(4,10)),
+ learn_rate() # learning rate
+)
+```
+
+```{r}
+lightgbm_grid <- dials::grid_max_entropy(
+ lightgbm_params,
+ size = 10)
+
+head(lightgbm_grid) %>%
+  kbl(toprule = T,align = 'c',booktabs = T)  %>%
+  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
+```
+
+and XGBoost.
+
+
+```{r}
+xgboost_params <- dials::parameters(
+ min_n(),
+ tree_depth(range = c(4,10)),
+ learn_rate() # learning rate
+)
+```
+
+```{r}
+xgboost_grid <- dials::grid_max_entropy(
+  xgboost_params,
+  size = 10
+)
+
+head(xgboost_grid) %>%
+  kbl(toprule = T,align = 'c',booktabs = T)  %>%
+  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
+```
+
+
+
+## Fit resamples
+
+
+```{r}
+# build workflow for LightGBM
+
+lightgbm_workflow <- workflows::workflow() %>%
+ add_model(lightgbm_model) %>%
+ add_formula(y ~.)
+```
+
+```{r}
+# build workflow for XGBoost
+
+xgboost_workflow <- workflows::workflow() %>%
+  add_model(xgboost_model) %>%
+  add_formula(y~.)
+```
+
+Finally, we can build the LightGBM model by combining :
+
+- The workflows we set it up above
+- The resamples
+- Grid of values (hyperparameters)
+- Metric based on which we will evaluate our model's performance
+
+```{r, cache=TRUE}
+start_time_lightgbm <- Sys.time()
+
+lightgbm_tuned_model <- tune::tune_grid(
+ object = lightgbm_workflow,
+ resamples = cv_folds,
+ metrics = metric_set(roc_auc, accuracy),
+ grid = lightgbm_grid,
+ control = tune::control_grid(verbose = FALSE) # set this to TRUE to see
+ # in what step of the process you are. But that doesn't look that well in
+ # a blog.
+)
+
+end_time_lightgbm <- Sys.time()
+
+time_lightgbm = difftime(end_time_lightgbm,start_time_lightgbm,units = "secs")
+
+```
+
+Similarly, for XGBoost. 
+
+```{r, cache=TRUE}
+start_time_xgboost <- Sys.time()
+
+xgboost_tuned_model <- tune::tune_grid(
+ object = xgboost_workflow,
+ resamples = cv_folds,
+ metrics = metric_set(roc_auc, accuracy),
+ grid = xgboost_grid,
+ control = tune::control_grid(verbose = FALSE) # set this to TRUE to see
+ # in what step of the process you are. But that doesn't look that well in
+ # a blog.
+)
+
+end_time_xgboost <- Sys.time()
+
+time_xgboost= difftime(end_time_xgboost,start_time_xgboost,units = "secs")
+
+```
+
+## Evaluate model
+
+Our first results based on resamples for LightGBM
+
+```{r}
+lightgbm_tuned_model %>%
+  show_best("roc_auc",n=5) %>% 
+  kbl(toprule = T,align = 'c',booktabs = T)  %>%
+  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
+```
+
+and XGBoost
+```{r}
+xgboost_tuned_model %>%
+  show_best("roc_auc",n=5) %>% 
+  kbl(toprule = T,align = 'c',booktabs = T)  %>%
+  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
+```
+
+## Last fit
+
+By now we can assess which is the best combination of values. Given those I will assess my model's performance on unknown (to my model) data. LightGBM model has 0.8469 ROC-value
+
+```{r}
+last_fit_lightgbm_model = parsnip::boost_tree(
+ mode = "classification",
+ trees = 100,
+ min_n = 33,
+ learn_rate = 0.0787,
+ tree_depth = 4) %>%
+set_engine("lightgbm", loss_function = "squarederror")
+```
+
+```{r}
+options(digits = 4)
+
+last_fit_workflow <- lightgbm_workflow %>% 
+  update_model(last_fit_lightgbm_model)
+
+last_lightgbm_fit <- 
+  last_fit_workflow %>% 
+  last_fit(bank_dataset_split)
+
+last_lightgbm_fit %>% 
+  collect_metrics() %>%
+  kbl(toprule = T,align = 'c',booktabs = T)  %>%
+  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
+```
+
+
+and XGBoost, 0.8736.
+
+
+```{r}
+last_fit_xgboost_model = parsnip::boost_tree(
+ mode = "classification",
+ trees = 100,
+ min_n = 21,
+ learn_rate = 0.0472,
+ tree_depth = 5) %>%
+set_engine("xgboost")
+```
+
+```{r}
+options(digits = 4)
+
+last_fit_xgboost_workflow <- xgboost_workflow %>% 
+  update_model(last_fit_xgboost_model)
+
+last_xgboost_fit <- 
+  last_fit_xgboost_workflow %>% 
+  last_fit(bank_dataset_split)
+
+last_xgboost_fit %>% 
+  collect_metrics() %>%
+  kbl(toprule = T,align = 'c',booktabs = T)  %>%
+  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
+```
+
+
+# Results
+
+
+It seems that my model has a really good predictive value even if I applied a relatively simple model. If an increased accuracy is justified we can apply a more powerful model (e.g., XGBoost, CatBoost, etc.).
+
+To summarize, 
+
+| Model    | Time to build  | ROC value (test)  | ROC value (CV) |
+| :----:   |    :----:   |    :----:    | :----: | 
+| LightGBM | `r sprintf("%.2f sec.", time_lightgbm)` | 0.8469  | 0.903 |
+| XGBoost  | `r sprintf("%.2f sec.", time_xgboost)`  | 0.8736  | 0.881 |
+
+In conclusion LightGBM model is less time xonsuming in comparison with XGBoost. On the other hand, XGBoost model needed more time to be built (which was expected) but outperformed LightGBM. 
+
+# Acknowledgements {.appendix .unlisted}
+
+Image by <a href="https://pixabay.com/users/geralt-9301/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=563967">Gerd Altmann</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=563967">Pixabay</a>
+
+
+# References {.appendix .unlisted}
