@@ -40,6 +40,9 @@ editor_options:
 &nbsp; 2.1 [Import Libraries](#import-libraries) <br>
 &nbsp; 2.2 [Import Dataset](#import-dataset) <br>
 &nbsp; 2.3 [Preview Dataset](#preview-dataset) <br>
+&nbsp; 2.4 [Dataset structure](#dataset-structure) <br>
+&nbsp; 2.5 [Recoding variables](#recoding-variables) <br>
+&nbsp; 2.6 [Custom functions](#custom-functions) <br>
 3. [EDA with R](#eda-with-r) <br>
 &nbsp; 3.1 [Missing Values](#missing-values) <br>
 &nbsp; 3.2 [Univariate Analysis](#univariate-analysis) <br>
@@ -152,8 +155,91 @@ As we noted previously, there are some variables that need recoding. Based on th
 
 ```{r}
 data$deleted = as.factor(data$deleted)
-
 data$deleted = fct_recode(data$deleted, Yes = "1", No = "0")
+```
+
+The same procedure has to be followed for the rest of the qualitative variables (`cooling`, `safedoor`).
+
+```{r}
+# Auto Heating
+
+data$auto_heating = data$auto_heating %>%
+  as.factor() %>%
+  fct_recode(., Yes = "1", No = "0")
+
+# Solar
+
+data$solar = data$solar %>%
+  as.factor() %>%
+  fct_recode(., Yes = "1", No = "0")
+
+# Cooling
+
+data$cooling = data$cooling %>%
+  as.factor() %>%
+  fct_recode(., Yes = "1", No = "0")
+
+# Safe door
+
+data$safe_door = data$safe_door %>%
+  as.factor() %>%
+  fct_recode(., Yes = "1", No = "0")
+
+# Gas
+
+data$gas = data$gas %>%
+  as.factor() %>%
+  fct_recode(., Yes = "1", No = "0")
+
+# Fireplace
+
+data$fireplace = data$fireplace %>%
+  as.factor() %>%
+  fct_recode(., Yes = "1", No = "0")
+
+# Furniture
+
+data$furniture = data$furniture %>%
+  as.factor() %>%
+  fct_recode(., Yes = "1", No = "0")
+
+# Student
+
+data$student = data$student %>%
+  as.factor() %>%
+  fct_recode(., Yes = "1", No = "0")
+```
+
+Let's see one more time our dataset structure after recoding :
+
+```{r}
+head(data, 7) %>%
+  kbl(align = 'c',
+    booktabs = T,
+    centering = T,
+    valign = T) %>%
+  kable_paper() %>%
+  scroll_box(width = "600px", height = "250px")
+```
+
+  
+## Custom functions
+
+### Qualitative - Categorical
+
+```{r}
+categorical_plot <- function(var){
+data %>%
+  as.data.frame() %>%
+  select(var) %>%
+  table() %>%
+  as.data.frame() %>%
+  `colnames<-`(c("Deleted", "Occurencies")) %>%
+  ggplot(., aes(x = Deleted, y = Occurencies)) +
+   geom_bar(stat = "identity") +
+   geom_text(aes(label = Occurencies, vjust = -.1)) +
+   theme_classic()
+}
 ```
 
 
@@ -170,7 +256,73 @@ On this dataset there are `r how_many_nas` missing values, in total. So, there i
 
 ## Univariate analysis
 
-### Qualitative variables
+### Qualitative (Nominal) variables
+
+::: {.panel-tabset}
+
+#### Autoheating
+
+```{r}
+categorical_plot("auto_heating")
+```
+
+
+#### Solar
+
+```{r}
+categorical_plot("solar")
+```
+
+
+#### Cooling
+
+```{r}
+categorical_plot("cooling")
+```
+
+
+#### Safe door
+
+```{r}
+categorical_plot("safe_door")
+```
+
+
+#### Gas
+
+```{r}
+categorical_plot("gas")
+```
+
+#### Fireplace
+
+```{r}
+categorical_plot("fireplace")
+```
+
+#### Furniture
+
+```{r}
+categorical_plot("furniture")
+```
+
+
+#### Student
+
+```{r}
+categorical_plot("student")
+```
+
+#### Parking
+
+```{r}
+categorical_plot("parking")
+```
+
+
+:::
+
+### Qualitative (Ordinal) variables
 
 ::: {.panel-tabset}
 
@@ -187,15 +339,10 @@ data %>%
 
 #### Deleted
 
+
+
 ```{r}
-data %>%
-  select(deleted) %>%
-  table() %>%
-  as.data.frame() %>%
-  `colnames<-`(c("Deleted", "Occurencies")) %>%
-  ggplot(., aes(x = Deleted, y = Occurencies)) +
-   geom_bar(stat = "identity") +
-   theme_classic()
+categorical_plot("deleted")
 ```
 
 
@@ -209,41 +356,6 @@ data %>%
 
 
 #### Energy class
-
-
-#### Autoheating
-
-
-
-#### Solar
-
-
-
-#### Cooling
-
-
-
-#### Safe door
-
-
-
-#### Gas
-
-
-
-#### Fireplace
-
-
-#### Furniture
-
-
-
-#### Student
-
-
-#### Parking
-
-
 
 :::
 

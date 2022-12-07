@@ -258,6 +258,12 @@ div.csl-indent {
   <li><a href="#qualitative" id="toc-qualitative" class="nav-link" data-scroll-target="#qualitative">Qualitative</a></li>
   </ul>
 </li>
+  <li>
+<a href="#custom-functions" id="toc-custom-functions" class="nav-link" data-scroll-target="#custom-functions">Custom functions</a>
+  <ul class="collapse">
+<li><a href="#qualitative---categorical" id="toc-qualitative---categorical" class="nav-link" data-scroll-target="#qualitative---categorical">Qualitative - Categorical</a></li>
+  </ul>
+</li>
   </ul>
 </li>
   <li>
@@ -267,7 +273,8 @@ div.csl-indent {
   <li>
 <a href="#univariate-analysis" id="toc-univariate-analysis" class="nav-link" data-scroll-target="#univariate-analysis">Univariate analysis</a>
   <ul class="collapse">
-<li><a href="#qualitative-variables" id="toc-qualitative-variables" class="nav-link" data-scroll-target="#qualitative-variables">Qualitative variables</a></li>
+<li><a href="#qualitative-nominal-variables" id="toc-qualitative-nominal-variables" class="nav-link" data-scroll-target="#qualitative-nominal-variables">Qualitative (Nominal) variables</a></li>
+  <li><a href="#qualitative-ordinal-variables" id="toc-qualitative-ordinal-variables" class="nav-link" data-scroll-target="#qualitative-ordinal-variables">Qualitative (Ordinal) variables</a></li>
   <li><a href="#quantitative-variables" id="toc-quantitative-variables" class="nav-link" data-scroll-target="#quantitative-variables">Quantitative variables</a></li>
   </ul>
 </li>
@@ -281,7 +288,7 @@ div.csl-indent {
 <ol type="1">
 <li><a href="#introduction">Introduction</a></li>
 <li>
-<a href="#prerequisites">Prerequisites</a> <br> &nbsp; 2.1 <a href="#import-libraries">Import Libraries</a> <br> &nbsp; 2.2 <a href="#import-dataset">Import Dataset</a> <br> &nbsp; 2.3 <a href="#preview-dataset">Preview Dataset</a> <br>
+<a href="#prerequisites">Prerequisites</a> <br> &nbsp; 2.1 <a href="#import-libraries">Import Libraries</a> <br> &nbsp; 2.2 <a href="#import-dataset">Import Dataset</a> <br> &nbsp; 2.3 <a href="#preview-dataset">Preview Dataset</a> <br> &nbsp; 2.4 <a href="#dataset-structure">Dataset structure</a> <br> &nbsp; 2.5 <a href="#recoding-variables">Recoding variables</a> <br> &nbsp; 2.6 <a href="#custom-functions">Custom functions</a> <br>
 </li>
 <li>
 <a href="#eda-with-r">EDA with R</a> <br> &nbsp; 3.1 <a href="#missing-values">Missing Values</a> <br> &nbsp; 3.2 <a href="#univariate-analysis">Univariate Analysis</a> <br> &nbsp; &nbsp; &nbsp; 3.2.1 <a href="#qualitative-variables">Qualitative variables</a> <br> &nbsp; &nbsp; &nbsp; 3.2.2 <a href="#quantitative-variables">Quantitative variables</a> <br>
@@ -586,119 +593,428 @@ div.csl-indent {
 </ul>
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data</span><span class="op">$</span><span class="va">deleted</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">deleted</span><span class="op">)</span></span>
-<span></span>
 <span><span class="va">data</span><span class="op">$</span><span class="va">deleted</span> <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_recode.html">fct_recode</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">deleted</span>, Yes <span class="op">=</span> <span class="st">"1"</span>, No <span class="op">=</span> <span class="st">"0"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section></section></section><section id="eda-with-r" class="level1"><h1>EDA with R</h1>
-<section id="missing-values" class="level2"><h2 class="anchored" data-anchor-id="missing-values">Missing Values</h2>
+<p>The same procedure has to be followed for the rest of the qualitative variables (<code>cooling</code>, <code>safedoor</code>).</p>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">how_many_nas</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Auto Heating</span></span>
+<span></span>
+<span><span class="va">data</span><span class="op">$</span><span class="va">auto_heating</span> <span class="op">=</span> <span class="va">data</span><span class="op">$</span><span class="va">auto_heating</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_recode.html">fct_recode</a></span><span class="op">(</span><span class="va">.</span>, Yes <span class="op">=</span> <span class="st">"1"</span>, No <span class="op">=</span> <span class="st">"0"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Solar</span></span>
+<span></span>
+<span><span class="va">data</span><span class="op">$</span><span class="va">solar</span> <span class="op">=</span> <span class="va">data</span><span class="op">$</span><span class="va">solar</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_recode.html">fct_recode</a></span><span class="op">(</span><span class="va">.</span>, Yes <span class="op">=</span> <span class="st">"1"</span>, No <span class="op">=</span> <span class="st">"0"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Cooling</span></span>
+<span></span>
+<span><span class="va">data</span><span class="op">$</span><span class="va">cooling</span> <span class="op">=</span> <span class="va">data</span><span class="op">$</span><span class="va">cooling</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_recode.html">fct_recode</a></span><span class="op">(</span><span class="va">.</span>, Yes <span class="op">=</span> <span class="st">"1"</span>, No <span class="op">=</span> <span class="st">"0"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Safe door</span></span>
+<span></span>
+<span><span class="va">data</span><span class="op">$</span><span class="va">safe_door</span> <span class="op">=</span> <span class="va">data</span><span class="op">$</span><span class="va">safe_door</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_recode.html">fct_recode</a></span><span class="op">(</span><span class="va">.</span>, Yes <span class="op">=</span> <span class="st">"1"</span>, No <span class="op">=</span> <span class="st">"0"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Gas</span></span>
+<span></span>
+<span><span class="va">data</span><span class="op">$</span><span class="va">gas</span> <span class="op">=</span> <span class="va">data</span><span class="op">$</span><span class="va">gas</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_recode.html">fct_recode</a></span><span class="op">(</span><span class="va">.</span>, Yes <span class="op">=</span> <span class="st">"1"</span>, No <span class="op">=</span> <span class="st">"0"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Fireplace</span></span>
+<span></span>
+<span><span class="va">data</span><span class="op">$</span><span class="va">fireplace</span> <span class="op">=</span> <span class="va">data</span><span class="op">$</span><span class="va">fireplace</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_recode.html">fct_recode</a></span><span class="op">(</span><span class="va">.</span>, Yes <span class="op">=</span> <span class="st">"1"</span>, No <span class="op">=</span> <span class="st">"0"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Furniture</span></span>
+<span></span>
+<span><span class="va">data</span><span class="op">$</span><span class="va">furniture</span> <span class="op">=</span> <span class="va">data</span><span class="op">$</span><span class="va">furniture</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_recode.html">fct_recode</a></span><span class="op">(</span><span class="va">.</span>, Yes <span class="op">=</span> <span class="st">"1"</span>, No <span class="op">=</span> <span class="st">"0"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Student</span></span>
+<span></span>
+<span><span class="va">data</span><span class="op">$</span><span class="va">furniture</span> <span class="op">=</span> <span class="va">data</span><span class="op">$</span><span class="va">furniture</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_recode.html">fct_recode</a></span><span class="op">(</span><span class="va">.</span>, Yes <span class="op">=</span> <span class="st">"1"</span>, No <span class="op">=</span> <span class="st">"0"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>On this dataset there are 1354 missing values, in total. So, there is no need for imputation.</p>
-</section><section id="univariate-analysis" class="level2"><h2 class="anchored" data-anchor-id="univariate-analysis">Univariate analysis</h2>
-<section id="qualitative-variables" class="level3"><h3 class="anchored" data-anchor-id="qualitative-variables">Qualitative variables</h3>
-<div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist">
-<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Date published</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Deleted</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Deleted at</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">Status</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false">Energy class</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-6" role="tab" aria-controls="tabset-1-6" aria-selected="false">Autoheating</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-7-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-7" role="tab" aria-controls="tabset-1-7" aria-selected="false">Solar</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-8-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-8" role="tab" aria-controls="tabset-1-8" aria-selected="false">Cooling</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-9-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-9" role="tab" aria-controls="tabset-1-9" aria-selected="false">Safe door</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-10-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-10" role="tab" aria-controls="tabset-1-10" aria-selected="false">Gas</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-11-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-11" role="tab" aria-controls="tabset-1-11" aria-selected="false">Fireplace</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-12-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-12" role="tab" aria-controls="tabset-1-12" aria-selected="false">Furniture</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-13-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-13" role="tab" aria-controls="tabset-1-13" aria-selected="false">Student</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-14-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-14" role="tab" aria-controls="tabset-1-14" aria-selected="false">Parking</a></li>
-</ul>
-<div class="tab-content">
-<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p>Let’s see one more time our dataset structure after recoding :</p>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">res_date</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html">scale_x_date</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"2022-01-01"</span>, <span class="st">"2022-06-31"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">data</span>, <span class="fl">7</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span>align <span class="op">=</span> <span class="st">'c'</span>,</span>
+<span>    booktabs <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>    centering <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>    valign <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_classic.html">kable_paper</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/scroll_box.html">scroll_box</a></span><span class="op">(</span>width <span class="op">=</span> <span class="st">"600px"</span>, height <span class="op">=</span> <span class="st">"250px"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<p><img src="2022-12-03-House-Price-Kallithea_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:250px; overflow-x: scroll; width:600px; "><table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
+<thead><tr>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> ...1 </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> ...2 </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> location_name </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> res_date </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> res_price </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> res_price_sqr </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> res_sqr </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> construction_year </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> levels </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> bedrooms </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> bathrooms </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> deleted </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> deleted_at </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> status </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> energyclass </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> auto_heating </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> solar </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> cooling </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> safe_door </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> gas </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> fireplace </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> furniture </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> student </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> parking </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:center;"> 1 </td>
+   <td style="text-align:center;"> 1 </td>
+   <td style="text-align:center;"> Kallithea </td>
+   <td style="text-align:center;"> 2022-03-09 </td>
+   <td style="text-align:center;"> 220000 </td>
+   <td style="text-align:center;"> 2558 </td>
+   <td style="text-align:center;"> 86 </td>
+   <td style="text-align:center;"> 2002 </td>
+   <td style="text-align:center;"> 2nd </td>
+   <td style="text-align:center;"> 2 </td>
+   <td style="text-align:center;"> 1 </td>
+   <td style="text-align:center;"> Yes </td>
+   <td style="text-align:center;"> 2022-04-15 </td>
+   <td style="text-align:center;"> Excellent </td>
+   <td style="text-align:center;"> C </td>
+   <td style="text-align:center;"> Yes </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> Yes </td>
+   <td style="text-align:center;"> Yes </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> Yes </td>
+   <td style="text-align:center;"> 0 </td>
+   <td style="text-align:center;"> Parking πιλωτής </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> 2 </td>
+   <td style="text-align:center;"> 2 </td>
+   <td style="text-align:center;"> Kallithea </td>
+   <td style="text-align:center;"> 2022-04-15 </td>
+   <td style="text-align:center;"> 180000 </td>
+   <td style="text-align:center;"> 2400 </td>
+   <td style="text-align:center;"> 75 </td>
+   <td style="text-align:center;"> 1975 </td>
+   <td style="text-align:center;"> 3rd </td>
+   <td style="text-align:center;"> 2 </td>
+   <td style="text-align:center;"> 1 </td>
+   <td style="text-align:center;"> Yes </td>
+   <td style="text-align:center;"> 2022-04-22 </td>
+   <td style="text-align:center;"> Renovated </td>
+   <td style="text-align:center;"> D </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> Yes </td>
+   <td style="text-align:center;"> 0 </td>
+   <td style="text-align:center;"> NA </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> 3 </td>
+   <td style="text-align:center;"> 3 </td>
+   <td style="text-align:center;"> Kallithea </td>
+   <td style="text-align:center;"> 2022-02-11 </td>
+   <td style="text-align:center;"> 180000 </td>
+   <td style="text-align:center;"> 3000 </td>
+   <td style="text-align:center;"> 60 </td>
+   <td style="text-align:center;"> 2022 </td>
+   <td style="text-align:center;"> 1st </td>
+   <td style="text-align:center;"> 2 </td>
+   <td style="text-align:center;"> 1 </td>
+   <td style="text-align:center;"> Yes </td>
+   <td style="text-align:center;"> 2022-04-14 </td>
+   <td style="text-align:center;"> Excellent </td>
+   <td style="text-align:center;"> A+ </td>
+   <td style="text-align:center;"> Yes </td>
+   <td style="text-align:center;"> Yes </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> Yes </td>
+   <td style="text-align:center;"> Yes </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> 0 </td>
+   <td style="text-align:center;"> NA </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> 4 </td>
+   <td style="text-align:center;"> 4 </td>
+   <td style="text-align:center;"> Kallithea </td>
+   <td style="text-align:center;"> 2022-05-27 </td>
+   <td style="text-align:center;"> 39000 </td>
+   <td style="text-align:center;"> 1300 </td>
+   <td style="text-align:center;"> 30 </td>
+   <td style="text-align:center;"> 1965 </td>
+   <td style="text-align:center;"> Basement </td>
+   <td style="text-align:center;"> 1 </td>
+   <td style="text-align:center;"> 1 </td>
+   <td style="text-align:center;"> Yes </td>
+   <td style="text-align:center;"> 2022-06-02 </td>
+   <td style="text-align:center;"> Renovated </td>
+   <td style="text-align:center;"> F </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> Yes </td>
+   <td style="text-align:center;"> 0 </td>
+   <td style="text-align:center;"> NA </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> 5 </td>
+   <td style="text-align:center;"> 5 </td>
+   <td style="text-align:center;"> Kallithea </td>
+   <td style="text-align:center;"> 2022-04-06 </td>
+   <td style="text-align:center;"> 92000 </td>
+   <td style="text-align:center;"> 1533 </td>
+   <td style="text-align:center;"> 60 </td>
+   <td style="text-align:center;"> 1981 </td>
+   <td style="text-align:center;"> 1st </td>
+   <td style="text-align:center;"> 1 </td>
+   <td style="text-align:center;"> 1 </td>
+   <td style="text-align:center;"> Yes </td>
+   <td style="text-align:center;"> 2022-04-08 </td>
+   <td style="text-align:center;"> Good </td>
+   <td style="text-align:center;"> E </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> 0 </td>
+   <td style="text-align:center;"> NA </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> 6 </td>
+   <td style="text-align:center;"> 6 </td>
+   <td style="text-align:center;"> Kallithea </td>
+   <td style="text-align:center;"> 2021-02-17 </td>
+   <td style="text-align:center;"> 220000 </td>
+   <td style="text-align:center;"> 1864 </td>
+   <td style="text-align:center;"> 118 </td>
+   <td style="text-align:center;"> 1992 </td>
+   <td style="text-align:center;"> 1st </td>
+   <td style="text-align:center;"> 3 </td>
+   <td style="text-align:center;"> 1 </td>
+   <td style="text-align:center;"> Yes </td>
+   <td style="text-align:center;"> 2022-03-23 </td>
+   <td style="text-align:center;"> Newly built </td>
+   <td style="text-align:center;"> D </td>
+   <td style="text-align:center;"> Yes </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> Yes </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> 0 </td>
+   <td style="text-align:center;"> NA </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> 7 </td>
+   <td style="text-align:center;"> 8 </td>
+   <td style="text-align:center;"> Kallithea </td>
+   <td style="text-align:center;"> 2022-04-10 </td>
+   <td style="text-align:center;"> 130000 </td>
+   <td style="text-align:center;"> 1461 </td>
+   <td style="text-align:center;"> 89 </td>
+   <td style="text-align:center;"> 1976 </td>
+   <td style="text-align:center;"> Ground </td>
+   <td style="text-align:center;"> 2 </td>
+   <td style="text-align:center;"> 1 </td>
+   <td style="text-align:center;"> Yes </td>
+   <td style="text-align:center;"> 2022-06-10 </td>
+   <td style="text-align:center;"> Good </td>
+   <td style="text-align:center;"> F </td>
+   <td style="text-align:center;"> Yes </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> No </td>
+   <td style="text-align:center;"> 0 </td>
+   <td style="text-align:center;"> NA </td>
+  </tr>
+</tbody>
+</table></div>
+
 </div>
 </div>
-</div>
-<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+</section></section><section id="custom-functions" class="level2"><h2 class="anchored" data-anchor-id="custom-functions">Custom functions</h2>
+<section id="qualitative---categorical" class="level3"><h3 class="anchored" data-anchor-id="qualitative---categorical">Qualitative - Categorical</h3>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">deleted</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">categorical_plot</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">var</span><span class="op">)</span><span class="op">{</span></span>
+<span><span class="va">data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">`colnames&lt;-`</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Deleted"</span>, <span class="st">"Occurencies"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">.</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Deleted</span>, y <span class="op">=</span> <span class="va">Occurencies</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">Occurencies</span>, vjust <span class="op">=</span> <span class="op">-</span><span class="fl">.1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section></section></section><section id="eda-with-r" class="level1"><h1>EDA with R</h1>
+<section id="missing-values" class="level2"><h2 class="anchored" data-anchor-id="missing-values">Missing Values</h2>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">how_many_nas</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>On this dataset there are 1354 missing values, in total. So, there is no need for imputation.</p>
+</section><section id="univariate-analysis" class="level2"><h2 class="anchored" data-anchor-id="univariate-analysis">Univariate analysis</h2>
+<section id="qualitative-nominal-variables" class="level3"><h3 class="anchored" data-anchor-id="qualitative-nominal-variables">Qualitative (Nominal) variables</h3>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Autoheating</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Solar</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Cooling</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">Safe door</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false">Gas</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-6" role="tab" aria-controls="tabset-1-6" aria-selected="false">Fireplace</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-7-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-7" role="tab" aria-controls="tabset-1-7" aria-selected="false">Furniture</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-8-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-8" role="tab" aria-controls="tabset-1-8" aria-selected="false">Student</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-9-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-9" role="tab" aria-controls="tabset-1-9" aria-selected="false">Parking</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">categorical_plot</span><span class="op">(</span><span class="st">"auto_heating"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<p><img src="2022-12-03-House-Price-Kallithea_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+<p><img src="2022-12-03-House-Price-Kallithea_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">categorical_plot</span><span class="op">(</span><span class="st">"solar"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="2022-12-03-House-Price-Kallithea_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">categorical_plot</span><span class="op">(</span><span class="st">"cooling"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="2022-12-03-House-Price-Kallithea_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 </div>
 <div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
-
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">categorical_plot</span><span class="op">(</span><span class="st">"safe_door"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="2022-12-03-House-Price-Kallithea_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 </div>
 <div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
-
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">categorical_plot</span><span class="op">(</span><span class="st">"gas"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="2022-12-03-House-Price-Kallithea_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 </div>
 <div id="tabset-1-6" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-6-tab">
-
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">categorical_plot</span><span class="op">(</span><span class="st">"fireplace"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="2022-12-03-House-Price-Kallithea_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 </div>
 <div id="tabset-1-7" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-7-tab">
-
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">categorical_plot</span><span class="op">(</span><span class="st">"furniture"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="2022-12-03-House-Price-Kallithea_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 </div>
 <div id="tabset-1-8" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-8-tab">
-
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">categorical_plot</span><span class="op">(</span><span class="st">"student"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="2022-12-03-House-Price-Kallithea_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 </div>
 <div id="tabset-1-9" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-9-tab">
-
-</div>
-<div id="tabset-1-10" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-10-tab">
-
-</div>
-<div id="tabset-1-11" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-11-tab">
-
-</div>
-<div id="tabset-1-12" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-12-tab">
-
-</div>
-<div id="tabset-1-13" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-13-tab">
-
-</div>
-<div id="tabset-1-14" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-14-tab">
-
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">categorical_plot</span><span class="op">(</span><span class="st">"parking"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="2022-12-03-House-Price-Kallithea_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
-</section><section id="quantitative-variables" class="level3"><h3 class="anchored" data-anchor-id="quantitative-variables">Quantitative variables</h3>
+</div>
+</div>
+</section><section id="qualitative-ordinal-variables" class="level3"><h3 class="anchored" data-anchor-id="qualitative-ordinal-variables">Qualitative (Ordinal) variables</h3>
 <div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist">
-<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Price</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Price per sqr</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">Squaremeters</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-4" role="tab" aria-controls="tabset-2-4" aria-selected="false">Year of Construction</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-5" role="tab" aria-controls="tabset-2-5" aria-selected="false">Floor</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-6" role="tab" aria-controls="tabset-2-6" aria-selected="false">Bedroorms</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-7-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-7" role="tab" aria-controls="tabset-2-7" aria-selected="false">Bathrooms</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Date published</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Deleted</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">Deleted at</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-4" role="tab" aria-controls="tabset-2-4" aria-selected="false">Status</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-5" role="tab" aria-controls="tabset-2-5" aria-selected="false">Energy class</a></li>
 </ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">res_date</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html">scale_x_date</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"2022-01-01"</span>, <span class="st">"2022-06-31"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="2022-12-03-House-Price-Kallithea_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
-
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">categorical_plot</span><span class="op">(</span><span class="st">"deleted"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="2022-12-03-House-Price-Kallithea_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 </div>
 <div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
 
@@ -709,10 +1025,39 @@ div.csl-indent {
 <div id="tabset-2-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-5-tab">
 
 </div>
-<div id="tabset-2-6" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-6-tab">
+</div>
+</div>
+</section><section id="quantitative-variables" class="level3"><h3 class="anchored" data-anchor-id="quantitative-variables">Quantitative variables</h3>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">Price</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Price per sqr</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" role="tab" aria-controls="tabset-3-3" aria-selected="false">Squaremeters</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-4" role="tab" aria-controls="tabset-3-4" aria-selected="false">Year of Construction</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-5" role="tab" aria-controls="tabset-3-5" aria-selected="false">Floor</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-6" role="tab" aria-controls="tabset-3-6" aria-selected="false">Bedroorms</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-7-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-7" role="tab" aria-controls="tabset-3-7" aria-selected="false">Bathrooms</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
 
 </div>
-<div id="tabset-2-7" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-7-tab">
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+
+</div>
+<div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
+
+</div>
+<div id="tabset-3-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-4-tab">
+
+</div>
+<div id="tabset-3-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-5-tab">
+
+</div>
+<div id="tabset-3-6" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-6-tab">
+
+</div>
+<div id="tabset-3-7" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-7-tab">
 
 </div>
 </div>
