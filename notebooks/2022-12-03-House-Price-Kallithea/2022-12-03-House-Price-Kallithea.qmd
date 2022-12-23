@@ -5,6 +5,7 @@ description: |
   Build a regression model using various ML algorithms to predict cost to buy a house in Kallithea.
 link-external-newwindow: true
 categories: [R, Regression]
+fig-height: 4
 fig-cap-location: bottom
 date: "2022-12-06"
 freeze: false
@@ -21,11 +22,10 @@ csl: apa-6th-edition
 bibliography: [packages.bib, references.bib]
 format: 
   html:
-    code-link: true
     code-fold: true
     code-summary: "Show the code"
     code-tools: 
-      source: repo
+      source: https://github.com/stesiam/stesiam.github.io/tree/gh-pages/notebooks/2022-12-03-House-Price-Kallithea
 execute:
   echo: true
 editor_options: 
@@ -46,9 +46,13 @@ editor_options:
 3. [EDA with R](#eda-with-r) <br>
 &nbsp; 3.1 [Missing Values](#missing-values) <br>
 &nbsp; 3.2 [Univariate Analysis](#univariate-analysis) <br>
-&nbsp; &nbsp; &nbsp; 3.2.1 [Qualitative variables](#qualitative-variables) <br>
-&nbsp; &nbsp; &nbsp; 3.2.2 [Quantitative variables](#quantitative-variables) <br>
-
+&nbsp; &nbsp; &nbsp; 3.2.1 [Qualitative (Nominal) variables](#qualitative-nominal-variables) <br>
+&nbsp; &nbsp; &nbsp; 3.2.2 [Qualitative (Ordinal) variables](#qualitative-ordinal-variables) <br>
+&nbsp; &nbsp; &nbsp; 3.2.2 [Qualitative (Discrete) variables](#qualitative-discrete-variables) <br>
+&nbsp; &nbsp; &nbsp; 3.2.2 [Qualitative (Continuous) variables](#qualitative-continuous-variables) <br>
+&nbsp; &nbsp; &nbsp; 3.2.2 [Time series](#time-series) <br>
+4. [Acknowledgements](#acknowledgements)
+5. [References](#references)
 <hr>
 
 # Introduction
@@ -84,6 +88,7 @@ library(ggtext) # Add support for HTML/CSS on ggplot
 # Build ML models
 
 library(tidymodels)
+library(bonsai)
 
 # Other settings
 options(digits=4) # print only 4 decimals
@@ -134,8 +139,6 @@ preview_data = head(data, 7) %>%
 preview_data
 ```
 
-## Dataset Structure
-
 
 ## Recoding variables
 
@@ -145,6 +148,7 @@ preview_data
 data$res_date = ymd(data$res_date)
 ```
 
+
 ### Qualitative
 
 As we noted previously, there are some variables that need recoding. Based on the 15th chapter of R-graphics book [@chang2018r] we have 2 main choices to do that :
@@ -152,15 +156,12 @@ As we noted previously, there are some variables that need recoding. Based on th
 - `recode()` from dplyr
 - `fct_recode()` from forcats
 
-
 ```{r}
+# Deleted
+
 data$deleted = as.factor(data$deleted)
 data$deleted = fct_recode(data$deleted, Yes = "1", No = "0")
-```
 
-The same procedure has to be followed for the rest of the qualitative variables (`cooling`, `safedoor`).
-
-```{r}
 # Auto Heating
 
 data$auto_heating = data$auto_heating %>%
@@ -208,7 +209,31 @@ data$furniture = data$furniture %>%
 data$student = data$student %>%
   as.factor() %>%
   fct_recode(., Yes = "1", No = "0")
+
+## Recoding data$parking
+data$parking <- data$parking %>%
+  fct_recode(
+    "Yes" = "Parking πιλωτής",
+    "Yes" = "Ανοιχτό parking",
+    "Yes" = "Ανοιχτό parking, Parking πιλωτής",
+    "Yes" = "Κλειστό parking",
+    "Yes" = "Υπόγειο parking"
+  ) %>%
+  fct_explicit_na("No")
+
+
+## Levels
+data$levels <- data$levels %>%
+  as.factor() %>%
+  fct_recode(., "Mezzanine" = "Ημιώροφος")
+
+# Delete ID column
+
+data$...2 <- NULL
+
 ```
+
+
 
 Let's see one more time our dataset structure after recoding :
 
@@ -228,17 +253,33 @@ head(data, 7) %>%
 ### Qualitative - Categorical
 
 ```{r}
-categorical_plot <- function(var){
+categorical_plot <- function(var, custom_title){
 data %>%
   as.data.frame() %>%
   select(var) %>%
   table() %>%
   as.data.frame() %>%
-  `colnames<-`(c("Deleted", "Occurencies")) %>%
-  ggplot(., aes(x = Deleted, y = Occurencies)) +
+  `colnames<-`(c("Categories", "Occurencies")) %>%
+  ggplot(., aes(x = Categories, y = Occurencies, fill=Categories)) +
    geom_bar(stat = "identity") +
    geom_text(aes(label = Occurencies, vjust = -.1)) +
+    labs(
+        title = custom_title
+    ) +
    theme_classic()
+}
+```
+
+
+
+
+### Quantitative - Discrete
+
+```{r}
+discrete_plot <- function(var){
+  ggplot(data, aes(x = var)) +
+  geom_bar(stat = "count") +
+  theme_classic()
 }
 ```
 
@@ -247,12 +288,23 @@ data %>%
 
 ## Missing Values
 
-```{r, results='hide'}
+```{r, results='hide', echo=FALSE}
 how_many_nas = sum(is.na(data))
 ```
 
-On this dataset there are `r how_many_nas` missing values, in total. So, there is no need for imputation.
+On this dataset there are `r how_many_nas` missing values, in total. More specifically, 
 
+```{r}
+data %>%
+  is.na() %>%
+  colSums() %>%
+  as.data.frame() %>%
+  `colnames<-`("Occurencies") %>%
+  filter(Occurencies >0) %>%
+  arrange(-Occurencies) %>%
+  kbl(caption = "Missing Values of Dataset") %>%
+  kable_classic(full_width = F, html_font = "Cambria")
+```
 
 ## Univariate analysis
 
@@ -263,60 +315,69 @@ On this dataset there are `r how_many_nas` missing values, in total. So, there i
 #### Autoheating
 
 ```{r}
-categorical_plot("auto_heating")
+categorical_plot("auto_heating","Autonomous Heating")
 ```
 
 
 #### Solar
 
 ```{r}
-categorical_plot("solar")
+categorical_plot("solar", "Solar-powered water-heater")
 ```
 
 
 #### Cooling
 
 ```{r}
-categorical_plot("cooling")
+categorical_plot("cooling", "Cooling")
 ```
 
 
 #### Safe door
 
 ```{r}
-categorical_plot("safe_door")
+categorical_plot("safe_door", "Safe door")
 ```
 
 
 #### Gas
 
 ```{r}
-categorical_plot("gas")
+categorical_plot("gas", "Gas")
 ```
 
 #### Fireplace
 
 ```{r}
-categorical_plot("fireplace")
+categorical_plot("fireplace", "Fireplace")
 ```
 
 #### Furniture
 
 ```{r}
-categorical_plot("furniture")
+categorical_plot("furniture", "Available furniture")
 ```
 
 
 #### Student
 
 ```{r}
-categorical_plot("student")
+categorical_plot("student", "Ideal for students")
 ```
 
 #### Parking
 
 ```{r}
-categorical_plot("parking")
+categorical_plot("parking", "Parking")
+```
+
+
+
+#### Deleted
+
+
+```{r}
+categorical_plot("deleted", "Deleted")
 ```
 
 
@@ -326,66 +387,149 @@ categorical_plot("parking")
 
 ::: {.panel-tabset}
 
-#### Date published
-
-```{r}
-data %>%
- ggplot(aes(res_date)) +
-    geom_line(stat = "count") +
-    scale_x_date(limits = as.Date(c("2022-01-01", "2022-06-31"))) +
-    theme_classic()
-```
-
-
-#### Deleted
-
-
-
-```{r}
-categorical_plot("deleted")
-```
-
-
-
-#### Deleted at
-
-
 
 #### Status
 
+```{r}
+table(data$status) %>%
+  sort(decreasing = F) %>%
+  as.data.frame() %>%
+  ggplot(., aes(x = Var1, y = Freq)) +
+   geom_bar(stat = "identity") +
+   geom_text(aes(label = Freq, y = Freq +17)) +
+   theme_classic() +
+   coord_flip()
+```
 
 
 #### Energy class
 
-:::
-
-### Quantitative variables
-
-::: {.panel-tabset}
-
-
-#### Price
-
-
-
-#### Price per sqr
-
-
-
-#### Squaremeters 
-
-
-#### Year of Construction
-
+```{r}
+table(data$energyclass) %>%
+  sort(decreasing = F) %>%
+  as.data.frame() %>%
+  ggplot(., aes(x = Var1, y = Freq)) +
+   geom_bar(stat = "identity") +
+   geom_text(aes(label = Freq, y = Freq +17)) +
+   theme_classic() +
+   coord_flip()
+```
 
 #### Floor
 
+```{r}
+table(data$levels) %>%
+  sort(decreasing = F) %>%
+  as.data.frame() %>%
+  ggplot(., aes(x = Var1, y = Freq)) +
+   geom_bar(stat = "identity") +
+   geom_text(aes(label = Freq, y = Freq +17)) +
+   theme_classic() +
+   coord_flip()
+```
 
-#### Bedroorms
+
+:::
+
+### Quantitative (Discrete) variables
+
+::: {.panel-tabset}
+
+#### Bedrooms
+
+```{r}
+ggplot(data, aes(x = bedrooms)) +
+  geom_bar(stat = "count") +
+  scale_x_discrete() +
+  theme_classic()
+```
 
 
 #### Bathrooms
 
+```{r}
+ggplot(data, aes(x = bathrooms)) +
+  geom_bar(stat = "count") +
+  scale_x_discrete() +
+  theme_classic()
+```
+
+:::
+
+### Quantitative (Continuous) variables
+
+::: {.panel-tabset}
+
+#### Price
+
+```{r}
+ggplot(data, aes(x= res_price)) +
+  geom_histogram() +
+  theme_classic()
+```
+
+
+#### Price per sqr
+
+```{r}
+ggplot(data, aes(x= res_price_sqr)) +
+  geom_histogram() +
+  theme_classic()
+```
+
+
+#### Squaremeters 
+
+```{r}
+ggplot(data, aes(x= res_sqr)) +
+  geom_line(stat = "count") +
+  theme_classic()
+```
+:::
+
+
+### Time Series
+::: {.panel-tabset}
+
+#### Date published
+
+```{r}
+data$Year_Published = lubridate::year(data$res_date)
+
+ggplot(data, aes(x= Year_Published)) +
+  geom_line(stat = "count") +
+  theme_classic()
+```
+
+
+#### Deleted at
+
+```{r}
+data$Year_Deleted = lubridate::ym(data$deleted_at)
+
+ggplot(data, aes(x= Year_Deleted)) +
+  geom_line(stat = "count") +
+  theme_classic()
+```
+
+
+
+#### Construction Year
+
+```{r}
+data$construction_year <- cut(data$construction_year,
+  include.lowest = TRUE,
+  right = FALSE,
+  dig.lab = 4,
+  breaks = c(1920, 1940, 1960, 1980, 2000, 2020, 2030)
+)
+```
+
+```{r}
+ggplot(data, aes(x = construction_year)) +
+  geom_bar(stat = "count") +
+  theme_classic()
+```
 
 :::
 
@@ -397,3 +541,4 @@ Image by <a href="https://pixabay.com/users/publicdomainpictures-14/?utm_source=
 
 
 # References {.appendix .unlisted}
+
