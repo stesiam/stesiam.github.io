@@ -533,6 +533,17 @@ ggplot(data, aes(x = construction_year)) +
 
 :::
 
+```{r}
+data_split <- initial_split(data, prop = 0.75)
+
+train <- training(data_split)
+test  <- testing(data_split)
+
+impute_rec <- recipe(res_price ~ bathrooms + bedrooms, data = data) %>%
+  step_impute_mean(all_predictors())
+```
+
+
 
 
 # Acknowledgements {.appendix .unlisted}

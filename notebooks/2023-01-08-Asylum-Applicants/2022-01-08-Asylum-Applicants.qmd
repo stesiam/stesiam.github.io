@@ -1,0 +1,224 @@
+---
+title: "Asylum applicants in Europe"
+author: "stesiam"
+description: |
+  Create a Europe map based on the number of asylum applications per country.
+categories: [R, Eurostat]
+image: eu_image.jpg
+fig-cap-location: bottom
+date: "2023-01-08"
+toc: true
+toc-title: Table of contents
+toc-location: left
+citation: true
+slug: stesiam2022
+title-block-banner: true
+nocite: '@*'
+csl: apa-6th-edition
+bibliography: [packages.bib, references.bib]
+format: 
+  html:
+    code-link: true
+    code-fold: true
+    code-summary: "Show the code"
+    code-tools: 
+      source: repo
+execute:
+  echo: true
+editor_options: 
+  markdown: 
+    wrap: 80
+---
+
+# Table of Contents {.unlisted}
+
+<hr>
+
+1.  [Introduction](#introduction) <br>
+2.  [Prerequisites](#prerequisites) <br>   2.1 [Import
+    Libraries](#import-libraries) <br>   2.2 [Import Dataset](#import-dataset)
+    <br>   2.3 [Preview Dataset](#preview-dataset) <br>
+3.  [Descriptive Statistics](#descriptive-statistics) <br>
+4.  [Making Map](#making-map) <br>   4.1 [Shapefile](#shapefile) <br>   4.2
+    [Visualization](#visualization) <br>
+5.  [References](#references)
+
+<hr>
+
+# Introduction {#introduction}
+
+
+
+# Prerequisites {#prerequisites}
+
+## Import Libraries {#import-libraries}
+
+```{r Import R Libraries, message=FALSE, results='hide', echo=TRUE}
+# General purpose R libraries
+library(dplyr)
+library(readr)
+library(kableExtra)
+
+# Data packages
+
+library(eurostat)
+
+# Packages for maps
+
+library(ggplot2)
+library(sf)
+
+```
+
+```{r, include=FALSE}
+knitr::write_bib(.packages(), file = 'packages.bib')
+```
+
+For this analysis we will need standard libraries for importing and processing
+my data, such as readr [@R-readr] and dplyr [@R-dplyr]. The kableExtra
+[@R-kableExtra] package was used to print the results in table format. Also, I
+use eurostat [@R-eurostat] package to analyze Eurostat data.
+
+In order to make the visualization (map with asylum applicants) I will need (as
+always) ggplot2 [@R-ggplot2] and sf [@R-sf].
+
+## Import dataset {#import-dataset}
+
+After loading the libraries I am able to use the commands of the readr package
+to import my data. My data is in .csv format, so I'll use the read_csv() command
+[@R-readr] to import them.
+
+Additionally, I choose not to include EA-19 values (as I investigate Greece's
+unemployment).
+
+```{r Import dataset, cache=TRUE, message=FALSE,results='hide',echo=TRUE, warning=FALSE}
+asylum_applicants = read_csv("data/Asylum_applicants_EU_2021.csv")
+
+asylum_applicants_time_series = read_csv("data/tps00191_linear.csv")
+```
+
+## Preview Dataset {#preview-dataset}
+
+```{r Preview Data}
+
+#| label: tbl-preview-dataset
+#| tbl-cap: "Preview Dataset (first 6 rows)"
+#| 
+preview_dataset = head(asylum_applicants, 10)
+kbl(preview_dataset, 
+    align = 'c',
+    booktabs = T,
+    centering = T,
+    valign = T) %>%
+  kable_paper() %>%
+  scroll_box(width = "600px", height = "250px")
+```
+
+# Descriptive Statistics {#descriptive-statistics}
+
+```{r}
+asylum_df = asylum_applicants %>% select(geo, OBS_VALUE)
+
+asylum_df %>% as.data.frame() %>% arrange(OBS_VALUE) %>% tail(7)
+```
+
+```{r}
+asylum_applicants_time_series %>% 
+  filter(asyl_app == "NASY_APP") %>% 
+  filter(geo == "EL") %>% 
+  select(TIME_PERIOD, OBS_VALUE) %>% 
+  ggplot(., aes(x = TIME_PERIOD, y = OBS_VALUE)) + 
+   geom_line() + 
+   geom_point() +
+   geom_text(aes(label = OBS_VALUE, y = OBS_VALUE + 3500)) +
+   labs(
+    title = "First time Asylum Applicants in Greece",
+    x = "Year",
+    y = "Observation"
+   ) +
+  ylim(0,100000) +
+   theme_classic()
+```
+
+# Making Map {#making-map}
+
+## Shapefile {#shapefile}
+
+```{r, warning=FALSE, message=FALSE}
+SHP_0 <- get_eurostat_geospatial(resolution = 10, 
+                                 nuts_level = 0, 
+                                 year = 2016)
+
+SHP_0 %>% 
+  ggplot() +
+  geom_sf()
+```
+
+## Visualization {#visualization}
+
+```{r, fig.width=10}
+EU27 <- eu_countries %>% 
+  filter(code != 'UK') %>% 
+  select(geo = code, name)
+
+SHP_27 <- SHP_0 %>% 
+  select(geo = NUTS_ID, geometry) %>% 
+  inner_join(EU27, by = "geo") %>% 
+  arrange(geo) %>% 
+  st_as_sf()
+
+SHP_27 %>% 
+  ggplot(fill = values) +
+  geom_sf() +
+  scale_x_continuous(limits = c(-10, 35)) +
+  scale_y_continuous(limits = c(35, 65)) +
+    labs(
+    title = "Asylum Applicants (2021)",
+    subtitle = "Annual % of change, 2020 vs 2019",
+    caption = "Data: Eurostat"
+  ) +
+  theme_void() +
+  theme(
+    legend.position = c(0.97, 0.50)
+  )
+
+```
+
+```{r}
+asylum_applicants_shp = asylum_applicants %>%
+  select(geo, OBS_VALUE) %>%
+  inner_join(SHP_27, by = "geo") %>% 
+  st_as_sf()
+#asylum_applicants_shp
+```
+
+```{r, fig.width=10, fig.height=8}
+asylum_applicants_shp  %>% 
+  ggplot(aes(fill = OBS_VALUE)) +
+  geom_sf() +
+  scale_fill_distiller(
+    palette = 12,
+    direction = 1   # reverse default order
+  ) +
+  scale_x_continuous(limits = c(-10, 35)) +
+  scale_y_continuous(limits = c(35, 65)) +
+  theme_void() +
+    labs(
+    title = "Asylum Applicants (2021)",
+    subtitle = "Total applications of people seeking for asylum in EU. ",
+    caption = "Data: Eurostat"
+  ) +
+  theme_void() +
+  theme(
+    legend.position = c(0.97, 0.50))
+```
+
+
+# Acknowledgements {.appendix .unlisted}
+
+Image by
+<a href="https://pixabay.com/users/geralt-9301/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=4904411">Gerd
+Altmann</a> from
+<a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=4904411">Pixabay</a>
+
+# References {#references .appendix .unlisted}
