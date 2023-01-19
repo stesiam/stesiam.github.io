@@ -284,10 +284,12 @@ Making Map <br> &nbsp; 4.1 Shapefile <br> &nbsp; 4.2 Visualization <br>
 <span>                                 nuts_level <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">0</span>, </span>
 <span>                                 year <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">2016</span><span class="op" style="color: #5E5E5E;">)</span></span>
 <span></span>
-<span><span class="co" style="color: #5E5E5E;">#SHP_0 %&gt;% </span></span>
-<span><span class="co" style="color: #5E5E5E;">#  ggplot() +</span></span>
-<span><span class="co" style="color: #5E5E5E;">#  geom_sf()</span></span></code></pre></div>
-</details>
+<span><span class="va" style="color: #111111;">SHP_0</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+</details><div class="cell-output-display">
+<p><img src="https://www.stesiam.github.io/notebooks/2023-01-08-Asylum-Applicants/2022-01-08-Asylum-Applicants_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
 </div>
 </section><section id="visualization" class="level2"><h2 class="anchored" data-anchor-id="visualization">Visualization</h2>
 <div class="cell">
@@ -334,18 +336,20 @@ Making Map <br> &nbsp; 4.1 Shapefile <br> &nbsp; 4.2 Visualization <br>
 <span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf_text</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op" style="color: #5E5E5E;">(</span>label <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/Round.html">floor</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">OBS_VALUE</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">/</span><span class="fl" style="color: #AD0000;">1000</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">)</span>,</span>
 <span>             colour <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"black"</span>, </span>
 <span>             size <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">6</span>,</span>
-<span>             font <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"serif"</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
-<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_fill_distiller</a></span><span class="op" style="color: #5E5E5E;">(</span></span>
-<span>    palette <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">13</span>,</span>
-<span>    direction <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">1</span>   <span class="co" style="color: #5E5E5E;"># reverse default order</span></span>
-<span>  <span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
+<span>             family<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"Liberation Serif"</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
+<span>  <span class="co" style="color: #5E5E5E;"># scale_fill_distiller(</span></span>
+<span>  <span class="co" style="color: #5E5E5E;">#   palette = 13,</span></span>
+<span>  <span class="co" style="color: #5E5E5E;">#   direction = 1   # reverse default order</span></span>
+<span>  <span class="co" style="color: #5E5E5E;"># ) +</span></span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html">scale_fill_gradient</a></span><span class="op" style="color: #5E5E5E;">(</span>low<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">'white'</span>, high<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">'grey60'</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
 <span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op" style="color: #5E5E5E;">(</span>limits <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">-</span><span class="fl" style="color: #AD0000;">10</span>, <span class="fl" style="color: #AD0000;">35</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
 <span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op" style="color: #5E5E5E;">(</span>limits <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="fl" style="color: #AD0000;">35</span>, <span class="fl" style="color: #AD0000;">65</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
 <span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
 <span>    <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op" style="color: #5E5E5E;">(</span></span>
 <span>    title <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Asylum Applicants (2021)"</span>,</span>
-<span>    subtitle <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Total applications of people seeking for asylum in EU. "</span>,</span>
-<span>    caption <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Data: Eurostat"</span></span>
+<span>    subtitle <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Total applications of people seeking for asylum in EU (in thousands) "</span>,</span>
+<span>    caption <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Data: Eurostat"</span>,</span>
+<span>    fill <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Observed"</span></span>
 <span>  <span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
 <span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
 <span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op" style="color: #5E5E5E;">(</span></span>
@@ -353,9 +357,6 @@ Making Map <br> &nbsp; 4.1 Shapefile <br> &nbsp; 4.2 Visualization <br>
 <span>    text<span class="op" style="color: #5E5E5E;">=</span><span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op" style="color: #5E5E5E;">(</span>size<span class="op" style="color: #5E5E5E;">=</span><span class="fl" style="color: #AD0000;">16</span>,  family<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"Liberation Serif"</span><span class="op" style="color: #5E5E5E;">)</span></span>
 <span>    <span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output cell-output-stderr">
-<pre><code>Warning: Ignoring unknown parameters: font</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
 <pre><code>Warning in st_point_on_surface.sfc(sf::st_zm(x)): st_point_on_surface may not
 give correct results for longitude/latitude data</code></pre>
 </div>

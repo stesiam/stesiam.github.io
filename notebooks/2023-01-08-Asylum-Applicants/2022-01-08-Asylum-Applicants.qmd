@@ -152,9 +152,9 @@ SHP_0 <- get_eurostat_geospatial(resolution = 10,
                                  nuts_level = 0, 
                                  year = 2016)
 
-#SHP_0 %>% 
-#  ggplot() +
-#  geom_sf()
+SHP_0 %>% 
+  ggplot() +
+  geom_sf()
 ```
 
 ## Visualization {#visualization}
@@ -202,18 +202,20 @@ asylum_applicants_shp  %>%
   geom_sf_text(aes(label = floor((OBS_VALUE)/1000)),
              colour = "black", 
              size = 6,
-             font = "serif") +
-  scale_fill_distiller(
-    palette = 13,
-    direction = 1   # reverse default order
-  ) +
+             family="Liberation Serif") +
+  # scale_fill_distiller(
+  #   palette = 13,
+  #   direction = 1   # reverse default order
+  # ) +
+  scale_fill_gradient(low='white', high='grey60') +
   scale_x_continuous(limits = c(-10, 35)) +
   scale_y_continuous(limits = c(35, 65)) +
   theme_void() +
     labs(
     title = "Asylum Applicants (2021)",
-    subtitle = "Total applications of people seeking for asylum in EU. ",
-    caption = "Data: Eurostat"
+    subtitle = "Total applications of people seeking for asylum in EU (in thousands) ",
+    caption = "Data: Eurostat",
+    fill = "Observed"
   ) +
   theme_void() +
   theme(
