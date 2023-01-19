@@ -119,7 +119,10 @@ kbl(preview_dataset,
 ```{r}
 asylum_df = asylum_applicants %>% select(geo, OBS_VALUE)
 
-asylum_df %>% as.data.frame() %>% arrange(OBS_VALUE) %>% tail(7)
+asylum_df %>% 
+  as.data.frame() %>% 
+  arrange(-OBS_VALUE) %>%
+  head(7)
 ```
 
 ```{r}
@@ -149,9 +152,9 @@ SHP_0 <- get_eurostat_geospatial(resolution = 10,
                                  nuts_level = 0, 
                                  year = 2016)
 
-SHP_0 %>% 
-  ggplot() +
-  geom_sf()
+#SHP_0 %>% 
+#  ggplot() +
+#  geom_sf()
 ```
 
 ## Visualization {#visualization}
@@ -196,8 +199,12 @@ asylum_applicants_shp = asylum_applicants %>%
 asylum_applicants_shp  %>% 
   ggplot(aes(fill = OBS_VALUE)) +
   geom_sf() +
+  geom_sf_text(aes(label = floor((OBS_VALUE)/1000)),
+             colour = "black", 
+             size = 6,
+             font = "serif") +
   scale_fill_distiller(
-    palette = 12,
+    palette = 13,
     direction = 1   # reverse default order
   ) +
   scale_x_continuous(limits = c(-10, 35)) +
@@ -210,7 +217,9 @@ asylum_applicants_shp  %>%
   ) +
   theme_void() +
   theme(
-    legend.position = c(0.97, 0.50))
+    legend.position = c(0.97, 0.50),
+    text=element_text(size=16,  family="Liberation Serif")
+    )
 ```
 
 
