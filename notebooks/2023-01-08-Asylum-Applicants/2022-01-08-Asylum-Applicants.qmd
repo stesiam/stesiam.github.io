@@ -47,8 +47,6 @@ editor_options:
 
 # Introduction {#introduction}
 
-
-
 # Prerequisites {#prerequisites}
 
 ## Import Libraries {#import-libraries}
@@ -187,6 +185,8 @@ SHP_27 %>%
 
 ```
 
+# Asylum Applicants (Total)
+
 ```{r}
 asylum_applicants_shp = asylum_applicants %>%
   select(geo, OBS_VALUE) %>%
@@ -195,7 +195,7 @@ asylum_applicants_shp = asylum_applicants %>%
 #asylum_applicants_shp
 ```
 
-```{r, fig.width=10, fig.height=8}
+```{r, fig.width=10, fig.height=8, warning= FALSE}
 asylum_applicants_shp  %>% 
   ggplot(aes(fill = OBS_VALUE)) +
   geom_sf() +
@@ -224,6 +224,208 @@ asylum_applicants_shp  %>%
     )
 ```
 
+# Asylum Applicants (New)
+
+```{r, message= FALSE}
+data <- read_csv("data/tps00191_linear.csv")
+```
+
+```{r}
+data_nasy = data %>%
+  select(asyl_app, OBS_VALUE, geo, TIME_PERIOD) %>%
+  filter(asyl_app == "NASY_APP") %>%
+  filter(TIME_PERIOD == "2021") %>%
+  filter(asyl_app == "NASY_APP")
+```
+
+```{r}
+asylum_applicants_shp = data_nasy %>%
+  select(geo, OBS_VALUE) %>%
+  inner_join(SHP_27, by = "geo") %>% 
+  st_as_sf()
+#asylum_applicants_shp
+```
+
+```{r, fig.width=10, fig.height=8, warning= FALSE}
+asylum_applicants_shp  %>% 
+  ggplot(aes(fill = OBS_VALUE)) +
+  geom_sf() +
+  geom_sf_text(aes(label = floor(OBS_VALUE/1000)),
+             colour = "black", 
+             size = 6,
+             family="Liberation Serif") +
+  # scale_fill_distiller(
+  #   palette = 13,
+  #   direction = 1   # reverse default order
+  # ) +
+  scale_fill_gradient(low='white', high='#bec201') +
+  scale_x_continuous(limits = c(-10, 35)) +
+  scale_y_continuous(limits = c(35, 65)) +
+  theme_void() +
+    labs(
+    title = "Asylum Applicants (2021)",
+    subtitle = "Total applications of people seeking for asylum in EU (in thousands) ",
+    caption = "Data: Eurostat",
+    fill = "Observed"
+  ) +
+  theme_void() +
+  theme(
+    legend.position = c(0.97, 0.50),
+    text=element_text(size=16,  family="Liberation Serif")
+    )
+```
+
+# Asylum applicants (Subsequent applicants)
+
+```{r}
+data_sseq = data %>%
+  select(asyl_app, OBS_VALUE, geo, TIME_PERIOD) %>%
+  filter(asyl_app == "SSEQ") %>%
+  filter(TIME_PERIOD == "2021")
+```
+
+```{r}
+asylum_applicants_shp = data_sseq %>%
+  select(geo, OBS_VALUE) %>%
+  inner_join(SHP_27, by = "geo") %>% 
+  st_as_sf()
+#asylum_applicants_shp
+```
+
+```{r, fig.width=10, fig.height=8}
+asylum_applicants_shp  %>% 
+  ggplot(aes(fill = OBS_VALUE)) +
+  geom_sf() +
+  geom_sf_text(aes(label = floor(OBS_VALUE/1000)),
+             colour = "black", 
+             size = 6,
+             family="Liberation Serif") +
+  # scale_fill_distiller(
+  #   palette = 13,
+  #   direction = 1   # reverse default order
+  # ) +
+  scale_fill_gradient(low='white', high='#efc102') +
+  scale_x_continuous(limits = c(-10, 35)) +
+  scale_y_continuous(limits = c(35, 65)) +
+  theme_void() +
+    labs(
+    title = "Asylum Applicants (2021)",
+    subtitle = "Total applications of people seeking for asylum in EU (in thousands) ",
+    caption = "Data: Eurostat",
+    fill = "Observed"
+  ) +
+  theme_void() +
+  theme(
+    legend.position = c(0.97, 0.50),
+    text=element_text(size=16,  family="Liberation Serif")
+    )
+```
+
+# Asylum Applicants per 1000 inhabitants
+
+```{r, message= FALSE}
+pop <- read_csv("data/tps00001_linear.csv")
+```
+
+```{r}
+options(scipen=999)
+pop = pop %>%
+  select(geo, TIME_PERIOD, OBS_VALUE) %>%
+  filter(TIME_PERIOD == 2021)
+
+asylum = asylum_applicants %>%
+  select(geo, TIME_PERIOD, OBS_VALUE)
+
+new = merge(pop, asylum, by = "geo") %>%
+  mutate(perc = (OBS_VALUE.y/ OBS_VALUE.x)*100)
+```
+
+```{r}
+asylum_applicants_shp = new %>%
+  select(geo, perc) %>%
+  inner_join(SHP_27, by = "geo") %>% 
+  st_as_sf()
+#asylum_applicants_shp
+```
+
+```{r, fig.width=10, fig.height=8, warning= FALSE}
+options(digits = 2)
+asylum_applicants_shp  %>% 
+  ggplot(aes(fill = perc)) +
+  geom_sf() +
+  geom_sf_text(aes(label = sprintf("%.2f", perc)),
+             colour = "black", 
+             size = 6,
+             family="Liberation Serif") +
+  # scale_fill_distiller(
+  #   palette = 13,
+  #   direction = 1   # reverse default order
+  # ) +
+  scale_fill_gradient(low='white', high='grey60') +
+  scale_x_continuous(limits = c(-10, 35)) +
+  scale_y_continuous(limits = c(35, 65)) +
+  theme_void() +
+    labs(
+    title = "Asylum Applicants (2021)",
+    subtitle = "Total applications of people seeking for asylum in EU (in thousands) ",
+    caption = "Data: Eurostat",
+    fill = "Observed"
+  ) +
+  theme_void() +
+  theme(
+    legend.position = c(0.97, 0.50),
+    text=element_text(size=16,  family="Liberation Serif")
+    )
+```
+
+# Unaccompanied minors
+
+```{r, message= FALSE}
+data_minors <- read_csv("data/tps00194_linear.csv")
+```
+
+```{r}
+data_minors = data_minors %>%
+  select(OBS_VALUE, geo, TIME_PERIOD) %>%
+  filter(TIME_PERIOD == "2021")
+```
+
+```{r}
+asylum_applicants_shp = data_minors %>%
+  select(geo, OBS_VALUE) %>%
+  inner_join(SHP_27, by = "geo") %>% 
+  st_as_sf()
+#asylum_applicants_shp
+```
+
+```{r, fig.width=9, fig.height=8, warning= FALSE}
+asylum_applicants_shp  %>% 
+  ggplot(aes(fill = OBS_VALUE)) +
+  geom_sf() +
+  geom_sf_text(aes(label = OBS_VALUE),
+             colour = "black", 
+             size = 5,
+             family="Liberation Serif") +
+  # scale_fill_distiller(
+  #   palette = 13,
+  #   direction = 1   # reverse default order
+  # ) +
+  scale_fill_gradient(low='white', high='#abe300') +
+  scale_x_continuous(limits = c(-10, 35)) +
+  scale_y_continuous(limits = c(35, 65)) +
+  theme_void() +
+    labs(
+    title = "Asylum Applicants (2021)",
+    subtitle = "Total applications of people seeking for asylum in EU (in thousands) ",
+    caption = "Data: Eurostat",
+    fill = "Observed"
+  ) +
+  theme_void() +
+  theme(
+    legend.position = c(0.97, 0.50),
+    text=element_text(size=13,  family="Liberation Serif")
+    )
+```
 
 # Acknowledgements {.appendix .unlisted}
 

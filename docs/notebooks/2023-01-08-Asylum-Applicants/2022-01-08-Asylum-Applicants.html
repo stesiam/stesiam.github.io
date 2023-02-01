@@ -259,6 +259,11 @@ div.csl-indent {
   <li><a href="#visualization" id="toc-visualization" class="nav-link" data-scroll-target="#visualization">Visualization</a></li>
   </ul>
 </li>
+  <li><a href="#asylum-applicants-total" id="toc-asylum-applicants-total" class="nav-link" data-scroll-target="#asylum-applicants-total">Asylum Applicants (Total)</a></li>
+  <li><a href="#asylum-applicants-new" id="toc-asylum-applicants-new" class="nav-link" data-scroll-target="#asylum-applicants-new">Asylum Applicants (New)</a></li>
+  <li><a href="#asylum-applicants-subsequent-applicants" id="toc-asylum-applicants-subsequent-applicants" class="nav-link" data-scroll-target="#asylum-applicants-subsequent-applicants">Asylum applicants (Subsequent applicants)</a></li>
+  <li><a href="#asylum-applicants-per-1000-inhabitants" id="toc-asylum-applicants-per-1000-inhabitants" class="nav-link" data-scroll-target="#asylum-applicants-per-1000-inhabitants">Asylum Applicants per 1000 inhabitants</a></li>
+  <li><a href="#unaccompanied-minors" id="toc-unaccompanied-minors" class="nav-link" data-scroll-target="#unaccompanied-minors">Unaccompanied minors</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/stesiam/stesiam.github.io/edit/main/notebooks/2023-01-08-Asylum-Applicants/2022-01-08-Asylum-Applicants.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/stesiam/stesiam.github.io/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
 </nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
     </div>
@@ -569,6 +574,7 @@ div.csl-indent {
 <p><img src="2022-01-08-Asylum-Applicants_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
+</section></section><section id="asylum-applicants-total" class="level1"><h1>Asylum Applicants (Total)</h1>
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">asylum_applicants_shp</span> <span class="op">=</span> <span class="va">asylum_applicants</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">geo</span>, <span class="va">OBS_VALUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -604,15 +610,222 @@ div.csl-indent {
 <span>    legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.97</span>, <span class="fl">0.50</span><span class="op">)</span>,</span>
 <span>    text<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">16</span>,  family<span class="op">=</span><span class="st">"Liberation Serif"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="2022-01-08-Asylum-Applicants_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+</section><section id="asylum-applicants-new" class="level1"><h1>Asylum Applicants (New)</h1>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"data/tps00191_linear.csv"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_nasy</span> <span class="op">=</span> <span class="va">data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">asyl_app</span>, <span class="va">OBS_VALUE</span>, <span class="va">geo</span>, <span class="va">TIME_PERIOD</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">asyl_app</span> <span class="op">==</span> <span class="st">"NASY_APP"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">TIME_PERIOD</span> <span class="op">==</span> <span class="st">"2021"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">asyl_app</span> <span class="op">==</span> <span class="st">"NASY_APP"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">asylum_applicants_shp</span> <span class="op">=</span> <span class="va">data_nasy</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">geo</span>, <span class="va">OBS_VALUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">SHP_27</span>, by <span class="op">=</span> <span class="st">"geo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html">st_as_sf</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#asylum_applicants_shp</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">asylum_applicants_shp</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">OBS_VALUE</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf_text</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">floor</a></span><span class="op">(</span><span class="va">OBS_VALUE</span><span class="op">/</span><span class="fl">1000</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>             colour <span class="op">=</span> <span class="st">"black"</span>, </span>
+<span>             size <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>             family<span class="op">=</span><span class="st">"Liberation Serif"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># scale_fill_distiller(</span></span>
+<span>  <span class="co">#   palette = 13,</span></span>
+<span>  <span class="co">#   direction = 1   # reverse default order</span></span>
+<span>  <span class="co"># ) +</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html">scale_fill_gradient</a></span><span class="op">(</span>low<span class="op">=</span><span class="st">'white'</span>, high<span class="op">=</span><span class="st">'#bec201'</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>, <span class="fl">35</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">35</span>, <span class="fl">65</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Asylum Applicants (2021)"</span>,</span>
+<span>    subtitle <span class="op">=</span> <span class="st">"Total applications of people seeking for asylum in EU (in thousands) "</span>,</span>
+<span>    caption <span class="op">=</span> <span class="st">"Data: Eurostat"</span>,</span>
+<span>    fill <span class="op">=</span> <span class="st">"Observed"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span></span>
+<span>    legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.97</span>, <span class="fl">0.50</span><span class="op">)</span>,</span>
+<span>    text<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">16</span>,  family<span class="op">=</span><span class="st">"Liberation Serif"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="2022-01-08-Asylum-Applicants_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+</section><section id="asylum-applicants-subsequent-applicants" class="level1"><h1>Asylum applicants (Subsequent applicants)</h1>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_sseq</span> <span class="op">=</span> <span class="va">data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">asyl_app</span>, <span class="va">OBS_VALUE</span>, <span class="va">geo</span>, <span class="va">TIME_PERIOD</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">asyl_app</span> <span class="op">==</span> <span class="st">"SSEQ"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">TIME_PERIOD</span> <span class="op">==</span> <span class="st">"2021"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">asylum_applicants_shp</span> <span class="op">=</span> <span class="va">data_sseq</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">geo</span>, <span class="va">OBS_VALUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">SHP_27</span>, by <span class="op">=</span> <span class="st">"geo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html">st_as_sf</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#asylum_applicants_shp</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">asylum_applicants_shp</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">OBS_VALUE</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf_text</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">floor</a></span><span class="op">(</span><span class="va">OBS_VALUE</span><span class="op">/</span><span class="fl">1000</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>             colour <span class="op">=</span> <span class="st">"black"</span>, </span>
+<span>             size <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>             family<span class="op">=</span><span class="st">"Liberation Serif"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># scale_fill_distiller(</span></span>
+<span>  <span class="co">#   palette = 13,</span></span>
+<span>  <span class="co">#   direction = 1   # reverse default order</span></span>
+<span>  <span class="co"># ) +</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html">scale_fill_gradient</a></span><span class="op">(</span>low<span class="op">=</span><span class="st">'white'</span>, high<span class="op">=</span><span class="st">'#efc102'</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>, <span class="fl">35</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">35</span>, <span class="fl">65</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Asylum Applicants (2021)"</span>,</span>
+<span>    subtitle <span class="op">=</span> <span class="st">"Total applications of people seeking for asylum in EU (in thousands) "</span>,</span>
+<span>    caption <span class="op">=</span> <span class="st">"Data: Eurostat"</span>,</span>
+<span>    fill <span class="op">=</span> <span class="st">"Observed"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span></span>
+<span>    legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.97</span>, <span class="fl">0.50</span><span class="op">)</span>,</span>
+<span>    text<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">16</span>,  family<span class="op">=</span><span class="st">"Liberation Serif"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-stderr">
 <pre><code>Warning in st_point_on_surface.sfc(sf::st_zm(x)): st_point_on_surface may not
 give correct results for longitude/latitude data</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="2022-01-08-Asylum-Applicants_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="960"></p>
+<p><img src="2022-01-08-Asylum-Applicants_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
-</section></section><div id="quarto-appendix" class="default"><section id="acknowledgements" class="level1 appendix unlisted"><h2 class="quarto-appendix-heading">Acknowledgements</h2><div class="quarto-appendix-contents">
+</section><section id="asylum-applicants-per-1000-inhabitants" class="level1"><h1>Asylum Applicants per 1000 inhabitants</h1>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pop</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"data/tps00001_linear.csv"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>scipen<span class="op">=</span><span class="fl">999</span><span class="op">)</span></span>
+<span><span class="va">pop</span> <span class="op">=</span> <span class="va">pop</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">geo</span>, <span class="va">TIME_PERIOD</span>, <span class="va">OBS_VALUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">TIME_PERIOD</span> <span class="op">==</span> <span class="fl">2021</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">asylum</span> <span class="op">=</span> <span class="va">asylum_applicants</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">geo</span>, <span class="va">TIME_PERIOD</span>, <span class="va">OBS_VALUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">new</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span><span class="op">(</span><span class="va">pop</span>, <span class="va">asylum</span>, by <span class="op">=</span> <span class="st">"geo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>perc <span class="op">=</span> <span class="op">(</span><span class="va">OBS_VALUE.y</span><span class="op">/</span> <span class="va">OBS_VALUE.x</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">asylum_applicants_shp</span> <span class="op">=</span> <span class="va">new</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">geo</span>, <span class="va">perc</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">SHP_27</span>, by <span class="op">=</span> <span class="st">"geo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html">st_as_sf</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#asylum_applicants_shp</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">asylum_applicants_shp</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">perc</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf_text</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"%.2f"</span>, <span class="va">perc</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>             colour <span class="op">=</span> <span class="st">"black"</span>, </span>
+<span>             size <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>             family<span class="op">=</span><span class="st">"Liberation Serif"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># scale_fill_distiller(</span></span>
+<span>  <span class="co">#   palette = 13,</span></span>
+<span>  <span class="co">#   direction = 1   # reverse default order</span></span>
+<span>  <span class="co"># ) +</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html">scale_fill_gradient</a></span><span class="op">(</span>low<span class="op">=</span><span class="st">'white'</span>, high<span class="op">=</span><span class="st">'grey60'</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>, <span class="fl">35</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">35</span>, <span class="fl">65</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Asylum Applicants (2021)"</span>,</span>
+<span>    subtitle <span class="op">=</span> <span class="st">"Total applications of people seeking for asylum in EU (in thousands) "</span>,</span>
+<span>    caption <span class="op">=</span> <span class="st">"Data: Eurostat"</span>,</span>
+<span>    fill <span class="op">=</span> <span class="st">"Observed"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span></span>
+<span>    legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.97</span>, <span class="fl">0.50</span><span class="op">)</span>,</span>
+<span>    text<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">16</span>,  family<span class="op">=</span><span class="st">"Liberation Serif"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="2022-01-08-Asylum-Applicants_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+</section><section id="unaccompanied-minors" class="level1"><h1>Unaccompanied minors</h1>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_minors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"data/tps00194_linear.csv"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_minors</span> <span class="op">=</span> <span class="va">data_minors</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">OBS_VALUE</span>, <span class="va">geo</span>, <span class="va">TIME_PERIOD</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">TIME_PERIOD</span> <span class="op">==</span> <span class="st">"2021"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">asylum_applicants_shp</span> <span class="op">=</span> <span class="va">data_minors</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">geo</span>, <span class="va">OBS_VALUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">SHP_27</span>, by <span class="op">=</span> <span class="st">"geo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html">st_as_sf</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#asylum_applicants_shp</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">asylum_applicants_shp</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">OBS_VALUE</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf_text</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">OBS_VALUE</span><span class="op">)</span>,</span>
+<span>             colour <span class="op">=</span> <span class="st">"black"</span>, </span>
+<span>             size <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>             family<span class="op">=</span><span class="st">"Liberation Serif"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># scale_fill_distiller(</span></span>
+<span>  <span class="co">#   palette = 13,</span></span>
+<span>  <span class="co">#   direction = 1   # reverse default order</span></span>
+<span>  <span class="co"># ) +</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html">scale_fill_gradient</a></span><span class="op">(</span>low<span class="op">=</span><span class="st">'white'</span>, high<span class="op">=</span><span class="st">'#abe300'</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>, <span class="fl">35</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">35</span>, <span class="fl">65</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Asylum Applicants (2021)"</span>,</span>
+<span>    subtitle <span class="op">=</span> <span class="st">"Total applications of people seeking for asylum in EU (in thousands) "</span>,</span>
+<span>    caption <span class="op">=</span> <span class="st">"Data: Eurostat"</span>,</span>
+<span>    fill <span class="op">=</span> <span class="st">"Observed"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span></span>
+<span>    legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.97</span>, <span class="fl">0.50</span><span class="op">)</span>,</span>
+<span>    text<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">13</span>,  family<span class="op">=</span><span class="st">"Liberation Serif"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="2022-01-08-Asylum-Applicants_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="864"></p>
+</div>
+</div>
+</section><div id="quarto-appendix" class="default"><section id="acknowledgements" class="level1 appendix unlisted"><h2 class="quarto-appendix-heading">Acknowledgements</h2><div class="quarto-appendix-contents">
 <p>Image by <a href="https://pixabay.com/users/geralt-9301/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=4904411">Gerd Altmann</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=4904411">Pixabay</a></p>
 </div></section><section id="references" class="level1 appendix unlisted"><h2 class="quarto-appendix-heading"></h2><div class="quarto-appendix-contents">
 
@@ -656,12 +869,12 @@ Zhu, H. (2021). <em>kableExtra: Construct complex table with kable and pipe synt
   author = {stesiam},
   title = {Asylum Applicants in {Europe}},
   date = {2023-01-08},
-  url = {https://www.stesiam.github.io/2022-01-08-Asylum-Applicants.html},
+  url = {https://www.stesiam.github.io/notebooks/2023-01-08-Asylum-Applicants/2022-01-08-Asylum-Applicants.html},
   langid = {en}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-stesiam2023" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
 stesiam. (2023, January 8). Asylum applicants in Europe. Retrieved from
-<a href="https://www.stesiam.github.io/2022-01-08-Asylum-Applicants.html">https://www.stesiam.github.io/2022-01-08-Asylum-Applicants.html</a>
+<a href="https://www.stesiam.github.io/notebooks/2023-01-08-Asylum-Applicants/2022-01-08-Asylum-Applicants.html">https://www.stesiam.github.io/notebooks/2023-01-08-Asylum-Applicants/2022-01-08-Asylum-Applicants.html</a>
 </div></div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
