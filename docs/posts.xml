@@ -10,7 +10,237 @@
 <atom:link href="https://www.stesiam.github.io/posts.xml" rel="self" type="application/rss+xml"/>
 <description></description>
 <generator>quarto-1.2.253</generator>
-<lastBuildDate>Sat, 04 Feb 2023 22:00:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 07 Feb 2023 22:00:00 GMT</lastBuildDate>
+<item>
+  <title>Big Tech Stock Companies</title>
+  <dc:creator>stesiam</dc:creator>
+  <link>https://www.stesiam.github.io/notebooks/2023-02-08-Big-Tech-Stock-Prices/2023-02-08-Big-Tech-Stock-Prices.html</link>
+  <description><![CDATA[ <section id="table-of-contents" class="level1 unlisted"><h1 class="unlisted">Table of Contents</h1>
+</section><section id="prerequisites" class="level1"><h1>Prerequisites</h1>
+<section id="import-libraries" class="level2"><h2 class="anchored" data-anchor-id="import-libraries">Import Libraries</h2>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co" style="color: #5E5E5E;"># General purpose R libraries</span></span>
+<span></span>
+<span><span class="kw" style="color: #003B4F;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;"><a href="https://readr.tidyverse.org">readr</a></span><span class="op" style="color: #5E5E5E;">)</span></span>
+<span><span class="kw" style="color: #003B4F;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op" style="color: #5E5E5E;">)</span></span>
+<span><span class="kw" style="color: #003B4F;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;"><a href="http://haozhu233.github.io/kableExtra/">kableExtra</a></span><span class="op" style="color: #5E5E5E;">)</span></span>
+<span></span>
+<span><span class="co" style="color: #5E5E5E;"># Plot </span></span>
+<span></span>
+<span><span class="kw" style="color: #003B4F;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+</details>
+</div>
+</section><section id="import-dataset" class="level2"><h2 class="anchored" data-anchor-id="import-dataset">Import dataset</h2>
+<div class="cell" data-hash="2023-02-08-Big-Tech-Stock-Prices_cache/html/Import dataset_ff3b9b3190b50c0b26c418e4505ef439">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;">stock_prices</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"data/big_tech_stock_prices.csv"</span><span class="op" style="color: #5E5E5E;">)</span></span>
+<span><span class="va" style="color: #111111;">companies</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"data/big_tech_companies.csv"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+</details>
+</div>
+</section><section id="preview-dataset" class="level2"><h2 class="anchored" data-anchor-id="preview-dataset">Preview Dataset</h2>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co" style="color: #5E5E5E;">#| label: tbl-preview-dataset</span></span>
+<span><span class="co" style="color: #5E5E5E;">#| tbl-cap: "Preview Dataset (first 6 rows)"</span></span>
+<span><span class="co" style="color: #5E5E5E;">#| </span></span>
+<span><span class="va" style="color: #111111;">preview_dataset</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">stock_prices</span>, <span class="fl" style="color: #AD0000;">10</span><span class="op" style="color: #5E5E5E;">)</span></span>
+<span><span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">preview_dataset</span>, </span>
+<span>    align <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">'c'</span>,</span>
+<span>    booktabs <span class="op" style="color: #5E5E5E;">=</span> <span class="cn" style="color: #8f5902;">T</span>,</span>
+<span>    centering <span class="op" style="color: #5E5E5E;">=</span> <span class="cn" style="color: #8f5902;">T</span>,</span>
+<span>    valign <span class="op" style="color: #5E5E5E;">=</span> <span class="cn" style="color: #8f5902;">T</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/pkg/kableExtra/man/kable_classic.html">kable_paper</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/pkg/kableExtra/man/scroll_box.html">scroll_box</a></span><span class="op" style="color: #5E5E5E;">(</span>width <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"600px"</span>, height <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"250px"</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+</details><div class="cell-output-display">
+
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:250px; overflow-x: scroll; width:600px; "><table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
+<thead><tr>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> stock_symbol </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> date </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> open </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> high </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> low </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> close </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> adj_close </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> volume </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:center;"> AAPL </td>
+   <td style="text-align:center;"> 2010-01-04 </td>
+   <td style="text-align:center;"> 7.622500 </td>
+   <td style="text-align:center;"> 7.660714 </td>
+   <td style="text-align:center;"> 7.585000 </td>
+   <td style="text-align:center;"> 7.643214 </td>
+   <td style="text-align:center;"> 6.515213 </td>
+   <td style="text-align:center;"> 493729600 </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> AAPL </td>
+   <td style="text-align:center;"> 2010-01-05 </td>
+   <td style="text-align:center;"> 7.664286 </td>
+   <td style="text-align:center;"> 7.699643 </td>
+   <td style="text-align:center;"> 7.616071 </td>
+   <td style="text-align:center;"> 7.656429 </td>
+   <td style="text-align:center;"> 6.526476 </td>
+   <td style="text-align:center;"> 601904800 </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> AAPL </td>
+   <td style="text-align:center;"> 2010-01-06 </td>
+   <td style="text-align:center;"> 7.656429 </td>
+   <td style="text-align:center;"> 7.686786 </td>
+   <td style="text-align:center;"> 7.526786 </td>
+   <td style="text-align:center;"> 7.534643 </td>
+   <td style="text-align:center;"> 6.422664 </td>
+   <td style="text-align:center;"> 552160000 </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> AAPL </td>
+   <td style="text-align:center;"> 2010-01-07 </td>
+   <td style="text-align:center;"> 7.562500 </td>
+   <td style="text-align:center;"> 7.571429 </td>
+   <td style="text-align:center;"> 7.466071 </td>
+   <td style="text-align:center;"> 7.520714 </td>
+   <td style="text-align:center;"> 6.410790 </td>
+   <td style="text-align:center;"> 477131200 </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> AAPL </td>
+   <td style="text-align:center;"> 2010-01-08 </td>
+   <td style="text-align:center;"> 7.510714 </td>
+   <td style="text-align:center;"> 7.571429 </td>
+   <td style="text-align:center;"> 7.466429 </td>
+   <td style="text-align:center;"> 7.570714 </td>
+   <td style="text-align:center;"> 6.453412 </td>
+   <td style="text-align:center;"> 447610800 </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> AAPL </td>
+   <td style="text-align:center;"> 2010-01-11 </td>
+   <td style="text-align:center;"> 7.600000 </td>
+   <td style="text-align:center;"> 7.607143 </td>
+   <td style="text-align:center;"> 7.444643 </td>
+   <td style="text-align:center;"> 7.503929 </td>
+   <td style="text-align:center;"> 6.396483 </td>
+   <td style="text-align:center;"> 462229600 </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> AAPL </td>
+   <td style="text-align:center;"> 2010-01-12 </td>
+   <td style="text-align:center;"> 7.471071 </td>
+   <td style="text-align:center;"> 7.491786 </td>
+   <td style="text-align:center;"> 7.372143 </td>
+   <td style="text-align:center;"> 7.418571 </td>
+   <td style="text-align:center;"> 6.323721 </td>
+   <td style="text-align:center;"> 594459600 </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> AAPL </td>
+   <td style="text-align:center;"> 2010-01-13 </td>
+   <td style="text-align:center;"> 7.423929 </td>
+   <td style="text-align:center;"> 7.533214 </td>
+   <td style="text-align:center;"> 7.289286 </td>
+   <td style="text-align:center;"> 7.523214 </td>
+   <td style="text-align:center;"> 6.412922 </td>
+   <td style="text-align:center;"> 605892000 </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> AAPL </td>
+   <td style="text-align:center;"> 2010-01-14 </td>
+   <td style="text-align:center;"> 7.503929 </td>
+   <td style="text-align:center;"> 7.516429 </td>
+   <td style="text-align:center;"> 7.465000 </td>
+   <td style="text-align:center;"> 7.479643 </td>
+   <td style="text-align:center;"> 6.375781 </td>
+   <td style="text-align:center;"> 432894000 </td>
+  </tr>
+<tr>
+<td style="text-align:center;"> AAPL </td>
+   <td style="text-align:center;"> 2010-01-15 </td>
+   <td style="text-align:center;"> 7.533214 </td>
+   <td style="text-align:center;"> 7.557143 </td>
+   <td style="text-align:center;"> 7.352500 </td>
+   <td style="text-align:center;"> 7.354643 </td>
+   <td style="text-align:center;"> 6.269228 </td>
+   <td style="text-align:center;"> 594067600 </td>
+  </tr>
+</tbody>
+</table></div>
+
+</div>
+</div>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">stock_prices</span><span class="op" style="color: #5E5E5E;">$</span><span class="va" style="color: #111111;">date</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] "Date"</code></pre>
+</div>
+</div>
+</section></section><section id="merge-datasets" class="level1"><h1>Merge Datasets</h1>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;">stock_prices</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">stock_symbol</span> <span class="op" style="color: #5E5E5E;"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"INTC"</span>, <span class="st" style="color: #20794D;">"NVDA"</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="va" style="color: #111111;">.</span>, mapping <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op" style="color: #5E5E5E;">(</span>x <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">date</span>, y <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">adj_close</span>, color <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">stock_symbol</span><span class="op" style="color: #5E5E5E;">)</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op" style="color: #5E5E5E;">(</span>size <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">0.8</span>, key_glyph <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"timeseries"</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op" style="color: #5E5E5E;">(</span></span>
+<span>    title <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Intel vs NVIDIA Stock Prices"</span>,</span>
+<span>    subtitle <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Comparison of Closing Stock Prices of NVIDIA (NVDA) and Intel Corporations (INTC)"</span>,</span>
+<span>    caption <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"stesiam, 2023"</span>,</span>
+<span>    x <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Date"</span>,</span>
+<span>    y <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Adjusted closing price"</span></span>
+<span>  <span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/annotate.html">annotate</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"text"</span>, x <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"2019-01-02"</span><span class="op" style="color: #5E5E5E;">)</span>, y <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">300</span>, label <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Highest value for NVDA"</span>, family <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Ubuntu Condensed"</span><span class="op" style="color: #5E5E5E;">)</span> <span class="op" style="color: #5E5E5E;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op" style="color: #5E5E5E;">(</span></span>
+<span>    title <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op" style="color: #5E5E5E;">(</span>family <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Ubuntu Condensed"</span>,face <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"bold"</span>,<span class="op" style="color: #5E5E5E;">)</span>,</span>
+<span>    panel.background <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span><span class="op" style="color: #5E5E5E;">(</span>fill <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"grey98"</span><span class="op" style="color: #5E5E5E;">)</span>,</span>
+<span>    plot.background <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span><span class="op" style="color: #5E5E5E;">(</span>fill <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"grey98"</span><span class="op" style="color: #5E5E5E;">)</span>,</span>
+<span>    legend.background <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span><span class="op" style="color: #5E5E5E;">(</span>fill <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"grey98"</span><span class="op" style="color: #5E5E5E;">)</span>,</span>
+<span>    line <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_line</a></span><span class="op" style="color: #5E5E5E;">(</span>lineend <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"butt"</span>, size <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">0.5</span><span class="op" style="color: #5E5E5E;">)</span>,</span>
+<span>  <span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
+</details><div class="cell-output-display">
+<p><img src="https://www.stesiam.github.io/notebooks/2023-02-08-Big-Tech-Stock-Prices/2023-02-08-Big-Tech-Stock-Prices_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+</section><div id="quarto-appendix" class="default"><section id="acknowledgements" class="level1 appendix unlisted"><h2 class="quarto-appendix-heading">Acknowledgements</h2><div class="quarto-appendix-contents">
+<p>Image by <a href="https://pixabay.com/users/3844328-3844328/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1863880">Lorenzo Cafaro</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1863880">Pixabay</a></p>
+</div></section><section id="references" class="level1 appendix unlisted"><h2 class="quarto-appendix-heading"></h2><div class="quarto-appendix-contents">
+
+
+
+</div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2">
+<div id="ref-R-base" class="csl-entry">
+R Core Team. (2021). <em>R: A language and environment for statistical computing</em>. Vienna, Austria: R Foundation for Statistical Computing. Retrieved from <a href="https://www.R-project.org/">https://www.R-project.org/</a>
+</div>
+<div id="ref-ggplot22016" class="csl-entry">
+Wickham, H. (2016). <em>ggplot2: Elegant graphics for data analysis</em>. Springer-Verlag New York. Retrieved from <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>
+</div>
+<div id="ref-R-ggplot2" class="csl-entry">
+Wickham, H., Chang, W., Henry, L., Pedersen, T. L., Takahashi, K., Wilke, C., … Dunnington, D. (2022). <em>ggplot2: Create elegant data visualisations using the grammar of graphics</em>. Retrieved from <a href="https://CRAN.R-project.org/package=ggplot2">https://CRAN.R-project.org/package=ggplot2</a>
+</div>
+<div id="ref-R-dplyr" class="csl-entry">
+Wickham, H., François, R., Henry, L., &amp; Müller, K. (2022). <em>Dplyr: A grammar of data manipulation</em>. Retrieved from <a href="https://CRAN.R-project.org/package=dplyr">https://CRAN.R-project.org/package=dplyr</a>
+</div>
+<div id="ref-R-readr" class="csl-entry">
+Wickham, H., Hester, J., &amp; Bryan, J. (2022). <em>Readr: Read rectangular text data</em>. Retrieved from <a href="https://CRAN.R-project.org/package=readr">https://CRAN.R-project.org/package=readr</a>
+</div>
+<div id="ref-R-kableExtra" class="csl-entry">
+Zhu, H. (2021). <em>kableExtra: Construct complex table with kable and pipe syntax</em>. Retrieved from <a href="https://CRAN.R-project.org/package=kableExtra">https://CRAN.R-project.org/package=kableExtra</a>
+</div>
+</div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{stesiam2023,
+  author = {stesiam},
+  title = {Big {Tech} {Stock} {Companies}},
+  date = {2023-02-08},
+  url = {https://www.stesiam.github.io/2023-02-08-Big-Tech-Stock-Prices.html},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-stesiam2023" class="csl-entry quarto-appendix-citeas">
+stesiam. (2023, February 8). Big Tech Stock Companies. Retrieved from <a href="https://www.stesiam.github.io/2023-02-08-Big-Tech-Stock-Prices.html">https://www.stesiam.github.io/2023-02-08-Big-Tech-Stock-Prices.html</a>
+</div></div></section></div> ]]></description>
+  <category>R</category>
+  <category>Time Series</category>
+  <category>Tidy Tuesday</category>
+  <guid>https://www.stesiam.github.io/notebooks/2023-02-08-Big-Tech-Stock-Prices/2023-02-08-Big-Tech-Stock-Prices.html</guid>
+  <pubDate>Tue, 07 Feb 2023 22:00:00 GMT</pubDate>
+  <media:content url="https://www.stesiam.github.io/notebooks/2023-02-08-Big-Tech-Stock-Prices/stocks.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Railway Transport in EU</title>
   <dc:creator>stesiam</dc:creator>
@@ -219,13 +449,13 @@ Electrified Railway Length<br>
 <span>                                 nuts_level <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">0</span>, </span>
 <span>                                 year <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">2016</span><span class="op" style="color: #5E5E5E;">)</span></span></code></pre></div>
 </details><div class="cell-output cell-output-stderr">
-<pre><code>Object cached at /tmp/Rtmp9wXr8I/eurostat/sf10020164326.RData</code></pre>
+<pre><code>Object cached at /tmp/RtmpqF2nX6/eurostat/sf10020164326.RData</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Reading cache file /tmp/Rtmp9wXr8I/eurostat/sf10020164326.RData</code></pre>
+<pre><code>No encoding supplied: defaulting to UTF-8.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>sf at resolution 1: 10  from year  2016  read from cache file:  /tmp/Rtmp9wXr8I/eurostat/sf10020164326.RData</code></pre>
+<pre><code>sf at resolution 1: 10  cached at:  /tmp/RtmpqF2nX6/eurostat/sf10020164326.RData</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in get_eurostat_geospatial(resolution = 10, nuts_level = 0, year =
@@ -376,6 +606,9 @@ Pebesma, E. (2022). <em>Sf: Simple features for r</em>. Retrieved from <a href="
 <div id="ref-R-base" class="csl-entry">
 R Core Team. (2021). <em>R: A language and environment for statistical computing</em>. Vienna, Austria: R Foundation for Statistical Computing. Retrieved from <a href="https://www.R-project.org/">https://www.R-project.org/</a>
 </div>
+<div id="ref-stavrakoudis" class="csl-entry">
+Stavrakoudis, A. (2022). <span class="nocase">Using Eurostat with R</span>. Retrieved October 25, 2022, from <a href="http://stavrakoudis.econ.uoi.gr/r-eurostat/index.html">http://stavrakoudis.econ.uoi.gr/r-eurostat/index.html</a>
+</div>
 <div id="ref-ggplot22016" class="csl-entry">
 Wickham, H. (2016). <em>ggplot2: Elegant graphics for data analysis</em>. Springer-Verlag New York. Retrieved from <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>
 </div>
@@ -403,6 +636,8 @@ stesiam. (2023, February 5). Railway Transport in EU. Retrieved from <a href="ht
 </div></div></section></div> ]]></description>
   <category>R</category>
   <category>Eurostat</category>
+  <category>EDA</category>
+  <category>Maps</category>
   <guid>https://www.stesiam.github.io/notebooks/2023-02-05-Railway-Transport-in-EU/2023-02-05-Railway-Transport-in-EU.html</guid>
   <pubDate>Sat, 04 Feb 2023 22:00:00 GMT</pubDate>
   <media:content url="https://www.stesiam.github.io/notebooks/2023-02-05-Railway-Transport-in-EU/railway.jpg" medium="image" type="image/jpeg"/>
@@ -1021,6 +1256,8 @@ stesiam. (2023, January 8). Asylum applicants in Europe. Retrieved from
 </div></div></section></div> ]]></description>
   <category>R</category>
   <category>Eurostat</category>
+  <category>EDA</category>
+  <category>Maps</category>
   <guid>https://www.stesiam.github.io/notebooks/2023-01-08-Asylum-Applicants/2022-01-08-Asylum-Applicants.html</guid>
   <pubDate>Sat, 07 Jan 2023 22:00:00 GMT</pubDate>
   <media:content url="https://www.stesiam.github.io/notebooks/2023-01-08-Asylum-Applicants/eu_image.jpg" medium="image" type="image/jpeg"/>
@@ -6338,7 +6575,6 @@ Retrieved from <a href="https://www.stesiam.github.io/2022-10-22-Unemployment-Gr
 </div></div></section></div> ]]></description>
   <category>R</category>
   <category>Time Series</category>
-  <category>ARIMA</category>
   <guid>https://www.stesiam.github.io/notebooks/2022-10-22-Forecasting-Unemployment-Greece/2022-10-22-Unemployment-Greece.html</guid>
   <pubDate>Fri, 21 Oct 2022 21:00:00 GMT</pubDate>
   <media:content url="https://www.stesiam.github.io/notebooks/2022-10-22-Forecasting-Unemployment-Greece/unemployment.jpg" medium="image" type="image/jpeg"/>
@@ -7537,7 +7773,6 @@ stesiam. (2022, October 10). EDA on Greek Parliament. Retrieved from <a href="ht
 </div></div></section></div> ]]></description>
   <category>R</category>
   <category>EDA</category>
-  <category>Greek Parliament</category>
   <guid>https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html</guid>
   <pubDate>Sun, 09 Oct 2022 21:00:00 GMT</pubDate>
   <media:content url="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/images/houses-of-parliament.jpg" medium="image" type="image/jpeg"/>
