@@ -1,0 +1,89 @@
+---
+title: "Bob Ross Paintings"
+author: "stesiam"
+description: |
+  to be completed...
+categories: [R, EDA, Tidy Tuesday]
+image: brush_paint.jpg
+freeze: true
+fig-cap-location: bottom
+date: "2023-02-23"
+toc: true
+toc-title: Table of contents
+toc-location: left
+citation: true
+slug: stesiam2022
+title-block-banner: true
+nocite: '@*'
+csl: apa-6th-edition
+bibliography: [packages.bib, references.bib]
+format: 
+  html:
+    code-link: true
+    code-fold: true
+    code-summary: "Show the code"
+    code-tools: 
+      source: repo
+execute:
+  echo: true
+editor_options: 
+  markdown: 
+    wrap: 80
+---
+
+# Table of Contents {.unlisted}
+
+# Prerequisites {#prerequisites}
+
+## Import Libraries {#import-libraries}
+
+```{r Import R Libraries, message=FALSE, results='hide', echo=TRUE}
+# General purpose R libraries
+
+library(readr)
+library(dplyr)
+library(kableExtra)
+
+# Plot 
+
+library(ggplot2)
+
+```
+
+```{r, include=FALSE}
+knitr::write_bib(.packages(), file = 'packages.bib')
+```
+
+## Import dataset {#import-dataset}
+
+```{r Import dataset, cache=TRUE, message=FALSE,results='hide',echo=TRUE, warning=FALSE}
+bob_ross_dataset = read_csv("data/bob_ross.csv")
+```
+
+
+
+## Other
+
+```{r}
+bob_ross_dataset %>%
+  filter(season == 1) %>%
+  select(num_colors)
+```
+
+
+
+```{r}
+c = data.frame(
+  "s" = c(1,0,0),
+  "e" = c(2,3,4)
+)
+
+mean(c)
+```
+
+
+# Acknowledgements {.appendix .unlisted}
+
+Image by <a href="https://pixabay.com/users/weinstock-25534/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=96240">Uwe Baumann</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=96240">Pixabay</a>
+
+# References {#references .appendix .unlisted}
