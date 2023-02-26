@@ -2,6 +2,7 @@
 title: "Verify your commits !"
 author: "stesiam"
 description: "Using GPG keys to add a signature to your GitHub commits"
+freeze: true
 link-external-newwindow: true
 categories: [GPG, Quarto]
 image: images/verify_icon.png
@@ -28,7 +29,7 @@ editor_options:
 
 It's not a long time ago that I have started to use Git. I am constantly
 discovering new things. All this time I was reading articles, posts on
-Stackoverflow etc. One day I was watchsaw a `Verified` badge on someones'
+Stackoverflow etc. One day I saw a `Verified` badge on someones'
 repository commit history.
 
 Then the first questions arised.
@@ -38,16 +39,12 @@ Then the first questions arised.
 :::{.callout-tip}
 ## SSH vs GitHub for commit
 
-In reality, when you have make a commit via your GitHub account your commit is indeed marked as verified but the majority of the users is working locally thus they have set SSH. Those are in need to set up GPG in order to sign their commits and push their changes.
+In reality, when you have make a commit via your GitHub account your commit is indeed marked as verified but the majority of the users is working locally, thus they have set SSH. Those are in need to set up GPG in order to sign their commits and push their changes.
 :::
 
 ## What if I do not verify
 
-THe thing is that I realised 
 
-A 
-
-But then 
 
 ## Create PGP key
 
@@ -58,8 +55,18 @@ You can see their guide
 For brevity, I will make a TL;DR version :
 
 ``` bash
+gpg --full-generate-key
+# Accept defaults
+# Give no-reply email
+# Passphrase
 
 
+#print GPG Key ID
+gpg --list-secret-keys --keyid-format=long
+# the alphanumeric after / is ID
+
+# print GPG key
+gpg --armor --export GPG_key_ID
 ```
 
 ## Signing your commits

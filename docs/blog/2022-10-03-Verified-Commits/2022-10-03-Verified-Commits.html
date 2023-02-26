@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.253">
+<meta name="generator" content="quarto-1.2.335">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -277,7 +277,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>It’s not a long time ago that I have started to use Git. I am constantly discovering new things. All this time I was reading articles, posts on Stackoverflow etc. One day I was watchsaw a <code>Verified</code> badge on someones’ repository commit history.</p>
+<p>It’s not a long time ago that I have started to use Git. I am constantly discovering new things. All this time I was reading articles, posts on Stackoverflow etc. One day I saw a <code>Verified</code> badge on someones’ repository commit history.</p>
 <p>Then the first questions arised.</p>
 <blockquote class="blockquote">
 <p>“What is that ?” <br> “Why I don’t have it ?” <br> “Do I need that ?”</p>
@@ -292,21 +292,29 @@ SSH vs GitHub for commit
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>In reality, when you have make a commit via your GitHub account your commit is indeed marked as verified but the majority of the users is working locally thus they have set SSH. Those are in need to set up GPG in order to sign their commits and push their changes.</p>
+<p>In reality, when you have make a commit via your GitHub account your commit is indeed marked as verified but the majority of the users is working locally, thus they have set SSH. Those are in need to set up GPG in order to sign their commits and push their changes.</p>
 </div>
 </div>
 </section>
 <section id="what-if-i-do-not-verify" class="level2">
 <h2 class="anchored" data-anchor-id="what-if-i-do-not-verify">What if I do not verify</h2>
-<p>THe thing is that I realised</p>
-<p>A</p>
-<p>But then</p>
 </section>
 <section id="create-pgp-key" class="level2">
 <h2 class="anchored" data-anchor-id="create-pgp-key">Create PGP key</h2>
 <p>GitHub has a wonderful explanation , so I won’t bother you to say the same things. You can see their guide <a href="https://docs.github.com/en/authentication/managing-commit-signature-verification/generating-a-new-gpg-key">here</a></p>
 <p>For brevity, I will make a TL;DR version :</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gpg</span> <span class="at">--full-generate-key</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Accept defaults</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Give no-reply email</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Passphrase</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#print GPG Key ID</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">gpg</span> <span class="at">--list-secret-keys</span> <span class="at">--keyid-format</span><span class="op">=</span>long</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># the alphanumeric after / is ID</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># print GPG key</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="ex">gpg</span> <span class="at">--armor</span> <span class="at">--export</span> GPG_key_ID</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="signing-your-commits" class="level2">
 <h2 class="anchored" data-anchor-id="signing-your-commits">Signing your commits</h2>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.253">
+<meta name="generator" content="quarto-1.2.335">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="stesiam">
 <meta name="dcterms.date" content="2022-11-04">
@@ -141,7 +141,7 @@ div.csl-indent {
 }</script><link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="stesiam - Git Series (Part I - Configuration)">
 <meta property="og:description" content="An article that brings together some configuration setttings of Git. A beginner's approach to Git.">
-<meta property="og:image" content="https://www.stesiam.github.io/blog/2022-11-04-Git-Commands/git_new.png">
+<meta property="og:image" content="https://www.stesiam.github.io/blog/2022-11-04-Git-Commands/images/git_new.png">
 <meta property="og:site-name" content="stesiam">
 <meta property="og:image:height" content="370">
 <meta property="og:image:width" content="640">
@@ -288,7 +288,7 @@ div.csl-indent {
 <section id="what-is-version-control-system" class="level3"><h3 class="anchored" data-anchor-id="what-is-version-control-system">What is Version Control System</h3>
 <p>A Version Control System (VCS) is a way to manage and track code changes. As we build an application, we add functions, change frontend features, fix bugs. We will need to edit the code many times. So we need a way to manage these changes. The tracking of every change to our code is the key point of VCS.</p>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="workflow_without_vcs.png" class="img-fluid figure-img"></p>
+<figure class="figure"><p><img src="images/workflow_without_vcs.png" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption">Workflow without Version Control</figcaption><p></p>
 </figure>
 </div>
@@ -307,8 +307,7 @@ div.csl-indent {
 
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">trends_vcs_tidy</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span> <span class="va">Month</span>, y <span class="op">=</span> <span class="va">counts</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<details><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span>  <span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="va">trends_vcs_tidy</span>, <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span> <span class="va">Month</span>, y <span class="op">=</span> <span class="va">counts</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_line</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>color <span class="op">=</span> <span class="va">VCS</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Trends on Version Control Systems"</span>,</span>
 <span>              subtitle <span class="op">=</span> <span class="st">"Compare trends of Git and SVN (Subversion) from 2004 to 2022"</span>,</span>
@@ -361,13 +360,14 @@ Note
 </div>
 </div>
 </section><section id="set-editor" class="level3"><h3 class="anchored" data-anchor-id="set-editor">Set editor</h3>
-<p>[Edit…]</p>
+<p>A part that I considered a little bit hard is editing Git commits. By default, Ubuntu has installed Vim, so this was my first editor for my commits. I think this choice is good if you are writing short commit messages or you are acquainted with Vim options/shortcuts. In case you are in a hurry, the use of an alterantive (most familiar) IDE is justified.</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Terminal</strong></pre>
 </div>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> core.editor <span class="st">"editor_name"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Most notable is Visual Studio Code, which is the most popular IDE, according to <a href="https://insights.stackoverflow.com/survey/2021#section-most-popular-technologies-integrated-development-environment">recent Stackoveflow’s survey</a>.</p>
 <table class="table">
 <thead><tr class="header">
 <th style="text-align: left;">Editor</th>
@@ -376,11 +376,11 @@ Note
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Atom</td>
-<td style="text-align: center;">Title</td>
+<td style="text-align: center;">git config –global core.editor “atom –wait”</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Vim</td>
-<td style="text-align: center;">Text</td>
+<td style="text-align: left;">Visual Studio Code</td>
+<td style="text-align: center;">git config –global core.editor “code –wait”</td>
 </tr>
 </tbody>
 </table></section><section id="default-branch-name-to-main" class="level3"><h3 class="anchored" data-anchor-id="default-branch-name-to-main">Default branch name to main</h3>
@@ -450,7 +450,7 @@ Warning
 </div>
 <p>Here is the output on my machine :</p>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="git_config_output.png" class="img-fluid figure-img"></p>
+<figure class="figure"><p><img src="images/git_config_output.png" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption">Output of git-config command</figcaption><p></p>
 </figure>
 </div>

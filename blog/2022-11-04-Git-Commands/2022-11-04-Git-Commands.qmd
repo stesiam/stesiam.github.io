@@ -7,7 +7,7 @@ categories: [Git]
 fig-cap-location: bottom
 date: "2022-11-04"
 freeze: true
-image: git_new.png
+image: images/git_new.png
 image-alt: "Git commands" 
 toc: true
 toc-title: Table of contents
@@ -35,7 +35,7 @@ editor_options:
 
 A Version Control System (VCS) is a way to manage and track code changes. As we build an application, we add functions, change frontend features, fix bugs. We will need to edit the code many times. So we need a way to manage these changes. The tracking of every change to our code is the key point of VCS.
 
-![Workflow without Version Control](workflow_without_vcs.png)
+![Workflow without Version Control](images/workflow_without_vcs.png)
 
 
 Some popular Version Control Software are the following :
@@ -58,7 +58,6 @@ library(ggplot2)
 ```
 
 
-
 ```{r Import data, echo=FALSE, message=FALSE, warning=FALSE}
 trends_vcs <- read_csv("multiTimeline.csv", 
     skip = 2)
@@ -70,8 +69,7 @@ trends_vcs_tidy = tidyr::pivot_longer(trends_vcs, !Month, names_to = "VCS", valu
 ```
 
 ```{r, fig.width= 7}
-trends_vcs_tidy %>%
-  ggplot(aes(x= Month, y = counts)) +
+  ggplot(data = trends_vcs_tidy, aes(x= Month, y = counts)) +
   geom_line(aes(color = VCS)) +
   labs(title = "Trends on Version Control Systems",
               subtitle = "Compare trends of Git and SVN (Subversion) from 2004 to 2022",
@@ -123,17 +121,18 @@ If you are planning to host your repository on GitHub, you may want to hide your
 
 ### Set editor
 
-[Edit...]
+A part that I considered a little bit hard is editing Git commits. By default, Ubuntu has installed Vim, so this was my first editor for my commits. I think this choice is good if you are writing short commit messages or you are acquainted with Vim options/shortcuts. In case you are in a hurry, the use of an alterantive (most familiar) IDE is justified. 
 
 ```{.bash filename="Terminal"}
 git config --global core.editor "editor_name"
 ```
 
+Most notable is Visual Studio Code, which is the most popular IDE, according to [recent Stackoveflow's survey](https://insights.stackoverflow.com/survey/2021#section-most-popular-technologies-integrated-development-environment).
 
 | Editor     | Command | 
 | :---        |    :----:   |
-| Atom     | Title       |
-| Vim   | Text        |
+| Atom     | git config --global core.editor "atom --wait" |
+| Visual Studio Code   | git config --global core.editor "code --wait" |
 
 ### Default branch name to main
 
@@ -197,7 +196,7 @@ git config --list
 Here is the output on my machine :
 
 
-![Output of git-config command](git_config_output.png)
+![Output of git-config command](images/git_config_output.png)
 
 The image above sums up the settings of Git. Although, each user has different needs and for that reason it would be good in case you want to learn more about `git config` to see their [documentation page](https://git-scm.com/docs/git-config).
 
