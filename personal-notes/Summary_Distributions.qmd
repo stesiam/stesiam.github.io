@@ -1,0 +1,92 @@
+---
+author: stesiam
+title: Table of Distributions
+date: 03-03-2023
+format: 
+  pdf:
+   documentclass: report
+   classoption: [landscape]
+   lof: false
+   lot: false
+   geometry:
+      - top=10mm
+      - left=20mm
+      - right =20mm
+      - heightrounded
+   include-in-header: 
+      text: |
+       \usepackage{polyglossia}
+       \usepackage{fontspec}
+       \setmainfont{Liberation Serif}
+       \usepackage{makecell}
+       \usepackage{float}
+---
+## Discrete Distributions
+\begingroup
+
+\renewcommand{\arraystretch}{3.5}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+	\hline
+	\textbf{Distribution}  & \textbf{Parameters} & $f(x)$ & \textbf{Value domain} & \textbf{F(x)} & \textbf{E(X)} & \textbf{Var(X)} & $M_{x}(t)$ & $P_{x}(t)$ \\
+	\hline
+	\makecell{\textbf{Bernoulli} \\ Bernoulli($p$)} & $p \in [0,1]$ & $\begin{cases} q , & \text{if k=0} \\ p , & \text{if k=1} \end{cases}$ & x = $\{0,1\}$ & $\begin{cases} 0 , & \text{if k<0} \\ q , & \text{if 0<=k<1} \\ 1 , & \text{if k>=1} \end{cases}$ & $p$ & $pq$ & $p(e^{t}+q)$ & $(pt+q)$ \\
+	\hline
+	\makecell{\textbf{Binomial} \\ $B(n,p)$} & \makecell{$n \in$ \{0,1,..,\} \\ $p \in$ [0,1]} & $\binom{n}{k} p^{x} q^{n-x}$ & x = 0,1,...,n &  & $np$ & $npq$ & $p(e^{t}+q)^{n}$ & $(pt+q)^{n}$ \\
+	\hline
+	\makecell{\textbf{Poisson} \\ $Poisson(\lambda)$} & $\lambda > 0 $ & $e^{-\lambda}\frac{\lambda^{x}}{x}$ & x = 0,1,... & -- & $\lambda$ & $\lambda$ & $e^{\lambda(e^{t} -1)}$ & $e^{\lambda(t-1)}$ \\
+	\hline
+	\makecell{\textbf{Geometric 0} \\ $G_0(p)$} & $p \in [0,1]$ & $q^x p$ & x = 0,1,2,... & $1-q^{x-1}$ & $\frac{q}{p}$ & $\frac{q}{p^2}$ & $\frac{p}{1-qe^t}$ &  \\
+	\hline
+	\makecell{\textbf{Geometric 1} \\ $G_1(p)$} & $p \in [0,1]$ & $q^{x-1} p$ & x = 1,2,... & $1-q^x$ & $\frac{1}{p}$ & $\frac{q}{p^2}$ & \makecell{$\frac{pe^{t}}{1-q e^t}$,  \\  $t<- ln(q) $}  &  \\
+	\hline
+	\makecell{\textbf{Negative Binomial 0} \\ $NB_0(r,p)$} &  &  &  &  &  &  &  &  \\
+	\hline
+	\makecell{\textbf{Negative Binomial 1} \\ $NB_1(r,p)$} &  &  &  &  &  &  &  &  \\
+	\hline
+	\makecell{\textbf{Hypergeometric} \\ $h(v,a,b)$}& \makecell{$a, b, n$ : pos. integers\\ $n<=a+b$} & $\frac{\binom{a}{x} \binom{b}{n-x}}{\binom{a+b}{n}}$ & x=0,1,2,...n &  & $\frac{a}{a+b}$ &  & -- & -- \\
+	\hline
+	\makecell{\textbf{Discrete Uniform} \\ $U(a,b)$} & \makecell{$a, b, n$ : pos. integers \\ $n<=a+b$} & $\frac{\binom{a}{x} \binom{b}{n-x}}{\binom{a+b}{n}}$ & x=0,1,2,...n &  & $\frac{a+b}{2}$ &  & -- & -- \\
+	\hline
+\end{tabular}
+\end{table}
+
+\endgroup
+
+## Continuous Distributions
+
+\begingroup
+\renewcommand{\arraystretch}{3}
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+	\hline
+	\textbf{Distribution} & \textbf{Parameters} & $f(x)$ & \textbf{Value domain} & \textbf{F(x)} & \textbf{E(X)} & \textbf{Var(X)} & $M_{x}(t)$\\
+	\hline
+	\makecell{\textbf{Uniform} \\ $U(a,b)$} & $-\infty <a<b< +\infty$ & $\frac{1}{b-a}$ & $x \in [a,b]$ & $\begin{cases} 0 , & x<a \\ \frac{x-a}{b-a} , &  a \leq x \leq b \\ 1 , & x>b \end{cases}$ & $\frac{a+b}{2}$ & $\frac{(b-a)^{2}}{12}$ & $\frac{e^{tb} - e^{ta}}{t(b-a)}$ \\
+	\hline
+	\makecell{\textbf{Normal} \\ $N(n,p)$} & \makecell{$n \in$ \{0,1,..,\} \\ $p \in$ [0,1]} & $\phi(x) = \frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{(x-\mu)^2}{2\sigma^2}} $ & $x \in [-\infty ,\infty]$ &  & $\mu$ & $\sigma^2$ & $e^{\mu t + \frac{\sigma^2 t^2}{2}} $ \\
+	\hline
+	\makecell{\textbf{Standard Normal} \\ $N(0,1)$} & -- & $\frac{1}{\sqrt{2\pi}} e^{-\frac{x^2}{2}}$ & x = 0,1,... &  & 0 & 1 &  \\
+	\hline
+	\makecell{\textbf{Exponential} \\ $Exp(\lambda)$} & $\lambda >0$ & $\lambda e^{-\lambda x}$ & $x \in [0,\infty]$ & $1-e^{-\lambda x}$ & $\frac{1}{\lambda}$ & $\frac{1}{\lambda^2}$ &  \\
+	\hline
+	\makecell{\textbf{Gamma} \\ $Gamma(k,\theta)$} & \makecell{$k > 0$ \\ $\theta$ >0 } & $\frac{x^{k-1}e^{-\frac{x}{\theta}}}{\theta^k \gamma(k) }$ & $ x \in [0,\infty]$ &  & $k \theta$ & $k \theta^2$ & $(1-\theta t)^{-k}, t<\frac{1}{\theta}$ \\
+	\hline
+	\makecell{\textbf{Beta} \\ $Beta(\alpha , \beta)$} & \makecell{$\alpha > 0$ \\ $\beta$ >0 } & $\frac{x^{\alpha-1}(1-x)^{\beta -1}}{B(a,b)}$ & $x \in [0,1]$ &  & $\frac{\alpha}{\alpha + \beta}$ & $\frac{\alpha \beta}{(\alpha+\beta)^2 (\alpha+\beta+1)}$ &   \\
+	\hline
+	\makecell{\textbf{Weibull} \\ $Wei(\lambda,k)$} & \makecell{$\lambda \in (0,+\infty)$ \\ $k \in (0,+\infty)$} & $\begin{cases} \frac{k}{\lambda}(\frac{x}{\lambda}) e^{-(\frac{x}{\lambda})^k}) , & x heq 0 \\ 0 , & x<0 \end{cases}$ & $x \in [0,\infty]$ & $\begin{cases} 1-e^{-(\frac{x}{\lambda})} , & x heq 0 \\ 0 , & x<0 \end{cases}$ & $\lambda$ Γ$(1 + \frac{1}{k})$ &  &  \\
+	\hline
+	\makecell{\textbf{Erlang} \\ $Erl(k,\lambda)$ \\ alt. $beta = \frac{1}{\lambda}$}  & \makecell{$k \in {1,2,3,...}$  \\ $\lambda \in (0, \infty)$} & $\frac{\lambda^k x^{k-1} e^{-\lambda x}}{(k-1)!}$ & $x \in [0,\infty]$ &  & $\frac{k}{\lambda}$ & $\frac{k}{\lambda^2}$ & \makecell{$(1-\frac{t}{\lambda})^{-k}$ \\ $t<\lambda$} \\
+	\hline
+	\makecell{\textbf{Pareto I}\\ $Pareto(\alpha, \beta)$} & \makecell{$a>0$ \\ $b>0$} & $\frac{\alpha \beta^{\alpha}}{(\beta + x)^{a+1}}$ & $x \in [0,+\infty]$ &  & \makecell{$\frac{\beta}{\alpha-1}$, \\ $\alpha>1$} & $\frac{\alpha \beta^2}{(\alpha - 1)^2 (\alpha -2)}$ & -- \\
+	\hline
+	\makecell{\textbf{Pareto II}\\ $Pareto$} & \makecell{$a>0$ \\ $b>0$} &  & $x \in [0,+\infty]$ &  &  & & -- \\
+	\hline
+	\makecell{\textbf{Lognormal} \\ $logN(\mu, \sigma^2)$} & \makecell{$\mu \in (-\infty, +\infty)$\\ $\sigma>0$} & $\frac{e^{-\frac{1}{2}(\frac{logx - \mu}{\sigma})}}{x\sigma\sqrt{2\pi}}$ & $x \in (0,+\infty)$ & \makecell{Compl. \\ expression} & $ e^{\mu + \frac{\sigma^2}{2}} $ & $(e^{\sigma^2}-1)(e^{2\mu+ \sigma^2}) $& --  \\
+	\hline
+\end{tabular}
+\end{table}
+\endgroup
