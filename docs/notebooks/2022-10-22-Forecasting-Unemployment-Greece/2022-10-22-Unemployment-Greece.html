@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.335">
+<meta name="generator" content="quarto-1.3.276">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="stesiam">
 <meta name="dcterms.date" content="2022-10-22">
@@ -17,9 +17,10 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -46,48 +47,19 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+/* CSS for citations */
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
 }
-.hanging div.csl-entry {
+.hanging-indent div.csl-entry {
   margin-left:2em;
   text-indent:-2em;
 }
@@ -101,8 +73,7 @@ div.csl-right-inline {
 }
 div.csl-indent {
   margin-left: 2em;
-}
-</style>
+}</style>
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
@@ -157,7 +128,7 @@ div.csl-indent {
   </script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
 <link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="stesiam - Forecasting Unemployment in Greece">
-<meta property="og:description" content="Make a prediction about the future value of Greece's unemployment using ARIMA model.">
+<meta property="og:description" content="Make a prediction about the future value of Greece’s unemployment using ARIMA model.">
 <meta property="og:image" content="https://www.stesiam.github.io/notebooks/2022-10-22-Forecasting-Unemployment-Greece/unemployment.jpg">
 <meta property="og:site-name" content="stesiam">
 <meta property="og:image:alt" content="Unemployment - Word Cloud">
@@ -171,66 +142,68 @@ div.csl-indent {
     <span class="navbar-title">stesiam</span>
     </a>
   </div>
+            <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
 <li class="nav-item">
-    <a class="nav-link" href="../../index.html">
+    <a class="nav-link" href="../../index.html" rel="" target="">
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-posts" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-posts" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
  <span class="menu-text">Posts</span>
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-posts">
 <li>
-    <a class="dropdown-item" href="../../posts.html">
+    <a class="dropdown-item" href="../../posts.html" rel="" target="">
  <span class="dropdown-text">All posts</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../notebooks.html">
+    <a class="dropdown-item" href="../../notebooks.html" rel="" target="">
  <span class="dropdown-text">Notebooks</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../blog.html">
+    <a class="dropdown-item" href="../../blog.html" rel="" target="">
  <span class="dropdown-text">Blog</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../greek.html">
+    <a class="dropdown-item" href="../../greek.html" rel="" target="">
  <span class="dropdown-text">Greek Posts</span></a>
   </li>  
     </ul>
 </li>
   <li class="nav-item">
-    <a class="nav-link" href="../../shiny.html">
+    <a class="nav-link" href="../../shiny.html" rel="" target="">
  <span class="menu-text">Shiny Projects</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../material.html">
+    <a class="nav-link" href="../../material.html" rel="" target="">
  <span class="menu-text">Material</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../gallery.html">
+    <a class="nav-link" href="../../gallery.html" rel="" target="">
  <span class="menu-text">Gallery</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../index.html">
+    <a class="nav-link" href="../../index.html" rel="" target="">
  <span class="menu-text">CV</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/stesiam"><i class="bi bi-github" role="img" aria-label="Website Search">
+    <a class="nav-link" href="https://github.com/stesiam" rel="" target=""><i class="bi bi-github" role="img" aria-label="Website Search">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="../../posts.xml"><i class="bi bi-rss" role="img" aria-label="Website RSS">
+    <a class="nav-link" href="../../posts.xml" rel="" target=""><i class="bi bi-rss" role="img" aria-label="Website RSS">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
 </ul>
-<div id="quarto-search" class="" title="Search"></div>
+<div class="quarto-navbar-tools">
+</div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full"><div class="quarto-title-banner page-columns page-full">
@@ -272,7 +245,7 @@ div.csl-indent {
   
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
 <li>
@@ -325,7 +298,9 @@ div.csl-indent {
 </li>
   <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/stesiam/stesiam.github.io/edit/main/notebooks/2022-10-22-Forecasting-Unemployment-Greece/2022-10-22-Unemployment-Greece.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/stesiam/stesiam.github.io/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
-</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
     </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content"><section id="table-of-contents" class="level1 unlisted"><h1 class="unlisted">Table of Contents</h1>
@@ -416,66 +391,67 @@ div.csl-indent {
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_classic.html">kable_paper</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/scroll_box.html">scroll_box</a></span><span class="op">(</span>width <span class="op">=</span> <span class="st">"600px"</span>, height <span class="op">=</span> <span class="st">"250px"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-
-<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:250px; overflow-x: scroll; width:600px; "><table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
-<thead><tr>
-<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> LOCATION </th>
-   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> TIME </th>
-   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> Value </th>
-  </tr></thead>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:250px; overflow-x: scroll; width:600px; ">
+<table class="lightable-paper table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">LOCATION</th>
+<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">TIME</th>
+<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">Value</th>
+</tr></thead>
 <tbody>
-<tr>
-<td style="text-align:center;"> GRC </td>
-   <td style="text-align:center;"> 1998-04 </td>
-   <td style="text-align:center;"> 11 </td>
-  </tr>
-<tr>
-<td style="text-align:center;"> GRC </td>
-   <td style="text-align:center;"> 1998-05 </td>
-   <td style="text-align:center;"> 11 </td>
-  </tr>
-<tr>
-<td style="text-align:center;"> GRC </td>
-   <td style="text-align:center;"> 1998-06 </td>
-   <td style="text-align:center;"> 11 </td>
-  </tr>
-<tr>
-<td style="text-align:center;"> GRC </td>
-   <td style="text-align:center;"> 1998-07 </td>
-   <td style="text-align:center;"> 11 </td>
-  </tr>
-<tr>
-<td style="text-align:center;"> GRC </td>
-   <td style="text-align:center;"> 1998-08 </td>
-   <td style="text-align:center;"> 11 </td>
-  </tr>
-<tr>
-<td style="text-align:center;"> GRC </td>
-   <td style="text-align:center;"> 1998-09 </td>
-   <td style="text-align:center;"> 11 </td>
-  </tr>
-<tr>
-<td style="text-align:center;"> GRC </td>
-   <td style="text-align:center;"> 1998-10 </td>
-   <td style="text-align:center;"> 11 </td>
-  </tr>
-<tr>
-<td style="text-align:center;"> GRC </td>
-   <td style="text-align:center;"> 1998-11 </td>
-   <td style="text-align:center;"> 11 </td>
-  </tr>
-<tr>
-<td style="text-align:center;"> GRC </td>
-   <td style="text-align:center;"> 1998-12 </td>
-   <td style="text-align:center;"> 11 </td>
-  </tr>
-<tr>
-<td style="text-align:center;"> GRC </td>
-   <td style="text-align:center;"> 1999-01 </td>
-   <td style="text-align:center;"> 11 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: center;">GRC</td>
+<td style="text-align: center;">1998-04</td>
+<td style="text-align: center;">11</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">GRC</td>
+<td style="text-align: center;">1998-05</td>
+<td style="text-align: center;">11</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">GRC</td>
+<td style="text-align: center;">1998-06</td>
+<td style="text-align: center;">11</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">GRC</td>
+<td style="text-align: center;">1998-07</td>
+<td style="text-align: center;">11</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">GRC</td>
+<td style="text-align: center;">1998-08</td>
+<td style="text-align: center;">11</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">GRC</td>
+<td style="text-align: center;">1998-09</td>
+<td style="text-align: center;">11</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">GRC</td>
+<td style="text-align: center;">1998-10</td>
+<td style="text-align: center;">11</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">GRC</td>
+<td style="text-align: center;">1998-11</td>
+<td style="text-align: center;">11</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">GRC</td>
+<td style="text-align: center;">1998-12</td>
+<td style="text-align: center;">11</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">GRC</td>
+<td style="text-align: center;">1999-01</td>
+<td style="text-align: center;">11</td>
+</tr>
 </tbody>
-</table></div>
+</table>
+</div>
 
 </div>
 </div>
@@ -519,25 +495,24 @@ div.csl-indent {
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">unemployment</span>, <span class="va">class</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">F</span>, position <span class="op">=</span> <span class="st">"center"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-
-<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<thead><tr>
-<th style="text-align:left;">   </th>
-   <th style="text-align:left;"> x </th>
-  </tr></thead>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">x</th>
+</tr></thead>
 <tbody>
-<tr>
-<td style="text-align:left;"> LOCATION </td>
-   <td style="text-align:left;"> character </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> TIME </td>
-   <td style="text-align:left;"> character </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Value </td>
-   <td style="text-align:left;"> numeric </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left;">LOCATION</td>
+<td style="text-align: left;">character</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">TIME</td>
+<td style="text-align: left;">character</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Value</td>
+<td style="text-align: left;">numeric</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -551,25 +526,24 @@ div.csl-indent {
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">unemployment</span>, <span class="va">class</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">F</span>, position <span class="op">=</span> <span class="st">"center"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-
-<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<thead><tr>
-<th style="text-align:left;">   </th>
-   <th style="text-align:left;"> x </th>
-  </tr></thead>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">x</th>
+</tr></thead>
 <tbody>
-<tr>
-<td style="text-align:left;"> LOCATION </td>
-   <td style="text-align:left;"> character </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> TIME </td>
-   <td style="text-align:left;"> Date </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Value </td>
-   <td style="text-align:left;"> numeric </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left;">LOCATION</td>
+<td style="text-align: left;">character</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">TIME</td>
+<td style="text-align: left;">Date</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Value</td>
+<td style="text-align: left;">numeric</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -589,39 +563,38 @@ div.csl-indent {
 <details><summary>Show the code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">unemployment</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">LOCATION</span> <span class="op">==</span> <span class="st">"GRC"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">TIME</span>, <span class="va">Value</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">Value</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">F</span>, position <span class="op">=</span> <span class="st">"center"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-
-<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<thead><tr>
-<th style="text-align:left;">   </th>
-   <th style="text-align:left;"> TIME </th>
-   <th style="text-align:right;"> Value </th>
-  </tr></thead>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">TIME</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Value</th>
+</tr></thead>
 <tbody>
-<tr>
-<td style="text-align:left;"> 289 </td>
-   <td style="text-align:left;"> 2013-11-01 </td>
-   <td style="text-align:right;"> 28 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> 290 </td>
-   <td style="text-align:left;"> 2013-04-01 </td>
-   <td style="text-align:right;"> 28 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> 291 </td>
-   <td style="text-align:left;"> 2013-05-01 </td>
-   <td style="text-align:right;"> 28 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> 292 </td>
-   <td style="text-align:left;"> 2013-07-01 </td>
-   <td style="text-align:right;"> 28 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> 293 </td>
-   <td style="text-align:left;"> 2013-09-01 </td>
-   <td style="text-align:right;"> 28 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left;">289</td>
+<td style="text-align: left;">2013-11-01</td>
+<td style="text-align: right;">28</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">290</td>
+<td style="text-align: left;">2013-04-01</td>
+<td style="text-align: right;">28</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">291</td>
+<td style="text-align: left;">2013-05-01</td>
+<td style="text-align: right;">28</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">292</td>
+<td style="text-align: left;">2013-07-01</td>
+<td style="text-align: right;">28</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">293</td>
+<td style="text-align: left;">2013-09-01</td>
+<td style="text-align: right;">28</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -631,39 +604,38 @@ div.csl-indent {
 <details><summary>Show the code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">unemployment</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">LOCATION</span> <span class="op">==</span> <span class="st">"EU27_2020"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">TIME</span>, <span class="va">Value</span><span class="op">)</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">Value</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">F</span>, position <span class="op">=</span> <span class="st">"center"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-
-<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<thead><tr>
-<th style="text-align:left;">   </th>
-   <th style="text-align:left;"> TIME </th>
-   <th style="text-align:right;"> Value </th>
-  </tr></thead>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">TIME</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Value</th>
+</tr></thead>
 <tbody>
-<tr>
-<td style="text-align:left;"> 268 </td>
-   <td style="text-align:left;"> 2013-06-01 </td>
-   <td style="text-align:right;"> 12 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> 269 </td>
-   <td style="text-align:left;"> 2013-01-01 </td>
-   <td style="text-align:right;"> 12 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> 270 </td>
-   <td style="text-align:left;"> 2013-02-01 </td>
-   <td style="text-align:right;"> 12 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> 271 </td>
-   <td style="text-align:left;"> 2013-03-01 </td>
-   <td style="text-align:right;"> 12 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> 272 </td>
-   <td style="text-align:left;"> 2013-04-01 </td>
-   <td style="text-align:right;"> 12 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left;">268</td>
+<td style="text-align: left;">2013-06-01</td>
+<td style="text-align: right;">12</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">269</td>
+<td style="text-align: left;">2013-01-01</td>
+<td style="text-align: right;">12</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">270</td>
+<td style="text-align: left;">2013-02-01</td>
+<td style="text-align: right;">12</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">271</td>
+<td style="text-align: left;">2013-03-01</td>
+<td style="text-align: right;">12</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">272</td>
+<td style="text-align: left;">2013-04-01</td>
+<td style="text-align: right;">12</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -673,33 +645,32 @@ div.csl-indent {
 <details><summary>Show the code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">unemployment</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">LOCATION</span> <span class="op">==</span> <span class="st">"GRC"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">TIME</span>, <span class="va">Value</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">Value</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">F</span>, position <span class="op">=</span> <span class="st">"center"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-
-<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<thead><tr>
-<th style="text-align:left;"> TIME </th>
-   <th style="text-align:right;"> Value </th>
-  </tr></thead>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">TIME</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Value</th>
+</tr></thead>
 <tbody>
-<tr>
-<td style="text-align:left;"> 2008-05-01 </td>
-   <td style="text-align:right;"> 7.4 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> 2008-06-01 </td>
-   <td style="text-align:right;"> 7.6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> 2008-07-01 </td>
-   <td style="text-align:right;"> 7.6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> 2008-10-01 </td>
-   <td style="text-align:right;"> 7.6 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> 2008-01-01 </td>
-   <td style="text-align:right;"> 7.7 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left;">2008-05-01</td>
+<td style="text-align: right;">7.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2008-06-01</td>
+<td style="text-align: right;">7.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2008-07-01</td>
+<td style="text-align: right;">7.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2008-10-01</td>
+<td style="text-align: right;">7.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2008-01-01</td>
+<td style="text-align: right;">7.7</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -709,33 +680,32 @@ div.csl-indent {
 <details><summary>Show the code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">unemployment</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">LOCATION</span> <span class="op">==</span> <span class="st">"EU27_2020"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">TIME</span>, <span class="va">Value</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">Value</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">F</span>, position <span class="op">=</span> <span class="st">"center"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-
-<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<thead><tr>
-<th style="text-align:left;"> TIME </th>
-   <th style="text-align:right;"> Value </th>
-  </tr></thead>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">TIME</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Value</th>
+</tr></thead>
 <tbody>
-<tr>
-<td style="text-align:left;"> 2022-07-01 </td>
-   <td style="text-align:right;"> 6.0 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> 2022-08-01 </td>
-   <td style="text-align:right;"> 6.0 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> 2022-04-01 </td>
-   <td style="text-align:right;"> 6.1 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> 2022-05-01 </td>
-   <td style="text-align:right;"> 6.1 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> 2022-06-01 </td>
-   <td style="text-align:right;"> 6.1 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left;">2022-07-01</td>
+<td style="text-align: right;">6.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2022-08-01</td>
+<td style="text-align: right;">6.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2022-04-01</td>
+<td style="text-align: right;">6.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2022-05-01</td>
+<td style="text-align: right;">6.1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2022-06-01</td>
+<td style="text-align: right;">6.1</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -753,7 +723,7 @@ div.csl-indent {
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html">scale_x_date</a></span><span class="op">(</span>date_labels <span class="op">=</span> <span class="st">"%m-%Y"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<p><img src="2022-10-22-Unemployment-Greece_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+<p><img src="2022-10-22-Unemployment-Greece_files/figure-html/unnamed-chunk-10-1.png" class="quarto-discovered-preview-image img-fluid" width="672"></p>
 </div>
 </div>
 </section><section id="examine-stationarity" class="level1"><h1>Examine stationarity</h1>
@@ -766,7 +736,7 @@ div.csl-indent {
 <span class="math inline">Var(X_t) = \text{constant}</span> </li>
 <li><span class="math inline">Cov(X_t, X_s) = \text{constant}</span></li>
 </ol></section><section id="examine-stationarity-graphically" class="level2"><h2 class="anchored" data-anchor-id="examine-stationarity-graphically">Examine Stationarity Graphically</h2>
-<div class="panel-tabset">
+<div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Level</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">First Diff.</a></li>
@@ -829,33 +799,32 @@ div.csl-indent {
 <span></span>
 <span><span class="va">summary_stationarity_results</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-
-<table class="table" style="margin-left: auto; margin-right: auto;">
-<thead><tr>
-<th style="text-align:left;"> Type </th>
-   <th style="text-align:left;"> ADF.test </th>
-   <th style="text-align:left;"> PP.test </th>
-   <th style="text-align:left;"> KPSS.test </th>
-  </tr></thead>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Type</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">ADF.test</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">PP.test</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">KPSS.test</th>
+</tr></thead>
 <tbody>
-<tr>
-<td style="text-align:left;"> levels </td>
-   <td style="text-align:left;"> Non Stationary </td>
-   <td style="text-align:left;"> Non Stationary </td>
-   <td style="text-align:left;"> Non Stationary </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Diff(GRC) </td>
-   <td style="text-align:left;"> Stationary </td>
-   <td style="text-align:left;"> Stationary </td>
-   <td style="text-align:left;"> Non Stationary </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Diff2(GRC) </td>
-   <td style="text-align:left;"> Stationary </td>
-   <td style="text-align:left;"> Stationary </td>
-   <td style="text-align:left;"> Stationary </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left;">levels</td>
+<td style="text-align: left;">Non Stationary</td>
+<td style="text-align: left;">Non Stationary</td>
+<td style="text-align: left;">Non Stationary</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Diff(GRC)</td>
+<td style="text-align: left;">Stationary</td>
+<td style="text-align: left;">Stationary</td>
+<td style="text-align: left;">Non Stationary</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Diff2(GRC)</td>
+<td style="text-align: left;">Stationary</td>
+<td style="text-align: left;">Stationary</td>
+<td style="text-align: left;">Stationary</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -875,25 +844,26 @@ H_1 : \text{Alternatively}
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/tseries/man/adf.test.html">adf.test</a></span><span class="op">(</span><span class="va">grc_unemployment</span><span class="op">$</span><span class="va">Value</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://davidgohel.github.io/flextable/reference/as_flextable.html">as_flextable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-
 <div class="tabwid">
 <style>.cl-4b54b0aa{}.cl-4b424bcc{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-4b4a6730{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4b4a6744{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4b4a9c96{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b4a9caa{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b4a9cb4{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b4a9cbe{width:2.596in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b4a9cc8{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b4a9cdc{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b4a9ce6{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b4a9cf0{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b4a9cfa{width:2.596in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b4a9d04{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b4a9d0e{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b4a9d18{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b4a9d19{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b4a9d22{width:2.596in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b4a9d2c{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<table class="cl-4b54b0aa">
-<thead><tr style="overflow-wrap:break-word;">
-<td class="cl-4b4a9c96"><p class="cl-4b4a6730"><span class="cl-4b424bcc">statistic</span></p></td>
-<td class="cl-4b4a9caa"><p class="cl-4b4a6730"><span class="cl-4b424bcc">p.value</span></p></td>
-<td class="cl-4b4a9cb4"><p class="cl-4b4a6730"><span class="cl-4b424bcc">parameter</span></p></td>
-<td class="cl-4b4a9cbe"><p class="cl-4b4a6744"><span class="cl-4b424bcc">method</span></p></td>
-<td class="cl-4b4a9cc8"><p class="cl-4b4a6744"><span class="cl-4b424bcc">alternative</span></p></td>
+<table class="cl-4b54b0aa table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header" style="overflow-wrap:break-word;">
+<th class="cl-4b4a9c96"><p><span class="cl-4b424bcc">statistic</span></p></th>
+<th class="cl-4b4a9caa"><p><span class="cl-4b424bcc">p.value</span></p></th>
+<th class="cl-4b4a9cb4"><p><span class="cl-4b424bcc">parameter</span></p></th>
+<th class="cl-4b4a9cbe"><p><span class="cl-4b424bcc">method</span></p></th>
+<th class="cl-4b4a9cc8"><p><span class="cl-4b424bcc">alternative</span></p></th>
 </tr></thead>
-<tbody><tr style="overflow-wrap:break-word;">
-<td class="cl-4b4a9cdc"><p class="cl-4b4a6730"><span class="cl-4b424bcc">-0.9</span></p></td>
-<td class="cl-4b4a9ce6"><p class="cl-4b4a6730"><span class="cl-4b424bcc">0.9485</span><span class="cl-4b424bcc">   </span></p></td>
-<td class="cl-4b4a9cf0"><p class="cl-4b4a6730"><span class="cl-4b424bcc">6.0</span></p></td>
-<td class="cl-4b4a9cfa"><p class="cl-4b4a6744"><span class="cl-4b424bcc">Augmented Dickey-Fuller Test</span></p></td>
-<td class="cl-4b4a9d04"><p class="cl-4b4a6744"><span class="cl-4b424bcc">stationary</span></p></td>
+<tbody><tr class="odd" style="overflow-wrap:break-word;">
+<td class="cl-4b4a9cdc"><p><span class="cl-4b424bcc">-0.9</span></p></td>
+<td class="cl-4b4a9ce6"><p><span class="cl-4b424bcc">0.9485</span><span class="cl-4b424bcc"> </span></p></td>
+<td class="cl-4b4a9cf0"><p><span class="cl-4b424bcc">6.0</span></p></td>
+<td class="cl-4b4a9cfa"><p><span class="cl-4b424bcc">Augmented Dickey-Fuller Test</span></p></td>
+<td class="cl-4b4a9d04"><p><span class="cl-4b424bcc">stationary</span></p></td>
 </tr></tbody>
-<tfoot><tr style="overflow-wrap:break-word;"><td colspan="5" class="cl-4b4a9d0e"><p class="cl-4b4a6744"><span class="cl-4b424bcc">Signif. codes: 0 &lt;= '***' &lt; 0.001 &lt; '**' &lt; 0.01 &lt; '*' &lt; 0.05</span></p></td></tr></tfoot>
+<tfoot><tr class="even" style="overflow-wrap:break-word;">
+<td colspan="5" class="cl-4b4a9d0e"><p><span class="cl-4b424bcc">Signif. codes: 0 &lt;= '***' &lt; 0.001 &lt; '**' &lt; 0.01 &lt; '*' &lt; 0.05</span></p></td>
+</tr></tfoot>
 </table>
 </div>
 </div>
@@ -902,25 +872,26 @@ H_1 : \text{Alternatively}
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/tseries/man/adf.test.html">adf.test</a></span><span class="op">(</span><span class="va">grc_unemployment_diff1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://davidgohel.github.io/flextable/reference/as_flextable.html">as_flextable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-
 <div class="tabwid">
 <style>.cl-4ba92fd6{}.cl-4b975b08{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-4b9fc0e0{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4b9fc0fe{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4b9fef5c{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b9fef70{width:0.993in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b9fef7a{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b9fef84{width:2.596in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b9fef8e{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b9fef98{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b9fefa2{width:0.993in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b9fefa3{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b9fefb6{width:2.596in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b9fefc0{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b9fefc1{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b9fefca{width:0.993in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b9fefd4{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b9fefde{width:2.596in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4b9fefe8{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<table class="cl-4ba92fd6">
-<thead><tr style="overflow-wrap:break-word;">
-<td class="cl-4b9fef5c"><p class="cl-4b9fc0e0"><span class="cl-4b975b08">statistic</span></p></td>
-<td class="cl-4b9fef70"><p class="cl-4b9fc0e0"><span class="cl-4b975b08">p.value</span></p></td>
-<td class="cl-4b9fef7a"><p class="cl-4b9fc0e0"><span class="cl-4b975b08">parameter</span></p></td>
-<td class="cl-4b9fef84"><p class="cl-4b9fc0fe"><span class="cl-4b975b08">method</span></p></td>
-<td class="cl-4b9fef8e"><p class="cl-4b9fc0fe"><span class="cl-4b975b08">alternative</span></p></td>
+<table class="cl-4ba92fd6 table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header" style="overflow-wrap:break-word;">
+<th class="cl-4b9fef5c"><p><span class="cl-4b975b08">statistic</span></p></th>
+<th class="cl-4b9fef70"><p><span class="cl-4b975b08">p.value</span></p></th>
+<th class="cl-4b9fef7a"><p><span class="cl-4b975b08">parameter</span></p></th>
+<th class="cl-4b9fef84"><p><span class="cl-4b975b08">method</span></p></th>
+<th class="cl-4b9fef8e"><p><span class="cl-4b975b08">alternative</span></p></th>
 </tr></thead>
-<tbody><tr style="overflow-wrap:break-word;">
-<td class="cl-4b9fef98"><p class="cl-4b9fc0e0"><span class="cl-4b975b08">-3.5</span></p></td>
-<td class="cl-4b9fefa2"><p class="cl-4b9fc0e0"><span class="cl-4b975b08">0.0424</span><span class="cl-4b975b08">  *</span></p></td>
-<td class="cl-4b9fefa3"><p class="cl-4b9fc0e0"><span class="cl-4b975b08">6.0</span></p></td>
-<td class="cl-4b9fefb6"><p class="cl-4b9fc0fe"><span class="cl-4b975b08">Augmented Dickey-Fuller Test</span></p></td>
-<td class="cl-4b9fefc0"><p class="cl-4b9fc0fe"><span class="cl-4b975b08">stationary</span></p></td>
+<tbody><tr class="odd" style="overflow-wrap:break-word;">
+<td class="cl-4b9fef98"><p><span class="cl-4b975b08">-3.5</span></p></td>
+<td class="cl-4b9fefa2"><p><span class="cl-4b975b08">0.0424</span><span class="cl-4b975b08"> *</span></p></td>
+<td class="cl-4b9fefa3"><p><span class="cl-4b975b08">6.0</span></p></td>
+<td class="cl-4b9fefb6"><p><span class="cl-4b975b08">Augmented Dickey-Fuller Test</span></p></td>
+<td class="cl-4b9fefc0"><p><span class="cl-4b975b08">stationary</span></p></td>
 </tr></tbody>
-<tfoot><tr style="overflow-wrap:break-word;"><td colspan="5" class="cl-4b9fefc1"><p class="cl-4b9fc0fe"><span class="cl-4b975b08">Signif. codes: 0 &lt;= '***' &lt; 0.001 &lt; '**' &lt; 0.01 &lt; '*' &lt; 0.05</span></p></td></tr></tfoot>
+<tfoot><tr class="even" style="overflow-wrap:break-word;">
+<td colspan="5" class="cl-4b9fefc1"><p><span class="cl-4b975b08">Signif. codes: 0 &lt;= '***' &lt; 0.001 &lt; '**' &lt; 0.01 &lt; '*' &lt; 0.05</span></p></td>
+</tr></tfoot>
 </table>
 </div>
 </div>
@@ -933,25 +904,26 @@ H_1 : \text{Alternatively}
 value</code></pre>
 </div>
 <div class="cell-output-display">
-
 <div class="tabwid">
 <style>.cl-4bfdaba6{}.cl-4be9a96c{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-4bf3a9b2{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4bf3a9e4{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4bf435bc{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4bf435ee{width:1.021in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4bf435f8{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4bf4360c{width:2.596in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4bf43616{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4bf43620{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4bf4362a{width:1.021in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4bf43634{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4bf4363e{width:2.596in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4bf43648{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4bf43649{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4bf4365c{width:1.021in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4bf43666{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4bf4367a{width:2.596in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4bf4367b{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<table class="cl-4bfdaba6">
-<thead><tr style="overflow-wrap:break-word;">
-<td class="cl-4bf435bc"><p class="cl-4bf3a9b2"><span class="cl-4be9a96c">statistic</span></p></td>
-<td class="cl-4bf435ee"><p class="cl-4bf3a9b2"><span class="cl-4be9a96c">p.value</span></p></td>
-<td class="cl-4bf435f8"><p class="cl-4bf3a9b2"><span class="cl-4be9a96c">parameter</span></p></td>
-<td class="cl-4bf4360c"><p class="cl-4bf3a9e4"><span class="cl-4be9a96c">method</span></p></td>
-<td class="cl-4bf43616"><p class="cl-4bf3a9e4"><span class="cl-4be9a96c">alternative</span></p></td>
+<table class="cl-4bfdaba6 table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header" style="overflow-wrap:break-word;">
+<th class="cl-4bf435bc"><p><span class="cl-4be9a96c">statistic</span></p></th>
+<th class="cl-4bf435ee"><p><span class="cl-4be9a96c">p.value</span></p></th>
+<th class="cl-4bf435f8"><p><span class="cl-4be9a96c">parameter</span></p></th>
+<th class="cl-4bf4360c"><p><span class="cl-4be9a96c">method</span></p></th>
+<th class="cl-4bf43616"><p><span class="cl-4be9a96c">alternative</span></p></th>
 </tr></thead>
-<tbody><tr style="overflow-wrap:break-word;">
-<td class="cl-4bf43620"><p class="cl-4bf3a9b2"><span class="cl-4be9a96c">-9.5</span></p></td>
-<td class="cl-4bf4362a"><p class="cl-4bf3a9b2"><span class="cl-4be9a96c">0.0100</span><span class="cl-4be9a96c"> **</span></p></td>
-<td class="cl-4bf43634"><p class="cl-4bf3a9b2"><span class="cl-4be9a96c">6.0</span></p></td>
-<td class="cl-4bf4363e"><p class="cl-4bf3a9e4"><span class="cl-4be9a96c">Augmented Dickey-Fuller Test</span></p></td>
-<td class="cl-4bf43648"><p class="cl-4bf3a9e4"><span class="cl-4be9a96c">stationary</span></p></td>
+<tbody><tr class="odd" style="overflow-wrap:break-word;">
+<td class="cl-4bf43620"><p><span class="cl-4be9a96c">-9.5</span></p></td>
+<td class="cl-4bf4362a"><p><span class="cl-4be9a96c">0.0100</span><span class="cl-4be9a96c"> **</span></p></td>
+<td class="cl-4bf43634"><p><span class="cl-4be9a96c">6.0</span></p></td>
+<td class="cl-4bf4363e"><p><span class="cl-4be9a96c">Augmented Dickey-Fuller Test</span></p></td>
+<td class="cl-4bf43648"><p><span class="cl-4be9a96c">stationary</span></p></td>
 </tr></tbody>
-<tfoot><tr style="overflow-wrap:break-word;"><td colspan="5" class="cl-4bf43649"><p class="cl-4bf3a9e4"><span class="cl-4be9a96c">Signif. codes: 0 &lt;= '***' &lt; 0.001 &lt; '**' &lt; 0.01 &lt; '*' &lt; 0.05</span></p></td></tr></tfoot>
+<tfoot><tr class="even" style="overflow-wrap:break-word;">
+<td colspan="5" class="cl-4bf43649"><p><span class="cl-4be9a96c">Signif. codes: 0 &lt;= '***' &lt; 0.001 &lt; '**' &lt; 0.01 &lt; '*' &lt; 0.05</span></p></td>
+</tr></tfoot>
 </table>
 </div>
 </div>
@@ -971,25 +943,26 @@ H_1 : \text{Alternatively}
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/tseries/man/pp.test.html">pp.test</a></span><span class="op">(</span><span class="va">grc_unemployment</span><span class="op">$</span><span class="va">Value</span>,<span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://davidgohel.github.io/flextable/reference/as_flextable.html">as_flextable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-
 <div class="tabwid">
 <style>.cl-4c528810{}.cl-4c4136be{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-4c48ec24{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4c48ec42{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4c491cd0{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c491cda{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c491ce4{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c491cee{width:2.514in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c491cef{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c491cf8{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c491d0c{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c491d0d{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c491d16{width:2.514in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c491d20{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c491d2a{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c491d34{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c491d35{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c491d48{width:2.514in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c491d49{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<table class="cl-4c528810">
-<thead><tr style="overflow-wrap:break-word;">
-<td class="cl-4c491cd0"><p class="cl-4c48ec24"><span class="cl-4c4136be">statistic</span></p></td>
-<td class="cl-4c491cda"><p class="cl-4c48ec24"><span class="cl-4c4136be">p.value</span></p></td>
-<td class="cl-4c491ce4"><p class="cl-4c48ec24"><span class="cl-4c4136be">parameter</span></p></td>
-<td class="cl-4c491cee"><p class="cl-4c48ec42"><span class="cl-4c4136be">method</span></p></td>
-<td class="cl-4c491cef"><p class="cl-4c48ec42"><span class="cl-4c4136be">alternative</span></p></td>
+<table class="cl-4c528810 table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header" style="overflow-wrap:break-word;">
+<th class="cl-4c491cd0"><p><span class="cl-4c4136be">statistic</span></p></th>
+<th class="cl-4c491cda"><p><span class="cl-4c4136be">p.value</span></p></th>
+<th class="cl-4c491ce4"><p><span class="cl-4c4136be">parameter</span></p></th>
+<th class="cl-4c491cee"><p><span class="cl-4c4136be">method</span></p></th>
+<th class="cl-4c491cef"><p><span class="cl-4c4136be">alternative</span></p></th>
 </tr></thead>
-<tbody><tr style="overflow-wrap:break-word;">
-<td class="cl-4c491cf8"><p class="cl-4c48ec24"><span class="cl-4c4136be">0.2</span></p></td>
-<td class="cl-4c491d0c"><p class="cl-4c48ec24"><span class="cl-4c4136be">0.9900</span><span class="cl-4c4136be">   </span></p></td>
-<td class="cl-4c491d0d"><p class="cl-4c48ec24"><span class="cl-4c4136be">5.0</span></p></td>
-<td class="cl-4c491d16"><p class="cl-4c48ec42"><span class="cl-4c4136be">Phillips-Perron Unit Root Test</span></p></td>
-<td class="cl-4c491d20"><p class="cl-4c48ec42"><span class="cl-4c4136be">stationary</span></p></td>
+<tbody><tr class="odd" style="overflow-wrap:break-word;">
+<td class="cl-4c491cf8"><p><span class="cl-4c4136be">0.2</span></p></td>
+<td class="cl-4c491d0c"><p><span class="cl-4c4136be">0.9900</span><span class="cl-4c4136be"> </span></p></td>
+<td class="cl-4c491d0d"><p><span class="cl-4c4136be">5.0</span></p></td>
+<td class="cl-4c491d16"><p><span class="cl-4c4136be">Phillips-Perron Unit Root Test</span></p></td>
+<td class="cl-4c491d20"><p><span class="cl-4c4136be">stationary</span></p></td>
 </tr></tbody>
-<tfoot><tr style="overflow-wrap:break-word;"><td colspan="5" class="cl-4c491d2a"><p class="cl-4c48ec42"><span class="cl-4c4136be">Signif. codes: 0 &lt;= '***' &lt; 0.001 &lt; '**' &lt; 0.01 &lt; '*' &lt; 0.05</span></p></td></tr></tfoot>
+<tfoot><tr class="even" style="overflow-wrap:break-word;">
+<td colspan="5" class="cl-4c491d2a"><p><span class="cl-4c4136be">Signif. codes: 0 &lt;= '***' &lt; 0.001 &lt; '**' &lt; 0.01 &lt; '*' &lt; 0.05</span></p></td>
+</tr></tfoot>
 </table>
 </div>
 </div>
@@ -997,25 +970,26 @@ H_1 : \text{Alternatively}
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/tseries/man/pp.test.html">pp.test</a></span><span class="op">(</span><span class="va">grc_unemployment_diff1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://davidgohel.github.io/flextable/reference/as_flextable.html">as_flextable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-
 <div class="tabwid">
 <style>.cl-4ca98d90{}.cl-4c94b866{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-4c9c5f9e{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4c9c5fbc{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4c9c8e92{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c9c8ea6{width:1.021in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c9c8eb0{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c9c8eba{width:2.514in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c9c8ec4{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c9c8ec5{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c9c8ed8{width:1.021in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c9c8ee2{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c9c8ee3{width:2.514in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c9c8eec{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c9c8ef6{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c9c8f00{width:1.021in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c9c8f01{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c9c8f0a{width:2.514in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4c9c8f14{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<table class="cl-4ca98d90">
-<thead><tr style="overflow-wrap:break-word;">
-<td class="cl-4c9c8e92"><p class="cl-4c9c5f9e"><span class="cl-4c94b866">statistic</span></p></td>
-<td class="cl-4c9c8ea6"><p class="cl-4c9c5f9e"><span class="cl-4c94b866">p.value</span></p></td>
-<td class="cl-4c9c8eb0"><p class="cl-4c9c5f9e"><span class="cl-4c94b866">parameter</span></p></td>
-<td class="cl-4c9c8eba"><p class="cl-4c9c5fbc"><span class="cl-4c94b866">method</span></p></td>
-<td class="cl-4c9c8ec4"><p class="cl-4c9c5fbc"><span class="cl-4c94b866">alternative</span></p></td>
+<table class="cl-4ca98d90 table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header" style="overflow-wrap:break-word;">
+<th class="cl-4c9c8e92"><p><span class="cl-4c94b866">statistic</span></p></th>
+<th class="cl-4c9c8ea6"><p><span class="cl-4c94b866">p.value</span></p></th>
+<th class="cl-4c9c8eb0"><p><span class="cl-4c94b866">parameter</span></p></th>
+<th class="cl-4c9c8eba"><p><span class="cl-4c94b866">method</span></p></th>
+<th class="cl-4c9c8ec4"><p><span class="cl-4c94b866">alternative</span></p></th>
 </tr></thead>
-<tbody><tr style="overflow-wrap:break-word;">
-<td class="cl-4c9c8ec5"><p class="cl-4c9c5f9e"><span class="cl-4c94b866">-279.8</span></p></td>
-<td class="cl-4c9c8ed8"><p class="cl-4c9c5f9e"><span class="cl-4c94b866">0.0100</span><span class="cl-4c94b866"> **</span></p></td>
-<td class="cl-4c9c8ee2"><p class="cl-4c9c5f9e"><span class="cl-4c94b866">5.0</span></p></td>
-<td class="cl-4c9c8ee3"><p class="cl-4c9c5fbc"><span class="cl-4c94b866">Phillips-Perron Unit Root Test</span></p></td>
-<td class="cl-4c9c8eec"><p class="cl-4c9c5fbc"><span class="cl-4c94b866">stationary</span></p></td>
+<tbody><tr class="odd" style="overflow-wrap:break-word;">
+<td class="cl-4c9c8ec5"><p><span class="cl-4c94b866">-279.8</span></p></td>
+<td class="cl-4c9c8ed8"><p><span class="cl-4c94b866">0.0100</span><span class="cl-4c94b866"> **</span></p></td>
+<td class="cl-4c9c8ee2"><p><span class="cl-4c94b866">5.0</span></p></td>
+<td class="cl-4c9c8ee3"><p><span class="cl-4c94b866">Phillips-Perron Unit Root Test</span></p></td>
+<td class="cl-4c9c8eec"><p><span class="cl-4c94b866">stationary</span></p></td>
 </tr></tbody>
-<tfoot><tr style="overflow-wrap:break-word;"><td colspan="5" class="cl-4c9c8ef6"><p class="cl-4c9c5fbc"><span class="cl-4c94b866">Signif. codes: 0 &lt;= '***' &lt; 0.001 &lt; '**' &lt; 0.01 &lt; '*' &lt; 0.05</span></p></td></tr></tfoot>
+<tfoot><tr class="even" style="overflow-wrap:break-word;">
+<td colspan="5" class="cl-4c9c8ef6"><p><span class="cl-4c94b866">Signif. codes: 0 &lt;= '***' &lt; 0.001 &lt; '**' &lt; 0.01 &lt; '*' &lt; 0.05</span></p></td>
+</tr></tfoot>
 </table>
 </div>
 </div>
@@ -1023,25 +997,26 @@ H_1 : \text{Alternatively}
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/tseries/man/pp.test.html">pp.test</a></span><span class="op">(</span><span class="va">grc_unemployment_diff2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://davidgohel.github.io/flextable/reference/as_flextable.html">as_flextable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-
 <div class="tabwid">
 <style>.cl-4d5273c4{}.cl-4d2a8526{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-4d3fcf30{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4d3fcf4e{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4d401a26{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4d401a44{width:1.021in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4d401a4e{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4d401a58{width:2.514in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4d401a62{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4d401a6c{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4d401a76{width:1.021in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4d401a80{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4d401a8a{width:2.514in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4d401a94{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4d401aa8{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4d401ab2{width:1.021in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4d401ab3{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4d401ac6{width:2.514in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4d401ac7{width:1.115in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<table class="cl-4d5273c4">
-<thead><tr style="overflow-wrap:break-word;">
-<td class="cl-4d401a26"><p class="cl-4d3fcf30"><span class="cl-4d2a8526">statistic</span></p></td>
-<td class="cl-4d401a44"><p class="cl-4d3fcf30"><span class="cl-4d2a8526">p.value</span></p></td>
-<td class="cl-4d401a4e"><p class="cl-4d3fcf30"><span class="cl-4d2a8526">parameter</span></p></td>
-<td class="cl-4d401a58"><p class="cl-4d3fcf4e"><span class="cl-4d2a8526">method</span></p></td>
-<td class="cl-4d401a62"><p class="cl-4d3fcf4e"><span class="cl-4d2a8526">alternative</span></p></td>
+<table class="cl-4d5273c4 table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header" style="overflow-wrap:break-word;">
+<th class="cl-4d401a26"><p><span class="cl-4d2a8526">statistic</span></p></th>
+<th class="cl-4d401a44"><p><span class="cl-4d2a8526">p.value</span></p></th>
+<th class="cl-4d401a4e"><p><span class="cl-4d2a8526">parameter</span></p></th>
+<th class="cl-4d401a58"><p><span class="cl-4d2a8526">method</span></p></th>
+<th class="cl-4d401a62"><p><span class="cl-4d2a8526">alternative</span></p></th>
 </tr></thead>
-<tbody><tr style="overflow-wrap:break-word;">
-<td class="cl-4d401a6c"><p class="cl-4d3fcf30"><span class="cl-4d2a8526">-337.1</span></p></td>
-<td class="cl-4d401a76"><p class="cl-4d3fcf30"><span class="cl-4d2a8526">0.0100</span><span class="cl-4d2a8526"> **</span></p></td>
-<td class="cl-4d401a80"><p class="cl-4d3fcf30"><span class="cl-4d2a8526">5.0</span></p></td>
-<td class="cl-4d401a8a"><p class="cl-4d3fcf4e"><span class="cl-4d2a8526">Phillips-Perron Unit Root Test</span></p></td>
-<td class="cl-4d401a94"><p class="cl-4d3fcf4e"><span class="cl-4d2a8526">stationary</span></p></td>
+<tbody><tr class="odd" style="overflow-wrap:break-word;">
+<td class="cl-4d401a6c"><p><span class="cl-4d2a8526">-337.1</span></p></td>
+<td class="cl-4d401a76"><p><span class="cl-4d2a8526">0.0100</span><span class="cl-4d2a8526"> **</span></p></td>
+<td class="cl-4d401a80"><p><span class="cl-4d2a8526">5.0</span></p></td>
+<td class="cl-4d401a8a"><p><span class="cl-4d2a8526">Phillips-Perron Unit Root Test</span></p></td>
+<td class="cl-4d401a94"><p><span class="cl-4d2a8526">stationary</span></p></td>
 </tr></tbody>
-<tfoot><tr style="overflow-wrap:break-word;"><td colspan="5" class="cl-4d401aa8"><p class="cl-4d3fcf4e"><span class="cl-4d2a8526">Signif. codes: 0 &lt;= '***' &lt; 0.001 &lt; '**' &lt; 0.01 &lt; '*' &lt; 0.05</span></p></td></tr></tfoot>
+<tfoot><tr class="even" style="overflow-wrap:break-word;">
+<td colspan="5" class="cl-4d401aa8"><p><span class="cl-4d2a8526">Signif. codes: 0 &lt;= '***' &lt; 0.001 &lt; '**' &lt; 0.01 &lt; '*' &lt; 0.05</span></p></td>
+</tr></tfoot>
 </table>
 </div>
 </div>
@@ -1061,23 +1036,24 @@ H_1 : \text{Alternatively}
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/tseries/man/kpss.test.html">kpss.test</a></span><span class="op">(</span><span class="va">grc_unemployment</span><span class="op">$</span><span class="va">Value</span>,<span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://davidgohel.github.io/flextable/reference/as_flextable.html">as_flextable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-
 <div class="tabwid">
 <style>.cl-4db35df6{}.cl-4d99c3be{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-4da51f5c{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4da51f7a{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4da5530a{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4da55328{width:1.021in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4da55332{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4da5533c{width:2.701in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4da55346{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4da55347{width:1.021in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4da5535a{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4da55364{width:2.701in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4da5536e{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4da55378{width:1.021in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4da55382{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4da5538c{width:2.701in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<table class="cl-4db35df6">
-<thead><tr style="overflow-wrap:break-word;">
-<td class="cl-4da5530a"><p class="cl-4da51f5c"><span class="cl-4d99c3be">statistic</span></p></td>
-<td class="cl-4da55328"><p class="cl-4da51f5c"><span class="cl-4d99c3be">p.value</span></p></td>
-<td class="cl-4da55332"><p class="cl-4da51f5c"><span class="cl-4d99c3be">parameter</span></p></td>
-<td class="cl-4da5533c"><p class="cl-4da51f7a"><span class="cl-4d99c3be">method</span></p></td>
+<table class="cl-4db35df6 table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header" style="overflow-wrap:break-word;">
+<th class="cl-4da5530a"><p><span class="cl-4d99c3be">statistic</span></p></th>
+<th class="cl-4da55328"><p><span class="cl-4d99c3be">p.value</span></p></th>
+<th class="cl-4da55332"><p><span class="cl-4d99c3be">parameter</span></p></th>
+<th class="cl-4da5533c"><p><span class="cl-4d99c3be">method</span></p></th>
 </tr></thead>
-<tbody><tr style="overflow-wrap:break-word;">
-<td class="cl-4da55346"><p class="cl-4da51f5c"><span class="cl-4d99c3be">2.5</span></p></td>
-<td class="cl-4da55347"><p class="cl-4da51f5c"><span class="cl-4d99c3be">0.0100</span><span class="cl-4d99c3be"> **</span></p></td>
-<td class="cl-4da5535a"><p class="cl-4da51f5c"><span class="cl-4d99c3be">5.0</span></p></td>
-<td class="cl-4da55364"><p class="cl-4da51f7a"><span class="cl-4d99c3be">KPSS Test for Level Stationarity</span></p></td>
+<tbody><tr class="odd" style="overflow-wrap:break-word;">
+<td class="cl-4da55346"><p><span class="cl-4d99c3be">2.5</span></p></td>
+<td class="cl-4da55347"><p><span class="cl-4d99c3be">0.0100</span><span class="cl-4d99c3be"> **</span></p></td>
+<td class="cl-4da5535a"><p><span class="cl-4d99c3be">5.0</span></p></td>
+<td class="cl-4da55364"><p><span class="cl-4d99c3be">KPSS Test for Level Stationarity</span></p></td>
 </tr></tbody>
-<tfoot><tr style="overflow-wrap:break-word;"><td colspan="4" class="cl-4da5536e"><p class="cl-4da51f7a"><span class="cl-4d99c3be">Signif. codes: 0 &lt;= '***' &lt; 0.001 &lt; '**' &lt; 0.01 &lt; '*' &lt; 0.05</span></p></td></tr></tfoot>
+<tfoot><tr class="even" style="overflow-wrap:break-word;">
+<td colspan="4" class="cl-4da5536e"><p><span class="cl-4d99c3be">Signif. codes: 0 &lt;= '***' &lt; 0.001 &lt; '**' &lt; 0.01 &lt; '*' &lt; 0.05</span></p></td>
+</tr></tfoot>
 </table>
 </div>
 </div>
@@ -1085,23 +1061,24 @@ H_1 : \text{Alternatively}
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/tseries/man/kpss.test.html">kpss.test</a></span><span class="op">(</span><span class="va">grc_unemployment_diff1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://davidgohel.github.io/flextable/reference/as_flextable.html">as_flextable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-
 <div class="tabwid">
 <style>.cl-4e21eed8{}.cl-4e07f7c6{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-4e144e40{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4e144e5e{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4e14cef6{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e14cf14{width:0.993in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e14cf1e{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e14cf28{width:2.701in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e14cf32{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e14cf3c{width:0.993in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e14cf46{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e14cf50{width:2.701in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e14cf5a{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e14cf64{width:0.993in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e14cf6e{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e14cf6f{width:2.701in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<table class="cl-4e21eed8">
-<thead><tr style="overflow-wrap:break-word;">
-<td class="cl-4e14cef6"><p class="cl-4e144e40"><span class="cl-4e07f7c6">statistic</span></p></td>
-<td class="cl-4e14cf14"><p class="cl-4e144e40"><span class="cl-4e07f7c6">p.value</span></p></td>
-<td class="cl-4e14cf1e"><p class="cl-4e144e40"><span class="cl-4e07f7c6">parameter</span></p></td>
-<td class="cl-4e14cf28"><p class="cl-4e144e5e"><span class="cl-4e07f7c6">method</span></p></td>
+<table class="cl-4e21eed8 table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header" style="overflow-wrap:break-word;">
+<th class="cl-4e14cef6"><p><span class="cl-4e07f7c6">statistic</span></p></th>
+<th class="cl-4e14cf14"><p><span class="cl-4e07f7c6">p.value</span></p></th>
+<th class="cl-4e14cf1e"><p><span class="cl-4e07f7c6">parameter</span></p></th>
+<th class="cl-4e14cf28"><p><span class="cl-4e07f7c6">method</span></p></th>
 </tr></thead>
-<tbody><tr style="overflow-wrap:break-word;">
-<td class="cl-4e14cf32"><p class="cl-4e144e40"><span class="cl-4e07f7c6">0.6</span></p></td>
-<td class="cl-4e14cf3c"><p class="cl-4e144e40"><span class="cl-4e07f7c6">0.0231</span><span class="cl-4e07f7c6">  *</span></p></td>
-<td class="cl-4e14cf46"><p class="cl-4e144e40"><span class="cl-4e07f7c6">5.0</span></p></td>
-<td class="cl-4e14cf50"><p class="cl-4e144e5e"><span class="cl-4e07f7c6">KPSS Test for Level Stationarity</span></p></td>
+<tbody><tr class="odd" style="overflow-wrap:break-word;">
+<td class="cl-4e14cf32"><p><span class="cl-4e07f7c6">0.6</span></p></td>
+<td class="cl-4e14cf3c"><p><span class="cl-4e07f7c6">0.0231</span><span class="cl-4e07f7c6"> *</span></p></td>
+<td class="cl-4e14cf46"><p><span class="cl-4e07f7c6">5.0</span></p></td>
+<td class="cl-4e14cf50"><p><span class="cl-4e07f7c6">KPSS Test for Level Stationarity</span></p></td>
 </tr></tbody>
-<tfoot><tr style="overflow-wrap:break-word;"><td colspan="4" class="cl-4e14cf5a"><p class="cl-4e144e5e"><span class="cl-4e07f7c6">Signif. codes: 0 &lt;= '***' &lt; 0.001 &lt; '**' &lt; 0.01 &lt; '*' &lt; 0.05</span></p></td></tr></tfoot>
+<tfoot><tr class="even" style="overflow-wrap:break-word;">
+<td colspan="4" class="cl-4e14cf5a"><p><span class="cl-4e07f7c6">Signif. codes: 0 &lt;= '***' &lt; 0.001 &lt; '**' &lt; 0.01 &lt; '*' &lt; 0.05</span></p></td>
+</tr></tfoot>
 </table>
 </div>
 </div>
@@ -1109,29 +1086,30 @@ H_1 : \text{Alternatively}
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/tseries/man/kpss.test.html">kpss.test</a></span><span class="op">(</span><span class="va">grc_unemployment_diff2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://davidgohel.github.io/flextable/reference/as_flextable.html">as_flextable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-
 <div class="tabwid">
 <style>.cl-4e976866{}.cl-4e81283a{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-4e8a8646{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4e8a8664{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4e8abd5a{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e8abd78{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e8abd82{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e8abd8c{width:2.701in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e8abd96{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e8abda0{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e8abdaa{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e8abdb4{width:2.701in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e8abdb5{width:0.887in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e8abdbe{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e8abdc8{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e8abdd2{width:2.701in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<table class="cl-4e976866">
-<thead><tr style="overflow-wrap:break-word;">
-<td class="cl-4e8abd5a"><p class="cl-4e8a8646"><span class="cl-4e81283a">statistic</span></p></td>
-<td class="cl-4e8abd78"><p class="cl-4e8a8646"><span class="cl-4e81283a">p.value</span></p></td>
-<td class="cl-4e8abd82"><p class="cl-4e8a8646"><span class="cl-4e81283a">parameter</span></p></td>
-<td class="cl-4e8abd8c"><p class="cl-4e8a8664"><span class="cl-4e81283a">method</span></p></td>
+<table class="cl-4e976866 table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header" style="overflow-wrap:break-word;">
+<th class="cl-4e8abd5a"><p><span class="cl-4e81283a">statistic</span></p></th>
+<th class="cl-4e8abd78"><p><span class="cl-4e81283a">p.value</span></p></th>
+<th class="cl-4e8abd82"><p><span class="cl-4e81283a">parameter</span></p></th>
+<th class="cl-4e8abd8c"><p><span class="cl-4e81283a">method</span></p></th>
 </tr></thead>
-<tbody><tr style="overflow-wrap:break-word;">
-<td class="cl-4e8abd96"><p class="cl-4e8a8646"><span class="cl-4e81283a">0.0</span></p></td>
-<td class="cl-4e8abda0"><p class="cl-4e8a8646"><span class="cl-4e81283a">0.1000</span><span class="cl-4e81283a">  .</span></p></td>
-<td class="cl-4e8abdaa"><p class="cl-4e8a8646"><span class="cl-4e81283a">5.0</span></p></td>
-<td class="cl-4e8abdb4"><p class="cl-4e8a8664"><span class="cl-4e81283a">KPSS Test for Level Stationarity</span></p></td>
+<tbody><tr class="odd" style="overflow-wrap:break-word;">
+<td class="cl-4e8abd96"><p><span class="cl-4e81283a">0.0</span></p></td>
+<td class="cl-4e8abda0"><p><span class="cl-4e81283a">0.1000</span><span class="cl-4e81283a"> .</span></p></td>
+<td class="cl-4e8abdaa"><p><span class="cl-4e81283a">5.0</span></p></td>
+<td class="cl-4e8abdb4"><p><span class="cl-4e81283a">KPSS Test for Level Stationarity</span></p></td>
 </tr></tbody>
-<tfoot><tr style="overflow-wrap:break-word;"><td colspan="4" class="cl-4e8abdb5"><p class="cl-4e8a8664"><span class="cl-4e81283a">Signif. codes: 0 &lt;= '***' &lt; 0.001 &lt; '**' &lt; 0.01 &lt; '*' &lt; 0.05</span></p></td></tr></tfoot>
+<tfoot><tr class="even" style="overflow-wrap:break-word;">
+<td colspan="4" class="cl-4e8abdb5"><p><span class="cl-4e81283a">Signif. codes: 0 &lt;= '***' &lt; 0.001 &lt; '**' &lt; 0.01 &lt; '*' &lt; 0.05</span></p></td>
+</tr></tfoot>
 </table>
 </div>
 </div>
 </div>
 </section></section></section><section id="identify-model" class="level1"><h1>Identify Model</h1>
-<div class="panel-tabset">
+<div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Levels</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">First Diff.</a></li>
@@ -1174,7 +1152,7 @@ H_1 : \text{Alternatively}
 </div>
 </div>
 </section><section id="build-time-series-model" class="level1"><h1>Build Time Series Model</h1>
-<div class="panel-tabset">
+<div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">Automated model</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">ARIMA candidate 1</a></li>
@@ -1287,34 +1265,33 @@ sigma^2 estimated as 0.139:  log likelihood = -127,  aic = 276</code></pre>
 <span></span>
 <span><span class="va">accuracy_table</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-
-<table class="table" style="margin-left: auto; margin-right: auto;">
-<thead><tr>
-<th style="text-align:left;"> Name.of.Model </th>
-   <th style="text-align:left;"> Model </th>
-   <th style="text-align:right;"> AIC </th>
-  </tr></thead>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Name.of.Model</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Model</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">AIC</th>
+</tr></thead>
 <tbody>
-<tr>
-<td style="text-align:left;"> Auto Model </td>
-   <td style="text-align:left;"> ARIMA(0,2,1) </td>
-   <td style="text-align:right;"> 297 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> ARIMA Candidate #1 </td>
-   <td style="text-align:left;"> ARIMA(0,1,2) </td>
-   <td style="text-align:right;"> 320 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> ARIMA Candidate #2 </td>
-   <td style="text-align:left;"> ARIMA(1,1,2) </td>
-   <td style="text-align:right;"> 296 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> ARIMA Candidate #3 </td>
-   <td style="text-align:left;"> ARIMA(9,2,1) </td>
-   <td style="text-align:right;"> 276 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left;">Auto Model</td>
+<td style="text-align: left;">ARIMA(0,2,1)</td>
+<td style="text-align: right;">297</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ARIMA Candidate #1</td>
+<td style="text-align: left;">ARIMA(0,1,2)</td>
+<td style="text-align: right;">320</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ARIMA Candidate #2</td>
+<td style="text-align: left;">ARIMA(1,1,2)</td>
+<td style="text-align: right;">296</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ARIMA Candidate #3</td>
+<td style="text-align: left;">ARIMA(9,2,1)</td>
+<td style="text-align: right;">276</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -1331,65 +1308,64 @@ sigma^2 estimated as 0.139:  log likelihood = -127,  aic = 276</code></pre>
 </div>
 <details><summary>Show the code</summary><div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/forecast.html">forecast</a></span><span class="op">(</span><span class="va">auto_model</span>,<span class="fl">6</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_classic.html">kable_paper</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-
-<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
-<thead><tr>
-<th style="text-align:left;">   </th>
-   <th style="text-align:right;"> Point Forecast </th>
-   <th style="text-align:right;"> Lo 80 </th>
-   <th style="text-align:right;"> Hi 80 </th>
-   <th style="text-align:right;"> Lo 95 </th>
-   <th style="text-align:right;"> Hi 95 </th>
-  </tr></thead>
+<table class="lightable-paper table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Point Forecast</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Lo 80</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Hi 80</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Lo 95</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Hi 95</th>
+</tr></thead>
 <tbody>
-<tr>
-<td style="text-align:left;"> 294 </td>
-   <td style="text-align:right;"> 12 </td>
-   <td style="text-align:right;"> 11.5 </td>
-   <td style="text-align:right;"> 13 </td>
-   <td style="text-align:right;"> 11.2 </td>
-   <td style="text-align:right;"> 13 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> 295 </td>
-   <td style="text-align:right;"> 12 </td>
-   <td style="text-align:right;"> 11.1 </td>
-   <td style="text-align:right;"> 13 </td>
-   <td style="text-align:right;"> 10.7 </td>
-   <td style="text-align:right;"> 13 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> 296 </td>
-   <td style="text-align:right;"> 12 </td>
-   <td style="text-align:right;"> 10.7 </td>
-   <td style="text-align:right;"> 13 </td>
-   <td style="text-align:right;"> 10.2 </td>
-   <td style="text-align:right;"> 13 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> 297 </td>
-   <td style="text-align:right;"> 12 </td>
-   <td style="text-align:right;"> 10.3 </td>
-   <td style="text-align:right;"> 13 </td>
-   <td style="text-align:right;"> 9.7 </td>
-   <td style="text-align:right;"> 13 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> 298 </td>
-   <td style="text-align:right;"> 11 </td>
-   <td style="text-align:right;"> 10.0 </td>
-   <td style="text-align:right;"> 13 </td>
-   <td style="text-align:right;"> 9.2 </td>
-   <td style="text-align:right;"> 13 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> 299 </td>
-   <td style="text-align:right;"> 11 </td>
-   <td style="text-align:right;"> 9.6 </td>
-   <td style="text-align:right;"> 13 </td>
-   <td style="text-align:right;"> 8.8 </td>
-   <td style="text-align:right;"> 14 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left;">294</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">11.5</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">11.2</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">295</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">11.1</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">10.7</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">296</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">10.7</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">10.2</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">297</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">10.3</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">9.7</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">298</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">10.0</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">9.2</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">299</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">9.6</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">8.8</td>
+<td style="text-align: right;">14</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -1402,138 +1378,137 @@ sigma^2 estimated as 0.139:  log likelihood = -127,  aic = 276</code></pre>
 </div>
 <details><summary>Show the code</summary><div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/forecast.html">forecast</a></span><span class="op">(</span><span class="va">arimaModel_3</span>,<span class="fl">6</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_classic.html">kable_paper</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-
-<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
-<thead><tr>
-<th style="text-align:left;">   </th>
-   <th style="text-align:right;"> Point Forecast </th>
-   <th style="text-align:right;"> Lo 80 </th>
-   <th style="text-align:right;"> Hi 80 </th>
-   <th style="text-align:right;"> Lo 95 </th>
-   <th style="text-align:right;"> Hi 95 </th>
-  </tr></thead>
+<table class="lightable-paper table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Point Forecast</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Lo 80</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Hi 80</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Lo 95</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Hi 95</th>
+</tr></thead>
 <tbody>
-<tr>
-<td style="text-align:left;"> 294 </td>
-   <td style="text-align:right;"> 12 </td>
-   <td style="text-align:right;"> 11 </td>
-   <td style="text-align:right;"> 12 </td>
-   <td style="text-align:right;"> 11.1 </td>
-   <td style="text-align:right;"> 13 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> 295 </td>
-   <td style="text-align:right;"> 12 </td>
-   <td style="text-align:right;"> 11 </td>
-   <td style="text-align:right;"> 13 </td>
-   <td style="text-align:right;"> 10.9 </td>
-   <td style="text-align:right;"> 13 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> 296 </td>
-   <td style="text-align:right;"> 12 </td>
-   <td style="text-align:right;"> 11 </td>
-   <td style="text-align:right;"> 13 </td>
-   <td style="text-align:right;"> 10.7 </td>
-   <td style="text-align:right;"> 13 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> 297 </td>
-   <td style="text-align:right;"> 12 </td>
-   <td style="text-align:right;"> 11 </td>
-   <td style="text-align:right;"> 13 </td>
-   <td style="text-align:right;"> 10.1 </td>
-   <td style="text-align:right;"> 13 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> 298 </td>
-   <td style="text-align:right;"> 12 </td>
-   <td style="text-align:right;"> 10 </td>
-   <td style="text-align:right;"> 13 </td>
-   <td style="text-align:right;"> 9.8 </td>
-   <td style="text-align:right;"> 13 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> 299 </td>
-   <td style="text-align:right;"> 12 </td>
-   <td style="text-align:right;"> 10 </td>
-   <td style="text-align:right;"> 13 </td>
-   <td style="text-align:right;"> 9.4 </td>
-   <td style="text-align:right;"> 14 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left;">294</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">11.1</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">295</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">10.9</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">296</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">10.7</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">297</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">10.1</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">298</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">9.8</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">299</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">9.4</td>
+<td style="text-align: right;">14</td>
+</tr>
 </tbody>
 </table>
 </div>
 </div>
 </section></section><section id="results" class="level1"><h1>Results</h1>
 <p>Given the diagram as well as the forecast table (of the best performing model, candidate #3), I conclude that a reduction in unemployment in Greece is expected in the next period of time (in the next six months). More specifically, <strong>Greece’s unemployment</strong> in <strong>February 2023</strong> will range between <strong>10%</strong> (9.4%) and <strong>13%</strong> (14%) with an <strong>80%</strong> (95%) probability (based on <strong>ARIMA(9,2,1)</strong> model).</p>
-</section><div id="quarto-appendix" class="default"><section id="acknowledgements" class="level1 appendix unlisted"><h2 class="quarto-appendix-heading">Acknowledgements</h2><div class="quarto-appendix-contents">
+</section><div id="quarto-appendix" class="default"><section id="acknowledgements" class="level1 appendix unlisted"><h2 class="anchored quarto-appendix-heading">Acknowledgements</h2><div class="quarto-appendix-contents">
 <p>Image by <a href="https://pixabay.com/users/publicdomainpictures-14/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=19907">PublicDomainPictures</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=19907">Pixabay</a></p>
 
 
 
-</div></section><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="doc-bibliography">
-<div id="ref-appliedtimeseriespenn" class="csl-entry" role="doc-biblioentry">
+</div></section><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
+<div id="ref-appliedtimeseriespenn" class="csl-entry" role="listitem">
 Applied time series analysis. (n.d.). Retrieved October 19, 2022, from <a href="https://online.stat.psu.edu/stat510/">https://online.stat.psu.edu/stat510/</a>
 </div>
-<div id="ref-R-flextable" class="csl-entry" role="doc-biblioentry">
+<div id="ref-R-flextable" class="csl-entry" role="listitem">
 Gohel, D., &amp; Skintzos, P. (2022). <em>Flextable: Functions for tabular reporting</em>. Retrieved from <a href="https://CRAN.R-project.org/package=flextable">https://CRAN.R-project.org/package=flextable</a>
 </div>
-<div id="ref-lubridate2011" class="csl-entry" role="doc-biblioentry">
+<div id="ref-lubridate2011" class="csl-entry" role="listitem">
 Grolemund, G., &amp; Wickham, H. (2011). Dates and times made easy with <span class="nocase">lubridate</span>. <em>Journal of Statistical Software</em>, <em>40</em>(3), 1–25. Retrieved from <a href="https://www.jstatsoft.org/v40/i03/">https://www.jstatsoft.org/v40/i03/</a>
 </div>
-<div id="ref-hyndman2018forecasting" class="csl-entry" role="doc-biblioentry">
+<div id="ref-hyndman2018forecasting" class="csl-entry" role="listitem">
 Hyndman, R. J., &amp; Athanasopoulos, G. (2018). <em>Forecasting: Principles and practice</em>. OTexts.
 </div>
-<div id="ref-forecast2008" class="csl-entry" role="doc-biblioentry">
+<div id="ref-forecast2008" class="csl-entry" role="listitem">
 Hyndman, R. J., &amp; Khandakar, Y. (2008). Automatic time series forecasting: The forecast package for <span>R</span>. <em>Journal of Statistical Software</em>, <em>26</em>(3), 1–22. <a href="https://doi.org/10.18637/jss.v027.i03">https://doi.org/10.18637/jss.v027.i03</a>
 </div>
-<div id="ref-R-forecast" class="csl-entry" role="doc-biblioentry">
+<div id="ref-R-forecast" class="csl-entry" role="listitem">
 Hyndman, R., Athanasopoulos, G., Bergmeir, C., Caceres, G., Chhay, L., Kuroptev, K., … Yasmeen, F. (2022). <em>Forecast: Forecasting functions for time series and linear models</em>. Retrieved from <a href="https://CRAN.R-project.org/package=forecast">https://CRAN.R-project.org/package=forecast</a>
 </div>
-<div id="ref-oecd2022" class="csl-entry" role="doc-biblioentry">
+<div id="ref-oecd2022" class="csl-entry" role="listitem">
 OECD. (2022). Unemployment rate (indicator). Retrieved October 14, 2022, from <a href="https://doi:%2010.1787/52570002-en">doi: 10.1787/52570002-en</a>
 </div>
-<div id="ref-R-base" class="csl-entry" role="doc-biblioentry">
+<div id="ref-R-base" class="csl-entry" role="listitem">
 R Core Team. (2021). <em>R: A language and environment for statistical computing</em>. Vienna, Austria: R Foundation for Statistical Computing. Retrieved from <a href="https://www.R-project.org/">https://www.R-project.org/</a>
 </div>
-<div id="ref-krgraphgallerytimeseries" class="csl-entry" role="doc-biblioentry">
+<div id="ref-krgraphgallerytimeseries" class="csl-entry" role="listitem">
 R Graph Gallery. (2018). Time series. <em>URL Https://r-Graph-Gallery.com/Time-Series.html</em>.
 </div>
-<div id="ref-R-lubridate" class="csl-entry" role="doc-biblioentry">
+<div id="ref-R-lubridate" class="csl-entry" role="listitem">
 Spinu, V., Grolemund, G., &amp; Wickham, H. (2021). <em>Lubridate: Make dealing with dates a little easier</em>. Retrieved from <a href="https://CRAN.R-project.org/package=lubridate">https://CRAN.R-project.org/package=lubridate</a>
 </div>
-<div id="ref-R-tseries" class="csl-entry" role="doc-biblioentry">
+<div id="ref-R-tseries" class="csl-entry" role="listitem">
 Trapletti, A., &amp; Hornik, K. (2022). <em>Tseries: Time series analysis and computational finance</em>. Retrieved from <a href="https://CRAN.R-project.org/package=tseries">https://CRAN.R-project.org/package=tseries</a>
 </div>
-<div id="ref-ggplot22016" class="csl-entry" role="doc-biblioentry">
+<div id="ref-ggplot22016" class="csl-entry" role="listitem">
 Wickham, H. (2016). <em>ggplot2: Elegant graphics for data analysis</em>. Springer-Verlag New York. Retrieved from <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>
 </div>
-<div id="ref-R-ggplot2" class="csl-entry" role="doc-biblioentry">
+<div id="ref-R-ggplot2" class="csl-entry" role="listitem">
 Wickham, H., Chang, W., Henry, L., Pedersen, T. L., Takahashi, K., Wilke, C., … Dunnington, D. (2022). <em>ggplot2: Create elegant data visualisations using the grammar of graphics</em>. Retrieved from <a href="https://CRAN.R-project.org/package=ggplot2">https://CRAN.R-project.org/package=ggplot2</a>
 </div>
-<div id="ref-R-dplyr" class="csl-entry" role="doc-biblioentry">
+<div id="ref-R-dplyr" class="csl-entry" role="listitem">
 Wickham, H., François, R., Henry, L., &amp; Müller, K. (2022). <em>Dplyr: A grammar of data manipulation</em>. Retrieved from <a href="https://CRAN.R-project.org/package=dplyr">https://CRAN.R-project.org/package=dplyr</a>
 </div>
-<div id="ref-R-readr" class="csl-entry" role="doc-biblioentry">
+<div id="ref-R-readr" class="csl-entry" role="listitem">
 Wickham, H., Hester, J., &amp; Bryan, J. (2022). <em>Readr: Read rectangular text data</em>. Retrieved from <a href="https://CRAN.R-project.org/package=readr">https://CRAN.R-project.org/package=readr</a>
 </div>
-<div id="ref-R-ggtext" class="csl-entry" role="doc-biblioentry">
+<div id="ref-R-ggtext" class="csl-entry" role="listitem">
 Wilke, C. O., &amp; Wiernik, B. M. (2022). <em>Ggtext: Improved text rendering support for ggplot2</em>. Retrieved from <a href="https://wilkelab.org/ggtext/">https://wilkelab.org/ggtext/</a>
 </div>
-<div id="ref-R-kableExtra" class="csl-entry" role="doc-biblioentry">
+<div id="ref-R-kableExtra" class="csl-entry" role="listitem">
 Zhu, H. (2021). <em>kableExtra: Construct complex table with kable and pipe syntax</em>. Retrieved from <a href="https://CRAN.R-project.org/package=kableExtra">https://CRAN.R-project.org/package=kableExtra</a>
 </div>
-</div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{stesiam2022,
-  author = {stesiam},
+</div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{2022,
+  author = {, stesiam},
   title = {Forecasting {Unemployment} in {Greece}},
   date = {2022-10-22},
-  url = {https://www.stesiam.github.io/2022-10-22-Unemployment-Greece.html},
+  url = {https://www.stesiam.github.io/notebooks/2022-10-22-Forecasting-Unemployment-Greece/2022-10-22-Unemployment-Greece.html},
   langid = {en}
 }
-</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-stesiam2022" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-2022" class="csl-entry quarto-appendix-citeas" role="listitem">
 stesiam. (2022, October 22). Forecasting Unemployment in Greece.
-Retrieved from <a href="https://www.stesiam.github.io/2022-10-22-Unemployment-Greece.html">https://www.stesiam.github.io/2022-10-22-Unemployment-Greece.html</a>
+Retrieved from <a href="https://www.stesiam.github.io/notebooks/2022-10-22-Forecasting-Unemployment-Greece/2022-10-22-Unemployment-Greece.html">https://www.stesiam.github.io/notebooks/2022-10-22-Forecasting-Unemployment-Greece/2022-10-22-Unemployment-Greece.html</a>
 </div></div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -1561,9 +1536,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -1679,6 +1668,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
@@ -1717,12 +1792,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp(/https:\/\/www\.stesiam\.github\.io/);
+      var filterRegex = new RegExp("https:\/\/www\.stesiam\.github\.io");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
-    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.335">
+<meta name="generator" content="quarto-1.3.276">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="stesiam">
 <meta name="dcterms.date" content="2022-10-10">
@@ -17,9 +17,10 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -46,48 +47,19 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+/* CSS for citations */
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
 }
-.hanging div.csl-entry {
+.hanging-indent div.csl-entry {
   margin-left:2em;
   text-indent:-2em;
 }
@@ -101,8 +73,7 @@ div.csl-right-inline {
 }
 div.csl-indent {
   margin-left: 2em;
-}
-</style>
+}</style>
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
@@ -141,7 +112,7 @@ div.csl-indent {
 }</script><script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script><link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 <link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="stesiam - EDA on Greek Parliament">
-<meta property="og:description" content="Let's explore the MPs that got elected the most over the years (1981-2019).">
+<meta property="og:description" content="Let’s explore the MPs that got elected the most over the years (1981-2019).">
 <meta property="og:image" content="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/images/houses-of-parliament.jpg">
 <meta property="og:site-name" content="stesiam">
 <meta property="og:image:alt" content="Greek parliament">
@@ -155,66 +126,68 @@ div.csl-indent {
     <span class="navbar-title">stesiam</span>
     </a>
   </div>
+            <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
 <li class="nav-item">
-    <a class="nav-link" href="../../index.html">
+    <a class="nav-link" href="../../index.html" rel="" target="">
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-posts" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-posts" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
  <span class="menu-text">Posts</span>
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-posts">
 <li>
-    <a class="dropdown-item" href="../../posts.html">
+    <a class="dropdown-item" href="../../posts.html" rel="" target="">
  <span class="dropdown-text">All posts</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../notebooks.html">
+    <a class="dropdown-item" href="../../notebooks.html" rel="" target="">
  <span class="dropdown-text">Notebooks</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../blog.html">
+    <a class="dropdown-item" href="../../blog.html" rel="" target="">
  <span class="dropdown-text">Blog</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../greek.html">
+    <a class="dropdown-item" href="../../greek.html" rel="" target="">
  <span class="dropdown-text">Greek Posts</span></a>
   </li>  
     </ul>
 </li>
   <li class="nav-item">
-    <a class="nav-link" href="../../shiny.html">
+    <a class="nav-link" href="../../shiny.html" rel="" target="">
  <span class="menu-text">Shiny Projects</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../material.html">
+    <a class="nav-link" href="../../material.html" rel="" target="">
  <span class="menu-text">Material</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../gallery.html">
+    <a class="nav-link" href="../../gallery.html" rel="" target="">
  <span class="menu-text">Gallery</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../index.html">
+    <a class="nav-link" href="../../index.html" rel="" target="">
  <span class="menu-text">CV</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/stesiam"><i class="bi bi-github" role="img" aria-label="Website Search">
+    <a class="nav-link" href="https://github.com/stesiam" rel="" target=""><i class="bi bi-github" role="img" aria-label="Website Search">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="../../posts.xml"><i class="bi bi-rss" role="img" aria-label="Website RSS">
+    <a class="nav-link" href="../../posts.xml" rel="" target=""><i class="bi bi-rss" role="img" aria-label="Website RSS">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
 </ul>
-<div id="quarto-search" class="" title="Search"></div>
+<div class="quarto-navbar-tools">
+</div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full"><div class="quarto-title-banner page-columns page-full">
@@ -256,7 +229,7 @@ div.csl-indent {
   
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
 <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
@@ -283,9 +256,11 @@ div.csl-indent {
   </ul>
 </li>
   <li><a href="#most-elected-members-based-per-constituency" id="toc-most-elected-members-based-per-constituency" class="nav-link" data-scroll-target="#most-elected-members-based-per-constituency">Most elected members based per constituency</a></li>
-  <li><a href="#acknowledgments" id="toc-acknowledgments" class="nav-link" data-scroll-target="#acknowledgments">Acknowledgments</a></li>
+  
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/stesiam/stesiam.github.io/edit/main/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/stesiam/stesiam.github.io/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
-</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
     </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content"><section id="table-of-contents" class="level1 unlisted"><h1 class="unlisted">Table of Contents</h1>
@@ -351,81 +326,82 @@ div.csl-indent {
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_classic.html">kable_paper</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/scroll_box.html">scroll_box</a></span><span class="op">(</span>width <span class="op">=</span> <span class="st">"600px"</span>, height <span class="op">=</span> <span class="st">"250px"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:250px; overflow-x: scroll; width:600px; ">
 <div id="tbl-preview-dataset" class="anchored">
-
-<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:250px; overflow-x: scroll; width:600px; "><table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
-<caption>Table&nbsp;1:  Preview Dataset (first 6 rows) </caption>
- <thead><tr>
-<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> FullName </th>
-   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> Party </th>
-   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> Constituency </th>
-   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"> Term </th>
-  </tr></thead>
+<table class="lightable-paper table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table&nbsp;1: Preview Dataset (first 6 rows)</caption>
+<thead><tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">FullName</th>
+<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">Party</th>
+<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">Constituency</th>
+<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">Term</th>
+</tr></thead>
 <tbody>
-<tr>
-<td style="text-align:center;"> Agorastis Vasileios </td>
-   <td style="text-align:center;"> PA.SO.K. (Panhellenic Socialist Movement) </td>
-   <td style="text-align:center;"> Larissa </td>
-   <td style="text-align:center;"> 3 </td>
-  </tr>
-<tr>
-<td style="text-align:center;"> Akrita Sylva - Kaiti </td>
-   <td style="text-align:center;"> PA.SO.K. (Panhellenic Socialist Movement) </td>
-   <td style="text-align:center;"> Athens B </td>
-   <td style="text-align:center;"> 3 </td>
-  </tr>
-<tr>
-<td style="text-align:center;"> Akritidis Nikolaos </td>
-   <td style="text-align:center;"> PA.SO.K. (Panhellenic Socialist Movement) </td>
-   <td style="text-align:center;"> Thessaloniki A </td>
-   <td style="text-align:center;"> 3 </td>
-  </tr>
-<tr>
-<td style="text-align:center;"> Akrivakis Alexandros </td>
-   <td style="text-align:center;"> PA.SO.K. (Panhellenic Socialist Movement) </td>
-   <td style="text-align:center;"> Viotia </td>
-   <td style="text-align:center;"> 3 </td>
-  </tr>
-<tr>
-<td style="text-align:center;"> Alevras Ioannis </td>
-   <td style="text-align:center;"> PA.SO.K. (Panhellenic Socialist Movement) </td>
-   <td style="text-align:center;"> Athens A </td>
-   <td style="text-align:center;"> 3 </td>
-  </tr>
-<tr>
-<td style="text-align:center;"> Alexandris Efstathios (Stathis) </td>
-   <td style="text-align:center;"> PA.SO.K. (Panhellenic Socialist Movement) </td>
-   <td style="text-align:center;"> Athens B </td>
-   <td style="text-align:center;"> 3 </td>
-  </tr>
-<tr>
-<td style="text-align:center;"> Alexiadis Konstantinos </td>
-   <td style="text-align:center;"> PA.SO.K. (Panhellenic Socialist Movement) </td>
-   <td style="text-align:center;"> Trikala </td>
-   <td style="text-align:center;"> 3 </td>
-  </tr>
-<tr>
-<td style="text-align:center;"> Alexiou Thomas </td>
-   <td style="text-align:center;"> NEA DIMOKRATIA </td>
-   <td style="text-align:center;"> Xanthi </td>
-   <td style="text-align:center;"> 3 </td>
-  </tr>
-<tr>
-<td style="text-align:center;"> Allamanis Stylianos </td>
-   <td style="text-align:center;"> NEA DIMOKRATIA </td>
-   <td style="text-align:center;"> Karditsa </td>
-   <td style="text-align:center;"> 3 </td>
-  </tr>
-<tr>
-<td style="text-align:center;"> Amanatidis Konstantinos </td>
-   <td style="text-align:center;"> PA.SO.K. (Panhellenic Socialist Movement) </td>
-   <td style="text-align:center;"> Thessaloniki B </td>
-   <td style="text-align:center;"> 3 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: center;">Agorastis Vasileios</td>
+<td style="text-align: center;">PA.SO.K. (Panhellenic Socialist Movement)</td>
+<td style="text-align: center;">Larissa</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Akrita Sylva - Kaiti</td>
+<td style="text-align: center;">PA.SO.K. (Panhellenic Socialist Movement)</td>
+<td style="text-align: center;">Athens B</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Akritidis Nikolaos</td>
+<td style="text-align: center;">PA.SO.K. (Panhellenic Socialist Movement)</td>
+<td style="text-align: center;">Thessaloniki A</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Akrivakis Alexandros</td>
+<td style="text-align: center;">PA.SO.K. (Panhellenic Socialist Movement)</td>
+<td style="text-align: center;">Viotia</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Alevras Ioannis</td>
+<td style="text-align: center;">PA.SO.K. (Panhellenic Socialist Movement)</td>
+<td style="text-align: center;">Athens A</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Alexandris Efstathios (Stathis)</td>
+<td style="text-align: center;">PA.SO.K. (Panhellenic Socialist Movement)</td>
+<td style="text-align: center;">Athens B</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Alexiadis Konstantinos</td>
+<td style="text-align: center;">PA.SO.K. (Panhellenic Socialist Movement)</td>
+<td style="text-align: center;">Trikala</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Alexiou Thomas</td>
+<td style="text-align: center;">NEA DIMOKRATIA</td>
+<td style="text-align: center;">Xanthi</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Allamanis Stylianos</td>
+<td style="text-align: center;">NEA DIMOKRATIA</td>
+<td style="text-align: center;">Karditsa</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Amanatidis Konstantinos</td>
+<td style="text-align: center;">PA.SO.K. (Panhellenic Socialist Movement)</td>
+<td style="text-align: center;">Thessaloniki B</td>
+<td style="text-align: center;">3</td>
+</tr>
 </tbody>
-</table></div>
-
+</table>
 </div>
+</div>
+
 </div>
 </div>
 </section><section id="structure-of-dataset" class="level2"><h2 class="anchored" data-anchor-id="structure-of-dataset">Structure of Dataset</h2>
@@ -544,12 +520,12 @@ div.csl-indent {
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 Note
 </div>
 </div>
@@ -557,7 +533,7 @@ Note
 <p>Note that till this moment I have not figure out how to change the position of the parties in an efficient way (in a function) that will somehow represent their potitical view. The next visualizations of the parliament are exclusively about how many MPs got elected by each party.</p>
 </div>
 </div>
-<div class="panel-tabset">
+<div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">3rd Term</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">4th Term</a></li>
@@ -689,12 +665,12 @@ Note
 </div>
 </div>
 <div id="tabset-1-15" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-15-tab">
-<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 Warning
 </div>
 </div>
@@ -740,7 +716,7 @@ Warning
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="2022-10-10-EDA-Greek-Parliament_files/figure-html/fig-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="2022-10-10-EDA-Greek-Parliament_files/figure-html/fig-1.png" class="quarto-discovered-preview-image img-fluid figure-img" width="672"></p>
 <p></p><figcaption class="figure-caption">Most elected MPs</figcaption><p></p>
 </figure>
 </div>
@@ -842,7 +818,7 @@ Warning
 </div>
 </div>
 </section><section id="attica" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="attica">Attica</h2>
-<div class="panel-tabset">
+<div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Athens A</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Athens B</a></li>
@@ -894,7 +870,7 @@ Warning
 </div>
 </div>
 </section><section id="central-greece" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="central-greece">Central Greece</h2>
-<div class="panel-tabset">
+<div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">Viotia</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Evrytania</a></li>
@@ -937,7 +913,7 @@ Warning
 </div>
 </div>
 </section><section id="central-macedonia" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="central-macedonia">Central Macedonia</h2>
-<div class="panel-tabset">
+<div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true">Thessaloniki A</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false">Thessaloniki B</a></li>
@@ -1007,7 +983,7 @@ Warning
 </div>
 </div>
 </section><section id="crete" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="crete">Crete</h2>
-<div class="panel-tabset">
+<div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true">Chania</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false">Heraklion</a></li>
@@ -1048,7 +1024,7 @@ Warning
 </div>
 </div>
 </section><section id="eastern-macedonia-and-thrace" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="eastern-macedonia-and-thrace">Eastern Macedonia and Thrace</h2>
-<div class="panel-tabset">
+<div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true">Drama</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false">Evros</a></li>
@@ -1100,7 +1076,7 @@ Warning
 </div>
 </div>
 </section><section id="epirus" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="epirus">Epirus</h2>
-<div class="panel-tabset">
+<div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" role="tab" aria-controls="tabset-7-1" aria-selected="true">Arta</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-2" role="tab" aria-controls="tabset-7-2" aria-selected="false">Ioannina</a></li>
@@ -1143,7 +1119,7 @@ Warning
 </div>
 </div>
 </section><section id="ionian-islands" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="ionian-islands">Ionian Islands</h2>
-<div class="panel-tabset">
+<div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-8-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-1" role="tab" aria-controls="tabset-8-1" aria-selected="true">Corfu</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-2" role="tab" aria-controls="tabset-8-2" aria-selected="false">Kefallonia</a></li>
@@ -1186,7 +1162,7 @@ Warning
 </div>
 </div>
 </section><section id="north-aegean" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="north-aegean">North Aegean</h2>
-<div class="panel-tabset">
+<div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-9-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-1" role="tab" aria-controls="tabset-9-1" aria-selected="true">Chios</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-9-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-2" role="tab" aria-controls="tabset-9-2" aria-selected="false">Lesvos</a></li>
@@ -1220,7 +1196,7 @@ Warning
 </div>
 </div>
 </section><section id="peloponnese" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="peloponnese">Peloponnese</h2>
-<div class="panel-tabset">
+<div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-10-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-1" role="tab" aria-controls="tabset-10-1" aria-selected="true">Argolida</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-10-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-2" role="tab" aria-controls="tabset-10-2" aria-selected="false">Arkadia</a></li>
@@ -1272,7 +1248,7 @@ Warning
 </div>
 </div>
 </section><section id="south-aegean" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="south-aegean">South Aegean</h2>
-<div class="panel-tabset">
+<div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-11-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-1" role="tab" aria-controls="tabset-11-1" aria-selected="true">Dodecanese Islands</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-11-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-2" role="tab" aria-controls="tabset-11-2" aria-selected="false">Cyclades</a></li>
@@ -1297,7 +1273,7 @@ Warning
 </div>
 </div>
 </section><section id="thessaly" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="thessaly">Thessaly</h2>
-<div class="panel-tabset">
+<div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-12-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-1" role="tab" aria-controls="tabset-12-1" aria-selected="true">Karditsa</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-12-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-2" role="tab" aria-controls="tabset-12-2" aria-selected="false">Larissa</a></li>
@@ -1340,7 +1316,7 @@ Warning
 </div>
 </div>
 </section><section id="western-greece" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="western-greece">Western Greece</h2>
-<div class="panel-tabset">
+<div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-13-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-13-1" role="tab" aria-controls="tabset-13-1" aria-selected="true">Achaia</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-13-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-13-2" role="tab" aria-controls="tabset-13-2" aria-selected="false">Aitoloakarnania</a></li>
@@ -1372,7 +1348,7 @@ Warning
 </div>
 </div>
 </section><section id="western-macedonia" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="western-macedonia">Western Macedonia</h2>
-<div class="panel-tabset">
+<div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-14-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-14-1" role="tab" aria-controls="tabset-14-1" aria-selected="true">Florina</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-14-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-14-2" role="tab" aria-controls="tabset-14-2" aria-selected="false">Grevena</a></li>
@@ -1414,67 +1390,67 @@ Warning
 </div>
 </div>
 </div>
-</section></section><div id="quarto-appendix" class="default"><section id="acknowledgments" class="level1 appendix"><h2 class="quarto-appendix-heading">Acknowledgments</h2><div class="quarto-appendix-contents">
+</section></section><div id="quarto-appendix" class="default"><section id="acknowledgments" class="level1 appendix"><h2 class="anchored quarto-appendix-heading">Acknowledgments</h2><div class="quarto-appendix-contents">
 <p>Image by <a href="https://pixabay.com/users/leonhard_niederwimmer-1131094/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=7402132">Leonhard Niederwimmer</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=7402132">Pixabay</a> <br></p>
 <p>Data are from <a href="https://github.com/stesiam/Greek-MPs-Dataset">mine repository on GitHub</a>. Original data are from <a href="https://www.hellenicparliament.gr"> Hellenic’s Parliament website</a></p>
 
 
 
-</div></section><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="doc-bibliography">
-<div id="ref-R-purrr" class="csl-entry" role="doc-biblioentry">
+</div></section><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
+<div id="ref-R-purrr" class="csl-entry" role="listitem">
 Henry, L., &amp; Wickham, H. (2020). <em>Purrr: Functional programming tools</em>. Retrieved from <a href="https://CRAN.R-project.org/package=purrr">https://CRAN.R-project.org/package=purrr</a>
 </div>
-<div id="ref-R-tibble" class="csl-entry" role="doc-biblioentry">
+<div id="ref-R-tibble" class="csl-entry" role="listitem">
 Müller, K., &amp; Wickham, H. (2022). <em>Tibble: Simple data frames</em>. Retrieved from <a href="https://CRAN.R-project.org/package=tibble">https://CRAN.R-project.org/package=tibble</a>
 </div>
-<div id="ref-R-base" class="csl-entry" role="doc-biblioentry">
+<div id="ref-R-base" class="csl-entry" role="listitem">
 R Core Team. (2021). <em>R: A language and environment for statistical computing</em>. Vienna, Austria: R Foundation for Statistical Computing. Retrieved from <a href="https://www.R-project.org/">https://www.R-project.org/</a>
 </div>
-<div id="ref-R-ggpol" class="csl-entry" role="doc-biblioentry">
+<div id="ref-R-ggpol" class="csl-entry" role="listitem">
 Tiedemann, F. (2020). <em>Ggpol: Visualizing social science data with ggplot2</em>. Retrieved from <a href="https://github.com/erocoar/ggpol">https://github.com/erocoar/ggpol</a>
 </div>
-<div id="ref-ggplot22016" class="csl-entry" role="doc-biblioentry">
+<div id="ref-ggplot22016" class="csl-entry" role="listitem">
 Wickham, H. (2016). <em>ggplot2: Elegant graphics for data analysis</em>. Springer-Verlag New York. Retrieved from <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>
 </div>
-<div id="ref-R-stringr" class="csl-entry" role="doc-biblioentry">
+<div id="ref-R-stringr" class="csl-entry" role="listitem">
 Wickham, H. (2019). <em>Stringr: Simple, consistent wrappers for common string operations</em>. Retrieved from <a href="https://CRAN.R-project.org/package=stringr">https://CRAN.R-project.org/package=stringr</a>
 </div>
-<div id="ref-R-forcats" class="csl-entry" role="doc-biblioentry">
+<div id="ref-R-forcats" class="csl-entry" role="listitem">
 Wickham, H. (2022a). <em>Forcats: Tools for working with categorical variables (factors)</em>. Retrieved from <a href="https://CRAN.R-project.org/package=forcats">https://CRAN.R-project.org/package=forcats</a>
 </div>
-<div id="ref-R-tidyverse" class="csl-entry" role="doc-biblioentry">
+<div id="ref-R-tidyverse" class="csl-entry" role="listitem">
 Wickham, H. (2022b). <em>Tidyverse: Easily install and load the tidyverse</em>. Retrieved from <a href="https://CRAN.R-project.org/package=tidyverse">https://CRAN.R-project.org/package=tidyverse</a>
 </div>
-<div id="ref-tidyverse2019" class="csl-entry" role="doc-biblioentry">
+<div id="ref-tidyverse2019" class="csl-entry" role="listitem">
 Wickham, H., Averick, M., Bryan, J., Chang, W., McGowan, L. D., François, R., … Yutani, H. (2019). Welcome to the <span class="nocase">tidyverse</span>. <em>Journal of Open Source Software</em>, <em>4</em>(43), 1686. <a href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>
 </div>
-<div id="ref-R-ggplot2" class="csl-entry" role="doc-biblioentry">
+<div id="ref-R-ggplot2" class="csl-entry" role="listitem">
 Wickham, H., Chang, W., Henry, L., Pedersen, T. L., Takahashi, K., Wilke, C., … Dunnington, D. (2022). <em>ggplot2: Create elegant data visualisations using the grammar of graphics</em>. Retrieved from <a href="https://CRAN.R-project.org/package=ggplot2">https://CRAN.R-project.org/package=ggplot2</a>
 </div>
-<div id="ref-R-dplyr" class="csl-entry" role="doc-biblioentry">
+<div id="ref-R-dplyr" class="csl-entry" role="listitem">
 Wickham, H., François, R., Henry, L., &amp; Müller, K. (2022). <em>Dplyr: A grammar of data manipulation</em>. Retrieved from <a href="https://CRAN.R-project.org/package=dplyr">https://CRAN.R-project.org/package=dplyr</a>
 </div>
-<div id="ref-R-tidyr" class="csl-entry" role="doc-biblioentry">
+<div id="ref-R-tidyr" class="csl-entry" role="listitem">
 Wickham, H., &amp; Girlich, M. (2022). <em>Tidyr: Tidy messy data</em>. Retrieved from <a href="https://CRAN.R-project.org/package=tidyr">https://CRAN.R-project.org/package=tidyr</a>
 </div>
-<div id="ref-R-readr" class="csl-entry" role="doc-biblioentry">
+<div id="ref-R-readr" class="csl-entry" role="listitem">
 Wickham, H., Hester, J., &amp; Bryan, J. (2022). <em>Readr: Read rectangular text data</em>. Retrieved from <a href="https://CRAN.R-project.org/package=readr">https://CRAN.R-project.org/package=readr</a>
 </div>
-<div id="ref-R-ggtext" class="csl-entry" role="doc-biblioentry">
+<div id="ref-R-ggtext" class="csl-entry" role="listitem">
 Wilke, C. O., &amp; Wiernik, B. M. (2022). <em>Ggtext: Improved text rendering support for ggplot2</em>. Retrieved from <a href="https://wilkelab.org/ggtext/">https://wilkelab.org/ggtext/</a>
 </div>
-<div id="ref-R-kableExtra" class="csl-entry" role="doc-biblioentry">
+<div id="ref-R-kableExtra" class="csl-entry" role="listitem">
 Zhu, H. (2021). <em>kableExtra: Construct complex table with kable and pipe syntax</em>. Retrieved from <a href="https://CRAN.R-project.org/package=kableExtra">https://CRAN.R-project.org/package=kableExtra</a>
 </div>
-</div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{stesiam2022,
-  author = {stesiam},
+</div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{2022,
+  author = {, stesiam},
   title = {EDA on {Greek} {Parliament}},
   date = {2022-10-10},
-  url = {https://www.stesiam.github.io/2022-10-10-EDA-Greek-Parliament.html},
+  url = {https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html},
   langid = {en}
 }
-</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-stesiam2022" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
-stesiam. (2022, October 10). EDA on Greek Parliament. Retrieved from <a href="https://www.stesiam.github.io/2022-10-10-EDA-Greek-Parliament.html">https://www.stesiam.github.io/2022-10-10-EDA-Greek-Parliament.html</a>
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-2022" class="csl-entry quarto-appendix-citeas" role="listitem">
+stesiam. (2022, October 10). EDA on Greek Parliament. Retrieved from <a href="https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html">https://www.stesiam.github.io/notebooks/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html</a>
 </div></div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -1502,9 +1478,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -1620,6 +1610,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
@@ -1658,12 +1734,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp(/https:\/\/www\.stesiam\.github\.io/);
+      var filterRegex = new RegExp("https:\/\/www\.stesiam\.github\.io");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
-    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
