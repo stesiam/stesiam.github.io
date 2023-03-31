@@ -1,0 +1,407 @@
+---
+title: "Predict Survivors of MS Estonia"
+author: "stesiam"
+description: |
+  Build a logistic regression model to predict survivors of MS Estonia.
+categories: [R, Classification]
+image: thunderstorm.jpg
+fig-cap-location: bottom
+date: "2023-03-31"
+toc: true
+toc-title: Table of contents
+toc-location: left
+citation: true
+title-block-banner: true
+nocite: '@*'
+csl: apa-6th-edition
+bibliography: [packages.bib, references.bib]
+format: 
+  html:
+    code-link: true
+    code-fold: true
+    code-summary: "Show the code"
+    code-tools: 
+      source: repo
+execute:
+  echo: true
+editor_options: 
+  markdown: 
+    wrap: 80
+---
+
+# Table of Contents {.unlisted}
+
+<hr>
+
+1. [Introduction](#introduction) <br>
+2. [Prerequisites](#prerequisites) <br>
+&nbsp; 2.1 [Import Libraries](#import-libraries) <br>
+&nbsp; 2.2 [Import Dataset](#import-dataset) <br>
+&nbsp; 2.3 [Preview Datasset](#preview-dataset) <br>
+&nbsp; 2.4 [Dataset Structure](#dataset-structure) <br>
+&nbsp; 2.5 [Convert Categorical variables](#convert-categorical-variables) <br>
+3. [EDA with R](#eda-with-r) <br>
+&nbsp; 3.1 [Missing Values](#missing-values) <br>
+&nbsp; 3.2 [Univariate Analysis](#univariate-analysis) <br>
+&nbsp; 3.3 [Bivariate Analysis](#bivariate-analysis) <br>
+&nbsp; 3.4 [Correlogram](#correlogram) <br>
+4. [Building Predictive Model](#build-predictive-model) <br>
+&nbsp; 4.1 [Split train/test Dataset](#split-train-test-dataset) <br>
+&nbsp; 4.2 [Recipes](#recipes) <br>
+&nbsp; 4.3 [Build Model](#build-model) <br>
+&nbsp; 4.4 [Fit](#fit-resamples) <br>
+&nbsp; 4.5 [Evaluate Model](#evaluate-model) <br>
+5. [References](#references)
+
+<hr>
+
+# Introduction
+
+
+
+
+
+# Prerequisites
+
+## Import Libraries
+
+For this analysis we will need standard libraries for importing and processing my data, such as readr [@R-readr] and dplyr [@R-dplyr]. The kableExtra [@R-kableExtra] package was used to print the results in table format.
+
+Finally, the ggplot2 [@R-ggplot2] package was used to create some visualizations, as well as an auxiliary package, ggtext [@R-ggtext], for further formatting those.
+
+```{r Import R Libraries, message=FALSE, results='hide', echo=TRUE}
+# General purpose R libraries
+library(dplyr)
+library(readr)
+library(kableExtra)
+
+
+# Packages for maps
+
+library(ggplot2)
+library(ggtext)
+
+
+# Build ML models
+
+library(tidymodels)
+library(bonsai)
+library(themis)
+library(vip)
+
+```
+
+```{r, include=FALSE}
+knitr::write_bib(.packages(), file = 'packages.bib')
+```
+
+## Import dataset
+
+After loading the libraries I am able to use the commands of the readr package to import my data. My data is in .csv format, so I'll use the read_csv() command [@R-readr] to import them.
+
+```{r Import dataset, message=FALSE}
+estonia_passenger_list = read_csv("data/estonia-passenger-list.csv")
+```
+
+
+## Preview Dataset
+
+```{r Preview Data}
+
+#| label: tbl-preview-dataset
+#| tbl-cap: "Preview Dataset (first 6 rows)"
+
+head(estonia_passenger_list, 10) %>%
+  kbl(
+    align = 'c',
+    booktabs = T,
+    centering = T,
+    valign = T) %>%
+  kable_paper() %>%
+  scroll_box(width = "600px", height = "250px") %>%
+  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
+```
+
+## Dataset Structure
+
+Our dataset is consisted by `r ncol(estonia_passenger_list)` variables (columns) and `r length(estonia_passenger_list$Survived)` observations (rows). More specifically :
+
+| Variable    | Property                           | Description     |
+| :----:      |    :----:                          |    :----: |
+| `PassengerId`       | *qualitative*  <br> (discrete)  |Id of passenger, Not important for analysis |
+| `Country`       | *qualitative*   <br> (nominal)     | Country of Origin of the passenger |
+| `Firstname`   | *qualitative*   <br> (nominal)     | Passenger's first name     |
+| `Lastname` | *qualitative*   <br> (nominal)     | Passenger's last name  |
+| `Sex`   | *qualitative*   <br> (nominal)     | Sex of Passenger |
+| `Age`   | *quantitative*  <br> (continuous)  | The age of the passenger |
+| `Category`   | *qualitative*   <br> (nominal)     | Passenger or member of the crew |
+| `Survived`      | *qualitative*   <br> (nominal)     | Did the person survive ? |
+
+Thus, my sample has `r ncol(estonia_passenger_list)` variables, of which 1 is quantitative and 7 are qualitative (nominal) properties.
+
+Sex -> factor (men /women)
+Category (crew/passinger)
+Survived (yes/no)
+Country (sweden/estonia/...)
+
+## Convert Categorical variables
+
+```{r}
+
+```
+
+
+# EDA with R
+
+## Missing Values
+
+On this dataset there are `r sum(is.na(estonia_passenger_list))` missing values, in total.
+
+```{r, results='hide'}
+sum(is.na(estonia_passenger_list))
+```
+
+
+## Univariate Analysis
+
+::: {.panel-tabset}
+
+### Country 
+
+```{r}
+table(estonia_passenger_list$Country) %>% sort(decreasing = T)
+```
+
+
+### Sex
+
+```{r}
+p<-ggplot(estonia_passenger_list, aes(x=Sex, fill = Sex)) +
+  geom_bar() +
+  theme_minimal()
+p
+```
+
+
+### Age
+
+```{r}
+table(estonia_passenger_list$Age) %>% sort(decreasing = T)
+```
+
+
+
+
+### Category
+
+```{r}
+table(estonia_passenger_list$Category) %>% sort(decreasing = T)
+```
+
+
+
+### Survived
+
+```{r}
+table(estonia_passenger_list$Survived) %>% sort(decreasing = T)
+
+estonia_passenger_list$Survived[estonia_passenger_list$Survived == 0] <- "No"
+estonia_passenger_list$Survived[estonia_passenger_list$Survived == 1] <- "Yes"
+estonia_passenger_list$Survived <- factor(estonia_passenger_list$Survived)
+```
+
+:::
+
+## Bivariate Analysis
+
+
+::: {.panel-tabset}
+
+### Country 
+
+
+### Sex
+
+
+### Age
+
+
+### Category
+
+
+:::
+
+
+# Building Predictive Model
+
+## Split train/test Dataset
+
+```{r}
+set.seed(123)# Create data split for train and test
+estonia_passenger_list_split <- initial_split(estonia_passenger_list,
+                                prop = 0.75,
+                                strata = Survived)
+
+# Create training data
+estonia_ms_train <- estonia_passenger_list_split %>%
+                    training()
+
+# Create testing data
+estonia_ms_test <- estonia_passenger_list_split %>%
+                    testing()
+
+```
+
+::: {.panel-tabset}
+
+
+### Train dataset
+
+```{r}
+head(estonia_ms_train) %>%
+  kbl(toprule = T,align = 'c',booktabs = T)  %>%
+  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
+```
+
+
+### Test dataset
+
+```{r}
+head(estonia_ms_test) %>%
+  kbl() %>%
+  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
+```
+
+:::
+
+## Recipes 
+
+```{r}
+preprocessing_recipe <-
+recipes::recipe(Survived ~ Sex + Age + Category, data = estonia_ms_train) %>%
+ recipes::step_other(all_nominal(), threshold = 0.01) %>%
+ recipes::step_nzv(all_nominal()) %>%
+ prep()
+```
+
+
+## Create Validation Set
+
+```{r}
+cv_folds <- recipes::bake(
+  preprocessing_recipe,
+  new_data = estonia_ms_train) %>%
+  rsample::vfold_cv(v = 5, strata = Survived)
+```
+
+```{r}
+cv_folds
+```
+
+
+## Build LightGBM Model
+
+```{r}
+lightgbm_model<- parsnip::boost_tree(
+ mode = "classification",
+ trees = 300,
+ min_n = tune(),
+ learn_rate = tune(),
+ tree_depth = tune()) %>%
+set_engine("lightgbm", loss_function = "squarederror")
+```
+
+## Hyperparameters tuning
+
+```{r}
+lightgbm_params <- dials::parameters(
+ min_n(), # min data in leaf
+ tree_depth(range = c(4,10)), # depth
+# In most cases, the optimal depth ranges from 4 to 10. 
+# Values in the range from 6 to 10 are recommended. 
+ learn_rate() # learning rate
+)
+```
+
+```{r}
+lightgbm_grid <- dials::grid_max_entropy(
+ lightgbm_params,
+ size = 15)
+
+head(lightgbm_grid) %>%
+  kbl(toprule = T,align = 'c',booktabs = T)  %>%
+  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
+```
+
+## Build workflow
+
+```{r}
+lightgbm_workflow <- workflows::workflow() %>%
+ add_model(lightgbm_model) %>%
+ add_formula(Survived ~ Sex + Age + Category)
+```
+
+
+## Fit
+
+```{r}
+lightgbm_tuned_model <- tune::tune_grid(
+ object = lightgbm_workflow,
+ resamples = cv_folds,
+ metrics = metric_set(roc_auc, accuracy),
+ grid = lightgbm_grid,
+ control = tune::control_grid(verbose = FALSE) # set this to TRUE to see
+ # in what step of the process you are. But that doesn't look that well in
+ # a blog.
+)
+```
+
+## Evaluate Model
+
+```{r}
+lightgbm_tuned_model %>%
+  show_best("roc_auc",n=5) %>% 
+  kbl(toprule = T,align = 'c',booktabs = T)  %>%
+  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
+```
+
+
+## Last Fit
+
+```{r}
+last_fit_lightgbm_model = parsnip::boost_tree(
+ mode = "classification",
+ trees = 300,
+ min_n = 4,
+ learn_rate = 5.9e-05,
+ tree_depth = 4) %>%
+set_engine("lightgbm", loss_function = "squarederror")
+```
+
+```{r}
+last_fit_workflow <- lightgbm_workflow %>% 
+  update_model(last_fit_lightgbm_model)
+
+last_rf_fit <- 
+  last_fit_workflow %>% 
+  last_fit(estonia_passenger_list_split)
+
+last_rf_fit %>% 
+  collect_metrics() %>%
+  kbl(toprule = T,align = 'c',booktabs = T)  %>%
+  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
+```
+
+```{r}
+
+```
+
+# Major Concerns 
+
+As we can see there is a significant difference between train and test results. My model performs better on train and less better on train set. That's the case of overfitting. 
+
+## Acknowledgements {.appendix .unlisted}
+
+Image by <a href="https://pixabay.com/users/dexmac-12233086/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=4375844">Gianluca</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=4375844">Pixabay</a>
+
+## References {.appendix .unlisted}
