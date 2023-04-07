@@ -3,7 +3,7 @@ title: "Predict Survivors of MS Estonia"
 author: "stesiam"
 description: |
   Build a logistic regression model to predict survivors of MS Estonia.
-categories: [R, Classification]
+categories: [R, Classification, Tidymodels, Logistic Regression]
 image: thunderstorm.jpg
 fig-cap-location: bottom
 date: "2023-03-31"
@@ -40,11 +40,12 @@ editor_options:
 &nbsp; 2.3 [Preview Datasset](#preview-dataset) <br>
 &nbsp; 2.4 [Dataset Structure](#dataset-structure) <br>
 &nbsp; 2.5 [Convert Categorical variables](#convert-categorical-variables) <br>
+&nbsp; 2.6 [Outliers](#outliers) <br>
+&nbsp; 2.7 [Missing Values](#missing-values) <br>
 3. [EDA with R](#eda-with-r) <br>
-&nbsp; 3.1 [Missing Values](#missing-values) <br>
-&nbsp; 3.2 [Univariate Analysis](#univariate-analysis) <br>
-&nbsp; 3.3 [Bivariate Analysis](#bivariate-analysis) <br>
-&nbsp; 3.4 [Correlogram](#correlogram) <br>
+&nbsp; 3.1 [Univariate Analysis](#univariate-analysis) <br>
+&nbsp; 3.2 [Bivariate Analysis](#bivariate-analysis) <br>
+&nbsp; 3.3 [Correlogram](#correlogram) <br>
 4. [Building Predictive Model](#build-predictive-model) <br>
 &nbsp; 4.1 [Split train/test Dataset](#split-train-test-dataset) <br>
 &nbsp; 4.2 [Recipes](#recipes) <br>
@@ -57,9 +58,7 @@ editor_options:
 
 # Introduction
 
-
-
-
+Το MSEstonia ήταν ένα επιβατηγό πλοίο το οποίο βυθίστηκε στις 28 Σεπτεμβρίου του 1994. 
 
 # Prerequisites
 
@@ -67,7 +66,7 @@ editor_options:
 
 For this analysis we will need standard libraries for importing and processing my data, such as readr [@R-readr] and dplyr [@R-dplyr]. The kableExtra [@R-kableExtra] package was used to print the results in table format.
 
-Finally, the ggplot2 [@R-ggplot2] package was used to create some visualizations, as well as an auxiliary package, ggtext [@R-ggtext], for further formatting those.
+Finally, the ggplot2 [@R-ggplot2] package is necessary to create some visualizations, as well as an auxiliary package, ggtext [@R-ggtext], for further formatting those.
 
 ```{r Import R Libraries, message=FALSE, results='hide', echo=TRUE}
 # General purpose R libraries
@@ -97,7 +96,7 @@ knitr::write_bib(.packages(), file = 'packages.bib')
 
 ## Import dataset
 
-After loading the libraries I am able to use the commands of the readr package to import my data. My data is in .csv format, so I'll use the read_csv() command [@R-readr] to import them.
+After loading the libraries, I am able to use the commands of the readr package to import my data. My data is in .csv format, so I'll use the read_csv() command [@R-readr] to import them.
 
 ```{r Import dataset, message=FALSE}
 estonia_passenger_list = read_csv("data/estonia-passenger-list.csv")
@@ -139,21 +138,25 @@ Our dataset is consisted by `r ncol(estonia_passenger_list)` variables (columns)
 
 Thus, my sample has `r ncol(estonia_passenger_list)` variables, of which 1 is quantitative and 7 are qualitative (nominal) properties.
 
-Sex -> factor (men /women)
-Category (crew/passinger)
-Survived (yes/no)
-Country (sweden/estonia/...)
-
 ## Convert Categorical variables
 
 ```{r}
+estonia_passenger_list$Country = as.factor(estonia_passenger_list$Country)
+estonia_passenger_list$Sex = as.factor(estonia_passenger_list$Sex)
+estonia_passenger_list$Category = as.factor(estonia_passenger_list$Category)
 
+estonia_passenger_list$Survived[estonia_passenger_list$Survived == "0"] <- "No"
+estonia_passenger_list$Survived[estonia_passenger_list$Survived == "1"] <- "Yes"
+estonia_passenger_list$Survived <- factor(estonia_passenger_list$Survived)
 ```
 
 
-# EDA with R
+## Outliers and NAs
 
-## Missing Values
+```{r}
+boxplot(estonia_passenger_list$Age)
+```
+
 
 On this dataset there are `r sum(is.na(estonia_passenger_list))` missing values, in total.
 
@@ -161,6 +164,26 @@ On this dataset there are `r sum(is.na(estonia_passenger_list))` missing values,
 sum(is.na(estonia_passenger_list))
 ```
 
+## Preview Cleaned Dataset
+
+```{r Preview clean data}
+
+#| label: tbl-preview-dataset
+#| tbl-cap: "Preview Dataset (first 6 rows)"
+
+head(estonia_passenger_list, 10) %>%
+  kbl(
+    align = 'c',
+    booktabs = T,
+    centering = T,
+    valign = T) %>%
+  kable_paper() %>%
+  scroll_box(width = "600px", height = "250px") %>%
+  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
+```
+
+
+# EDA with R
 
 ## Univariate Analysis
 
@@ -169,7 +192,7 @@ sum(is.na(estonia_passenger_list))
 ### Country 
 
 ```{r}
-table(estonia_passenger_list$Country) %>% sort(decreasing = T)
+table(estonia_passenger_list$Country) %>% sort(decreasing = T) %>% kbl()
 ```
 
 
@@ -184,10 +207,6 @@ p
 
 
 ### Age
-
-```{r}
-table(estonia_passenger_list$Age) %>% sort(decreasing = T)
-```
 
 
 
@@ -392,9 +411,8 @@ last_rf_fit %>%
   kable_styling(full_width = F, position = "center", html_font = "Cambria") 
 ```
 
-```{r}
 
-```
+
 
 # Major Concerns 
 

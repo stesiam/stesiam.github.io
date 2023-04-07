@@ -5,8 +5,8 @@
 <meta name="generator" content="quarto-1.3.276">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="stesiam">
-<meta name="dcterms.date" content="2022-11-15">
-<meta name="description" content="Build a classification machine learning model to predict the survivors of MS Estonia.">
+<meta name="dcterms.date" content="2023-03-31">
+<meta name="description" content="Build a logistic regression model to predict survivors of MS Estonia.">
 <title>stesiam - Predict Survivors of MS Estonia</title>
 <style>
 code{white-space: pre-wrap;}
@@ -112,8 +112,8 @@ div.csl-indent {
 }</script><script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script><link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 <link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="stesiam - Predict Survivors of MS Estonia">
-<meta property="og:description" content="Build a classification machine learning model to predict the survivors of MS Estonia.">
-<meta property="og:image" content="https://www.stesiam.github.io/notebooks/2023-03-30-Predict-Survivors-of-MS-Estonia/thunderstorm.jpg">
+<meta property="og:description" content="Build a logistic regression model to predict survivors of MS Estonia.">
+<meta property="og:image" content="https://www.stesiam.github.io/notebooks/2023-03-31-Predict-Survivors-of-MS-Estonia/thunderstorm.jpg">
 <meta property="og:site-name" content="stesiam">
 </head>
 <body class="floating nav-fixed">
@@ -191,15 +191,17 @@ div.csl-indent {
       </div> <!-- /container-fluid -->
     </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full"><div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <div class="quarto-title-block"><div><h1 class="title">Predict Survivors of MS Estonia</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button" data-quarto-source-url="https://github.com/stesiam/stesiam.github.io/blob/main/notebooks/2023-03-30-Predict-Survivors-of-MS-Estonia/2023-03-30-Predict-Survivors-of-MS-Estonia.qmd">View Source</a></li></ul></div></div>
+      <div class="quarto-title-block"><div><h1 class="title">Predict Survivors of MS Estonia</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button" data-quarto-source-url="https://github.com/stesiam/stesiam.github.io/blob/main/notebooks/2023-03-31-Predict-Survivors-of-MS-Estonia/2023-03-31-Predict-Survivors-of-MS-Estonia.qmd">View Source</a></li></ul></div></div>
                   <div>
         <div class="description">
-          <p>Build a classification machine learning model to predict the survivors of MS Estonia.</p>
+          <p>Build a logistic regression model to predict survivors of MS Estonia.</p>
         </div>
       </div>
                           <div class="quarto-categories">
                 <div class="quarto-category">R</div>
                 <div class="quarto-category">Classification</div>
+                <div class="quarto-category">Tidymodels</div>
+                <div class="quarto-category">Logistic Regression</div>
               </div>
                   </div>
   </div>
@@ -217,7 +219,7 @@ div.csl-indent {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">November 15, 2022</p>
+        <p class="date">March 31, 2023</p>
       </div>
     </div>
     
@@ -239,13 +241,14 @@ div.csl-indent {
   <li><a href="#preview-dataset" id="toc-preview-dataset" class="nav-link" data-scroll-target="#preview-dataset">Preview Dataset</a></li>
   <li><a href="#dataset-structure" id="toc-dataset-structure" class="nav-link" data-scroll-target="#dataset-structure">Dataset Structure</a></li>
   <li><a href="#convert-categorical-variables" id="toc-convert-categorical-variables" class="nav-link" data-scroll-target="#convert-categorical-variables">Convert Categorical variables</a></li>
+  <li><a href="#outliers-and-nas" id="toc-outliers-and-nas" class="nav-link" data-scroll-target="#outliers-and-nas">Outliers and NAs</a></li>
+  <li><a href="#preview-cleaned-dataset" id="toc-preview-cleaned-dataset" class="nav-link" data-scroll-target="#preview-cleaned-dataset">Preview Cleaned Dataset</a></li>
   </ul>
 </li>
   <li>
 <a href="#eda-with-r" id="toc-eda-with-r" class="nav-link" data-scroll-target="#eda-with-r">EDA with R</a>
   <ul class="collapse">
-<li><a href="#missing-values" id="toc-missing-values" class="nav-link" data-scroll-target="#missing-values">Missing Values</a></li>
-  <li><a href="#univariate-analysis" id="toc-univariate-analysis" class="nav-link" data-scroll-target="#univariate-analysis">Univariate Analysis</a></li>
+<li><a href="#univariate-analysis" id="toc-univariate-analysis" class="nav-link" data-scroll-target="#univariate-analysis">Univariate Analysis</a></li>
   <li><a href="#bivariate-analysis" id="toc-bivariate-analysis" class="nav-link" data-scroll-target="#bivariate-analysis">Bivariate Analysis</a></li>
   </ul>
 </li>
@@ -264,7 +267,7 @@ div.csl-indent {
   </ul>
 </li>
   <li><a href="#major-concerns" id="toc-major-concerns" class="nav-link" data-scroll-target="#major-concerns">Major Concerns</a></li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/stesiam/stesiam.github.io/edit/main/notebooks/2023-03-30-Predict-Survivors-of-MS-Estonia/2023-03-30-Predict-Survivors-of-MS-Estonia.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/stesiam/stesiam.github.io/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/stesiam/stesiam.github.io/edit/main/notebooks/2023-03-31-Predict-Survivors-of-MS-Estonia/2023-03-31-Predict-Survivors-of-MS-Estonia.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/stesiam/stesiam.github.io/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
 </nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
@@ -277,10 +280,10 @@ div.csl-indent {
 <a href="#introduction">Introduction</a> <br>
 </li>
 <li>
-<a href="#prerequisites">Prerequisites</a> <br> &nbsp; 2.1 <a href="#import-libraries">Import Libraries</a> <br> &nbsp; 2.2 <a href="#import-dataset">Import Dataset</a> <br> &nbsp; 2.3 <a href="#preview-dataset">Preview Datasset</a> <br> &nbsp; 2.4 <a href="#dataset-structure">Dataset Structure</a> <br> &nbsp; 2.5 <a href="#convert-categorical-variables">Convert Categorical variables</a> <br>
+<a href="#prerequisites">Prerequisites</a> <br> &nbsp; 2.1 <a href="#import-libraries">Import Libraries</a> <br> &nbsp; 2.2 <a href="#import-dataset">Import Dataset</a> <br> &nbsp; 2.3 <a href="#preview-dataset">Preview Datasset</a> <br> &nbsp; 2.4 <a href="#dataset-structure">Dataset Structure</a> <br> &nbsp; 2.5 <a href="#convert-categorical-variables">Convert Categorical variables</a> <br> &nbsp; 2.6 <a href="#outliers">Outliers</a> <br> &nbsp; 2.7 <a href="#missing-values">Missing Values</a> <br>
 </li>
 <li>
-<a href="#eda-with-r">EDA with R</a> <br> &nbsp; 3.1 <a href="#missing-values">Missing Values</a> <br> &nbsp; 3.2 <a href="#univariate-analysis">Univariate Analysis</a> <br> &nbsp; 3.3 <a href="#bivariate-analysis">Bivariate Analysis</a> <br> &nbsp; 3.4 <a href="#correlogram">Correlogram</a> <br>
+<a href="#eda-with-r">EDA with R</a> <br> &nbsp; 3.1 <a href="#univariate-analysis">Univariate Analysis</a> <br> &nbsp; 3.2 <a href="#bivariate-analysis">Bivariate Analysis</a> <br> &nbsp; 3.3 <a href="#correlogram">Correlogram</a> <br>
 </li>
 <li>
 <a href="#build-predictive-model">Building Predictive Model</a> <br> &nbsp; 4.1 <a href="#split-train-test-dataset">Split train/test Dataset</a> <br> &nbsp; 4.2 <a href="#recipes">Recipes</a> <br> &nbsp; 4.3 <a href="#build-model">Build Model</a> <br> &nbsp; 4.4 <a href="#fit-resamples">Fit</a> <br> &nbsp; 4.5 <a href="#evaluate-model">Evaluate Model</a> <br>
@@ -288,10 +291,11 @@ div.csl-indent {
 <li><a href="#references">References</a></li>
 </ol>
 <hr></section><section id="introduction" class="level1"><h1>Introduction</h1>
+<p>Το MSEstonia ήταν ένα επιβατηγό πλοίο το οποίο βυθίστηκε στις 28 Σεπτεμβρίου του 1994.</p>
 </section><section id="prerequisites" class="level1"><h1>Prerequisites</h1>
 <section id="import-libraries" class="level2"><h2 class="anchored" data-anchor-id="import-libraries">Import Libraries</h2>
 <p>For this analysis we will need standard libraries for importing and processing my data, such as readr <span class="citation" data-cites="R-readr">(<a href="#ref-R-readr" role="doc-biblioref">Wickham, Hester, &amp; Bryan, 2022</a>)</span> and dplyr <span class="citation" data-cites="R-dplyr">(<a href="#ref-R-dplyr" role="doc-biblioref">Wickham, François, Henry, &amp; Müller, 2022</a>)</span>. The kableExtra <span class="citation" data-cites="R-kableExtra">(<a href="#ref-R-kableExtra" role="doc-biblioref">Zhu, 2021</a>)</span> package was used to print the results in table format.</p>
-<p>Finally, the ggplot2 <span class="citation" data-cites="R-ggplot2">(<a href="#ref-R-ggplot2" role="doc-biblioref">Wickham, Chang, et al., 2022</a>)</span> package was used to create some visualizations, as well as an auxiliary package, ggtext <span class="citation" data-cites="R-ggtext">(<a href="#ref-R-ggtext" role="doc-biblioref">Wilke &amp; Wiernik, 2022</a>)</span>, for further formatting those.</p>
+<p>Finally, the ggplot2 <span class="citation" data-cites="R-ggplot2">(<a href="#ref-R-ggplot2" role="doc-biblioref">Wickham, Chang, et al., 2022</a>)</span> package is necessary to create some visualizations, as well as an auxiliary package, ggtext <span class="citation" data-cites="R-ggtext">(<a href="#ref-R-ggtext" role="doc-biblioref">Wilke &amp; Wiernik, 2022</a>)</span>, for further formatting those.</p>
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># General purpose R libraries</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></span>
@@ -314,7 +318,7 @@ div.csl-indent {
 </details>
 </div>
 </section><section id="import-dataset" class="level2"><h2 class="anchored" data-anchor-id="import-dataset">Import dataset</h2>
-<p>After loading the libraries I am able to use the commands of the readr package to import my data. My data is in .csv format, so I’ll use the read_csv() command <span class="citation" data-cites="R-readr">(<a href="#ref-R-readr" role="doc-biblioref">Wickham, Hester, et al., 2022</a>)</span> to import them.</p>
+<p>After loading the libraries, I am able to use the commands of the readr package to import my data. My data is in .csv format, so I’ll use the read_csv() command <span class="citation" data-cites="R-readr">(<a href="#ref-R-readr" role="doc-biblioref">Wickham, Hester, et al., 2022</a>)</span> to import them.</p>
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">estonia_passenger_list</span> <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"data/estonia-passenger-list.csv"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -519,16 +523,166 @@ div.csl-indent {
 </tbody>
 </table>
 <p>Thus, my sample has 8 variables, of which 1 is quantitative and 7 are qualitative (nominal) properties.</p>
-<p>Sex -&gt; factor (men /women) Category (crew/passinger) Survived (yes/no) Country (sweden/estonia/…)</p>
 </section><section id="convert-categorical-variables" class="level2"><h2 class="anchored" data-anchor-id="convert-categorical-variables">Convert Categorical variables</h2>
-</section></section><section id="eda-with-r" class="level1"><h1>EDA with R</h1>
-<section id="missing-values" class="level2"><h2 class="anchored" data-anchor-id="missing-values">Missing Values</h2>
-<p>On this dataset there are 0 missing values, in total.</p>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">estonia_passenger_list</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Country</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Country</span><span class="op">)</span></span>
+<span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Sex</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Sex</span><span class="op">)</span></span>
+<span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Category</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Category</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Survived</span><span class="op">[</span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Survived</span> <span class="op">==</span> <span class="st">"0"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"No"</span></span>
+<span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Survived</span><span class="op">[</span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Survived</span> <span class="op">==</span> <span class="st">"1"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Yes"</span></span>
+<span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Survived</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Survived</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section><section id="univariate-analysis" class="level2"><h2 class="anchored" data-anchor-id="univariate-analysis">Univariate Analysis</h2>
+</section><section id="outliers-and-nas" class="level2"><h2 class="anchored" data-anchor-id="outliers-and-nas">Outliers and NAs</h2>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot</a></span><span class="op">(</span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Age</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="2023-03-31-Predict-Survivors-of-MS-Estonia_files/figure-html/unnamed-chunk-3-1.png" class="quarto-discovered-preview-image img-fluid" width="672"></p>
+</div>
+</div>
+<p>On this dataset there are 0 missing values, in total.</p>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">estonia_passenger_list</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section><section id="preview-cleaned-dataset" class="level2"><h2 class="anchored" data-anchor-id="preview-cleaned-dataset">Preview Cleaned Dataset</h2>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#| label: tbl-preview-dataset</span></span>
+<span><span class="co">#| tbl-cap: "Preview Dataset (first 6 rows)"</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">estonia_passenger_list</span>, <span class="fl">10</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span></span>
+<span>    align <span class="op">=</span> <span class="st">'c'</span>,</span>
+<span>    booktabs <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>    centering <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>    valign <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_classic.html">kable_paper</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/scroll_box.html">scroll_box</a></span><span class="op">(</span>width <span class="op">=</span> <span class="st">"600px"</span>, height <span class="op">=</span> <span class="st">"250px"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">F</span>, position <span class="op">=</span> <span class="st">"center"</span>, html_font <span class="op">=</span> <span class="st">"Cambria"</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:250px; overflow-x: scroll; width:600px;  font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;" class="table">
+<table class="lightable-paper table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">PassengerId</th>
+<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">Country</th>
+<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">Firstname</th>
+<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">Lastname</th>
+<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">Sex</th>
+<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">Age</th>
+<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">Category</th>
+<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">Survived</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">Sweden</td>
+<td style="text-align: center;">ARVID KALLE</td>
+<td style="text-align: center;">AADLI</td>
+<td style="text-align: center;">M</td>
+<td style="text-align: center;">62</td>
+<td style="text-align: center;">P</td>
+<td style="text-align: center;">No</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">Estonia</td>
+<td style="text-align: center;">LEA</td>
+<td style="text-align: center;">AALISTE</td>
+<td style="text-align: center;">F</td>
+<td style="text-align: center;">22</td>
+<td style="text-align: center;">C</td>
+<td style="text-align: center;">No</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">Estonia</td>
+<td style="text-align: center;">AIRI</td>
+<td style="text-align: center;">AAVASTE</td>
+<td style="text-align: center;">F</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">C</td>
+<td style="text-align: center;">No</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">Sweden</td>
+<td style="text-align: center;">JURI</td>
+<td style="text-align: center;">AAVIK</td>
+<td style="text-align: center;">M</td>
+<td style="text-align: center;">53</td>
+<td style="text-align: center;">C</td>
+<td style="text-align: center;">No</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">Sweden</td>
+<td style="text-align: center;">BRITTA ELISABET</td>
+<td style="text-align: center;">AHLSTROM</td>
+<td style="text-align: center;">F</td>
+<td style="text-align: center;">55</td>
+<td style="text-align: center;">P</td>
+<td style="text-align: center;">No</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">Sweden</td>
+<td style="text-align: center;">GERD INGA MAGNHILD</td>
+<td style="text-align: center;">AHLSTROM</td>
+<td style="text-align: center;">F</td>
+<td style="text-align: center;">71</td>
+<td style="text-align: center;">P</td>
+<td style="text-align: center;">No</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">Sweden</td>
+<td style="text-align: center;">HJALMAR</td>
+<td style="text-align: center;">AHLSTROM</td>
+<td style="text-align: center;">M</td>
+<td style="text-align: center;">60</td>
+<td style="text-align: center;">P</td>
+<td style="text-align: center;">No</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">Estonia</td>
+<td style="text-align: center;">PILLE</td>
+<td style="text-align: center;">AHMAN</td>
+<td style="text-align: center;">F</td>
+<td style="text-align: center;">18</td>
+<td style="text-align: center;">P</td>
+<td style="text-align: center;">No</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">Estonia</td>
+<td style="text-align: center;">TORMI</td>
+<td style="text-align: center;">AINSALU</td>
+<td style="text-align: center;">M</td>
+<td style="text-align: center;">30</td>
+<td style="text-align: center;">C</td>
+<td style="text-align: center;">No</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">Sweden</td>
+<td style="text-align: center;">ANNA MARIA</td>
+<td style="text-align: center;">ALDRIN</td>
+<td style="text-align: center;">F</td>
+<td style="text-align: center;">63</td>
+<td style="text-align: center;">P</td>
+<td style="text-align: center;">No</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</div>
+</div>
+</section></section><section id="eda-with-r" class="level1"><h1>EDA with R</h1>
+<section id="univariate-analysis" class="level2"><h2 class="anchored" data-anchor-id="univariate-analysis">Univariate Analysis</h2>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Country</a></li>
@@ -540,44 +694,96 @@ div.csl-indent {
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Country</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span>decreasing <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
-<pre><code>
-       Sweden       Estonia        Latvia       Finland        Russia 
-          550           344            28            16            14 
-       Norway       Germany       Denmark     Lithuania Great Britain 
-            9             8             6             4             2 
-      Morocco   Netherlands       Belarus        Canada        France 
-            2             2             1             1             1 
-      Nigeria 
-            1 </code></pre>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Country</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span>decreasing <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<thead><tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Var1</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Freq</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Sweden</td>
+<td style="text-align: right;">550</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Estonia</td>
+<td style="text-align: right;">344</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Latvia</td>
+<td style="text-align: right;">28</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Finland</td>
+<td style="text-align: right;">16</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Russia</td>
+<td style="text-align: right;">14</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Norway</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Germany</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Denmark</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Lithuania</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Great Britain</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Morocco</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Netherlands</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Belarus</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Canada</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">France</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Nigeria</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">p</span><span class="op">&lt;-</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">estonia_passenger_list</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">Sex</span>, fill <span class="op">=</span> <span class="va">Sex</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">p</span><span class="op">&lt;-</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">estonia_passenger_list</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">Sex</span>, fill <span class="op">=</span> <span class="va">Sex</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">p</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<p><img src="2023-03-30-Predict-Survivors-of-MS-Estonia_files/figure-html/unnamed-chunk-5-1.png" class="quarto-discovered-preview-image img-fluid" width="672"></p>
+<p><img src="2023-03-31-Predict-Survivors-of-MS-Estonia_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Age</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span>decreasing <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
-<pre><code>
-21 45 30 67 49 50 24 29 37 41 43 51 42 22 23 31 69 18 34 36 47 63 64 40 48 53 
-27 27 25 25 24 24 22 21 21 21 21 21 20 19 19 19 19 18 18 18 18 18 18 17 17 17 
-35 44 46 71 20 38 39 55 74 27 54 56 57 72 19 26 28 32 33 59 60 65 68 25 52 62 
-16 16 16 16 15 15 15 15 15 14 14 14 14 14 13 13 13 13 13 13 13 13 13 12 12 12 
-70 58 61 66 73 17 75 76 78 10 16  5 13 14 77 80 82  0  2  4  6  9 12 15 81 87 
-12 10 10  8  7  5  5  5  4  3  3  2  2  2  2  2  2  1  1  1  1  1  1  1  1  1 </code></pre>
-</div>
-</div>
+
 </div>
 <div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
 <div class="cell">
@@ -594,7 +800,7 @@ div.csl-indent {
 <details><summary>Show the code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Survived</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span>decreasing <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-stdout">
 <pre><code>
-  0   1 
+ No Yes 
 852 137 </code></pre>
 </div>
 <details><summary>Show the code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Survived</span><span class="op">[</span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Survived</span> <span class="op">==</span> <span class="fl">0</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"No"</span></span>
@@ -1038,14 +1244,9 @@ div.csl-indent {
 <span></span>
 <span><span class="va">last_rf_fit</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="va">last_fit_workflow</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu">last_fit</span><span class="op">(</span><span class="va">estonia_passenger_list_split</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stderr">
-<pre><code>! train/test split: preprocessor 1/1, model 1/1: NAs introduced by coercion</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>! train/test split: preprocessor 1/1, model 1/1 (predictions): NAs introduced by coercion</code></pre>
-</div>
-<details><summary>Show the code</summary><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">last_rf_fit</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">last_fit</span><span class="op">(</span><span class="va">estonia_passenger_list_split</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">last_rf_fit</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">collect_metrics</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span>toprule <span class="op">=</span> <span class="cn">T</span>,align <span class="op">=</span> <span class="st">'c'</span>,booktabs <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">F</span>, position <span class="op">=</span> <span class="st">"center"</span>, html_font <span class="op">=</span> <span class="st">"Cambria"</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1067,7 +1268,7 @@ div.csl-indent {
 <tr class="even">
 <td style="text-align: center;">roc_auc</td>
 <td style="text-align: center;">binary</td>
-<td style="text-align: center;">0.6955064</td>
+<td style="text-align: center;">0.7591549</td>
 <td style="text-align: center;">Preprocessor1_Model1</td>
 </tr>
 </tbody>
@@ -1170,16 +1371,16 @@ Wilke, C. O., &amp; Wiernik, B. M. (2022). <em>Ggtext: Improved text rendering s
 <div id="ref-R-kableExtra" class="csl-entry" role="listitem">
 Zhu, H. (2021). <em>kableExtra: Construct complex table with kable and pipe syntax</em>. Retrieved from <a href="https://CRAN.R-project.org/package=kableExtra">https://CRAN.R-project.org/package=kableExtra</a>
 </div>
-</div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{2022,
+</div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{2023,
   author = {, stesiam},
   title = {Predict {Survivors} of {MS} {Estonia}},
-  date = {2022-11-15},
-  url = {https://www.stesiam.github.io/notebooks/2023-03-30-Predict-Survivors-of-MS-Estonia/2023-03-30-Predict-Survivors-of-MS-Estonia.html},
+  date = {2023-03-31},
+  url = {https://www.stesiam.github.io/notebooks/2023-03-31-Predict-Survivors-of-MS-Estonia/2023-03-31-Predict-Survivors-of-MS-Estonia.html},
   langid = {en}
 }
-</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-2022" class="csl-entry quarto-appendix-citeas" role="listitem">
-stesiam. (2022, November 15). Predict Survivors of MS Estonia. Retrieved
-from <a href="https://www.stesiam.github.io/notebooks/2023-03-30-Predict-Survivors-of-MS-Estonia/2023-03-30-Predict-Survivors-of-MS-Estonia.html">https://www.stesiam.github.io/notebooks/2023-03-30-Predict-Survivors-of-MS-Estonia/2023-03-30-Predict-Survivors-of-MS-Estonia.html</a>
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-2023" class="csl-entry quarto-appendix-citeas" role="listitem">
+stesiam. (2023, March 31). Predict Survivors of MS Estonia. Retrieved
+from <a href="https://www.stesiam.github.io/notebooks/2023-03-31-Predict-Survivors-of-MS-Estonia/2023-03-31-Predict-Survivors-of-MS-Estonia.html">https://www.stesiam.github.io/notebooks/2023-03-31-Predict-Survivors-of-MS-Estonia/2023-03-31-Predict-Survivors-of-MS-Estonia.html</a>
 </div></div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
