@@ -72,7 +72,7 @@ editor_options:
 
 And here we go...
 
-My first notebook on my website and I'd like to be a little special. I didn't want to just take a ready-made dataset and apply a machine learning technique (I will do this in the next articles). So, I decided to make my own with the help of [hellenic's parliament website](hellenicparliament.gr/).
+This is the first notebook on my website and I'd like to be a little special. I didn't want to just take a ready-made dataset and apply a machine learning technique (I will do this in the next articles). So, I decided to make my own with the help of [hellenic's parliament website](hellenicparliament.gr/).
 
 The Greek political scene has particularly preoccupied global public opinion in recent years, due to the Greek economic crisis. A part of it was spent on the reasons that caused it. The causes of the Greek crisis are many and a point of contention to this day. In this article we will deal essentially with one of the points of criticism. The election of the same persons.
 
@@ -173,7 +173,7 @@ parliament$Party[parliament$Party == "ΟΟ.ΕΟ."] <- "ΟΟ.ΕΟ"
 
 ## Setting colors
 
-A few days after, I decided that there should be a consistency in the choice of colors. That's the reason of this section. Set a hex color for each party. 
+A few days after, I decided that there should be a consistency in the choice of colors. That's the reason of this section. Thus, I will assign a dedicated hex color code to each party. 
 
 ```{r}
 kke_color = "#FF6666"
@@ -187,11 +187,9 @@ syriza_color = "#e27bb1"
 
 # Parliament over the years
 
-Now, I will make a short sum-up of the electoral resuts over the years. It is important to share that I made it thanks to [this post](https://datavizstory.com/a-parliament-diagram-in-r/) and `ggpol` package. As I am planning to do this procedure for many electoral terms I will convert the as a function.
+Now, I will make a short sum-up of the electoral resuts over the years. It is important to share that I made it thanks to [this post](https://datavizstory.com/a-parliament-diagram-in-r/) and `ggpol` package. As I am planning to do this procedure for many electoral terms, I will convert it as a function.
 
-Arguments like `term` and `custom_title` are vital to create reproducible plots for all the terms. Although a main problem is the colors. On the aforementioned post it was about only one term. We knew how many parties we had, so we knew what colors to set and how many. If we try that on many terms (on which the number of parties can vary from 3 to 8) an error will come up which will say "Hey, you have set 3 colors but I see that you have 8 values (parties)". This was a real obstacle for me.
-
-After some tries and misses I came up with the concept of **dynamic arguments**. 
+Arguments like `term` and `custom_title` are vital to create reproducible plots for all the terms. Although a main problem is the colors. On the aforementioned post it was about only one term. We knew how many parties we had, so we knew what colors to set and how many. If we try that on many terms (on which the number of parties can vary from 3 to 8) an error will come up which will say "Hey, you have set 3 colors but I see that you have 8 values (parties)". This was a real obstacle for me. After some tries and misses I came up with the concept of **dynamic arguments**. 
 
 ```{r}
 make_parliament_plot <- function(term, custom_title, ...){
@@ -332,7 +330,7 @@ make_parliament_plot(16, "Greek Parliament (Jan, 2015 - Aug,2015)", "#bcd2e8", "
 ## 17th Term
 
 :::{.callout-warning}
-As you can see on the next plot there are many MPs that are classified as independent (according to Hellenic's Parliament website). Many of them are members of parties "ANEL" and "Enosi Kentroon". However, a large wave of departures from the parties led to not fulfilling the conditions to be considered as parliamentary parties. For that reason members of these parties (that did not left) are considere independent.
+As you can see on the next plot there are many MPs that are classified as independent (according to Hellenic's Parliament website). Many of them are members of parties "ANEL" and "Enosi Kentroon". However, a large wave of departures from the parties led to not fulfilling the conditions to be considered as parliamentary parties. For that reason members of these parties (that did not left) are considered independent.
 :::
 
 
@@ -400,7 +398,9 @@ ggplot(data = party_df, aes(x = reorder(Full_Name , Freq), y = Freq))+
   theme_minimal() +
    labs(title = "Most elected MPs",
        subtitle = "",
-       caption = "Source: stesiam | stesiam.github.io, 2022") +
+       caption = "Source: stesiam | stesiam.github.io, 2022",
+       x = "Times elected",
+       y = "Members of Parliament") +
   coord_flip()
 }
 ```

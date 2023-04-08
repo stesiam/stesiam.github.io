@@ -78,7 +78,6 @@ Generally, we are saving our money in a bank account but we are promising to not
 
 It is apparent that term deposits have a major disadvantage over regular ones in terms of capital availability. Of course, people will not have motive to do that without anything in return. For that reason, the banks usually offer higher interest for that kind of accounts. For example, Piraeus Bank (a bank in Greece) offers double interest rate on term deposits compared to regular ones.
 
-
 So, we can assume that there will be a serious interest for that product mostly on people with significant amount of savings ($>1000$) and do not have large, extraordinary expenses (loan, kids, etc.). 
 
 # Prerequisites
@@ -129,10 +128,12 @@ knitr::write_bib(.packages(), file = 'packages.bib')
 
 ## Import dataset
 
-After loading R libraries, then I will load my data. The initial source of my dataset has various versions of the same dataset. I will use the smaller one, as the fitting process on Boosting algorithms it is more time consuming in comparison with other methods (e.g. Logistic Regression, k-Nearest Neighbors etc.).
+After loading R libraries, then I will load my data. The initial source of my dataset has various versions of the same dataset. I will use the smaller one, as the fitting process on Boosting algorithms it is more time consuming in comparison with other methods (e.g. Logistic Regression, k-Nearest Neighbours etc.).
 
 ```{r Import dataset, cache=TRUE, message=FALSE,results='hide',echo=TRUE}
 bank_dataset <- read_delim("bank_dataset_files/bank.csv",  delim = ";", escape_double = FALSE, trim_ws = TRUE)
+
+bank_dataset = bank_dataset %>% tibble::rowid_to_column("ID")
 ```
 
 ## Preview dataset
@@ -942,7 +943,7 @@ In instance, the dataset I am working right now has imbalanced response variable
 ```{r}
 bank_recipe <- recipes::recipe(y~., 
                                data = bank_train) %>%
-  step_rm(poutcome) %>%
+  step_rm(poutcome, ID) %>%
   step_corr(all_numeric(), threshold = 0.75) %>%
   step_dummy(all_nominal(), -all_outcomes()) %>% prep() %>%
   step_smote(y) %>%
@@ -1007,7 +1008,7 @@ xgboost_model<- parsnip::boost_tree(
 
 ## Hyperparameters tuning
 
-Now, we are specifying the hyperpaterers' values and a grid to check whicη combination of those are performing better according to our desired metric (in our case ROC). This has to be done for both, LightGBM 
+Now, we are specifying the hyperpaterers' values and a grid to check which combination of those are performing better according to our desired metric (in our case ROC). This has to be done for both, LightGBM 
 
 ```{r}
 lightgbm_params <- dials::parameters(
@@ -1200,7 +1201,7 @@ last_xgboost_fit %>%
 # Results
 
 
-It seems that my model has a really good predictive value even if I applied a relatively simple model. If an increased accuracy is justified we can apply a more powerful model (e.g., XGBoost, CatBoost, etc.).
+It seems that my model has a really good predictive value even if I applied a relatively simple model. If an increased accuracy is justified we can apply a more powerful model (e.g., XGBoost, CatBoost, etc..).
 
 To summarize, 
 
@@ -1209,7 +1210,43 @@ To summarize,
 | LightGBM | `r sprintf("%.2f sec.", time_lightgbm)` | 0.8469  | 0.903 |
 | XGBoost  | `r sprintf("%.2f sec.", time_xgboost)`  | 0.8736  | 0.881 |
 
-In conclusion LightGBM model is less time xonsuming in comparison with XGBoost. On the other hand, XGBoost model needed more time to be built (which was expected) but outperformed LightGBM. 
+In conclusion LightGBM model is less time consuming in comparison with XGBoost. On the other hand, XGBoost model needed more time to be built (which was expected) but outperformed LightGBM. 
+
+So, we got some results, so what? The main question is still unanswered. All this modelling was about to find out who is interested to a term deposit. Usually, I would use predict function with the corresponding data to mark my predictions. However, I wasn't able to do that as I received an error about class. Nevermind, the function collect_predictions() does the same. 
+
+```{r}
+pr = last_lightgbm_fit %>% collect_predictions()
+```
+
+Now, I will select the predicted value and the result and I will paste them on my test data. 
+
+```{r}
+pr = pr %>% select(.pred_class, y) 
+
+final = cbind(pr, bank_test)
+```
+
+And now let's say that I want to give a list of only the interested ones. I will filter pred class to show only "Yes" values. We should also take into consideration that the dataset does not include any personal information, so I will also include  an ID.
+
+```{r}
+final %>% 
+  head() %>%
+  kbl(toprule = T,align = 'c',booktabs = T)  %>%
+  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
+
+final %>% select(.pred_class, ID) %>%
+  filter(.pred_class == "yes") %>% 
+  kbl(toprule = T,align = 'c',booktabs = T)  %>%
+  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
+```
+
+So, from 1131 possible clients, I finally got 75 that are actually interested. So, I reduced the required phone calls by 93 \% (and therefore the working hours allocated to this task). But at what cost ? 
+
+# Hypothesis
+
+Let's suppose we had to launch a new campaign and we had to inform the interested ones. There are two ways. The traditional one on which case we should call everyone (1131 people). On the other hand we can make a ML model (given the fact that I have some data) to "interrupt" some of them. I am also taking for granted that a phone call lasts on average 4 minutes. Also, based on Eurostat, the average hour wage was 30.5 euros. 
+
+To call everyone we need 4524 minutes, which correspond to 75.4 working hours and therefore to 2300 euros. By using the model, we require 75 calls which are equivalent to 5 working hours and 152.5 euros. Even on this simple example (and so few observations), we see an important benefit for the company. Last but not least, the company won't disappoint any customers by promoting something that are not interested to and even possible losing clients. So, ML modelling will help not only financially but also keeping the brand healthy.
 
 # Acknowledgements {.appendix .unlisted}
 

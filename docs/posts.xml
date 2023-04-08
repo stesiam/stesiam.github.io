@@ -4926,8 +4926,8 @@ font-style: inherit;">)</span></span></code></pre></div>
 </details>
 </div>
 </section><section id="import-dataset" class="level2"><h2 class="anchored" data-anchor-id="import-dataset">Import dataset</h2>
-<p>After loading R libraries, then I will load my data. The initial source of my dataset has various versions of the same dataset. I will use the smaller one, as the fitting process on Boosting algorithms it is more time consuming in comparison with other methods (e.g.&nbsp;Logistic Regression, k-Nearest Neighbors etc.).</p>
-<div class="cell" data-hash="2022-11-24-Predict-Possible-Clients_cache/html/Import dataset_ce41a0d5664b241261796d322d77084f">
+<p>After loading R libraries, then I will load my data. The initial source of my dataset has various versions of the same dataset. I will use the smaller one, as the fitting process on Boosting algorithms it is more time consuming in comparison with other methods (e.g.&nbsp;Logistic Regression, k-Nearest Neighbours etc.).</p>
+<div class="cell" data-hash="2022-11-24-Predict-Possible-Clients_cache/html/Import dataset_ff90c307495bbf025144870c9827f740">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">bank_dataset</span> <span class="op" style="color: #5E5E5E;
@@ -4951,6 +4951,28 @@ background-color: null;
 font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
 background-color: null;
 font-style: inherit;">TRUE</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span></span>
+<span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">bank_dataset</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">bank_dataset</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tibble</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://tibble.tidyverse.org/reference/rownames.html">rowid_to_column</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ID"</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details>
@@ -5041,6 +5063,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:250px; overflow-x: scroll; width:600px; ">
 <table class="lightable-paper table table-sm table-striped small" data-quarto-postprocess="true">
 <thead><tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">ID</th>
 <th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">age</th>
 <th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">job</th>
 <th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">marital</th>
@@ -5061,6 +5084,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </tr></thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: center;">1</td>
 <td style="text-align: center;">30</td>
 <td style="text-align: center;">unemployed</td>
 <td style="text-align: center;">married</td>
@@ -5080,6 +5104,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <td style="text-align: center;">no</td>
 </tr>
 <tr class="even">
+<td style="text-align: center;">2</td>
 <td style="text-align: center;">33</td>
 <td style="text-align: center;">services</td>
 <td style="text-align: center;">married</td>
@@ -5099,6 +5124,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <td style="text-align: center;">no</td>
 </tr>
 <tr class="odd">
+<td style="text-align: center;">3</td>
 <td style="text-align: center;">35</td>
 <td style="text-align: center;">management</td>
 <td style="text-align: center;">single</td>
@@ -5118,6 +5144,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <td style="text-align: center;">no</td>
 </tr>
 <tr class="even">
+<td style="text-align: center;">4</td>
 <td style="text-align: center;">30</td>
 <td style="text-align: center;">management</td>
 <td style="text-align: center;">married</td>
@@ -5137,6 +5164,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <td style="text-align: center;">no</td>
 </tr>
 <tr class="odd">
+<td style="text-align: center;">5</td>
 <td style="text-align: center;">59</td>
 <td style="text-align: center;">blue-collar</td>
 <td style="text-align: center;">married</td>
@@ -5156,6 +5184,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <td style="text-align: center;">no</td>
 </tr>
 <tr class="even">
+<td style="text-align: center;">6</td>
 <td style="text-align: center;">35</td>
 <td style="text-align: center;">management</td>
 <td style="text-align: center;">single</td>
@@ -5175,6 +5204,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <td style="text-align: center;">no</td>
 </tr>
 <tr class="odd">
+<td style="text-align: center;">7</td>
 <td style="text-align: center;">36</td>
 <td style="text-align: center;">self-employed</td>
 <td style="text-align: center;">married</td>
@@ -5194,6 +5224,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <td style="text-align: center;">no</td>
 </tr>
 <tr class="even">
+<td style="text-align: center;">8</td>
 <td style="text-align: center;">39</td>
 <td style="text-align: center;">technician</td>
 <td style="text-align: center;">married</td>
@@ -5213,6 +5244,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <td style="text-align: center;">no</td>
 </tr>
 <tr class="odd">
+<td style="text-align: center;">9</td>
 <td style="text-align: center;">41</td>
 <td style="text-align: center;">entrepreneur</td>
 <td style="text-align: center;">married</td>
@@ -5232,6 +5264,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <td style="text-align: center;">no</td>
 </tr>
 <tr class="even">
+<td style="text-align: center;">10</td>
 <td style="text-align: center;">43</td>
 <td style="text-align: center;">services</td>
 <td style="text-align: center;">married</td>
@@ -5283,7 +5316,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 </div>
 </center>
-<p>Our dataset is consisted by 17 variables (columns) and 4521 observations (rows). More specifically, concerning my variables, are as follows :</p>
+<p>Our dataset is consisted by 18 variables (columns) and 4521 observations (rows). More specifically, concerning my variables, are as follows :</p>
 <table class="table">
 <colgroup>
 <col style="width: 33%">
@@ -5391,7 +5424,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </tr>
 </tbody>
 </table>
-<p>Thus, my sample has 17 variables, of which 7 are quantitative and 10 are quantitative properties, of which 8 are nominal and the rest ones (<code>Education</code>, <code>Month</code>) are ordinal.</p>
+<p>Thus, my sample has 18 variables, of which 7 are quantitative and 10 are quantitative properties, of which 8 are nominal and the rest ones (<code>Education</code>, <code>Month</code>) are ordinal.</p>
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
@@ -10537,6 +10570,7 @@ font-style: inherit;">)</span> </span></code></pre></div>
 </details><div class="cell-output-display">
 <table class="table table-sm table-striped small" data-quarto-postprocess="true">
 <thead><tr class="header">
+<th style="text-align: center;" data-quarto-table-cell-role="th">ID</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">age</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">job</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">marital</th>
@@ -10557,6 +10591,7 @@ font-style: inherit;">)</span> </span></code></pre></div>
 </tr></thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: center;">1</td>
 <td style="text-align: center;">30</td>
 <td style="text-align: center;">unemployed</td>
 <td style="text-align: center;">married</td>
@@ -10576,6 +10611,7 @@ font-style: inherit;">)</span> </span></code></pre></div>
 <td style="text-align: center;">no</td>
 </tr>
 <tr class="even">
+<td style="text-align: center;">2</td>
 <td style="text-align: center;">33</td>
 <td style="text-align: center;">services</td>
 <td style="text-align: center;">married</td>
@@ -10595,6 +10631,7 @@ font-style: inherit;">)</span> </span></code></pre></div>
 <td style="text-align: center;">no</td>
 </tr>
 <tr class="odd">
+<td style="text-align: center;">4</td>
 <td style="text-align: center;">30</td>
 <td style="text-align: center;">management</td>
 <td style="text-align: center;">married</td>
@@ -10614,6 +10651,7 @@ font-style: inherit;">)</span> </span></code></pre></div>
 <td style="text-align: center;">no</td>
 </tr>
 <tr class="even">
+<td style="text-align: center;">5</td>
 <td style="text-align: center;">59</td>
 <td style="text-align: center;">blue-collar</td>
 <td style="text-align: center;">married</td>
@@ -10633,6 +10671,7 @@ font-style: inherit;">)</span> </span></code></pre></div>
 <td style="text-align: center;">no</td>
 </tr>
 <tr class="odd">
+<td style="text-align: center;">7</td>
 <td style="text-align: center;">36</td>
 <td style="text-align: center;">self-employed</td>
 <td style="text-align: center;">married</td>
@@ -10652,6 +10691,7 @@ font-style: inherit;">)</span> </span></code></pre></div>
 <td style="text-align: center;">no</td>
 </tr>
 <tr class="even">
+<td style="text-align: center;">8</td>
 <td style="text-align: center;">39</td>
 <td style="text-align: center;">technician</td>
 <td style="text-align: center;">married</td>
@@ -10731,6 +10771,7 @@ font-style: inherit;">)</span> </span></code></pre></div>
 </details><div class="cell-output-display">
 <table class="table table-sm table-striped small" data-quarto-postprocess="true">
 <thead><tr class="header">
+<th style="text-align: center;" data-quarto-table-cell-role="th">ID</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">age</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">job</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">marital</th>
@@ -10751,6 +10792,7 @@ font-style: inherit;">)</span> </span></code></pre></div>
 </tr></thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: center;">3</td>
 <td style="text-align: center;">35</td>
 <td style="text-align: center;">management</td>
 <td style="text-align: center;">single</td>
@@ -10770,6 +10812,7 @@ font-style: inherit;">)</span> </span></code></pre></div>
 <td style="text-align: center;">no</td>
 </tr>
 <tr class="even">
+<td style="text-align: center;">6</td>
 <td style="text-align: center;">35</td>
 <td style="text-align: center;">management</td>
 <td style="text-align: center;">single</td>
@@ -10789,6 +10832,7 @@ font-style: inherit;">)</span> </span></code></pre></div>
 <td style="text-align: center;">no</td>
 </tr>
 <tr class="odd">
+<td style="text-align: center;">15</td>
 <td style="text-align: center;">31</td>
 <td style="text-align: center;">blue-collar</td>
 <td style="text-align: center;">married</td>
@@ -10808,6 +10852,7 @@ font-style: inherit;">)</span> </span></code></pre></div>
 <td style="text-align: center;">no</td>
 </tr>
 <tr class="even">
+<td style="text-align: center;">23</td>
 <td style="text-align: center;">44</td>
 <td style="text-align: center;">services</td>
 <td style="text-align: center;">single</td>
@@ -10827,6 +10872,7 @@ font-style: inherit;">)</span> </span></code></pre></div>
 <td style="text-align: center;">no</td>
 </tr>
 <tr class="odd">
+<td style="text-align: center;">51</td>
 <td style="text-align: center;">45</td>
 <td style="text-align: center;">blue-collar</td>
 <td style="text-align: center;">divorced</td>
@@ -10846,6 +10892,7 @@ font-style: inherit;">)</span> </span></code></pre></div>
 <td style="text-align: center;">yes</td>
 </tr>
 <tr class="even">
+<td style="text-align: center;">52</td>
 <td style="text-align: center;">37</td>
 <td style="text-align: center;">technician</td>
 <td style="text-align: center;">single</td>
@@ -10909,7 +10956,9 @@ font-style: inherit;"><a href="https://recipes.tidymodels.org/reference/step_rm.
 background-color: null;
 font-style: inherit;">(</span><span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit;">poutcome</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">poutcome</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">ID</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -11545,7 +11594,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </details>
 </div>
 </section><section id="hyperparameters-tuning" class="level2"><h2 class="anchored" data-anchor-id="hyperparameters-tuning">Hyperparameters tuning</h2>
-<p>Now, we are specifying the hyperpaterers’ values and a grid to check whicη combination of those are performing better according to our desired metric (in our case ROC). This has to be done for both, LightGBM</p>
+<p>Now, we are specifying the hyperpaterers’ values and a grid to check which combination of those are performing better according to our desired metric (in our case ROC). This has to be done for both, LightGBM</p>
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb68" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
@@ -12683,13 +12732,13 @@ font-style: inherit;">)</span> </span></code></pre></div>
 <tr class="odd">
 <td style="text-align: center;">accuracy</td>
 <td style="text-align: center;">binary</td>
-<td style="text-align: center;">0.8815</td>
+<td style="text-align: center;">0.8833</td>
 <td style="text-align: center;">Preprocessor1_Model1</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">roc_auc</td>
 <td style="text-align: center;">binary</td>
-<td style="text-align: center;">0.8458</td>
+<td style="text-align: center;">0.8471</td>
 <td style="text-align: center;">Preprocessor1_Model1</td>
 </tr>
 </tbody>
@@ -12869,13 +12918,13 @@ font-style: inherit;">)</span> </span></code></pre></div>
 <tr class="odd">
 <td style="text-align: center;">accuracy</td>
 <td style="text-align: center;">binary</td>
-<td style="text-align: center;">0.8957</td>
+<td style="text-align: center;">0.8921</td>
 <td style="text-align: center;">Preprocessor1_Model1</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">roc_auc</td>
 <td style="text-align: center;">binary</td>
-<td style="text-align: center;">0.8702</td>
+<td style="text-align: center;">0.8693</td>
 <td style="text-align: center;">Preprocessor1_Model1</td>
 </tr>
 </tbody>
@@ -12883,7 +12932,7 @@ font-style: inherit;">)</span> </span></code></pre></div>
 </div>
 </div>
 </section></section><section id="results" class="level1"><h1>Results</h1>
-<p>It seems that my model has a really good predictive value even if I applied a relatively simple model. If an increased accuracy is justified we can apply a more powerful model (e.g., XGBoost, CatBoost, etc.).</p>
+<p>It seems that my model has a really good predictive value even if I applied a relatively simple model. If an increased accuracy is justified we can apply a more powerful model (e.g., XGBoost, CatBoost, etc..).</p>
 <p>To summarize,</p>
 <table class="table">
 <thead><tr class="header">
@@ -12907,7 +12956,668 @@ font-style: inherit;">)</span> </span></code></pre></div>
 </tr>
 </tbody>
 </table>
-<p>In conclusion LightGBM model is less time xonsuming in comparison with XGBoost. On the other hand, XGBoost model needed more time to be built (which was expected) but outperformed LightGBM.</p>
+<p>In conclusion LightGBM model is less time consuming in comparison with XGBoost. On the other hand, XGBoost model needed more time to be built (which was expected) but outperformed LightGBM.</p>
+<p>So, we got some results, so what? The main question is still unanswered. All this modelling was about to find out who is interested to a term deposit. Usually, I would use predict function with the corresponding data to mark my predictions. However, I wasn’t able to do that as I received an error about class. Nevermind, the function collect_predictions() does the same.</p>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb85" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">pr</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">last_lightgbm_fit</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">collect_predictions</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div>
+</details>
+</div>
+<p>Now, I will select the predicted value and the result and I will paste them on my test data.</p>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb86" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">pr</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">pr</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">.pred_class</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">y</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> </span>
+<span></span>
+<span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">final</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">pr</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">bank_test</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div>
+</details>
+</div>
+<p>And now let’s say that I want to give a list of only the interested ones. I will filter pred class to show only “Yes” values. We should also take into consideration that the dataset does not include any personal information, so I will also include an ID.</p>
+<div class="cell">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb87" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">final</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>toprule <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">T</span>,align <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'c'</span>,booktabs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">T</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>full_width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">F</span>, position <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"center"</span>, html_font <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Cambria"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> </span></code></pre></div>
+</details><div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
+<th style="text-align: center;" data-quarto-table-cell-role="th">.pred_class</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">y</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">ID</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">age</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">job</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">marital</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">education</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">default</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">balance</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">housing</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">loan</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">contact</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">day</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">month</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">duration</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">campaign</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">pdays</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">previous</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">poutcome</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">y</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">no</td>
+<td style="text-align: center;">no</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">35</td>
+<td style="text-align: center;">management</td>
+<td style="text-align: center;">single</td>
+<td style="text-align: center;">tertiary</td>
+<td style="text-align: center;">no</td>
+<td style="text-align: center;">1350</td>
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">no</td>
+<td style="text-align: center;">cellular</td>
+<td style="text-align: center;">16</td>
+<td style="text-align: center;">apr</td>
+<td style="text-align: center;">185</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">330</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">failure</td>
+<td style="text-align: center;">no</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">no</td>
+<td style="text-align: center;">no</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">35</td>
+<td style="text-align: center;">management</td>
+<td style="text-align: center;">single</td>
+<td style="text-align: center;">tertiary</td>
+<td style="text-align: center;">no</td>
+<td style="text-align: center;">747</td>
+<td style="text-align: center;">no</td>
+<td style="text-align: center;">no</td>
+<td style="text-align: center;">cellular</td>
+<td style="text-align: center;">23</td>
+<td style="text-align: center;">feb</td>
+<td style="text-align: center;">141</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">176</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">failure</td>
+<td style="text-align: center;">no</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">no</td>
+<td style="text-align: center;">no</td>
+<td style="text-align: center;">15</td>
+<td style="text-align: center;">31</td>
+<td style="text-align: center;">blue-collar</td>
+<td style="text-align: center;">married</td>
+<td style="text-align: center;">secondary</td>
+<td style="text-align: center;">no</td>
+<td style="text-align: center;">360</td>
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">cellular</td>
+<td style="text-align: center;">29</td>
+<td style="text-align: center;">jan</td>
+<td style="text-align: center;">89</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">241</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">failure</td>
+<td style="text-align: center;">no</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">no</td>
+<td style="text-align: center;">no</td>
+<td style="text-align: center;">23</td>
+<td style="text-align: center;">44</td>
+<td style="text-align: center;">services</td>
+<td style="text-align: center;">single</td>
+<td style="text-align: center;">secondary</td>
+<td style="text-align: center;">no</td>
+<td style="text-align: center;">106</td>
+<td style="text-align: center;">no</td>
+<td style="text-align: center;">no</td>
+<td style="text-align: center;">unknown</td>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">jun</td>
+<td style="text-align: center;">109</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">-1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">unknown</td>
+<td style="text-align: center;">no</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">no</td>
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">51</td>
+<td style="text-align: center;">45</td>
+<td style="text-align: center;">blue-collar</td>
+<td style="text-align: center;">divorced</td>
+<td style="text-align: center;">primary</td>
+<td style="text-align: center;">no</td>
+<td style="text-align: center;">844</td>
+<td style="text-align: center;">no</td>
+<td style="text-align: center;">no</td>
+<td style="text-align: center;">unknown</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">jun</td>
+<td style="text-align: center;">1018</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">-1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">unknown</td>
+<td style="text-align: center;">yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">no</td>
+<td style="text-align: center;">52</td>
+<td style="text-align: center;">37</td>
+<td style="text-align: center;">technician</td>
+<td style="text-align: center;">single</td>
+<td style="text-align: center;">secondary</td>
+<td style="text-align: center;">no</td>
+<td style="text-align: center;">228</td>
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">no</td>
+<td style="text-align: center;">cellular</td>
+<td style="text-align: center;">20</td>
+<td style="text-align: center;">aug</td>
+<td style="text-align: center;">1740</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">-1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">unknown</td>
+<td style="text-align: center;">no</td>
+</tr>
+</tbody>
+</table>
+</div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb88" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">final</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">.pred_class</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">ID</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">.pred_class</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"yes"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>toprule <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">T</span>,align <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'c'</span>,booktabs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">T</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>full_width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">F</span>, position <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"center"</span>, html_font <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Cambria"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> </span></code></pre></div>
+</details><div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
+<th style="text-align: center;" data-quarto-table-cell-role="th">.pred_class</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">ID</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">52</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">99</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">157</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">201</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">203</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">219</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">242</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">299</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">301</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">355</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">495</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">685</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">703</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">806</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">960</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">1127</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">1176</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">1193</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">1277</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">1279</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">1280</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">1350</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">1370</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">1432</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">1455</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">1502</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">1593</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">1764</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">1878</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">1904</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">1915</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">1946</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">1992</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">2038</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">2056</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">2139</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">2160</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">2203</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">2214</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">2218</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">2255</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">2259</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">2432</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">2465</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">2481</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">2652</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">2655</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">2666</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">2732</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">2761</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">2828</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">2920</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">3420</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">3590</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">3615</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">3645</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">3659</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">3738</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">3751</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">3755</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">3787</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">3795</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">3862</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">3932</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">3957</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">3969</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">4055</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">4067</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">4124</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">4214</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">4224</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">4233</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">4263</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">4481</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">4504</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>So, from 1131 possible clients, I finally got 75 that are actually interested. So, I reduced the required phone calls by 93 % (and therefore the working hours allocated to this task). But at what cost ?</p>
+</section><section id="hypothesis" class="level1"><h1>Hypothesis</h1>
+<p>Let’s suppose we had to launch a new campaign and we had to inform the interested ones. There are two ways. The traditional one on which case we should call everyone (1131 people). On the other hand we can make a ML model (given the fact that I have some data) to “interrupt” some of them. I am also taking for granted that a phone call lasts on average 4 minutes. Also, based on Eurostat, the average hour wage was 30.5 euros.</p>
+<p>To call everyone we need 4524 minutes, which correspond to 75.4 working hours and therefore to 2300 euros. By using the model, we require 75 calls which are equivalent to 5 working hours and 152.5 euros. Even on this simple example (and so few observations), we see an important benefit for the company. Last but not least, the company won’t disappoint any customers by promoting something that are not interested to and even possible losing clients. So, ML modelling will help not only financially but also keeping the brand healthy.</p>
 </section><div id="quarto-appendix" class="default"><section id="acknowledgements" class="level1 appendix unlisted"><h2 class="anchored quarto-appendix-heading">Acknowledgements</h2><div class="quarto-appendix-contents">
 <p>Image by <a href="https://pixabay.com/users/geralt-9301/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=563967">Gerd Altmann</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=563967">Pixabay</a></p>
 </div></section><section id="references" class="level1 appendix unlisted"><h2 class="quarto-appendix-heading"></h2><div class="quarto-appendix-contents">
@@ -16398,7 +17108,7 @@ References
 </li>
 </ol></section><section id="introduction" class="level1"><h1>Introduction</h1>
 <p>And here we go…</p>
-<p>My first notebook on my website and I’d like to be a little special. I didn’t want to just take a ready-made dataset and apply a machine learning technique (I will do this in the next articles). So, I decided to make my own with the help of <a href="hellenicparliament.gr/">hellenic’s parliament website</a>.</p>
+<p>This is the first notebook on my website and I’d like to be a little special. I didn’t want to just take a ready-made dataset and apply a machine learning technique (I will do this in the next articles). So, I decided to make my own with the help of <a href="hellenicparliament.gr/">hellenic’s parliament website</a>.</p>
 <p>The Greek political scene has particularly preoccupied global public opinion in recent years, due to the Greek economic crisis. A part of it was spent on the reasons that caused it. The causes of the Greek crisis are many and a point of contention to this day. In this article we will deal essentially with one of the points of criticism. The election of the same persons.</p>
 <p>With this notebook I will try to analyze whether this claim is valid by counting how many times someone has been elected to the Greek parliament. In addition, I will study the obsession with the same persons at the party level, but also at the local level (constituencies).</p>
 </section><section id="prerequisites" class="level1"><h1>Prerequisites</h1>
@@ -17210,7 +17920,7 @@ font-style: inherit;">"ΟΟ.ΕΟ"</span></span></code></pre></div>
 </details>
 </div>
 </section><section id="setting-colors" class="level2"><h2 class="anchored" data-anchor-id="setting-colors">Setting colors</h2>
-<p>A few days after, I decided that there should be a consistency in the choice of colors. That’s the reason of this section. Set a hex color for each party.</p>
+<p>A few days after, I decided that there should be a consistency in the choice of colors. That’s the reason of this section. Thus, I will assign a dedicated hex color code to each party.</p>
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
@@ -17243,9 +17953,8 @@ font-style: inherit;">"#e27bb1"</span></span></code></pre></div>
 </details>
 </div>
 </section></section><section id="parliament-over-the-years" class="level1"><h1>Parliament over the years</h1>
-<p>Now, I will make a short sum-up of the electoral resuts over the years. It is important to share that I made it thanks to <a href="https://datavizstory.com/a-parliament-diagram-in-r/">this post</a> and <code>ggpol</code> package. As I am planning to do this procedure for many electoral terms I will convert the as a function.</p>
-<p>Arguments like <code>term</code> and <code>custom_title</code> are vital to create reproducible plots for all the terms. Although a main problem is the colors. On the aforementioned post it was about only one term. We knew how many parties we had, so we knew what colors to set and how many. If we try that on many terms (on which the number of parties can vary from 3 to 8) an error will come up which will say “Hey, you have set 3 colors but I see that you have 8 values (parties)”. This was a real obstacle for me.</p>
-<p>After some tries and misses I came up with the concept of <strong>dynamic arguments</strong>.</p>
+<p>Now, I will make a short sum-up of the electoral resuts over the years. It is important to share that I made it thanks to <a href="https://datavizstory.com/a-parliament-diagram-in-r/">this post</a> and <code>ggpol</code> package. As I am planning to do this procedure for many electoral terms, I will convert it as a function.</p>
+<p>Arguments like <code>term</code> and <code>custom_title</code> are vital to create reproducible plots for all the terms. Although a main problem is the colors. On the aforementioned post it was about only one term. We knew how many parties we had, so we knew what colors to set and how many. If we try that on many terms (on which the number of parties can vary from 3 to 8) an error will come up which will say “Hey, you have set 3 colors but I see that you have 8 values (parties)”. This was a real obstacle for me. After some tries and misses I came up with the concept of <strong>dynamic arguments</strong>.</p>
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
@@ -18151,7 +18860,7 @@ Warning
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>As you can see on the next plot there are many MPs that are classified as independent (according to Hellenic’s Parliament website). Many of them are members of parties “ANEL” and “Enosi Kentroon”. However, a large wave of departures from the parties led to not fulfilling the conditions to be considered as parliamentary parties. For that reason members of these parties (that did not left) are considere independent.</p>
+<p>As you can see on the next plot there are many MPs that are classified as independent (according to Hellenic’s Parliament website). Many of them are members of parties “ANEL” and “Enosi Kentroon”. However, a large wave of departures from the parties led to not fulfilling the conditions to be considered as parliamentary parties. For that reason members of these parties (that did not left) are considered independent.</p>
 </div>
 </div>
 <div class="cell">
@@ -18740,7 +19449,17 @@ font-style: inherit;">""</span>,</span>
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"Source: stesiam | stesiam.github.io, 2022"</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">"Source: stesiam | stesiam.github.io, 2022"</span>,</span>
+<span>       x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Times elected"</span>,</span>
+<span>       y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Members of Parliament"</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
 background-color: null;

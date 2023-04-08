@@ -201,7 +201,6 @@ div.csl-indent {
                           <div class="quarto-categories">
                 <div class="quarto-category">R</div>
                 <div class="quarto-category">EDA</div>
-                <div class="quarto-category">Greek Parliament</div>
               </div>
                   </div>
   </div>
@@ -288,7 +287,7 @@ div.csl-indent {
 </li>
 </ol></section><section id="introduction" class="level1"><h1>Introduction</h1>
 <p>And here we go…</p>
-<p>My first notebook on my website and I’d like to be a little special. I didn’t want to just take a ready-made dataset and apply a machine learning technique (I will do this in the next articles). So, I decided to make my own with the help of <a href="hellenicparliament.gr/">hellenic’s parliament website</a>.</p>
+<p>This is the first notebook on my website and I’d like to be a little special. I didn’t want to just take a ready-made dataset and apply a machine learning technique (I will do this in the next articles). So, I decided to make my own with the help of <a href="hellenicparliament.gr/">hellenic’s parliament website</a>.</p>
 <p>The Greek political scene has particularly preoccupied global public opinion in recent years, due to the Greek economic crisis. A part of it was spent on the reasons that caused it. The causes of the Greek crisis are many and a point of contention to this day. In this article we will deal essentially with one of the points of criticism. The election of the same persons.</p>
 <p>With this notebook I will try to analyze whether this claim is valid by counting how many times someone has been elected to the Greek parliament. In addition, I will study the obsession with the same persons at the party level, but also at the local level (constituencies).</p>
 </section><section id="prerequisites" class="level1"><h1>Prerequisites</h1>
@@ -474,7 +473,7 @@ div.csl-indent {
 </details>
 </div>
 </section><section id="setting-colors" class="level2"><h2 class="anchored" data-anchor-id="setting-colors">Setting colors</h2>
-<p>A few days after, I decided that there should be a consistency in the choice of colors. That’s the reason of this section. Set a hex color for each party.</p>
+<p>A few days after, I decided that there should be a consistency in the choice of colors. That’s the reason of this section. Thus, I will assign a dedicated hex color code to each party.</p>
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">kke_color</span> <span class="op">=</span> <span class="st">"#FF6666"</span></span>
 <span><span class="va">nd_color</span> <span class="op">=</span> <span class="st">"#0492c2"</span></span>
@@ -483,9 +482,8 @@ div.csl-indent {
 </details>
 </div>
 </section></section><section id="parliament-over-the-years" class="level1"><h1>Parliament over the years</h1>
-<p>Now, I will make a short sum-up of the electoral resuts over the years. It is important to share that I made it thanks to <a href="https://datavizstory.com/a-parliament-diagram-in-r/">this post</a> and <code>ggpol</code> package. As I am planning to do this procedure for many electoral terms I will convert the as a function.</p>
-<p>Arguments like <code>term</code> and <code>custom_title</code> are vital to create reproducible plots for all the terms. Although a main problem is the colors. On the aforementioned post it was about only one term. We knew how many parties we had, so we knew what colors to set and how many. If we try that on many terms (on which the number of parties can vary from 3 to 8) an error will come up which will say “Hey, you have set 3 colors but I see that you have 8 values (parties)”. This was a real obstacle for me.</p>
-<p>After some tries and misses I came up with the concept of <strong>dynamic arguments</strong>.</p>
+<p>Now, I will make a short sum-up of the electoral resuts over the years. It is important to share that I made it thanks to <a href="https://datavizstory.com/a-parliament-diagram-in-r/">this post</a> and <code>ggpol</code> package. As I am planning to do this procedure for many electoral terms, I will convert it as a function.</p>
+<p>Arguments like <code>term</code> and <code>custom_title</code> are vital to create reproducible plots for all the terms. Although a main problem is the colors. On the aforementioned post it was about only one term. We knew how many parties we had, so we knew what colors to set and how many. If we try that on many terms (on which the number of parties can vary from 3 to 8) an error will come up which will say “Hey, you have set 3 colors but I see that you have 8 values (parties)”. This was a real obstacle for me. After some tries and misses I came up with the concept of <strong>dynamic arguments</strong>.</p>
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">make_parliament_plot</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">term</span>, <span class="va">custom_title</span>, <span class="va">...</span><span class="op">)</span><span class="op">{</span></span>
 <span></span>
@@ -675,7 +673,7 @@ Warning
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>As you can see on the next plot there are many MPs that are classified as independent (according to Hellenic’s Parliament website). Many of them are members of parties “ANEL” and “Enosi Kentroon”. However, a large wave of departures from the parties led to not fulfilling the conditions to be considered as parliamentary parties. For that reason members of these parties (that did not left) are considere independent.</p>
+<p>As you can see on the next plot there are many MPs that are classified as independent (according to Hellenic’s Parliament website). Many of them are members of parties “ANEL” and “Enosi Kentroon”. However, a large wave of departures from the parties led to not fulfilling the conditions to be considered as parliamentary parties. For that reason members of these parties (that did not left) are considered independent.</p>
 </div>
 </div>
 <div class="cell">
@@ -744,7 +742,9 @@ Warning
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Most elected MPs"</span>,</span>
 <span>       subtitle <span class="op">=</span> <span class="st">""</span>,</span>
-<span>       caption <span class="op">=</span> <span class="st">"Source: stesiam | stesiam.github.io, 2022"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>       caption <span class="op">=</span> <span class="st">"Source: stesiam | stesiam.github.io, 2022"</span>,</span>
+<span>       x <span class="op">=</span> <span class="st">"Times elected"</span>,</span>
+<span>       y <span class="op">=</span> <span class="st">"Members of Parliament"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
