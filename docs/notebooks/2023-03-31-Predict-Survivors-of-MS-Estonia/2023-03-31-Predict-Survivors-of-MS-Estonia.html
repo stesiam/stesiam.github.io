@@ -258,7 +258,7 @@ div.csl-indent {
 <li><a href="#split-traintest-dataset" id="toc-split-traintest-dataset" class="nav-link" data-scroll-target="#split-traintest-dataset">Split train/test Dataset</a></li>
   <li><a href="#recipes" id="toc-recipes" class="nav-link" data-scroll-target="#recipes">Recipes</a></li>
   <li><a href="#create-validation-set" id="toc-create-validation-set" class="nav-link" data-scroll-target="#create-validation-set">Create Validation Set</a></li>
-  <li><a href="#build-lightgbm-model" id="toc-build-lightgbm-model" class="nav-link" data-scroll-target="#build-lightgbm-model">Build LightGBM Model</a></li>
+  <li><a href="#build-logistic-regression-model" id="toc-build-logistic-regression-model" class="nav-link" data-scroll-target="#build-logistic-regression-model">Build Logistic Regression Model</a></li>
   <li><a href="#hyperparameters-tuning" id="toc-hyperparameters-tuning" class="nav-link" data-scroll-target="#hyperparameters-tuning">Hyperparameters tuning</a></li>
   <li><a href="#build-workflow" id="toc-build-workflow" class="nav-link" data-scroll-target="#build-workflow">Build workflow</a></li>
   <li><a href="#fit" id="toc-fit" class="nav-link" data-scroll-target="#fit">Fit</a></li>
@@ -837,7 +837,9 @@ div.csl-indent {
 </section></section><section id="building-predictive-model" class="level1"><h1>Building Predictive Model</h1>
 <section id="split-traintest-dataset" class="level2"><h2 class="anchored" data-anchor-id="split-traintest-dataset">Split train/test Dataset</h2>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span><span class="co"># Create data split for train and test</span></span>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Split train/test Dataset</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span><span class="co"># Create data split for train and test</span></span>
 <span><span class="va">estonia_passenger_list_split</span> <span class="op">&lt;-</span> <span class="fu">initial_split</span><span class="op">(</span><span class="va">estonia_passenger_list</span>,</span>
 <span>                                prop <span class="op">=</span> <span class="fl">0.75</span>,</span>
 <span>                                strata <span class="op">=</span> <span class="va">Survived</span><span class="op">)</span></span>
@@ -1056,7 +1058,7 @@ div.csl-indent {
 5 &lt;split [594/147]&gt; Fold5</code></pre>
 </div>
 </div>
-</section><section id="build-lightgbm-model" class="level2"><h2 class="anchored" data-anchor-id="build-lightgbm-model">Build LightGBM Model</h2>
+</section><section id="build-logistic-regression-model" class="level2"><h2 class="anchored" data-anchor-id="build-logistic-regression-model">Build Logistic Regression Model</h2>
 <div class="cell">
 <details><summary>Show the code</summary><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lightgbm_model</span><span class="op">&lt;-</span> <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html">boost_tree</a></span><span class="op">(</span></span>
 <span> mode <span class="op">=</span> <span class="st">"classification"</span>,</span>

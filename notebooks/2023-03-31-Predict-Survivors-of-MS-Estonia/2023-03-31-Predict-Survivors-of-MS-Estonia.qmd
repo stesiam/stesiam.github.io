@@ -256,6 +256,8 @@ estonia_passenger_list$Survived <- factor(estonia_passenger_list$Survived)
 ## Split train/test Dataset
 
 ```{r}
+## Split train/test Dataset
+
 set.seed(123)# Create data split for train and test
 estonia_passenger_list_split <- initial_split(estonia_passenger_list,
                                 prop = 0.75,
@@ -318,7 +320,7 @@ cv_folds
 ```
 
 
-## Build LightGBM Model
+## Build Logistic Regression Model
 
 ```{r}
 lightgbm_model<- parsnip::boost_tree(
