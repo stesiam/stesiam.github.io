@@ -1,0 +1,108 @@
+---
+title: "Kaggle's Greek Community"
+author: "stesiam"
+description: |
+  An exploratory data analysis about Kaggle's Greek community, based on its 2021 survey.
+link-external-newwindow: true
+categories: [R, EDA, Kaggle]
+fig-cap-location: bottom
+date: "2023-05-06"
+freeze: true
+image: survey.png
+image-alt: random survey with ticked values
+toc: true
+toc-title: Table of contents
+toc-location: left
+citation: true
+slug: stesiam2022
+title-block-banner: true
+nocite: '@*'
+csl: apa-6th-edition
+bibliography: [packages.bib, references.bib]
+format: 
+  html:
+    code-link: true
+    code-fold: true
+    code-summary: "Show the code"
+    code-tools: 
+      source: repo
+execute:
+  echo: true
+editor_options: 
+  markdown: 
+    wrap: 80
+---
+# Introduction
+
+
+
+# Prerequisites
+
+## Import libraries
+
+```{r Import R Libraries, message=FALSE, results='hide', echo=TRUE}
+# General purpose R libraries
+library(readr)
+library(dplyr)
+library(forcats)
+library(kableExtra)
+library(gridExtra)
+
+# Graphs
+library(ggplot2)
+library(ggtext) # Add support for HTML/CSS on ggplot
+
+# Other R packages
+library(fontawesome)
+
+# Other settings
+options(digits=4) # print only 4 decimals
+options(warn = -1)
+```
+
+```{r, include=FALSE}
+# Add loaded libraries to bibliography section
+
+knitr::write_bib(.packages(), file = 'packages.bib')
+```
+
+
+## Import data
+
+```{r}
+kaggle_2021 = read_csv("data/kaggle_survey_2021.csv")
+
+# Delete second line
+kaggle_2021 = kaggle_2021[-c(1),]
+```
+
+## Prepare Data
+
+Since my analysis is based on Greek users, I split the dataset into two parts. One part includes exclusively Greek users and all the rest another. Thus, we can observe any peculiarities or similarities with broader Kaggle's userbase.
+
+```{r}
+kaggle_2021$Q3[kaggle_2021$Q3 != "Greece"] <- "Other" 
+```
+
+
+# Prevalent DS Language
+
+```{r}
+kaggle_2021 %>%
+  group_by(Q2, Q3) %>%
+  summarise(n = n()) %>%
+  filter(Q2 %in% c("Man","Woman"))
+```
+
+
+
+
+
+# Acknowledgements {.appendix .unlisted}
+
+Dataset based on <a href="https://www.kaggle.com/competitions/kaggle-survey-2021/overview">2021 Kaggle Machine Learning & Data Science Survey</a>
+
+Image by <a href="https://pixabay.com/users/graphicbunny-10705863/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=4441595">Christina Smith</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=4441595">Pixabay</a>
+
+
+# References {.appendix .unlisted}
