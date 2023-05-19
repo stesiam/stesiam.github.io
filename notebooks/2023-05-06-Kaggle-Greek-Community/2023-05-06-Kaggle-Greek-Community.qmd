@@ -9,6 +9,7 @@ fig-cap-location: bottom
 date: "2023-05-06"
 freeze: true
 image: survey.png
+df_print: paged
 image-alt: random survey with ticked values
 toc: true
 toc-title: Table of contents
@@ -32,21 +33,37 @@ editor_options:
   markdown: 
     wrap: 80
 ---
+
 # Introduction
 
+In our days we are coming across terms or ML . 
 
+The raise of supply for data
+
+Kaggle is one of the most well-known communities of data analysts with over 10 million active users [@headsortails2022]. Αξίζει να σημειωθεί ότι υπάρχουν και άλλες παρόμοιες πλατφόρμες, όπως το 
+
+Μία συνοπτική λίστα αυτών είναι η εξής:
+
+
+Το Kaggle από το 2017 και κάθε χρόνο διεξάγει μία έρευνα μαζεύοντας στοιχεία για τα χαρακτηριστικά των χρηστών του. Αφού κάνει κάποια βασική επεξεργασία αυτών, ζητάει μέσω διαγωνισμού η ίδια η κοινότητα να αναλύσει τα στοιχεία αυτά. Σε αυτό το notebook αποφάσισα να πάρω τα στοιχεία της έρευνας του 2021 και να συγκρίνω τους Έλληνες αναλυτές δεδομένων με τον υπόλοιπο κόσμο. Η Ελλάδα που είναι σε σχέση με τον υπόλοιπο κόσμο; Μ
 
 # Prerequisites
 
 ## Import libraries
+
+Σε αυτό το notebook θα γίνουν οπωσδήποτε κάποια διαγράμματα σύγκρισης, οπότε το πακέτο ggplot2 κρίνεται απαραίτητο. Επίσης, η ύπαρξη μεταβλητών με πάρα πολλές τιμές (όπως η χώρα του κάθε χρήστη του Kaggle) είναι μία ένδειξη για χρήση πινάκων και για αυτό το πακέτο reactablefmtr θα βοηθήσει σε ένα ωραίο αποτέλεσμα.
+
 
 ```{r Import R Libraries, message=FALSE, results='hide', echo=TRUE}
 # General purpose R libraries
 library(readr)
 library(dplyr)
 library(forcats)
-library(kableExtra)
 library(gridExtra)
+
+# Tables
+library(kableExtra)
+library(reactablefmtr)
 
 # Graphs
 library(ggplot2)
@@ -54,22 +71,25 @@ library(ggtext) # Add support for HTML/CSS on ggplot
 
 # Other R packages
 library(fontawesome)
+#library(htmltools) # for building div/links
 
 # Other settings
 options(digits=4) # print only 4 decimals
 options(warn = -1)
 ```
 
-```{r, include=FALSE}
+```{r Add references of R libraries, include=FALSE}
 # Add loaded libraries to bibliography section
 
 knitr::write_bib(.packages(), file = 'packages.bib')
-```
 
+```
 
 ## Import data
 
-```{r}
+Kaggle's survey is one
+
+```{r Import data, message=FALSE, warning=FALSE}
 kaggle_2021 = read_csv("data/kaggle_survey_2021.csv")
 
 # Delete second line
@@ -78,31 +98,76 @@ kaggle_2021 = kaggle_2021[-c(1),]
 
 ## Prepare Data
 
-Since my analysis is based on Greek users, I split the dataset into two parts. One part includes exclusively Greek users and all the rest another. Thus, we can observe any peculiarities or similarities with broader Kaggle's userbase.
+Since my analysis is based on Greek users, I split the dataset into two parts.
+One part includes exclusively Greek users and all the rest another. Thus, we can
+observe any peculiarities or similarities with broader Kaggle's userbase.
 
 ```{r}
-kaggle_2021$Q3[kaggle_2021$Q3 != "Greece"] <- "Other" 
+#kaggle_2021$Q3[kaggle_2021$Q3 != "Greece"] <- "Other" 
+```
+
+# Greece's community
+
+```{r}
+perc = kaggle_2021 %>%
+  group_by(Q3) %>%
+  summarise(n = n()) %>%
+  mutate(pct = round(n/nrow(kaggle_2021) * 100, digits = 2))
+
+
+reactable(
+  perc,
+  defaultPageSize = 6,
+  theme = espn(),
+  columns = list(
+    Q3 = colDef(name = "Country"),
+    n = colDef(name = "Population", 
+               defaultSortOrder = "desc"),
+    pct = colDef(name = "Percentage (%)")),
+  defaultColDef = colDef(
+    cell = data_bars(data = perc, 
+                     text_position = "outside-base",
+                     fill_opacity = 0.5, round_edges = T
+                    )
+  )
+) %>%
+  add_title("Kaggle's Community by Country", font_size = 18) %>% 
+  add_subtitle("India is the most ") %>% 
+  add_source("stesiam | Data : Kaggle Survey 2021", font_size = 12, align = )
 ```
 
 
-# Prevalent DS Language
+
+# Women participation in DS
+
+Generally, women are under-represented in labor market. According to the World
+Bank [-@worldbank2023], only one in two women participates in the
+labor market, in contrast to men whose corresponding participation is 7 in 10.
+It would be interesting to see if DS community follows the same pattern.
 
 ```{r}
-kaggle_2021 %>%
+data = kaggle_2021 %>%
   group_by(Q2, Q3) %>%
   summarise(n = n()) %>%
   filter(Q2 %in% c("Man","Woman"))
+
 ```
 
-
-
-
+```{r}
+ggplot(data) +
+  geom_col(aes(x = Q3, y = n)) +
+  coord_flip()
+```
 
 # Acknowledgements {.appendix .unlisted}
 
-Dataset based on <a href="https://www.kaggle.com/competitions/kaggle-survey-2021/overview">2021 Kaggle Machine Learning & Data Science Survey</a>
+Dataset based on
+<a href="https://www.kaggle.com/competitions/kaggle-survey-2021/overview">2021
+Kaggle Machine Learning & Data Science Survey</a>
 
-Image by <a href="https://pixabay.com/users/graphicbunny-10705863/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=4441595">Christina Smith</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=4441595">Pixabay</a>
-
+Image by
+<a href="https://pixabay.com/users/graphicbunny-10705863/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=4441595">Christina
+Smith</a> from
+<a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=4441595">Pixabay</a>
 
 # References {.appendix .unlisted}
