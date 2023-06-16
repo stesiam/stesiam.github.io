@@ -88,7 +88,7 @@
     "href": "gallery.html#day-map-challenge",
     "title": "Gallery",
     "section": "30 Day Map Challenge",
-    "text": "30 Day Map Challenge\n\n\n\n\n\nPublic Music Schools in Greece\n\n\n\n\n\n\n\nRailway Network of Greece\n\n\n\n\n\n\n\nRegions of Greece\n\n\n\n\n\n\n\nPharmacies in Greece\n\n\n\n\n\n\n\nPorts in Ukraine\n\n\n\n\n\n\n\nLuxembourg’s City Bus Transportation\n\n\n\n\n\n\n\nPopulation in Europe\n\n\n\n\n\n\n\nPublic Buildings, Lamia city\n\n\n\n\n\n\n\nStarmap of Athens\n\n\n\n\n\n\n\nLuxembourg’s City Bus Transportation\n\n\n\n\n\n\n\nPopulation in Europe\n\n\n\n\n\n\n\nPublic Buildings, Lamia city"
+    "text": "30 Day Map Challenge\n\n\n\n\n\nPublic Music Schools in Greece\n\n\n\n\n\n\n\nRailway Network of Greece\n\n\n\n\n\n\n\nRegions of Greece\n\n\n\n\n\n\n\nPharmacies in Greece\n\n\n\n\n\n\n\nPorts in Ukraine\n\n\n\n\n\n\n\nLuxembourg’s City Bus Transportation\n\n\n\n\n\n\n\nPopulation in Europe\n\n\n\n\n\n\n\nPublic Buildings, Lamia city\n\n\n\n\n\n\n\nStarmap of Athens"
   },
   {
     "objectID": "gallery.html#greece-in-figures",
@@ -637,25 +637,32 @@
     "text": "Western Macedonia\n\n\nFlorina\nGrevena\nKastoria\nKozani\n\n\n\n\nShow the codeconstituency_freqs(\"Florina\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Grevena\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Kastoria\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Kozani\",3)"
   },
   {
+    "objectID": "notebooks/2023-05-06-Kaggle-Greek-Community/2023-05-06-Kaggle-Greek-Community.html",
+    "href": "notebooks/2023-05-06-Kaggle-Greek-Community/2023-05-06-Kaggle-Greek-Community.html",
+    "title": "Kaggle’s Greek Community",
+    "section": "",
+    "text": "In our days we are coming across terms or ML .\nThe raise of supply for data\nKaggle is one of the most well-known communities of data analysts with over 10 million active users (Heads or Tails, 2020). Αξίζει να σημειωθεί ότι υπάρχουν και άλλες παρόμοιες πλατφόρμες, όπως το\nΜία συνοπτική λίστα αυτών είναι η εξής:\nΤο Kaggle από το 2017 και κάθε χρόνο διεξάγει μία έρευνα μαζεύοντας στοιχεία για τα χαρακτηριστικά των χρηστών του. Αφού κάνει κάποια βασική επεξεργασία αυτών, ζητάει μέσω διαγωνισμού η ίδια η κοινότητα να αναλύσει τα στοιχεία αυτά. Σε αυτό το notebook αποφάσισα να πάρω τα στοιχεία της έρευνας του 2021 και να συγκρίνω τους Έλληνες αναλυτές δεδομένων με τον υπόλοιπο κόσμο. Η Ελλάδα που είναι σε σχέση με τον υπόλοιπο κόσμο; Μ"
+  },
+  {
     "objectID": "notebooks/2023-05-06-Kaggle-Greek-Community/2023-05-06-Kaggle-Greek-Community.html#import-libraries",
     "href": "notebooks/2023-05-06-Kaggle-Greek-Community/2023-05-06-Kaggle-Greek-Community.html#import-libraries",
     "title": "Kaggle’s Greek Community",
     "section": "Import libraries",
-    "text": "Import libraries\n\nShow the code# General purpose R libraries\nlibrary(readr)\nlibrary(dplyr)\nlibrary(forcats)\nlibrary(kableExtra)\nlibrary(gridExtra)\n\n# Graphs\nlibrary(ggplot2)\nlibrary(ggtext) # Add support for HTML/CSS on ggplot\n\n# Other R packages\nlibrary(fontawesome)\n\n# Other settings\noptions(digits=4) # print only 4 decimals\noptions(warn = -1)"
+    "text": "Import libraries\nΣε αυτό το notebook θα γίνουν οπωσδήποτε κάποια διαγράμματα σύγκρισης, οπότε το πακέτο ggplot2 κρίνεται απαραίτητο. Επίσης, η ύπαρξη μεταβλητών με πάρα πολλές τιμές (όπως η χώρα του κάθε χρήστη του Kaggle) είναι μία ένδειξη για χρήση πινάκων και για αυτό το πακέτο reactablefmtr θα βοηθήσει σε ένα ωραίο αποτέλεσμα.\n\nShow the code# General purpose R libraries\nlibrary(readr)\nlibrary(dplyr)\nlibrary(forcats)\nlibrary(gridExtra)\n\n# Tables\nlibrary(kableExtra)\nlibrary(reactablefmtr)\n\n# Graphs\nlibrary(ggplot2)\nlibrary(ggtext) # Add support for HTML/CSS on ggplot\n\n# Other R packages\nlibrary(fontawesome)\n#library(htmltools) # for building div/links\n\n# Other settings\noptions(digits=4) # print only 4 decimals\noptions(warn = -1)"
   },
   {
     "objectID": "notebooks/2023-05-06-Kaggle-Greek-Community/2023-05-06-Kaggle-Greek-Community.html#import-data",
     "href": "notebooks/2023-05-06-Kaggle-Greek-Community/2023-05-06-Kaggle-Greek-Community.html#import-data",
     "title": "Kaggle’s Greek Community",
     "section": "Import data",
-    "text": "Import data\n\nShow the codekaggle_2021 = read_csv(\"data/kaggle_survey_2021.csv\")\n\nRows: 25974 Columns: 369\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr (369): Time from Start to Finish (seconds), Q1, Q2, Q3, Q4, Q5, Q6, Q7_P...\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n\nShow the code# Delete second line\nkaggle_2021 = kaggle_2021[-c(1),]"
+    "text": "Import data\nKaggle’s survey is one\n\nShow the codekaggle_2021 = read_csv(\"data/kaggle_survey_2021.csv\")\n\n# Delete second line\nkaggle_2021 = kaggle_2021[-c(1),]"
   },
   {
     "objectID": "notebooks/2023-05-06-Kaggle-Greek-Community/2023-05-06-Kaggle-Greek-Community.html#prepare-data",
     "href": "notebooks/2023-05-06-Kaggle-Greek-Community/2023-05-06-Kaggle-Greek-Community.html#prepare-data",
     "title": "Kaggle’s Greek Community",
     "section": "Prepare Data",
-    "text": "Prepare Data\nSince my analysis is based on Greek users, I split the dataset into two parts. One part includes exclusively Greek users and all the rest another. Thus, we can observe any peculiarities or similarities with broader Kaggle’s userbase.\n\nShow the codekaggle_2021$Q3[kaggle_2021$Q3 != \"Greece\"] &lt;- \"Other\""
+    "text": "Prepare Data\nSince my analysis is based on Greek users, I split the dataset into two parts. One part includes exclusively Greek users and all the rest another. Thus, we can observe any peculiarities or similarities with broader Kaggle’s userbase.\n\nShow the code#kaggle_2021$Q3[kaggle_2021$Q3 != \"Greece\"] &lt;- \"Other\""
   },
   {
     "objectID": "notebooks/2022-11-24-Predict-Possible-Clients/2022-11-24-Predict-Possible-Clients.html",
@@ -669,7 +676,7 @@
     "href": "notebooks/2022-11-24-Predict-Possible-Clients/2022-11-24-Predict-Possible-Clients.html#import-libraries",
     "title": "Predict Possible Interested Clients",
     "section": "Import libraries",
-    "text": "Import libraries\nFor this analysis we will need standard libraries for importing and processing my data, such as readr (Wickham, Hester, & Bryan, 2022) and dplyr (Wickham, François, Henry, & Müller, 2022). The kableExtra (Zhu, 2021) package was used to print the results in table format. Concerning general purpose R libraries, I also used gridExtra in order to show ggplot items side to side.\nOn its basis this analysis is about to predict if someone is interested or not to have a term deposit. Thus, we need to build a ML model. The all-in-one solution package tidymodels is crucial to this. Although, there are some concerns about our data (imbalanced predicted value and our implementation of LightGBM. Thankfully, these are solved by bonsai and treesnip packages, respectively.\nFinally, the ggplot2 (Wickham, Chang, et al., 2022) package was used to create some visualizations, as well as an auxiliary package, ggtext (Wilke & Wiernik, 2022), for further formatting those.\n\nShow the code# General purpose R libraries\nlibrary(readr)\nlibrary(dplyr)\nlibrary(forcats)\nlibrary(kableExtra)\nlibrary(gridExtra)\n\n# Build ML models\nlibrary(tidymodels)\n\n# Graphs\nlibrary(ggplot2)\nlibrary(ggtext) # Add support for HTML/CSS on ggplot\n\n# Other R packages\nlibrary(fontawesome)\n\n\n# Build ML models\n\nlibrary(tidymodels)\nlibrary(bonsai)\nlibrary(themis)\n\n# Other settings\noptions(digits=4) # print only 4 decimals\noptions(warn = -1)"
+    "text": "Import libraries\nFor this analysis we will need standard libraries for importing and processing my data, such as readr (Wickham, Hester, & Bryan, 2022) and dplyr (Wickham, François, Henry, Müller, & Vaughan, 2023). The kableExtra (Zhu, 2021) package was used to print the results in table format. Concerning general purpose R libraries, I also used gridExtra in order to show ggplot items side to side.\nOn its basis this analysis is about to predict if someone is interested or not to have a term deposit. Thus, we need to build a ML model. The all-in-one solution package tidymodels is crucial to this. Although, there are some concerns about our data (imbalanced predicted value and our implementation of LightGBM. Thankfully, these are solved by bonsai and treesnip packages, respectively.\nFinally, the ggplot2 (Wickham, Chang, et al., 2022) package was used to create some visualizations, as well as an auxiliary package, ggtext (Wilke & Wiernik, 2022), for further formatting those.\n\nShow the code# General purpose R libraries\nlibrary(readr)\nlibrary(dplyr)\nlibrary(forcats)\nlibrary(kableExtra)\nlibrary(gridExtra)\n\n# Build ML models\nlibrary(tidymodels)\n\n# Graphs\nlibrary(ggplot2)\nlibrary(ggtext) # Add support for HTML/CSS on ggplot\n\n# Other R packages\nlibrary(fontawesome)\n\n\n# Build ML models\n\nlibrary(tidymodels)\nlibrary(bonsai)\nlibrary(themis)\n\n# Other settings\noptions(digits=4) # print only 4 decimals\noptions(warn = -1)"
   },
   {
     "objectID": "notebooks/2022-11-24-Predict-Possible-Clients/2022-11-24-Predict-Possible-Clients.html#import-dataset",
