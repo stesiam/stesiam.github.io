@@ -83,7 +83,7 @@ tmimata_statistikis = data.frame(
 ggplot2::ggplot(data = tmimata_statistikis, aes(x = Year, y = Vasi, color= University)) +
   geom_line() +
   geom_point() +
-  geom_text_repel(aes(x = Year, y = Vasi, label = round(Vasi/1000, digits = 1))) +
+  geom_text_repel(data = tmimata_statistikis %>% group_by(University) %>% filter(Year == max(Year)), aes(x = Year, y = Vasi, label = Vasi)) +
   scale_x_continuous("Έτος", breaks = 2013:2022) +
   labs(
     title = "<b>Βάσεις εισαγωγής σε τμήματα Στατιστικής</b>",
@@ -113,6 +113,7 @@ ggplot2::ggplot(data = tmimata_statistikis, aes(x = Year, y = Vasi, color= Unive
 ggplot2::ggplot(data = tmimata_statistikis, aes(x = Year, y = Theseis, color= University)) +
   geom_line() +
   geom_point() +
+  geom_text(data = tmimata_statistikis %>% group_by(University) %>% filter(Year == max(Year)), aes(x = Year, y = Theseis+7, label = Theseis)) +
   scale_x_continuous("Έτος", breaks = 2013:2022) +
   labs(
     title = "<b>Θέσεις εισαγωγής σε τμήματα Στατιστικής (ΓΛ90)</b>",
@@ -288,6 +289,7 @@ ggplot(data = grc) +
      plot.subtitle = element_markdown(family = "mont", size = 10, lineheight = 0.7),
      plot.caption = element_markdown(family = "mont", size = 10),
      axis.title = element_markdown(family = "mont", size = 12),
+     text = element_text(family = "mont", size = 10)
 )
 ```
 
