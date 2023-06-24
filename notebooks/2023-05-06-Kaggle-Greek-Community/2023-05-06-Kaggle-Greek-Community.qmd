@@ -36,16 +36,9 @@ editor_options:
 
 # Introduction
 
-In our days we are coming across terms or ML . 
+[Kaggle](https://www.kaggle.com/) is one of the most well-known communities of data analysts/scientists with over 10 million active users [@headsortails2022]. Besides that, Kaggle offers an abundance of functionalities (Notebooks), information (through Discussions between users) and Competitions. It is worth noting that there are other similar communities but they cannot compare to the full functionality of Kaggle. For example, [DrivenData](https://www.drivendata.org/) could be considered an alternative for participating in  ML competitions, but it neither provides the possibility to create notebooks nor has a large number of users.
 
-The raise of supply for data
-
-Kaggle is one of the most well-known communities of data analysts with over 10 million active users [@headsortails2022]. Αξίζει να σημειωθεί ότι υπάρχουν και άλλες παρόμοιες πλατφόρμες, όπως το 
-
-Μία συνοπτική λίστα αυτών είναι η εξής:
-
-
-Το Kaggle από το 2017 και κάθε χρόνο διεξάγει μία έρευνα μαζεύοντας στοιχεία για τα χαρακτηριστικά των χρηστών του. Αφού κάνει κάποια βασική επεξεργασία αυτών, ζητάει μέσω διαγωνισμού η ίδια η κοινότητα να αναλύσει τα στοιχεία αυτά. Σε αυτό το notebook αποφάσισα να πάρω τα στοιχεία της έρευνας του 2021 και να συγκρίνω τους Έλληνες αναλυτές δεδομένων με τον υπόλοιπο κόσμο. Η Ελλάδα που είναι σε σχέση με τον υπόλοιπο κόσμο; Μ
+**Kaggle Machine Learning & Data Science Survey** is an annual survey conducted by Kaggle. The platform asks its users to analyze users' data in the context of a competition.  In this notebook, I conduct an analysis based on 2021's survey in order to compare Greek data analysts with the rest of the world.
 
 # Prerequisites
 
@@ -68,6 +61,8 @@ library(reactablefmtr)
 # Graphs
 library(ggplot2)
 library(ggtext) # Add support for HTML/CSS on ggplot
+library(showtext)
+library(sysfonts) # System / Google fonts
 
 # Other R packages
 library(fontawesome)
@@ -76,13 +71,21 @@ library(fontawesome)
 # Other settings
 options(digits=4) # print only 4 decimals
 options(warn = -1)
+
+## Load fonts
+
+# font_families_google() ## see list with available Google fonts
+
+font_add_google(name = "Lilita One", family = "title", db_cache = F)
+font_add_google(name = "Ysabeau Office", family = "subtitle", db_cache = F)
 ```
+
+
 
 ```{r Add references of R libraries, include=FALSE}
 # Add loaded libraries to bibliography section
 
 knitr::write_bib(.packages(), file = 'packages.bib')
-
 ```
 
 ## Import data
@@ -102,9 +105,42 @@ Since my analysis is based on Greek users, I split the dataset into two parts.
 One part includes exclusively Greek users and all the rest another. Thus, we can
 observe any peculiarities or similarities with broader Kaggle's userbase.
 
-```{r}
-#kaggle_2021$Q3[kaggle_2021$Q3 != "Greece"] <- "Other" 
+
+```{r, message=FALSE, warning=F}
+# Recoding Q2 variable
+
+kaggle_2021$Q2 = kaggle_2021$Q2 %>%
+  fct_recode(
+    "Other" = "Nonbinary",
+    "Other" = "Prefer not to say",
+    "Other" = "Prefer to self-describe"
+  )
+
+## Recoding kaggle_2021$Q3
+
+kaggle_2021$Q3 <- kaggle_2021$Q3 %>%
+  fct_recode(
+    "Hong Kong" = "Hong Kong (S.A.R.)",
+    "Other" = "I do not wish to disclose my location",
+    "Iran" = "Iran, Islamic Republic of...",
+    "UAE" = "United Arab Emirates",
+    "UK" = "United Kingdom of Great Britain and Northern Ireland",
+    "USA" = "United States of America",
+    "Vietnam" = "Viet Nam"
+  )
+
+## Recoding kaggle_2021$Q6
+kaggle_2021$Q6 <- kaggle_2021$Q6 %>%
+  fct_recode(
+    "0 years" = "I have never written code"
+  )
+
+
+kaggle_2021_compare = kaggle_2021 %>%
+  mutate(Q3 = if_else(Q3 != "Greece", "Other", Q3))
 ```
+
+
 
 # Greece's community
 
@@ -132,8 +168,8 @@ reactable(
   )
 ) %>%
   add_title("Kaggle's Community by Country", font_size = 18) %>% 
-  add_subtitle("India is the most ") %>% 
-  add_source("stesiam | Data : Kaggle Survey 2021", font_size = 12, align = )
+  add_subtitle("India is the most represented country, followed by the United States.", font_size = 14, font_weight = "normal") %>% 
+  add_source("stesiam | Data : Kaggle Survey 2021", font_size = 12, align = "right")
 ```
 
 
@@ -143,21 +179,78 @@ reactable(
 Generally, women are under-represented in labor market. According to the World
 Bank [-@worldbank2023], only one in two women participates in the
 labor market, in contrast to men whose corresponding participation is 7 in 10.
-It would be interesting to see if DS community follows the same pattern.
+Does DS community follow the same pattern?
 
-```{r}
+```{r, warning=F, message=F}
 data = kaggle_2021 %>%
-  group_by(Q2, Q3) %>%
+  group_by(Q3) %>%
+  summarise(n = n(),
+            Women = sum(factor(Q2) == "Woman"),
+            pct_women = Women/n *100)
+```
+
+```{r, fig.height= 10, fig.showtext=T, height = 5, dpi = 300, warning=F}
+data %>%
+  ggplot() +
+  geom_col(alpha = 0.5, aes(x = pct_women, y = reorder(Q3, pct_women))) +
+  geom_text(data = subset(data, pct_women == max(pct_women) | Q3 == "Greece" | pct_women == min(pct_women)), aes(x = pct_women + 2, y = reorder(Q3, pct_women), label = paste0(round(pct_women, digits = 1), "%"))) +
+  scale_x_continuous(limits = c(0,50)) +
+  labs(
+    title = "<b>Women participation in DS community per country</b>",
+    subtitle = "Based on Kaggle's 2021 Survey women are underrepresented in DS. <br> The country with the highest women participation is <span style= 'color: #c8102c;'>Tunisia</span> and <span style= 'color: #008f4c;'>Peru</span> is one with the lowest. <br>Last but not least, <span style= 'color: #001489;'>Greece</span> has a relatively decent rate of women participation holding 15th place with 15\\%.",
+    caption = "<b>stesiam</b>, 2023",
+    x = "Percentage of Women",
+    y = "Countries"
+  ) +
+  coord_cartesian(expand = FALSE) + # push geom_col to not leave space on axis x
+  theme_classic() +
+  theme(
+    plot.title = element_markdown(family = "title"),
+    plot.subtitle = element_markdown(family = "subtitle", lineheight = 0.4),
+    plot.caption = element_markdown(family = "subtitle"),
+    text = element_text(family = "subtitle")
+  )
+```
+
+
+
+# Age Distribution
+
+
+
+```{r, fig.showtext=T, dpi = 300, warning=F}
+kaggle_2021_compare %>%
+  select(Q3, Q1) %>%
+  group_by(Q3,Q1) %>%
   summarise(n = n()) %>%
-  filter(Q2 %in% c("Man","Woman"))
-
+  group_by(Q3) %>%
+  mutate(total = sum(n),
+         pct = round(n/total *100, digits = 1)) %>%
+  select(Q3, Q1, pct) %>%
+  ggplot(aes(x = Q1, y = pct+1, fill = Q3)) +
+  geom_bar(stat = "identity", alpha = 0.5, position = "identity") +
+  geom_text(aes(x = Q1, y = pct, label = pct)) +
+  scale_fill_manual(values = c("Greece" = "#1f77b4", "Other" = "#ff7f0e"))+ 
+  labs(
+    title = "<b>Age Distribution of Kaggle Community</b>",
+    subtitle = "Greek Kagglers have a proportionally lower presence at younger ages (<24 years) compared to the rest <br> of the world and almost zero presence at older ages (>60 years). For the most part, Greek analysts on <br> the  platform belong to the 25-29, 30-34 and 45-49 age groups. On the other hand, the rest of Kaggle's <br> users have a tremendous superiority to the three smaller age groups (18-21, 22-24, 25-29).",
+    caption = "stesiam, 2023",
+    x = "Age Group",
+    y = "Percentage",
+    fill = ""
+  ) +
+  theme_classic() +
+    theme(
+    plot.title = element_markdown(family = "title"),
+    plot.subtitle = element_markdown(family = "subtitle", lineheight = 0.4),
+    plot.caption = element_markdown(family = "subtitle"),
+    text = element_text(family = "subtitle"),
+    legend.position = c(0.85, 0.85)
+  )
 ```
 
-```{r}
-ggplot(data) +
-  geom_col(aes(x = Q3, y = n)) +
-  coord_flip()
-```
+
+
 
 # Acknowledgements {.appendix .unlisted}
 
