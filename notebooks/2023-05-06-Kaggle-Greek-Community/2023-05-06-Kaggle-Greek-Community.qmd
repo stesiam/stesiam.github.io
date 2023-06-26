@@ -2,7 +2,7 @@
 title: "Kaggle's Greek Community"
 author: "stesiam"
 description: |
-  An exploratory data analysis about Kaggle's Greek community, based on its 2021 survey.
+  An exploratory data analysis about Kaggle's Greek community, based on its 2021 survey. Comparing Greek 
 link-external-newwindow: true
 categories: [R, EDA, Kaggle]
 fig-cap-location: bottom
@@ -51,6 +51,7 @@ editor_options:
 # General purpose R libraries
 library(readr)
 library(dplyr)
+library(tidyr)
 library(forcats)
 library(gridExtra)
 
@@ -135,6 +136,24 @@ kaggle_2021$Q6 <- kaggle_2021$Q6 %>%
     "0 years" = "I have never written code"
   )
 
+## Recoding kaggle_2021$Q4
+kaggle_2021$Q4 <- kaggle_2021$Q4 %>%
+  fct_recode(
+    "Bachelor" = "Bachelor’s degree",
+    "PhD" = "Doctoral degree",
+    "Other" = "I prefer not to answer",
+    "Master" = "Master’s degree",
+    "No" = "No formal education past high school",
+    "ProfDoc" = "Professional doctorate",
+    "UniNoDegree" = "Some college/university study without earning a bachelor’s degree"
+  )
+
+kaggle_2021$Q4 <- kaggle_2021$Q4 %>%
+  fct_relevel(
+    "No", "UniNoDegree", "Bachelor", "Master", "PhD", "ProfDoc",
+    "Other"
+  )
+
 
 kaggle_2021_compare = kaggle_2021 %>%
   mutate(Q3 = if_else(Q3 != "Greece", "Other", Q3))
@@ -142,34 +161,34 @@ kaggle_2021_compare = kaggle_2021 %>%
 
 
 
-# Greece's community
+# Kaggle's community
+
+
 
 ```{r}
-perc = kaggle_2021 %>%
+kaggle_2021 %>%
   group_by(Q3) %>%
   summarise(n = n()) %>%
-  mutate(pct = round(n/nrow(kaggle_2021) * 100, digits = 2))
-
-
-reactable(
-  perc,
-  defaultPageSize = 6,
-  theme = espn(),
-  columns = list(
-    Q3 = colDef(name = "Country"),
-    n = colDef(name = "Population", 
-               defaultSortOrder = "desc"),
-    pct = colDef(name = "Percentage (%)")),
-  defaultColDef = colDef(
-    cell = data_bars(data = perc, 
-                     text_position = "outside-base",
-                     fill_opacity = 0.5, round_edges = T
-                    )
-  )
-) %>%
-  add_title("Kaggle's Community by Country", font_size = 18) %>% 
-  add_subtitle("India is the most represented country, followed by the United States.", font_size = 14, font_weight = "normal") %>% 
-  add_source("stesiam | Data : Kaggle Survey 2021", font_size = 12, align = "right")
+  mutate(pct = round(n/nrow(kaggle_2021) * 100, digits = 2)) %>%
+  arrange(desc(pct)) %>%
+            reactable(.,
+              defaultPageSize = 6,
+              theme = espn(),
+              columns = list(
+                Q3 = colDef(name = "Country"),
+                n = colDef(name = "Population", 
+                           defaultSortOrder = "desc"),
+                pct = colDef(name = "Percentage (%)")),
+              defaultColDef = colDef(
+                cell = data_bars(data = ., 
+                                 text_position = "outside-base",
+                                 fill_opacity = 0.5, round_edges = T
+                )
+              )
+            ) %>%
+            add_title("Kaggle's Community by Country", font_size = 18) %>% 
+            add_subtitle("India is the most represented country, followed by the United States.", font_size = 14, font_weight = "normal") %>% 
+            add_source("stesiam | Data : Kaggle Survey 2021", font_size = 12, align = "right")
 ```
 
 
@@ -229,7 +248,6 @@ kaggle_2021_compare %>%
   select(Q3, Q1, pct) %>%
   ggplot(aes(x = Q1, y = pct+1, fill = Q3)) +
   geom_bar(stat = "identity", alpha = 0.5, position = "identity") +
-  geom_text(aes(x = Q1, y = pct, label = pct)) +
   scale_fill_manual(values = c("Greece" = "#1f77b4", "Other" = "#ff7f0e"))+ 
   labs(
     title = "<b>Age Distribution of Kaggle Community</b>",
@@ -249,6 +267,129 @@ kaggle_2021_compare %>%
   )
 ```
 
+# Educational Background
+
+
+```{r, fig.showtext=T, dpi = 300, warning=F}
+kaggle_2021_compare %>%
+  select(Q3, Q4) %>%
+  group_by(Q3, Q4) %>%
+  summarise(n = n()) %>%
+  group_by(Q3) %>%
+  mutate(pct = round(n/sum(n)*100, digits = 1)) %>%
+  ungroup() %>%
+  ggplot() +
+  geom_col(stat = "identity", alpha = 0.5, position = "identity", aes(x = Q4, y = pct, fill = Q3)) +
+  scale_fill_manual(values = c("Greece" = "#1f77b4", "Other" = "#ff7f0e"))+ 
+  labs(
+    title = "Educational Background of Kagglers",
+    subtitle = "Γρεεκ,",
+    caption = "stesiam, 2023",
+    x = "Education",
+    y = "Percentage"
+  ) +
+  theme_classic() +
+    theme(
+    plot.title = element_markdown(family = "title"),
+    plot.subtitle = element_markdown(family = "subtitle", lineheight = 0.4),
+    plot.caption = element_markdown(family = "subtitle"),
+    text = element_text(family = "subtitle"),
+    legend.position = c(0.85, 0.85)
+  )
+```
+
+
+# Programming Language
+
+```{r, fig.showtext=T, dpi = 300, warning=F}
+
+d1 = kaggle_2021_compare %>%
+  select(Q3, Q7_Part_1, Q7_Part_2) %>%
+  group_by(Q3) %>%
+  count(Q7_Part_1 == "Python") %>%
+  mutate(pct  = round(n/sum(n)*100, digits = 1)) %>%
+  na.omit()
+
+d2 = kaggle_2021_compare %>%
+  select(Q3, Q7_Part_2) %>%
+  group_by(Q3) %>%
+  count(Q7_Part_2 == "R") %>%
+  mutate(pct  = round(n/sum(n)*100, digits = 1)) %>%
+  na.omit()
+
+d3 = kaggle_2021_compare %>%
+  select(Q3, Q7_Part_8) %>%
+  group_by(Q3) %>%
+  count(Q7_Part_8 == "Julia") %>%
+  mutate(pct  = round(n/sum(n)*100, digits = 1)) %>%
+  na.omit()
+
+
+```
+
+
+
+
+# Common Stacks
+
+```{r}
+kaggle_2021_compare %>%
+  select(Q3, starts_with("Q7")) %>%
+  unite(Combined, starts_with("Q7"), sep = ",", na.rm = T) %>%
+  count(Q3, Combined) %>%
+  filter(Q3 == "Greece") %>%
+  mutate(pct = round(n/sum(n)*100, digits = 1)) %>%
+  arrange(-pct) %>%
+  filter(pct >=3) %>%
+  ggplot() +
+  geom_col(aes(x = reorder(Combined, -pct), y = pct)) +
+  geom_text(aes(x = Combined, y = pct+ 1, label = paste0(pct, "%", "", " (", n, ")"))) +
+  labs(
+    title = "Popular Stacks in Greece",
+    subtitle = "Python seems to be THE tool for a big portion of Greek Analysts.",
+    caption = "stesiam, 2023",
+    x = "Stacks",
+    y = "Percentage"
+  ) + 
+  theme_classic() +
+    theme(
+    plot.title = element_markdown(family = "title"),
+    plot.subtitle = element_markdown(family = "subtitle", lineheight = 0.4),
+    plot.caption = element_markdown(family = "subtitle"),
+    text = element_text(family = "subtitle")
+  )
+```
+
+
+# IDEs
+
+
+
+
+# Jobs
+
+```{r}
+jobs1 = kaggle_2021_compare %>%
+  select(Q3, Q5) %>%
+  filter(Q3 == "Greece") %>%
+  count(Q5) %>%
+  arrange(-n) %>%
+  head(8) %>%
+  mutate(pct = round(n/sum(n)*100, 1))
+
+jobs2 = kaggle_2021_compare %>%
+  select(Q3, Q5) %>%
+  filter(Q3 == "Other") %>%
+  count(Q5) %>%
+  arrange(-n) %>%
+  head()  %>%
+  mutate(pct = round(n/sum(n)*100, 1))
+
+```
+
+
+
+# Conclusions
 
 
 
