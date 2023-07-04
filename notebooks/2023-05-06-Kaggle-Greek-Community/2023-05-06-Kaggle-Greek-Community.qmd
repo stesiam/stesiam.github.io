@@ -332,8 +332,8 @@ d3 = kaggle_2021_compare %>%
 
 # Common Stacks
 
-```{r}
-kaggle_2021_compare %>%
+```{r, fig.showtext=T, dpi = 300, warning=F}
+p1 = kaggle_2021_compare %>%
   select(Q3, starts_with("Q7")) %>%
   unite(Combined, starts_with("Q7"), sep = ",", na.rm = T) %>%
   count(Q3, Combined) %>%
@@ -352,7 +352,33 @@ kaggle_2021_compare %>%
     y = "Percentage"
   ) + 
   theme_classic() +
-    theme(
+  theme(
+    plot.title = element_markdown(family = "title"),
+    plot.subtitle = element_markdown(family = "subtitle", lineheight = 0.4),
+    plot.caption = element_markdown(family = "subtitle"),
+    text = element_text(family = "subtitle")
+  )
+
+kaggle_2021_compare %>%
+  select(Q3, starts_with("Q7")) %>%
+  unite(Combined, starts_with("Q7"), sep = ",", na.rm = T) %>%
+  count(Q3, Combined) %>%
+  filter(Q3 == "Other") %>%
+  mutate(pct = round(n/sum(n)*100, digits = 1)) %>%
+  arrange(-pct) %>%
+  filter(pct >=3) %>%
+  ggplot() +
+  geom_col(aes(x = reorder(Combined, -pct), y = pct)) +
+  geom_text(aes(x = Combined, y = pct+ 1, label = paste0(pct, "%", "", " (", n, ")"))) +
+  labs(
+    title = "Popular Stacks in Greece",
+    subtitle = "Python seems to be THE tool for a big portion of Greek Analysts.",
+    caption = "stesiam, 2023",
+    x = "Stacks",
+    y = "Percentage"
+  ) + 
+  theme_classic() +
+  theme(
     plot.title = element_markdown(family = "title"),
     plot.subtitle = element_markdown(family = "subtitle", lineheight = 0.4),
     plot.caption = element_markdown(family = "subtitle"),
@@ -360,6 +386,33 @@ kaggle_2021_compare %>%
   )
 ```
 
+```{r}
+p2 = kaggle_2021_compare %>%
+  select(Q3, starts_with("Q7")) %>%
+  unite(Combined, starts_with("Q7"), sep = ",", na.rm = T) %>%
+  count(Q3, Combined) %>%
+  filter(Q3 == "Other") %>%
+  mutate(pct = round(n/sum(n)*100, digits = 1)) %>%
+  arrange(-pct) %>%
+  filter(pct >=3) %>%
+  ggplot() +
+  geom_col(aes(x = reorder(Combined, -pct), y = pct)) +
+  geom_text(aes(x = Combined, y = pct+ 1, label = paste0(pct, "%", "", " (", n, ")"))) +
+  labs(
+    title = "Popular Stacks in Greece",
+    subtitle = "Python seems to be THE tool for a big portion of Greek Analysts.",
+    caption = "stesiam, 2023",
+    x = "Stacks",
+    y = "Percentage"
+  ) + 
+  theme_classic() +
+  theme(
+    plot.title = element_markdown(family = "title"),
+    plot.subtitle = element_markdown(family = "subtitle", lineheight = 0.4),
+    plot.caption = element_markdown(family = "subtitle"),
+    text = element_text(family = "subtitle")
+  )
+```
 
 # IDEs
 

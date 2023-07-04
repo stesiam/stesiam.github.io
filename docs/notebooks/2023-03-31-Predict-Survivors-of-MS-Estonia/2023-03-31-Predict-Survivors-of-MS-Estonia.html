@@ -1,18 +1,13 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
-
-<head>
-
-<meta charset="utf-8" />
-<meta name="generator" content="quarto-1.3.276" />
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-
-<meta name="author" content="stesiam" />
-<meta name="dcterms.date" content="2023-03-31" />
-<meta name="description" content="Build a logistic regression model to predict survivors of MS Estonia." />
-
-<title>stesiam – Predict Survivors of MS Estonia</title>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.276">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="stesiam">
+<meta name="dcterms.date" content="2023-03-31">
+<meta name="description" content="Build a logistic regression model to predict survivors of MS Estonia.">
+<title>stesiam - Predict Survivors of MS Estonia</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -80,8 +75,23 @@ div.csl-indent {
   margin-left: 2em;
 }</style>
 
-<!-- htmldependencies:E3FAD763 -->
-<script id="quarto-search-options" type="application/json">{
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Rplot1.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": true,
   "collapse-after": 3,
@@ -99,120 +109,89 @@ div.csl-indent {
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit"
   }
-}</script>
-
-<script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script>
-<link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-
-
-<link rel="stylesheet" href="../../styles.css" />
+}</script><script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script><link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="stesiam - Predict Survivors of MS Estonia">
+<meta property="og:description" content="Build a logistic regression model to predict survivors of MS Estonia.">
+<meta property="og:image" content="https://www.stesiam.github.io/notebooks/2023-03-31-Predict-Survivors-of-MS-Estonia/thunderstorm.jpg">
+<meta property="og:site-name" content="stesiam">
 </head>
-
-<body>
+<body class="floating nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
-      <div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
-    <a class="navbar-brand" href="/index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">stesiam</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-  aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation"
-  onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="/index.html" rel="" target="">
+<li class="nav-item">
+    <a class="nav-link" href="../../index.html" rel="" target="">
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-posts" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
  <span class="menu-text">Posts</span>
     </a>
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-posts">    
-        <li>
-    <a class="dropdown-item" href="/posts.html" rel="" target="">
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-posts">
+<li>
+    <a class="dropdown-item" href="../../posts.html" rel="" target="">
  <span class="dropdown-text">All posts</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="/notebooks.html" rel="" target="">
+    <a class="dropdown-item" href="../../notebooks.html" rel="" target="">
  <span class="dropdown-text">Notebooks</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="/blog.html" rel="" target="">
+    <a class="dropdown-item" href="../../blog.html" rel="" target="">
  <span class="dropdown-text">Blog</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="/greek.html" rel="" target="">
+    <a class="dropdown-item" href="../../greek.html" rel="" target="">
  <span class="dropdown-text">Greek Posts</span></a>
   </li>  
     </ul>
-  </li>
+</li>
   <li class="nav-item">
-    <a class="nav-link" href="/shiny.html" rel="" target="">
+    <a class="nav-link" href="../../shiny.html" rel="" target="">
  <span class="menu-text">Shiny Projects</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="/material.html" rel="" target="">
+    <a class="nav-link" href="../../material.html" rel="" target="">
  <span class="menu-text">Material</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="/gallery.html" rel="" target="">
+    <a class="nav-link" href="../../gallery.html" rel="" target="">
  <span class="menu-text">Gallery</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="/index.html" rel="" target="">
+    <a class="nav-link" href="../../index.html" rel="" target="">
  <span class="menu-text">CV</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/stesiam" rel="" target=""><i 
-  class="bi bi-github" 
-  role="img" 
-  aria-label="Website Search" 
->
+    <a class="nav-link" href="https://github.com/stesiam" rel="" target=""><i class="bi bi-github" role="img" aria-label="Website Search">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="/posts.xml" rel="" target=""><i 
-  class="bi bi-rss" 
-  role="img" 
-  aria-label="Website RSS" 
->
+    <a class="nav-link" href="../../posts.xml" rel="" target=""><i class="bi bi-rss" role="img" aria-label="Website RSS">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools">
+<div class="quarto-navbar-tools">
 </div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
-    </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
-<!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
-    <div id="quarto-toc-target"></div>
-</nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" ></div>
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-    </div>
-<!-- main -->
-<main class="content" id="quarto-document-content">
-
-
-<header id="title-block-header" class="quarto-title-block default toc-left">
-  <div class="quarto-title-banner">
+    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full"><div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Predict Survivors of MS Estonia</h1>
+      <div class="quarto-title-block"><div><h1 class="title">Predict Survivors of MS Estonia</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button" data-quarto-source-url="https://github.com/stesiam/stesiam.github.io/blob/main/notebooks/2023-03-31-Predict-Survivors-of-MS-Estonia/2023-03-31-Predict-Survivors-of-MS-Estonia.qmd">View Source</a></li></ul></div></div>
                   <div>
         <div class="description">
           <p>Build a logistic regression model to predict survivors of MS Estonia.</p>
@@ -248,122 +227,121 @@ div.csl-indent {
     </div>
     
   
-  </header>
-<nav id="TOC" role="doc-toc">
-    <h2 id="toc-title">Table of contents</h2>
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction">Introduction</a></li>
-  <li><a href="#prerequisites" id="toc-prerequisites">Prerequisites</a>
-  <ul>
-  <li><a href="#import-libraries" id="toc-import-libraries">Import Libraries</a></li>
-  <li><a href="#import-dataset" id="toc-import-dataset">Import dataset</a></li>
-  <li><a href="#preview-dataset" id="toc-preview-dataset">Preview Dataset</a></li>
-  <li><a href="#dataset-structure" id="toc-dataset-structure">Dataset Structure</a></li>
-  <li><a href="#convert-categorical-variables" id="toc-convert-categorical-variables">Convert Categorical variables</a></li>
-  <li><a href="#outliers-and-nas" id="toc-outliers-and-nas">Outliers and NAs</a></li>
-  <li><a href="#preview-cleaned-dataset" id="toc-preview-cleaned-dataset">Preview Cleaned Dataset</a></li>
-  </ul></li>
-  <li><a href="#eda-with-r" id="toc-eda-with-r">EDA with R</a>
-  <ul>
-  <li><a href="#univariate-analysis" id="toc-univariate-analysis">Univariate Analysis</a></li>
-  <li><a href="#bivariate-analysis" id="toc-bivariate-analysis">Bivariate Analysis</a></li>
-  </ul></li>
-  <li><a href="#building-predictive-model" id="toc-building-predictive-model">Building Predictive Model</a>
-  <ul>
-  <li><a href="#split-traintest-dataset" id="toc-split-traintest-dataset">Split train/test Dataset</a></li>
-  <li><a href="#recipes" id="toc-recipes">Recipes</a></li>
-  <li><a href="#create-validation-set" id="toc-create-validation-set">Create Validation Set</a></li>
-  <li><a href="#build-logistic-regression-model" id="toc-build-logistic-regression-model">Build Logistic Regression Model</a></li>
-  <li><a href="#hyperparameters-tuning" id="toc-hyperparameters-tuning">Hyperparameters tuning</a></li>
-  <li><a href="#build-workflow" id="toc-build-workflow">Build workflow</a></li>
-  <li><a href="#fit" id="toc-fit">Fit</a></li>
-  <li><a href="#evaluate-model" id="toc-evaluate-model">Evaluate Model</a></li>
-  <li><a href="#last-fit" id="toc-last-fit">Last Fit</a></li>
-  </ul></li>
-  <li><a href="#major-concerns" id="toc-major-concerns">Major Concerns</a></li>
+<li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li>
+<a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites">Prerequisites</a>
+  <ul class="collapse">
+<li><a href="#import-libraries" id="toc-import-libraries" class="nav-link" data-scroll-target="#import-libraries">Import Libraries</a></li>
+  <li><a href="#import-dataset" id="toc-import-dataset" class="nav-link" data-scroll-target="#import-dataset">Import dataset</a></li>
+  <li><a href="#preview-dataset" id="toc-preview-dataset" class="nav-link" data-scroll-target="#preview-dataset">Preview Dataset</a></li>
+  <li><a href="#dataset-structure" id="toc-dataset-structure" class="nav-link" data-scroll-target="#dataset-structure">Dataset Structure</a></li>
+  <li><a href="#convert-categorical-variables" id="toc-convert-categorical-variables" class="nav-link" data-scroll-target="#convert-categorical-variables">Convert Categorical variables</a></li>
+  <li><a href="#outliers-and-nas" id="toc-outliers-and-nas" class="nav-link" data-scroll-target="#outliers-and-nas">Outliers and NAs</a></li>
+  <li><a href="#preview-cleaned-dataset" id="toc-preview-cleaned-dataset" class="nav-link" data-scroll-target="#preview-cleaned-dataset">Preview Cleaned Dataset</a></li>
   </ul>
-</nav>
-<section id="table-of-contents" class="level1 unlisted">
-<h1 class="unlisted">Table of Contents</h1>
+</li>
+  <li>
+<a href="#eda-with-r" id="toc-eda-with-r" class="nav-link" data-scroll-target="#eda-with-r">EDA with R</a>
+  <ul class="collapse">
+<li><a href="#univariate-analysis" id="toc-univariate-analysis" class="nav-link" data-scroll-target="#univariate-analysis">Univariate Analysis</a></li>
+  <li><a href="#bivariate-analysis" id="toc-bivariate-analysis" class="nav-link" data-scroll-target="#bivariate-analysis">Bivariate Analysis</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#building-predictive-model" id="toc-building-predictive-model" class="nav-link" data-scroll-target="#building-predictive-model">Building Predictive Model</a>
+  <ul class="collapse">
+<li><a href="#split-traintest-dataset" id="toc-split-traintest-dataset" class="nav-link" data-scroll-target="#split-traintest-dataset">Split train/test Dataset</a></li>
+  <li><a href="#recipes" id="toc-recipes" class="nav-link" data-scroll-target="#recipes">Recipes</a></li>
+  <li><a href="#create-validation-set" id="toc-create-validation-set" class="nav-link" data-scroll-target="#create-validation-set">Create Validation Set</a></li>
+  <li><a href="#build-logistic-regression-model" id="toc-build-logistic-regression-model" class="nav-link" data-scroll-target="#build-logistic-regression-model">Build Logistic Regression Model</a></li>
+  <li><a href="#hyperparameters-tuning" id="toc-hyperparameters-tuning" class="nav-link" data-scroll-target="#hyperparameters-tuning">Hyperparameters tuning</a></li>
+  <li><a href="#build-workflow" id="toc-build-workflow" class="nav-link" data-scroll-target="#build-workflow">Build workflow</a></li>
+  <li><a href="#fit" id="toc-fit" class="nav-link" data-scroll-target="#fit">Fit</a></li>
+  <li><a href="#evaluate-model" id="toc-evaluate-model" class="nav-link" data-scroll-target="#evaluate-model">Evaluate Model</a></li>
+  <li><a href="#last-fit" id="toc-last-fit" class="nav-link" data-scroll-target="#last-fit">Last Fit</a></li>
+  </ul>
+</li>
+  <li><a href="#major-concerns" id="toc-major-concerns" class="nav-link" data-scroll-target="#major-concerns">Major Concerns</a></li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/stesiam/stesiam.github.io/edit/main/notebooks/2023-03-31-Predict-Survivors-of-MS-Estonia/2023-03-31-Predict-Survivors-of-MS-Estonia.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/stesiam/stesiam.github.io/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content"><section id="table-of-contents" class="level1 unlisted"><h1 class="unlisted">Table of Contents</h1>
 <hr>
 <ol type="1">
-<li><a href="#introduction">Introduction</a> <br></li>
-<li><a href="#prerequisites">Prerequisites</a> <br>   2.1 <a href="#import-libraries">Import Libraries</a> <br>   2.2 <a href="#import-dataset">Import Dataset</a> <br>   2.3 <a href="#preview-dataset">Preview Datasset</a> <br>   2.4 <a href="#dataset-structure">Dataset Structure</a> <br>   2.5 <a href="#convert-categorical-variables">Convert Categorical variables</a> <br>   2.6 <a href="#outliers">Outliers</a> <br>   2.7 <a href="#missing-values">Missing Values</a> <br></li>
-<li><a href="#eda-with-r">EDA with R</a> <br>   3.1 <a href="#univariate-analysis">Univariate Analysis</a> <br>   3.2 <a href="#bivariate-analysis">Bivariate Analysis</a> <br>   3.3 <a href="#correlogram">Correlogram</a> <br></li>
-<li><a href="#build-predictive-model">Building Predictive Model</a> <br>   4.1 <a href="#split-train-test-dataset">Split train/test Dataset</a> <br>   4.2 <a href="#recipes">Recipes</a> <br>   4.3 <a href="#build-model">Build Model</a> <br>   4.4 <a href="#fit-resamples">Fit</a> <br>   4.5 <a href="#evaluate-model">Evaluate Model</a> <br></li>
+<li>
+<a href="#introduction">Introduction</a> <br>
+</li>
+<li>
+<a href="#prerequisites">Prerequisites</a> <br> &nbsp; 2.1 <a href="#import-libraries">Import Libraries</a> <br> &nbsp; 2.2 <a href="#import-dataset">Import Dataset</a> <br> &nbsp; 2.3 <a href="#preview-dataset">Preview Datasset</a> <br> &nbsp; 2.4 <a href="#dataset-structure">Dataset Structure</a> <br> &nbsp; 2.5 <a href="#convert-categorical-variables">Convert Categorical variables</a> <br> &nbsp; 2.6 <a href="#outliers">Outliers</a> <br> &nbsp; 2.7 <a href="#missing-values">Missing Values</a> <br>
+</li>
+<li>
+<a href="#eda-with-r">EDA with R</a> <br> &nbsp; 3.1 <a href="#univariate-analysis">Univariate Analysis</a> <br> &nbsp; 3.2 <a href="#bivariate-analysis">Bivariate Analysis</a> <br> &nbsp; 3.3 <a href="#correlogram">Correlogram</a> <br>
+</li>
+<li>
+<a href="#build-predictive-model">Building Predictive Model</a> <br> &nbsp; 4.1 <a href="#split-train-test-dataset">Split train/test Dataset</a> <br> &nbsp; 4.2 <a href="#recipes">Recipes</a> <br> &nbsp; 4.3 <a href="#build-model">Build Model</a> <br> &nbsp; 4.4 <a href="#fit-resamples">Fit</a> <br> &nbsp; 4.5 <a href="#evaluate-model">Evaluate Model</a> <br>
+</li>
 <li><a href="#references">References</a></li>
 </ol>
-<hr>
-</section>
-<section id="introduction" class="level1">
-<h1>Introduction</h1>
+<hr></section><section id="introduction" class="level1"><h1>Introduction</h1>
 <p>Το MSEstonia ήταν ένα επιβατηγό πλοίο το οποίο βυθίστηκε στις 28 Σεπτεμβρίου του 1994.</p>
-</section>
-<section id="prerequisites" class="level1">
-<h1>Prerequisites</h1>
-<section id="import-libraries" class="level2">
-<h2>Import Libraries</h2>
+</section><section id="prerequisites" class="level1"><h1>Prerequisites</h1>
+<section id="import-libraries" class="level2"><h2 class="anchored" data-anchor-id="import-libraries">Import Libraries</h2>
 <p>For this analysis we will need standard libraries for importing and processing my data, such as readr <span class="citation" data-cites="R-readr">(<a href="#ref-R-readr" role="doc-biblioref">Wickham, Hester, &amp; Bryan, 2022</a>)</span> and dplyr <span class="citation" data-cites="R-dplyr">(<a href="#ref-R-dplyr" role="doc-biblioref">Wickham, François, Henry, Müller, &amp; Vaughan, 2023</a>)</span>. The kableExtra <span class="citation" data-cites="R-kableExtra">(<a href="#ref-R-kableExtra" role="doc-biblioref">Zhu, 2021</a>)</span> package was used to print the results in table format.</p>
 <p>Finally, the ggplot2 <span class="citation" data-cites="R-ggplot2">(<a href="#ref-R-ggplot2" role="doc-biblioref">Wickham, Chang, et al., 2022</a>)</span> package is necessary to create some visualizations, as well as an auxiliary package, ggtext <span class="citation" data-cites="R-ggtext">(<a href="#ref-R-ggtext" role="doc-biblioref">Wilke &amp; Wiernik, 2022</a>)</span>, for further formatting those.</p>
 <div class="cell">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># General purpose R libraries</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Packages for maps</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggtext)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Build ML models</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bonsai)</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(themis)</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vip)</span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># General purpose R libraries</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org">readr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://haozhu233.github.io/kableExtra/">kableExtra</a></span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Packages for maps</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://wilkelab.org/ggtext/">ggtext</a></span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Build ML models</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://bonsai.tidymodels.org/">bonsai</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/themis">themis</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/koalaverse/vip/">vip</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section>
-<section id="import-dataset" class="level2">
-<h2>Import dataset</h2>
+</section><section id="import-dataset" class="level2"><h2 class="anchored" data-anchor-id="import-dataset">Import dataset</h2>
 <p>After loading the libraries, I am able to use the commands of the readr package to import my data. My data is in .csv format, so I’ll use the read_csv() command <span class="citation" data-cites="R-readr">(<a href="#ref-R-readr" role="doc-biblioref">Wickham, Hester, et al., 2022</a>)</span> to import them.</p>
 <div class="cell">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>estonia_passenger_list <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/estonia-passenger-list.csv&quot;</span>)</span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">estonia_passenger_list</span> <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"data/estonia-passenger-list.csv"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section>
-<section id="preview-dataset" class="level2">
-<h2>Preview Dataset</h2>
+</section><section id="preview-dataset" class="level2"><h2 class="anchored" data-anchor-id="preview-dataset">Preview Dataset</h2>
 <div class="cell">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-preview-dataset</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: &quot;Preview Dataset (first 6 rows)&quot;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(estonia_passenger_list, <span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">align =</span> <span class="st">&#39;c&#39;</span>,</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">booktabs =</span> T,</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">centering =</span> T,</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">valign =</span> T) <span class="sc">%&gt;%</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_paper</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scroll_box</span>(<span class="at">width =</span> <span class="st">&quot;600px&quot;</span>, <span class="at">height =</span> <span class="st">&quot;250px&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> F, <span class="at">position =</span> <span class="st">&quot;center&quot;</span>, <span class="at">html_font =</span> <span class="st">&quot;Cambria&quot;</span>) </span></code></pre></div>
-</details>
-<div class="cell-output-display">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#| label: tbl-preview-dataset</span></span>
+<span><span class="co">#| tbl-cap: "Preview Dataset (first 6 rows)"</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">estonia_passenger_list</span>, <span class="fl">10</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span></span>
+<span>    align <span class="op">=</span> <span class="st">'c'</span>,</span>
+<span>    booktabs <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>    centering <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>    valign <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_classic.html">kable_paper</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/scroll_box.html">scroll_box</a></span><span class="op">(</span>width <span class="op">=</span> <span class="st">"600px"</span>, height <span class="op">=</span> <span class="st">"250px"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">F</span>, position <span class="op">=</span> <span class="st">"center"</span>, html_font <span class="op">=</span> <span class="st">"Cambria"</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
 
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:250px; overflow-x: scroll; width:600px;  font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;" class="table">
-<table class="lightable-paper" data-quarto-postprocess="true" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
-<thead>
-<tr class="header">
+<table class="lightable-paper table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
 <th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">PassengerId</th>
 <th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">Country</th>
 <th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">Firstname</th>
@@ -372,8 +350,7 @@ div.csl-indent {
 <th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">Age</th>
 <th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">Category</th>
 <th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">Survived</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: center;">1</td>
@@ -481,126 +458,113 @@ div.csl-indent {
 
 </div>
 </div>
-</section>
-<section id="dataset-structure" class="level2">
-<h2>Dataset Structure</h2>
+</section><section id="dataset-structure" class="level2"><h2 class="anchored" data-anchor-id="dataset-structure">Dataset Structure</h2>
 <p>Our dataset is consisted by 8 variables (columns) and 989 observations (rows). More specifically :</p>
-<table>
+<table class="table">
 <colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
-<thead>
-<tr class="header">
+<thead><tr class="header">
 <th style="text-align: center;">Variable</th>
 <th style="text-align: center;">Property</th>
 <th style="text-align: center;">Description</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: center;"><code>PassengerId</code></td>
-<td style="text-align: center;"><em>qualitative</em> <br> (discrete)</td>
+<td style="text-align: center;">
+<em>qualitative</em> <br> (discrete)</td>
 <td style="text-align: center;">Id of passenger, Not important for analysis</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"><code>Country</code></td>
-<td style="text-align: center;"><em>qualitative</em> <br> (nominal)</td>
+<td style="text-align: center;">
+<em>qualitative</em> <br> (nominal)</td>
 <td style="text-align: center;">Country of Origin of the passenger</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><code>Firstname</code></td>
-<td style="text-align: center;"><em>qualitative</em> <br> (nominal)</td>
+<td style="text-align: center;">
+<em>qualitative</em> <br> (nominal)</td>
 <td style="text-align: center;">Passenger’s first name</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"><code>Lastname</code></td>
-<td style="text-align: center;"><em>qualitative</em> <br> (nominal)</td>
+<td style="text-align: center;">
+<em>qualitative</em> <br> (nominal)</td>
 <td style="text-align: center;">Passenger’s last name</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><code>Sex</code></td>
-<td style="text-align: center;"><em>qualitative</em> <br> (nominal)</td>
+<td style="text-align: center;">
+<em>qualitative</em> <br> (nominal)</td>
 <td style="text-align: center;">Sex of Passenger</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"><code>Age</code></td>
-<td style="text-align: center;"><em>quantitative</em> <br> (continuous)</td>
+<td style="text-align: center;">
+<em>quantitative</em> <br> (continuous)</td>
 <td style="text-align: center;">The age of the passenger</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><code>Category</code></td>
-<td style="text-align: center;"><em>qualitative</em> <br> (nominal)</td>
+<td style="text-align: center;">
+<em>qualitative</em> <br> (nominal)</td>
 <td style="text-align: center;">Passenger or member of the crew</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"><code>Survived</code></td>
-<td style="text-align: center;"><em>qualitative</em> <br> (nominal)</td>
+<td style="text-align: center;">
+<em>qualitative</em> <br> (nominal)</td>
 <td style="text-align: center;">Did the person survive ?</td>
 </tr>
 </tbody>
 </table>
 <p>Thus, my sample has 8 variables, of which 1 is quantitative and 7 are qualitative (nominal) properties.</p>
-</section>
-<section id="convert-categorical-variables" class="level2">
-<h2>Convert Categorical variables</h2>
+</section><section id="convert-categorical-variables" class="level2"><h2 class="anchored" data-anchor-id="convert-categorical-variables">Convert Categorical variables</h2>
 <div class="cell">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>estonia_passenger_list<span class="sc">$</span>Country <span class="ot">=</span> <span class="fu">as.factor</span>(estonia_passenger_list<span class="sc">$</span>Country)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>estonia_passenger_list<span class="sc">$</span>Sex <span class="ot">=</span> <span class="fu">as.factor</span>(estonia_passenger_list<span class="sc">$</span>Sex)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>estonia_passenger_list<span class="sc">$</span>Category <span class="ot">=</span> <span class="fu">as.factor</span>(estonia_passenger_list<span class="sc">$</span>Category)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>estonia_passenger_list<span class="sc">$</span>Survived[estonia_passenger_list<span class="sc">$</span>Survived <span class="sc">==</span> <span class="st">&quot;0&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;No&quot;</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>estonia_passenger_list<span class="sc">$</span>Survived[estonia_passenger_list<span class="sc">$</span>Survived <span class="sc">==</span> <span class="st">&quot;1&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;Yes&quot;</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>estonia_passenger_list<span class="sc">$</span>Survived <span class="ot">&lt;-</span> <span class="fu">factor</span>(estonia_passenger_list<span class="sc">$</span>Survived)</span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Country</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Country</span><span class="op">)</span></span>
+<span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Sex</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Sex</span><span class="op">)</span></span>
+<span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Category</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Category</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Survived</span><span class="op">[</span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Survived</span> <span class="op">==</span> <span class="st">"0"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"No"</span></span>
+<span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Survived</span><span class="op">[</span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Survived</span> <span class="op">==</span> <span class="st">"1"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Yes"</span></span>
+<span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Survived</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Survived</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section>
-<section id="outliers-and-nas" class="level2">
-<h2>Outliers and NAs</h2>
+</section><section id="outliers-and-nas" class="level2"><h2 class="anchored" data-anchor-id="outliers-and-nas">Outliers and NAs</h2>
 <div class="cell">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(estonia_passenger_list<span class="sc">$</span>Age)</span></code></pre></div>
-</details>
-<div class="cell-output-display">
-<p><img src="2023-03-31-Predict-Survivors-of-MS-Estonia_files/figure-html/unnamed-chunk-3-1.png" class="quarto-discovered-preview-image img-fluid" width="672" /></p>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot</a></span><span class="op">(</span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Age</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="2023-03-31-Predict-Survivors-of-MS-Estonia_files/figure-html/unnamed-chunk-3-1.png" class="quarto-discovered-preview-image img-fluid" width="672"></p>
 </div>
 </div>
 <p>On this dataset there are 0 missing values, in total.</p>
 <div class="cell">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(estonia_passenger_list))</span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">estonia_passenger_list</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section>
-<section id="preview-cleaned-dataset" class="level2">
-<h2>Preview Cleaned Dataset</h2>
+</section><section id="preview-cleaned-dataset" class="level2"><h2 class="anchored" data-anchor-id="preview-cleaned-dataset">Preview Cleaned Dataset</h2>
 <div class="cell">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-preview-dataset</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: &quot;Preview Dataset (first 6 rows)&quot;</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(estonia_passenger_list, <span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">align =</span> <span class="st">&#39;c&#39;</span>,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">booktabs =</span> T,</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">centering =</span> T,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">valign =</span> T) <span class="sc">%&gt;%</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_paper</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scroll_box</span>(<span class="at">width =</span> <span class="st">&quot;600px&quot;</span>, <span class="at">height =</span> <span class="st">&quot;250px&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> F, <span class="at">position =</span> <span class="st">&quot;center&quot;</span>, <span class="at">html_font =</span> <span class="st">&quot;Cambria&quot;</span>) </span></code></pre></div>
-</details>
-<div class="cell-output-display">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#| label: tbl-preview-dataset</span></span>
+<span><span class="co">#| tbl-cap: "Preview Dataset (first 6 rows)"</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">estonia_passenger_list</span>, <span class="fl">10</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span></span>
+<span>    align <span class="op">=</span> <span class="st">'c'</span>,</span>
+<span>    booktabs <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>    centering <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>    valign <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_classic.html">kable_paper</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/scroll_box.html">scroll_box</a></span><span class="op">(</span>width <span class="op">=</span> <span class="st">"600px"</span>, height <span class="op">=</span> <span class="st">"250px"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">F</span>, position <span class="op">=</span> <span class="st">"center"</span>, html_font <span class="op">=</span> <span class="st">"Cambria"</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
 
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:250px; overflow-x: scroll; width:600px;  font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;" class="table">
-<table class="lightable-paper" data-quarto-postprocess="true" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
-<thead>
-<tr class="header">
+<table class="lightable-paper table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
 <th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">PassengerId</th>
 <th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">Country</th>
 <th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">Firstname</th>
@@ -609,8 +573,7 @@ div.csl-indent {
 <th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">Age</th>
 <th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">Category</th>
 <th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">Survived</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: center;">1</td>
@@ -718,29 +681,26 @@ div.csl-indent {
 
 </div>
 </div>
-</section>
-</section>
-<section id="eda-with-r" class="level1">
-<h1>EDA with R</h1>
-<section id="univariate-analysis" class="level2">
-<h2>Univariate Analysis</h2>
-<div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Country</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Sex</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Age</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">Category</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false">Survived</a></li></ul>
+</section></section><section id="eda-with-r" class="level1"><h1>EDA with R</h1>
+<section id="univariate-analysis" class="level2"><h2 class="anchored" data-anchor-id="univariate-analysis">Univariate Analysis</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Country</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Sex</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Age</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">Category</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false">Survived</a></li>
+</ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <div class="cell">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(estonia_passenger_list<span class="sc">$</span>Country) <span class="sc">%&gt;%</span> <span class="fu">sort</span>(<span class="at">decreasing =</span> T) <span class="sc">%&gt;%</span> <span class="fu">kbl</span>()</span></code></pre></div>
-</details>
-<div class="cell-output-display">
-<table data-quarto-postprocess="true">
-<thead>
-<tr class="header">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Country</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span>decreasing <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Var1</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">Freq</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Sweden</td>
@@ -808,22 +768,17 @@ div.csl-indent {
 </tr>
 </tbody>
 </table>
-
-
 </div>
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <div class="cell">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>p<span class="ot">&lt;-</span><span class="fu">ggplot</span>(estonia_passenger_list, <span class="fu">aes</span>(<span class="at">x=</span>Sex, <span class="at">fill =</span> Sex)) <span class="sc">+</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>p</span></code></pre></div>
-</details>
-<div class="cell-output-display">
-<p><img src="2023-03-31-Predict-Survivors-of-MS-Estonia_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672" /></p>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">p</span><span class="op">&lt;-</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">estonia_passenger_list</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">Sex</span>, fill <span class="op">=</span> <span class="va">Sex</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">p</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="2023-03-31-Predict-Survivors-of-MS-Estonia_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -832,11 +787,8 @@ div.csl-indent {
 </div>
 <div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
 <div class="cell">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(estonia_passenger_list<span class="sc">$</span>Category) <span class="sc">%&gt;%</span> <span class="fu">sort</span>(<span class="at">decreasing =</span> T)</span></code></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Category</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span>decreasing <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
 <pre><code>
   P   C 
 796 193 </code></pre>
@@ -845,30 +797,28 @@ div.csl-indent {
 </div>
 <div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
 <div class="cell">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(estonia_passenger_list<span class="sc">$</span>Survived) <span class="sc">%&gt;%</span> <span class="fu">sort</span>(<span class="at">decreasing =</span> T)</span></code></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Survived</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span>decreasing <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
 <pre><code>
  No Yes 
 852 137 </code></pre>
 </div>
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>estonia_passenger_list<span class="sc">$</span>Survived[estonia_passenger_list<span class="sc">$</span>Survived <span class="sc">==</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="st">&quot;No&quot;</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>estonia_passenger_list<span class="sc">$</span>Survived[estonia_passenger_list<span class="sc">$</span>Survived <span class="sc">==</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">&quot;Yes&quot;</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>estonia_passenger_list<span class="sc">$</span>Survived <span class="ot">&lt;-</span> <span class="fu">factor</span>(estonia_passenger_list<span class="sc">$</span>Survived)</span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Survived</span><span class="op">[</span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Survived</span> <span class="op">==</span> <span class="fl">0</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"No"</span></span>
+<span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Survived</span><span class="op">[</span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Survived</span> <span class="op">==</span> <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Yes"</span></span>
+<span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Survived</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">estonia_passenger_list</span><span class="op">$</span><span class="va">Survived</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </div>
 </div>
 </div>
-</section>
-<section id="bivariate-analysis" class="level2">
-<h2>Bivariate Analysis</h2>
-<div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Country</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Sex</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">Age</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-4" role="tab" aria-controls="tabset-2-4" aria-selected="false">Category</a></li></ul>
+</section><section id="bivariate-analysis" class="level2"><h2 class="anchored" data-anchor-id="bivariate-analysis">Bivariate Analysis</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Country</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Sex</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">Age</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-4" role="tab" aria-controls="tabset-2-4" aria-selected="false">Category</a></li>
+</ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 
@@ -884,46 +834,39 @@ div.csl-indent {
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="building-predictive-model" class="level1">
-<h1>Building Predictive Model</h1>
-<section id="split-traintest-dataset" class="level2">
-<h2>Split train/test Dataset</h2>
+</section></section><section id="building-predictive-model" class="level1"><h1>Building Predictive Model</h1>
+<section id="split-traintest-dataset" class="level2"><h2 class="anchored" data-anchor-id="split-traintest-dataset">Split train/test Dataset</h2>
 <div class="cell">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Split train/test Dataset</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)<span class="co"># Create data split for train and test</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>estonia_passenger_list_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(estonia_passenger_list,</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>                                <span class="at">prop =</span> <span class="fl">0.75</span>,</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>                                <span class="at">strata =</span> Survived)</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Create training data</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>estonia_ms_train <span class="ot">&lt;-</span> estonia_passenger_list_split <span class="sc">%&gt;%</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">training</span>()</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Create testing data</span></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>estonia_ms_test <span class="ot">&lt;-</span> estonia_passenger_list_split <span class="sc">%&gt;%</span></span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">testing</span>()</span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Split train/test Dataset</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span><span class="co"># Create data split for train and test</span></span>
+<span><span class="va">estonia_passenger_list_split</span> <span class="op">&lt;-</span> <span class="fu">initial_split</span><span class="op">(</span><span class="va">estonia_passenger_list</span>,</span>
+<span>                                prop <span class="op">=</span> <span class="fl">0.75</span>,</span>
+<span>                                strata <span class="op">=</span> <span class="va">Survived</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create training data</span></span>
+<span><span class="va">estonia_ms_train</span> <span class="op">&lt;-</span> <span class="va">estonia_passenger_list_split</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>                    <span class="fu">training</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create testing data</span></span>
+<span><span class="va">estonia_ms_test</span> <span class="op">&lt;-</span> <span class="va">estonia_passenger_list_split</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>                    <span class="fu">testing</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">Train dataset</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Test dataset</a></li></ul>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">Train dataset</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Test dataset</a></li>
+</ul>
 <div class="tab-content">
 <div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
 <div class="cell">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(estonia_ms_train) <span class="sc">%&gt;%</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">toprule =</span> T,<span class="at">align =</span> <span class="st">&#39;c&#39;</span>,<span class="at">booktabs =</span> T)  <span class="sc">%&gt;%</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> F, <span class="at">position =</span> <span class="st">&quot;center&quot;</span>, <span class="at">html_font =</span> <span class="st">&quot;Cambria&quot;</span>) </span></code></pre></div>
-</details>
-<div class="cell-output-display">
-<table class="table" data-quarto-postprocess="true" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
-<thead>
-<tr class="header">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">estonia_ms_train</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span>toprule <span class="op">=</span> <span class="cn">T</span>,align <span class="op">=</span> <span class="st">'c'</span>,booktabs <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">F</span>, position <span class="op">=</span> <span class="st">"center"</span>, html_font <span class="op">=</span> <span class="st">"Cambria"</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
 <th style="text-align: center;" data-quarto-table-cell-role="th">PassengerId</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">Country</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">Firstname</th>
@@ -932,8 +875,7 @@ div.csl-indent {
 <th style="text-align: center;" data-quarto-table-cell-role="th">Age</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">Category</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">Survived</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: center;">2</td>
@@ -997,23 +939,17 @@ div.csl-indent {
 </tr>
 </tbody>
 </table>
-
-
 </div>
 </div>
 </div>
 <div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
 <div class="cell">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(estonia_ms_test) <span class="sc">%&gt;%</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> F, <span class="at">position =</span> <span class="st">&quot;center&quot;</span>, <span class="at">html_font =</span> <span class="st">&quot;Cambria&quot;</span>) </span></code></pre></div>
-</details>
-<div class="cell-output-display">
-<table class="table" data-quarto-postprocess="true" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
-<thead>
-<tr class="header">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">estonia_ms_test</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">F</span>, position <span class="op">=</span> <span class="st">"center"</span>, html_font <span class="op">=</span> <span class="st">"Cambria"</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
 <th style="text-align: right;" data-quarto-table-cell-role="th">PassengerId</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">Country</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">Firstname</th>
@@ -1022,8 +958,7 @@ div.csl-indent {
 <th style="text-align: right;" data-quarto-table-cell-role="th">Age</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">Category</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">Survived</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: right;">1</td>
@@ -1087,44 +1022,31 @@ div.csl-indent {
 </tr>
 </tbody>
 </table>
-
-
 </div>
 </div>
 </div>
 </div>
 </div>
-</section>
-<section id="recipes" class="level2">
-<h2>Recipes</h2>
+</section><section id="recipes" class="level2"><h2 class="anchored" data-anchor-id="recipes">Recipes</h2>
 <div class="cell">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>preprocessing_recipe <span class="ot">&lt;-</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>recipes<span class="sc">::</span><span class="fu">recipe</span>(Survived <span class="sc">~</span> Sex <span class="sc">+</span> Age <span class="sc">+</span> Category, <span class="at">data =</span> estonia_ms_train) <span class="sc">%&gt;%</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a> recipes<span class="sc">::</span><span class="fu">step_other</span>(<span class="fu">all_nominal</span>(), <span class="at">threshold =</span> <span class="fl">0.01</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a> recipes<span class="sc">::</span><span class="fu">step_nzv</span>(<span class="fu">all_nominal</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a> <span class="fu">prep</span>()</span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">preprocessing_recipe</span> <span class="op">&lt;-</span></span>
+<span><span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">Survived</span> <span class="op">~</span> <span class="va">Sex</span> <span class="op">+</span> <span class="va">Age</span> <span class="op">+</span> <span class="va">Category</span>, data <span class="op">=</span> <span class="va">estonia_ms_train</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span> <span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/step_other.html">step_other</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_nominal</a></span><span class="op">(</span><span class="op">)</span>, threshold <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span> <span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/step_nzv.html">step_nzv</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_nominal</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/prep.html">prep</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section>
-<section id="create-validation-set" class="level2">
-<h2>Create Validation Set</h2>
+</section><section id="create-validation-set" class="level2"><h2 class="anchored" data-anchor-id="create-validation-set">Create Validation Set</h2>
 <div class="cell">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>cv_folds <span class="ot">&lt;-</span> recipes<span class="sc">::</span><span class="fu">bake</span>(</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  preprocessing_recipe,</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">new_data =</span> estonia_ms_train) <span class="sc">%&gt;%</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  rsample<span class="sc">::</span><span class="fu">vfold_cv</span>(<span class="at">v =</span> <span class="dv">5</span>, <span class="at">strata =</span> Survived)</span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cv_folds</span> <span class="op">&lt;-</span> <span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/bake.html">bake</a></span><span class="op">(</span></span>
+<span>  <span class="va">preprocessing_recipe</span>,</span>
+<span>  new_data <span class="op">=</span> <span class="va">estonia_ms_train</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">rsample</span><span class="fu">::</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/vfold_cv.html">vfold_cv</a></span><span class="op">(</span>v <span class="op">=</span> <span class="fl">5</span>, strata <span class="op">=</span> <span class="va">Survived</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>cv_folds</span></code></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cv_folds</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
 <pre><code>#  5-fold cross-validation using stratification 
 # A tibble: 5 × 2
   splits            id   
@@ -1136,56 +1058,43 @@ div.csl-indent {
 5 &lt;split [594/147]&gt; Fold5</code></pre>
 </div>
 </div>
-</section>
-<section id="build-logistic-regression-model" class="level2">
-<h2>Build Logistic Regression Model</h2>
+</section><section id="build-logistic-regression-model" class="level2"><h2 class="anchored" data-anchor-id="build-logistic-regression-model">Build Logistic Regression Model</h2>
 <div class="cell">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>lightgbm_model<span class="ot">&lt;-</span> parsnip<span class="sc">::</span><span class="fu">boost_tree</span>(</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a> <span class="at">mode =</span> <span class="st">&quot;classification&quot;</span>,</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a> <span class="at">trees =</span> <span class="dv">300</span>,</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a> <span class="at">min_n =</span> <span class="fu">tune</span>(),</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a> <span class="at">learn_rate =</span> <span class="fu">tune</span>(),</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a> <span class="at">tree_depth =</span> <span class="fu">tune</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="fu">set_engine</span>(<span class="st">&quot;lightgbm&quot;</span>, <span class="at">loss_function =</span> <span class="st">&quot;squarederror&quot;</span>)</span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lightgbm_model</span><span class="op">&lt;-</span> <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html">boost_tree</a></span><span class="op">(</span></span>
+<span> mode <span class="op">=</span> <span class="st">"classification"</span>,</span>
+<span> trees <span class="op">=</span> <span class="fl">300</span>,</span>
+<span> min_n <span class="op">=</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/tune.html">tune</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span> learn_rate <span class="op">=</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/tune.html">tune</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span> tree_depth <span class="op">=</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/tune.html">tune</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"lightgbm"</span>, loss_function <span class="op">=</span> <span class="st">"squarederror"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section>
-<section id="hyperparameters-tuning" class="level2">
-<h2>Hyperparameters tuning</h2>
+</section><section id="hyperparameters-tuning" class="level2"><h2 class="anchored" data-anchor-id="hyperparameters-tuning">Hyperparameters tuning</h2>
 <div class="cell">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>lightgbm_params <span class="ot">&lt;-</span> dials<span class="sc">::</span><span class="fu">parameters</span>(</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">min_n</span>(), <span class="co"># min data in leaf</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">tree_depth</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">10</span>)), <span class="co"># depth</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># In most cases, the optimal depth ranges from 4 to 10. </span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Values in the range from 6 to 10 are recommended. </span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a> <span class="fu">learn_rate</span>() <span class="co"># learning rate</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lightgbm_params</span> <span class="op">&lt;-</span> <span class="fu">dials</span><span class="fu">::</span><span class="fu"><a href="https://dials.tidymodels.org/reference/parameters.html">parameters</a></span><span class="op">(</span></span>
+<span> <span class="fu">min_n</span><span class="op">(</span><span class="op">)</span>, <span class="co"># min data in leaf</span></span>
+<span> <span class="fu">tree_depth</span><span class="op">(</span>range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">10</span><span class="op">)</span><span class="op">)</span>, <span class="co"># depth</span></span>
+<span><span class="co"># In most cases, the optimal depth ranges from 4 to 10. </span></span>
+<span><span class="co"># Values in the range from 6 to 10 are recommended. </span></span>
+<span> <span class="fu">learn_rate</span><span class="op">(</span><span class="op">)</span> <span class="co"># learning rate</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>lightgbm_grid <span class="ot">&lt;-</span> dials<span class="sc">::</span><span class="fu">grid_max_entropy</span>(</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a> lightgbm_params,</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a> <span class="at">size =</span> <span class="dv">15</span>)</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(lightgbm_grid) <span class="sc">%&gt;%</span></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">toprule =</span> T,<span class="at">align =</span> <span class="st">&#39;c&#39;</span>,<span class="at">booktabs =</span> T)  <span class="sc">%&gt;%</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> F, <span class="at">position =</span> <span class="st">&quot;center&quot;</span>, <span class="at">html_font =</span> <span class="st">&quot;Cambria&quot;</span>) </span></code></pre></div>
-</details>
-<div class="cell-output-display">
-<table class="table" data-quarto-postprocess="true" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
-<thead>
-<tr class="header">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lightgbm_grid</span> <span class="op">&lt;-</span> <span class="fu">dials</span><span class="fu">::</span><span class="fu"><a href="https://dials.tidymodels.org/reference/grid_max_entropy.html">grid_max_entropy</a></span><span class="op">(</span></span>
+<span> <span class="va">lightgbm_params</span>,</span>
+<span> size <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">lightgbm_grid</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span>toprule <span class="op">=</span> <span class="cn">T</span>,align <span class="op">=</span> <span class="st">'c'</span>,booktabs <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">F</span>, position <span class="op">=</span> <span class="st">"center"</span>, html_font <span class="op">=</span> <span class="st">"Cambria"</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
 <th style="text-align: center;" data-quarto-table-cell-role="th">min_n</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">tree_depth</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">learn_rate</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: center;">22</td>
@@ -1219,53 +1128,37 @@ div.csl-indent {
 </tr>
 </tbody>
 </table>
-
-
 </div>
 </div>
-</section>
-<section id="build-workflow" class="level2">
-<h2>Build workflow</h2>
+</section><section id="build-workflow" class="level2"><h2 class="anchored" data-anchor-id="build-workflow">Build workflow</h2>
 <div class="cell">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>lightgbm_workflow <span class="ot">&lt;-</span> workflows<span class="sc">::</span><span class="fu">workflow</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">add_model</span>(lightgbm_model) <span class="sc">%&gt;%</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">add_formula</span>(Survived <span class="sc">~</span> Sex <span class="sc">+</span> Age <span class="sc">+</span> Category)</span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lightgbm_workflow</span> <span class="op">&lt;-</span> <span class="fu">workflows</span><span class="fu">::</span><span class="fu"><a href="https://workflows.tidymodels.org/reference/workflow.html">workflow</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span> <span class="fu">add_model</span><span class="op">(</span><span class="va">lightgbm_model</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span> <span class="fu">add_formula</span><span class="op">(</span><span class="va">Survived</span> <span class="op">~</span> <span class="va">Sex</span> <span class="op">+</span> <span class="va">Age</span> <span class="op">+</span> <span class="va">Category</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section>
-<section id="fit" class="level2">
-<h2>Fit</h2>
+</section><section id="fit" class="level2"><h2 class="anchored" data-anchor-id="fit">Fit</h2>
 <div class="cell">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>lightgbm_tuned_model <span class="ot">&lt;-</span> tune<span class="sc">::</span><span class="fu">tune_grid</span>(</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a> <span class="at">object =</span> lightgbm_workflow,</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a> <span class="at">resamples =</span> cv_folds,</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a> <span class="at">metrics =</span> <span class="fu">metric_set</span>(roc_auc, accuracy),</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a> <span class="at">grid =</span> lightgbm_grid,</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a> <span class="at">control =</span> tune<span class="sc">::</span><span class="fu">control_grid</span>(<span class="at">verbose =</span> <span class="cn">FALSE</span>) <span class="co"># set this to TRUE to see</span></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a> <span class="co"># in what step of the process you are. But that doesn&#39;t look that well in</span></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a> <span class="co"># a blog.</span></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lightgbm_tuned_model</span> <span class="op">&lt;-</span> <span class="fu">tune</span><span class="fu">::</span><span class="fu"><a href="https://tune.tidymodels.org/reference/tune_grid.html">tune_grid</a></span><span class="op">(</span></span>
+<span> object <span class="op">=</span> <span class="va">lightgbm_workflow</span>,</span>
+<span> resamples <span class="op">=</span> <span class="va">cv_folds</span>,</span>
+<span> metrics <span class="op">=</span> <span class="fu">metric_set</span><span class="op">(</span><span class="va">roc_auc</span>, <span class="va">accuracy</span><span class="op">)</span>,</span>
+<span> grid <span class="op">=</span> <span class="va">lightgbm_grid</span>,</span>
+<span> control <span class="op">=</span> <span class="fu">tune</span><span class="fu">::</span><span class="fu"><a href="https://tune.tidymodels.org/reference/control_grid.html">control_grid</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co"># set this to TRUE to see</span></span>
+<span> <span class="co"># in what step of the process you are. But that doesn't look that well in</span></span>
+<span> <span class="co"># a blog.</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section>
-<section id="evaluate-model" class="level2">
-<h2>Evaluate Model</h2>
+</section><section id="evaluate-model" class="level2"><h2 class="anchored" data-anchor-id="evaluate-model">Evaluate Model</h2>
 <div class="cell">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>lightgbm_tuned_model <span class="sc">%&gt;%</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">show_best</span>(<span class="st">&quot;roc_auc&quot;</span>,<span class="at">n=</span><span class="dv">5</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">toprule =</span> T,<span class="at">align =</span> <span class="st">&#39;c&#39;</span>,<span class="at">booktabs =</span> T)  <span class="sc">%&gt;%</span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> F, <span class="at">position =</span> <span class="st">&quot;center&quot;</span>, <span class="at">html_font =</span> <span class="st">&quot;Cambria&quot;</span>) </span></code></pre></div>
-</details>
-<div class="cell-output-display">
-<table class="table" data-quarto-postprocess="true" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
-<thead>
-<tr class="header">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lightgbm_tuned_model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">show_best</span><span class="op">(</span><span class="st">"roc_auc"</span>,n<span class="op">=</span><span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span>toprule <span class="op">=</span> <span class="cn">T</span>,align <span class="op">=</span> <span class="st">'c'</span>,booktabs <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">F</span>, position <span class="op">=</span> <span class="st">"center"</span>, html_font <span class="op">=</span> <span class="st">"Cambria"</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
 <th style="text-align: center;" data-quarto-table-cell-role="th">min_n</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">tree_depth</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">learn_rate</th>
@@ -1275,8 +1168,7 @@ div.csl-indent {
 <th style="text-align: center;" data-quarto-table-cell-role="th">n</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">std_err</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">.config</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: center;">39</td>
@@ -1335,50 +1227,39 @@ div.csl-indent {
 </tr>
 </tbody>
 </table>
-
-
 </div>
 </div>
-</section>
-<section id="last-fit" class="level2">
-<h2>Last Fit</h2>
+</section><section id="last-fit" class="level2"><h2 class="anchored" data-anchor-id="last-fit">Last Fit</h2>
 <div class="cell">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>last_fit_lightgbm_model <span class="ot">=</span> parsnip<span class="sc">::</span><span class="fu">boost_tree</span>(</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a> <span class="at">mode =</span> <span class="st">&quot;classification&quot;</span>,</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a> <span class="at">trees =</span> <span class="dv">300</span>,</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a> <span class="at">min_n =</span> <span class="dv">4</span>,</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a> <span class="at">learn_rate =</span> <span class="fl">5.9e-05</span>,</span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a> <span class="at">tree_depth =</span> <span class="dv">4</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="fu">set_engine</span>(<span class="st">&quot;lightgbm&quot;</span>, <span class="at">loss_function =</span> <span class="st">&quot;squarederror&quot;</span>)</span></code></pre></div>
+<details><summary>Show the code</summary><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">last_fit_lightgbm_model</span> <span class="op">=</span> <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html">boost_tree</a></span><span class="op">(</span></span>
+<span> mode <span class="op">=</span> <span class="st">"classification"</span>,</span>
+<span> trees <span class="op">=</span> <span class="fl">300</span>,</span>
+<span> min_n <span class="op">=</span> <span class="fl">4</span>,</span>
+<span> learn_rate <span class="op">=</span> <span class="fl">5.9e-05</span>,</span>
+<span> tree_depth <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"lightgbm"</span>, loss_function <span class="op">=</span> <span class="st">"squarederror"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>last_fit_workflow <span class="ot">&lt;-</span> lightgbm_workflow <span class="sc">%&gt;%</span> </span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_model</span>(last_fit_lightgbm_model)</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>last_rf_fit <span class="ot">&lt;-</span> </span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  last_fit_workflow <span class="sc">%&gt;%</span> </span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">last_fit</span>(estonia_passenger_list_split)</span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>last_rf_fit <span class="sc">%&gt;%</span> </span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect_metrics</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">toprule =</span> T,<span class="at">align =</span> <span class="st">&#39;c&#39;</span>,<span class="at">booktabs =</span> T)  <span class="sc">%&gt;%</span></span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> F, <span class="at">position =</span> <span class="st">&quot;center&quot;</span>, <span class="at">html_font =</span> <span class="st">&quot;Cambria&quot;</span>) </span></code></pre></div>
-</details>
-<div class="cell-output-display">
-<table class="table" data-quarto-postprocess="true" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
-<thead>
-<tr class="header">
+<details><summary>Show the code</summary><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">last_fit_workflow</span> <span class="op">&lt;-</span> <span class="va">lightgbm_workflow</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">update_model</span><span class="op">(</span><span class="va">last_fit_lightgbm_model</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">last_rf_fit</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="va">last_fit_workflow</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">last_fit</span><span class="op">(</span><span class="va">estonia_passenger_list_split</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">last_rf_fit</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">collect_metrics</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span>toprule <span class="op">=</span> <span class="cn">T</span>,align <span class="op">=</span> <span class="st">'c'</span>,booktabs <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">F</span>, position <span class="op">=</span> <span class="st">"center"</span>, html_font <span class="op">=</span> <span class="st">"Cambria"</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<thead><tr class="header">
 <th style="text-align: center;" data-quarto-table-cell-role="th">.metric</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">.estimator</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">.estimate</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">.config</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: center;">accuracy</td>
@@ -1394,28 +1275,17 @@ div.csl-indent {
 </tr>
 </tbody>
 </table>
-
-
 </div>
 </div>
-</section>
-</section>
-<section id="major-concerns" class="level1">
-<h1>Major Concerns</h1>
+</section></section><section id="major-concerns" class="level1"><h1>Major Concerns</h1>
 <p>As we can see there is a significant difference between train and test results. My model performs better on train and less better on train set. That’s the case of overfitting.</p>
-<section id="acknowledgements" class="level2 appendix unlisted">
-<h2 class="appendix unlisted">Acknowledgements</h2>
+</section><div id="quarto-appendix" class="default"><section id="acknowledgements" class="level2 appendix unlisted"><h2 class="anchored quarto-appendix-heading">Acknowledgements</h2><div class="quarto-appendix-contents">
 <p>Image by <a href="https://pixabay.com/users/dexmac-12233086/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=4375844">Gianluca</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=4375844">Pixabay</a></p>
-</section>
-<section id="references" class="level2 appendix unlisted">
-<h2 class="appendix unlisted">References</h2>
-<div id="quarto-navigation-envelope" class="hidden">
-<p><span class="hidden" data-render-id="quarto-int-sidebar-title">stesiam</span> <span class="hidden" data-render-id="quarto-int-navbar-title">stesiam</span> <span class="hidden" data-render-id="quarto-int-navbar:Home">Home</span> <span class="hidden" data-render-id="quarto-int-navbar:/index.html">/index.html</span> <span class="hidden" data-render-id="quarto-int-navbar:Posts">Posts</span> <span class="hidden" data-render-id="quarto-int-navbar:All posts">All posts</span> <span class="hidden" data-render-id="quarto-int-navbar:/posts.html">/posts.html</span> <span class="hidden" data-render-id="quarto-int-navbar:Notebooks">Notebooks</span> <span class="hidden" data-render-id="quarto-int-navbar:/notebooks.html">/notebooks.html</span> <span class="hidden" data-render-id="quarto-int-navbar:Blog">Blog</span> <span class="hidden" data-render-id="quarto-int-navbar:/blog.html">/blog.html</span> <span class="hidden" data-render-id="quarto-int-navbar:Greek Posts">Greek Posts</span> <span class="hidden" data-render-id="quarto-int-navbar:/greek.html">/greek.html</span> <span class="hidden" data-render-id="quarto-int-navbar:Shiny Projects">Shiny Projects</span> <span class="hidden" data-render-id="quarto-int-navbar:/shiny.html">/shiny.html</span> <span class="hidden" data-render-id="quarto-int-navbar:Material">Material</span> <span class="hidden" data-render-id="quarto-int-navbar:/material.html">/material.html</span> <span class="hidden" data-render-id="quarto-int-navbar:Gallery">Gallery</span> <span class="hidden" data-render-id="quarto-int-navbar:/gallery.html">/gallery.html</span> <span class="hidden" data-render-id="quarto-int-navbar:CV">CV</span> <span class="hidden" data-render-id="quarto-int-navbar:https://github.com/stesiam">https://github.com/stesiam</span> <span class="hidden" data-render-id="quarto-int-navbar:/posts.xml">/posts.xml</span></p>
-</div>
-<div id="quarto-meta-markdown" class="hidden">
-<p><span class="hidden" data-render-id="quarto-metatitle">stesiam - Predict Survivors of MS Estonia</span> <span class="hidden" data-render-id="quarto-twittercardtitle">stesiam - Predict Survivors of MS Estonia</span> <span class="hidden" data-render-id="quarto-ogcardtitle">stesiam - Predict Survivors of MS Estonia</span> <span class="hidden" data-render-id="quarto-metasitename">stesiam</span> <span class="hidden" data-render-id="quarto-twittercarddesc">Build a logistic regression model to predict survivors of MS Estonia.</span> <span class="hidden" data-render-id="quarto-ogcardddesc">Build a logistic regression model to predict survivors of MS Estonia.</span></p>
-</div>
-<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
+</div></section><section id="references" class="level2 appendix unlisted"><h2 class="quarto-appendix-heading"></h2><div class="quarto-appendix-contents">
+
+
+
+</div></section><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
 <div id="ref-R-infer" class="csl-entry" role="listitem">
 Bray, A., Ismay, C., Chasnovski, E., Couch, S., Baumer, B., &amp; Cetinkaya-Rundel, M. (2022). <em>Infer: Tidy statistical inference</em>. Retrieved from <a href="https://CRAN.R-project.org/package=infer">https://CRAN.R-project.org/package=infer</a>
 </div>
@@ -1503,12 +1373,17 @@ Wilke, C. O., &amp; Wiernik, B. M. (2022). <em>Ggtext: Improved text rendering s
 <div id="ref-R-kableExtra" class="csl-entry" role="listitem">
 Zhu, H. (2021). <em>kableExtra: Construct complex table with kable and pipe syntax</em>. Retrieved from <a href="https://CRAN.R-project.org/package=kableExtra">https://CRAN.R-project.org/package=kableExtra</a>
 </div>
-</div>
-</section>
-</section>
-
-</main> <!-- /main -->
-<script id = "quarto-html-after-body" type="application/javascript">
+</div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{2023,
+  author = {, stesiam},
+  title = {Predict {Survivors} of {MS} {Estonia}},
+  date = {2023-03-31},
+  url = {https://www.stesiam.github.io/notebooks/2023-03-31-Predict-Survivors-of-MS-Estonia/2023-03-31-Predict-Survivors-of-MS-Estonia.html},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-2023" class="csl-entry quarto-appendix-citeas" role="listitem">
+stesiam. (2023, March 31). Predict Survivors of MS Estonia. Retrieved
+from <a href="https://www.stesiam.github.io/notebooks/2023-03-31-Predict-Survivors-of-MS-Estonia/2023-03-31-Predict-Survivors-of-MS-Estonia.html">https://www.stesiam.github.io/notebooks/2023-03-31-Predict-Survivors-of-MS-Estonia/2023-03-31-Predict-Survivors-of-MS-Estonia.html</a>
+</div></div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -1791,23 +1666,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
-<script src="https://giscus.app/client.js"
-        data-repo="stesiam/stesiam.github.io"
-        data-repo-id="R_kgDOHuiNDg"
-        data-category="Comments"
-        data-category-id="DIC_kwDOHuiNDs4CQeAf"
-        data-mapping="title"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="top"
-        data-theme="light"
-        data-lang="en"
-        crossorigin="anonymous"
-        async>
+</script><script src="https://giscus.app/client.js" data-repo="stesiam/stesiam.github.io" data-repo-id="R_kgDOHuiNDg" data-category="Comments" data-category-id="DIC_kwDOHuiNDs4CQeAf" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
 </script>
 </div> <!-- /content -->
 
-</body>
 
-</html>
+
+</body></html>
