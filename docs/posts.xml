@@ -10,7 +10,119 @@
 <atom:link href="https://www.stesiam.github.io/posts.xml" rel="self" type="application/rss+xml"/>
 <description>All my posts in one place.</description>
 <generator>quarto-1.3.276</generator>
-<lastBuildDate>Mon, 03 Jul 2023 21:00:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 20 Jul 2023 21:00:00 GMT</lastBuildDate>
+<item>
+  <title>Statistics of Statistics Graduates</title>
+  <dc:creator>stesiam</dc:creator>
+  <link>https://www.stesiam.github.io/english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html</link>
+  <description><![CDATA[ <section id="introduction" class="level2"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Statistics can be hard. This is</p>
+<p>THe recent study guide includes data about the graduates and their average grade of graduation over the years. First and foremost the data we are interested in are included in table form (which is good) but is is part of a pdf file (which is not good :)). Thankfully, <strong>tabulizer</strong> is the solution to this kind of problems.</p>
+</section><section id="load-packages" class="level2"><h2 class="anchored" data-anchor-id="load-packages">Load Packages</h2>
+<p>As I will extract tables from a pdf file, I will definitely need <strong>tabulizer</strong> package. Unfortunately, I was not able to install the specific package, as I was getting an error similar to this <a href="https://github.com/ropensci/tabulizer/issues/157">one</a>. This issue seems to be related to rJava package and <a href="https://github.com/s-u/rJava/issues/255#issuecomment-794473988">this comment</a> solved the issue. After installing rJava I was able to install successufully tabulizer as below:</p>
+<div class="cell">
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># remotes::install_github(c("ropensci/tabulizerjars", "ropensci/tabulizer"))</span></span></code></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;"><a href="https://docs.ropensci.org/tabulizer">tabulizer</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div>
+</div>
+</section><section id="extract-data" class="level2"><h2 class="anchored" data-anchor-id="extract-data">Extract Data</h2>
+<div class="cell">
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">url</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://www.unipi.gr/faculty/mbouts/anak/OS_22_23.pdf"</span></span>
+<span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">destfile</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"english/2023-07-21-Graduates-of-Statistics"</span></span></code></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">url</span>, destfile <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'./others/'</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in download.file(url, destfile = "./others/"): URL
+https://www.unipi.gr/faculty/mbouts/anak/OS_22_23.pdf: cannot open destfile
+'./others/', reason 'Is a directory'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in download.file(url, destfile = "./others/"): download had nonzero
+exit status</code></pre>
+</div>
+</div>
+</section><section id="analysing-data" class="level2"><h2 class="anchored" data-anchor-id="analysing-data">Analysing Data</h2>
+</section><div id="quarto-appendix" class="default"><section id="acknowledgements" class="level2 appendix unlisted"><h2 class="anchored quarto-appendix-heading">Acknowledgements</h2><div class="quarto-appendix-contents">
+<p>Dataset based on recent study guide <a href="https://www.unipi.gr/faculty/mbouts/anak/OS_22_23.pdf">recent study guide</a> of Department of Statistics and Insurance Science of the University of Piraeus.</p>
+<p>Image by <a href="https://pixabay.com/users/vloveland-4834409/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2148715">Victoria Loveland</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2148715">Pixabay</a></p>
+</div></section><section id="references" class="level2 appendix unlisted"><h2 class="quarto-appendix-heading"></h2><div class="quarto-appendix-contents">
+
+
+
+</div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2">
+<div id="ref-R-tabulizer" class="csl-entry">
+Leeper, T. J., Vargas, M., &amp; Paskhalis, T. (2023). <em>Tabulizer: Bindings for tabula PDF table extractor library</em>.
+</div>
+<div id="ref-R-base" class="csl-entry">
+R Core Team. (2021). <em>R: A language and environment for statistical computing</em>. Vienna, Austria: R Foundation for Statistical Computing. Retrieved from <a href="https://www.R-project.org/">https://www.R-project.org/</a>
+</div>
+<div id="ref-R-dplyr" class="csl-entry">
+Wickham, H., François, R., Henry, L., Müller, K., &amp; Vaughan, D. (2023). <em>Dplyr: A grammar of data manipulation</em>. Retrieved from <a href="https://CRAN.R-project.org/package=dplyr">https://CRAN.R-project.org/package=dplyr</a>
+</div>
+</div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{2023,
+  author = {, stesiam},
+  title = {Statistics of {Statistics} {Graduates}},
+  date = {2023-07-21},
+  url = {https://www.stesiam.github.io/english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-2023" class="csl-entry quarto-appendix-citeas">
+stesiam. (2023, July 21). Statistics of Statistics Graduates. Retrieved
+from <a href="https://www.stesiam.github.io/english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html">https://www.stesiam.github.io/english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html</a>
+</div></div></section></div> ]]></description>
+  <category>R</category>
+  <category>EDA</category>
+  <category>PDF</category>
+  <category>tabulizer</category>
+  <guid>https://www.stesiam.github.io/english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html</guid>
+  <pubDate>Thu, 20 Jul 2023 21:00:00 GMT</pubDate>
+  <media:content url="https://www.stesiam.github.io/english/2023-07-21-Graduates-of-Statistics/graduation-cap.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Πρόσβαση στο API του data.gov.gr</title>
   <dc:creator>stesiam</dc:creator>
