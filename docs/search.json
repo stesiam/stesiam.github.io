@@ -175,13 +175,6 @@
     "text": "Finally, I made my site using Quarto and hosted it via GitHub Pages.\nIt was a month ago, that I decided to start building my website. Initially, I was experimenting with other frameworks (e.g., Hugo with the help of blogdown, Distill), which were pretty good, but Quarto fulfilled my needs. The reasons for my decision are going to be discussed in a new article."
   },
   {
-    "objectID": "english/2022-07-27-hello/27-07-2022-hello.html#last-updated-on",
-    "href": "english/2022-07-27-hello/27-07-2022-hello.html#last-updated-on",
-    "title": "Hello, World",
-    "section": "Last updated on",
-    "text": "Last updated on\n\n\n[1] \"2023-07-06\""
-  },
-  {
     "objectID": "english/2022-07-27-hello/27-07-2022-hello.html#acknowledgments",
     "href": "english/2022-07-27-hello/27-07-2022-hello.html#acknowledgments",
     "title": "Hello, World",
@@ -425,6 +418,13 @@
     "title": "List of Quarto Websites",
     "section": "",
     "text": "Given the increased popularity of Quarto, I took the initiative to make a list of some sites that are using this framework. That way, users of other popular frameworks (e.g., distill, blogdown) will have the chance to see the features of a Quarto site. Furthermore, existing Quarto users can draw inspiration from other web pages.\nUnfortunately, it is certain that this list does not contain every Quarto website. However, you are welcome to comment yours in order to be added."
+  },
+  {
+    "objectID": "english/2022-08-10-List-of-Quarto-Sites/2022-08-10-List-of-Quarto-Sites.html#inspiration",
+    "href": "english/2022-08-10-List-of-Quarto-Sites/2022-08-10-List-of-Quarto-Sites.html#inspiration",
+    "title": "List of Quarto Websites",
+    "section": "Inspiration",
+    "text": "Inspiration\nA couple of years ago, I had the desire to create a portfolio website, and I tried out many options. Long story short, I ended up using Distill, and I really loved it because it offered a balance of simplicity and professionalism. Despite some minor issues with Distill (many of which are resolved by Quarto), I was extremely happy with the platform. However, I faced a challenge as I was not only an amateur R programmer but also lacked hands-on experience with HTML/CSS. Around the same time, I discovered a website that listed many Distill websites together. This compilation of websites provided several benefits for me:\n\nUnderstand the limits of the Distill\nMotivation to look on others’ websites and take some inspiration\nEasy access to implemented features and their respective code\n\nIn 2022, Quarto was announced and the things on website publishing with R changed a little bit. Many users have already considered the change to the new framework (based on the Distill sites listing above). Some others may are hesitant due to the fact that Quarto is new or they are not interested to read long documentation. Thus, I believe that a listing of Quarto websites is needed to make the framework more accessible to newer users and speed the implementation of features for existing ones."
   },
   {
     "objectID": "english/2022-08-10-List-of-Quarto-Sites/2022-08-10-List-of-Quarto-Sites.html#list-of-quarto-sites",
@@ -819,6 +819,48 @@
     "text": "Univariate analysis\n\nQualitative (Nominal) variables\n\nAutoheatingSolarCoolingSafe doorGasFireplaceFurnitureStudentParkingDeleted\n\n\n\n\nShow the code\ncategorical_plot(\"auto_heating\",\"Autonomous Heating\")\n\n\n\n\n\n\n\n\n\nShow the code\ncategorical_plot(\"solar\", \"Solar-powered water-heater\")\n\n\n\n\n\n\n\n\n\nShow the code\ncategorical_plot(\"cooling\", \"Cooling\")\n\n\n\n\n\n\n\n\n\nShow the code\ncategorical_plot(\"safe_door\", \"Safe door\")\n\n\n\n\n\n\n\n\n\nShow the code\ncategorical_plot(\"gas\", \"Gas\")\n\n\n\n\n\n\n\n\n\nShow the code\ncategorical_plot(\"fireplace\", \"Fireplace\")\n\n\n\n\n\n\n\n\n\nShow the code\ncategorical_plot(\"furniture\", \"Available furniture\")\n\n\n\n\n\n\n\n\n\nShow the code\ncategorical_plot(\"student\", \"Ideal for students\")\n\n\n\n\n\n\n\n\n\nShow the code\ncategorical_plot(\"parking\", \"Parking\")\n\n\n\n\n\n\n\n\n\nShow the code\ncategorical_plot(\"deleted\", \"Deleted\")\n\n\n\n\n\n\n\n\n\n\nQualitative (Ordinal) variables\n\nStatusEnergy classFloor\n\n\n\n\nShow the code\ntable(data$status) %&gt;%\n  sort(decreasing = F) %&gt;%\n  as.data.frame() %&gt;%\n  ggplot(., aes(x = Var1, y = Freq)) +\n   geom_bar(stat = \"identity\") +\n   geom_text(aes(label = Freq, y = Freq +17)) +\n   theme_classic() +\n   coord_flip()\n\n\n\n\n\n\n\n\n\nShow the code\ntable(data$energyclass) %&gt;%\n  sort(decreasing = F) %&gt;%\n  as.data.frame() %&gt;%\n  ggplot(., aes(x = Var1, y = Freq)) +\n   geom_bar(stat = \"identity\") +\n   geom_text(aes(label = Freq, y = Freq +17)) +\n   theme_classic() +\n   coord_flip()\n\n\n\n\n\n\n\n\n\nShow the code\ntable(data$levels) %&gt;%\n  sort(decreasing = F) %&gt;%\n  as.data.frame() %&gt;%\n  ggplot(., aes(x = Var1, y = Freq)) +\n   geom_bar(stat = \"identity\") +\n   geom_text(aes(label = Freq, y = Freq +17)) +\n   theme_classic() +\n   coord_flip()\n\n\n\n\n\n\n\n\n\n\nQuantitative (Discrete) variables\n\nBedroomsBathrooms\n\n\n\n\nShow the code\nggplot(data, aes(x = bedrooms)) +\n  geom_bar(stat = \"count\") +\n  scale_x_discrete() +\n  theme_classic()\n\n\n\n\n\n\n\n\n\nShow the code\nggplot(data, aes(x = bathrooms)) +\n  geom_bar(stat = \"count\") +\n  scale_x_discrete() +\n  theme_classic()\n\n\n\n\n\n\n\n\n\n\nQuantitative (Continuous) variables\n\nPricePrice per sqrSquaremeters\n\n\n\n\nShow the code\nggplot(data, aes(x= res_price)) +\n  geom_histogram() +\n  theme_classic()\n\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\n\n\n\n\n\n\n\n\n\nShow the code\nggplot(data, aes(x= res_price_sqr)) +\n  geom_histogram() +\n  theme_classic()\n\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\n\n\n\n\n\n\n\n\n\nShow the code\nggplot(data, aes(x= res_sqr)) +\n  geom_line(stat = \"count\") +\n  theme_classic()\n\n\n\n\n\n\n\n\n\n\nTime Series\n\nDate publishedDeleted atConstruction Year\n\n\n\n\nShow the code\ndata$Year_Published = lubridate::year(data$res_date)\n\nggplot(data, aes(x= Year_Published)) +\n  geom_line(stat = \"count\") +\n  theme_classic()\n\n\n\n\n\n\n\n\n\nShow the code\ndata$Year_Deleted = lubridate::ym(data$deleted_at)\n\nggplot(data, aes(x= Year_Deleted)) +\n  geom_line(stat = \"count\") +\n  theme_classic()\n\n\n\n\n\n\n\n\n\nShow the code\ndata$construction_year &lt;- cut(data$construction_year,\n  include.lowest = TRUE,\n  right = FALSE,\n  dig.lab = 4,\n  breaks = c(1920, 1940, 1960, 1980, 2000, 2020, 2030)\n)\n\n\n\n\nShow the code\nggplot(data, aes(x = construction_year)) +\n  geom_bar(stat = \"count\") +\n  theme_classic()\n\n\n\n\n\n\n\n\n\n\nShow the code\ndata_split &lt;- initial_split(data, prop = 0.75)\n\ntrain &lt;- training(data_split)\ntest  &lt;- testing(data_split)\n\nimpute_rec &lt;- recipe(res_price ~ bathrooms + bedrooms, data = data) %&gt;%\n  step_impute_mean(all_predictors())"
   },
   {
+    "objectID": "english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html",
+    "href": "english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html",
+    "title": "Statistics of Statistics Graduates",
+    "section": "",
+    "text": "Statistics can be hard. This is\nTHe recent study guide includes data about the graduates and their average grade of graduation over the years. First and foremost the data we are interested in are included in table form (which is good) but is is part of a pdf file (which is not good :)). Thankfully, tabulizer is the solution to this kind of problems."
+  },
+  {
+    "objectID": "english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html#introduction",
+    "href": "english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html#introduction",
+    "title": "Statistics of Statistics Graduates",
+    "section": "",
+    "text": "Statistics can be hard. This is\nTHe recent study guide includes data about the graduates and their average grade of graduation over the years. First and foremost the data we are interested in are included in table form (which is good) but is is part of a pdf file (which is not good :)). Thankfully, tabulizer is the solution to this kind of problems."
+  },
+  {
+    "objectID": "english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html#load-packages",
+    "href": "english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html#load-packages",
+    "title": "Statistics of Statistics Graduates",
+    "section": "Load Packages",
+    "text": "Load Packages\nAs I will extract tables from a pdf file, I will definitely need tabulizer package. Unfortunately, I was not able to install the specific package, as I was getting an error similar to this one. This issue seems to be related to rJava package and this comment solved the issue. After installing rJava I was able to install successufully tabulizer as below:\n\n# remotes::install_github(c(\"ropensci/tabulizerjars\", \"ropensci/tabulizer\"))\n\n\nlibrary(rJava)\nlibrary(tabulizer)\nlibrary(dplyr)\nlibrary(pdftools)\nlibrary(tidyr)"
+  },
+  {
+    "objectID": "english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html#extract-data",
+    "href": "english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html#extract-data",
+    "title": "Statistics of Statistics Graduates",
+    "section": "Extract Data",
+    "text": "Extract Data\n\nurl = \"https://www.unipi.gr/faculty/mbouts/anak/OS_22_23.pdf\"\n\ndownload.file(url, \n              destfile = \"sg22.pdf\",\n              method = \"wget\",\n              extra = \"--no-check-certificate\")\n\npdf_subset('sg22.pdf',\n  pages = 186:190,  output = \"subset.pdf\")\n\n[1] \"/home/stelios/Desktop/stesiam/english/2023-07-21-Graduates-of-Statistics/subset.pdf\"\n\n\n\nstatistics_tables &lt;- extract_tables(\n    file   = \"subset.pdf\", \n    method = \"decide\", \n    output = \"data.frame\")"
+  },
+  {
+    "objectID": "english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html#analysing-data",
+    "href": "english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html#analysing-data",
+    "title": "Statistics of Statistics Graduates",
+    "section": "Analysing Data",
+    "text": "Analysing Data\nAdmitted students\n\nadmitted_students = statistics_tables[[1]] %&gt;%\n  .[-1,] %&gt;%\n  setNames(c(\"Year\", \"Main_exams\", \"Transfer\", \"Entry_exams\", \"Other\", \"Total\"))\n\nadmitted_students$Main_exams = admitted_students$Main_exams %&gt;% as.integer()\nadmitted_students$Transfer= admitted_students$Transfer %&gt;% as.integer()\n\nWarning in admitted_students$Transfer %&gt;% as.integer(): NAs introduced by\ncoercion\n\nadmitted_students$Entry_exams = admitted_students$Entry_exams %&gt;% as.integer()\n\nWarning in admitted_students$Entry_exams %&gt;% as.integer(): NAs introduced by\ncoercion\n\nadmitted_students$Other = admitted_students$Other %&gt;% as.integer()\n\nrownames(admitted_students) = 1:nrow(admitted_students)\n\nadmitted_students %&gt;% \n  pivot_longer(\n    cols = !Year, \n    names_to = \"Admission_Type\", \n    values_to = \"count\"\n  )\n\n# A tibble: 100 × 3\n   Year      Admission_Type count\n   &lt;chr&gt;     &lt;chr&gt;          &lt;int&gt;\n 1 2003-2004 Main_exams       183\n 2 2003-2004 Transfer          15\n 3 2003-2004 Entry_exams        1\n 4 2003-2004 Other             17\n 5 2003-2004 Total            216\n 6 2004-2005 Main_exams       181\n 7 2004-2005 Transfer          21\n 8 2004-2005 Entry_exams        1\n 9 2004-2005 Other             16\n10 2004-2005 Total            219\n# ℹ 90 more rows"
+  },
+  {
+    "objectID": "english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html#acknowledgements",
+    "href": "english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html#acknowledgements",
+    "title": "Statistics of Statistics Graduates",
+    "section": "Acknowledgements",
+    "text": "Acknowledgements\nDataset based on recent study guide recent study guide of Department of Statistics and Insurance Science of the University of Piraeus.\nImage by Victoria Loveland from Pixabay"
+  },
+  {
     "objectID": "presentations/Test.html#getting-up",
     "href": "presentations/Test.html#getting-up",
     "title": "Test Presentation",
@@ -1047,62 +1089,6 @@
     "href": "shiny.html",
     "title": "Shiny Projects",
     "section": "",
-    "text": "Possible Samples\n      \n      A simple Shiny App that calculates the number of possible samples depending on the chosen sampling method.\n    \n    \n     Website\n     Repo\n    \n\n\n\n\n\n    \n      Shiny Distributions\n      A Shiny App to showcase various distributions and their characteristics.\n    \n    \n     Website\n     Repo\n    \n\n\n\n\n\n    \n      Greek Elections Shiny\n      A Shiny App to calculate parliamentary seats for each party (Greek parliament).\n    \n    \n     Website\n     Repo\n    \n\n\n\n\n\n\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "english/2022-08-10-List-of-Quarto-Sites/2022-08-10-List-of-Quarto-Sites.html#inspiration",
-    "href": "english/2022-08-10-List-of-Quarto-Sites/2022-08-10-List-of-Quarto-Sites.html#inspiration",
-    "title": "List of Quarto Websites",
-    "section": "Inspiration",
-    "text": "Inspiration\nA couple of years ago, I had the desire to create a portfolio website, and I tried out many options. Long story short, I ended up using Distill, and I really loved it because it offered a balance of simplicity and professionalism. Despite some minor issues with Distill (many of which are resolved by Quarto), I was extremely happy with the platform. However, I faced a challenge as I was not only an amateur R programmer but also lacked hands-on experience with HTML/CSS. Around the same time, I discovered a website that listed many Distill websites together. This compilation of websites provided several benefits for me:\n\nUnderstand the limits of the Distill\nMotivation to look on others’ websites and take some inspiration\nEasy access to implemented features and their respective code\n\nIn 2022, Quarto was announced and the things on website publishing with R changed a little bit. Many users have already considered the change to the new framework (based on the Distill sites listing above). Some others may are hesitant due to the fact that Quarto is new or they are not interested to read long documentation. Thus, I believe that a listing of Quarto websites is needed to make the framework more accessible to newer users and speed the implementation of features for existing ones."
-  },
-  {
-    "objectID": "english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html#extracting-data",
-    "href": "english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html#extracting-data",
-    "title": "Statistics of Statistics Graduates",
-    "section": "Extracting Data",
-    "text": "Extracting Data\nAs I will extract tables from a pdf file, I will definitely need tabulizer package. Unfortunately, I was not able to install the specific package, as I was getting an error similar to this one. This issue seems to be related to rJava package and this comment solved the issue. After installing rJava I was able to install successufully tabuliriser as below:\n\n# remotes::install_github(c(\"ropensci/tabulizerjars\", \"ropensci/tabulizer\"))\n\n\nlibrary(tabulizer)\nlibrary(dplyr)"
-  },
-  {
-    "objectID": "english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html#analysing-data",
-    "href": "english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html#analysing-data",
-    "title": "Statistics of Statistics Graduates",
-    "section": "Analysing Data",
-    "text": "Analysing Data"
-  },
-  {
-    "objectID": "english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html#acknowledgements",
-    "href": "english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html#acknowledgements",
-    "title": "Statistics of Statistics Graduates",
-    "section": "Acknowledgements",
-    "text": "Acknowledgements\nDataset based on recent study guide recent study guide of Department of Statistics and Insurance Science of the University of Piraeus.\nImage by Victoria Loveland from Pixabay"
-  },
-  {
-    "objectID": "english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html",
-    "href": "english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html",
-    "title": "Statistics of Statistics Graduates",
-    "section": "",
-    "text": "Statistics can be hard. This is\nTHe recent study guide includes data about the graduates and their average grade of graduation over the years. First and foremost the data we are interested in are included in table form (which is good) but is is part of a pdf file (which is not good :)). Thankfully, tabulizer is the solution to this kind of problems."
-  },
-  {
-    "objectID": "english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html#introduction",
-    "href": "english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html#introduction",
-    "title": "Statistics of Statistics Graduates",
-    "section": "",
-    "text": "Statistics can be hard. This is\nTHe recent study guide includes data about the graduates and their average grade of graduation over the years. First and foremost the data we are interested in are included in table form (which is good) but is is part of a pdf file (which is not good :)). Thankfully, tabulizer is the solution to this kind of problems."
-  },
-  {
-    "objectID": "english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html#load-packages",
-    "href": "english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html#load-packages",
-    "title": "Statistics of Statistics Graduates",
-    "section": "Load Packages",
-    "text": "Load Packages\nAs I will extract tables from a pdf file, I will definitely need tabulizer package. Unfortunately, I was not able to install the specific package, as I was getting an error similar to this one. This issue seems to be related to rJava package and this comment solved the issue. After installing rJava I was able to install successufully tabulizer as below:\n\n# remotes::install_github(c(\"ropensci/tabulizerjars\", \"ropensci/tabulizer\"))\n\n\nlibrary(tabulizer)\nlibrary(dplyr)"
-  },
-  {
-    "objectID": "english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html#extract-data",
-    "href": "english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html#extract-data",
-    "title": "Statistics of Statistics Graduates",
-    "section": "Extract Data",
-    "text": "Extract Data\n\nurl = \"https://www.unipi.gr/faculty/mbouts/anak/OS_22_23.pdf\"\ndestfile = \"english/2023-07-21-Graduates-of-Statistics\"\n\n\ndownload.file(url, destfile = './others/')\n\nWarning in download.file(url, destfile = \"./others/\"): URL\nhttps://www.unipi.gr/faculty/mbouts/anak/OS_22_23.pdf: cannot open destfile\n'./others/', reason 'Is a directory'\n\n\nWarning in download.file(url, destfile = \"./others/\"): download had nonzero\nexit status"
+    "text": "Ship Travellers\n      A dashboard of daily ship travellers in Greece\n    \n    \n     Website\n     Repo\n    \n\n\n\n\n\n    \n      Possible Samples\n      A simple Shiny App that calculates the number of possible samples depending on the chosen sampling method.\n    \n    \n     Website\n     Repo\n    \n\n\n\n\n\n    \n      Shiny Distributions\n      A Shiny App to showcase various distributions and their characteristics.\n    \n    \n     Website\n     Repo\n    \n\n\n\n\n\n    \n      Greek Elections Shiny\n      A Shiny App to calculate parliamentary seats for each party (Greek parliament).\n    \n    \n     Website\n     Repo\n    \n\n\n\n\n\n\n\n\n\n\n\n\nNo matching items"
   }
 ]
