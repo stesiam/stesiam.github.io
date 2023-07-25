@@ -88,6 +88,7 @@ First and foremost, we have to load our libraries.
 # General purpose R libraries
 library(tidyverse)
 library(kableExtra)
+library(reactable)
 
 
 # Graphs
@@ -143,9 +144,20 @@ Thus, my sample has `r ncol(parliament)` variables, of which 0 are quantitative 
 
 ## Recoding variables
 
-```{r, results='hide'}
-table(parliament$Party)
+Party names can vary from short to lengthy ones. The last ones are a problem for our analysis because their names can not fit to our visualisations. The table below is showing all the parties that have ever participated in parliament. Is is apparent that some parties have really long names. 
+
+```{r}
+data.frame(
+  Party = unique(parliament$Party),
+  Length = str_length(unique(parliament$Party))
+) %>%
+  arrange(-Length) %>%
+  reactable(
+    defaultPageSize = 5
+  )
 ```
+
+In our case the parties with the longest name is AN.EL. and Democratic Coalition  with 81 and 70 characters, respectively. On the contrary, the shortest party name is POL.A. with 6 characters.
 
 ```{r}
 ## Recoding parliament$Party

@@ -193,21 +193,21 @@
     "href": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#import-libraries",
     "title": "EDA on Greek Parliament",
     "section": "Import Libraries",
-    "text": "Import Libraries\nFirst and foremost, we have to load our libraries.\n\nShow the code# General purpose R libraries\nlibrary(tidyverse)\nlibrary(kableExtra)\n\n\n# Graphs\nlibrary(ggplot2)\nlibrary(ggpol) \nlibrary(ggtext)\n\n# Other settings\noptions(digits=2) # print only 2 decimals"
+    "text": "Import Libraries\nFirst and foremost, we have to load our libraries.\n\nCode# General purpose R libraries\nlibrary(tidyverse)\nlibrary(kableExtra)\nlibrary(reactable)\n\n\n# Graphs\nlibrary(ggplot2)\nlibrary(ggpol) \nlibrary(ggtext)\n\n# Other settings\noptions(digits=2) # print only 2 decimals"
   },
   {
     "objectID": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#import-dataset",
     "href": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#import-dataset",
     "title": "EDA on Greek Parliament",
     "section": "Import dataset",
-    "text": "Import dataset\nAfter loading R libraries, then I will load my data.\n\nShow the codeparliament &lt;- read_csv(\"data/greek_parliament.csv\")"
+    "text": "Import dataset\nAfter loading R libraries, then I will load my data.\n\nCodeparliament &lt;- read_csv(\"data/greek_parliament.csv\")"
   },
   {
     "objectID": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#preview-dataset",
     "href": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#preview-dataset",
     "title": "EDA on Greek Parliament",
     "section": "Preview Dataset",
-    "text": "Preview Dataset\n\nShow the codepreview_dataset = head(parliament, 10)\nkbl(preview_dataset, \n    align = 'c',\n    booktabs = T,\n    centering = T,\n    valign = T) %&gt;%\n  kable_paper() %&gt;%\n  scroll_box(width = \"600px\", height = \"250px\")\n\n\n\n\nTable 1: Preview Dataset (first 6 rows)\n\nFullName\nParty\nConstituency\nTerm\n\n\n\nAgorastis Vasileios\nPA.SO.K. (Panhellenic Socialist Movement)\nLarissa\n3\n\n\nAkrita Sylva - Kaiti\nPA.SO.K. (Panhellenic Socialist Movement)\nAthens B\n3\n\n\nAkritidis Nikolaos\nPA.SO.K. (Panhellenic Socialist Movement)\nThessaloniki A\n3\n\n\nAkrivakis Alexandros\nPA.SO.K. (Panhellenic Socialist Movement)\nViotia\n3\n\n\nAlevras Ioannis\nPA.SO.K. (Panhellenic Socialist Movement)\nAthens A\n3\n\n\nAlexandris Efstathios (Stathis)\nPA.SO.K. (Panhellenic Socialist Movement)\nAthens B\n3\n\n\nAlexiadis Konstantinos\nPA.SO.K. (Panhellenic Socialist Movement)\nTrikala\n3\n\n\nAlexiou Thomas\nNEA DIMOKRATIA\nXanthi\n3\n\n\nAllamanis Stylianos\nNEA DIMOKRATIA\nKarditsa\n3\n\n\nAmanatidis Konstantinos\nPA.SO.K. (Panhellenic Socialist Movement)\nThessaloniki B\n3"
+    "text": "Preview Dataset\n\nCodepreview_dataset = head(parliament, 10)\nkbl(preview_dataset, \n    align = 'c',\n    booktabs = T,\n    centering = T,\n    valign = T) %&gt;%\n  kable_paper() %&gt;%\n  scroll_box(width = \"600px\", height = \"250px\")\n\n\n\n\nTable 1: Preview Dataset (first 6 rows)\n\nFullName\nParty\nConstituency\nTerm\n\n\n\nAgorastis Vasileios\nPA.SO.K. (Panhellenic Socialist Movement)\nLarissa\n3\n\n\nAkrita Sylva - Kaiti\nPA.SO.K. (Panhellenic Socialist Movement)\nAthens B\n3\n\n\nAkritidis Nikolaos\nPA.SO.K. (Panhellenic Socialist Movement)\nThessaloniki A\n3\n\n\nAkrivakis Alexandros\nPA.SO.K. (Panhellenic Socialist Movement)\nViotia\n3\n\n\nAlevras Ioannis\nPA.SO.K. (Panhellenic Socialist Movement)\nAthens A\n3\n\n\nAlexandris Efstathios (Stathis)\nPA.SO.K. (Panhellenic Socialist Movement)\nAthens B\n3\n\n\nAlexiadis Konstantinos\nPA.SO.K. (Panhellenic Socialist Movement)\nTrikala\n3\n\n\nAlexiou Thomas\nNEA DIMOKRATIA\nXanthi\n3\n\n\nAllamanis Stylianos\nNEA DIMOKRATIA\nKarditsa\n3\n\n\nAmanatidis Konstantinos\nPA.SO.K. (Panhellenic Socialist Movement)\nThessaloniki B\n3"
   },
   {
     "objectID": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#structure-of-dataset",
@@ -221,140 +221,140 @@
     "href": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#recoding-variables",
     "title": "EDA on Greek Parliament",
     "section": "Recoding variables",
-    "text": "Recoding variables\n\nShow the codetable(parliament$Party)\n\n\n\nShow the code## Recoding parliament$Party\nparliament$Party[parliament$Party == \"ANEXARTITOI DIMOKRATIKOI VOULEFTES\"] &lt;- \"ADP\"\nparliament$Party[parliament$Party == \"ANEXARTITOI ELLINES (Independent Hellenes)\"] &lt;- \"ANEL\"\nparliament$Party[parliament$Party == \"ANEXARTITOI ELLINES (Independent Hellenes) National Patriotic Democratic Alliance\"]&lt;- \"ANEL\"\nparliament$Party[parliament$Party == \"Coalition of the Left and Progress\"] &lt;- \"SYRIZA\"\nparliament$Party[parliament$Party == \"Communist Party of Greece (Interior)\"] &lt;- \"KKE (interior)\"\nparliament$Party[parliament$Party == \"DEMOCRATIC COALITION (Panhellenic Socialist Movement Democratic Left )\"] &lt;- \"PASOK\"\nparliament$Party[parliament$Party == \"DHM.AR (Democratic Left)\"] &lt;- \"DHMAR\"\nparliament$Party[parliament$Party == \"DI.ANA.\"] &lt;- \"DIANA\"\nparliament$Party[parliament$Party == \"DI.K.KI.\"] &lt;- \"DIKKI\"\nparliament$Party[parliament$Party == \"INDEPENDENT\"] &lt;- \"INDEPENDENT\"\nparliament$Party[parliament$Party == \"KOMMOUNISTIKO KOMMA ELLADAS\"] &lt;- \"KKE\"\nparliament$Party[parliament$Party == \"LA.O.S.\"] &lt;- \"LAOS\"\nparliament$Party[parliament$Party == \"LAIKI ENOTITA\"] &lt;- \"LAE\"\nparliament$Party[parliament$Party == \"LAIKOS SYNDESMOS - CHRYSI AVGI (People’s Association – Golden Dawn)\"] &lt;- \"XA\"\nparliament$Party[parliament$Party == \"NEA DIMOKRATIA\"] &lt;- \"ND\"\nparliament$Party[parliament$Party == \"PA.SO.K. (Panhellenic Socialist Movement)\"] &lt;- \"PASOK\"\nparliament$Party[parliament$Party == \"POL.A.\"] &lt;- \"POLA\"\nparliament$Party[parliament$Party == \"SYNASPISMOS RIZOSPASTIKIS ARISTERAS\"] &lt;- \"SYRIZA\"\nparliament$Party[parliament$Party == \"TO POTAMI (The River)\"] &lt;- \"POTAMI\"\nparliament$Party[parliament$Party == \"ΟΟ.ΕΟ.\"] &lt;- \"ΟΟ.ΕΟ\""
+    "text": "Recoding variables\nParty names can vary from short to lengthy ones. The last ones are a problem for our analysis because their names can not fit to our visualisations. The table below is showing all the parties that have ever participated in parliament. Is is apparent that some parties have really long names.\n\nCodedata.frame(\n  Party = unique(parliament$Party),\n  Length = str_length(unique(parliament$Party))\n) %&gt;%\n  arrange(-Length) %&gt;%\n  reactable(\n    defaultPageSize = 5\n  )\n\n\n\n\n\n\nIn our case the parties with the longest name is AN.EL. and Democratic Coalition with 81 and 70 characters, respectively. On the contrary, the shortest party name is POL.A. with 6 characters.\n\nCode## Recoding parliament$Party\nparliament$Party[parliament$Party == \"ANEXARTITOI DIMOKRATIKOI VOULEFTES\"] &lt;- \"ADP\"\nparliament$Party[parliament$Party == \"ANEXARTITOI ELLINES (Independent Hellenes)\"] &lt;- \"ANEL\"\nparliament$Party[parliament$Party == \"ANEXARTITOI ELLINES (Independent Hellenes) National Patriotic Democratic Alliance\"]&lt;- \"ANEL\"\nparliament$Party[parliament$Party == \"Coalition of the Left and Progress\"] &lt;- \"SYRIZA\"\nparliament$Party[parliament$Party == \"Communist Party of Greece (Interior)\"] &lt;- \"KKE (interior)\"\nparliament$Party[parliament$Party == \"DEMOCRATIC COALITION (Panhellenic Socialist Movement Democratic Left )\"] &lt;- \"PASOK\"\nparliament$Party[parliament$Party == \"DHM.AR (Democratic Left)\"] &lt;- \"DHMAR\"\nparliament$Party[parliament$Party == \"DI.ANA.\"] &lt;- \"DIANA\"\nparliament$Party[parliament$Party == \"DI.K.KI.\"] &lt;- \"DIKKI\"\nparliament$Party[parliament$Party == \"INDEPENDENT\"] &lt;- \"INDEPENDENT\"\nparliament$Party[parliament$Party == \"KOMMOUNISTIKO KOMMA ELLADAS\"] &lt;- \"KKE\"\nparliament$Party[parliament$Party == \"LA.O.S.\"] &lt;- \"LAOS\"\nparliament$Party[parliament$Party == \"LAIKI ENOTITA\"] &lt;- \"LAE\"\nparliament$Party[parliament$Party == \"LAIKOS SYNDESMOS - CHRYSI AVGI (People’s Association – Golden Dawn)\"] &lt;- \"XA\"\nparliament$Party[parliament$Party == \"NEA DIMOKRATIA\"] &lt;- \"ND\"\nparliament$Party[parliament$Party == \"PA.SO.K. (Panhellenic Socialist Movement)\"] &lt;- \"PASOK\"\nparliament$Party[parliament$Party == \"POL.A.\"] &lt;- \"POLA\"\nparliament$Party[parliament$Party == \"SYNASPISMOS RIZOSPASTIKIS ARISTERAS\"] &lt;- \"SYRIZA\"\nparliament$Party[parliament$Party == \"TO POTAMI (The River)\"] &lt;- \"POTAMI\"\nparliament$Party[parliament$Party == \"ΟΟ.ΕΟ.\"] &lt;- \"ΟΟ.ΕΟ\""
   },
   {
     "objectID": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#setting-colors",
     "href": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#setting-colors",
     "title": "EDA on Greek Parliament",
     "section": "Setting colors",
-    "text": "Setting colors\nA few days after, I decided that there should be a consistency in the choice of colors. That’s the reason of this section. Thus, I will assign a dedicated hex color code to each party.\n\nShow the codekke_color = \"#FF6666\"\nnd_color = \"#0492c2\"\npasok_color = \"#95bb72\"\nsyriza_color = \"#e27bb1\""
+    "text": "Setting colors\nA few days after, I decided that there should be a consistency in the choice of colors. That’s the reason of this section. Thus, I will assign a dedicated hex color code to each party.\n\nCodekke_color = \"#FF6666\"\nnd_color = \"#0492c2\"\npasok_color = \"#95bb72\"\nsyriza_color = \"#e27bb1\""
   },
   {
     "objectID": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#kke",
     "href": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#kke",
     "title": "EDA on Greek Parliament",
     "section": "KKE",
-    "text": "KKE\n\nShow the codeparty_plot(\"KKE\", \"#FF6666\", times_elected_min = 5)"
+    "text": "KKE\n\nCodeparty_plot(\"KKE\", \"#FF6666\", times_elected_min = 5)"
   },
   {
     "objectID": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#nd",
     "href": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#nd",
     "title": "EDA on Greek Parliament",
     "section": "ND",
-    "text": "ND\n\nShow the codeparty_plot(\"ND\", \"#0492c2\", times_elected_min = 10)"
+    "text": "ND\n\nCodeparty_plot(\"ND\", \"#0492c2\", times_elected_min = 10)"
   },
   {
     "objectID": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#pasok",
     "href": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#pasok",
     "title": "EDA on Greek Parliament",
     "section": "PASOK",
-    "text": "PASOK\n\nShow the codeparty_plot(\"PASOK\", \"#95bb72\", times_elected_min = 10)"
+    "text": "PASOK\n\nCodeparty_plot(\"PASOK\", \"#95bb72\", times_elected_min = 10)"
   },
   {
     "objectID": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#syriza",
     "href": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#syriza",
     "title": "EDA on Greek Parliament",
     "section": "SYRIZA",
-    "text": "SYRIZA\n\nShow the codeparty_plot(\"SYRIZA\", \"#e27bb1\", times_elected_min = 5)"
+    "text": "SYRIZA\n\nCodeparty_plot(\"SYRIZA\", \"#e27bb1\", times_elected_min = 5)"
   },
   {
     "objectID": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#state",
     "href": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#state",
     "title": "EDA on Greek Parliament",
     "section": "State",
-    "text": "State\n\nShow the codeconstituency_freqs(\"State\", 3)"
+    "text": "State\n\nCodeconstituency_freqs(\"State\", 3)"
   },
   {
     "objectID": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#attica",
     "href": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#attica",
     "title": "EDA on Greek Parliament",
     "section": "Attica",
-    "text": "Attica\n\n\nAthens A\nAthens B\nPiraeus A\nPiraeus B\nOf Attica (rest)\n\n\n\n\nShow the codeconstituency_freqs(\"Athens A\",5)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Athens B\",7)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Piraeus A\",5)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Piraeus B\",5)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Of Attica (rest)\",5)"
+    "text": "Attica\n\n\nAthens A\nAthens B\nPiraeus A\nPiraeus B\nOf Attica (rest)\n\n\n\n\nCodeconstituency_freqs(\"Athens A\",5)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Athens B\",7)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Piraeus A\",5)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Piraeus B\",5)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Of Attica (rest)\",5)"
   },
   {
     "objectID": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#central-greece",
     "href": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#central-greece",
     "title": "EDA on Greek Parliament",
     "section": "Central Greece",
-    "text": "Central Greece\n\n\nViotia\nEvrytania\nFokida\nFthiotida\n\n\n\n\nShow the codeconstituency_freqs(\"Viotia\",5)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Evrytania\",2)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Fokida\",2)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Fthiotida\",3)"
+    "text": "Central Greece\n\n\nViotia\nEvrytania\nFokida\nFthiotida\n\n\n\n\nCodeconstituency_freqs(\"Viotia\",5)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Evrytania\",2)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Fokida\",2)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Fthiotida\",3)"
   },
   {
     "objectID": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#central-macedonia",
     "href": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#central-macedonia",
     "title": "EDA on Greek Parliament",
     "section": "Central Macedonia",
-    "text": "Central Macedonia\n\n\nThessaloniki A\nThessaloniki B\nKilkis\nPella\nPieria\nSerres\nHalkidiki\n\n\n\n\nShow the codeconstituency_freqs(\"Thessaloniki A\",6)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Thessaloniki B\",6)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Kilkis\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Pella\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Pieria\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Serres\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Halkidiki\",3)"
+    "text": "Central Macedonia\n\n\nThessaloniki A\nThessaloniki B\nKilkis\nPella\nPieria\nSerres\nHalkidiki\n\n\n\n\nCodeconstituency_freqs(\"Thessaloniki A\",6)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Thessaloniki B\",6)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Kilkis\",3)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Pella\",3)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Pieria\",3)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Serres\",3)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Halkidiki\",3)"
   },
   {
     "objectID": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#crete",
     "href": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#crete",
     "title": "EDA on Greek Parliament",
     "section": "Crete",
-    "text": "Crete\n\n\nChania\nHeraklion\nLasithi\nRethymno\n\n\n\n\nShow the codeconstituency_freqs(\"Chania\",3)\n\n\n\n\n\n\n\nShow the code#constituency_freqs(\"Irakleio\",3)\n\n\n\n\n\nShow the codeconstituency_freqs(\"Lasithi\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Rethymno\",3)"
+    "text": "Crete\n\n\nChania\nHeraklion\nLasithi\nRethymno\n\n\n\n\nCodeconstituency_freqs(\"Chania\",3)\n\n\n\n\n\n\n\nCode#constituency_freqs(\"Irakleio\",3)\n\n\n\n\n\nCodeconstituency_freqs(\"Lasithi\",3)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Rethymno\",3)"
   },
   {
     "objectID": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#eastern-macedonia-and-thrace",
     "href": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#eastern-macedonia-and-thrace",
     "title": "EDA on Greek Parliament",
     "section": "Eastern Macedonia and Thrace",
-    "text": "Eastern Macedonia and Thrace\n\n\nDrama\nEvros\nKavala\nXanthi\nRodopi\n\n\n\n\nShow the codeconstituency_freqs(\"Drama\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Evros\",4)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Kavala\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Xanthi\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Rodopi\",3)"
+    "text": "Eastern Macedonia and Thrace\n\n\nDrama\nEvros\nKavala\nXanthi\nRodopi\n\n\n\n\nCodeconstituency_freqs(\"Drama\",3)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Evros\",4)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Kavala\",3)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Xanthi\",3)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Rodopi\",3)"
   },
   {
     "objectID": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#epirus",
     "href": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#epirus",
     "title": "EDA on Greek Parliament",
     "section": "Epirus",
-    "text": "Epirus\n\n\nArta\nIoannina\nPreveza\nThesprotia\n\n\n\n\nShow the codeconstituency_freqs(\"Arta\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Ioannina\",4)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Preveza\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Thesprotia\",3)"
+    "text": "Epirus\n\n\nArta\nIoannina\nPreveza\nThesprotia\n\n\n\n\nCodeconstituency_freqs(\"Arta\",3)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Ioannina\",4)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Preveza\",3)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Thesprotia\",3)"
   },
   {
     "objectID": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#ionian-islands",
     "href": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#ionian-islands",
     "title": "EDA on Greek Parliament",
     "section": "Ionian Islands",
-    "text": "Ionian Islands\n\n\nCorfu\nKefallonia\nLefkada\nZakynthos\n\n\n\n\nShow the codeconstituency_freqs(\"Corfu\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Kefallonia\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Lefkada\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Zakynthos\",3)"
+    "text": "Ionian Islands\n\n\nCorfu\nKefallonia\nLefkada\nZakynthos\n\n\n\n\nCodeconstituency_freqs(\"Corfu\",3)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Kefallonia\",3)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Lefkada\",3)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Zakynthos\",3)"
   },
   {
     "objectID": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#north-aegean",
     "href": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#north-aegean",
     "title": "EDA on Greek Parliament",
     "section": "North Aegean",
-    "text": "North Aegean\n\n\nChios\nLesvos\nSamos\n\n\n\n\nShow the codeconstituency_freqs(\"Chios\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Lesvos\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Samos\",3)"
+    "text": "North Aegean\n\n\nChios\nLesvos\nSamos\n\n\n\n\nCodeconstituency_freqs(\"Chios\",3)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Lesvos\",3)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Samos\",3)"
   },
   {
     "objectID": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#peloponnese",
     "href": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#peloponnese",
     "title": "EDA on Greek Parliament",
     "section": "Peloponnese",
-    "text": "Peloponnese\n\n\nArgolida\nArkadia\nKorinthia\nLakonia\nMessinia\n\n\n\n\nShow the codeconstituency_freqs(\"Argolida\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Arcadia\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Korinthia\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Lakonia\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Messinia\",3)"
+    "text": "Peloponnese\n\n\nArgolida\nArkadia\nKorinthia\nLakonia\nMessinia\n\n\n\n\nCodeconstituency_freqs(\"Argolida\",3)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Arcadia\",3)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Korinthia\",3)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Lakonia\",3)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Messinia\",3)"
   },
   {
     "objectID": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#south-aegean",
     "href": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#south-aegean",
     "title": "EDA on Greek Parliament",
     "section": "South Aegean",
-    "text": "South Aegean\n\n\nDodecanese Islands\nCyclades\n\n\n\n\nShow the codeconstituency_freqs(\"Dodecanese Islands\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Cyclades\",3)"
+    "text": "South Aegean\n\n\nDodecanese Islands\nCyclades\n\n\n\n\nCodeconstituency_freqs(\"Dodecanese Islands\",3)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Cyclades\",3)"
   },
   {
     "objectID": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#thessaly",
     "href": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#thessaly",
     "title": "EDA on Greek Parliament",
     "section": "Thessaly",
-    "text": "Thessaly\n\n\nKarditsa\nLarissa\nMagnesia\nTrikala\n\n\n\n\nShow the codeconstituency_freqs(\"Karditsa\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Larissa\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Magnesia\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Trikala\",3)"
+    "text": "Thessaly\n\n\nKarditsa\nLarissa\nMagnesia\nTrikala\n\n\n\n\nCodeconstituency_freqs(\"Karditsa\",3)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Larissa\",3)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Magnesia\",3)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Trikala\",3)"
   },
   {
     "objectID": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#western-greece",
     "href": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#western-greece",
     "title": "EDA on Greek Parliament",
     "section": "Western Greece",
-    "text": "Western Greece\n\n\nAchaia\nAitoloakarnania\nIleia\n\n\n\n\nShow the codeconstituency_freqs(\"Achaia\",3)\n\n\n\n\n\n\n\nShow the code#constituency_freqs(\"Aitoloakarnania\",3)\n\n\n\n\n\nShow the codeconstituency_freqs(\"Ileia\",3)"
+    "text": "Western Greece\n\n\nAchaia\nAitoloakarnania\nIleia\n\n\n\n\nCodeconstituency_freqs(\"Achaia\",3)\n\n\n\n\n\n\n\nCode#constituency_freqs(\"Aitoloakarnania\",3)\n\n\n\n\n\nCodeconstituency_freqs(\"Ileia\",3)"
   },
   {
     "objectID": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#western-macedonia",
     "href": "english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html#western-macedonia",
     "title": "EDA on Greek Parliament",
     "section": "Western Macedonia",
-    "text": "Western Macedonia\n\n\nFlorina\nGrevena\nKastoria\nKozani\n\n\n\n\nShow the codeconstituency_freqs(\"Florina\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Grevena\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Kastoria\",3)\n\n\n\n\n\n\n\nShow the codeconstituency_freqs(\"Kozani\",3)"
+    "text": "Western Macedonia\n\n\nFlorina\nGrevena\nKastoria\nKozani\n\n\n\n\nCodeconstituency_freqs(\"Florina\",3)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Grevena\",3)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Kastoria\",3)\n\n\n\n\n\n\n\nCodeconstituency_freqs(\"Kozani\",3)"
   },
   {
     "objectID": "english/2022-10-03-Verified-Commits/2022-10-03-Verified-Commits.html",
@@ -942,7 +942,7 @@
     "href": "english.html",
     "title": "English Posts",
     "section": "",
-    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n  \n\n\n\n\nStatistics of Statistics Graduates\n\n\n\n\n\n\n\nR\n\n\nEDA\n\n\nPDF\n\n\ntabulizer\n\n\n\n\nExtracting tabular data from PDF file, in order to explore facts about graduates of Statistics and Insurance Department in University of Piraeus\n\n\n\n\n\n\nJul 21, 2023\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nKaggle’s Greek Community\n\n\n\n\n\n\n\nR\n\n\nEDA\n\n\nKaggle\n\n\n\n\nAn exploratory data analysis about Kaggle’s Greek community, based on its 2021 survey. Comparing Greek\n\n\n\n\n\n\nMay 6, 2023\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nPredict Survivors of MS Estonia\n\n\n\n\n\n\n\nR\n\n\nClassification\n\n\nTidymodels\n\n\nLogistic Regression\n\n\n\n\nBuild a logistic regression model to predict survivors of MS Estonia.\n\n\n\n\n\n\nMar 31, 2023\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nPredict Cost of Housing in Kallithea\n\n\n\n\n\n\n\nR\n\n\nRegression\n\n\n\n\nBuild a regression model using various ML algorithms to predict cost to buy a house in Kallithea.\n\n\n\n\n\n\nDec 6, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nPredict Possible Interested Clients\n\n\n\n\n\n\n\nR\n\n\nClassification\n\n\nTidymodels\n\n\n\n\nBuild a classification machine learning model (using LightGBM & XGBoost) in order to classify people based on their interest to have a term deposit or not.\n\n\n\n\n\n\nNov 24, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nInstall LightGBM and CatBoost on Ubuntu 22.04\n\n\n\n\n\n\n\nLinux\n\n\nLightGBM\n\n\nCatBoost\n\n\nXGBoost\n\n\n\n\nInstall high performance algorithms (LightGBM, CatBoost & XGBoost) on your Linux device\n\n\n\n\n\n\nNov 13, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nGit Series (Part I - Configuration)\n\n\n\n\n\n\n\nGit\n\n\n\n\nAn article that brings together some configuration setttings of Git. A beginner’s approach to Git.\n\n\n\n\n\n\nNov 4, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nForecasting Unemployment in Greece\n\n\n\n\n\n\n\nR\n\n\nTime Series\n\n\n\n\nMake a prediction about the future value of Greece’s unemployment using ARIMA model.\n\n\n\n\n\n\nOct 22, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nEDA on Greek Parliament\n\n\n\n\n\n\n\nR\n\n\nEDA\n\n\n\n\nLet’s explore the MPs that got elected the most over the years (1981-2019).\n\n\n\n\n\n\nOct 10, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nVerify your commits !\n\n\n\n\n\n\n\nGPG\n\n\nQuarto\n\n\n\n\nUsing GPG keys to add a signature to your GitHub commits\n\n\n\n\n\n\nOct 3, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nList of Quarto Websites\n\n\n\n\n\n\n\nQuarto\n\n\n\n\nA collection of websites built with Quarto. Includes links to websites and their respective repositories. Further additions are always welcome.\n\n\n\n\n\n\nAug 10, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nHello, World\n\n\n\n\n\n\n\nfirst article\n\n\n\n\nMy first article on my Quarto website.\n\n\n\n\n\n\nJul 27, 2022\n\n\nstesiam\n\n\n\n\n\n\nNo matching items"
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n  \n\n\n\n\nStatistics of Statistics Graduates\n\n\n\n\n\n\n\nR\n\n\nEDA\n\n\nPDF\n\n\ntabulizer\n\n\n\n\nExtracting tabular data from PDF file, in order to explore facts about graduates of Statistics and Insurance Department in University of Piraeus\n\n\n\n\n\n\nJul 23, 2023\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nKaggle’s Greek Community\n\n\n\n\n\n\n\nR\n\n\nEDA\n\n\nKaggle\n\n\n\n\nAn exploratory data analysis about Kaggle’s Greek community, based on its 2021 survey. Comparing Greek\n\n\n\n\n\n\nMay 6, 2023\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nPredict Survivors of MS Estonia\n\n\n\n\n\n\n\nR\n\n\nClassification\n\n\nTidymodels\n\n\nLogistic Regression\n\n\n\n\nBuild a logistic regression model to predict survivors of MS Estonia.\n\n\n\n\n\n\nMar 31, 2023\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nPredict Cost of Housing in Kallithea\n\n\n\n\n\n\n\nR\n\n\nRegression\n\n\n\n\nBuild a regression model using various ML algorithms to predict cost to buy a house in Kallithea.\n\n\n\n\n\n\nDec 6, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nPredict Possible Interested Clients\n\n\n\n\n\n\n\nR\n\n\nClassification\n\n\nTidymodels\n\n\n\n\nBuild a classification machine learning model (using LightGBM & XGBoost) in order to classify people based on their interest to have a term deposit or not.\n\n\n\n\n\n\nNov 24, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nInstall LightGBM and CatBoost on Ubuntu 22.04\n\n\n\n\n\n\n\nLinux\n\n\nLightGBM\n\n\nCatBoost\n\n\nXGBoost\n\n\n\n\nInstall high performance algorithms (LightGBM, CatBoost & XGBoost) on your Linux device\n\n\n\n\n\n\nNov 13, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nGit Series (Part I - Configuration)\n\n\n\n\n\n\n\nGit\n\n\n\n\nAn article that brings together some configuration setttings of Git. A beginner’s approach to Git.\n\n\n\n\n\n\nNov 4, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nForecasting Unemployment in Greece\n\n\n\n\n\n\n\nR\n\n\nTime Series\n\n\n\n\nMake a prediction about the future value of Greece’s unemployment using ARIMA model.\n\n\n\n\n\n\nOct 22, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nEDA on Greek Parliament\n\n\n\n\n\n\n\nR\n\n\nEDA\n\n\n\n\nLet’s explore the MPs that got elected the most over the years (1981-2019).\n\n\n\n\n\n\nOct 10, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nVerify your commits !\n\n\n\n\n\n\n\nGPG\n\n\nQuarto\n\n\n\n\nUsing GPG keys to add a signature to your GitHub commits\n\n\n\n\n\n\nOct 3, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nList of Quarto Websites\n\n\n\n\n\n\n\nQuarto\n\n\n\n\nA collection of websites built with Quarto. Includes links to websites and their respective repositories. Further additions are always welcome.\n\n\n\n\n\n\nAug 10, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nHello, World\n\n\n\n\n\n\n\nfirst article\n\n\n\n\nMy first article on my Quarto website.\n\n\n\n\n\n\nJul 27, 2022\n\n\nstesiam\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "greek/2023-07-04-GovGR-API-Greek/2023-07-04-GovGR-API-Greek.html",
@@ -963,7 +963,7 @@
     "href": "greek/2023-07-04-GovGR-API-Greek/2023-07-04-GovGR-API-Greek.html#αίτηση-για-api-key",
     "title": "Πρόσβαση στο API του data.gov.gr",
     "section": "Αίτηση για API Key",
-    "text": "Αίτηση για API Key\nΩστόσο, το συγκεκριμένο API (όπως τα περισσότερα χρειάζονται\nΚάνουμε άιτηση στην αντίστοιχη σελίδα και συμπληρώνουμε τα στοιχεία μας και όλα τα πεδία της φόρμας όπως αυτή φαίνεται παρακάτω:\n\n\nΠροεπισκόπηση σελίδας αίτησης για πρόσβαση στο API\n\n\nΣτη συνέχεια θα πρέπει να κοιτάξετε το e-mail σας γιατί θα σας έρθει ένα μήνυμα με τον Token μέσω του οποίου θα χρησιμοποιείται το API. Να δείτε οπωσδήποτε και τον φάκελο με την Ανεπιθύμητη αλληλογραφία (spam) καθώς εμένα μου ήρθε εκεί. Παρεπιπτόντως, σε περίπτωση που χάσετε το token και έχετε σβήσει το mail και ξανακάνετε αίτηση (με το ίδιο mail) θα σας το ξαναστείλει. Το έπαθα μόλις :)"
+    "text": "Αίτηση για API Key\nΩστόσο, το συγκεκριμένο API (όπως τα περισσότερα χρειάζονται\nΚάνουμε άιτηση στην αντίστοιχη σελίδα και συμπληρώνουμε τα στοιχεία μας και όλα τα πεδία της φόρμας όπως αυτή φαίνεται παρακάτω:\n\n\nΠροεπισκόπηση σελίδας αίτησης για πρόσβαση στο API\n\nΣτη συνέχεια θα πρέπει να κοιτάξετε το e-mail σας γιατί θα σας έρθει ένα μήνυμα με τον Token μέσω του οποίου θα χρησιμοποιείται το API. Να δείτε οπωσδήποτε και τον φάκελο με την Ανεπιθύμητη αλληλογραφία (spam) καθώς εμένα μου ήρθε εκεί. Παρεπιπτόντως, σε περίπτωση που χάσετε το token και έχετε σβήσει το mail και ξανακάνετε αίτηση (με το ίδιο mail) θα σας το ξαναστείλει. Το έπαθα μόλις :)"
   },
   {
     "objectID": "greek/2023-07-04-GovGR-API-Greek/2023-07-04-GovGR-API-Greek.html#χρήση-api",
@@ -977,7 +977,7 @@
     "href": "greek/2023-07-04-GovGR-API-Greek/2023-07-04-GovGR-API-Greek.html#παράδειγμα-χρήσης",
     "title": "Πρόσβαση στο API του data.gov.gr",
     "section": "Παράδειγμα χρήσης",
-    "text": "Παράδειγμα χρήσης\nΠριν ολοκληρωθεί αυτό το άρθρο έκρινα ως σημαντική την εφαρμηγή ενός παραδέιγαμτος. Τη στιγμή που γράφεται αυτό το άρθρο, υπάρχουν συνολικά 49 βάσεις δεδομένων από τις οποίες μπορώ να επιλέξω. Προκειμένου να δούμε την ωφέλεια του API θα διαλέξω κάποιο που ανανεώνεται σε αρκετά συχνή βάση. Ένα τέτοιο δεδομένο είναι οι επιβάτες που ταξιδεύουν με πλοία.\n\nlibrary(httr)\nlibrary(jsonlite)"
+    "text": "Παράδειγμα χρήσης\nΠριν ολοκληρωθεί αυτό το άρθρο έκρινα ως σημαντική την εφαρμογή ενός παραδείγματος. Τη στιγμή που γράφεται αυτό το άρθρο, υπάρχουν συνολικά 49 βάσεις δεδομένων από τις οποίες μπορώ να επιλέξω. Προκειμένου να δούμε την ωφέλεια του API θα διαλέξω κάποιο που ανανεώνεται σε αρκετά συχνή βάση. Ένα τέτοιο δεδομένο είναι οι επιβάτες που ταξιδεύουν με πλοία.\n\nlibrary(httr)\nlibrary(jsonlite)\n\nΣτη συνέχεια θέτω σε μία μεταβλητή τον βασικό σύνδεσμο των δεδομένων. Εγώ που επέλεξα την κίνηση των πλοίων θέτω το εξής:\n\nbase = \"https://data.gov.gr/api/v1/query/sailing_traffic\"\n\nΣτη συνέχεια, όπως τονίζει το documentation της σελίδας για τις άλλες γλώσσες, θα πρέπει να ορίσουμε ένα εύρος ημερομηνιών για το οποίο ενδιοαφερόμαστε. Αξίζει να σημειωθεί ότι δεν μπορείτε να πάρετε μεγάλο εύρος με μία μόνο κλήση του API. Για να επιστρέψω στο προηγούμενο παράδειγμα, τα δεδομένα της επιβατικής κίνησης των πλοίων ξεκινάνε από το 2017 μέχρι και σήμερα (2023). Ας υποθέσουμε ότι δεν μας πειράζει αυτό και ότι θέλουμε τα δεδομένα από τις 4 πρώτες μέρες του Ιουλίου του 2023.\n\ndate_from = \"2023-07-01\"\ndate_to = \"2023-07-04\"\n\nAPI_URL = paste0(base, \"?date_from=\", date_from, \"&\", \"date_to=\", date_to)\n\ncall = httr::GET(url = API_URL,\n    add_headers(`Authorization` = paste0('Token token_id')\n    )\n)\n\nΌπου στο σημείο που αναφέρεται το token_id θα πρέπει να βάλετε το token που σας έστειλε το data.gov.gr μέσω mail. Αφού λοιπόν αιτηθούμε τα δεδομένα μέσω της GET και κάνουμε λίγο υπομονή βλέπουμε ότι λαμβάνω μία λίστα με διάφορες πληροφορίες. Εμάς μας ενδιαφέρουν τα δεδομένα, οπότε κοιτάμε στη κατηγορία content της λίστας, ωστόσο παρατηρούμε μία μη αναγνώσιμη μορφή των στοιχειών μιας και είναι σε δεκαεξαδική μορφή.\n\ndata = base::rawToChar(call$content)\n\nΜε την παραπάνω εντολή μετατρέπονται οι χαρακτήρες και είναι πλέον αναγνώσιμοι, ωστόσο τωρα θα πρέπει να πάρουν και μορφή πίνακα προκειμένου να γίνει η ανάλυση.\n\ndata = jsonlite::fromJSON(data, flatten = T)\n\nΚαι τέλος, με τη βοήθεια του πακέτου jsnolite λαμβάνω ένα data.frame με όνομα data που περιέχει όλους τους προορισμούς, τον αριθμό επιβατών, αυτοκινήτων για τη κάθε ημέρα που ζήτησα."
   },
   {
     "objectID": "greek/2023-06-20-Studies-in-Statistics-Greek/2023-06-20-Studies-in-Statistics-Greek.html",
@@ -1082,7 +1082,7 @@
     "href": "posts.html",
     "title": "All posts",
     "section": "",
-    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n  \n\n\n\n\nStatistics of Statistics Graduates\n\n\n\n\n\n\n\nR\n\n\nEDA\n\n\nPDF\n\n\ntabulizer\n\n\n\n\nExtracting tabular data from PDF file, in order to explore facts about graduates of Statistics and Insurance Department in University of Piraeus\n\n\n\n\n\n\nJul 21, 2023\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nΠρόσβαση στο API του data.gov.gr\n\n\n\n\n\n\n\nR\n\n\nAPI\n\n\n\n\nΈνας απλός οδηγός χρήσης του API του data.gov.gr, ώστε να λαμβάνετε τη ροή δεδομένων με τη χρήση της R.\n\n\n\n\n\n\nJul 4, 2023\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nΣπουδές Στατιστικής στην Ελλάδα\n\n\n\n\n\n\n\nΣπουδές\n\n\n\n\nΣυγκρίνω τις δημόσιες σχολές στατιστικής στην Ελλάδα και συγκρίνω τα βασικά τους στοιχεία με βάση τους οδηγούς σπουδών τους.\n\n\n\n\n\n\nJun 20, 2023\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nKaggle’s Greek Community\n\n\n\n\n\n\n\nR\n\n\nEDA\n\n\nKaggle\n\n\n\n\nAn exploratory data analysis about Kaggle’s Greek community, based on its 2021 survey. Comparing Greek\n\n\n\n\n\n\nMay 6, 2023\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nPredict Survivors of MS Estonia\n\n\n\n\n\n\n\nR\n\n\nClassification\n\n\nTidymodels\n\n\nLogistic Regression\n\n\n\n\nBuild a logistic regression model to predict survivors of MS Estonia.\n\n\n\n\n\n\nMar 31, 2023\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nPredict Cost of Housing in Kallithea\n\n\n\n\n\n\n\nR\n\n\nRegression\n\n\n\n\nBuild a regression model using various ML algorithms to predict cost to buy a house in Kallithea.\n\n\n\n\n\n\nDec 6, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nPredict Possible Interested Clients\n\n\n\n\n\n\n\nR\n\n\nClassification\n\n\nTidymodels\n\n\n\n\nBuild a classification machine learning model (using LightGBM & XGBoost) in order to classify people based on their interest to have a term deposit or not.\n\n\n\n\n\n\nNov 24, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nInstall LightGBM and CatBoost on Ubuntu 22.04\n\n\n\n\n\n\n\nLinux\n\n\nLightGBM\n\n\nCatBoost\n\n\nXGBoost\n\n\n\n\nInstall high performance algorithms (LightGBM, CatBoost & XGBoost) on your Linux device\n\n\n\n\n\n\nNov 13, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nGit Series (Part I - Configuration)\n\n\n\n\n\n\n\nGit\n\n\n\n\nAn article that brings together some configuration setttings of Git. A beginner’s approach to Git.\n\n\n\n\n\n\nNov 4, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nΣυγκεντρωμένο υλικό για την R στα ελληνικά\n\n\n\n\n\n\n\nR\n\n\n\n\nΜία λίστα (που θα ανανεώνεται συνεχώς) με υλικό που υπάρχει διαθέσιμο στο διαδίκτυο (δωρεάν) σχετικά με την R\n\n\n\n\n\n\nOct 23, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nForecasting Unemployment in Greece\n\n\n\n\n\n\n\nR\n\n\nTime Series\n\n\n\n\nMake a prediction about the future value of Greece’s unemployment using ARIMA model.\n\n\n\n\n\n\nOct 22, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nEDA on Greek Parliament\n\n\n\n\n\n\n\nR\n\n\nEDA\n\n\n\n\nLet’s explore the MPs that got elected the most over the years (1981-2019).\n\n\n\n\n\n\nOct 10, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nVerify your commits !\n\n\n\n\n\n\n\nGPG\n\n\nQuarto\n\n\n\n\nUsing GPG keys to add a signature to your GitHub commits\n\n\n\n\n\n\nOct 3, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nList of Quarto Websites\n\n\n\n\n\n\n\nQuarto\n\n\n\n\nA collection of websites built with Quarto. Includes links to websites and their respective repositories. Further additions are always welcome.\n\n\n\n\n\n\nAug 10, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nHello, World\n\n\n\n\n\n\n\nfirst article\n\n\n\n\nMy first article on my Quarto website.\n\n\n\n\n\n\nJul 27, 2022\n\n\nstesiam\n\n\n\n\n\n\nNo matching items"
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n  \n\n\n\n\nStatistics of Statistics Graduates\n\n\n\n\n\n\n\nR\n\n\nEDA\n\n\nPDF\n\n\ntabulizer\n\n\n\n\nExtracting tabular data from PDF file, in order to explore facts about graduates of Statistics and Insurance Department in University of Piraeus\n\n\n\n\n\n\nJul 23, 2023\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nΠρόσβαση στο API του data.gov.gr\n\n\n\n\n\n\n\nR\n\n\nAPI\n\n\n\n\nΈνας απλός οδηγός χρήσης του API του data.gov.gr, ώστε να λαμβάνετε τη ροή δεδομένων με τη χρήση της R.\n\n\n\n\n\n\nJul 4, 2023\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nΣπουδές Στατιστικής στην Ελλάδα\n\n\n\n\n\n\n\nΣπουδές\n\n\n\n\nΣυγκρίνω τις δημόσιες σχολές στατιστικής στην Ελλάδα και συγκρίνω τα βασικά τους στοιχεία με βάση τους οδηγούς σπουδών τους.\n\n\n\n\n\n\nJun 20, 2023\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nKaggle’s Greek Community\n\n\n\n\n\n\n\nR\n\n\nEDA\n\n\nKaggle\n\n\n\n\nAn exploratory data analysis about Kaggle’s Greek community, based on its 2021 survey. Comparing Greek\n\n\n\n\n\n\nMay 6, 2023\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nPredict Survivors of MS Estonia\n\n\n\n\n\n\n\nR\n\n\nClassification\n\n\nTidymodels\n\n\nLogistic Regression\n\n\n\n\nBuild a logistic regression model to predict survivors of MS Estonia.\n\n\n\n\n\n\nMar 31, 2023\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nPredict Cost of Housing in Kallithea\n\n\n\n\n\n\n\nR\n\n\nRegression\n\n\n\n\nBuild a regression model using various ML algorithms to predict cost to buy a house in Kallithea.\n\n\n\n\n\n\nDec 6, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nPredict Possible Interested Clients\n\n\n\n\n\n\n\nR\n\n\nClassification\n\n\nTidymodels\n\n\n\n\nBuild a classification machine learning model (using LightGBM & XGBoost) in order to classify people based on their interest to have a term deposit or not.\n\n\n\n\n\n\nNov 24, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nInstall LightGBM and CatBoost on Ubuntu 22.04\n\n\n\n\n\n\n\nLinux\n\n\nLightGBM\n\n\nCatBoost\n\n\nXGBoost\n\n\n\n\nInstall high performance algorithms (LightGBM, CatBoost & XGBoost) on your Linux device\n\n\n\n\n\n\nNov 13, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nGit Series (Part I - Configuration)\n\n\n\n\n\n\n\nGit\n\n\n\n\nAn article that brings together some configuration setttings of Git. A beginner’s approach to Git.\n\n\n\n\n\n\nNov 4, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nΣυγκεντρωμένο υλικό για την R στα ελληνικά\n\n\n\n\n\n\n\nR\n\n\n\n\nΜία λίστα (που θα ανανεώνεται συνεχώς) με υλικό που υπάρχει διαθέσιμο στο διαδίκτυο (δωρεάν) σχετικά με την R\n\n\n\n\n\n\nOct 23, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nForecasting Unemployment in Greece\n\n\n\n\n\n\n\nR\n\n\nTime Series\n\n\n\n\nMake a prediction about the future value of Greece’s unemployment using ARIMA model.\n\n\n\n\n\n\nOct 22, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nEDA on Greek Parliament\n\n\n\n\n\n\n\nR\n\n\nEDA\n\n\n\n\nLet’s explore the MPs that got elected the most over the years (1981-2019).\n\n\n\n\n\n\nOct 10, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nVerify your commits !\n\n\n\n\n\n\n\nGPG\n\n\nQuarto\n\n\n\n\nUsing GPG keys to add a signature to your GitHub commits\n\n\n\n\n\n\nOct 3, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nList of Quarto Websites\n\n\n\n\n\n\n\nQuarto\n\n\n\n\nA collection of websites built with Quarto. Includes links to websites and their respective repositories. Further additions are always welcome.\n\n\n\n\n\n\nAug 10, 2022\n\n\nstesiam\n\n\n\n\n\n\n  \n\n\n\n\nHello, World\n\n\n\n\n\n\n\nfirst article\n\n\n\n\nMy first article on my Quarto website.\n\n\n\n\n\n\nJul 27, 2022\n\n\nstesiam\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "shiny.html",
@@ -1090,5 +1090,54 @@
     "title": "Shiny Projects",
     "section": "",
     "text": "Ship Travellers\n      A dashboard of daily ship travellers in Greece\n    \n    \n     Website\n     Repo\n    \n\n\n\n\n\n    \n      Possible Samples\n      A simple Shiny App that calculates the number of possible samples depending on the chosen sampling method.\n    \n    \n     Website\n     Repo\n    \n\n\n\n\n\n    \n      Shiny Distributions\n      A Shiny App to showcase various distributions and their characteristics.\n    \n    \n     Website\n     Repo\n    \n\n\n\n\n\n    \n      Greek Elections Shiny\n      A Shiny App to calculate parliamentary seats for each party (Greek parliament).\n    \n    \n     Website\n     Repo\n    \n\n\n\n\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "english/2023-07-23-Graduates-of-Statistics/2023-07-23-Graduates-of-Statistics.html",
+    "href": "english/2023-07-23-Graduates-of-Statistics/2023-07-23-Graduates-of-Statistics.html",
+    "title": "Statistics of Statistics Graduates",
+    "section": "",
+    "text": "Statistics can be hard. This is\nTHe recent study guide includes data about the graduates and their average grade of graduation over the years. First and foremost the data we are interested in are included in table form (which is good) but is is part of a pdf file (which is not good :)). Thankfully, tabulizer is the solution to this kind of problems."
+  },
+  {
+    "objectID": "english/2023-07-23-Graduates-of-Statistics/2023-07-23-Graduates-of-Statistics.html#introduction",
+    "href": "english/2023-07-23-Graduates-of-Statistics/2023-07-23-Graduates-of-Statistics.html#introduction",
+    "title": "Statistics of Statistics Graduates",
+    "section": "",
+    "text": "Statistics can be hard. This is\nTHe recent study guide includes data about the graduates and their average grade of graduation over the years. First and foremost the data we are interested in are included in table form (which is good) but is is part of a pdf file (which is not good :)). Thankfully, tabulizer is the solution to this kind of problems."
+  },
+  {
+    "objectID": "english/2023-07-23-Graduates-of-Statistics/2023-07-23-Graduates-of-Statistics.html#load-packages",
+    "href": "english/2023-07-23-Graduates-of-Statistics/2023-07-23-Graduates-of-Statistics.html#load-packages",
+    "title": "Statistics of Statistics Graduates",
+    "section": "Load Packages",
+    "text": "Load Packages\nAs I will extract tables from a pdf file, I will definitely need tabulizer package. Unfortunately, I was not able to install the specific package, as I was getting an error similar to this one. This issue seems to be related to rJava package and this comment solved the issue. After installing rJava I was able to install successufully tabulizer as below:\n\n# remotes::install_github(c(\"ropensci/tabulizerjars\", \"ropensci/tabulizer\"))\n\n\nlibrary(rJava)\nlibrary(tabulizer)\nlibrary(dplyr)\nlibrary(pdftools)\nlibrary(tidyr)\nlibrary(reactable)\n\nlibrary(ggplot2)\nlibrary(ggtext)"
+  },
+  {
+    "objectID": "english/2023-07-23-Graduates-of-Statistics/2023-07-23-Graduates-of-Statistics.html#extract-data",
+    "href": "english/2023-07-23-Graduates-of-Statistics/2023-07-23-Graduates-of-Statistics.html#extract-data",
+    "title": "Statistics of Statistics Graduates",
+    "section": "Extract Data",
+    "text": "Extract Data\n\n# url = \"https://www.unipi.gr/faculty/mbouts/anak/OS_22_23.pdf\"\n# \n# download.file(url, \n#               destfile = \"sg22.pdf\",\n#               method = \"wget\",\n#               extra = \"--no-check-certificate\")\n\npdf_subset('sg22.pdf',\n  pages = 186:190,  output = \"subset.pdf\")\n\n[1] \"/home/stelios/Desktop/stesiam/english/2023-07-23-Graduates-of-Statistics/subset.pdf\"\n\n\n\nstatistics_tables &lt;- extract_tables(\n    file   = \"subset.pdf\", \n    method = \"decide\", \n    output = \"data.frame\")"
+  },
+  {
+    "objectID": "english/2023-07-23-Graduates-of-Statistics/2023-07-23-Graduates-of-Statistics.html#analysing-data",
+    "href": "english/2023-07-23-Graduates-of-Statistics/2023-07-23-Graduates-of-Statistics.html#analysing-data",
+    "title": "Statistics of Statistics Graduates",
+    "section": "Analysing Data",
+    "text": "Analysing Data\nAdmitted students\n\nadmitted_students = statistics_tables[[1]] %&gt;%\n  .[-1,] %&gt;%\n  setNames(c(\"Year\", \"Main_exams\", \"Transfer\", \"Entry_exams\", \"Other\", \"Total\"))\n\nadmitted_students$Main_exams = admitted_students$Main_exams %&gt;% as.integer()\nadmitted_students$Transfer= admitted_students$Transfer %&gt;% as.integer()\nadmitted_students$Entry_exams = admitted_students$Entry_exams %&gt;% as.integer()\nadmitted_students$Other = admitted_students$Other %&gt;% as.integer()\n\nrownames(admitted_students) = 1:nrow(admitted_students)\n\nadmitted_students = admitted_students %&gt;% \n  pivot_longer(\n    cols = !Year, \n    names_to = \"Admission_Type\", \n    values_to = \"count\"\n  )\n\nadmitted_students %&gt;%\n  reactable(\n    defaultPageSize = 5\n  )\n\n\n\n\n\n\n\nadmitted_students %&gt;%\n  filter(Admission_Type %in% c(\"Main_exams\", \"Total\")) %&gt;%\n  ggplot2::ggplot(., aes(x = Year, y = count, color = Admission_Type , group = Admission_Type)) +\n  geom_line() +\n  geom_point() +\n  labs(\n    title = \"Admitted students\",\n    subtitle = \"Admitted students over the years (2003-2023) at Department of Statistics and Insurance Science of &lt;br&gt; University of Piraeus. A significant drop in admissions occured in 2021 which is maily caused by the &lt;br&gt; introduction of grade requirements to be admitted to specific departments.\",\n    caption = \"stesiam, 2023\",\n    x = \"Academic Year\",\n    y = \"Students\",\n    color = \"Type of Admission\"\n  ) +\n  theme_classic() +\n  theme(\n    plot.title = element_markdown(family = \"serif\", face=\"bold\"),\n    plot.subtitle = element_markdown(family = \"serif\"),\n    plot.caption = element_markdown(family = \"serif\"),\n    axis.text.x = element_text(face=\"bold\", angle=90)\n  )\n\n\n\n\nMaster Programmes\nDepartment of Statistics and Isurance Science has 2 master programs\n\nmsc_students = statistics_tables[[2]] %&gt;%\n  setNames(c(\"AcademicYear\", \"BSc\", \"MSc (AppliedStat)\", \"MSc (Actuar)\", \"PhD\")) %&gt;%\n  .[-1,]\n\nrownames(msc_students) = 1:nrow(msc_students)\n\nmsc_students = msc_students %&gt;%\n  mutate_at(c(\"BSc\", \"MSc (AppliedStat)\", \"MSc (Actuar)\", \"PhD\"), as.numeric) %&gt;%\n  mutate(pct = round((PhD/BSc)*100, 2))\n\nWarning: There was 1 warning in `mutate()`.\nℹ In argument: `MSc (Actuar) = .Primitive(\"as.double\")(`MSc (Actuar)`)`.\nCaused by warning:\n! NAs introduced by coercion\n\nmsc_students %&gt;%\n  reactable(\n    defaultPageSize = 5\n  )\n\n\n\n\n\n\n\nggplot(msc_students, aes(x = AcademicYear, y = pct, group = 1)) +\n  geom_line() +\n  labs(\n    title = \"Ratio of PhD students/ Undergraduates\",\n    subtitle = \"The decrease \",\n    caption = \"stesiam, 2023\"\n  ) +\n  theme_classic() +\n  theme(\n    plot.title = element_markdown(family = \"serif\", face=\"bold\"),\n    plot.subtitle = element_markdown(family = \"serif\"),\n    plot.caption = element_markdown(family = \"serif\"),\n    axis.text.x = element_text(face=\"bold\", angle=90)\n  )\n\n\n\n\n\ntidy_students = msc_students %&gt;%\n  select(!pct) %&gt;%\n  tidyr::pivot_longer(., cols = !c(AcademicYear), values_to = \"count\")\n\nggplot(tidy_students, aes(x = AcademicYear, y = count, fill = name)) +\n  geom_col() +\n  guides(fill = guide_legend(reverse = TRUE)) +\n  labs(\n    title = \"Ratio of PhD students/ Undergraduates\",\n    subtitle = \"The decrease \",\n    caption = \"stesiam, 2023\",\n    x = \"\",\n    y = \"\"\n  ) +\n  theme_classic() +\n  theme(\n    plot.title = element_markdown(family = \"serif\", face=\"bold\"),\n    plot.subtitle = element_markdown(family = \"serif\"),\n    plot.caption = element_markdown(family = \"serif\"),\n    axis.text.x = element_text(face=\"bold\", angle=90)\n  )\n\nWarning: Removed 4 rows containing missing values (position_stack)."
+  },
+  {
+    "objectID": "english/2023-07-23-Graduates-of-Statistics/2023-07-23-Graduates-of-Statistics.html#acknowledgements",
+    "href": "english/2023-07-23-Graduates-of-Statistics/2023-07-23-Graduates-of-Statistics.html#acknowledgements",
+    "title": "Statistics of Statistics Graduates",
+    "section": "Acknowledgements",
+    "text": "Acknowledgements\nDataset based on recent study guide recent study guide of Department of Statistics and Insurance Science of the University of Piraeus.\nImage by Victoria Loveland from Pixabay"
+  },
+  {
+    "objectID": "english/2023-07-23-Graduates-of-Statistics/2023-07-23-Graduates-of-Statistics.html#msc-students",
+    "href": "english/2023-07-23-Graduates-of-Statistics/2023-07-23-Graduates-of-Statistics.html#msc-students",
+    "title": "Statistics of Statistics Graduates",
+    "section": "MSc Students",
+    "text": "MSc Students\n\nstatistics_tables[[3]] %&gt;%\n  select(c(1,2)) %&gt;%\n  setNames(c(\"Year\", \"S\")) %&gt;%\n  .[-c(1,2),] %&gt;%\n  separate(S, c('Admitted', 'Graduated')) %&gt;%\n  na.omit()\n\nWarning: Expected 2 pieces. Missing pieces filled with `NA` in 21 rows [1, 3,\n5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, ...].\n\n\n        Year Admitted Graduated\n4  2003-2004       27        15\n6  2004-2005       28        26\n8  2005-2006       25        20\n10 2006-2007       25        34\n12 2007-2008       24        31\n14 2008-2009       20        42\n16 2009-2010       30        27\n18 2010-2011       20        17\n20 2011-2012       30        26\n22 2012-2013       18        19\n24 2013-2014       23        35\n26 2014-2015       20        29\n28 2015-2016       21        24\n30 2016-2017       20        22\n32 2017-2018       23        21\n34 2018-2019       22        20\n36 2019-2020       26        15\n38 2020-2021       32        18\n40 2021-2022       41        33"
   }
 ]

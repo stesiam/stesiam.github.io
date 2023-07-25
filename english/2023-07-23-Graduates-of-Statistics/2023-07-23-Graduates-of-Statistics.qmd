@@ -6,7 +6,7 @@ description: |
 link-external-newwindow: true
 categories: [R, EDA, PDF, tabulizer]
 fig-cap-location: bottom
-date: "2023-07-21"
+date: "2023-07-23"
 freeze: true
 image: graduation-cap.jpg
 df_print: paged
@@ -35,7 +35,7 @@ editor_options:
 ---
 
 ```{r, include=FALSE}
-here::here("english/2023-07-21-Graduates-of-Statistics")
+here::here("english/2023-07-23-Graduates-of-Statistics")
 ```
 
 
@@ -63,6 +63,10 @@ library(tabulizer)
 library(dplyr)
 library(pdftools)
 library(tidyr)
+library(reactable)
+
+library(ggplot2)
+library(ggtext)
 ```
 
 
@@ -77,12 +81,12 @@ knitr::write_bib(.packages(), file = 'packages.bib')
 
 
 ```{r}
-url = "https://www.unipi.gr/faculty/mbouts/anak/OS_22_23.pdf"
-
-download.file(url, 
-              destfile = "sg22.pdf",
-              method = "wget",
-              extra = "--no-check-certificate")
+# url = "https://www.unipi.gr/faculty/mbouts/anak/OS_22_23.pdf"
+# 
+# download.file(url, 
+#               destfile = "sg22.pdf",
+#               method = "wget",
+#               extra = "--no-check-certificate")
 
 pdf_subset('sg22.pdf',
   pages = 186:190,  output = "subset.pdf")
@@ -100,7 +104,7 @@ statistics_tables <- extract_tables(
 
 ###  Admitted students
 
-```{r}
+```{r, warning=FALSE}
 admitted_students = statistics_tables[[1]] %>%
   .[-1,] %>%
   setNames(c("Year", "Main_exams", "Transfer", "Entry_exams", "Other", "Total"))
@@ -112,17 +116,116 @@ admitted_students$Other = admitted_students$Other %>% as.integer()
 
 rownames(admitted_students) = 1:nrow(admitted_students)
 
-admitted_students %>% 
+admitted_students = admitted_students %>% 
   pivot_longer(
     cols = !Year, 
     names_to = "Admission_Type", 
     values_to = "count"
   )
+
+admitted_students %>%
+  reactable(
+    defaultPageSize = 5
+  )
 ```
 
 
+```{r}
+admitted_students %>%
+  filter(Admission_Type %in% c("Main_exams", "Total")) %>%
+  ggplot2::ggplot(., aes(x = Year, y = count, color = Admission_Type , group = Admission_Type)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Admitted students",
+    subtitle = "Admitted students over the years (2003-2023) at Department of Statistics and Insurance Science of <br> University of Piraeus. A significant drop in admissions occured in 2021 which is maily caused by the <br> introduction of grade requirements to be admitted to specific departments.",
+    caption = "stesiam, 2023",
+    x = "Academic Year",
+    y = "Students",
+    color = "Type of Admission"
+  ) +
+  theme_classic() +
+  theme(
+    plot.title = element_markdown(family = "serif", face="bold"),
+    plot.subtitle = element_markdown(family = "serif"),
+    plot.caption = element_markdown(family = "serif"),
+    axis.text.x = element_text(face="bold", angle=90)
+  )
+```
+
+### Master Programmes
 
 
+
+Department of Statistics and Isurance Science has 2 master programs 
+
+```{r}
+msc_students = statistics_tables[[2]] %>%
+  setNames(c("AcademicYear", "BSc", "MSc (AppliedStat)", "MSc (Actuar)", "PhD")) %>%
+  .[-1,]
+
+rownames(msc_students) = 1:nrow(msc_students)
+
+msc_students = msc_students %>%
+  mutate_at(c("BSc", "MSc (AppliedStat)", "MSc (Actuar)", "PhD"), as.numeric) %>%
+  mutate(pct = round((PhD/BSc)*100, 2))
+
+msc_students %>%
+  reactable(
+    defaultPageSize = 5
+  )
+```
+
+```{r}
+ggplot(msc_students, aes(x = AcademicYear, y = pct, group = 1)) +
+  geom_line() +
+  labs(
+    title = "Ratio of PhD students/ Undergraduates",
+    subtitle = "The decrease ",
+    caption = "stesiam, 2023"
+  ) +
+  theme_classic() +
+  theme(
+    plot.title = element_markdown(family = "serif", face="bold"),
+    plot.subtitle = element_markdown(family = "serif"),
+    plot.caption = element_markdown(family = "serif"),
+    axis.text.x = element_text(face="bold", angle=90)
+  )
+```
+
+```{r}
+tidy_students = msc_students %>%
+  select(!pct) %>%
+  tidyr::pivot_longer(., cols = !c(AcademicYear), values_to = "count")
+
+ggplot(tidy_students, aes(x = AcademicYear, y = count, fill = name)) +
+  geom_col() +
+  guides(fill = guide_legend(reverse = TRUE)) +
+  labs(
+    title = "Ratio of PhD students/ Undergraduates",
+    subtitle = "The decrease ",
+    caption = "stesiam, 2023",
+    x = "",
+    y = ""
+  ) +
+  theme_classic() +
+  theme(
+    plot.title = element_markdown(family = "serif", face="bold"),
+    plot.subtitle = element_markdown(family = "serif"),
+    plot.caption = element_markdown(family = "serif"),
+    axis.text.x = element_text(face="bold", angle=90)
+  )
+```
+## MSc Students
+
+```{r}
+statistics_tables[[3]] %>%
+  select(c(1,2)) %>%
+  setNames(c("Year", "S")) %>%
+  .[-c(1,2),] %>%
+  separate(S, c('Admitted', 'Graduated')) %>%
+  na.omit()
+```
 
 
 

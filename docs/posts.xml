@@ -9,12 +9,12 @@
 <link>https://www.stesiam.github.io/posts.html</link>
 <atom:link href="https://www.stesiam.github.io/posts.xml" rel="self" type="application/rss+xml"/>
 <description>All my posts in one place.</description>
-<generator>quarto-1.3.276</generator>
-<lastBuildDate>Thu, 20 Jul 2023 21:00:00 GMT</lastBuildDate>
+<generator>quarto-1.3.433</generator>
+<lastBuildDate>Sat, 22 Jul 2023 21:00:00 GMT</lastBuildDate>
 <item>
   <title>Statistics of Statistics Graduates</title>
-  <dc:creator>stesiam</dc:creator>
-  <link>https://www.stesiam.github.io/english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html</link>
+  <dc:creator>stesiam </dc:creator>
+  <link>https://www.stesiam.github.io/english/2023-07-23-Graduates-of-Statistics/2023-07-23-Graduates-of-Statistics.html</link>
   <description><![CDATA[ <section id="introduction" class="level2"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>Statistics can be hard. This is</p>
 <p>THe recent study guide includes data about the graduates and their average grade of graduation over the years. First and foremost the data we are interested in are included in table form (which is good) but is is part of a pdf file (which is not good :)). Thankfully, <strong>tabulizer</strong> is the solution to this kind of problems.</p>
@@ -70,42 +70,56 @@ font-style: inherit;">(</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;"><a href="https://tidyr.tidyverse.org">tidyr</a></span><span class="op" style="color: #5E5E5E;
 background-color: null;
+font-style: inherit;">)</span></span>
+<span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;"><a href="https://glin.github.io/reactable/">reactable</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span></span>
+<span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;"><a href="https://wilkelab.org/ggtext/">ggtext</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </div>
 </section><section id="extract-data" class="level2"><h2 class="anchored" data-anchor-id="extract-data">Extract Data</h2>
 <div class="cell">
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">url</span> <span class="op" style="color: #5E5E5E;
+font-style: inherit;"># url = "https://www.unipi.gr/faculty/mbouts/anak/OS_22_23.pdf"</span></span>
+<span><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+font-style: inherit;"># </span></span>
+<span><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">"https://www.unipi.gr/faculty/mbouts/anak/OS_22_23.pdf"</span></span>
-<span></span>
-<span><span class="fu" style="color: #4758AB;
+font-style: inherit;"># download.file(url, </span></span>
+<span><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">#               destfile = "sg22.pdf",</span></span>
+<span><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">(</span><span class="va" style="color: #111111;
+font-style: inherit;">#               method = "wget",</span></span>
+<span><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">url</span>, </span>
-<span>              destfile <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"sg22.pdf"</span>,</span>
-<span>              method <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"wget"</span>,</span>
-<span>              extra <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"--no-check-certificate"</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">)</span></span>
+font-style: inherit;">#               extra = "--no-check-certificate")</span></span>
 <span></span>
 <span><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -130,7 +144,7 @@ font-style: inherit;">"subset.pdf"</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "/home/stelios/Desktop/stesiam/english/2023-07-21-Graduates-of-Statistics/subset.pdf"</code></pre>
+<pre><code>[1] "/home/stelios/Desktop/stesiam/english/2023-07-23-Graduates-of-Statistics/subset.pdf"</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -265,12 +279,8 @@ font-style: inherit;"><a href="https://rdrr.io/r/base/integer.html">as.integer</
 background-color: null;
 font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">)</span></span></code></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in admitted_students$Transfer %&gt;% as.integer(): NAs introduced by
-coercion</code></pre>
-</div>
-<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+font-style: inherit;">)</span></span>
+<span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">admitted_students</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -292,12 +302,8 @@ font-style: inherit;"><a href="https://rdrr.io/r/base/integer.html">as.integer</
 background-color: null;
 font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">)</span></span></code></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in admitted_students$Entry_exams %&gt;% as.integer(): NAs introduced by
-coercion</code></pre>
-</div>
-<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+font-style: inherit;">)</span></span>
+<span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">admitted_students</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -349,6 +355,10 @@ font-style: inherit;">)</span></span>
 background-color: null;
 font-style: inherit;">admitted_students</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">admitted_students</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
 font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -374,25 +384,919 @@ background-color: null;
 font-style: inherit;">"count"</span></span>
 <span>  <span class="op" style="color: #5E5E5E;
 background-color: null;
+font-style: inherit;">)</span></span>
+<span></span>
+<span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">admitted_students</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://glin.github.io/reactable/reference/reactable.html">reactable</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>    defaultPageSize <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span></span>
+<span>  <span class="op" style="color: #5E5E5E;
+background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
+<div class="cell-output-display">
+
+<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-b4133ecfd9081fe1888a" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-b4133ecfd9081fe1888a">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Year":["2003-2004","2003-2004","2003-2004","2003-2004","2003-2004","2004-2005","2004-2005","2004-2005","2004-2005","2004-2005","2005-2006","2005-2006","2005-2006","2005-2006","2005-2006","2006-2007","2006-2007","2006-2007","2006-2007","2006-2007","2007-2008","2007-2008","2007-2008","2007-2008","2007-2008","2008-2009","2008-2009","2008-2009","2008-2009","2008-2009","2009-2010","2009-2010","2009-2010","2009-2010","2009-2010","2010-2011","2010-2011","2010-2011","2010-2011","2010-2011","2011-2012","2011-2012","2011-2012","2011-2012","2011-2012","2012-2013","2012-2013","2012-2013","2012-2013","2012-2013","2013-2014","2013-2014","2013-2014","2013-2014","2013-2014","2014-2015","2014-2015","2014-2015","2014-2015","2014-2015","2015-2016","2015-2016","2015-2016","2015-2016","2015-2016","2016-2017","2016-2017","2016-2017","2016-2017","2016-2017","2017-2018","2017-2018","2017-2018","2017-2018","2017-2018","2018-2019","2018-2019","2018-2019","2018-2019","2018-2019","2019-2020","2019-2020","2019-2020","2019-2020","2019-2020","2020-2121","2020-2121","2020-2121","2020-2121","2020-2121","2021-2022","2021-2022","2021-2022","2021-2022","2021-2022","2022-2023","2022-2023","2022-2023","2022-2023","2022-2023"],"Admission_Type":["Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total"],"count":[183,15,1,17,216,181,21,1,16,219,186,11,1,16,214,186,27,1,9,223,185,38,2,18,243,170,44,1,12,253,170,60,0,14,244,175,47,4,24,250,198,0,0,3,201,206,14,2,15,237,205,20,2,48,275,219,48,1,4,272,212,29,1,4,246,212,30,4,0,246,209,41,1,1,252,189,11,1,5,206,228,55,2,7,292,234,-16,1,5,224,134,"NA","NA",1,133,168,"NA","NA",3,170]},"columns":[{"id":"Year","name":"Year","type":"character"},{"id":"Admission_Type","name":"Admission_Type","type":"character"},{"id":"count","name":"count","type":"numeric"}],"defaultPageSize":5,"dataKey":"013676f9c2d732827646d87a9d894ddf"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">admitted_students</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">Admission_Type</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Main_exams"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Total"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot2</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">.</span>, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">Year</span>, y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">count</span>, color <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">Admission_Type</span> , group <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">Admission_Type</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>    title <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Admitted students"</span>,</span>
+<span>    subtitle <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Admitted students over the years (2003-2023) at Department of Statistics and Insurance Science of &lt;br&gt; University of Piraeus. A significant drop in admissions occured in 2021 which is maily caused by the &lt;br&gt; introduction of grade requirements to be admitted to specific departments."</span>,</span>
+<span>    caption <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"stesiam, 2023"</span>,</span>
+<span>    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Academic Year"</span>,</span>
+<span>    y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Students"</span>,</span>
+<span>    color <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Type of Admission"</span></span>
+<span>  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>    plot.title <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://wilkelab.org/ggtext/reference/element_markdown.html">element_markdown</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>family <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"serif"</span>, face<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>    plot.subtitle <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://wilkelab.org/ggtext/reference/element_markdown.html">element_markdown</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>family <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"serif"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>    plot.caption <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://wilkelab.org/ggtext/reference/element_markdown.html">element_markdown</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>family <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"serif"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>    axis.text.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>face<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span>, angle<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">90</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<p><img src="https://www.stesiam.github.io/english/2023-07-23-Graduates-of-Statistics/2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="master-programmes" class="level3"><h3 class="anchored" data-anchor-id="master-programmes">Master Programmes</h3>
+<p>Department of Statistics and Isurance Science has 2 master programs</p>
+<div class="cell">
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">msc_students</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">statistics_tables</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[[</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"AcademicYear"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"BSc"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"MSc (AppliedStat)"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"MSc (Actuar)"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"PhD"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">.</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span></span>
+<span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">msc_students</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">msc_students</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span></span>
+<span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">msc_students</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">msc_students</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_at</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"BSc"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"MSc (AppliedStat)"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"MSc (Actuar)"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"PhD"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">as.numeric</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>pct <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">PhD</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">BSc</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: There was 1 warning in `mutate()`.
+ℹ In argument: `MSc (Actuar) = .Primitive("as.double")(`MSc (Actuar)`)`.
+Caused by warning:
+! NAs introduced by coercion</code></pre>
+</div>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">msc_students</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://glin.github.io/reactable/reference/reactable.html">reactable</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>    defaultPageSize <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span></span>
+<span>  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div>
+<div class="cell-output-display">
+
+<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-05253819465d35270efe" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-05253819465d35270efe">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"AcademicYear":["2003-2004","2004-2005","2005-2006","2006-2007","2007-2008","2008-2009","2009-2010","2010-2011","2011-2012","2012-2013","2013-2014","2014-2015","2015-2016","2016-2017","2017-2018","2018-2019","2019-2020","2020-2021","2021-2022","2022-2023"],"BSc":[2135,2128,2225,2255,2360,2411,2429,2629,2528,2631,2707,2656,2742,2842,2953,3021,3091,3200,3159,3177],"MSc (AppliedStat)":[68,67,89,57,65,50,54,55,56,52,56,52,85,42,47,43,53,66,102,111],"MSc (Actuar)":["NA","NA","NA","NA",38,66,81,86,88,87,89,110,47,74,85,69,68,66,93,85],"PhD":[11,16,20,24,24,20,13,13,16,15,16,14,14,18,21,21,19,19,18,15],"pct":[0.52,0.75,0.9,1.06,1.02,0.83,0.54,0.49,0.63,0.57,0.59,0.53,0.51,0.63,0.71,0.7,0.61,0.59,0.57,0.47]},"columns":[{"id":"AcademicYear","name":"AcademicYear","type":"character"},{"id":"BSc","name":"BSc","type":"numeric"},{"id":"MSc (AppliedStat)","name":"MSc (AppliedStat)","type":"numeric"},{"id":"MSc (Actuar)","name":"MSc (Actuar)","type":"numeric"},{"id":"PhD","name":"PhD","type":"numeric"},{"id":"pct","name":"pct","type":"numeric"}],"defaultPageSize":5,"dataKey":"9e1a659e4b3bbf409916a76f20fe3050"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">msc_students</span>, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">AcademicYear</span>, y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">pct</span>, group <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>    title <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Ratio of PhD students/ Undergraduates"</span>,</span>
+<span>    subtitle <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"The decrease "</span>,</span>
+<span>    caption <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"stesiam, 2023"</span></span>
+<span>  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>    plot.title <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://wilkelab.org/ggtext/reference/element_markdown.html">element_markdown</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>family <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"serif"</span>, face<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>    plot.subtitle <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://wilkelab.org/ggtext/reference/element_markdown.html">element_markdown</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>family <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"serif"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>    plot.caption <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://wilkelab.org/ggtext/reference/element_markdown.html">element_markdown</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>family <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"serif"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>    axis.text.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>face<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span>, angle<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">90</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<p><img src="https://www.stesiam.github.io/english/2023-07-23-Graduates-of-Statistics/2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">tidy_students</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">msc_students</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">pct</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tidyr</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">.</span>, cols <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">AcademicYear</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>, values_to <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"count"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span></span>
+<span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">tidy_students</span>, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">AcademicYear</span>, y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">count</span>, fill <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">name</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/guides.html">guides</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>fill <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html">guide_legend</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>reverse <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>    title <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Ratio of PhD students/ Undergraduates"</span>,</span>
+<span>    subtitle <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"The decrease "</span>,</span>
+<span>    caption <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"stesiam, 2023"</span>,</span>
+<span>    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>,</span>
+<span>    y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span></span>
+<span>  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>    plot.title <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://wilkelab.org/ggtext/reference/element_markdown.html">element_markdown</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>family <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"serif"</span>, face<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>    plot.subtitle <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://wilkelab.org/ggtext/reference/element_markdown.html">element_markdown</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>family <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"serif"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>    plot.caption <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://wilkelab.org/ggtext/reference/element_markdown.html">element_markdown</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>family <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"serif"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>    axis.text.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>face<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span>, angle<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">90</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 4 rows containing missing values (position_stack).</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="https://www.stesiam.github.io/english/2023-07-23-Graduates-of-Statistics/2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section></section><section id="msc-students" class="level2"><h2 class="anchored" data-anchor-id="msc-students">MSc Students</h2>
+<div class="cell">
+<div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">statistics_tables</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[[</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Year"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"S"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">.</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://tidyr.tidyverse.org/reference/separate.html">separate</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">S</span>, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Admitted'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Graduated'</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/stats/na.fail.html">na.omit</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expected 2 pieces. Missing pieces filled with `NA` in 21 rows [1, 3,
+5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, ...].</code></pre>
+</div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 100 × 3
-   Year      Admission_Type count
-   &lt;chr&gt;     &lt;chr&gt;          &lt;int&gt;
- 1 2003-2004 Main_exams       183
- 2 2003-2004 Transfer          15
- 3 2003-2004 Entry_exams        1
- 4 2003-2004 Other             17
- 5 2003-2004 Total            216
- 6 2004-2005 Main_exams       181
- 7 2004-2005 Transfer          21
- 8 2004-2005 Entry_exams        1
- 9 2004-2005 Other             16
-10 2004-2005 Total            219
-# ℹ 90 more rows</code></pre>
+<pre><code>        Year Admitted Graduated
+4  2003-2004       27        15
+6  2004-2005       28        26
+8  2005-2006       25        20
+10 2006-2007       25        34
+12 2007-2008       24        31
+14 2008-2009       20        42
+16 2009-2010       30        27
+18 2010-2011       20        17
+20 2011-2012       30        26
+22 2012-2013       18        19
+24 2013-2014       23        35
+26 2014-2015       20        29
+28 2015-2016       21        24
+30 2016-2017       20        22
+32 2017-2018       23        21
+34 2018-2019       22        20
+36 2019-2020       26        15
+38 2020-2021       32        18
+40 2021-2022       41        33</code></pre>
 </div>
 </div>
-</section></section><div id="quarto-appendix" class="default"><section id="acknowledgements" class="level2 appendix unlisted"><h2 class="anchored quarto-appendix-heading">Acknowledgements</h2><div class="quarto-appendix-contents">
+</section><div id="quarto-appendix" class="default"><section id="acknowledgements" class="level2 appendix unlisted"><h2 class="anchored quarto-appendix-heading">Acknowledgements</h2><div class="quarto-appendix-contents">
 <p>Dataset based on recent study guide <a href="https://www.unipi.gr/faculty/mbouts/anak/OS_22_23.pdf">recent study guide</a> of Department of Statistics and Insurance Science of the University of Piraeus.</p>
 <p>Image by <a href="https://pixabay.com/users/vloveland-4834409/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2148715">Victoria Loveland</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2148715">Pixabay</a></p>
 </div></section><section id="references" class="level2 appendix unlisted"><h2 class="quarto-appendix-heading"></h2><div class="quarto-appendix-contents">
@@ -403,6 +1307,9 @@ font-style: inherit;">)</span></span></code></pre></div>
 <div id="ref-R-tabulizer" class="csl-entry">
 Leeper, T. J., Vargas, M., &amp; Paskhalis, T. (2023). <em>Tabulizer: Bindings for tabula PDF table extractor library</em>.
 </div>
+<div id="ref-R-reactable" class="csl-entry">
+Lin, G. (2023). <em>Reactable: Interactive data tables for r</em>. Retrieved from <a href="https://CRAN.R-project.org/package=reactable">https://CRAN.R-project.org/package=reactable</a>
+</div>
 <div id="ref-R-pdftools" class="csl-entry">
 Ooms, J. (2023). <em>Pdftools: Text extraction, rendering and converting of PDF documents</em>. Retrieved from <a href="https://CRAN.R-project.org/package=pdftools">https://CRAN.R-project.org/package=pdftools</a>
 </div>
@@ -412,34 +1319,43 @@ R Core Team. (2021). <em>R: A language and environment for statistical computing
 <div id="ref-R-rJava" class="csl-entry">
 Urbanek, S. (2021). <em>rJava: Low-level r to java interface</em>. Retrieved from <a href="http://www.rforge.net/rJava/">http://www.rforge.net/rJava/</a>
 </div>
+<div id="ref-ggplot22016" class="csl-entry">
+Wickham, H. (2016). <em>ggplot2: Elegant graphics for data analysis</em>. Springer-Verlag New York. Retrieved from <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>
+</div>
+<div id="ref-R-ggplot2" class="csl-entry">
+Wickham, H., Chang, W., Henry, L., Pedersen, T. L., Takahashi, K., Wilke, C., … Dunnington, D. (2022). <em>ggplot2: Create elegant data visualisations using the grammar of graphics</em>. Retrieved from <a href="https://CRAN.R-project.org/package=ggplot2">https://CRAN.R-project.org/package=ggplot2</a>
+</div>
 <div id="ref-R-dplyr" class="csl-entry">
 Wickham, H., François, R., Henry, L., Müller, K., &amp; Vaughan, D. (2023). <em>Dplyr: A grammar of data manipulation</em>. Retrieved from <a href="https://CRAN.R-project.org/package=dplyr">https://CRAN.R-project.org/package=dplyr</a>
 </div>
 <div id="ref-R-tidyr" class="csl-entry">
 Wickham, H., &amp; Girlich, M. (2022). <em>Tidyr: Tidy messy data</em>. Retrieved from <a href="https://CRAN.R-project.org/package=tidyr">https://CRAN.R-project.org/package=tidyr</a>
 </div>
+<div id="ref-R-ggtext" class="csl-entry">
+Wilke, C. O., &amp; Wiernik, B. M. (2022). <em>Ggtext: Improved text rendering support for ggplot2</em>. Retrieved from <a href="https://wilkelab.org/ggtext/">https://wilkelab.org/ggtext/</a>
+</div>
 </div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{2023,
   author = {, stesiam},
   title = {Statistics of {Statistics} {Graduates}},
-  date = {2023-07-21},
-  url = {https://www.stesiam.github.io/english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html},
+  date = {2023-07-23},
+  url = {https://www.stesiam.github.io/english/2023-07-23-Graduates-of-Statistics/2023-07-23-Graduates-of-Statistics.html},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-2023" class="csl-entry quarto-appendix-citeas">
-stesiam. (2023, July 21). Statistics of Statistics Graduates. Retrieved
-from <a href="https://www.stesiam.github.io/english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html">https://www.stesiam.github.io/english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html</a>
+stesiam. (2023, July 23). Statistics of Statistics Graduates. Retrieved
+from <a href="https://www.stesiam.github.io/english/2023-07-23-Graduates-of-Statistics/2023-07-23-Graduates-of-Statistics.html">https://www.stesiam.github.io/english/2023-07-23-Graduates-of-Statistics/2023-07-23-Graduates-of-Statistics.html</a>
 </div></div></section></div> ]]></description>
   <category>R</category>
   <category>EDA</category>
   <category>PDF</category>
   <category>tabulizer</category>
-  <guid>https://www.stesiam.github.io/english/2023-07-21-Graduates-of-Statistics/2023-07-21-Graduates-of-Statistics.html</guid>
-  <pubDate>Thu, 20 Jul 2023 21:00:00 GMT</pubDate>
-  <media:content url="https://www.stesiam.github.io/english/2023-07-21-Graduates-of-Statistics/graduation-cap.jpg" medium="image" type="image/jpeg"/>
+  <guid>https://www.stesiam.github.io/english/2023-07-23-Graduates-of-Statistics/2023-07-23-Graduates-of-Statistics.html</guid>
+  <pubDate>Sat, 22 Jul 2023 21:00:00 GMT</pubDate>
+  <media:content url="https://www.stesiam.github.io/english/2023-07-23-Graduates-of-Statistics/graduation-cap.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Πρόσβαση στο API του data.gov.gr</title>
-  <dc:creator>stesiam</dc:creator>
+  <dc:creator>stesiam </dc:creator>
   <link>https://www.stesiam.github.io/greek/2023-07-04-GovGR-API-Greek/2023-07-04-GovGR-API-Greek.html</link>
   <description><![CDATA[ <section id="εισαγωγή" class="level2"><h2 class="anchored" data-anchor-id="εισαγωγή">Εισαγωγή</h2>
 <p>Στην παραδοσιακή ανάλυση δεδομένων συνήθως ο αναλυτής καλείται να &lt;&gt; τα δεδομένα, να τους δώσει μία κατάλληλη μορφή πορκειμένου να αναλυθούν. Αυτή η δαιδικασία υπονοεί ότι τα δεδομένα υπάρχουν συγκεντρωμένα σε ένα αρχείο. Ωστόσο, δεν είναι πάντα έτσι. Το πρόβλημα με την ανάλυση ενός dataset είναι ότι δεν λαμβάνει υπόψιν τις όποιες νέες τιμές. Σε αυτή τη περίπτωση θα πρέπει να ξανακατβάσω τα νέα δεδομένα και να ξανατρέξω την ανάλυση μέσω της R ή όποιου εργαλείου χρησιμοποιώ. Αυτό όπως γίνεται αντιληπτό είναι μη παραγωγικό, ωστόσο όταν γίνεται λίγες φορές μέσα στο χρόνο, ίσως να μην είναι και τόσο . Εκεί που πλέον γίνεται εμφανής η μη αποτελεσματικότητα της παραπάνω διαδικασίας είναι όταν υπάρχει συνεχής ροή δεδομένων, άρα πρέπει να γίνεται αυτή η διαδικασία καθημερινά. Σε αυτές τις περιπτώσεις φαίνεται η χρησιμότητα του API αφού μας δίνει τις νέες τιμές με μικρό σχετικά κόπο. Παράλληλα η χρήση του API ευνοεί την ένατξη νέων δεδομένων, συνεπώς αν φτιάχουμε ένα προβλεπτικό μοντέλο η ακρίβειά του θα παραμένει σε ένα ικανοποιητικό επίπεδο. Τέλος, άλλη μία θετική συμβολή είναι σε Shiny Apps, προκειμένου να αυτοματοποιείται η ανάλυση δεδομένων και οι πληροφορίες να είναι αξιόπιστες για τον επισκέπτη αυτού.</p>
@@ -448,9 +1364,8 @@ from <a href="https://www.stesiam.github.io/english/2023-07-21-Graduates-of-Stat
 <p>Ωστόσο, το συγκεκριμένο API (όπως τα περισσότερα χρειάζονται</p>
 <p>Κάνουμε άιτηση στην αντίστοιχη σελίδα και συμπληρώνουμε τα στοιχεία μας και <strong>όλα</strong> τα πεδία της φόρμας όπως αυτή φαίνεται παρακάτω:</p>
 <div class="quarto-figure quarto-figure-center" style="text-align:center; background-color: #fafafa; padding: 20px">
-<figure class="figure"><p><img src="https://www.stesiam.github.io/greek/2023-07-04-GovGR-API-Greek/images/datagovgr_api_request.png" class="quarto-discovered-preview-image img-fluid figure-img" width="500"></p>
-<p></p><figcaption class="figure-caption">Προεπισκόπηση σελίδας αίτησης για πρόσβαση στο API</figcaption><p></p>
-</figure>
+<figure class="figure"><p><img src="https://www.stesiam.github.io/greek/2023-07-04-GovGR-API-Greek/images/datagovgr_api_request.png" class="img-fluid figure-img" width="500"></p>
+<figcaption class="figure-caption">Προεπισκόπηση σελίδας αίτησης για πρόσβαση στο API</figcaption></figure>
 </div>
 <p>Στη συνέχεια θα πρέπει να κοιτάξετε το e-mail σας γιατί θα σας έρθει ένα μήνυμα με τον Token μέσω του οποίου θα χρησιμοποιείται το API. Να δείτε οπωσδήποτε και τον φάκελο με την Ανεπιθύμητη αλληλογραφία (spam) καθώς εμένα μου ήρθε εκεί. Παρεπιπτόντως, σε περίπτωση που χάσετε το token και έχετε σβήσει το mail και ξανακάνετε αίτηση (με το ίδιο mail) θα σας το ξαναστείλει. Το έπαθα μόλις :)</p>
 </section><section id="χρήση-api" class="level2"><h2 class="anchored" data-anchor-id="χρήση-api">Χρήση API</h2>
@@ -461,7 +1376,7 @@ from <a href="https://www.stesiam.github.io/english/2023-07-21-Graduates-of-Stat
 </ul>
 <p>Ο ένας τρόπος (και μάλλον ο λιγότερο αποδοτικός) είναι να κάνεις ζητήσεις τα δεδομένα απευθείας από την ιστοσελίδα data.gov.gr. Αυτό είναι από τη μία εξαιρετικά απλό, αλλά από την άλλη κατεβάζουμε μία σταθερή εκδοση των δεδομένων και συνεπώς αν θελήσω να ανανεώσω τα δεδομένα θα πρέπει πάλι να κατεβάσω τα δεδομένα.</p>
 </section><section id="παράδειγμα-χρήσης" class="level2"><h2 class="anchored" data-anchor-id="παράδειγμα-χρήσης">Παράδειγμα χρήσης</h2>
-<p>Πριν ολοκληρωθεί αυτό το άρθρο έκρινα ως σημαντική την εφαρμηγή ενός παραδέιγαμτος. Τη στιγμή που γράφεται αυτό το άρθρο, υπάρχουν συνολικά 49 βάσεις δεδομένων από τις οποίες μπορώ να επιλέξω. Προκειμένου να δούμε την ωφέλεια του API θα διαλέξω κάποιο που ανανεώνεται σε αρκετά συχνή βάση. Ένα τέτοιο δεδομένο είναι οι επιβάτες που ταξιδεύουν με πλοία.</p>
+<p>Πριν ολοκληρωθεί αυτό το άρθρο έκρινα ως σημαντική την εφαρμογή ενός παραδείγματος. Τη στιγμή που γράφεται αυτό το άρθρο, υπάρχουν συνολικά 49 βάσεις δεδομένων από τις οποίες μπορώ να επιλέξω. Προκειμένου να δούμε την ωφέλεια του API θα διαλέξω κάποιο που ανανεώνεται σε αρκετά συχνή βάση. Ένα τέτοιο δεδομένο είναι οι επιβάτες που <a href="https://www.data.gov.gr/datasets/sailing_traffic/">ταξιδεύουν με πλοία</a>.</p>
 <div class="cell">
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -482,6 +1397,145 @@ font-style: inherit;"><a href="https://jeroen.r-universe.dev/jsonlite">jsonlite<
 background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </div>
+<p>Στη συνέχεια θέτω σε μία μεταβλητή τον βασικό σύνδεσμο των δεδομένων. Εγώ που επέλεξα την κίνηση των πλοίων θέτω το εξής:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">base</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://data.gov.gr/api/v1/query/sailing_traffic"</span></span></code></pre></div>
+</div>
+<p>Στη συνέχεια, όπως τονίζει το documentation της σελίδας για τις άλλες γλώσσες, θα πρέπει να ορίσουμε ένα εύρος ημερομηνιών για το οποίο ενδιοαφερόμαστε. Αξίζει να σημειωθεί ότι δεν μπορείτε να πάρετε μεγάλο εύρος με μία μόνο κλήση του API. Για να επιστρέψω στο προηγούμενο παράδειγμα, τα δεδομένα της επιβατικής κίνησης των πλοίων ξεκινάνε από το 2017 μέχρι και σήμερα (2023). Ας υποθέσουμε ότι δεν μας πειράζει αυτό και ότι θέλουμε τα δεδομένα από τις 4 πρώτες μέρες του Ιουλίου του 2023.</p>
+<div class="cell">
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">date_from</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2023-07-01"</span></span>
+<span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">date_to</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2023-07-04"</span></span>
+<span></span>
+<span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">API_URL</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">base</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"?date_from="</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">date_from</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"&amp;"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"date_to="</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">date_to</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span></span>
+<span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">call</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">httr</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://httr.r-lib.org/reference/GET.html">GET</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>url <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">API_URL</span>,</span>
+<span>    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://httr.r-lib.org/reference/add_headers.html">add_headers</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>`Authorization` <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Token token_id'</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>    <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div>
+</div>
+<p>Όπου στο σημείο που αναφέρεται το <strong>token_id</strong> θα πρέπει να βάλετε το token που σας έστειλε το data.gov.gr μέσω mail. Αφού λοιπόν αιτηθούμε τα δεδομένα μέσω της GET και κάνουμε λίγο υπομονή βλέπουμε ότι λαμβάνω μία λίστα με διάφορες πληροφορίες. Εμάς μας ενδιαφέρουν τα δεδομένα, οπότε κοιτάμε στη κατηγορία <strong>content</strong> της λίστας, ωστόσο παρατηρούμε μία μη αναγνώσιμη μορφή των στοιχειών μιας και είναι σε δεκαεξαδική μορφή.</p>
+<div class="cell">
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">data</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">base</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/rawConversion.html">rawToChar</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">call</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">content</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div>
+</div>
+<p>Με την παραπάνω εντολή μετατρέπονται οι χαρακτήρες και είναι πλέον αναγνώσιμοι, ωστόσο τωρα θα πρέπει να πάρουν και μορφή πίνακα προκειμένου να γίνει η ανάλυση.</p>
+<div class="cell">
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">data</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">jsonlite</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html">fromJSON</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">data</span>, flatten <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">T</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div>
+</div>
+<p>Και τέλος, με τη βοήθεια του πακέτου jsnolite λαμβάνω ένα data.frame με όνομα data που περιέχει όλους τους προορισμούς, τον αριθμό επιβατών, αυτοκινήτων για τη κάθε ημέρα που ζήτησα.</p>
 
 
 </section> ]]></description>
@@ -492,7 +1546,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </item>
 <item>
   <title>Σπουδές Στατιστικής στην Ελλάδα</title>
-  <dc:creator>stesiam</dc:creator>
+  <dc:creator>stesiam </dc:creator>
   <link>https://www.stesiam.github.io/greek/2023-06-20-Studies-in-Statistics-Greek/2023-06-20-Studies-in-Statistics-Greek.html</link>
   <description><![CDATA[ <section id="εισαγωγή" class="level2"><h2 class="anchored" data-anchor-id="εισαγωγή">Εισαγωγή</h2>
 <p>Σε αυτό το άρθρο θα ήθελα να συγκεντρώσω όλες αυτές τις διάσπαρτες πληροφορίες που υπάρχουν για τα τμήματα Στατιστικής στη χώρα μας. Θα αναλύσω ως επί το πλείστον πληροφορίες που μπορούν να βρεθούν στο διαδίκτυο σαν να είχα να συμπληρώσω μηχανογραφικό. Ωστόσο, σε κάθε περίπτωση σας αποτρέπω από το να επιλέξετε σχολή βασίζοντας την επιλογή σας σε μόνο αυτό το άρθρο.</p>
@@ -2715,7 +3769,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </item>
 <item>
   <title>Kaggle’s Greek Community</title>
-  <dc:creator>stesiam</dc:creator>
+  <dc:creator>stesiam </dc:creator>
   <link>https://www.stesiam.github.io/english/2023-05-06-Kaggle-Greek-Community/2023-05-06-Kaggle-Greek-Community.html</link>
   <description><![CDATA[ <section id="introduction" class="level1"><h1>Introduction</h1>
 <p><a href="https://www.kaggle.com/">Kaggle</a> is one of the most well-known communities of data analysts/scientists with over 10 million active users <span class="citation" data-cites="headsortails2022">(Heads or Tails, 2020)</span>. Besides that, Kaggle offers an abundance of functionalities (Notebooks), information (through Discussions between users) and Competitions. It is worth noting that there are other similar communities but they cannot compare to the full functionality of Kaggle. For example, <a href="https://www.drivendata.org/">DrivenData</a> could be considered an alternative for participating in ML competitions, but it neither provides the possibility to create notebooks nor has a large number of users.</p>
@@ -6208,7 +7262,7 @@ stesiam. (2023, May 6). Kaggle’s Greek Community. Retrieved from <a href="http
 </item>
 <item>
   <title>Predict Survivors of MS Estonia</title>
-  <dc:creator>stesiam</dc:creator>
+  <dc:creator>stesiam </dc:creator>
   <link>https://www.stesiam.github.io/english/2023-03-31-Predict-Survivors-of-MS-Estonia/2023-03-31-Predict-Survivors-of-MS-Estonia.html</link>
   <description><![CDATA[ <section id="table-of-contents" class="level1 unlisted"><h1 class="unlisted">Table of Contents</h1>
 <hr>
@@ -8675,7 +9729,7 @@ from <a href="https://www.stesiam.github.io/english/2023-03-31-Predict-Survivors
 </item>
 <item>
   <title>Predict Cost of Housing in Kallithea</title>
-  <dc:creator>stesiam</dc:creator>
+  <dc:creator>stesiam </dc:creator>
   <link>https://www.stesiam.github.io/english/2022-12-03-House-Price-Kallithea/2022-12-03-House-Price-Kallithea.html</link>
   <description><![CDATA[ 
 
@@ -10925,7 +11979,7 @@ Retrieved from <a href="https://www.stesiam.github.io/english/2022-12-03-House-P
 </item>
 <item>
   <title>Predict Possible Interested Clients</title>
-  <dc:creator>stesiam</dc:creator>
+  <dc:creator>stesiam </dc:creator>
   <link>https://www.stesiam.github.io/english/2022-11-24-Predict-Possible-Clients/2022-11-24-Predict-Possible-Clients.html</link>
   <description><![CDATA[ <section id="table-of-contents" class="level1 unlisted"><h1 class="unlisted">Table of Contents</h1>
 <ol type="1">
@@ -19972,7 +21026,7 @@ Retrieved from <a href="https://www.stesiam.github.io/english/2022-11-24-Predict
 </item>
 <item>
   <title>Install LightGBM and CatBoost on Ubuntu 22.04</title>
-  <dc:creator>stesiam</dc:creator>
+  <dc:creator>stesiam </dc:creator>
   <link>https://www.stesiam.github.io/english/2022-11-13-Install-LightGBM-CatBoost-Ubuntu/2022-11-13-Install-LightGBM-CatBoost-Ubuntu.html</link>
   <description><![CDATA[ 
 
@@ -20204,7 +21258,7 @@ stesiam. (2022, November 13). Install LightGBM and CatBoost on Ubuntu
 </item>
 <item>
   <title>Git Series (Part I - Configuration)</title>
-  <dc:creator>stesiam</dc:creator>
+  <dc:creator>stesiam </dc:creator>
   <link>https://www.stesiam.github.io/english/2022-11-04-Git-Commands/2022-11-04-Git-Commands.html</link>
   <description><![CDATA[ <section id="introduction" class="level2"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <section id="what-is-version-control-system" class="level3"><h3 class="anchored" data-anchor-id="what-is-version-control-system">What is Version Control System</h3>
@@ -20587,7 +21641,7 @@ Retrieved from <a href="https://www.stesiam.github.io/english/2022-11-04-Git-Com
 </item>
 <item>
   <title>Συγκεντρωμένο υλικό για την R στα ελληνικά</title>
-  <dc:creator>stesiam</dc:creator>
+  <dc:creator>stesiam </dc:creator>
   <link>https://www.stesiam.github.io/greek/2022-10-23-Material-for-R-Greek/2022-10-23-Material-for-R-Greek.html</link>
   <description><![CDATA[ 
 
@@ -20687,7 +21741,7 @@ Retrieved from <a href="https://www.stesiam.github.io/english/2022-11-04-Git-Com
 </item>
 <item>
   <title>Forecasting Unemployment in Greece</title>
-  <dc:creator>stesiam</dc:creator>
+  <dc:creator>stesiam </dc:creator>
   <link>https://www.stesiam.github.io/english/2022-10-22-Forecasting-Unemployment-Greece/2022-10-22-Unemployment-Greece.html</link>
   <description><![CDATA[ <section id="table-of-contents" class="level1 unlisted"><h1 class="unlisted">Table of Contents</h1>
 <hr>
@@ -23400,7 +24454,7 @@ Retrieved from <a href="https://www.stesiam.github.io/english/2022-10-22-Forecas
 </item>
 <item>
   <title>EDA on Greek Parliament</title>
-  <dc:creator>stesiam</dc:creator>
+  <dc:creator>stesiam </dc:creator>
   <link>https://www.stesiam.github.io/english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament.html</link>
   <description><![CDATA[ <section id="table-of-contents" class="level1 unlisted"><h1 class="unlisted">Table of Contents</h1>
 <ol type="1">
@@ -23434,7 +24488,7 @@ References
 <section id="import-libraries" class="level2"><h2 class="anchored" data-anchor-id="import-libraries">Import Libraries</h2>
 <p>First and foremost, we have to load our libraries.</p>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co" style="color: #5E5E5E;
+<details><summary>Code</summary><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># General purpose R libraries</span></span>
 <span><span class="kw" style="color: #003B4F;
@@ -23453,6 +24507,15 @@ background-color: null;
 font-style: inherit;">(</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;"><a href="http://haozhu233.github.io/kableExtra/">kableExtra</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;"><a href="https://glin.github.io/reactable/">reactable</a></span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">)</span></span>
 <span></span>
@@ -23509,7 +24572,7 @@ font-style: inherit;"># print only 2 decimals</span></span></code></pre></div>
 </section><section id="import-dataset" class="level2"><h2 class="anchored" data-anchor-id="import-dataset">Import dataset</h2>
 <p>After loading R libraries, then I will load my data.</p>
 <div class="cell" data-hash="2022-10-10-EDA-Greek-Parliament_cache/html/Import dataset_ac9040f94dee535cb4bed0ad361abd19">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+<details><summary>Code</summary><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">parliament</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -23526,7 +24589,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 </section><section id="preview-dataset" class="level2"><h2 class="anchored" data-anchor-id="preview-dataset">Preview Dataset</h2>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+<details><summary>Code</summary><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">preview_dataset</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -23716,10 +24779,18 @@ font-style: inherit;">)</span></span></code></pre></div>
 </table>
 <p>Thus, my sample has 4 variables, of which 0 are quantitative and 4 are quantitative properties, of which 3 are nominal and the rest one (<code>Term</code>) is ordinal.</p>
 </section><section id="recoding-variables" class="level2"><h2 class="anchored" data-anchor-id="recoding-variables">Recoding variables</h2>
+<p>Party names can vary from short to lengthy ones. The last ones are a problem for our analysis because their names can not fit to our visualisations. The table below is showing all the parties that have ever participated in parliament. Is is apparent that some parties have really long names.</p>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op" style="color: #5E5E5E;
+font-style: inherit;"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>  Party <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">(</span><span class="va" style="color: #111111;
 background-color: null;
@@ -23729,11 +24800,68 @@ font-style: inherit;">$</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">Party</span><span class="op" style="color: #5E5E5E;
 background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>  Length <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://stringr.tidyverse.org/reference/str_length.html">str_length</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">parliament</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">Party</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">Length</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://glin.github.io/reactable/reference/reactable.html">reactable</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>    defaultPageSize <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span></span>
+<span>  <span class="op" style="color: #5E5E5E;
+background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
-</details>
+</details><div class="cell-output-display">
+
+<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-07c9d4ccc7c4ea15bc7c" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-07c9d4ccc7c4ea15bc7c">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Party":["ANEXARTITOI ELLINES (Independent Hellenes) National Patriotic Democratic Alliance","DEMOCRATIC COALITION (Panhellenic Socialist Movement Democratic Left )","LAIKOS SYNDESMOS - CHRYSI AVGI (People’s Association – Golden Dawn)","ANEXARTITOI ELLINES (Independent Hellenes)","PA.SO.K. (Panhellenic Socialist Movement)","Communist Party of Greece (Interior)","SYNASPISMOS RIZOSPASTIKIS ARISTERAS","Coalition of the Left and Progress","ANEXARTITOI DIMOKRATIKOI VOULEFTES","KOMMOUNISTIKO KOMMA ELLADAS","DHM.AR (Democratic Left)","TO POTAMI (The River)","NEA DIMOKRATIA","LAIKI ENOTITA","INDEPENDENT","DI.K.KI.","DI.ANA.","LA.O.S.","ΟΟ.ΕΟ.","POL.A."],"Length":[81,70,67,42,41,36,35,34,34,27,24,21,14,13,11,8,7,7,6,6]},"columns":[{"id":"Party","name":"Party","type":"character"},{"id":"Length","name":"Length","type":"numeric"}],"defaultPageSize":5,"dataKey":"6290ea4daaf33732cb2712395b66ae78"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
+</div>
+<p>In our case the parties with the longest name is AN.EL. and Democratic Coalition with 81 and 70 characters, respectively. On the contrary, the shortest party name is POL.A. with 6 characters.</p>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co" style="color: #5E5E5E;
+<details><summary>Code</summary><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">## Recoding parliament$Party</span></span>
 <span><span class="va" style="color: #111111;
@@ -24241,7 +25369,7 @@ font-style: inherit;">"ΟΟ.ΕΟ"</span></span></code></pre></div>
 </section><section id="setting-colors" class="level2"><h2 class="anchored" data-anchor-id="setting-colors">Setting colors</h2>
 <p>A few days after, I decided that there should be a consistency in the choice of colors. That’s the reason of this section. Thus, I will assign a dedicated hex color code to each party.</p>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+<details><summary>Code</summary><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">kke_color</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -24275,7 +25403,7 @@ font-style: inherit;">"#e27bb1"</span></span></code></pre></div>
 <p>Now, I will make a short sum-up of the electoral resuts over the years. It is important to share that I made it thanks to <a href="https://datavizstory.com/a-parliament-diagram-in-r/">this post</a> and <code>ggpol</code> package. As I am planning to do this procedure for many electoral terms, I will convert it as a function.</p>
 <p>Arguments like <code>term</code> and <code>custom_title</code> are vital to create reproducible plots for all the terms. Although a main problem is the colors. On the aforementioned post it was about only one term. We knew how many parties we had, so we knew what colors to set and how many. If we try that on many terms (on which the number of parties can vary from 3 to 8) an error will come up which will say “Hey, you have set 3 colors but I see that you have 8 values (parties)”. This was a real obstacle for me. After some tries and misses I came up with the concept of <strong>dynamic arguments</strong>.</p>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+<details><summary>Code</summary><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">make_parliament_plot</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -24756,7 +25884,7 @@ Note
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" aria-labelledby="tabset-1-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -24780,7 +25908,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-1-2" class="tab-pane" aria-labelledby="tabset-1-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -24808,7 +25936,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-1-3" class="tab-pane" aria-labelledby="tabset-1-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -24836,7 +25964,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-1-4" class="tab-pane" aria-labelledby="tabset-1-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -24864,7 +25992,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-1-5" class="tab-pane" aria-labelledby="tabset-1-5-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -24894,7 +26022,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-1-6" class="tab-pane" aria-labelledby="tabset-1-6-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -24920,7 +26048,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-1-7" class="tab-pane" aria-labelledby="tabset-1-7-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -24950,7 +26078,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-1-8" class="tab-pane" aria-labelledby="tabset-1-8-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -24978,7 +26106,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-1-9" class="tab-pane" aria-labelledby="tabset-1-9-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -25006,7 +26134,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-1-10" class="tab-pane" aria-labelledby="tabset-1-10-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -25034,7 +26162,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-1-11" class="tab-pane" aria-labelledby="tabset-1-11-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb18" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb18" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -25068,7 +26196,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-1-12" class="tab-pane" aria-labelledby="tabset-1-12-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb19" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb19" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -25100,7 +26228,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-1-13" class="tab-pane" aria-labelledby="tabset-1-13-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb20" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb20" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -25136,7 +26264,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-1-14" class="tab-pane" aria-labelledby="tabset-1-14-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb21" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb21" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -25183,7 +26311,7 @@ Warning
 </div>
 </div>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb22" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb22" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">make_parliament_plot</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -25217,7 +26345,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 </section><section id="most-elected-members-of-parliament" class="level1"><h1>Most elected members of parliament</h1>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb23" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co" style="color: #5E5E5E;
+<details><summary>Code</summary><div class="sourceCode" id="cb23" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">#total_times_elected_freqs &lt;- function(input_constituency, min_times_elected){</span></span>
 <span><span class="va" style="color: #111111;
@@ -25520,9 +26648,8 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="https://www.stesiam.github.io/english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/fig-1.png" class="quarto-discovered-preview-image img-fluid figure-img" width="672"></p>
-<p></p><figcaption class="figure-caption">Most elected MPs</figcaption><p></p>
-</figure>
+<figure class="figure"><p><img src="https://www.stesiam.github.io/english/2022-10-10-EDA-Greek-Parliament/2022-10-10-EDA-Greek-Parliament_files/figure-html/fig-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Most elected MPs</figcaption></figure>
 </div>
 </div>
 </div>
@@ -25538,7 +26665,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <code>times_elected_min</code> : A argument that I added up later. The problem with its absence is that I have to deal with parties that elect for example 150 MPs and some others just 10. If I set a universal number of elections to visualize I will have diagrams with many problems. Let’s suppose that I set a big value (e.g., 10). Then I would visualize my data for <em>ND</em> and <em>PASOK</em>, although parties with relatively low number of MPs would have only one or noone to show (<em>KKE</em> &amp; <em>SYRIZA</em>, respectively). On the other hand if I set a low value I create a new problem as there will be many MPs of and it creates the need to edit many more things (like width of bars). An argument like <code>times_elected_min</code> can adapt the specific characteristics of each party.</li>
 </ul>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb24" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+<details><summary>Code</summary><div class="sourceCode" id="cb24" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">party_plot</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -25798,7 +26925,7 @@ font-style: inherit;">}</span></span></code></pre></div>
 <p>The visualizations are presented in alphabetical order.</p>
 <section id="kke" class="level2"><h2 class="anchored" data-anchor-id="kke">KKE</h2>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb25" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb25" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">party_plot</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -25819,7 +26946,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 </section><section id="nd" class="level2"><h2 class="anchored" data-anchor-id="nd">ND</h2>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb26" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb26" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">party_plot</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -25840,7 +26967,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 </section><section id="pasok" class="level2"><h2 class="anchored" data-anchor-id="pasok">PASOK</h2>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb27" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb27" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">party_plot</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -25861,7 +26988,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 </section><section id="syriza" class="level2"><h2 class="anchored" data-anchor-id="syriza">SYRIZA</h2>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb28" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb28" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">party_plot</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -25891,7 +27018,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <p>Obviously, the same logic applies to party charts (same processes with minor changes), so the use of a function is almost mandatory (over fifty -50- cases !).</p>
 <p>On my previous workflow I used table() function in order to take frequencies. That’s one easy way to go. Although I didn’t figured out to add characteristics from other columns (like party of the MP). Fir that reason I took the decision to use count() instead of table.</p>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb29" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+<details><summary>Code</summary><div class="sourceCode" id="cb29" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">constituency_freqs</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26161,14 +27288,14 @@ font-style: inherit;">}</span></span></code></pre></div>
 </div>
 <p>Now I have frequencies and the party for every MP. That will be useful on my diagrams.</p>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb30" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co" style="color: #5E5E5E;
+<details><summary>Code</summary><div class="sourceCode" id="cb30" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">#unique(parliament$Constituency) %&gt;% sort()</span></span></code></pre></div>
 </details>
 </div>
 <section id="state" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="state">State</h2>
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb31" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb31" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26195,7 +27322,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" aria-labelledby="tabset-2-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb32" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb32" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26213,7 +27340,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-2-2" class="tab-pane" aria-labelledby="tabset-2-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb33" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb33" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26231,7 +27358,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-2-3" class="tab-pane" aria-labelledby="tabset-2-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb34" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb34" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26249,7 +27376,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-2-4" class="tab-pane" aria-labelledby="tabset-2-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb35" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb35" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26267,7 +27394,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-2-5" class="tab-pane" aria-labelledby="tabset-2-5-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb36" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb36" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26296,7 +27423,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <div class="tab-content">
 <div id="tabset-3-1" class="tab-pane active" aria-labelledby="tabset-3-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb37" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb37" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26314,7 +27441,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-3-2" class="tab-pane" aria-labelledby="tabset-3-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb38" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb38" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26332,7 +27459,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-3-3" class="tab-pane" aria-labelledby="tabset-3-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb39" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb39" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26350,7 +27477,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-3-4" class="tab-pane" aria-labelledby="tabset-3-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb40" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb40" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26382,7 +27509,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <div class="tab-content">
 <div id="tabset-4-1" class="tab-pane active" aria-labelledby="tabset-4-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb41" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb41" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26400,7 +27527,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-4-2" class="tab-pane" aria-labelledby="tabset-4-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb42" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb42" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26418,7 +27545,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-4-3" class="tab-pane" aria-labelledby="tabset-4-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb43" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb43" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26436,7 +27563,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-4-4" class="tab-pane" aria-labelledby="tabset-4-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb44" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb44" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26454,7 +27581,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-4-5" class="tab-pane" aria-labelledby="tabset-4-5-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb45" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb45" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26472,7 +27599,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-4-6" class="tab-pane" aria-labelledby="tabset-4-6-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb46" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb46" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26490,7 +27617,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-4-7" class="tab-pane" aria-labelledby="tabset-4-7-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb47" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb47" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26519,7 +27646,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <div class="tab-content">
 <div id="tabset-5-1" class="tab-pane active" aria-labelledby="tabset-5-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb48" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb48" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26537,7 +27664,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-5-2" class="tab-pane" aria-labelledby="tabset-5-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb49" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co" style="color: #5E5E5E;
+<details><summary>Code</summary><div class="sourceCode" id="cb49" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">#constituency_freqs("Irakleio",3)</span></span></code></pre></div>
 </details>
@@ -26545,7 +27672,7 @@ font-style: inherit;">#constituency_freqs("Irakleio",3)</span></span></code></pr
 </div>
 <div id="tabset-5-3" class="tab-pane" aria-labelledby="tabset-5-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb50" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb50" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26563,7 +27690,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-5-4" class="tab-pane" aria-labelledby="tabset-5-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb51" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb51" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26593,7 +27720,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <div class="tab-content">
 <div id="tabset-6-1" class="tab-pane active" aria-labelledby="tabset-6-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb52" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb52" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26611,7 +27738,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-6-2" class="tab-pane" aria-labelledby="tabset-6-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb53" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb53" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26629,7 +27756,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-6-3" class="tab-pane" aria-labelledby="tabset-6-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb54" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb54" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26647,7 +27774,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-6-4" class="tab-pane" aria-labelledby="tabset-6-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb55" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb55" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26665,7 +27792,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-6-5" class="tab-pane" aria-labelledby="tabset-6-5-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb56" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb56" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26694,7 +27821,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <div class="tab-content">
 <div id="tabset-7-1" class="tab-pane active" aria-labelledby="tabset-7-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb57" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb57" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26712,7 +27839,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-7-2" class="tab-pane" aria-labelledby="tabset-7-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb58" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb58" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26730,7 +27857,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-7-3" class="tab-pane" aria-labelledby="tabset-7-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb59" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb59" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26748,7 +27875,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-7-4" class="tab-pane" aria-labelledby="tabset-7-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb60" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb60" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26777,7 +27904,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <div class="tab-content">
 <div id="tabset-8-1" class="tab-pane active" aria-labelledby="tabset-8-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb61" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb61" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26795,7 +27922,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-8-2" class="tab-pane" aria-labelledby="tabset-8-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb62" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb62" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26813,7 +27940,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-8-3" class="tab-pane" aria-labelledby="tabset-8-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb63" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb63" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26831,7 +27958,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-8-4" class="tab-pane" aria-labelledby="tabset-8-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb64" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb64" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26859,7 +27986,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <div class="tab-content">
 <div id="tabset-9-1" class="tab-pane active" aria-labelledby="tabset-9-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb65" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb65" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26877,7 +28004,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-9-2" class="tab-pane" aria-labelledby="tabset-9-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb66" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb66" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26895,7 +28022,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-9-3" class="tab-pane" aria-labelledby="tabset-9-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb67" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb67" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26925,7 +28052,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <div class="tab-content">
 <div id="tabset-10-1" class="tab-pane active" aria-labelledby="tabset-10-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb68" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb68" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26943,7 +28070,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-10-2" class="tab-pane" aria-labelledby="tabset-10-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb69" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb69" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26961,7 +28088,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-10-3" class="tab-pane" aria-labelledby="tabset-10-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb70" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb70" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26979,7 +28106,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-10-4" class="tab-pane" aria-labelledby="tabset-10-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb71" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb71" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -26997,7 +28124,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-10-5" class="tab-pane" aria-labelledby="tabset-10-5-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb72" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb72" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -27024,7 +28151,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <div class="tab-content">
 <div id="tabset-11-1" class="tab-pane active" aria-labelledby="tabset-11-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb73" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb73" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -27042,7 +28169,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-11-2" class="tab-pane" aria-labelledby="tabset-11-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb74" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb74" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -27071,7 +28198,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <div class="tab-content">
 <div id="tabset-12-1" class="tab-pane active" aria-labelledby="tabset-12-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb75" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb75" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -27089,7 +28216,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-12-2" class="tab-pane" aria-labelledby="tabset-12-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb76" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb76" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -27107,7 +28234,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-12-3" class="tab-pane" aria-labelledby="tabset-12-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb77" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb77" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -27125,7 +28252,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-12-4" class="tab-pane" aria-labelledby="tabset-12-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb78" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb78" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -27153,7 +28280,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <div class="tab-content">
 <div id="tabset-13-1" class="tab-pane active" aria-labelledby="tabset-13-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb79" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb79" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -27171,7 +28298,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-13-2" class="tab-pane" aria-labelledby="tabset-13-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb80" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co" style="color: #5E5E5E;
+<details><summary>Code</summary><div class="sourceCode" id="cb80" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">#constituency_freqs("Aitoloakarnania",3)</span></span></code></pre></div>
 </details>
@@ -27179,7 +28306,7 @@ font-style: inherit;">#constituency_freqs("Aitoloakarnania",3)</span></span></co
 </div>
 <div id="tabset-13-3" class="tab-pane" aria-labelledby="tabset-13-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb81" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb81" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -27208,7 +28335,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <div class="tab-content">
 <div id="tabset-14-1" class="tab-pane active" aria-labelledby="tabset-14-1-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb82" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb82" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -27226,7 +28353,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-14-2" class="tab-pane" aria-labelledby="tabset-14-2-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb83" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb83" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -27244,7 +28371,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-14-3" class="tab-pane" aria-labelledby="tabset-14-3-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb84" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb84" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -27262,7 +28389,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 <div id="tabset-14-4" class="tab-pane" aria-labelledby="tabset-14-4-tab">
 <div class="cell">
-<details><summary>Show the code</summary><div class="sourceCode" id="cb85" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details><summary>Code</summary><div class="sourceCode" id="cb85" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">constituency_freqs</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -27290,6 +28417,9 @@ font-style: inherit;">)</span></span></code></pre></div>
 <div id="ref-R-purrr" class="csl-entry">
 Henry, L., &amp; Wickham, H. (2020). <em>Purrr: Functional programming tools</em>. Retrieved from <a href="https://CRAN.R-project.org/package=purrr">https://CRAN.R-project.org/package=purrr</a>
 </div>
+<div id="ref-R-reactable" class="csl-entry">
+Lin, G. (2023). <em>Reactable: Interactive data tables for r</em>. Retrieved from <a href="https://CRAN.R-project.org/package=reactable">https://CRAN.R-project.org/package=reactable</a>
+</div>
 <div id="ref-R-tibble" class="csl-entry">
 Müller, K., &amp; Wickham, H. (2023). <em>Tibble: Simple data frames</em>. Retrieved from <a href="https://CRAN.R-project.org/package=tibble">https://CRAN.R-project.org/package=tibble</a>
 </div>
@@ -27302,14 +28432,14 @@ Tiedemann, F. (2020). <em>Ggpol: Visualizing social science data with ggplot2</e
 <div id="ref-ggplot22016" class="csl-entry">
 Wickham, H. (2016). <em>ggplot2: Elegant graphics for data analysis</em>. Springer-Verlag New York. Retrieved from <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>
 </div>
-<div id="ref-R-stringr" class="csl-entry">
-Wickham, H. (2019). <em>Stringr: Simple, consistent wrappers for common string operations</em>. Retrieved from <a href="https://CRAN.R-project.org/package=stringr">https://CRAN.R-project.org/package=stringr</a>
-</div>
 <div id="ref-R-forcats" class="csl-entry">
 Wickham, H. (2022a). <em>Forcats: Tools for working with categorical variables (factors)</em>. Retrieved from <a href="https://CRAN.R-project.org/package=forcats">https://CRAN.R-project.org/package=forcats</a>
 </div>
+<div id="ref-R-stringr" class="csl-entry">
+Wickham, H. (2022b). <em>Stringr: Simple, consistent wrappers for common string operations</em>. Retrieved from <a href="https://CRAN.R-project.org/package=stringr">https://CRAN.R-project.org/package=stringr</a>
+</div>
 <div id="ref-R-tidyverse" class="csl-entry">
-Wickham, H. (2022b). <em>Tidyverse: Easily install and load the tidyverse</em>. Retrieved from <a href="https://CRAN.R-project.org/package=tidyverse">https://CRAN.R-project.org/package=tidyverse</a>
+Wickham, H. (2022c). <em>Tidyverse: Easily install and load the tidyverse</em>. Retrieved from <a href="https://CRAN.R-project.org/package=tidyverse">https://CRAN.R-project.org/package=tidyverse</a>
 </div>
 <div id="ref-tidyverse2019" class="csl-entry">
 Wickham, H., Averick, M., Bryan, J., Chang, W., McGowan, L. D., François, R., … Yutani, H. (2019). Welcome to the <span class="nocase">tidyverse</span>. <em>Journal of Open Source Software</em>, <em>4</em>(43), 1686. <a href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>
@@ -27350,7 +28480,7 @@ stesiam. (2022, October 10). EDA on Greek Parliament. Retrieved from <a href="ht
 </item>
 <item>
   <title>Verify your commits !</title>
-  <dc:creator>stesiam</dc:creator>
+  <dc:creator>stesiam </dc:creator>
   <link>https://www.stesiam.github.io/english/2022-10-03-Verified-Commits/2022-10-03-Verified-Commits.html</link>
   <description><![CDATA[ 
 
@@ -27493,7 +28623,7 @@ font-style: inherit;">"Edit something"</span></span></code></pre></div>
 </item>
 <item>
   <title>List of Quarto Websites</title>
-  <dc:creator>stesiam</dc:creator>
+  <dc:creator>stesiam </dc:creator>
   <link>https://www.stesiam.github.io/english/2022-08-10-List-of-Quarto-Sites/2022-08-10-List-of-Quarto-Sites.html</link>
   <description><![CDATA[ <section id="introduction" class="level2"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>Given the increased popularity of Quarto, I took the initiative to make a list of some sites that are using this framework. That way, users of other popular frameworks (e.g., distill, blogdown) will have the chance to see the features of a Quarto site. Furthermore, existing Quarto users can draw inspiration from other web pages.</p>
@@ -27880,7 +29010,7 @@ stesiam. 2022. <span>“List of Quarto Websites.”</span> August 10, 2022.
 </item>
 <item>
   <title>Hello, World</title>
-  <dc:creator>stesiam</dc:creator>
+  <dc:creator>stesiam </dc:creator>
   <link>https://www.stesiam.github.io/english/2022-07-27-hello/27-07-2022-hello.html</link>
   <description><![CDATA[ 
 

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.276">
+<meta name="generator" content="quarto-1.3.433">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="stesiam">
 <meta name="dcterms.date" content="2023-07-04">
@@ -88,7 +88,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script><link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="stesiam - Πρόσβαση στο API του data.gov.gr">
@@ -221,9 +222,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Ωστόσο, το συγκεκριμένο API (όπως τα περισσότερα χρειάζονται</p>
 <p>Κάνουμε άιτηση στην αντίστοιχη σελίδα και συμπληρώνουμε τα στοιχεία μας και <strong>όλα</strong> τα πεδία της φόρμας όπως αυτή φαίνεται παρακάτω:</p>
 <div class="quarto-figure quarto-figure-center" style="text-align:center; background-color: #fafafa; padding: 20px">
-<figure class="figure"><p><img src="images/datagovgr_api_request.png" class="quarto-discovered-preview-image img-fluid figure-img" width="500"></p>
-<p></p><figcaption class="figure-caption">Προεπισκόπηση σελίδας αίτησης για πρόσβαση στο API</figcaption><p></p>
-</figure>
+<figure class="figure"><p><img src="images/datagovgr_api_request.png" class="img-fluid figure-img" width="500"></p>
+<figcaption class="figure-caption">Προεπισκόπηση σελίδας αίτησης για πρόσβαση στο API</figcaption></figure>
 </div>
 <p>Στη συνέχεια θα πρέπει να κοιτάξετε το e-mail σας γιατί θα σας έρθει ένα μήνυμα με τον Token μέσω του οποίου θα χρησιμοποιείται το API. Να δείτε οπωσδήποτε και τον φάκελο με την Ανεπιθύμητη αλληλογραφία (spam) καθώς εμένα μου ήρθε εκεί. Παρεπιπτόντως, σε περίπτωση που χάσετε το token και έχετε σβήσει το mail και ξανακάνετε αίτηση (με το ίδιο mail) θα σας το ξαναστείλει. Το έπαθα μόλις :)</p>
 </section><section id="χρήση-api" class="level2"><h2 class="anchored" data-anchor-id="χρήση-api">Χρήση API</h2>
@@ -234,11 +234,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>Ο ένας τρόπος (και μάλλον ο λιγότερο αποδοτικός) είναι να κάνεις ζητήσεις τα δεδομένα απευθείας από την ιστοσελίδα data.gov.gr. Αυτό είναι από τη μία εξαιρετικά απλό, αλλά από την άλλη κατεβάζουμε μία σταθερή εκδοση των δεδομένων και συνεπώς αν θελήσω να ανανεώσω τα δεδομένα θα πρέπει πάλι να κατεβάσω τα δεδομένα.</p>
 </section><section id="παράδειγμα-χρήσης" class="level2"><h2 class="anchored" data-anchor-id="παράδειγμα-χρήσης">Παράδειγμα χρήσης</h2>
-<p>Πριν ολοκληρωθεί αυτό το άρθρο έκρινα ως σημαντική την εφαρμηγή ενός παραδέιγαμτος. Τη στιγμή που γράφεται αυτό το άρθρο, υπάρχουν συνολικά 49 βάσεις δεδομένων από τις οποίες μπορώ να επιλέξω. Προκειμένου να δούμε την ωφέλεια του API θα διαλέξω κάποιο που ανανεώνεται σε αρκετά συχνή βάση. Ένα τέτοιο δεδομένο είναι οι επιβάτες που ταξιδεύουν με πλοία.</p>
+<p>Πριν ολοκληρωθεί αυτό το άρθρο έκρινα ως σημαντική την εφαρμογή ενός παραδείγματος. Τη στιγμή που γράφεται αυτό το άρθρο, υπάρχουν συνολικά 49 βάσεις δεδομένων από τις οποίες μπορώ να επιλέξω. Προκειμένου να δούμε την ωφέλεια του API θα διαλέξω κάποιο που ανανεώνεται σε αρκετά συχνή βάση. Ένα τέτοιο δεδομένο είναι οι επιβάτες που <a href="https://www.data.gov.gr/datasets/sailing_traffic/">ταξιδεύουν με πλοία</a>.</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://httr.r-lib.org/">httr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://jeroen.r-universe.dev/jsonlite">jsonlite</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Στη συνέχεια θέτω σε μία μεταβλητή τον βασικό σύνδεσμο των δεδομένων. Εγώ που επέλεξα την κίνηση των πλοίων θέτω το εξής:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">base</span> <span class="op">=</span> <span class="st">"https://data.gov.gr/api/v1/query/sailing_traffic"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Στη συνέχεια, όπως τονίζει το documentation της σελίδας για τις άλλες γλώσσες, θα πρέπει να ορίσουμε ένα εύρος ημερομηνιών για το οποίο ενδιοαφερόμαστε. Αξίζει να σημειωθεί ότι δεν μπορείτε να πάρετε μεγάλο εύρος με μία μόνο κλήση του API. Για να επιστρέψω στο προηγούμενο παράδειγμα, τα δεδομένα της επιβατικής κίνησης των πλοίων ξεκινάνε από το 2017 μέχρι και σήμερα (2023). Ας υποθέσουμε ότι δεν μας πειράζει αυτό και ότι θέλουμε τα δεδομένα από τις 4 πρώτες μέρες του Ιουλίου του 2023.</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">date_from</span> <span class="op">=</span> <span class="st">"2023-07-01"</span></span>
+<span><span class="va">date_to</span> <span class="op">=</span> <span class="st">"2023-07-04"</span></span>
+<span></span>
+<span><span class="va">API_URL</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">base</span>, <span class="st">"?date_from="</span>, <span class="va">date_from</span>, <span class="st">"&amp;"</span>, <span class="st">"date_to="</span>, <span class="va">date_to</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">call</span> <span class="op">=</span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/GET.html">GET</a></span><span class="op">(</span>url <span class="op">=</span> <span class="va">API_URL</span>,</span>
+<span>    <span class="fu"><a href="https://httr.r-lib.org/reference/add_headers.html">add_headers</a></span><span class="op">(</span>`Authorization` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">'Token token_id'</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Όπου στο σημείο που αναφέρεται το <strong>token_id</strong> θα πρέπει να βάλετε το token που σας έστειλε το data.gov.gr μέσω mail. Αφού λοιπόν αιτηθούμε τα δεδομένα μέσω της GET και κάνουμε λίγο υπομονή βλέπουμε ότι λαμβάνω μία λίστα με διάφορες πληροφορίες. Εμάς μας ενδιαφέρουν τα δεδομένα, οπότε κοιτάμε στη κατηγορία <strong>content</strong> της λίστας, ωστόσο παρατηρούμε μία μη αναγνώσιμη μορφή των στοιχειών μιας και είναι σε δεκαεξαδική μορφή.</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data</span> <span class="op">=</span> <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/rawConversion.html">rawToChar</a></span><span class="op">(</span><span class="va">call</span><span class="op">$</span><span class="va">content</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Με την παραπάνω εντολή μετατρέπονται οι χαρακτήρες και είναι πλέον αναγνώσιμοι, ωστόσο τωρα θα πρέπει να πάρουν και μορφή πίνακα προκειμένου να γίνει η ανάλυση.</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data</span> <span class="op">=</span> <span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html">fromJSON</a></span><span class="op">(</span><span class="va">data</span>, flatten <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Και τέλος, με τη βοήθεια του πακέτου jsnolite λαμβάνω ένα data.frame με όνομα data που περιέχει όλους τους προορισμούς, τον αριθμό επιβατών, αυτοκινήτων για τη κάθε ημέρα που ζήτησα.</p>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
