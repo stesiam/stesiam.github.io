@@ -216,6 +216,7 @@ ggplot(tidy_students, aes(x = AcademicYear, y = count, fill = name)) +
     axis.text.x = element_text(face="bold", angle=90)
   )
 ```
+
 ## MSc Students
 
 ```{r}
@@ -224,7 +225,23 @@ statistics_tables[[3]] %>%
   setNames(c("Year", "S")) %>%
   .[-c(1,2),] %>%
   separate(S, c('Admitted', 'Graduated')) %>%
-  na.omit()
+  na.omit() %>%
+  mutate(Ratio = round(as.numeric(Graduated)/as.numeric(Admitted), 2)) %>%
+  select(Year, Ratio) %>%
+  ggplot(.) +
+  geom_line(aes(x = Year, y = Ratio, group = 1))+
+  theme_classic()
+  
+```
+
+
+## Graduation Grade
+
+```{r}
+statistics_tables[[4]] %>%
+  setNames(c("Year", "[5.0 - 6)", "[6, 7)", "X3", "(", "AVG_Grade"))
+  
+  
 ```
 
 
