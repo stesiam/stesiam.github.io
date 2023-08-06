@@ -23,7 +23,7 @@ bibliography: [packages.bib, references.bib]
 format: 
   html:
     code-link: true
-    code-fold: true
+    code-fold: false
     code-summary: "Show the code"
     code-tools: 
       source: repo
@@ -44,7 +44,7 @@ editor_options:
 
 ## Import libraries
 
-Σε αυτό το notebook θα γίνουν οπωσδήποτε κάποια διαγράμματα σύγκρισης, οπότε το πακέτο ggplot2 κρίνεται απαραίτητο. Επίσης, η ύπαρξη μεταβλητών με πάρα πολλές τιμές (όπως η χώρα του κάθε χρήστη του Kaggle) είναι μία ένδειξη για χρήση πινάκων και για αυτό το πακέτο reactablefmtr θα βοηθήσει σε ένα ωραίο αποτέλεσμα.
+This notebook will definitely make some charts, so the ggplot2 package is necessary. Also, having variables with too many values (e.g. country of each Kaggle user) is an indication of using tables, and for this the reactablefmtr package will help to get a nice result. 
 
 
 ```{r Import R Libraries, message=FALSE, results='hide', echo=TRUE}
@@ -91,7 +91,7 @@ knitr::write_bib(.packages(), file = 'packages.bib')
 
 ## Import data
 
-Kaggle's survey is one
+Using `read.csv()` from readr package, I import my dataset and I name it as `kaggle_2021`. The dataset includes in the first line the question which is not required for my data analysis, so I exclude it from my dataset.
 
 ```{r Import data, message=FALSE, warning=FALSE}
 kaggle_2021 = read_csv("data/kaggle_survey_2021.csv")
@@ -213,10 +213,12 @@ data %>%
   ggplot() +
   geom_col(alpha = 0.5, aes(x = pct_women, y = reorder(Q3, pct_women))) +
   geom_text(data = subset(data, pct_women == max(pct_women) | Q3 == "Greece" | pct_women == min(pct_women)), aes(x = pct_women + 2, y = reorder(Q3, pct_women), label = paste0(round(pct_women, digits = 1), "%"))) +
+  geom_vline(xintercept = mean(data$pct_women), linetype = "dashed", color = "pink1") +
+  geom_text(aes(x= mean(data$pct_women)+0.5, label=paste0("Average:", round(mean(data$pct_women), digits = 2)), y = "Colombia"), angle=270) +
   scale_x_continuous(limits = c(0,50)) +
   labs(
     title = "<b>Women participation in DS community per country</b>",
-    subtitle = "Based on Kaggle's 2021 Survey women are underrepresented in DS. <br> The country with the highest women participation is <span style= 'color: #c8102c;'>Tunisia</span> and <span style= 'color: #008f4c;'>Peru</span> is one with the lowest. <br>Last but not least, <span style= 'color: #001489;'>Greece</span> has a relatively decent rate of women participation holding 15th place with 15\\%.",
+    subtitle = "Based on Kaggle's 2021 Survey women are underrepresented in DS. <br> The country with the highest women participation is <span style= 'color: #c8102c;'>Tunisia</span> and <span style= 'color: #008f4c;'>Peru</span> is one with the lowest. <br>Last but not least, <span style= 'color: #001489;'>Greece</span> has a relatively disappointing rate of women participation holding <br> 15th place with 15.7\\%, given the fact that the average is", round(mean(data$pct_women),digits = 2),
     caption = "<b>stesiam</b>, 2023",
     x = "Percentage of Women",
     y = "Countries"
@@ -226,8 +228,7 @@ data %>%
   theme(
     plot.title = element_markdown(family = "title"),
     plot.subtitle = element_markdown(family = "subtitle", lineheight = 0.4),
-    plot.caption = element_markdown(family = "subtitle"),
-    text = element_text(family = "subtitle")
+    plot.caption = element_markdown(family = "subtitle")
   )
 ```
 
