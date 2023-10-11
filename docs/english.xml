@@ -16,8 +16,7 @@
   <dc:creator>stesiam </dc:creator>
   <link>https://www.stesiam.github.io/english/2023-07-23-Graduates-of-Statistics/2023-07-23-Graduates-of-Statistics.html</link>
   <description><![CDATA[ <section id="introduction" class="level2"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>Statistics can be hard. This is</p>
-<p>THe recent study guide includes data about the graduates and their average grade of graduation over the years. First and foremost the data we are interested in are included in table form (which is good) but is is part of a pdf file (which is not good :)). Thankfully, <strong>tabulizer</strong> is the solution to this kind of problems.</p>
+<p>The recent study guide includes data about the graduates and their average grade of graduation over the years. First and foremost the data we are interested in are included in table form (which is good) but is is part of a pdf file (which is not good :)). Thankfully, <strong>tabulizer</strong> is the solution to this kind of problems.</p>
 </section><section id="load-packages" class="level2"><h2 class="anchored" data-anchor-id="load-packages">Load Packages</h2>
 <p>As I will extract tables from a pdf file, I will definitely need <strong>tabulizer</strong> package. Unfortunately, I was not able to install the specific package, as I was getting an error similar to this <a href="https://github.com/ropensci/tabulizer/issues/157">one</a>. This issue seems to be related to rJava package and <a href="https://github.com/s-u/rJava/issues/255#issuecomment-794473988">this comment</a> solved the issue. After installing rJava I was able to install successufully tabulizer as below:</p>
 <div class="cell">
@@ -98,9 +97,49 @@ font-style: inherit;">(</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;"><a href="https://wilkelab.org/ggtext/">ggtext</a></span><span class="op" style="color: #5E5E5E;
 background-color: null;
+font-style: inherit;">)</span></span>
+<span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;"><a href="https://github.com/yixuan/showtext">showtext</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span></span>
+<span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/pkg/sysfonts/man/font_add_google.html">font_add_google</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Lobster"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lobster"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/pkg/sysfonts/man/font_add_google.html">font_add_google</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Economica"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"economica"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/pkg/showtext/man/showtext_auto.html">showtext_auto</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
+background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </div>
 </section><section id="extract-data" class="level2"><h2 class="anchored" data-anchor-id="extract-data">Extract Data</h2>
+<p>My main source of data is the Department’s study guide. The most recent one (2022) has data on admissions, graduations etc., since 2004. It worths to note that there are irrelevant information that have to be elapsed beforehand.</p>
 <div class="cell">
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co" style="color: #5E5E5E;
 background-color: null;
@@ -177,6 +216,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 </section><section id="analysing-data" class="level2"><h2 class="anchored" data-anchor-id="analysing-data">Analysing Data</h2>
 <section id="admitted-students" class="level3"><h3 class="anchored" data-anchor-id="admitted-students">Admitted students</h3>
+<p>Data on admissions show an</p>
 <div class="cell">
 <div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
@@ -406,11 +446,11 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 <div class="cell-output-display">
 
-<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-ff9983c17cefe12e8a7d" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-ff9983c17cefe12e8a7d">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Year":["2003-2004","2003-2004","2003-2004","2003-2004","2003-2004","2004-2005","2004-2005","2004-2005","2004-2005","2004-2005","2005-2006","2005-2006","2005-2006","2005-2006","2005-2006","2006-2007","2006-2007","2006-2007","2006-2007","2006-2007","2007-2008","2007-2008","2007-2008","2007-2008","2007-2008","2008-2009","2008-2009","2008-2009","2008-2009","2008-2009","2009-2010","2009-2010","2009-2010","2009-2010","2009-2010","2010-2011","2010-2011","2010-2011","2010-2011","2010-2011","2011-2012","2011-2012","2011-2012","2011-2012","2011-2012","2012-2013","2012-2013","2012-2013","2012-2013","2012-2013","2013-2014","2013-2014","2013-2014","2013-2014","2013-2014","2014-2015","2014-2015","2014-2015","2014-2015","2014-2015","2015-2016","2015-2016","2015-2016","2015-2016","2015-2016","2016-2017","2016-2017","2016-2017","2016-2017","2016-2017","2017-2018","2017-2018","2017-2018","2017-2018","2017-2018","2018-2019","2018-2019","2018-2019","2018-2019","2018-2019","2019-2020","2019-2020","2019-2020","2019-2020","2019-2020","2020-2121","2020-2121","2020-2121","2020-2121","2020-2121","2021-2022","2021-2022","2021-2022","2021-2022","2021-2022","2022-2023","2022-2023","2022-2023","2022-2023","2022-2023"],"Admission_Type":["Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total"],"count":[183,15,1,17,216,181,21,1,16,219,186,11,1,16,214,186,27,1,9,223,185,38,2,18,243,170,44,1,12,253,170,60,0,14,244,175,47,4,24,250,198,0,0,3,201,206,14,2,15,237,205,20,2,48,275,219,48,1,4,272,212,29,1,4,246,212,30,4,0,246,209,41,1,1,252,189,11,1,5,206,228,55,2,7,292,234,-16,1,5,224,134,"NA","NA",1,133,168,"NA","NA",3,170]},"columns":[{"id":"Year","name":"Year","type":"character"},{"id":"Admission_Type","name":"Admission_Type","type":"character"},{"id":"count","name":"count","type":"numeric"}],"defaultPageSize":5,"dataKey":"013676f9c2d732827646d87a9d894ddf"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-65967ca33051b7c7df49" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-65967ca33051b7c7df49">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Year":["2003-2004","2003-2004","2003-2004","2003-2004","2003-2004","2004-2005","2004-2005","2004-2005","2004-2005","2004-2005","2005-2006","2005-2006","2005-2006","2005-2006","2005-2006","2006-2007","2006-2007","2006-2007","2006-2007","2006-2007","2007-2008","2007-2008","2007-2008","2007-2008","2007-2008","2008-2009","2008-2009","2008-2009","2008-2009","2008-2009","2009-2010","2009-2010","2009-2010","2009-2010","2009-2010","2010-2011","2010-2011","2010-2011","2010-2011","2010-2011","2011-2012","2011-2012","2011-2012","2011-2012","2011-2012","2012-2013","2012-2013","2012-2013","2012-2013","2012-2013","2013-2014","2013-2014","2013-2014","2013-2014","2013-2014","2014-2015","2014-2015","2014-2015","2014-2015","2014-2015","2015-2016","2015-2016","2015-2016","2015-2016","2015-2016","2016-2017","2016-2017","2016-2017","2016-2017","2016-2017","2017-2018","2017-2018","2017-2018","2017-2018","2017-2018","2018-2019","2018-2019","2018-2019","2018-2019","2018-2019","2019-2020","2019-2020","2019-2020","2019-2020","2019-2020","2020-2121","2020-2121","2020-2121","2020-2121","2020-2121","2021-2022","2021-2022","2021-2022","2021-2022","2021-2022","2022-2023","2022-2023","2022-2023","2022-2023","2022-2023"],"Admission_Type":["Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total"],"count":[183,15,1,17,216,181,21,1,16,219,186,11,1,16,214,186,27,1,9,223,185,38,2,18,243,170,44,1,12,253,170,60,0,14,244,175,47,4,24,250,198,0,0,3,201,206,14,2,15,237,205,20,2,48,275,219,48,1,4,272,212,29,1,4,246,212,30,4,0,246,209,41,1,1,252,189,11,1,5,206,228,55,2,7,292,234,-16,1,5,224,134,"NA","NA",1,133,168,"NA","NA",3,170]},"columns":[{"id":"Year","name":"Year","type":"character"},{"id":"Admission_Type","name":"Admission_Type","type":"character"},{"id":"count","name":"count","type":"numeric"}],"defaultPageSize":5,"dataKey":"013676f9c2d732827646d87a9d894ddf"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
-<div class="cell">
+<div class="cell" data-fig.showtext="true">
 <div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">admitted_students</span> <span class="op" style="color: #5E5E5E;
@@ -487,15 +527,6 @@ background-color: null;
 font-style: inherit;">+</span></span>
 <span>  <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span></span>
-<span>  <span class="fu" style="color: #4758AB;
-background-color: null;
 font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">(</span></span>
@@ -558,7 +589,7 @@ font-style: inherit;">(</span>family <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"serif"</span>, face<span class="op" style="color: #5E5E5E;
+font-style: inherit;">"lobster"</span>, face<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
@@ -575,7 +606,7 @@ font-style: inherit;">(</span>family <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"serif"</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">"economica"</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">)</span>,</span>
 <span>    plot.caption <span class="op" style="color: #5E5E5E;
@@ -588,7 +619,7 @@ font-style: inherit;">(</span>family <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"serif"</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">"economica"</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">)</span>,</span>
 <span>    axis.text.x <span class="op" style="color: #5E5E5E;
@@ -787,8 +818,8 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 <div class="cell-output-display">
 
-<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-0758d0faf55e97fd21ed" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-0758d0faf55e97fd21ed">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"AcademicYear":["2003-2004","2004-2005","2005-2006","2006-2007","2007-2008","2008-2009","2009-2010","2010-2011","2011-2012","2012-2013","2013-2014","2014-2015","2015-2016","2016-2017","2017-2018","2018-2019","2019-2020","2020-2021","2021-2022","2022-2023"],"BSc":[2135,2128,2225,2255,2360,2411,2429,2629,2528,2631,2707,2656,2742,2842,2953,3021,3091,3200,3159,3177],"MSc (AppliedStat)":[68,67,89,57,65,50,54,55,56,52,56,52,85,42,47,43,53,66,102,111],"MSc (Actuar)":["NA","NA","NA","NA",38,66,81,86,88,87,89,110,47,74,85,69,68,66,93,85],"PhD":[11,16,20,24,24,20,13,13,16,15,16,14,14,18,21,21,19,19,18,15],"pct":[0.52,0.75,0.9,1.06,1.02,0.83,0.54,0.49,0.63,0.57,0.59,0.53,0.51,0.63,0.71,0.7,0.61,0.59,0.57,0.47]},"columns":[{"id":"AcademicYear","name":"AcademicYear","type":"character"},{"id":"BSc","name":"BSc","type":"numeric"},{"id":"MSc (AppliedStat)","name":"MSc (AppliedStat)","type":"numeric"},{"id":"MSc (Actuar)","name":"MSc (Actuar)","type":"numeric"},{"id":"PhD","name":"PhD","type":"numeric"},{"id":"pct","name":"pct","type":"numeric"}],"defaultPageSize":5,"dataKey":"9e1a659e4b3bbf409916a76f20fe3050"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-e1e7c789fe7777b0597e" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-e1e7c789fe7777b0597e">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"AcademicYear":["2003-2004","2004-2005","2005-2006","2006-2007","2007-2008","2008-2009","2009-2010","2010-2011","2011-2012","2012-2013","2013-2014","2014-2015","2015-2016","2016-2017","2017-2018","2018-2019","2019-2020","2020-2021","2021-2022","2022-2023"],"BSc":[2135,2128,2225,2255,2360,2411,2429,2629,2528,2631,2707,2656,2742,2842,2953,3021,3091,3200,3159,3177],"MSc (AppliedStat)":[68,67,89,57,65,50,54,55,56,52,56,52,85,42,47,43,53,66,102,111],"MSc (Actuar)":["NA","NA","NA","NA",38,66,81,86,88,87,89,110,47,74,85,69,68,66,93,85],"PhD":[11,16,20,24,24,20,13,13,16,15,16,14,14,18,21,21,19,19,18,15],"pct":[0.52,0.75,0.9,1.06,1.02,0.83,0.54,0.49,0.63,0.57,0.59,0.53,0.51,0.63,0.71,0.7,0.61,0.59,0.57,0.47]},"columns":[{"id":"AcademicYear","name":"AcademicYear","type":"character"},{"id":"BSc","name":"BSc","type":"numeric"},{"id":"MSc (AppliedStat)","name":"MSc (AppliedStat)","type":"numeric"},{"id":"MSc (Actuar)","name":"MSc (Actuar)","type":"numeric"},{"id":"PhD","name":"PhD","type":"numeric"},{"id":"pct","name":"pct","type":"numeric"}],"defaultPageSize":5,"dataKey":"9e1a659e4b3bbf409916a76f20fe3050"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div class="cell">
@@ -1268,32 +1299,177 @@ font-style: inherit;"><a href="https://rdrr.io/r/stats/na.fail.html">na.omit</a>
 background-color: null;
 font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
 background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>Ratio <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">Graduated</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">Admitted</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">Year</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">Ratio</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">.</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">Year</span>, y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">Ratio</span>, group <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
+background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Expected 2 pieces. Missing pieces filled with `NA` in 21 rows [1, 3,
 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, ...].</code></pre>
 </div>
+<div class="cell-output-display">
+<p><img src="https://www.stesiam.github.io/english/2023-07-23-Graduates-of-Statistics/2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="graduation-grade" class="level2"><h2 class="anchored" data-anchor-id="graduation-grade">Graduation Grade</h2>
+<div class="cell">
+<div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">statistics_tables</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[[</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Year"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"[5.0 - 6)"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"[6, 7)"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"X3"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"("</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"AVG_Grade"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>        Year Admitted Graduated
-4  2003-2004       27        15
-6  2004-2005       28        26
-8  2005-2006       25        20
-10 2006-2007       25        34
-12 2007-2008       24        31
-14 2008-2009       20        42
-16 2009-2010       30        27
-18 2010-2011       20        17
-20 2011-2012       30        26
-22 2012-2013       18        19
-24 2013-2014       23        35
-26 2014-2015       20        29
-28 2015-2016       21        24
-30 2016-2017       20        22
-32 2017-2018       23        21
-34 2018-2019       22        20
-36 2019-2020       26        15
-38 2020-2021       32        18
-40 2021-2022       41        33</code></pre>
+<pre><code>          Year  [5.0 - 6)      [6, 7)         X3          (    AVG_Grade
+1         Έτος                                               Βαθμολογίας
+2               [5.0-6.0)   [6.0-7.0)  [7.0-8.5) [8.5-10.0]             
+3  Αποφοίτησης                                              (Σύνολο απο-
+4                                                                φοίτων)
+5    2003-2004 20,71 (29)     60 (84) 19,29 (27)   0,00 (0)   6,46 (140)
+6    2004-2005 16,89 (37) 62,10 (136) 21,00 (46)   0,00 (0)   6,54 (219)
+7    2005-2006 24,17 (29)  55,83 (67) 19,17 (23)   0,83 (1)   6,48 (120)
+8    2006-2007  6,13 (10) 72,39 (118) 19,63 (32)   1,84 (3)   6,51 (163)
+9    2007-2008 23,38 (36)  59,09 (91) 16,88 (26)   0,65 (1)   6,41 (154)
+10   2008-2009 24,68 (38)  61,69 (95) 12,99 (20)   0,64 (1)   6,39 (154)
+11   2009-2010 34,62 (54)  54,48 (85) 10,90 (17)   0,00 (0)   6,30 (156)
+12   2010-2011 25,16 (40)  57,86 (92) 16,35 (26)   0,63 (1)   6,40 (159)
+13   2011-2012 24,10 (40)  59,04 (98) 14,46 (24)   2,41 (4)   6,43 (166)
+14   2012-2013 25,13 (50) 63,32 (126) 10,05 (20)   1,51 (3)   6,36 (199)
+15   2013-2014 32,33(107) 56,19 (186)  9,67 (32)   1,81 (6)   6,33 (331)
+16   2014-2015 31,60 (67) 52,36 (111) 13,21 (28)   2,83 (6)   6,38 (212)
+17   2015-2016 30,89 (38)  51,22 (63) 17,07 (21)   0,81 (1)   6,36 (123)
+18   2016-2017 29,91 (35)  57,27 (67) 11,97 (14)   0,85 (1)   6,35 (117)
+19   2017-2018 28,57 (18)  60,32 (38)   6,35 (4)   4,76 (3)    6,39 (63)
+20   2018-2019 27,36 (58) 60,38 (128) 10,85 (23)   1,41 (3)   6,38 (212)
+21   2019-2020 28,18 (62) 57,73 (127) 14,09 (31)   0,00 (0)   6,39 (220)
+22   2020-2021 13,36 (33) 67,61 (167) 18,22 (45)   0,81 (2)   6,41 (247)
+23   2021-2022 10,50 (19) 65,75 (119) 21,55 (39)   2,20 (4)   6,65 (181)</code></pre>
 </div>
 </div>
 </section><div id="quarto-appendix" class="default"><section id="acknowledgements" class="level2 appendix unlisted"><h2 class="anchored quarto-appendix-heading">Acknowledgements</h2><div class="quarto-appendix-contents">
@@ -1312,6 +1488,15 @@ Lin, G. (2023). <em>Reactable: Interactive data tables for r</em>. Retrieved fro
 </div>
 <div id="ref-R-pdftools" class="csl-entry">
 Ooms, J. (2023). <em>Pdftools: Text extraction, rendering and converting of PDF documents</em>. Retrieved from <a href="https://CRAN.R-project.org/package=pdftools">https://CRAN.R-project.org/package=pdftools</a>
+</div>
+<div id="ref-R-showtextdb" class="csl-entry">
+Qiu, Y., &amp; See file AUTHORS for details., authors/contributors of the included fonts. (2020). <em>Showtextdb: Font files for the showtext package</em>. Retrieved from <a href="https://CRAN.R-project.org/package=showtextdb">https://CRAN.R-project.org/package=showtextdb</a>
+</div>
+<div id="ref-R-sysfonts" class="csl-entry">
+Qiu, Y., &amp; See file AUTHORS for details., authors/contributors of the included fonts. (2022a). <em>Sysfonts: Loading fonts into r</em>. Retrieved from <a href="https://github.com/yixuan/sysfonts">https://github.com/yixuan/sysfonts</a>
+</div>
+<div id="ref-R-showtext" class="csl-entry">
+Qiu, Y., &amp; See file AUTHORS for details., authors/contributors of the included software. (2022b). <em>Showtext: Using fonts more easily in r graphs</em>. Retrieved from <a href="https://github.com/yixuan/showtext">https://github.com/yixuan/showtext</a>
 </div>
 <div id="ref-R-base" class="csl-entry">
 R Core Team. (2021). <em>R: A language and environment for statistical computing</em>. Vienna, Austria: R Foundation for Statistical Computing. Retrieved from <a href="https://www.R-project.org/">https://www.R-project.org/</a>

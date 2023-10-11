@@ -27,6 +27,7 @@ format:
     code-summary: "Show the code"
     code-tools: 
       source: repo
+    fig_retina: 1
 execute:
   echo: true
 editor_options: 
@@ -41,10 +42,7 @@ here::here("english/2023-07-23-Graduates-of-Statistics")
 
 ## Introduction
 
-Statistics can be hard. This is 
-
-THe recent study guide includes data about the graduates and their average grade of graduation over the years. First and foremost the data we are interested in are included in table form (which is good) but is is part of a pdf file (which is not good :)). Thankfully, **tabulizer** is the solution to this kind of problems.
-
+The recent study guide includes data about the graduates and their average grade of graduation over the years. First and foremost the data we are interested in are included in table form (which is good) but is is part of a pdf file (which is not good :)). Thankfully, **tabulizer** is the solution to this kind of problems.
 
 
 ## Load Packages
@@ -67,6 +65,11 @@ library(reactable)
 
 library(ggplot2)
 library(ggtext)
+library(showtext)
+
+font_add_google("Lobster", "lobster")
+font_add_google("Economica", "economica")
+showtext_auto()
 ```
 
 
@@ -78,7 +81,7 @@ knitr::write_bib(.packages(), file = 'packages.bib')
 
 ## Extract Data
 
-
+My main source of data is the Department's study guide. The most recent one (2022) has data on admissions, graduations etc., since 2004. It worths to note that there are irrelevant information that have to be elapsed beforehand.
 
 ```{r}
 # url = "https://www.unipi.gr/faculty/mbouts/anak/OS_22_23.pdf"
@@ -103,6 +106,8 @@ statistics_tables <- extract_tables(
 ## Analysing Data
 
 ###  Admitted students
+
+Data on admissions show an 
 
 ```{r, warning=FALSE}
 admitted_students = statistics_tables[[1]] %>%
@@ -130,12 +135,11 @@ admitted_students %>%
 ```
 
 
-```{r}
+```{r, fig.showtext = TRUE}
 admitted_students %>%
   filter(Admission_Type %in% c("Main_exams", "Total")) %>%
   ggplot2::ggplot(., aes(x = Year, y = count, color = Admission_Type , group = Admission_Type)) +
   geom_line() +
-  geom_point() +
   labs(
     title = "Admitted students",
     subtitle = "Admitted students over the years (2003-2023) at Department of Statistics and Insurance Science of <br> University of Piraeus. A significant drop in admissions occured in 2021 which is maily caused by the <br> introduction of grade requirements to be admitted to specific departments.",
@@ -146,9 +150,9 @@ admitted_students %>%
   ) +
   theme_classic() +
   theme(
-    plot.title = element_markdown(family = "serif", face="bold"),
-    plot.subtitle = element_markdown(family = "serif"),
-    plot.caption = element_markdown(family = "serif"),
+    plot.title = element_markdown(family = "lobster", face="bold"),
+    plot.subtitle = element_markdown(family = "economica"),
+    plot.caption = element_markdown(family = "economica"),
     axis.text.x = element_text(face="bold", angle=90)
   )
 ```
