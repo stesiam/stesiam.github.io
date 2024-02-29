@@ -19,7 +19,7 @@ slug: stesiam2022
 title-block-banner: true
 nocite: '@*'
 csl: apa-6th-edition.csl
-bibliography: [packages.bib, references.bib]
+bibliography: [references.bib]
 format: 
   html:
     code-link: true
@@ -41,6 +41,8 @@ here::here("english/2023-07-23-Graduates-of-Statistics")
 
 
 ## Introduction
+
+**NOTE:** Frequent updates should be expected until this note be erased.
 
 The recent study guide includes data about the graduates and their average grade of graduation over the years. First and foremost the data we are interested in are included in table form (which is good) but is is part of a pdf file (which is not good :)). Thankfully, **tabulizer** is the solution to this kind of problems.
 
@@ -66,6 +68,7 @@ library(reactable)
 library(ggplot2)
 library(ggtext)
 library(showtext)
+library(glue)
 
 font_add_google("Lobster", "lobster")
 font_add_google("Economica", "economica")
@@ -81,7 +84,8 @@ knitr::write_bib(.packages(), file = 'packages.bib')
 
 ## Extract Data
 
-My main source of data is the Department's study guide. The most recent one (2022) has data on admissions, graduations etc., since 2004. It worths to note that there are irrelevant information that have to be elapsed beforehand.
+The study guide gives a general description of the university, as well as the prerequisites for a degree and a detailed description of each course. In total, the guide is a little bit less than 200 pages! Of course we don't need 
+My main source of data is the Department's study guide. The most recent one (2022) has data on admissions, graduations etc., since 2004. The study guide gives a general description of the university, as well as the prerequisites for a degree and a detailed description of each course. In total, the guide is a little bit less than 200 pages! Of course we don't need everything in there. I am just interested on the tables of the last pages, so I will extract those pages first from the original pdf.
 
 ```{r}
 # url = "https://www.unipi.gr/faculty/mbouts/anak/OS_22_23.pdf"
@@ -96,6 +100,16 @@ pdf_subset('sg22.pdf',
 
 ```
 
+So, we extracted the pages which we are interested in. Let's take a look at them:
+
+```{=html}
+<iframe width="100%" height="600" src="./subset.pdf">
+</iframe>
+```
+
+
+Thankfully, tabulizer comes with a very handy function to extract all the tables from a PDF file. Yeap, I know the original study guide is written in greek but don't worry that's just to take a basic understanding of how the pdf and the tables look. I will translate the column names when I will work with the data. But look at the bright side. At least we will get a notebook with ggplot2 visualizations as an alternative of those Excel graphs :)
+
 ```{r}
 statistics_tables <- extract_tables(
     file   = "subset.pdf", 
@@ -103,23 +117,47 @@ statistics_tables <- extract_tables(
     output = "data.frame")
 ```
 
-## Analysing Data
+Extracting the tables from splitted PDF I get a list of 5 tables with my data. It's amazing that in a matter of seconds I get all the information in a format ready for analysis. If I were to write them the traditional way (copy-paste) it would definitely take me an hour.
 
-###  Admitted students
 
-Data on admissions show an 
+##  Admitted students
+
+So, in Greece there is 1 standard way to be admitted to a university. Although there are 3 more ways which require some certain conditions. I will try to explain them as simple as possible. 
+
+### Main Exams
+
+Once a year, third-year high school students from all over Greece take exams on the same subjects at the same time. The exams are known as **Panhellenic Exams**. Until today, it's one of the few things in Greece that as its integrity is not disputed, as the papers of students are getting graded by teachers from other areas. However, it has also faced considerable criticism for the pressure it places on students. In my opinion a fair one as everything in your life is depending on these exams... If you fail you should wait to retake them next year.
+
+Typically the exams are being held between the second half of May and the first week of June. The students' grades are getting published approximately either the end of June or the first days of July. Then you are completing a list on which you are declare which departments you are interested to. On the end of July the minimum grades to be admitted for each department are announced. Those can fluctuate significantly every year as they are depending on both students' performance on the Exams and the difficulty of the exams.
+
+In a nutchell, the departments from big cities like Attica (Athens, Piraeus) and Thessaloniki have the biggest demand and so the minimum grades for those are higher from the rest ones. For example, the Statistics Department in Piraeus had a minimum grade of 11700 in 2019  (for simplicity consider it like 11.7/20). The corresponding department of Statistics in University of Aegean the same year had a minimum grade of 5100 (5.1/20) (yes, that's not a typo). Well there are many reasons behind that, as the continuance of austerity in Greece, but in general that's the pattern.
+
+Not so fun fact but when I made my list of preference for studies, Statistics in Piraeus was something like 15th place, so I guess my fate was that. Okay and a little bit of anxiety. :)
+
+### Transfer
+
+As I wrote earlier there are some exceptions. First of all the Admission by Transfer is referring to transfer your place in one department with one **similar-study** in other city. There are many criteria mainly based on your income. For example, a student admitted on Statistics on University of Aegean could be admitted on Statistics Department on Piraeus (i.e. in case his/her family hasn't enough income). 
+
+These seats are limited.
+
+### Entry Exams
+
+In case you have already graduated a Bachelor programme then you are able to give Entry Exams on your department of choice, instead of the nightmare of Panhellenic Exams.
 
 ```{r, warning=FALSE}
 admitted_students = statistics_tables[[1]] %>%
   .[-1,] %>%
   setNames(c("Year", "Main_exams", "Transfer", "Entry_exams", "Other", "Total"))
 
+
 admitted_students$Main_exams = admitted_students$Main_exams %>% as.integer()
 admitted_students$Transfer= admitted_students$Transfer %>% as.integer()
 admitted_students$Entry_exams = admitted_students$Entry_exams %>% as.integer()
 admitted_students$Other = admitted_students$Other %>% as.integer()
-
+admitted_students$Pct_Non_Main = (admitted_students$Main_exams/admitted_students$Total) %>% as.double()
 rownames(admitted_students) = 1:nrow(admitted_students)
+
+
 
 admitted_students = admitted_students %>% 
   pivot_longer(
@@ -128,40 +166,82 @@ admitted_students = admitted_students %>%
     values_to = "count"
   )
 
+admitted_students = admitted_students %>%
+  dplyr::filter(Admission_Type == "Pct_Non_Main" &
+                !(Year %in% c("2020-2121","2021-2022", "2022-2023"))) %>%
+  mutate(perc = round((1 - count)*100, digits = 2),
+         perc100 = 100-perc) %>%
+  dplyr::select(c(-Admission_Type, -count)) %>%
+  tidyr::pivot_longer(., cols = !Year,values_to = "Obs") %>%
+  dplyr::rename(
+    
+  )
+
 admitted_students %>%
   reactable(
     defaultPageSize = 5
   )
 ```
 
+I would like to examine the percentage of students who have been admitted by the other 3 ways over the years.
 
-```{r, fig.showtext = TRUE}
-admitted_students %>%
-  filter(Admission_Type %in% c("Main_exams", "Total")) %>%
-  ggplot2::ggplot(., aes(x = Year, y = count, color = Admission_Type , group = Admission_Type)) +
-  geom_line() +
+```{r fig.showtext = TRUE}
+ggplot(data = admitted_students, aes(x = "", y = Obs, fill = name)) +
+  geom_bar(stat="identity", width=1) +
+  facet_wrap(~Year) +
+  coord_polar("y", start=0) +
   labs(
-    title = "Admitted students",
-    subtitle = "Admitted students over the years (2003-2023) at Department of Statistics and Insurance Science of <br> University of Piraeus. A significant drop in admissions occured in 2021 which is maily caused by the <br> introduction of grade requirements to be admitted to specific departments.",
-    caption = "stesiam, 2023",
-    x = "Academic Year",
-    y = "Students",
-    color = "Type of Admission"
+    title = "Proportion of Admissions through Panhellenic Exams",
+    subtitle = glue("It seems that <span style = 'color:#619CFF; font-weight: bold'>Panhellenic Exams</span> is the prevalent way to be admitted to Statistics <br> Department. Although that was an expected result. It is interesting to study <br> the proportion over the years. The most extraordinary result is in 2011 when almost <br>  everyone came through Panhellenic Exams."),
+    caption = "**Data:** Study Guide of Statistics and Insurance Science <br> 
+    stesiam, 2023"
   ) +
-  theme_classic() +
+  theme_void() +
   theme(
+    legend.position = "none",
     plot.title = element_markdown(family = "lobster", face="bold"),
     plot.subtitle = element_markdown(family = "economica"),
-    plot.caption = element_markdown(family = "economica"),
-    axis.text.x = element_text(face="bold", angle=90)
+    plot.caption = element_markdown(family = "economica")
   )
 ```
 
-### Master Programmes
+
+```{r, fig.showtext = TRUE}
+# admitted_students %>%
+#   filter(Admission_Type %in% c("Main_exams", "Total")) %>%
+#   ggplot2::ggplot(., aes(x = Year, y = count, color = Admission_Type , group = Admission_Type)) +
+#   geom_line() +
+#   labs(
+#     title = "Admitted students",
+#     subtitle = "Admitted students over the years (2003-2023) at Department of Statistics and Insurance Science of <br> University of Piraeus. A significant drop in admissions occured in 2021 which is maily caused by the <br> introduction of grade requirements to be admitted to specific departments.",
+#     caption = "stesiam, 2023",
+#     x = "Academic Year",
+#     y = "Students",
+#     color = "Type of Admission"
+#   ) +
+#   theme_classic() +
+#   theme(
+#     plot.title = element_markdown(family = "lobster", face="bold"),
+#     plot.subtitle = element_markdown(family = "economica"),
+#     plot.caption = element_markdown(family = "economica"),
+#     axis.text.x = element_text(face="bold", angle=90)
+#   )
+```
 
 
 
-Department of Statistics and Isurance Science has 2 master programs 
+## Master Programmes
+
+Our department has two Master options. 
+
+- Applied Statistics
+- Actuarial Science and Risk Management
+
+```{r}
+statistics_tables[[1]]
+```
+
+
 
 ```{r}
 msc_students = statistics_tables[[2]] %>%
@@ -221,7 +301,7 @@ ggplot(tidy_students, aes(x = AcademicYear, y = count, fill = name)) +
   )
 ```
 
-## MSc Students
+## Master Students
 
 ```{r}
 statistics_tables[[3]] %>%
@@ -240,6 +320,8 @@ statistics_tables[[3]] %>%
 
 
 ## Graduation Grade
+
+I hope you are still here because for the end I hold the best part. Finally, how did we perform? The study guide gives a distribution 
 
 ```{r}
 statistics_tables[[4]] %>%

@@ -54,26 +54,7 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
@@ -222,13 +203,15 @@ div.csl-indent {
   <li><a href="#load-packages" id="toc-load-packages" class="nav-link" data-scroll-target="#load-packages">Load Packages</a></li>
   <li><a href="#extract-data" id="toc-extract-data" class="nav-link" data-scroll-target="#extract-data">Extract Data</a></li>
   <li>
-<a href="#analysing-data" id="toc-analysing-data" class="nav-link" data-scroll-target="#analysing-data">Analysing Data</a>
+<a href="#admitted-students" id="toc-admitted-students" class="nav-link" data-scroll-target="#admitted-students">Admitted students</a>
   <ul class="collapse">
-<li><a href="#admitted-students" id="toc-admitted-students" class="nav-link" data-scroll-target="#admitted-students">Admitted students</a></li>
-  <li><a href="#master-programmes" id="toc-master-programmes" class="nav-link" data-scroll-target="#master-programmes">Master Programmes</a></li>
+<li><a href="#main-exams" id="toc-main-exams" class="nav-link" data-scroll-target="#main-exams">Main Exams</a></li>
+  <li><a href="#transfer" id="toc-transfer" class="nav-link" data-scroll-target="#transfer">Transfer</a></li>
+  <li><a href="#entry-exams" id="toc-entry-exams" class="nav-link" data-scroll-target="#entry-exams">Entry Exams</a></li>
   </ul>
 </li>
-  <li><a href="#msc-students" id="toc-msc-students" class="nav-link" data-scroll-target="#msc-students">MSc Students</a></li>
+  <li><a href="#master-programmes" id="toc-master-programmes" class="nav-link" data-scroll-target="#master-programmes">Master Programmes</a></li>
+  <li><a href="#master-students" id="toc-master-students" class="nav-link" data-scroll-target="#master-students">Master Students</a></li>
   <li><a href="#graduation-grade" id="toc-graduation-grade" class="nav-link" data-scroll-target="#graduation-grade">Graduation Grade</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/stesiam/stesiam.github.io/edit/main/english/2023-07-23-Graduates-of-Statistics/2023-07-23-Graduates-of-Statistics.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/stesiam/stesiam.github.io/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
 </nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
@@ -237,6 +220,7 @@ div.csl-indent {
     </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content"><section id="introduction" class="level2"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p><strong>NOTE:</strong> Frequent updates should be expected until this note be erased.</p>
 <p>The recent study guide includes data about the graduates and their average grade of graduation over the years. First and foremost the data we are interested in are included in table form (which is good) but is is part of a pdf file (which is not good :)). Thankfully, <strong>tabulizer</strong> is the solution to this kind of problems.</p>
 </section><section id="load-packages" class="level2"><h2 class="anchored" data-anchor-id="load-packages">Load Packages</h2>
 <p>As I will extract tables from a pdf file, I will definitely need <strong>tabulizer</strong> package. Unfortunately, I was not able to install the specific package, as I was getting an error similar to this <a href="https://github.com/ropensci/tabulizer/issues/157">one</a>. This issue seems to be related to rJava package and <a href="https://github.com/s-u/rJava/issues/255#issuecomment-794473988">this comment</a> solved the issue. After installing rJava I was able to install successufully tabulizer as below:</p>
@@ -254,13 +238,14 @@ div.csl-indent {
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://wilkelab.org/ggtext/">ggtext</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/yixuan/showtext">showtext</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidyverse/glue">glue</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/sysfonts/man/font_add_google.html">font_add_google</a></span><span class="op">(</span><span class="st">"Lobster"</span>, <span class="st">"lobster"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/sysfonts/man/font_add_google.html">font_add_google</a></span><span class="op">(</span><span class="st">"Economica"</span>, <span class="st">"economica"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/showtext/man/showtext_auto.html">showtext_auto</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section><section id="extract-data" class="level2"><h2 class="anchored" data-anchor-id="extract-data">Extract Data</h2>
-<p>My main source of data is the Department’s study guide. The most recent one (2022) has data on admissions, graduations etc., since 2004. It worths to note that there are irrelevant information that have to be elapsed beforehand.</p>
+<p>The study guide gives a general description of the university, as well as the prerequisites for a degree and a detailed description of each course. In total, the guide is a little bit less than 200 pages! Of course we don’t need My main source of data is the Department’s study guide. The most recent one (2022) has data on admissions, graduations etc., since 2004. The study guide gives a general description of the university, as well as the prerequisites for a degree and a detailed description of each course. In total, the guide is a little bit less than 200 pages! Of course we don’t need everything in there. I am just interested on the tables of the last pages, so I will extract those pages first from the original pdf.</p>
 <div class="cell">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># url = "https://www.unipi.gr/faculty/mbouts/anak/OS_22_23.pdf"</span></span>
 <span><span class="co"># </span></span>
@@ -272,29 +257,46 @@ div.csl-indent {
 <span><span class="fu"><a href="https://docs.ropensci.org/qpdf/reference/qpdf.html">pdf_subset</a></span><span class="op">(</span><span class="st">'sg22.pdf'</span>,</span>
 <span>  pages <span class="op">=</span> <span class="fl">186</span><span class="op">:</span><span class="fl">190</span>,  output <span class="op">=</span> <span class="st">"subset.pdf"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "/home/stelios/Desktop/stesiam/english/2023-07-23-Graduates-of-Statistics/subset.pdf"</code></pre>
+<pre><code>[1] "/home/stelios/stesiam.github.io/english/2023-07-23-Graduates-of-Statistics/subset.pdf"</code></pre>
 </div>
 </div>
+<p>So, we extracted the pages which we are interested in. Let’s take a look at them:</p>
+<iframe width="100%" height="600" src="./subset.pdf">
+</iframe>
+<p>Thankfully, tabulizer comes with a very handy function to extract all the tables from a PDF file. Yeap, I know the original study guide is written in greek but don’t worry that’s just to take a basic understanding of how the pdf and the tables look. I will translate the column names when I will work with the data. But look at the bright side. At least we will get a notebook with ggplot2 visualizations as an alternative of those Excel graphs :)</p>
 <div class="cell">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">statistics_tables</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/tabulizer/reference/extract_tables.html">extract_tables</a></span><span class="op">(</span></span>
 <span>    file   <span class="op">=</span> <span class="st">"subset.pdf"</span>, </span>
 <span>    method <span class="op">=</span> <span class="st">"decide"</span>, </span>
 <span>    output <span class="op">=</span> <span class="st">"data.frame"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section><section id="analysing-data" class="level2"><h2 class="anchored" data-anchor-id="analysing-data">Analysing Data</h2>
-<section id="admitted-students" class="level3"><h3 class="anchored" data-anchor-id="admitted-students">Admitted students</h3>
-<p>Data on admissions show an</p>
+<p>Extracting the tables from splitted PDF I get a list of 5 tables with my data. It’s amazing that in a matter of seconds I get all the information in a format ready for analysis. If I were to write them the traditional way (copy-paste) it would definitely take me an hour.</p>
+</section><section id="admitted-students" class="level2"><h2 class="anchored" data-anchor-id="admitted-students">Admitted students</h2>
+<p>So, in Greece there is 1 standard way to be admitted to a university. Although there are 3 more ways which require some certain conditions. I will try to explain them as simple as possible.</p>
+<section id="main-exams" class="level3"><h3 class="anchored" data-anchor-id="main-exams">Main Exams</h3>
+<p>Once a year, third-year high school students from all over Greece take exams on the same subjects at the same time. The exams are known as <strong>Panhellenic Exams</strong>. Until today, it’s one of the few things in Greece that as its integrity is not disputed, as the papers of students are getting graded by teachers from other areas. However, it has also faced considerable criticism for the pressure it places on students. In my opinion a fair one as everything in your life is depending on these exams… If you fail you should wait to retake them next year.</p>
+<p>Typically the exams are being held between the second half of May and the first week of June. The students’ grades are getting published approximately either the end of June or the first days of July. Then you are completing a list on which you are declare which departments you are interested to. On the end of July the minimum grades to be admitted for each department are announced. Those can fluctuate significantly every year as they are depending on both students’ performance on the Exams and the difficulty of the exams.</p>
+<p>In a nutchell, the departments from big cities like Attica (Athens, Piraeus) and Thessaloniki have the biggest demand and so the minimum grades for those are higher from the rest ones. For example, the Statistics Department in Piraeus had a minimum grade of 11700 in 2019 (for simplicity consider it like 11.7/20). The corresponding department of Statistics in University of Aegean the same year had a minimum grade of 5100 (5.1/20) (yes, that’s not a typo). Well there are many reasons behind that, as the continuance of austerity in Greece, but in general that’s the pattern.</p>
+<p>Not so fun fact but when I made my list of preference for studies, Statistics in Piraeus was something like 15th place, so I guess my fate was that. Okay and a little bit of anxiety. :)</p>
+</section><section id="transfer" class="level3"><h3 class="anchored" data-anchor-id="transfer">Transfer</h3>
+<p>As I wrote earlier there are some exceptions. First of all the Admission by Transfer is referring to transfer your place in one department with one <strong>similar-study</strong> in other city. There are many criteria mainly based on your income. For example, a student admitted on Statistics on University of Aegean could be admitted on Statistics Department on Piraeus (i.e.&nbsp;in case his/her family hasn’t enough income).</p>
+<p>These seats are limited.</p>
+</section><section id="entry-exams" class="level3"><h3 class="anchored" data-anchor-id="entry-exams">Entry Exams</h3>
+<p>In case you have already graduated a Bachelor programme then you are able to give Entry Exams on your department of choice, instead of the nightmare of Panhellenic Exams.</p>
 <div class="cell">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">admitted_students</span> <span class="op">=</span> <span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="va">.</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span>,<span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"Main_exams"</span>, <span class="st">"Transfer"</span>, <span class="st">"Entry_exams"</span>, <span class="st">"Other"</span>, <span class="st">"Total"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
+<span></span>
 <span><span class="va">admitted_students</span><span class="op">$</span><span class="va">Main_exams</span> <span class="op">=</span> <span class="va">admitted_students</span><span class="op">$</span><span class="va">Main_exams</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">admitted_students</span><span class="op">$</span><span class="va">Transfer</span><span class="op">=</span> <span class="va">admitted_students</span><span class="op">$</span><span class="va">Transfer</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">admitted_students</span><span class="op">$</span><span class="va">Entry_exams</span> <span class="op">=</span> <span class="va">admitted_students</span><span class="op">$</span><span class="va">Entry_exams</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">admitted_students</span><span class="op">$</span><span class="va">Other</span> <span class="op">=</span> <span class="va">admitted_students</span><span class="op">$</span><span class="va">Other</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
+<span><span class="va">admitted_students</span><span class="op">$</span><span class="va">Pct_Non_Main</span> <span class="op">=</span> <span class="op">(</span><span class="va">admitted_students</span><span class="op">$</span><span class="va">Main_exams</span><span class="op">/</span><span class="va">admitted_students</span><span class="op">$</span><span class="va">Total</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/double.html">as.double</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">admitted_students</span><span class="op">)</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">admitted_students</span><span class="op">)</span></span>
+<span></span>
+<span></span>
 <span></span>
 <span><span class="va">admitted_students</span> <span class="op">=</span> <span class="va">admitted_students</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span></span>
@@ -303,44 +305,106 @@ div.csl-indent {
 <span>    values_to <span class="op">=</span> <span class="st">"count"</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
+<span><span class="va">admitted_students</span> <span class="op">=</span> <span class="va">admitted_students</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Admission_Type</span> <span class="op">==</span> <span class="st">"Pct_Non_Main"</span> <span class="op">&amp;</span></span>
+<span>                <span class="op">!</span><span class="op">(</span><span class="va">Year</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"2020-2121"</span>,<span class="st">"2021-2022"</span>, <span class="st">"2022-2023"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>perc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">count</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span>
+<span>         perc100 <span class="op">=</span> <span class="fl">100</span><span class="op">-</span><span class="va">perc</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="va">Admission_Type</span>, <span class="op">-</span><span class="va">count</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="va">.</span>, cols <span class="op">=</span> <span class="op">!</span><span class="va">Year</span>,values_to <span class="op">=</span> <span class="st">"Obs"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span></span>
+<span>    </span>
+<span>  <span class="op">)</span></span>
+<span></span>
 <span><span class="va">admitted_students</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://glin.github.io/reactable/reference/reactable.html">reactable</a></span><span class="op">(</span></span>
 <span>    defaultPageSize <span class="op">=</span> <span class="fl">5</span></span>
 <span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
-<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-65967ca33051b7c7df49" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-65967ca33051b7c7df49">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Year":["2003-2004","2003-2004","2003-2004","2003-2004","2003-2004","2004-2005","2004-2005","2004-2005","2004-2005","2004-2005","2005-2006","2005-2006","2005-2006","2005-2006","2005-2006","2006-2007","2006-2007","2006-2007","2006-2007","2006-2007","2007-2008","2007-2008","2007-2008","2007-2008","2007-2008","2008-2009","2008-2009","2008-2009","2008-2009","2008-2009","2009-2010","2009-2010","2009-2010","2009-2010","2009-2010","2010-2011","2010-2011","2010-2011","2010-2011","2010-2011","2011-2012","2011-2012","2011-2012","2011-2012","2011-2012","2012-2013","2012-2013","2012-2013","2012-2013","2012-2013","2013-2014","2013-2014","2013-2014","2013-2014","2013-2014","2014-2015","2014-2015","2014-2015","2014-2015","2014-2015","2015-2016","2015-2016","2015-2016","2015-2016","2015-2016","2016-2017","2016-2017","2016-2017","2016-2017","2016-2017","2017-2018","2017-2018","2017-2018","2017-2018","2017-2018","2018-2019","2018-2019","2018-2019","2018-2019","2018-2019","2019-2020","2019-2020","2019-2020","2019-2020","2019-2020","2020-2121","2020-2121","2020-2121","2020-2121","2020-2121","2021-2022","2021-2022","2021-2022","2021-2022","2021-2022","2022-2023","2022-2023","2022-2023","2022-2023","2022-2023"],"Admission_Type":["Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total","Main_exams","Transfer","Entry_exams","Other","Total"],"count":[183,15,1,17,216,181,21,1,16,219,186,11,1,16,214,186,27,1,9,223,185,38,2,18,243,170,44,1,12,253,170,60,0,14,244,175,47,4,24,250,198,0,0,3,201,206,14,2,15,237,205,20,2,48,275,219,48,1,4,272,212,29,1,4,246,212,30,4,0,246,209,41,1,1,252,189,11,1,5,206,228,55,2,7,292,234,-16,1,5,224,134,"NA","NA",1,133,168,"NA","NA",3,170]},"columns":[{"id":"Year","name":"Year","type":"character"},{"id":"Admission_Type","name":"Admission_Type","type":"character"},{"id":"count","name":"count","type":"numeric"}],"defaultPageSize":5,"dataKey":"013676f9c2d732827646d87a9d894ddf"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-6aad1becee9aeb196bd8" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-6aad1becee9aeb196bd8">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Year":["2003-2004","2003-2004","2004-2005","2004-2005","2005-2006","2005-2006","2006-2007","2006-2007","2007-2008","2007-2008","2008-2009","2008-2009","2009-2010","2009-2010","2010-2011","2010-2011","2011-2012","2011-2012","2012-2013","2012-2013","2013-2014","2013-2014","2014-2015","2014-2015","2015-2016","2015-2016","2016-2017","2016-2017","2017-2018","2017-2018","2018-2019","2018-2019","2019-2020","2019-2020"],"name":["perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100"],"Obs":[15.28,84.72,17.35,82.65,13.08,86.92,16.59,83.41,23.87,76.13,32.81,67.19,30.33,69.67,30,70,1.49,98.51,13.08,86.92,25.45,74.55,19.49,80.51,13.82,86.18,13.82,86.18,17.06,82.94,8.25,91.75,21.92,78.08]},"columns":[{"id":"Year","name":"Year","type":"character"},{"id":"name","name":"name","type":"character"},{"id":"Obs","name":"Obs","type":"numeric"}],"defaultPageSize":5,"dataKey":"d6ba351c17767cb1a57b17b789785898"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
+<p>I would like to examine the percentage of students who have been admitted by the other 3 ways over the years.</p>
 <div class="cell" data-fig.showtext="true">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">admitted_students</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Admission_Type</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Main_exams"</span>, <span class="st">"Total"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">.</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Year</span>, y <span class="op">=</span> <span class="va">count</span>, color <span class="op">=</span> <span class="va">Admission_Type</span> , group <span class="op">=</span> <span class="va">Admission_Type</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">admitted_students</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">""</span>, y <span class="op">=</span> <span class="va">Obs</span>, fill <span class="op">=</span> <span class="va">name</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>stat<span class="op">=</span><span class="st">"identity"</span>, width<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">Year</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_polar.html">coord_polar</a></span><span class="op">(</span><span class="st">"y"</span>, start<span class="op">=</span><span class="fl">0</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
-<span>    title <span class="op">=</span> <span class="st">"Admitted students"</span>,</span>
-<span>    subtitle <span class="op">=</span> <span class="st">"Admitted students over the years (2003-2023) at Department of Statistics and Insurance Science of &lt;br&gt; University of Piraeus. A significant drop in admissions occured in 2021 which is maily caused by the &lt;br&gt; introduction of grade requirements to be admitted to specific departments."</span>,</span>
-<span>    caption <span class="op">=</span> <span class="st">"stesiam, 2023"</span>,</span>
-<span>    x <span class="op">=</span> <span class="st">"Academic Year"</span>,</span>
-<span>    y <span class="op">=</span> <span class="st">"Students"</span>,</span>
-<span>    color <span class="op">=</span> <span class="st">"Type of Admission"</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Proportion of Admissions through Panhellenic Exams"</span>,</span>
+<span>    subtitle <span class="op">=</span> <span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html">glue</a></span><span class="op">(</span><span class="st">"It seems that &lt;span style = 'color:#619CFF; font-weight: bold'&gt;Panhellenic Exams&lt;/span&gt; is the prevalent way to be admitted to Statistics &lt;br&gt; Department. Although that was an expected result. It is interesting to study &lt;br&gt; the proportion over the years. The most extraordinary result is in 2011 when almost &lt;br&gt;  everyone came through Panhellenic Exams."</span><span class="op">)</span>,</span>
+<span>    caption <span class="op">=</span> <span class="st">"**Data:** Study Guide of Statistics and Insurance Science &lt;br&gt; </span></span>
+<span><span class="st">    stesiam, 2023"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span></span>
+<span>    legend.position <span class="op">=</span> <span class="st">"none"</span>,</span>
 <span>    plot.title <span class="op">=</span> <span class="fu"><a href="https://wilkelab.org/ggtext/reference/element_markdown.html">element_markdown</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"lobster"</span>, face<span class="op">=</span><span class="st">"bold"</span><span class="op">)</span>,</span>
 <span>    plot.subtitle <span class="op">=</span> <span class="fu"><a href="https://wilkelab.org/ggtext/reference/element_markdown.html">element_markdown</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"economica"</span><span class="op">)</span>,</span>
-<span>    plot.caption <span class="op">=</span> <span class="fu"><a href="https://wilkelab.org/ggtext/reference/element_markdown.html">element_markdown</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"economica"</span><span class="op">)</span>,</span>
-<span>    axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>face<span class="op">=</span><span class="st">"bold"</span>, angle<span class="op">=</span><span class="fl">90</span><span class="op">)</span></span>
+<span>    plot.caption <span class="op">=</span> <span class="fu"><a href="https://wilkelab.org/ggtext/reference/element_markdown.html">element_markdown</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"economica"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-</section><section id="master-programmes" class="level3"><h3 class="anchored" data-anchor-id="master-programmes">Master Programmes</h3>
-<p>Department of Statistics and Isurance Science has 2 master programs</p>
+<div class="cell" data-fig.showtext="true">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># admitted_students %&gt;%</span></span>
+<span><span class="co">#   filter(Admission_Type %in% c("Main_exams", "Total")) %&gt;%</span></span>
+<span><span class="co">#   ggplot2::ggplot(., aes(x = Year, y = count, color = Admission_Type , group = Admission_Type)) +</span></span>
+<span><span class="co">#   geom_line() +</span></span>
+<span><span class="co">#   labs(</span></span>
+<span><span class="co">#     title = "Admitted students",</span></span>
+<span><span class="co">#     subtitle = "Admitted students over the years (2003-2023) at Department of Statistics and Insurance Science of &lt;br&gt; University of Piraeus. A significant drop in admissions occured in 2021 which is maily caused by the &lt;br&gt; introduction of grade requirements to be admitted to specific departments.",</span></span>
+<span><span class="co">#     caption = "stesiam, 2023",</span></span>
+<span><span class="co">#     x = "Academic Year",</span></span>
+<span><span class="co">#     y = "Students",</span></span>
+<span><span class="co">#     color = "Type of Admission"</span></span>
+<span><span class="co">#   ) +</span></span>
+<span><span class="co">#   theme_classic() +</span></span>
+<span><span class="co">#   theme(</span></span>
+<span><span class="co">#     plot.title = element_markdown(family = "lobster", face="bold"),</span></span>
+<span><span class="co">#     plot.subtitle = element_markdown(family = "economica"),</span></span>
+<span><span class="co">#     plot.caption = element_markdown(family = "economica"),</span></span>
+<span><span class="co">#     axis.text.x = element_text(face="bold", angle=90)</span></span>
+<span><span class="co">#   )</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section></section><section id="master-programmes" class="level2"><h2 class="anchored" data-anchor-id="master-programmes">Master Programmes</h2>
+<p>Our department has two Master options.</p>
+<ul>
+<li>Applied Statistics</li>
+<li>Actuarial Science and Risk Management</li>
+</ul>
 <div class="cell">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">msc_students</span> <span class="op">=</span> <span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           X Εισαγωγικές Μετεγγραφές Κατατακτήριες      Άλλες Σύνολο
+1              εξετάσεις                           κατηγορίες     NA
+2  2003-2004         183          15             1         17    216
+3  2004-2005         181          21             1         16    219
+4  2005-2006         186          11             1         16    214
+5  2006-2007         186          27             1          9    223
+6  2007-2008         185          38             2         18    243
+7  2008-2009         170          44             1         12    253
+8  2009-2010         170          60             0         14    244
+9  2010-2011         175          47             4         24    250
+10 2011-2012         198           0             0          3    201
+11 2012-2013         206          14             2         15    237
+12 2013-2014         205          20             2         48    275
+13 2014-2015         219          48             1          4    272
+14 2015-2016         212          29             1          4    246
+15 2016-2017         212          30             4          0    246
+16 2017-2018         209          41             1          1    252
+17 2018-2019         189          11             1          5    206
+18 2019-2020         228          55             2          7    292
+19 2020-2121         234         -16             1          5    224
+20 2021-2022         134         -2*             -          1    133
+21 2022-2023         168         -1*            **          3    170</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">msc_students</span> <span class="op">=</span> <span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"AcademicYear"</span>, <span class="st">"BSc"</span>, <span class="st">"MSc (AppliedStat)"</span>, <span class="st">"MSc (Actuar)"</span>, <span class="st">"PhD"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="va">.</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span>,<span class="op">]</span></span>
 <span></span>
@@ -355,18 +419,18 @@ div.csl-indent {
 Caused by warning:
 ! NAs introduced by coercion</code></pre>
 </div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">msc_students</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">msc_students</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://glin.github.io/reactable/reference/reactable.html">reactable</a></span><span class="op">(</span></span>
 <span>    defaultPageSize <span class="op">=</span> <span class="fl">5</span></span>
 <span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
-<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-e1e7c789fe7777b0597e" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-e1e7c789fe7777b0597e">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"AcademicYear":["2003-2004","2004-2005","2005-2006","2006-2007","2007-2008","2008-2009","2009-2010","2010-2011","2011-2012","2012-2013","2013-2014","2014-2015","2015-2016","2016-2017","2017-2018","2018-2019","2019-2020","2020-2021","2021-2022","2022-2023"],"BSc":[2135,2128,2225,2255,2360,2411,2429,2629,2528,2631,2707,2656,2742,2842,2953,3021,3091,3200,3159,3177],"MSc (AppliedStat)":[68,67,89,57,65,50,54,55,56,52,56,52,85,42,47,43,53,66,102,111],"MSc (Actuar)":["NA","NA","NA","NA",38,66,81,86,88,87,89,110,47,74,85,69,68,66,93,85],"PhD":[11,16,20,24,24,20,13,13,16,15,16,14,14,18,21,21,19,19,18,15],"pct":[0.52,0.75,0.9,1.06,1.02,0.83,0.54,0.49,0.63,0.57,0.59,0.53,0.51,0.63,0.71,0.7,0.61,0.59,0.57,0.47]},"columns":[{"id":"AcademicYear","name":"AcademicYear","type":"character"},{"id":"BSc","name":"BSc","type":"numeric"},{"id":"MSc (AppliedStat)","name":"MSc (AppliedStat)","type":"numeric"},{"id":"MSc (Actuar)","name":"MSc (Actuar)","type":"numeric"},{"id":"PhD","name":"PhD","type":"numeric"},{"id":"pct","name":"pct","type":"numeric"}],"defaultPageSize":5,"dataKey":"9e1a659e4b3bbf409916a76f20fe3050"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-1266e1a2a5293c928682" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-1266e1a2a5293c928682">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"AcademicYear":["2003-2004","2004-2005","2005-2006","2006-2007","2007-2008","2008-2009","2009-2010","2010-2011","2011-2012","2012-2013","2013-2014","2014-2015","2015-2016","2016-2017","2017-2018","2018-2019","2019-2020","2020-2021","2021-2022","2022-2023"],"BSc":[2135,2128,2225,2255,2360,2411,2429,2629,2528,2631,2707,2656,2742,2842,2953,3021,3091,3200,3159,3177],"MSc (AppliedStat)":[68,67,89,57,65,50,54,55,56,52,56,52,85,42,47,43,53,66,102,111],"MSc (Actuar)":["NA","NA","NA","NA",38,66,81,86,88,87,89,110,47,74,85,69,68,66,93,85],"PhD":[11,16,20,24,24,20,13,13,16,15,16,14,14,18,21,21,19,19,18,15],"pct":[0.52,0.75,0.9,1.06,1.02,0.83,0.54,0.49,0.63,0.57,0.59,0.53,0.51,0.63,0.71,0.7,0.61,0.59,0.57,0.47]},"columns":[{"id":"AcademicYear","name":"AcademicYear","type":"character"},{"id":"BSc","name":"BSc","type":"numeric"},{"id":"MSc (AppliedStat)","name":"MSc (AppliedStat)","type":"numeric"},{"id":"MSc (Actuar)","name":"MSc (Actuar)","type":"numeric"},{"id":"PhD","name":"PhD","type":"numeric"},{"id":"pct","name":"pct","type":"numeric"}],"defaultPageSize":5,"dataKey":"9e1a659e4b3bbf409916a76f20fe3050"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">msc_students</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">AcademicYear</span>, y <span class="op">=</span> <span class="va">pct</span>, group <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">msc_students</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">AcademicYear</span>, y <span class="op">=</span> <span class="va">pct</span>, group <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Ratio of PhD students/ Undergraduates"</span>,</span>
@@ -381,11 +445,11 @@ Caused by warning:
 <span>    axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>face<span class="op">=</span><span class="st">"bold"</span>, angle<span class="op">=</span><span class="fl">90</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+<p><img src="2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tidy_students</span> <span class="op">=</span> <span class="va">msc_students</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tidy_students</span> <span class="op">=</span> <span class="va">msc_students</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">!</span><span class="va">pct</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="va">.</span>, cols <span class="op">=</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">AcademicYear</span><span class="op">)</span>, values_to <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span></span>
 <span></span>
@@ -410,12 +474,12 @@ Caused by warning:
 <pre><code>Warning: Removed 4 rows containing missing values (position_stack).</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+<p><img src="2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-</section></section><section id="msc-students" class="level2"><h2 class="anchored" data-anchor-id="msc-students">MSc Students</h2>
+</section><section id="master-students" class="level2"><h2 class="anchored" data-anchor-id="master-students">Master Students</h2>
 <div class="cell">
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"S"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="va">.</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,<span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -431,12 +495,13 @@ Caused by warning:
 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, ...].</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+<p><img src="2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section><section id="graduation-grade" class="level2"><h2 class="anchored" data-anchor-id="graduation-grade">Graduation Grade</h2>
+<p>I hope you are still here because for the end I hold the best part. Finally, how did we perform? The study guide gives a distribution</p>
 <div class="cell">
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"[5.0 - 6)"</span>, <span class="st">"[6, 7)"</span>, <span class="st">"X3"</span>, <span class="st">"("</span>, <span class="st">"AVG_Grade"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          Year  [5.0 - 6)      [6, 7)         X3          (    AVG_Grade
@@ -468,50 +533,9 @@ Caused by warning:
 </section><div id="quarto-appendix" class="default"><section id="acknowledgements" class="level2 appendix unlisted"><h2 class="anchored quarto-appendix-heading">Acknowledgements</h2><div class="quarto-appendix-contents">
 <p>Dataset based on recent study guide <a href="https://www.unipi.gr/faculty/mbouts/anak/OS_22_23.pdf">recent study guide</a> of Department of Statistics and Insurance Science of the University of Piraeus.</p>
 <p>Image by <a href="https://pixabay.com/users/vloveland-4834409/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2148715">Victoria Loveland</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2148715">Pixabay</a></p>
-</div></section><section id="references" class="level2 appendix unlisted"><h2 class="quarto-appendix-heading"></h2><div class="quarto-appendix-contents">
+</div></section><section id="references" class="level2 appendix unlisted"><h2 class="anchored quarto-appendix-heading">References</h2><div class="quarto-appendix-contents">
 
 
-
-</div></section><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
-<div id="ref-R-tabulizer" class="csl-entry" role="listitem">
-Leeper, T. J., Vargas, M., &amp; Paskhalis, T. (2023). <em>Tabulizer: Bindings for tabula PDF table extractor library</em>.
-</div>
-<div id="ref-R-reactable" class="csl-entry" role="listitem">
-Lin, G. (2023). <em>Reactable: Interactive data tables for r</em>. Retrieved from <a href="https://CRAN.R-project.org/package=reactable">https://CRAN.R-project.org/package=reactable</a>
-</div>
-<div id="ref-R-pdftools" class="csl-entry" role="listitem">
-Ooms, J. (2023). <em>Pdftools: Text extraction, rendering and converting of PDF documents</em>. Retrieved from <a href="https://CRAN.R-project.org/package=pdftools">https://CRAN.R-project.org/package=pdftools</a>
-</div>
-<div id="ref-R-showtextdb" class="csl-entry" role="listitem">
-Qiu, Y., &amp; See file AUTHORS for details., authors/contributors of the included fonts. (2020). <em>Showtextdb: Font files for the showtext package</em>. Retrieved from <a href="https://CRAN.R-project.org/package=showtextdb">https://CRAN.R-project.org/package=showtextdb</a>
-</div>
-<div id="ref-R-sysfonts" class="csl-entry" role="listitem">
-Qiu, Y., &amp; See file AUTHORS for details., authors/contributors of the included fonts. (2022a). <em>Sysfonts: Loading fonts into r</em>. Retrieved from <a href="https://github.com/yixuan/sysfonts">https://github.com/yixuan/sysfonts</a>
-</div>
-<div id="ref-R-showtext" class="csl-entry" role="listitem">
-Qiu, Y., &amp; See file AUTHORS for details., authors/contributors of the included software. (2022b). <em>Showtext: Using fonts more easily in r graphs</em>. Retrieved from <a href="https://github.com/yixuan/showtext">https://github.com/yixuan/showtext</a>
-</div>
-<div id="ref-R-base" class="csl-entry" role="listitem">
-R Core Team. (2021). <em>R: A language and environment for statistical computing</em>. Vienna, Austria: R Foundation for Statistical Computing. Retrieved from <a href="https://www.R-project.org/">https://www.R-project.org/</a>
-</div>
-<div id="ref-R-rJava" class="csl-entry" role="listitem">
-Urbanek, S. (2021). <em>rJava: Low-level r to java interface</em>. Retrieved from <a href="http://www.rforge.net/rJava/">http://www.rforge.net/rJava/</a>
-</div>
-<div id="ref-ggplot22016" class="csl-entry" role="listitem">
-Wickham, H. (2016). <em>ggplot2: Elegant graphics for data analysis</em>. Springer-Verlag New York. Retrieved from <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>
-</div>
-<div id="ref-R-ggplot2" class="csl-entry" role="listitem">
-Wickham, H., Chang, W., Henry, L., Pedersen, T. L., Takahashi, K., Wilke, C., … Dunnington, D. (2022). <em>ggplot2: Create elegant data visualisations using the grammar of graphics</em>. Retrieved from <a href="https://CRAN.R-project.org/package=ggplot2">https://CRAN.R-project.org/package=ggplot2</a>
-</div>
-<div id="ref-R-dplyr" class="csl-entry" role="listitem">
-Wickham, H., François, R., Henry, L., Müller, K., &amp; Vaughan, D. (2023). <em>Dplyr: A grammar of data manipulation</em>. Retrieved from <a href="https://CRAN.R-project.org/package=dplyr">https://CRAN.R-project.org/package=dplyr</a>
-</div>
-<div id="ref-R-tidyr" class="csl-entry" role="listitem">
-Wickham, H., &amp; Girlich, M. (2022). <em>Tidyr: Tidy messy data</em>. Retrieved from <a href="https://CRAN.R-project.org/package=tidyr">https://CRAN.R-project.org/package=tidyr</a>
-</div>
-<div id="ref-R-ggtext" class="csl-entry" role="listitem">
-Wilke, C. O., &amp; Wiernik, B. M. (2022). <em>Ggtext: Improved text rendering support for ggplot2</em>. Retrieved from <a href="https://wilkelab.org/ggtext/">https://wilkelab.org/ggtext/</a>
-</div>
 </div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{2023,
   author = {, stesiam},
   title = {Statistics of {Statistics} {Graduates}},
