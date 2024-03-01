@@ -72,6 +72,9 @@ library(glue)
 
 font_add_google("Lobster", "lobster")
 font_add_google("Economica", "economica")
+font_add_google("Creepster", "Creepster")
+
+font_add_google("Ubuntu Condensed", "uc")
 showtext_auto()
 ```
 
@@ -229,6 +232,41 @@ ggplot(data = admitted_students, aes(x = "", y = Obs, fill = name)) +
 ```
 
 
+## Students
+
+
+```{r, fig.height=4}
+A = statistics_tables[[2]] %>%
+  setNames(c("Year", "BSc", "MScAppliedStat", "MScActuar", "PhD")) %>%
+  .[-1,] %>%
+  mutate_at(., vars(-Year), as.integer) %>%
+  tidyr::pivot_longer(., cols = !Year, values_to = "Obs")
+ 
+A %>%
+  dplyr::filter(name == "BSc") %>%
+  ggplot(., aes(x = Year, y = Obs, group = "1")) +
+  ylim(2000, 4000) +
+  geom_line(color = "white") +
+  labs(title = "Number of Undergraduate Students",
+       x = "Academic Year",
+       y = "Undergraduate Students") +
+  geom_point(data= A %>% dplyr::filter(name == "BSc") %>% dplyr::filter(.,Obs == max(Obs) | Obs == min(Obs)), aes(x = Year, y = Obs), color = "orange") +
+  geom_text(data= A %>% dplyr::filter(name == "BSc") %>% dplyr::filter(.,Obs == max(Obs) | Obs == min(Obs)),aes(x = Year, y = Obs+200, label = Obs), color = "orange", fontface = "bold", size = 5) +
+  theme_minimal(base_size = 15) +
+  theme(axis.text.x = element_text(angle = 60, size = 10,color = "white"),
+        axis.text.y = element_text(size = 10, color = "white"),
+        axis.title = element_text(size = 10, color = "white"),
+        panel.grid = element_blank(),
+        plot.title = element_text(family = "Creepster", hjust = 0.5),
+        plot.title.position = "plot",
+        plot.subtitle = element_text(family = "uc", size = 14,
+                                     margin = margin(l = 10, r = 10), 
+                                     hjust = 0),
+        plot.background = element_rect(fill = "black", color = "black"),
+        panel.background = element_rect(fill = "black", color = "black"),
+        text = element_text(color = "white")
+  )
+```
 
 ## Master Programmes
 
@@ -237,8 +275,10 @@ Our department has two Master options.
 - Applied Statistics
 - Actuarial Science and Risk Management
 
+
+
 ```{r}
-statistics_tables[[1]]
+statistics_tables[[3]]
 ```
 
 
