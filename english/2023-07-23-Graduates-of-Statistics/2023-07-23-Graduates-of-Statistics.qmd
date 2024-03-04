@@ -70,10 +70,12 @@ library(ggtext)
 library(showtext)
 library(glue)
 
+library(packcircles)
+
 font_add_google("Lobster", "lobster")
 font_add_google("Economica", "economica")
 font_add_google("Creepster", "Creepster")
-
+font_add_google("Oswald", "Oswald")
 font_add_google("Ubuntu Condensed", "uc")
 showtext_auto()
 ```
@@ -232,7 +234,7 @@ ggplot(data = admitted_students, aes(x = "", y = Obs, fill = name)) +
 ```
 
 
-## Students
+## Student Population
 
 
 ```{r, fig.height=4}
@@ -242,6 +244,15 @@ A = statistics_tables[[2]] %>%
   mutate_at(., vars(-Year), as.integer) %>%
   tidyr::pivot_longer(., cols = !Year, values_to = "Obs")
  
+d = A %>% 
+  dplyr::filter(name == "BSc" & (Year == "2003-2004" | Year == "2022-2023"))
+
+e = A %>% dplyr::filter(name == "BSc") %>% dplyr::filter(.,Obs == max(Obs) | Obs == min(Obs)) %>%
+  .$Year
+
+sub = glue("Last 20 years the undergraduates have been increased
+           by <span style = 'color:orange; font-weight: bold'>{d$Obs[2] - d$Obs[1]}</span> ({round(((d$Obs[2] - d$Obs[1])/d$Obs[1])*100, digits = 2)} %). <br>The highest number of undergrads is observed at the academic term of <span style = 'color:red; font-weight: bold'>{e[1]}</span> <br> and the lowest at <span style = 'color:#0a5c36; font-weight: bold'>{e[2]}</span>" ) 
+
 A %>%
   dplyr::filter(name == "BSc") %>%
   ggplot(., aes(x = Year, y = Obs, group = "1")) +
@@ -249,19 +260,24 @@ A %>%
   geom_line(color = "white") +
   labs(title = "Number of Undergraduate Students",
        x = "Academic Year",
-       y = "Undergraduate Students") +
-  geom_point(data= A %>% dplyr::filter(name == "BSc") %>% dplyr::filter(.,Obs == max(Obs) | Obs == min(Obs)), aes(x = Year, y = Obs), color = "orange") +
-  geom_text(data= A %>% dplyr::filter(name == "BSc") %>% dplyr::filter(.,Obs == max(Obs) | Obs == min(Obs)),aes(x = Year, y = Obs+200, label = Obs), color = "orange", fontface = "bold", size = 5) +
+       y = "Undergraduate Students",
+       caption = "stesiam, 2024",
+       subtitle = sub) +
+  geom_point(data= A %>% dplyr::filter(name == "BSc") %>% dplyr::filter(.,Obs == max(Obs)), aes(x = Year, y = Obs), color = "red3") +
+  geom_point(data= A %>% dplyr::filter(name == "BSc") %>% dplyr::filter(.,Obs == min(Obs)), aes(x = Year, y = Obs), color = "green4") +
+  geom_point(data = A %>% dplyr::filter(Year == "2003-2004" | Year == "2022-2023") %>% dplyr::filter(name == "BSc"), color = "orange") +
+  geom_text(data= A %>% dplyr::filter(Year == "2003-2004" | Year == "2022-2023") %>% dplyr::filter(name == "BSc"),aes(x = Year, y = Obs+200, label = Obs), color = "orange", fontface = "bold", size = 4) +
   theme_minimal(base_size = 15) +
   theme(axis.text.x = element_text(angle = 60, size = 10,color = "white"),
         axis.text.y = element_text(size = 10, color = "white"),
         axis.title = element_text(size = 10, color = "white"),
         panel.grid = element_blank(),
-        plot.title = element_text(family = "Creepster", hjust = 0.5),
+        plot.title = element_text(family = "Oswald", hjust = 0.5),
         plot.title.position = "plot",
-        plot.subtitle = element_text(family = "uc", size = 14,
-                                     margin = margin(l = 10, r = 10), 
-                                     hjust = 0),
+        plot.subtitle = element_markdown(family = "Oswald", size = 14,
+                                     margin = margin(l = 10, r = 10),
+                                     lineheight = 1.2, hjust = 0.5),
+        plot.caption = element_markdown(family = "Oswald", size = 10),
         plot.background = element_rect(fill = "black", color = "black"),
         panel.background = element_rect(fill = "black", color = "black"),
         text = element_text(color = "white")
@@ -276,9 +292,10 @@ Our department has two Master options.
 - Actuarial Science and Risk Management
 
 
-
 ```{r}
-statistics_tables[[3]]
+statistics_tables[[3]] %>%
+  setNames(c("Year", "MSc_AppliedStats", "MSc_Actuar")) %>%
+  slice(-c(1:2))
 ```
 
 
@@ -301,21 +318,76 @@ msc_students %>%
 ```
 
 ```{r}
-ggplot(msc_students, aes(x = AcademicYear, y = pct, group = 1)) +
-  geom_line() +
+ggplot(msc_students, aes(x = AcademicYear, y = pct, group = 1))  +
+  geom_area(fill = rgb(0.3,0.7,0.3,0.4)) +
   labs(
-    title = "Ratio of PhD students/ Undergraduates",
+    title = "Ratio of PhD students per Hundreds of Undergraduates",
     subtitle = "The decrease ",
     caption = "stesiam, 2023"
   ) +
-  theme_classic() +
+  geom_text(data = msc_students %>% dplyr::filter(pct == min(pct) | pct == max(pct)),aes(label = pct, y = pct+0.1), fontface = "bold", family = "uc", nudge_y =0.1) +
+  theme_minimal() +
   theme(
-    plot.title = element_markdown(family = "serif", face="bold"),
+    plot.title = element_markdown(family = "uc", face="bold"),
     plot.subtitle = element_markdown(family = "serif"),
     plot.caption = element_markdown(family = "serif"),
-    axis.text.x = element_text(face="bold", angle=90)
+    axis.text.x = element_text(face="bold", angle=90),panel.grid = element_blank()
   )
 ```
+## Structure of Students
+
+```{r}
+B = statistics_tables[[2]] %>%
+  setNames(c("Year", "BSc_students", "MScStudentsA", "MScStudentsB", "PhD")) %>%
+  .[-1,] %>%
+ mutate_at(., vars(-Year), as.integer) %>%
+ mutate(
+   MScStudentsB = tidyr::replace_na(MScStudentsB, 0),
+   MSc_Students = MScStudentsA + MScStudentsB
+ ) %>%
+  dplyr::select(-c("MScStudentsA", "MScStudentsB")) %>%
+  relocate(., MSc_Students, .after = "BSc_students") %>%
+  mutate(
+    total = BSc_students + MSc_Students + PhD,
+    BSc_students = BSc_students/total,
+    MSc_Students = MSc_Students/total,
+    PhD = PhD/total
+  ) %>%
+  mutate_at(vars(!c(Year, total)), ~round(.*100, 2)) %>%
+  dplyr::select(c(-total)) %>%
+  tidyr::pivot_longer(., cols = !c(Year), values_to = "Obs")
+  
+```
+
+```{r}
+
+# C$label = fontawesome('fa-twitter')
+# waffle_data <- waffle_iron(C, aes_d(group = name))
+# 
+# ggplot(C, aes( fill = name, values = Obs)) + 
+#   geom_waffle() +
+#   theme_waffle()
+# 
+# ggplot(C, aes(fill = name, values = Obs)) +
+#   geom_text(aes(label=label), family='fontawesome-webfont', size=12) +
+#   geom_waffle(n_rows = 8, size = 0.33, colour = "white")
+# 
+# library(waffle)
+# 
+# # Data
+# df <- data.frame(group = LETTERS[1:3],
+#                  value = c(25, 20, 35))
+# 
+# # Waffle plot
+# ggplot(df, aes(fill = group, values = value)) +
+#   geom_waffle(n_rows = 8, size = 0.33, colour = "white", ) +
+#   scale_fill_manual(name = NULL,
+#                     values = c("#BA182A", "#FF8288", "#FFDBDD"),
+#                     labels = c("A", "B", "C")) +
+#   coord_equal() +
+#   theme_void()
+```
+
 
 ```{r}
 tidy_students = msc_students %>%
@@ -355,7 +427,6 @@ statistics_tables[[3]] %>%
   ggplot(.) +
   geom_line(aes(x = Year, y = Ratio, group = 1))+
   theme_classic()
-  
 ```
 
 
@@ -364,13 +435,111 @@ statistics_tables[[3]] %>%
 I hope you are still here because for the end I hold the best part. Finally, how did we perform? The study guide gives a distribution 
 
 ```{r}
-statistics_tables[[4]] %>%
-  setNames(c("Year", "[5.0 - 6)", "[6, 7)", "X3", "(", "AVG_Grade"))
-  
-  
+VVV = statistics_tables[[4]] %>%
+  setNames(c("Year", "[5.0 - 6)", "[6, 7)", "[7-8.5)", "[8.5-10]", "AVG_Grade")) %>%
+  slice(-c(1:4))  %>%
+  mutate(across("AVG_Grade"), separate(.,AVG_Grade, into = c("AVG_Grade", "Graduates"),sep = "\\(")) %>%
+  select(c("Year", "AVG_Grade", "Graduates")) %>%
+  mutate(
+    "Graduates" =  stringr::str_remove_all(Graduates, "\\)")
+  ) %>%
+  mutate(
+    AVG_Grade = stringr::str_replace_all(AVG_Grade, ",", ".")
+  ) %>%
+  mutate_at(vars("AVG_Grade", "Graduates"), as.numeric)
+```
+
+```{r}
+data = VVV %>%
+  mutate(
+    AVG_Group = ifelse(AVG_Grade >= mean(AVG_Grade), "over", "under")
+  ) %>%
+  mutate(
+    Year = stringr::str_remove_all(Year, "-.*")
+  )
+
+packing <- circleProgressiveLayout(data$Graduates, sizetype='area')
+data <- cbind(data, packing)
+data <- data |> 
+  rename(xcirc = x, 
+         ycirc = y, 
+         radius_circ = radius) |> 
+  tibble::rowid_to_column('id')
+# Calculate the 50 vertices points for each circle
+dat.gg <- circleLayoutVertices(packing, npoints=50)
+final_data <- left_join(data, dat.gg, by = join_by(id))
 ```
 
 
+```{r, fig.fullwidth=TRUE, fig.showtext=TRUE}
+ggplot(data = final_data) + 
+  geom_polygon(aes(x, 
+                   y, 
+                   group = Year,
+                   fill = AVG_Group, 
+                   text = Graduates), 
+               colour = "white", 
+               # alpha = 0.7
+               ) +
+  scale_fill_manual(values = c("under"="red","over" = "green"))+
+  geom_text(aes(xcirc, 
+                ycirc, 
+                size = Graduates,
+                label = Year), 
+            size = 3, 
+            family = 'uc', 
+            fontface = 'bold',
+            color = 'white') +
+  labs(title = "Graduates and Gradaution Grade per Year",
+       subtitle = "On this bubble chart we visualized the total graduates per Academic Year <br> depending on the size of the circle. Funrthermore, the color of the circle <br> notes if the average grade of graduation of that specific year <br> is <span style = 'color: green'>over</span> or <span style = 'color: red'>under</span> the historical average graduation grade.",
+       x = NULL,
+       y = NULL,
+       caption = "stesiam, 2024") +
+  coord_equal() +
+  theme_void(base_size = 10) +
+  theme(
+      legend.position = "none",
+      plot.subtitle = element_markdown(family = "serif")
+  )
+```
+
+
+## Online vs On-campus Exams
+
+Due to pandemic COVID-19, Greek government suspended the operation of  schools (elementary, high school, universities) on Tuesday 10 March 2020. Some days later imposed lockdown measures. That period our department organized online lectures  and organized online exams for the majority of the courses on Spring Semester and on the September (retake exams). Long story short that lasted for at least 2 years.
+
+
+## Students Graduated in 6 Years
+
+Last but not least, maybe the most nervewrecking statistic is that one.
+
+```{r}
+statistics_tables[[5]] %>%
+  setNames(c("Year", "4Years", "5Years", "6Years", "7Years", "8Years", "9Years",
+           "10Years", "11YearsPlus", "avg_Years")) %>%
+  slice(-c(1:2)) %>%
+  slice(-c(seq(from = 2, to = 28, by = 2))) %>%
+  tidyr::pivot_longer(., cols = !c("Year","avg_Years"), names_to = "Obs") %>%
+  mutate(
+    Obs  = stringr::str_remove_all(Obs, pattern = c("Y.*")) %>% as.numeric(),
+    value  = value %>% as.numeric()
+  ) %>%
+  group_by(Year) %>%
+  mutate(
+    s = sum(value),
+    pct = round((value/s)*100, digits = 2)
+    ) %>%
+  mutate(
+    Category = ifelse(Obs<=6, "A", "B")
+  ) %>%
+  group_by(Category, Year) %>%
+  summarise(
+    total_pct = sum(pct)
+  ) %>%
+  tidyr::drop_na(total_pct)
+```
+
+Just for clarification, our studies are 4-Year studies. Although the majority will not successfully finish their degree even in 6 Years. This is important as currently has been voted the time-limit on BSc studies. We have 6 years to complete our studies otherwise we will not take the degree. In the next years, the best case scenario is that 60% of my collegeaus who were about to graduate will not get their degree.
 
 ## Acknowledgements {.appendix .unlisted}
 

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="stesiam">
 <meta name="dcterms.date" content="2023-07-23">
@@ -210,11 +210,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#entry-exams" id="toc-entry-exams" class="nav-link" data-scroll-target="#entry-exams">Entry Exams</a></li>
   </ul>
 </li>
-  <li><a href="#students" id="toc-students" class="nav-link" data-scroll-target="#students">Students</a></li>
+  <li><a href="#student-population" id="toc-student-population" class="nav-link" data-scroll-target="#student-population">Student Population</a></li>
   <li><a href="#master-programmes" id="toc-master-programmes" class="nav-link" data-scroll-target="#master-programmes">Master Programmes</a></li>
+  <li><a href="#structure-of-students" id="toc-structure-of-students" class="nav-link" data-scroll-target="#structure-of-students">Structure of Students</a></li>
   <li><a href="#master-students" id="toc-master-students" class="nav-link" data-scroll-target="#master-students">Master Students</a></li>
   <li><a href="#graduation-grade" id="toc-graduation-grade" class="nav-link" data-scroll-target="#graduation-grade">Graduation Grade</a></li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/stesiam/stesiam.github.io/edit/main/english/2023-07-23-Graduates-of-Statistics/2023-07-23-Graduates-of-Statistics.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/stesiam/stesiam.github.io/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+  <li><a href="#online-vs-on-campus-exams" id="toc-online-vs-on-campus-exams" class="nav-link" data-scroll-target="#online-vs-on-campus-exams">Online vs On-campus Exams</a></li>
+  <li><a href="#students-graduated-in-6-years" id="toc-students-graduated-in-6-years" class="nav-link" data-scroll-target="#students-graduated-in-6-years">Students Graduated in 6 Years</a></li>
+  </ul></nav>
 </nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
@@ -239,12 +242,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://wilkelab.org/ggtext/">ggtext</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/yixuan/showtext">showtext</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidyverse/glue">glue</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://glue.tidyverse.org/">glue</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mbedward/packcircles">packcircles</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/sysfonts/man/font_add_google.html">font_add_google</a></span><span class="op">(</span><span class="st">"Lobster"</span>, <span class="st">"lobster"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/sysfonts/man/font_add_google.html">font_add_google</a></span><span class="op">(</span><span class="st">"Economica"</span>, <span class="st">"economica"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/sysfonts/man/font_add_google.html">font_add_google</a></span><span class="op">(</span><span class="st">"Creepster"</span>, <span class="st">"Creepster"</span><span class="op">)</span></span>
-<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/sysfonts/man/font_add_google.html">font_add_google</a></span><span class="op">(</span><span class="st">"Oswald"</span>, <span class="st">"Oswald"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/sysfonts/man/font_add_google.html">font_add_google</a></span><span class="op">(</span><span class="st">"Ubuntu Condensed"</span>, <span class="st">"uc"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/showtext/man/showtext_auto.html">showtext_auto</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -326,8 +331,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
-<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-35bfed83d72f22b57803" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-35bfed83d72f22b57803">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Year":["2003-2004","2003-2004","2004-2005","2004-2005","2005-2006","2005-2006","2006-2007","2006-2007","2007-2008","2007-2008","2008-2009","2008-2009","2009-2010","2009-2010","2010-2011","2010-2011","2011-2012","2011-2012","2012-2013","2012-2013","2013-2014","2013-2014","2014-2015","2014-2015","2015-2016","2015-2016","2016-2017","2016-2017","2017-2018","2017-2018","2018-2019","2018-2019","2019-2020","2019-2020"],"name":["perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100"],"Obs":[15.28,84.72,17.35,82.65,13.08,86.92,16.59,83.41,23.87,76.13,32.81,67.19,30.33,69.67,30,70,1.49,98.51,13.08,86.92,25.45,74.55,19.49,80.51,13.82,86.18,13.82,86.18,17.06,82.94,8.25,91.75,21.92,78.08]},"columns":[{"id":"Year","name":"Year","type":"character"},{"id":"name","name":"name","type":"character"},{"id":"Obs","name":"Obs","type":"numeric"}],"defaultPageSize":5,"dataKey":"d6ba351c17767cb1a57b17b789785898"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-105aafe58ec69f56f429" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-105aafe58ec69f56f429">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Year":["2003-2004","2003-2004","2004-2005","2004-2005","2005-2006","2005-2006","2006-2007","2006-2007","2007-2008","2007-2008","2008-2009","2008-2009","2009-2010","2009-2010","2010-2011","2010-2011","2011-2012","2011-2012","2012-2013","2012-2013","2013-2014","2013-2014","2014-2015","2014-2015","2015-2016","2015-2016","2016-2017","2016-2017","2017-2018","2017-2018","2018-2019","2018-2019","2019-2020","2019-2020"],"name":["perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100"],"Obs":[15.28,84.72,17.35,82.65,13.08,86.92,16.59,83.41,23.87,76.13,32.81,67.19,30.33,69.67,30,70,1.49,98.51,13.08,86.92,25.45,74.55,19.49,80.51,13.82,86.18,13.82,86.18,17.06,82.94,8.25,91.75,21.92,78.08]},"columns":[{"id":"Year","name":"Year","type":"character"},{"id":"name","name":"name","type":"character"},{"id":"Obs","name":"Obs","type":"numeric"}],"defaultPageSize":5,"dataKey":"d6ba351c17767cb1a57b17b789785898"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p>I would like to examine the percentage of students who have been admitted by the other 3 ways over the years.</p>
@@ -374,7 +379,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#     axis.text.x = element_text(face="bold", angle=90)</span></span>
 <span><span class="co">#   )</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section></section><section id="students" class="level2"><h2 class="anchored" data-anchor-id="students">Students</h2>
+</section></section><section id="student-population" class="level2"><h2 class="anchored" data-anchor-id="student-population">Student Population</h2>
 <div class="cell">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">A</span> <span class="op">=</span> <span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"BSc"</span>, <span class="st">"MScAppliedStat"</span>, <span class="st">"MScActuar"</span>, <span class="st">"PhD"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -387,26 +392,40 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 Caused by warning:
 ! NAs introduced by coercion</code></pre>
 </div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">A</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span> <span class="op">=</span> <span class="va">A</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"BSc"</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">Year</span> <span class="op">==</span> <span class="st">"2003-2004"</span> <span class="op">|</span> <span class="va">Year</span> <span class="op">==</span> <span class="st">"2022-2023"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">e</span> <span class="op">=</span> <span class="va">A</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"BSc"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.</span>,<span class="va">Obs</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">Obs</span><span class="op">)</span> <span class="op">|</span> <span class="va">Obs</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">Obs</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="va">.</span><span class="op">$</span><span class="va">Year</span></span>
+<span></span>
+<span><span class="va">sub</span> <span class="op">=</span> <span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html">glue</a></span><span class="op">(</span><span class="st">"Last 20 years the undergraduates have been increased</span></span>
+<span><span class="st">           by &lt;span style = 'color:orange; font-weight: bold'&gt;{d$Obs[2] - d$Obs[1]}&lt;/span&gt; ({round(((d$Obs[2] - d$Obs[1])/d$Obs[1])*100, digits = 2)} %). &lt;br&gt;The highest number of undergrads is observed at the academic term of &lt;span style = 'color:red; font-weight: bold'&gt;{e[1]}&lt;/span&gt; &lt;br&gt; and the lowest at &lt;span style = 'color:#0a5c36; font-weight: bold'&gt;{e[2]}&lt;/span&gt;"</span> <span class="op">)</span> </span>
+<span></span>
+<span><span class="va">A</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"BSc"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">.</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Year</span>, y <span class="op">=</span> <span class="va">Obs</span>, group <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">ylim</a></span><span class="op">(</span><span class="fl">2000</span>, <span class="fl">4000</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Live Your Hell in Statistics"</span>,</span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Number of Undergraduate Students"</span>,</span>
 <span>       x <span class="op">=</span> <span class="st">"Academic Year"</span>,</span>
-<span>       y <span class="op">=</span> <span class="st">"Undergraduate Students"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>data<span class="op">=</span> <span class="va">A</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"BSc"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.</span>,<span class="va">Obs</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">Obs</span><span class="op">)</span> <span class="op">|</span> <span class="va">Obs</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">Obs</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Year</span>, y <span class="op">=</span> <span class="va">Obs</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"orange"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op">(</span>data<span class="op">=</span> <span class="va">A</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"BSc"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.</span>,<span class="va">Obs</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">Obs</span><span class="op">)</span> <span class="op">|</span> <span class="va">Obs</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">Obs</span><span class="op">)</span><span class="op">)</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Year</span>, y <span class="op">=</span> <span class="va">Obs</span><span class="op">+</span><span class="fl">200</span>, label <span class="op">=</span> <span class="va">Obs</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"orange"</span>, fontface <span class="op">=</span> <span class="st">"bold"</span>, size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>       y <span class="op">=</span> <span class="st">"Undergraduate Students"</span>,</span>
+<span>       caption <span class="op">=</span> <span class="st">"stesiam, 2024"</span>,</span>
+<span>       subtitle <span class="op">=</span> <span class="va">sub</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>data<span class="op">=</span> <span class="va">A</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"BSc"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.</span>,<span class="va">Obs</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">Obs</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Year</span>, y <span class="op">=</span> <span class="va">Obs</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"red3"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>data<span class="op">=</span> <span class="va">A</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"BSc"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.</span>,<span class="va">Obs</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">Obs</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Year</span>, y <span class="op">=</span> <span class="va">Obs</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"green4"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">A</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Year</span> <span class="op">==</span> <span class="st">"2003-2004"</span> <span class="op">|</span> <span class="va">Year</span> <span class="op">==</span> <span class="st">"2022-2023"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"BSc"</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"orange"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op">(</span>data<span class="op">=</span> <span class="va">A</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Year</span> <span class="op">==</span> <span class="st">"2003-2004"</span> <span class="op">|</span> <span class="va">Year</span> <span class="op">==</span> <span class="st">"2022-2023"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"BSc"</span><span class="op">)</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Year</span>, y <span class="op">=</span> <span class="va">Obs</span><span class="op">+</span><span class="fl">200</span>, label <span class="op">=</span> <span class="va">Obs</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"orange"</span>, fontface <span class="op">=</span> <span class="st">"bold"</span>, size <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">15</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">60</span>, size <span class="op">=</span> <span class="fl">10</span>,color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span>,</span>
 <span>        axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span>, color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span>,</span>
 <span>        axis.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span>, color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span>,</span>
 <span>        panel.grid <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>        plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"Creepster"</span>, hjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>        plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"Oswald"</span>, hjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
 <span>        plot.title.position <span class="op">=</span> <span class="st">"plot"</span>,</span>
-<span>        plot.subtitle <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"uc"</span>, size <span class="op">=</span> <span class="fl">14</span>,</span>
-<span>                                     margin <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">margin</a></span><span class="op">(</span>l <span class="op">=</span> <span class="fl">10</span>, r <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>, </span>
-<span>                                     hjust <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,</span>
+<span>        plot.subtitle <span class="op">=</span> <span class="fu"><a href="https://wilkelab.org/ggtext/reference/element_markdown.html">element_markdown</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"Oswald"</span>, size <span class="op">=</span> <span class="fl">14</span>,</span>
+<span>                                     margin <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">margin</a></span><span class="op">(</span>l <span class="op">=</span> <span class="fl">10</span>, r <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
+<span>                                     lineheight <span class="op">=</span> <span class="fl">1.2</span>, hjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>        plot.caption <span class="op">=</span> <span class="fu"><a href="https://wilkelab.org/ggtext/reference/element_markdown.html">element_markdown</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"Oswald"</span>, size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
 <span>        plot.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"black"</span>, color <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span>,</span>
 <span>        panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"black"</span>, color <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span>,</span>
 <span>        text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span>
@@ -422,30 +441,51 @@ Caused by warning:
 <li>Actuarial Science and Risk Management</li>
 </ul>
 <div class="cell">
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"MSc_AppliedStats"</span>, <span class="st">"MSc_Actuar"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>           X Εισαγωγικές Μετεγγραφές Κατατακτήριες      Άλλες Σύνολο
-1              εξετάσεις                           κατηγορίες     NA
-2  2003-2004         183          15             1         17    216
-3  2004-2005         181          21             1         16    219
-4  2005-2006         186          11             1         16    214
-5  2006-2007         186          27             1          9    223
-6  2007-2008         185          38             2         18    243
-7  2008-2009         170          44             1         12    253
-8  2009-2010         170          60             0         14    244
-9  2010-2011         175          47             4         24    250
-10 2011-2012         198           0             0          3    201
-11 2012-2013         206          14             2         15    237
-12 2013-2014         205          20             2         48    275
-13 2014-2015         219          48             1          4    272
-14 2015-2016         212          29             1          4    246
-15 2016-2017         212          30             4          0    246
-16 2017-2018         209          41             1          1    252
-17 2018-2019         189          11             1          5    206
-18 2019-2020         228          55             2          7    292
-19 2020-2121         234         -16             1          5    224
-20 2021-2022         134         -2*             -          1    133
-21 2022-2023         168         -1*            **          3    170</code></pre>
+<pre><code>        Year MSc_AppliedStats MSc_Actuar
+1                                       
+2  2003-2004            27 15           
+3                                       
+4  2004-2005            28 26           
+5                                       
+6  2005-2006            25 20           
+7                                       
+8  2006-2007            25 34           
+9                                       
+10 2007-2008            24 31       38 0
+11                                      
+12 2008-2009            20 42       36 4
+13                                      
+14 2009-2010            30 27      35 21
+15                                      
+16 2010-2011            20 17      40 35
+17                                      
+18 2011-2012            30 26      38 30
+19                                      
+20 2012-2013            18 19      37 37
+21                                      
+22 2013-2014            23 35      39 63
+23                                      
+24 2014-2015            20 29      38 38
+25                                      
+26 2015-2016            21 24      42 39
+27                                      
+28 2016-2017            20 22      33 40
+29                                      
+30 2017-2018            23 21      37 30
+31                                      
+32 2018-2019            22 20      29 29
+33                                      
+34 2019-2020            26 15      26 24
+35                                      
+36 2020-2021            32 18      27 28
+37                                      
+38 2021-2022            41 33      34 59
+39                                      
+40 2022-2023               31         19</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -470,31 +510,87 @@ Caused by warning:
 <span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
-<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-4f188f38f4d68de3330e" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-4f188f38f4d68de3330e">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"AcademicYear":["2003-2004","2004-2005","2005-2006","2006-2007","2007-2008","2008-2009","2009-2010","2010-2011","2011-2012","2012-2013","2013-2014","2014-2015","2015-2016","2016-2017","2017-2018","2018-2019","2019-2020","2020-2021","2021-2022","2022-2023"],"BSc":[2135,2128,2225,2255,2360,2411,2429,2629,2528,2631,2707,2656,2742,2842,2953,3021,3091,3200,3159,3177],"MSc (AppliedStat)":[68,67,89,57,65,50,54,55,56,52,56,52,85,42,47,43,53,66,102,111],"MSc (Actuar)":["NA","NA","NA","NA",38,66,81,86,88,87,89,110,47,74,85,69,68,66,93,85],"PhD":[11,16,20,24,24,20,13,13,16,15,16,14,14,18,21,21,19,19,18,15],"pct":[0.52,0.75,0.9,1.06,1.02,0.83,0.54,0.49,0.63,0.57,0.59,0.53,0.51,0.63,0.71,0.7,0.61,0.59,0.57,0.47]},"columns":[{"id":"AcademicYear","name":"AcademicYear","type":"character"},{"id":"BSc","name":"BSc","type":"numeric"},{"id":"MSc (AppliedStat)","name":"MSc (AppliedStat)","type":"numeric"},{"id":"MSc (Actuar)","name":"MSc (Actuar)","type":"numeric"},{"id":"PhD","name":"PhD","type":"numeric"},{"id":"pct","name":"pct","type":"numeric"}],"defaultPageSize":5,"dataKey":"9e1a659e4b3bbf409916a76f20fe3050"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-0547b13651a25a3c9a4e" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-0547b13651a25a3c9a4e">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"AcademicYear":["2003-2004","2004-2005","2005-2006","2006-2007","2007-2008","2008-2009","2009-2010","2010-2011","2011-2012","2012-2013","2013-2014","2014-2015","2015-2016","2016-2017","2017-2018","2018-2019","2019-2020","2020-2021","2021-2022","2022-2023"],"BSc":[2135,2128,2225,2255,2360,2411,2429,2629,2528,2631,2707,2656,2742,2842,2953,3021,3091,3200,3159,3177],"MSc (AppliedStat)":[68,67,89,57,65,50,54,55,56,52,56,52,85,42,47,43,53,66,102,111],"MSc (Actuar)":["NA","NA","NA","NA",38,66,81,86,88,87,89,110,47,74,85,69,68,66,93,85],"PhD":[11,16,20,24,24,20,13,13,16,15,16,14,14,18,21,21,19,19,18,15],"pct":[0.52,0.75,0.9,1.06,1.02,0.83,0.54,0.49,0.63,0.57,0.59,0.53,0.51,0.63,0.71,0.7,0.61,0.59,0.57,0.47]},"columns":[{"id":"AcademicYear","name":"AcademicYear","type":"character"},{"id":"BSc","name":"BSc","type":"numeric"},{"id":"MSc (AppliedStat)","name":"MSc (AppliedStat)","type":"numeric"},{"id":"MSc (Actuar)","name":"MSc (Actuar)","type":"numeric"},{"id":"PhD","name":"PhD","type":"numeric"},{"id":"pct","name":"pct","type":"numeric"}],"defaultPageSize":5,"dataKey":"9e1a659e4b3bbf409916a76f20fe3050"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">msc_students</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">AcademicYear</span>, y <span class="op">=</span> <span class="va">pct</span>, group <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">msc_students</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">AcademicYear</span>, y <span class="op">=</span> <span class="va">pct</span>, group <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span>  <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html">geom_area</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/rgb.html">rgb</a></span><span class="op">(</span><span class="fl">0.3</span>,<span class="fl">0.7</span>,<span class="fl">0.3</span>,<span class="fl">0.4</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
-<span>    title <span class="op">=</span> <span class="st">"Ratio of PhD students/ Undergraduates"</span>,</span>
+<span>    title <span class="op">=</span> <span class="st">"Ratio of PhD students per Hundreds of Undergraduates"</span>,</span>
 <span>    subtitle <span class="op">=</span> <span class="st">"The decrease "</span>,</span>
 <span>    caption <span class="op">=</span> <span class="st">"stesiam, 2023"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">msc_students</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">pct</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">pct</span><span class="op">)</span> <span class="op">|</span> <span class="va">pct</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">pct</span><span class="op">)</span><span class="op">)</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">pct</span>, y <span class="op">=</span> <span class="va">pct</span><span class="op">+</span><span class="fl">0.1</span><span class="op">)</span>, fontface <span class="op">=</span> <span class="st">"bold"</span>, family <span class="op">=</span> <span class="st">"uc"</span>, nudge_y <span class="op">=</span><span class="fl">0.1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span></span>
-<span>    plot.title <span class="op">=</span> <span class="fu"><a href="https://wilkelab.org/ggtext/reference/element_markdown.html">element_markdown</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"serif"</span>, face<span class="op">=</span><span class="st">"bold"</span><span class="op">)</span>,</span>
+<span>    plot.title <span class="op">=</span> <span class="fu"><a href="https://wilkelab.org/ggtext/reference/element_markdown.html">element_markdown</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"uc"</span>, face<span class="op">=</span><span class="st">"bold"</span><span class="op">)</span>,</span>
 <span>    plot.subtitle <span class="op">=</span> <span class="fu"><a href="https://wilkelab.org/ggtext/reference/element_markdown.html">element_markdown</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"serif"</span><span class="op">)</span>,</span>
 <span>    plot.caption <span class="op">=</span> <span class="fu"><a href="https://wilkelab.org/ggtext/reference/element_markdown.html">element_markdown</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"serif"</span><span class="op">)</span>,</span>
-<span>    axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>face<span class="op">=</span><span class="st">"bold"</span>, angle<span class="op">=</span><span class="fl">90</span><span class="op">)</span></span>
+<span>    axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>face<span class="op">=</span><span class="st">"bold"</span>, angle<span class="op">=</span><span class="fl">90</span><span class="op">)</span>,panel.grid <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+</section><section id="structure-of-students" class="level2"><h2 class="anchored" data-anchor-id="structure-of-students">Structure of Students</h2>
 <div class="cell">
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tidy_students</span> <span class="op">=</span> <span class="va">msc_students</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">B</span> <span class="op">=</span> <span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"BSc_students"</span>, <span class="st">"MScStudentsA"</span>, <span class="st">"MScStudentsB"</span>, <span class="st">"PhD"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="va">.</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span>,<span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_at</a></span><span class="op">(</span><span class="va">.</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html">vars</a></span><span class="op">(</span><span class="op">-</span><span class="va">Year</span><span class="op">)</span>, <span class="va">as.integer</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>   MScStudentsB <span class="op">=</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/replace_na.html">replace_na</a></span><span class="op">(</span><span class="va">MScStudentsB</span>, <span class="fl">0</span><span class="op">)</span>,</span>
+<span>   MSc_Students <span class="op">=</span> <span class="va">MScStudentsA</span> <span class="op">+</span> <span class="va">MScStudentsB</span></span>
+<span> <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"MScStudentsA"</span>, <span class="st">"MScStudentsB"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/relocate.html">relocate</a></span><span class="op">(</span><span class="va">.</span>, <span class="va">MSc_Students</span>, .after <span class="op">=</span> <span class="st">"BSc_students"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    total <span class="op">=</span> <span class="va">BSc_students</span> <span class="op">+</span> <span class="va">MSc_Students</span> <span class="op">+</span> <span class="va">PhD</span>,</span>
+<span>    BSc_students <span class="op">=</span> <span class="va">BSc_students</span><span class="op">/</span><span class="va">total</span>,</span>
+<span>    MSc_Students <span class="op">=</span> <span class="va">MSc_Students</span><span class="op">/</span><span class="va">total</span>,</span>
+<span>    PhD <span class="op">=</span> <span class="va">PhD</span><span class="op">/</span><span class="va">total</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_at</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html">vars</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">Year</span>, <span class="va">total</span><span class="op">)</span><span class="op">)</span>, <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">.</span><span class="op">*</span><span class="fl">100</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="va">total</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="va">.</span>, cols <span class="op">=</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">Year</span><span class="op">)</span>, values_to <span class="op">=</span> <span class="st">"Obs"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: There was 1 warning in `mutate()`.
+ℹ In argument: `MScStudentsB = .Primitive("as.integer")(MScStudentsB)`.
+Caused by warning:
+! NAs introduced by coercion</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># C$label = fontawesome('fa-twitter')</span></span>
+<span><span class="co"># waffle_data &lt;- waffle_iron(C, aes_d(group = name))</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># ggplot(C, aes( fill = name, values = Obs)) + </span></span>
+<span><span class="co">#   geom_waffle() +</span></span>
+<span><span class="co">#   theme_waffle()</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># ggplot(C, aes(fill = name, values = Obs)) +</span></span>
+<span><span class="co">#   geom_text(aes(label=label), family='fontawesome-webfont', size=12) +</span></span>
+<span><span class="co">#   geom_waffle(n_rows = 8, size = 0.33, colour = "white")</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># library(waffle)</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># # Data</span></span>
+<span><span class="co"># df &lt;- data.frame(group = LETTERS[1:3],</span></span>
+<span><span class="co">#                  value = c(25, 20, 35))</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># # Waffle plot</span></span>
+<span><span class="co"># ggplot(df, aes(fill = group, values = value)) +</span></span>
+<span><span class="co">#   geom_waffle(n_rows = 8, size = 0.33, colour = "white", ) +</span></span>
+<span><span class="co">#   scale_fill_manual(name = NULL,</span></span>
+<span><span class="co">#                     values = c("#BA182A", "#FF8288", "#FFDBDD"),</span></span>
+<span><span class="co">#                     labels = c("A", "B", "C")) +</span></span>
+<span><span class="co">#   coord_equal() +</span></span>
+<span><span class="co">#   theme_void()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tidy_students</span> <span class="op">=</span> <span class="va">msc_students</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">!</span><span class="va">pct</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="va">.</span>, cols <span class="op">=</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">AcademicYear</span><span class="op">)</span>, values_to <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span></span>
 <span></span>
@@ -516,15 +612,16 @@ Caused by warning:
 <span>    axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>face<span class="op">=</span><span class="st">"bold"</span>, angle<span class="op">=</span><span class="fl">90</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 4 rows containing missing values (position_stack).</code></pre>
+<pre><code>Warning: Removed 4 rows containing missing values or values outside the scale range
+(`geom_col()`).</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+<p><img src="2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section><section id="master-students" class="level2"><h2 class="anchored" data-anchor-id="master-students">Master Students</h2>
 <div class="cell">
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"S"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="va">.</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,<span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -540,42 +637,135 @@ Caused by warning:
 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, ...].</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+<p><img src="2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section><section id="graduation-grade" class="level2"><h2 class="anchored" data-anchor-id="graduation-grade">Graduation Grade</h2>
 <p>I hope you are still here because for the end I hold the best part. Finally, how did we perform? The study guide gives a distribution</p>
 <div class="cell">
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"[5.0 - 6)"</span>, <span class="st">"[6, 7)"</span>, <span class="st">"X3"</span>, <span class="st">"("</span>, <span class="st">"AVG_Grade"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">VVV</span> <span class="op">=</span> <span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"[5.0 - 6)"</span>, <span class="st">"[6, 7)"</span>, <span class="st">"[7-8.5)"</span>, <span class="st">"[8.5-10]"</span>, <span class="st">"AVG_Grade"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="st">"AVG_Grade"</span><span class="op">)</span>, <span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate.html">separate</a></span><span class="op">(</span><span class="va">.</span>,<span class="va">AVG_Grade</span>, into <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"AVG_Grade"</span>, <span class="st">"Graduates"</span><span class="op">)</span>,sep <span class="op">=</span> <span class="st">"\\("</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"AVG_Grade"</span>, <span class="st">"Graduates"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    <span class="st">"Graduates"</span> <span class="op">=</span>  <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove_all</a></span><span class="op">(</span><span class="va">Graduates</span>, <span class="st">"\\)"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    AVG_Grade <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all</a></span><span class="op">(</span><span class="va">AVG_Grade</span>, <span class="st">","</span>, <span class="st">"."</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_at</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html">vars</a></span><span class="op">(</span><span class="st">"AVG_Grade"</span>, <span class="st">"Graduates"</span><span class="op">)</span>, <span class="va">as.numeric</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data</span> <span class="op">=</span> <span class="va">VVV</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    AVG_Group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">AVG_Grade</span> <span class="op">&gt;=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">AVG_Grade</span><span class="op">)</span>, <span class="st">"over"</span>, <span class="st">"under"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    Year <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove_all</a></span><span class="op">(</span><span class="va">Year</span>, <span class="st">"-.*"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">packing</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/packcircles/man/circleProgressiveLayout.html">circleProgressiveLayout</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">Graduates</span>, sizetype<span class="op">=</span><span class="st">'area'</span><span class="op">)</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">packing</span><span class="op">)</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>xcirc <span class="op">=</span> <span class="va">x</span>, </span>
+<span>         ycirc <span class="op">=</span> <span class="va">y</span>, </span>
+<span>         radius_circ <span class="op">=</span> <span class="va">radius</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html">rowid_to_column</a></span><span class="op">(</span><span class="st">'id'</span><span class="op">)</span></span>
+<span><span class="co"># Calculate the 50 vertices points for each circle</span></span>
+<span><span class="va">dat.gg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/packcircles/man/circleLayoutVertices.html">circleLayoutVertices</a></span><span class="op">(</span><span class="va">packing</span>, npoints<span class="op">=</span><span class="fl">50</span><span class="op">)</span></span>
+<span><span class="va">final_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">dat.gg</span>, by <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html">join_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-fig.fullwidth="true" data-fig.showtext="true">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">final_data</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html">geom_polygon</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span>, </span>
+<span>                   <span class="va">y</span>, </span>
+<span>                   group <span class="op">=</span> <span class="va">Year</span>,</span>
+<span>                   fill <span class="op">=</span> <span class="va">AVG_Group</span>, </span>
+<span>                   text <span class="op">=</span> <span class="va">Graduates</span><span class="op">)</span>, </span>
+<span>               colour <span class="op">=</span> <span class="st">"white"</span>, </span>
+<span>               <span class="co"># alpha = 0.7</span></span>
+<span>               <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"under"</span><span class="op">=</span><span class="st">"red"</span>,<span class="st">"over"</span> <span class="op">=</span> <span class="st">"green"</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">xcirc</span>, </span>
+<span>                <span class="va">ycirc</span>, </span>
+<span>                size <span class="op">=</span> <span class="va">Graduates</span>,</span>
+<span>                label <span class="op">=</span> <span class="va">Year</span><span class="op">)</span>, </span>
+<span>            size <span class="op">=</span> <span class="fl">3</span>, </span>
+<span>            family <span class="op">=</span> <span class="st">'uc'</span>, </span>
+<span>            fontface <span class="op">=</span> <span class="st">'bold'</span>,</span>
+<span>            color <span class="op">=</span> <span class="st">'white'</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Graduates and Gradaution Grade per Year"</span>,</span>
+<span>       subtitle <span class="op">=</span> <span class="st">"On this bubble chart we visualized the total graduates per Academic Year &lt;br&gt; depending on the size of the circle. Funrthermore, the color of the circle &lt;br&gt; notes if the average grade of graduation of that specific year &lt;br&gt; is &lt;span style = 'color: green'&gt;over&lt;/span&gt; or &lt;span style = 'color: red'&gt;under&lt;/span&gt; the historical average graduation grade."</span>,</span>
+<span>       x <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>       y <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>       caption <span class="op">=</span> <span class="st">"stesiam, 2024"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html">coord_equal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span></span>
+<span>      legend.position <span class="op">=</span> <span class="st">"none"</span>,</span>
+<span>      plot.subtitle <span class="op">=</span> <span class="fu"><a href="https://wilkelab.org/ggtext/reference/element_markdown.html">element_markdown</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"serif"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in geom_polygon(aes(x, y, group = Year, fill = AVG_Group, text =
+Graduates), : Ignoring unknown aesthetics: text</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="online-vs-on-campus-exams" class="level2"><h2 class="anchored" data-anchor-id="online-vs-on-campus-exams">Online vs On-campus Exams</h2>
+<p>Due to pandemic COVID-19, Greek government suspended the operation of schools (elementary, high school, universities) on Tuesday 10 March 2020. Some days later imposed lockdown measures. That period our department organized online lectures and organized online exams for the majority of the courses on Spring Semester and on the September (retake exams). Long story short that lasted for at least 2 years.</p>
+</section><section id="students-graduated-in-6-years" class="level2"><h2 class="anchored" data-anchor-id="students-graduated-in-6-years">Students Graduated in 6 Years</h2>
+<p>Last but not least, maybe the most nervewrecking statistic is that one.</p>
+<div class="cell">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">5</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"4Years"</span>, <span class="st">"5Years"</span>, <span class="st">"6Years"</span>, <span class="st">"7Years"</span>, <span class="st">"8Years"</span>, <span class="st">"9Years"</span>,</span>
+<span>           <span class="st">"10Years"</span>, <span class="st">"11YearsPlus"</span>, <span class="st">"avg_Years"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">2</span>, to <span class="op">=</span> <span class="fl">28</span>, by <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="va">.</span>, cols <span class="op">=</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Year"</span>,<span class="st">"avg_Years"</span><span class="op">)</span>, names_to <span class="op">=</span> <span class="st">"Obs"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    Obs  <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove_all</a></span><span class="op">(</span><span class="va">Obs</span>, pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Y.*"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    value  <span class="op">=</span> <span class="va">value</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Year</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    s <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span>,</span>
+<span>    pct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">value</span><span class="op">/</span><span class="va">s</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    Category <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">Obs</span><span class="op">&lt;=</span><span class="fl">6</span>, <span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Category</span>, <span class="va">Year</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
+<span>    total_pct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">pct</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/drop_na.html">drop_na</a></span><span class="op">(</span><span class="va">total_pct</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'Category'. You can override using the
+`.groups` argument.</code></pre>
+</div>
 <div class="cell-output cell-output-stdout">
-<pre><code>          Year  [5.0 - 6)      [6, 7)         X3          (    AVG_Grade
-1         Έτος                                               Βαθμολογίας
-2               [5.0-6.0)   [6.0-7.0)  [7.0-8.5) [8.5-10.0]             
-3  Αποφοίτησης                                              (Σύνολο απο-
-4                                                                φοίτων)
-5    2003-2004 20,71 (29)     60 (84) 19,29 (27)   0,00 (0)   6,46 (140)
-6    2004-2005 16,89 (37) 62,10 (136) 21,00 (46)   0,00 (0)   6,54 (219)
-7    2005-2006 24,17 (29)  55,83 (67) 19,17 (23)   0,83 (1)   6,48 (120)
-8    2006-2007  6,13 (10) 72,39 (118) 19,63 (32)   1,84 (3)   6,51 (163)
-9    2007-2008 23,38 (36)  59,09 (91) 16,88 (26)   0,65 (1)   6,41 (154)
-10   2008-2009 24,68 (38)  61,69 (95) 12,99 (20)   0,64 (1)   6,39 (154)
-11   2009-2010 34,62 (54)  54,48 (85) 10,90 (17)   0,00 (0)   6,30 (156)
-12   2010-2011 25,16 (40)  57,86 (92) 16,35 (26)   0,63 (1)   6,40 (159)
-13   2011-2012 24,10 (40)  59,04 (98) 14,46 (24)   2,41 (4)   6,43 (166)
-14   2012-2013 25,13 (50) 63,32 (126) 10,05 (20)   1,51 (3)   6,36 (199)
-15   2013-2014 32,33(107) 56,19 (186)  9,67 (32)   1,81 (6)   6,33 (331)
-16   2014-2015 31,60 (67) 52,36 (111) 13,21 (28)   2,83 (6)   6,38 (212)
-17   2015-2016 30,89 (38)  51,22 (63) 17,07 (21)   0,81 (1)   6,36 (123)
-18   2016-2017 29,91 (35)  57,27 (67) 11,97 (14)   0,85 (1)   6,35 (117)
-19   2017-2018 28,57 (18)  60,32 (38)   6,35 (4)   4,76 (3)    6,39 (63)
-20   2018-2019 27,36 (58) 60,38 (128) 10,85 (23)   1,41 (3)   6,38 (212)
-21   2019-2020 28,18 (62) 57,73 (127) 14,09 (31)   0,00 (0)   6,39 (220)
-22   2020-2021 13,36 (33) 67,61 (167) 18,22 (45)   0,81 (2)   6,41 (247)
-23   2021-2022 10,50 (19) 65,75 (119) 21,55 (39)   2,20 (4)   6,65 (181)</code></pre>
+<pre><code># A tibble: 26 × 3
+# Groups:   Category [2]
+   Category Year      total_pct
+   &lt;chr&gt;    &lt;chr&gt;         &lt;dbl&gt;
+ 1 A        2009-2010      60.7
+ 2 A        2010-2011      56.9
+ 3 A        2011-2012      55.7
+ 4 A        2012-2013      56.1
+ 5 A        2013-2014      55.2
+ 6 A        2014-2015      67.2
+ 7 A        2015-2016      51.7
+ 8 A        2016-2017      31.9
+ 9 A        2017-2018      41.2
+10 A        2018-2019      25.9
+# ℹ 16 more rows</code></pre>
 </div>
 </div>
-</section><div id="quarto-appendix" class="default"><section id="acknowledgements" class="level2 appendix unlisted"><h2 class="anchored quarto-appendix-heading">Acknowledgements</h2><div class="quarto-appendix-contents">
+<p>Just for clarification, our studies are 4-Year studies. Although the majority will not successfully finish their degree even in 6 Years. This is important as currently has been voted the time-limit on BSc studies. We have 6 years to complete our studies otherwise we will not take the degree. In the next years, the best case scenario is that 60% of my collegeaus who were about to graduate will not get their degree.</p>
+</section><p>stesiam, 2024</p><div id="quarto-appendix" class="default"><section id="acknowledgements" class="level2 appendix unlisted"><h2 class="anchored quarto-appendix-heading">Acknowledgements</h2><div class="quarto-appendix-contents">
 <p>Dataset based on recent study guide <a href="https://www.unipi.gr/faculty/mbouts/anak/OS_22_23.pdf">recent study guide</a> of Department of Statistics and Insurance Science of the University of Piraeus.</p>
 <p>Image by <a href="https://pixabay.com/users/vloveland-4834409/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2148715">Victoria Loveland</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2148715">Pixabay</a></p>
 </div></section><section id="references" class="level2 appendix unlisted"><h2 class="anchored quarto-appendix-heading">References</h2><div class="quarto-appendix-contents">
