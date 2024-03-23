@@ -84,6 +84,13 @@
     "text": "Παράδειγμα χρήσης\nΠριν ολοκληρωθεί αυτό το άρθρο έκρινα ως σημαντική την εφαρμογή ενός παραδείγματος. Τη στιγμή που γράφεται αυτό το άρθρο, υπάρχουν συνολικά 49 βάσεις δεδομένων από τις οποίες μπορώ να επιλέξω. Προκειμένου να δούμε την ωφέλεια του API θα διαλέξω κάποιο που ανανεώνεται σε αρκετά συχνή βάση. Ένα τέτοιο δεδομένο είναι οι επιβάτες που ταξιδεύουν με πλοία.\n\nlibrary(httr)\nlibrary(jsonlite)\n\nΣτη συνέχεια θέτω σε μία μεταβλητή τον βασικό σύνδεσμο των δεδομένων. Εγώ που επέλεξα την κίνηση των πλοίων θέτω το εξής:\n\nbase = \"https://data.gov.gr/api/v1/query/sailing_traffic\"\n\nΣτη συνέχεια, όπως τονίζει το documentation της σελίδας για τις άλλες γλώσσες, θα πρέπει να ορίσουμε ένα εύρος ημερομηνιών για το οποίο ενδιοαφερόμαστε. Αξίζει να σημειωθεί ότι δεν μπορείτε να πάρετε μεγάλο εύρος με μία μόνο κλήση του API. Για να επιστρέψω στο προηγούμενο παράδειγμα, τα δεδομένα της επιβατικής κίνησης των πλοίων ξεκινάνε από το 2017 μέχρι και σήμερα (2023). Ας υποθέσουμε ότι δεν μας πειράζει αυτό και ότι θέλουμε τα δεδομένα από τις 4 πρώτες μέρες του Ιουλίου του 2023.\n\ndate_from = \"2023-07-01\"\ndate_to = \"2023-07-04\"\n\nAPI_URL = paste0(base, \"?date_from=\", date_from, \"&\", \"date_to=\", date_to)\n\ncall = httr::GET(url = API_URL,\n    add_headers(`Authorization` = paste0('Token token_id')\n    )\n)\n\nΌπου στο σημείο που αναφέρεται το token_id θα πρέπει να βάλετε το token που σας έστειλε το data.gov.gr μέσω mail. Αφού λοιπόν αιτηθούμε τα δεδομένα μέσω της GET και κάνουμε λίγο υπομονή βλέπουμε ότι λαμβάνω μία λίστα με διάφορες πληροφορίες. Εμάς μας ενδιαφέρουν τα δεδομένα, οπότε κοιτάμε στη κατηγορία content της λίστας, ωστόσο παρατηρούμε μία μη αναγνώσιμη μορφή των στοιχειών μιας και είναι σε δεκαεξαδική μορφή.\n\ndata = base::rawToChar(call$content)\n\nΜε την παραπάνω εντολή μετατρέπονται οι χαρακτήρες και είναι πλέον αναγνώσιμοι, ωστόσο τωρα θα πρέπει να πάρουν και μορφή πίνακα προκειμένου να γίνει η ανάλυση.\n\ndata = jsonlite::fromJSON(data, flatten = T)\n\nΚαι τέλος, με τη βοήθεια του πακέτου jsnolite λαμβάνω ένα data.frame με όνομα data που περιέχει όλους τους προορισμούς, τον αριθμό επιβατών, αυτοκινήτων για τη κάθε ημέρα που ζήτησα."
   },
   {
+    "objectID": "gallery.html#day-chart-challenge",
+    "href": "gallery.html#day-chart-challenge",
+    "title": "Gallery",
+    "section": "30 Day Chart Challenge",
+    "text": "30 Day Chart Challenge"
+  },
+  {
     "objectID": "gallery.html#day-map-challenge",
     "href": "gallery.html#day-map-challenge",
     "title": "Gallery",
@@ -536,14 +543,14 @@
     "href": "material.html",
     "title": "Material",
     "section": "",
-    "text": "{{&lt; ai &lt;icon-name&gt; &gt;}}"
+    "text": "Title\nType\nSize\nLanguage\nSource\n\n\n\n\nSummary of Distributions\nPDF\n44.8 KB\n\nRepository"
   },
   {
     "objectID": "material.html#personal-notes",
     "href": "material.html#personal-notes",
     "title": "Material",
-    "section": "Personal Notes",
-    "text": "Personal Notes\n\n\n\n\nTitle\nType\nSize\nLanguage\nSource\n\n\n\n\nSummary of Distributions\nPDF\n44.8 KB\n\nRepository"
+    "section": "",
+    "text": "Title\nType\nSize\nLanguage\nSource\n\n\n\n\nSummary of Distributions\nPDF\n44.8 KB\n\nRepository"
   },
   {
     "objectID": "material.html#assignments",
@@ -943,26 +950,5 @@
     "title": "All posts",
     "section": "",
     "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nStatistics of Statistics’ Graduates\n\n\n\n\n\n\nR\n\n\nEDA\n\n\nPDF\n\n\ntabulizer\n\n\n\nExtracting tabular data from PDF file, in order to explore facts about graduates of Statistics and Insurance Department in University of Piraeus \n\n\n\n\n\nJul 23, 2023\n\n\nstesiam\n\n\n\n\n\n\n\n\n\n\n\n\nΠρόσβαση στο API του data.gov.gr\n\n\n\n\n\n\nR\n\n\nAPI\n\n\n\nΈνας απλός οδηγός χρήσης του API του data.gov.gr, ώστε να λαμβάνετε τη ροή δεδομένων με τη χρήση της R.\n\n\n\n\n\nJul 4, 2023\n\n\nstesiam\n\n\n\n\n\n\n\n\n\n\n\n\nΣπουδές Στατιστικής στην Ελλάδα\n\n\n\n\n\n\nΣπουδές\n\n\n\nΣυγκρίνω τις δημόσιες σχολές στατιστικής στην Ελλάδα και συγκρίνω τα βασικά τους στοιχεία με βάση τους οδηγούς σπουδών τους.\n\n\n\n\n\nJun 20, 2023\n\n\nstesiam\n\n\n\n\n\n\n\n\n\n\n\n\nKaggle’s Greek Community\n\n\n\n\n\n\nR\n\n\nEDA\n\n\nKaggle\n\n\n\nAn exploratory data analysis about Kaggle’s Greek community, based on its 2021 survey. A comparison with the rest DS community. \n\n\n\n\n\nMay 6, 2023\n\n\nstesiam\n\n\n\n\n\n\n\n\n\n\n\n\nPredict Possible Interested Clients\n\n\n\n\n\n\nR\n\n\nClassification\n\n\nTidymodels\n\n\n\nBuild a classification machine learning model (using LightGBM & XGBoost) in order to classify people based on their interest to have a term deposit or not. \n\n\n\n\n\nNov 24, 2022\n\n\nstesiam\n\n\n\n\n\n\n\n\n\n\n\n\nInstall LightGBM and CatBoost on Ubuntu 22.04\n\n\n\n\n\n\nLinux\n\n\nLightGBM\n\n\nCatBoost\n\n\nXGBoost\n\n\n\nInstall high performance algorithms (LightGBM, CatBoost & XGBoost) on your Linux device\n\n\n\n\n\nNov 13, 2022\n\n\nstesiam\n\n\n\n\n\n\n\n\n\n\n\n\nGit Series (Part I - Configuration)\n\n\n\n\n\n\nGit\n\n\n\nAn article that brings together some configuration setttings of Git. A beginner’s approach to Git.\n\n\n\n\n\nNov 4, 2022\n\n\nstesiam\n\n\n\n\n\n\n\n\n\n\n\n\nΣυγκεντρωμένο υλικό για την R στα ελληνικά\n\n\n\n\n\n\nR\n\n\n\nΜία λίστα (που θα ανανεώνεται συνεχώς) με υλικό που υπάρχει διαθέσιμο στο διαδίκτυο (δωρεάν) σχετικά με την R\n\n\n\n\n\nOct 23, 2022\n\n\nstesiam\n\n\n\n\n\n\n\n\n\n\n\n\nForecasting Unemployment in Greece\n\n\n\n\n\n\nR\n\n\nTime Series\n\n\n\nMake a prediction about the future value of Greece’s unemployment using ARIMA model. \n\n\n\n\n\nOct 22, 2022\n\n\nstesiam\n\n\n\n\n\n\n\n\n\n\n\n\nEDA on Greek Parliament\n\n\n\n\n\n\nR\n\n\nEDA\n\n\n\nLet’s explore the MPs that got elected the most over the years (1981-2019). \n\n\n\n\n\nOct 10, 2022\n\n\nstesiam\n\n\n\n\n\n\n\n\n\n\n\n\nVerify your commits !\n\n\n\n\n\n\nGPG\n\n\nQuarto\n\n\n\nUsing GPG keys to add a signature to your GitHub commits\n\n\n\n\n\nOct 3, 2022\n\n\nstesiam\n\n\n\n\n\n\n\n\n\n\n\n\nList of Quarto Websites\n\n\n\n\n\n\nQuarto\n\n\n\nA collection of websites built with Quarto. Includes links to websites and their respective repositories. Further additions are always welcome.\n\n\n\n\n\nAug 10, 2022\n\n\nstesiam\n\n\n\n\n\n\n\n\n\n\n\n\nHello, World\n\n\n\n\n\n\nfirst article\n\n\n\nMy first article on my Quarto website. \n\n\n\n\n\nJul 27, 2022\n\n\nstesiam\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "gallery.html",
-    "href": "gallery.html",
-    "title": "Gallery",
-    "section": "",
-    "text": "Repo"
-  },
-  {
-    "objectID": "gallery.html#tidy-tuesday",
-    "href": "gallery.html#tidy-tuesday",
-    "title": "Gallery",
-    "section": "",
-    "text": "Repo"
-  },
-  {
-    "objectID": "gallery.html#day-chart-challenge",
-    "href": "gallery.html#day-chart-challenge",
-    "title": "Gallery",
-    "section": "30 Day Chart Challenge",
-    "text": "30 Day Chart Challenge\nEdit…"
   }
 ]
