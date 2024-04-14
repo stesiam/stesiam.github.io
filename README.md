@@ -2,6 +2,7 @@
 
 [![pages-build-deployment](https://github.com/stesiam/stesiam.github.io/actions/workflows/pages/pages-build-deployment/badge.svg?branch=gh-pages)](https://github.com/stesiam/stesiam.github.io/actions/workflows/pages/pages-build-deployment)
 
+A website built with Quarto and deployed using GitHub Pages.
 
 [Website Link](https://stesiam.com)
 
@@ -9,7 +10,7 @@
 
 - 🌖 Light / Dark mode
 - 🖌️️ Use Bootstrap to make cards
-- Add 404 page
+- 🔍 Add 404 page
 
 
 ## TODO
