@@ -13,7 +13,7 @@ A website built with Quarto and deployed using GitHub Pages.
 - 🔍 Add 404 page
 
 
-## TODO
+## To Do
 
 - giscus dark theme not rendering sometimes  ([Related Issue #8613](https://github.com/quarto-dev/quarto-cli/issues/8613))
 - Visualizations filtering or change based on dark / light theme ([Possible Solution](https://mickael.canouil.fr/posts/2023-05-30-quarto-light-dark/))
