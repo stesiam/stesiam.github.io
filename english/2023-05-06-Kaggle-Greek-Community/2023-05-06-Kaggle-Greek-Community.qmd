@@ -104,7 +104,7 @@ kaggle_2021 = kaggle_2021[-c(1),]
 
 Since my analysis is based on Greek users, I split the dataset into two parts.
 One part includes exclusively Greek users and all the rest another. Thus, we can
-observe any peculiarities or similarities with broader Kaggle's userbase.
+observe any differences or similarities with broader Kaggle's userbase.
 
 
 ```{r, message=FALSE, warning=F}
@@ -163,10 +163,18 @@ kaggle_2021_compare = kaggle_2021 %>%
 
 # Kaggle's community
 
+One of the first thing I observed when I signed up on Kaggle was the vast majority of nationalities and the multicultural origin of the platform. Many people from many countries all in one platform gathered sharing the same passion for Data Science and Data Analytics. Something like Facebook but for Statistics :)
+
+Nevermind, I decided to make a `reactable` to see from which nationalities the platform is comprised from. One out of four users are from India which makes them the most populous nation in platform. By the way, Greek users are way less making a 0.39% of Kaggle's userbase.
+
+::: {.callout-note}
+## Assumptions Note
+We should note that the results are from Kaggle's Survey. That is to say from people that participated. An assumption has to be done that the distribution of the users that participated is the same with the ones who didn't.
+:::
 
 
 ```{r}
-kaggle_2021 %>%
+a = kaggle_2021 %>%
   group_by(Q3) %>%
   summarise(n = n()) %>%
   mutate(pct = round(n/nrow(kaggle_2021) * 100, digits = 2)) %>%
@@ -189,8 +197,9 @@ kaggle_2021 %>%
             add_title("Kaggle's Community by Country", font_size = 18) %>% 
             add_subtitle("India is the most represented country, followed by the United States.", font_size = 14, font_weight = "normal") %>% 
             add_source("stesiam | Data : Kaggle Survey 2021", font_size = 12, align = "right")
-```
 
+a
+```
 
 
 # Women participation in DS
@@ -198,7 +207,7 @@ kaggle_2021 %>%
 Generally, women are under-represented in labor market. According to the World
 Bank [-@worldbank2023], only one in two women participates in the
 labor market, in contrast to men whose corresponding participation is 7 in 10.
-Does DS community follow the same pattern?
+Does DS community follow the same pattern? As it seems, **it varies**.
 
 ```{r, warning=F, message=F}
 data = kaggle_2021 %>%
@@ -446,6 +455,11 @@ jobs2 = kaggle_2021_compare %>%
   head()  %>%
   mutate(pct = round(n/sum(n)*100, 1))
 
+```
+
+
+```{r Export reactable table to html, include=F}
+save_reactable(a, "kaggle_table.html")
 ```
 
 

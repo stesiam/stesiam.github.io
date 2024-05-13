@@ -128,6 +128,28 @@ Extracting the tables from splitted PDF I get a list of 5 tables with my data. I
 ##  Admitted students
 
 So, in Greece there is 1 standard way to be admitted to a university. Although there are 3 more ways which require some certain conditions. I will try to explain them as simple as possible. 
+```{r}
+library(DiagrammeR)
+grViz("
+digraph a_nice_graph {
+
+# node definitions with substituted label text
+node [fontname = Helvetica]
+a [label = '@@1']
+b [label = '@@2-1']
+c [label = '@@2-2']
+d [label = '@@2-3']
+
+# edge definitions with the node IDs
+a -> {b c d}
+}
+
+[1]: 'Ways to admitted on University in Greece'
+[2]: c('Panhellenic Exams','Entry Exams','Transfer')
+")
+```
+
+
 
 ### Main Exams
 
@@ -512,35 +534,9 @@ Due to pandemic COVID-19, Greek government suspended the operation of  schools (
 
 ## Students Graduated in 6 Years
 
-Last but not least, maybe the most nervewrecking statistic is that one.
+Last but not least, maybe the most nervewrecking statistic is that one. Just for clarification, our studies have a duaration of four years. Although the majority will not successfully finish their degree even in 6 Years. This is important as currently has been voted the time-limit on BSc studies. We have 6 years to complete our studies otherwise we will not take the degree. In the next years, the best case scenario is that 60% of my collegeaus who were about to graduate will not get their degree.
 
-```{r}
-statistics_tables[[5]] %>%
-  setNames(c("Year", "4Years", "5Years", "6Years", "7Years", "8Years", "9Years",
-           "10Years", "11YearsPlus", "avg_Years")) %>%
-  slice(-c(1:2)) %>%
-  slice(-c(seq(from = 2, to = 28, by = 2))) %>%
-  tidyr::pivot_longer(., cols = !c("Year","avg_Years"), names_to = "Obs") %>%
-  mutate(
-    Obs  = stringr::str_remove_all(Obs, pattern = c("Y.*")) %>% as.numeric(),
-    value  = value %>% as.numeric()
-  ) %>%
-  group_by(Year) %>%
-  mutate(
-    s = sum(value),
-    pct = round((value/s)*100, digits = 2)
-    ) %>%
-  mutate(
-    Category = ifelse(Obs<=6, "A", "B")
-  ) %>%
-  group_by(Category, Year) %>%
-  summarise(
-    total_pct = sum(pct)
-  ) %>%
-  tidyr::drop_na(total_pct)
-```
-
-Just for clarification, our studies are 4-Year studies. Although the majority will not successfully finish their degree even in 6 Years. This is important as currently has been voted the time-limit on BSc studies. We have 6 years to complete our studies otherwise we will not take the degree. In the next years, the best case scenario is that 60% of my collegeaus who were about to graduate will not get their degree.
+![](https://github.com/stesiam/30DayChartChallenge/blob/main/2024/day23/day23-2024-cc.png?raw=true)
 
 ## Acknowledgements {.appendix .unlisted}
 

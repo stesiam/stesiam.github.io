@@ -101,7 +101,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><script src="../../site_libs/core-js-2.5.3/shim.min.js"></script><script src="../../site_libs/react-17.0.0/react.min.js"></script><script src="../../site_libs/react-17.0.0/react-dom.min.js"></script><script src="../../site_libs/reactwidget-1.0.0/react-tools.js"></script><script src="../../site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script><link href="../../site_libs/reactable-0.4.4/reactable.css" rel="stylesheet">
+}</script><link href="../../site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<script src="../../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script><script src="../../site_libs/viz-1.8.2/viz.js"></script><link href="../../site_libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet">
+<script src="../../site_libs/grViz-binding-1.0.11/grViz.js"></script><script src="../../site_libs/core-js-2.5.3/shim.min.js"></script><script src="../../site_libs/react-18.2.0/react.min.js"></script><script src="../../site_libs/react-18.2.0/react-dom.min.js"></script><script src="../../site_libs/reactwidget-1.0.0/react-tools.js"></script><link href="../../site_libs/reactable-0.4.4/reactable.css" rel="stylesheet">
 <script src="../../site_libs/reactable-binding-0.4.4/reactable.js"></script><link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="stesiam - Statistics of Statistics’ Graduates">
 <meta property="og:description" content="Extracting tabular data from PDF file, in order to explore facts about graduates of Statistics and Insurance Department in University of Piraeus">
@@ -156,7 +158,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Gallery</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../index.html"> 
+    <a class="nav-link" href="https://github.com/stesiam/cvDSen"> 
 <span class="menu-text">CV</span></a>
   </li>  
 </ul>
@@ -285,7 +287,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </iframe>
 <p>Thankfully, tabulizer comes with a very handy function to extract all the tables from a PDF file. Yeap, I know the original study guide is written in greek but don’t worry that’s just to take a basic understanding of how the pdf and the tables look. I will translate the column names when I will work with the data. But look at the bright side. At least we will get a notebook with ggplot2 visualizations as an alternative of those Excel graphs :)</p>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">statistics_tables</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/tabulizer/reference/extract_tables.html">extract_tables</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">statistics_tables</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tabulizer/man/extract_tables.html">extract_tables</a></span><span class="op">(</span></span>
 <span>    file   <span class="op">=</span> <span class="st">"subset.pdf"</span>, </span>
 <span>    method <span class="op">=</span> <span class="st">"decide"</span>, </span>
 <span>    output <span class="op">=</span> <span class="st">"data.frame"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -293,6 +295,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Extracting the tables from splitted PDF I get a list of 5 tables with my data. It’s amazing that in a matter of seconds I get all the information in a format ready for analysis. If I were to write them the traditional way (copy-paste) it would definitely take me an hour.</p>
 </section><section id="admitted-students" class="level2"><h2 class="anchored" data-anchor-id="admitted-students">Admitted students</h2>
 <p>So, in Greece there is 1 standard way to be admitted to a university. Although there are 3 more ways which require some certain conditions. I will try to explain them as simple as possible.</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rich-iannone.github.io/DiagrammeR/">DiagrammeR</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rich-iannone.github.io/DiagrammeR/reference/grViz.html">grViz</a></span><span class="op">(</span><span class="st">"</span></span>
+<span><span class="st">digraph a_nice_graph {</span></span>
+<span><span class="st"></span></span>
+<span><span class="st"># node definitions with substituted label text</span></span>
+<span><span class="st">node [fontname = Helvetica]</span></span>
+<span><span class="st">a [label = '@@1']</span></span>
+<span><span class="st">b [label = '@@2-1']</span></span>
+<span><span class="st">c [label = '@@2-2']</span></span>
+<span><span class="st">d [label = '@@2-3']</span></span>
+<span><span class="st"></span></span>
+<span><span class="st"># edge definitions with the node IDs</span></span>
+<span><span class="st">a -&gt; {b c d}</span></span>
+<span><span class="st">}</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">[1]: 'Ways to admitted on University in Greece'</span></span>
+<span><span class="st">[2]: c('Panhellenic Exams','Entry Exams','Transfer')</span></span>
+<span><span class="st">"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="grViz html-widget html-fill-item" id="htmlwidget-72fb00c83a69865b8582" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-72fb00c83a69865b8582">{"x":{"diagram":"\ndigraph a_nice_graph {\n\n# node definitions with substituted label text\nnode [fontname = Helvetica]\na [label = \"Ways to admitted on University in Greece\"]\nb [label = \"Panhellenic Exams\"]\nc [label = \"Entry Exams\"]\nd [label = \"Transfer\"]\n\n# edge definitions with the node IDs\na -> {b c d}\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
 <section id="main-exams" class="level3"><h3 class="anchored" data-anchor-id="main-exams">Main Exams</h3>
 <p>Once a year, third-year high school students from all over Greece take exams on the same subjects at the same time. The exams are known as <strong>Panhellenic Exams</strong>. Until today, it’s one of the few things in Greece that as its integrity is not disputed, as the papers of students are getting graded by teachers from other areas. However, it has also faced considerable criticism for the pressure it places on students. In my opinion a fair one as everything in your life is depending on these exams… If you fail you should wait to retake them next year.</p>
 <p>Typically the exams are being held between the second half of May and the first week of June. The students’ grades are getting published approximately either the end of June or the first days of July. Then you are completing a list on which you are declare which departments you are interested to. On the end of July the minimum grades to be admitted for each department are announced. Those can fluctuate significantly every year as they are depending on both students’ performance on the Exams and the difficulty of the exams.</p>
@@ -304,7 +330,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="entry-exams" class="level3"><h3 class="anchored" data-anchor-id="entry-exams">Entry Exams</h3>
 <p>In case you have already graduated a Bachelor programme then you are able to give Entry Exams on your department of choice, instead of the nightmare of Panhellenic Exams.</p>
 <div class="cell">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">admitted_students</span> <span class="op">=</span> <span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">admitted_students</span> <span class="op">=</span> <span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="va">.</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span>,<span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"Main_exams"</span>, <span class="st">"Transfer"</span>, <span class="st">"Entry_exams"</span>, <span class="st">"Other"</span>, <span class="st">"Total"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -341,13 +367,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>    defaultPageSize <span class="op">=</span> <span class="fl">5</span></span>
 <span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-3cfb5ca486fc17e3ce02" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-3cfb5ca486fc17e3ce02">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Year":["2003-2004","2003-2004","2004-2005","2004-2005","2005-2006","2005-2006","2006-2007","2006-2007","2007-2008","2007-2008","2008-2009","2008-2009","2009-2010","2009-2010","2010-2011","2010-2011","2011-2012","2011-2012","2012-2013","2012-2013","2013-2014","2013-2014","2014-2015","2014-2015","2015-2016","2015-2016","2016-2017","2016-2017","2017-2018","2017-2018","2018-2019","2018-2019","2019-2020","2019-2020"],"name":["perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100"],"Obs":[15.28,84.72,17.35,82.65,13.08,86.92,16.59,83.41,23.87,76.13,32.81,67.19,30.33,69.67,30,70,1.49,98.51,13.08,86.92,25.45,74.55,19.49,80.51,13.82,86.18,13.82,86.18,17.06,82.94,8.25,91.75,21.92,78.08]},"columns":[{"id":"Year","name":"Year","type":"character"},{"id":"name","name":"name","type":"character"},{"id":"Obs","name":"Obs","type":"numeric"}],"defaultPageSize":5,"dataKey":"d6ba351c17767cb1a57b17b789785898"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div class="reactable html-widget html-fill-item" id="htmlwidget-7e8403c03cd7917597c1" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-7e8403c03cd7917597c1">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Year":["2003-2004","2003-2004","2004-2005","2004-2005","2005-2006","2005-2006","2006-2007","2006-2007","2007-2008","2007-2008","2008-2009","2008-2009","2009-2010","2009-2010","2010-2011","2010-2011","2011-2012","2011-2012","2012-2013","2012-2013","2013-2014","2013-2014","2014-2015","2014-2015","2015-2016","2015-2016","2016-2017","2016-2017","2017-2018","2017-2018","2018-2019","2018-2019","2019-2020","2019-2020"],"name":["perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100","perc","perc100"],"Obs":[15.28,84.72,17.35,82.65,13.08,86.92,16.59,83.41,23.87,76.13,32.81,67.19,30.33,69.67,30,70,1.49,98.51,13.08,86.92,25.45,74.55,19.49,80.51,13.82,86.18,13.82,86.18,17.06,82.94,8.25,91.75,21.92,78.08]},"columns":[{"id":"Year","name":"Year","type":"character"},{"id":"name","name":"name","type":"character"},{"id":"Obs","name":"Obs","type":"numeric"}],"defaultPageSize":5,"dataKey":"d6ba351c17767cb1a57b17b789785898"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p>I would like to examine the percentage of students who have been admitted by the other 3 ways over the years.</p>
 <div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">admitted_students</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">""</span>, y <span class="op">=</span> <span class="va">Obs</span>, fill <span class="op">=</span> <span class="va">name</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">admitted_students</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">""</span>, y <span class="op">=</span> <span class="va">Obs</span>, fill <span class="op">=</span> <span class="va">name</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>stat<span class="op">=</span><span class="st">"identity"</span>, width<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">Year</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_polar.html">coord_polar</a></span><span class="op">(</span><span class="st">"y"</span>, start<span class="op">=</span><span class="fl">0</span><span class="op">)</span> <span class="op">+</span></span>
@@ -367,13 +393,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># admitted_students %&gt;%</span></span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># admitted_students %&gt;%</span></span>
 <span><span class="co">#   filter(Admission_Type %in% c("Main_exams", "Total")) %&gt;%</span></span>
 <span><span class="co">#   ggplot2::ggplot(., aes(x = Year, y = count, color = Admission_Type , group = Admission_Type)) +</span></span>
 <span><span class="co">#   geom_line() +</span></span>
@@ -395,7 +421,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section></section><section id="student-population" class="level2"><h2 class="anchored" data-anchor-id="student-population">Student Population</h2>
 <div class="cell">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">A</span> <span class="op">=</span> <span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">A</span> <span class="op">=</span> <span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"BSc"</span>, <span class="st">"MScAppliedStat"</span>, <span class="st">"MScActuar"</span>, <span class="st">"PhD"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="va">.</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span>,<span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_at</a></span><span class="op">(</span><span class="va">.</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html">vars</a></span><span class="op">(</span><span class="op">-</span><span class="va">Year</span><span class="op">)</span>, <span class="va">as.integer</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -406,7 +432,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 Caused by warning:
 ! NAs introduced by coercion</code></pre>
 </div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span> <span class="op">=</span> <span class="va">A</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span> <span class="op">=</span> <span class="va">A</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"BSc"</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">Year</span> <span class="op">==</span> <span class="st">"2003-2004"</span> <span class="op">|</span> <span class="va">Year</span> <span class="op">==</span> <span class="st">"2022-2023"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">e</span> <span class="op">=</span> <span class="va">A</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"BSc"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.</span>,<span class="va">Obs</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">Obs</span><span class="op">)</span> <span class="op">|</span> <span class="va">Obs</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">Obs</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -446,7 +472,7 @@ Caused by warning:
 <span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -458,7 +484,7 @@ Caused by warning:
 <li>Actuarial Science and Risk Management</li>
 </ul>
 <div class="cell">
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"MSc_AppliedStats"</span>, <span class="st">"MSc_Actuar"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -506,7 +532,7 @@ Caused by warning:
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">msc_students</span> <span class="op">=</span> <span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">msc_students</span> <span class="op">=</span> <span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"AcademicYear"</span>, <span class="st">"BSc"</span>, <span class="st">"MSc (AppliedStat)"</span>, <span class="st">"MSc (Actuar)"</span>, <span class="st">"PhD"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="va">.</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span>,<span class="op">]</span></span>
 <span></span>
@@ -521,17 +547,17 @@ Caused by warning:
 Caused by warning:
 ! NAs introduced by coercion</code></pre>
 </div>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">msc_students</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">msc_students</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://glin.github.io/reactable/reference/reactable.html">reactable</a></span><span class="op">(</span></span>
 <span>    defaultPageSize <span class="op">=</span> <span class="fl">5</span></span>
 <span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-f67ebe2caafafcd09064" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-f67ebe2caafafcd09064">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"AcademicYear":["2003-2004","2004-2005","2005-2006","2006-2007","2007-2008","2008-2009","2009-2010","2010-2011","2011-2012","2012-2013","2013-2014","2014-2015","2015-2016","2016-2017","2017-2018","2018-2019","2019-2020","2020-2021","2021-2022","2022-2023"],"BSc":[2135,2128,2225,2255,2360,2411,2429,2629,2528,2631,2707,2656,2742,2842,2953,3021,3091,3200,3159,3177],"MSc (AppliedStat)":[68,67,89,57,65,50,54,55,56,52,56,52,85,42,47,43,53,66,102,111],"MSc (Actuar)":["NA","NA","NA","NA",38,66,81,86,88,87,89,110,47,74,85,69,68,66,93,85],"PhD":[11,16,20,24,24,20,13,13,16,15,16,14,14,18,21,21,19,19,18,15],"pct":[0.52,0.75,0.9,1.06,1.02,0.83,0.54,0.49,0.63,0.57,0.59,0.53,0.51,0.63,0.71,0.7,0.61,0.59,0.57,0.47]},"columns":[{"id":"AcademicYear","name":"AcademicYear","type":"character"},{"id":"BSc","name":"BSc","type":"numeric"},{"id":"MSc (AppliedStat)","name":"MSc (AppliedStat)","type":"numeric"},{"id":"MSc (Actuar)","name":"MSc (Actuar)","type":"numeric"},{"id":"PhD","name":"PhD","type":"numeric"},{"id":"pct","name":"pct","type":"numeric"}],"defaultPageSize":5,"dataKey":"9e1a659e4b3bbf409916a76f20fe3050"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div class="reactable html-widget html-fill-item" id="htmlwidget-a694dc2b19d04fabb0f4" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-a694dc2b19d04fabb0f4">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"AcademicYear":["2003-2004","2004-2005","2005-2006","2006-2007","2007-2008","2008-2009","2009-2010","2010-2011","2011-2012","2012-2013","2013-2014","2014-2015","2015-2016","2016-2017","2017-2018","2018-2019","2019-2020","2020-2021","2021-2022","2022-2023"],"BSc":[2135,2128,2225,2255,2360,2411,2429,2629,2528,2631,2707,2656,2742,2842,2953,3021,3091,3200,3159,3177],"MSc (AppliedStat)":[68,67,89,57,65,50,54,55,56,52,56,52,85,42,47,43,53,66,102,111],"MSc (Actuar)":["NA","NA","NA","NA",38,66,81,86,88,87,89,110,47,74,85,69,68,66,93,85],"PhD":[11,16,20,24,24,20,13,13,16,15,16,14,14,18,21,21,19,19,18,15],"pct":[0.52,0.75,0.9,1.06,1.02,0.83,0.54,0.49,0.63,0.57,0.59,0.53,0.51,0.63,0.71,0.7,0.61,0.59,0.57,0.47]},"columns":[{"id":"AcademicYear","name":"AcademicYear","type":"character"},{"id":"BSc","name":"BSc","type":"numeric"},{"id":"MSc (AppliedStat)","name":"MSc (AppliedStat)","type":"numeric"},{"id":"MSc (Actuar)","name":"MSc (Actuar)","type":"numeric"},{"id":"PhD","name":"PhD","type":"numeric"},{"id":"pct","name":"pct","type":"numeric"}],"defaultPageSize":5,"dataKey":"9e1a659e4b3bbf409916a76f20fe3050"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">msc_students</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">AcademicYear</span>, y <span class="op">=</span> <span class="va">pct</span>, group <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span>  <span class="op">+</span></span>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">msc_students</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">AcademicYear</span>, y <span class="op">=</span> <span class="va">pct</span>, group <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span>  <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html">geom_area</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/rgb.html">rgb</a></span><span class="op">(</span><span class="fl">0.3</span>,<span class="fl">0.7</span>,<span class="fl">0.3</span>,<span class="fl">0.4</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Ratio of PhD students per Hundreds of Undergraduates"</span>,</span>
@@ -548,14 +574,14 @@ Caused by warning:
 <span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 </section><section id="structure-of-students" class="level2"><h2 class="anchored" data-anchor-id="structure-of-students">Structure of Students</h2>
 <div class="cell">
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">B</span> <span class="op">=</span> <span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">B</span> <span class="op">=</span> <span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"BSc_students"</span>, <span class="st">"MScStudentsA"</span>, <span class="st">"MScStudentsB"</span>, <span class="st">"PhD"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="va">.</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span>,<span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_at</a></span><span class="op">(</span><span class="va">.</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html">vars</a></span><span class="op">(</span><span class="op">-</span><span class="va">Year</span><span class="op">)</span>, <span class="va">as.integer</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -582,7 +608,7 @@ Caused by warning:
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># C$label = fontawesome('fa-twitter')</span></span>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># C$label = fontawesome('fa-twitter')</span></span>
 <span><span class="co"># waffle_data &lt;- waffle_iron(C, aes_d(group = name))</span></span>
 <span><span class="co"># </span></span>
 <span><span class="co"># ggplot(C, aes( fill = name, values = Obs)) + </span></span>
@@ -609,7 +635,7 @@ Caused by warning:
 <span><span class="co">#   theme_void()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tidy_students</span> <span class="op">=</span> <span class="va">msc_students</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tidy_students</span> <span class="op">=</span> <span class="va">msc_students</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">!</span><span class="va">pct</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="va">.</span>, cols <span class="op">=</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">AcademicYear</span><span class="op">)</span>, values_to <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span></span>
 <span></span>
@@ -636,14 +662,14 @@ Caused by warning:
 </div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 </section><section id="master-students" class="level2"><h2 class="anchored" data-anchor-id="master-students">Master Students</h2>
 <div class="cell">
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"S"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="va">.</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,<span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -660,7 +686,7 @@ Caused by warning:
 </div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -668,7 +694,7 @@ Caused by warning:
 </section><section id="graduation-grade" class="level2"><h2 class="anchored" data-anchor-id="graduation-grade">Graduation Grade</h2>
 <p>I hope you are still here because for the end I hold the best part. Finally, how did we perform? The study guide gives a distribution</p>
 <div class="cell">
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">VVV</span> <span class="op">=</span> <span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">VVV</span> <span class="op">=</span> <span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"[5.0 - 6)"</span>, <span class="st">"[6, 7)"</span>, <span class="st">"[7-8.5)"</span>, <span class="st">"[8.5-10]"</span>, <span class="st">"AVG_Grade"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="st">"AVG_Grade"</span><span class="op">)</span>, <span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate.html">separate</a></span><span class="op">(</span><span class="va">.</span>,<span class="va">AVG_Grade</span>, into <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"AVG_Grade"</span>, <span class="st">"Graduates"</span><span class="op">)</span>,sep <span class="op">=</span> <span class="st">"\\("</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -682,7 +708,7 @@ Caused by warning:
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_at</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html">vars</a></span><span class="op">(</span><span class="st">"AVG_Grade"</span>, <span class="st">"Graduates"</span><span class="op">)</span>, <span class="va">as.numeric</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data</span> <span class="op">=</span> <span class="va">VVV</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data</span> <span class="op">=</span> <span class="va">VVV</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
 <span>    AVG_Group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">AVG_Grade</span> <span class="op">&gt;=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">AVG_Grade</span><span class="op">)</span>, <span class="st">"over"</span>, <span class="st">"under"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -702,7 +728,7 @@ Caused by warning:
 <span><span class="va">final_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">dat.gg</span>, by <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html">join_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-fig.fullwidth="true">
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">final_data</span><span class="op">)</span> <span class="op">+</span> </span>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">final_data</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html">geom_polygon</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span>, </span>
 <span>                   <span class="va">y</span>, </span>
 <span>                   group <span class="op">=</span> <span class="va">Year</span>,</span>
@@ -737,7 +763,7 @@ Graduates), : Ignoring unknown aesthetics: text</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="2023-07-23-Graduates-of-Statistics_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -745,54 +771,8 @@ Graduates), : Ignoring unknown aesthetics: text</code></pre>
 </section><section id="online-vs-on-campus-exams" class="level2"><h2 class="anchored" data-anchor-id="online-vs-on-campus-exams">Online vs On-campus Exams</h2>
 <p>Due to pandemic COVID-19, Greek government suspended the operation of schools (elementary, high school, universities) on Tuesday 10 March 2020. Some days later imposed lockdown measures. That period our department organized online lectures and organized online exams for the majority of the courses on Spring Semester and on the September (retake exams). Long story short that lasted for at least 2 years.</p>
 </section><section id="students-graduated-in-6-years" class="level2"><h2 class="anchored" data-anchor-id="students-graduated-in-6-years">Students Graduated in 6 Years</h2>
-<p>Last but not least, maybe the most nervewrecking statistic is that one.</p>
-<div class="cell">
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">5</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"4Years"</span>, <span class="st">"5Years"</span>, <span class="st">"6Years"</span>, <span class="st">"7Years"</span>, <span class="st">"8Years"</span>, <span class="st">"9Years"</span>,</span>
-<span>           <span class="st">"10Years"</span>, <span class="st">"11YearsPlus"</span>, <span class="st">"avg_Years"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">2</span>, to <span class="op">=</span> <span class="fl">28</span>, by <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="va">.</span>, cols <span class="op">=</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Year"</span>,<span class="st">"avg_Years"</span><span class="op">)</span>, names_to <span class="op">=</span> <span class="st">"Obs"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
-<span>    Obs  <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove_all</a></span><span class="op">(</span><span class="va">Obs</span>, pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Y.*"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>    value  <span class="op">=</span> <span class="va">value</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Year</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
-<span>    s <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span>,</span>
-<span>    pct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">value</span><span class="op">/</span><span class="va">s</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span>    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
-<span>    Category <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">Obs</span><span class="op">&lt;=</span><span class="fl">6</span>, <span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Category</span>, <span class="va">Year</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
-<span>    total_pct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">pct</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/drop_na.html">drop_na</a></span><span class="op">(</span><span class="va">total_pct</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`summarise()` has grouped output by 'Category'. You can override using the
-`.groups` argument.</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 26 × 3
-# Groups:   Category [2]
-   Category Year      total_pct
-   &lt;chr&gt;    &lt;chr&gt;         &lt;dbl&gt;
- 1 A        2009-2010      60.7
- 2 A        2010-2011      56.9
- 3 A        2011-2012      55.7
- 4 A        2012-2013      56.1
- 5 A        2013-2014      55.2
- 6 A        2014-2015      67.2
- 7 A        2015-2016      51.7
- 8 A        2016-2017      31.9
- 9 A        2017-2018      41.2
-10 A        2018-2019      25.9
-# ℹ 16 more rows</code></pre>
-</div>
-</div>
-<p>Just for clarification, our studies are 4-Year studies. Although the majority will not successfully finish their degree even in 6 Years. This is important as currently has been voted the time-limit on BSc studies. We have 6 years to complete our studies otherwise we will not take the degree. In the next years, the best case scenario is that 60% of my collegeaus who were about to graduate will not get their degree.</p>
+<p>Last but not least, maybe the most nervewrecking statistic is that one. Just for clarification, our studies have a duaration of four years. Although the majority will not successfully finish their degree even in 6 Years. This is important as currently has been voted the time-limit on BSc studies. We have 6 years to complete our studies otherwise we will not take the degree. In the next years, the best case scenario is that 60% of my collegeaus who were about to graduate will not get their degree.</p>
+<p><img src="https://github.com/stesiam/30DayChartChallenge/blob/main/2024/day23/day23-2024-cc.png?raw=true" class="img-fluid"></p>
 </section><div id="quarto-appendix" class="default"><section id="acknowledgements" class="level2 appendix unlisted"><h2 class="anchored quarto-appendix-heading">Acknowledgements</h2><div class="quarto-appendix-contents">
 <p>Dataset based on recent study guide <a href="https://www.unipi.gr/faculty/mbouts/anak/OS_22_23.pdf">recent study guide</a> of Department of Statistics and Insurance Science of the University of Piraeus.</p>
 <p>Image by <a href="https://pixabay.com/users/vloveland-4834409/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2148715">Victoria Loveland</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2148715">Pixabay</a></p>
