@@ -128,26 +128,7 @@ Extracting the tables from splitted PDF I get a list of 5 tables with my data. I
 ##  Admitted students
 
 So, in Greece there is 1 standard way to be admitted to a university. Although there are 3 more ways which require some certain conditions. I will try to explain them as simple as possible. 
-```{r}
-library(DiagrammeR)
-grViz("
-digraph a_nice_graph {
 
-# node definitions with substituted label text
-node [fontname = Helvetica]
-a [label = '@@1']
-b [label = '@@2-1']
-c [label = '@@2-2']
-d [label = '@@2-3']
-
-# edge definitions with the node IDs
-a -> {b c d}
-}
-
-[1]: 'Ways to admitted on University in Greece'
-[2]: c('Panhellenic Exams','Entry Exams','Transfer')
-")
-```
 
 
 
@@ -513,7 +494,7 @@ ggplot(data = final_data) +
             family = 'uc', 
             fontface = 'bold',
             color = 'white') +
-  labs(title = "Graduates and Gradaution Grade per Year",
+  labs(title = "Graduates and Graduation Grade per Year",
        subtitle = "On this bubble chart we visualized the total graduates per Academic Year <br> depending on the size of the circle. Funrthermore, the color of the circle <br> notes if the average grade of graduation of that specific year <br> is <span style = 'color: #0D6E6E'>over</span> or <span style = 'color: #ff6366'>under</span> the historical average graduation grade.",
        x = NULL,
        y = NULL,
