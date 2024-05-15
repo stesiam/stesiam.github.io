@@ -1,0 +1,487 @@
+---
+title: "Kaggle's Greek Community"
+author: "stesiam"
+description: |
+  An exploratory data analysis about Kaggle's Greek community, based on its 2021 survey. A comparison with the rest DS community.
+link-external-newwindow: true
+categories: [R, EDA, Kaggle]
+fig-cap-location: bottom
+date: "2023-05-06"
+freeze: true
+image: survey.png
+df_print: paged
+image-alt: random survey with ticked values
+toc: true
+toc-title: Table of contents
+toc-location: left
+citation: true
+slug: stesiam2022
+title-block-banner: true
+nocite: '@*'
+csl: apa-6th-edition.csl
+bibliography: [packages.bib, references.bib]
+format: 
+  html:
+    code-link: true
+    code-fold: false
+    code-summary: "Show the code"
+    code-tools: 
+      source: repo
+execute:
+  echo: true
+editor_options: 
+  markdown: 
+    wrap: 80
+---
+
+# Introduction
+
+[Kaggle](https://www.kaggle.com/) is one of the most well-known communities of data analysts/scientists with over 10 million active users [@headsortails2022]. Besides that, Kaggle offers an abundance of functionalities (Notebooks), information (through Discussions between users) and Competitions. It is worth noting that there are other similar communities but they cannot compare to the full functionality of Kaggle. For example, [DrivenData](https://www.drivendata.org/) could be considered an alternative for participating in  ML competitions, but it neither provides the possibility to create notebooks nor has a large number of users.
+
+**Kaggle Machine Learning & Data Science Survey** is an annual survey conducted by Kaggle. The platform asks its users to analyze users' data in the context of a competition.  In this notebook, I conduct an analysis based on 2021's survey in order to compare Greek data analysts with the rest of the world.
+
+
+
+# Prerequisites
+
+## Import libraries
+
+This notebook will definitely make some charts, so the ggplot2 package is necessary. Also, having variables with too many values (e.g. country of each Kaggle user) is an indication of using tables, and for this the reactablefmtr package will help to get a nice result. 
+
+
+```{r Import R Libraries, message=FALSE, results='hide', echo=TRUE}
+# General purpose R libraries
+library(readr)
+library(dplyr)
+library(tidyr)
+library(forcats)
+library(gridExtra)
+
+# Tables
+library(kableExtra)
+library(reactablefmtr)
+
+# Graphs
+library(ggplot2)
+library(ggtext) # Add support for HTML/CSS on ggplot
+library(showtext)
+library(sysfonts) # System / Google fonts
+
+# Other R packages
+library(fontawesome)
+#library(htmltools) # for building div/links
+
+# Other settings
+options(digits=4) # print only 4 decimals
+options(warn = -1)
+
+## Load fonts
+
+# font_families_google() ## see list with available Google fonts
+
+font_add_google(name = "Lilita One", family = "title", db_cache = F)
+font_add_google(name = "Ysabeau Office", family = "subtitle", db_cache = F)
+```
+
+
+
+```{r Add references of R libraries, include=FALSE}
+# Add loaded libraries to bibliography section
+
+knitr::write_bib(.packages(), file = 'packages.bib')
+```
+
+## Import data
+
+Using `read.csv()` from readr package, I import my dataset and I name it as `kaggle_2021`. The dataset includes in the first line the question which is not required for my data analysis, so I exclude it from my dataset.
+
+```{r Import data, message=FALSE, warning=FALSE}
+kaggle_2021 = read_csv("data/kaggle_survey_2021.csv")
+
+# Delete second line
+kaggle_2021 = kaggle_2021[-c(1),]
+```
+
+## Prepare Data
+
+Since my analysis is based on Greek users, I split the dataset into two parts.
+One part includes exclusively Greek users and all the rest another. Thus, we can
+observe any differences or similarities with broader Kaggle's userbase.
+
+
+```{r, message=FALSE, warning=F}
+# Recoding Q2 variable
+
+kaggle_2021$Q2 = kaggle_2021$Q2 %>%
+  fct_recode(
+    "Other" = "Nonbinary",
+    "Other" = "Prefer not to say",
+    "Other" = "Prefer to self-describe"
+  )
+
+## Recoding kaggle_2021$Q3
+
+kaggle_2021$Q3 <- kaggle_2021$Q3 %>%
+  fct_recode(
+    "Hong Kong" = "Hong Kong (S.A.R.)",
+    "Other" = "I do not wish to disclose my location",
+    "Iran" = "Iran, Islamic Republic of...",
+    "UAE" = "United Arab Emirates",
+    "UK" = "United Kingdom of Great Britain and Northern Ireland",
+    "USA" = "United States of America",
+    "Vietnam" = "Viet Nam"
+  )
+
+## Recoding kaggle_2021$Q6
+kaggle_2021$Q6 <- kaggle_2021$Q6 %>%
+  fct_recode(
+    "0 years" = "I have never written code"
+  )
+
+## Recoding kaggle_2021$Q4
+kaggle_2021$Q4 <- kaggle_2021$Q4 %>%
+  fct_recode(
+    "Bachelor" = "Bachelor’s degree",
+    "PhD" = "Doctoral degree",
+    "Other" = "I prefer not to answer",
+    "Master" = "Master’s degree",
+    "No" = "No formal education past high school",
+    "ProfDoc" = "Professional doctorate",
+    "UniNoDegree" = "Some college/university study without earning a bachelor’s degree"
+  )
+
+kaggle_2021$Q4 <- kaggle_2021$Q4 %>%
+  fct_relevel(
+    "No", "UniNoDegree", "Bachelor", "Master", "PhD", "ProfDoc",
+    "Other"
+  )
+
+
+kaggle_2021_compare = kaggle_2021 %>%
+  mutate(Q3 = if_else(Q3 != "Greece", "Other", Q3))
+```
+
+
+
+# Kaggle's community
+
+One of the first thing I observed when I signed up on Kaggle was the vast majority of nationalities and the multicultural origin of the platform. Many people from many countries all in one platform gathered sharing the same passion for Data Science and Data Analytics. Something like Facebook but for Statistics :)
+
+Nevermind, I decided to make a `reactable` to see from which nationalities the platform is comprised from. One out of four users are from India which makes them the most populous nation in platform. By the way, Greek users are way less making a 0.39% of Kaggle's userbase.
+
+::: {.callout-note}
+## Assumptions Note
+We should note that the results are from Kaggle's Survey. That is to say from people that participated. An assumption has to be done that the distribution of the users that participated is the same with the ones who didn't.
+:::
+
+
+```{r}
+a = kaggle_2021 %>%
+  group_by(Q3) %>%
+  summarise(n = n()) %>%
+  mutate(pct = round(n/nrow(kaggle_2021) * 100, digits = 2)) %>%
+  arrange(desc(pct)) %>%
+            reactable(.,
+              defaultPageSize = 6,
+              theme = espn(),
+              columns = list(
+                Q3 = colDef(name = "Country"),
+                n = colDef(name = "Population", 
+                           defaultSortOrder = "desc"),
+                pct = colDef(name = "Percentage (%)")),
+              defaultColDef = colDef(
+                cell = data_bars(data = ., 
+                                 text_position = "outside-base",
+                                 fill_opacity = 0.5, round_edges = T
+                )
+              )
+            ) %>%
+ add_title(
+    title = reactablefmtr::html("Kaggle's Community by Country <img src='https://www.svgrepo.com/show/387896/laptop.svg' alt='' width='40' height='40'>"),
+    margin = reactablefmtr::margin(t=0,r=0,b=3,l=0)
+    )  %>% 
+            add_subtitle("India is the most represented country, followed by the United States.", font_size = 14, font_weight = "normal") %>% 
+            add_source("stesiam | Data : Kaggle Survey 2021", font_size = 12, align = "right")
+
+a
+```
+
+
+# Women participation in DS
+
+Generally, women are under-represented in labor market. According to the World
+Bank [-@worldbank2023], only one in two women participates in the
+labor market, in contrast to men whose corresponding participation is 7 in 10.
+Does DS community follow the same pattern? As it seems, **it varies**.
+
+```{r, warning=F, message=F}
+data = kaggle_2021 %>%
+  group_by(Q3) %>%
+  summarise(n = n(),
+            Women = sum(factor(Q2) == "Woman"),
+            pct_women = Women/n *100)
+```
+
+```{r, fig.height= 10, fig.showtext=T, height = 5, dpi = 300, warning=F}
+data %>%
+  ggplot() +
+  geom_col(alpha = 0.5, aes(x = pct_women, y = reorder(Q3, pct_women))) +
+  geom_text(data = subset(data, pct_women == max(pct_women) | Q3 == "Greece" | pct_women == min(pct_women)), aes(x = pct_women + 2, y = reorder(Q3, pct_women), label = paste0(round(pct_women, digits = 1), "%"))) +
+  geom_vline(xintercept = mean(data$pct_women), linetype = "dashed", color = "pink1") +
+  geom_text(aes(x= mean(data$pct_women)+0.5, label=paste0("Average:", round(mean(data$pct_women), digits = 2)), y = "Colombia"), angle=270) +
+  scale_x_continuous(limits = c(0,50)) +
+  labs(
+    title = "<b>Women participation in DS community per country</b>",
+    subtitle = "Based on Kaggle's 2021 Survey women are underrepresented in DS. <br> The country with the highest women participation is <span style= 'color: #c8102c;'>Tunisia</span> and <span style= 'color: #008f4c;'>Peru</span> is one with the lowest. <br>Last but not least, <span style= 'color: #001489;'>Greece</span> has a relatively disappointing rate of women participation holding <br> 15th place with 15.7\\%, given the fact that the average is", round(mean(data$pct_women),digits = 2),
+    caption = "<b>stesiam</b>, 2023",
+    x = "Percentage of Women",
+    y = "Countries"
+  ) +
+  coord_cartesian(expand = FALSE) + # push geom_col to not leave space on axis x
+  theme_classic() +
+  theme(
+    plot.title = element_markdown(family = "title"),
+    plot.subtitle = element_markdown(family = "subtitle", lineheight = 0.4),
+    plot.caption = element_markdown(family = "subtitle")
+  )
+```
+
+
+
+# Age Distribution
+
+
+
+```{r, fig.showtext=T, dpi = 300, warning=F}
+kaggle_2021_compare %>%
+  select(Q3, Q1) %>%
+  group_by(Q3,Q1) %>%
+  summarise(n = n()) %>%
+  group_by(Q3) %>%
+  mutate(total = sum(n),
+         pct = round(n/total *100, digits = 1)) %>%
+  select(Q3, Q1, pct) %>%
+  ggplot(aes(x = Q1, y = pct+1, fill = Q3)) +
+  geom_bar(stat = "identity", alpha = 0.5, position = "identity") +
+  scale_fill_manual(values = c("Greece" = "#1f77b4", "Other" = "#ff7f0e"))+ 
+  labs(
+    title = "<b>Age Distribution of Kaggle Community</b>",
+    subtitle = "Greek Kagglers have a proportionally lower presence at younger ages (<24 years) compared to the rest <br> of the world and almost zero presence at older ages (>60 years). For the most part, Greek analysts on <br> the  platform belong to the 25-29, 30-34 and 45-49 age groups. On the other hand, the rest of Kaggle's <br> users have a tremendous superiority to the three smaller age groups (18-21, 22-24, 25-29).",
+    caption = "stesiam, 2023",
+    x = "Age Group",
+    y = "Percentage",
+    fill = ""
+  ) +
+  theme_classic() +
+    theme(
+    plot.title = element_markdown(family = "title"),
+    plot.subtitle = element_markdown(family = "subtitle", lineheight = 0.4),
+    plot.caption = element_markdown(family = "subtitle"),
+    text = element_text(family = "subtitle"),
+    legend.position = c(0.85, 0.85)
+  )
+```
+
+# Educational Background
+
+
+```{r, fig.showtext=T, dpi = 300, warning=F}
+kaggle_2021_compare %>%
+  select(Q3, Q4) %>%
+  group_by(Q3, Q4) %>%
+  summarise(n = n()) %>%
+  group_by(Q3) %>%
+  mutate(pct = round(n/sum(n)*100, digits = 1)) %>%
+  ungroup() %>%
+  ggplot() +
+  geom_col(stat = "identity", alpha = 0.5, position = "identity", aes(x = Q4, y = pct, fill = Q3)) +
+  scale_fill_manual(values = c("Greece" = "#1f77b4", "Other" = "#ff7f0e"))+ 
+  labs(
+    title = "Educational Background of Kagglers",
+    subtitle = "Γρεεκ,",
+    caption = "stesiam, 2023",
+    x = "Education",
+    y = "Percentage"
+  ) +
+  theme_classic() +
+    theme(
+    plot.title = element_markdown(family = "title"),
+    plot.subtitle = element_markdown(family = "subtitle", lineheight = 0.4),
+    plot.caption = element_markdown(family = "subtitle"),
+    text = element_text(family = "subtitle"),
+    legend.position = c(0.85, 0.85)
+  )
+```
+
+
+# Programming Language
+
+
+
+```{r, fig.showtext=T, dpi = 300, warning=F}
+
+d1 = kaggle_2021_compare %>%
+  select(Q3, Q7_Part_1, Q7_Part_2) %>%
+  group_by(Q3) %>%
+  count(Q7_Part_1 == "Python") %>%
+  mutate(pct  = round(n/sum(n)*100, digits = 1)) %>%
+  na.omit()
+
+d2 = kaggle_2021_compare %>%
+  select(Q3, Q7_Part_2) %>%
+  group_by(Q3) %>%
+  count(Q7_Part_2 == "R") %>%
+  mutate(pct  = round(n/sum(n)*100, digits = 1)) %>%
+  na.omit()
+
+d3 = kaggle_2021_compare %>%
+  select(Q3, Q7_Part_8) %>%
+  group_by(Q3) %>%
+  count(Q7_Part_8 == "Julia") %>%
+  mutate(pct  = round(n/sum(n)*100, digits = 1)) %>%
+  na.omit()
+
+
+```
+
+
+
+
+# Common Stacks
+
+
+
+```{r, fig.showtext=T, dpi = 300, warning=F}
+p1 = kaggle_2021_compare %>%
+  select(Q3, starts_with("Q7")) %>%
+  unite(Combined, starts_with("Q7"), sep = ",", na.rm = T) %>%
+  count(Q3, Combined) %>%
+  filter(Q3 == "Greece") %>%
+  mutate(pct = round(n/sum(n)*100, digits = 1)) %>%
+  arrange(-pct) %>%
+  filter(pct >=3) %>%
+  ggplot() +
+  geom_col(aes(x = reorder(Combined, -pct), y = pct)) +
+  geom_text(aes(x = Combined, y = pct+ 1, label = paste0(pct, "%", "", " (", n, ")"))) +
+  labs(
+    title = "Popular Stacks in Greece",
+    subtitle = "Python seems to be THE tool for a big portion of Greek Analysts.",
+    caption = "stesiam, 2023",
+    x = "Stacks",
+    y = "Percentage"
+  ) + 
+  theme_classic() +
+  theme(
+    plot.title = element_markdown(family = "title"),
+    plot.subtitle = element_markdown(family = "subtitle", lineheight = 0.4),
+    plot.caption = element_markdown(family = "subtitle"),
+    text = element_text(family = "subtitle")
+  )
+
+kaggle_2021_compare %>%
+  select(Q3, starts_with("Q7")) %>%
+  unite(Combined, starts_with("Q7"), sep = ",", na.rm = T) %>%
+  count(Q3, Combined) %>%
+  filter(Q3 == "Other") %>%
+  mutate(pct = round(n/sum(n)*100, digits = 1)) %>%
+  arrange(-pct) %>%
+  filter(pct >=3) %>%
+  ggplot() +
+  geom_col(aes(x = reorder(Combined, -pct), y = pct)) +
+  geom_text(aes(x = Combined, y = pct+ 1, label = paste0(pct, "%", "", " (", n, ")"))) +
+  labs(
+    title = "Popular Stacks in Greece",
+    subtitle = "Python seems to be THE tool for a big portion of Greek Analysts.",
+    caption = "stesiam, 2023",
+    x = "Stacks",
+    y = "Percentage"
+  ) + 
+  theme_classic() +
+  theme(
+    plot.title = element_markdown(family = "title"),
+    plot.subtitle = element_markdown(family = "subtitle", lineheight = 0.4),
+    plot.caption = element_markdown(family = "subtitle"),
+    text = element_text(family = "subtitle")
+  )
+```
+
+```{r}
+p2 = kaggle_2021_compare %>%
+  select(Q3, starts_with("Q7")) %>%
+  unite(Combined, starts_with("Q7"), sep = ",", na.rm = T) %>%
+  count(Q3, Combined) %>%
+  filter(Q3 == "Other") %>%
+  mutate(pct = round(n/sum(n)*100, digits = 1)) %>%
+  arrange(-pct) %>%
+  filter(pct >=3) %>%
+  ggplot() +
+  geom_col(aes(x = reorder(Combined, -pct), y = pct)) +
+  geom_text(aes(x = Combined, y = pct+ 1, label = paste0(pct, "%", "", " (", n, ")"))) +
+  labs(
+    title = "Popular Stacks in Greece",
+    subtitle = "Python seems to be THE tool for a big portion of Greek Analysts.",
+    caption = "stesiam, 2023",
+    x = "Stacks",
+    y = "Percentage"
+  ) + 
+  theme_classic() +
+  theme(
+    plot.title = element_markdown(family = "title"),
+    plot.subtitle = element_markdown(family = "subtitle", lineheight = 0.4),
+    plot.caption = element_markdown(family = "subtitle"),
+    text = element_text(family = "subtitle")
+  )
+```
+
+# IDEs
+
+## Python users
+
+
+## R users
+
+
+# Jobs
+
+```{r}
+jobs1 = kaggle_2021_compare %>%
+  select(Q3, Q5) %>%
+  filter(Q3 == "Greece") %>%
+  count(Q5) %>%
+  arrange(-n) %>%
+  head(8) %>%
+  mutate(pct = round(n/sum(n)*100, 1))
+
+jobs2 = kaggle_2021_compare %>%
+  select(Q3, Q5) %>%
+  filter(Q3 == "Other") %>%
+  count(Q5) %>%
+  arrange(-n) %>%
+  head()  %>%
+  mutate(pct = round(n/sum(n)*100, 1))
+
+```
+
+
+```{r Export reactable table to html, include=F}
+save_reactable(a, "kaggle_table.html")
+```
+
+
+
+# Conclusions
+
+
+
+# Acknowledgements {.appendix .unlisted}
+
+Dataset based on
+<a href="https://www.kaggle.com/competitions/kaggle-survey-2021/overview">2021
+Kaggle Machine Learning & Data Science Survey</a>
+
+Image by
+<a href="https://pixabay.com/users/graphicbunny-10705863/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=4441595">Christina
+Smith</a> from
+<a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=4441595">Pixabay</a>
+
+# References {.appendix .unlisted}
