@@ -193,7 +193,10 @@ admitted_students %>%
 
 I would like to examine the percentage of students who have been admitted by the other 3 ways over the years.
 
-```{r fig.showtext = TRUE,fig.width=12}
+```{r Visualization of Admitted Undergrads,fig.width=10, fig.showtext=T, dpi = 300, warning=F}
+#| label: fig-line-plot
+#| fig-cap: "Admitted Undergrads through Panhellnic Exams"
+
 ggplot(data = admitted_students, aes(x = "", y = Obs, fill = name)) +
   geom_bar(stat="identity", width=1) +
   facet_wrap(~Year) +
@@ -205,7 +208,7 @@ ggplot(data = admitted_students, aes(x = "", y = Obs, fill = name)) +
     caption = "**Data:** Study Guide of Statistics and Insurance Science <br> 
     stesiam, 2023"
   ) +
-  theme_void(base_size = 20) +
+  theme_void(base_size = 10) +
   theme(
     legend.position = "none",
     plot.title = element_markdown(family = "lobster", face="bold"),
