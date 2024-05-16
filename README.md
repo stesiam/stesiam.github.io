@@ -11,6 +11,7 @@ A website built with Quarto and deployed using GitHub Pages.
 - 🌖 Light / Dark mode
 - 🖌️️ Use Bootstrap to make cards
 - 🔍 Add 404 page
+- 📎 Remove .html endings on several links using folders containing quarto files named as index.qmd
 
 
 ## To Do
