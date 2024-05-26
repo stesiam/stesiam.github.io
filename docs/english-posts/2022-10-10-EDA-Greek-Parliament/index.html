@@ -123,8 +123,8 @@ div.csl-indent {
   }
 }</script><script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script><link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 <script src="../../site_libs/core-js-2.5.3/shim.min.js"></script><script src="../../site_libs/react-18.2.0/react.min.js"></script><script src="../../site_libs/react-18.2.0/react-dom.min.js"></script><script src="../../site_libs/reactwidget-1.0.0/react-tools.js"></script><link href="../../site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
-<script src="../../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script><link href="../../site_libs/reactable-0.4.4/reactable.css" rel="stylesheet">
-<script src="../../site_libs/reactable-binding-0.4.4/reactable.js"></script><link rel="stylesheet" href="../../styles.css">
+<script src="../../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script><link href="../../site_libs/reactable-0.4.4.9000/reactable.css" rel="stylesheet">
+<script src="../../site_libs/reactable-binding-0.4.4.9000/reactable.js"></script><link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="stesiam - EDA on Greek Parliament">
 <meta property="og:description" content="Let’s explore the MPs that got elected the most over the years (1981-2019).">
 <meta property="og:image" content="https://www.stesiam.com/english-posts/2022-10-10-EDA-Greek-Parliament/images/houses-of-parliament.jpg">
@@ -261,30 +261,7 @@ div.csl-indent {
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
     </div>
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content"><section id="table-of-contents" class="level1 unlisted"><h1 class="unlisted">Table of Contents</h1>
-<ol type="1">
-<li><a href="#introduction">Introduction</a></li>
-<li>
-<a href="#prerequisites">Prerequisites</a> <br> &nbsp; 2.1 <a href="#import-libraries">Import Libraries</a> <br> &nbsp; 2.2 <a href="#import-dataset">Import Dataset</a> <br> &nbsp; 2.3 <a href="#preview-dataset">Preview Dataset</a> <br> &nbsp; 2.4 <a href="#structure-of-dataset">Structure of Dataset</a> <br> &nbsp; 2.5 <a href="#recoding-variables">Recoding variables</a> <br> &nbsp; 2.6 <a href="#setting-colors">Setting colors</a> <br>
-</li>
-<li>
-<a href="#parliament-over-the-years">Parliament over the years</a> <br>
-</li>
-<li>
-<a href="#most-elected-members-of-parliament">Most elected members of parliament</a> <br>
-</li>
-<li>
-<a href="#most-elected-members-by-party">Most elected members by party</a> <br> &nbsp; 5.1 <a href="#kke">KKE</a> <br> &nbsp; 5.2 <a href="#nd">ND</a> <br> &nbsp; 5.3 <a href="#pasok">PASOK</a> <br> &nbsp; 5.4 <a href="#syriza">SYRIZA</a> <br>
-</li>
-<li>
-<a href="#most-elected-members-per-constituency">Most elected members per constituency</a> <br> &nbsp; 6.1 <a href="#attica">Attica</a> <br> &nbsp; 6.2 <a href="#central-greece">Central Greece</a> <br> &nbsp; 6.3 <a href="#central-macenodia">Central Macedonia</a> <br> &nbsp; 6.4 <a href="#crete">Crete</a> <br> &nbsp; 6.5 <a href="#eastern-macedonia-and-thrace">Eastern Macedonia and Thrace</a> <br> &nbsp; 6.6 <a href="#epirus">Epirus</a> <br> &nbsp; 6.7 <a href="#ionian-islands">Ionian Islands</a> <br> &nbsp; 6.8 <a href="#north-aegean">North Aegean</a> <br> &nbsp; 6.9 <a href="#pelopponnese">Peloponnese</a> <br> &nbsp; 6.10 <a href="#south-aegean">South Aegean</a> <br> &nbsp; 6.11 <a href="#thessaly">Thessaly</a> <br> &nbsp; 6.12 <a href="#western-greece">Western Greece</a> <br> &nbsp; 6.13 <a href="#western-macedonia">Western Macedonia</a> <br>
-</li>
-<li><a href="#acknowledgements">Acknowledgements</a></li>
-<li>
-<a href="#references">References</a>
-<hr>
-</li>
-</ol></section><section id="introduction" class="level1"><h1>Introduction</h1>
+<main class="content quarto-banner-title-block" id="quarto-document-content"><section id="introduction" class="level1"><h1>Introduction</h1>
 <p>And here we go…</p>
 <p>This is the first notebook on my website and I’d like to be a little special. I didn’t want to just take a ready-made dataset and apply a machine learning technique (I will do this in the next articles). So, I decided to make my own with the help of <a href="hellenicparliament.gr/">hellenic’s parliament website</a>.</p>
 <p>The Greek political scene has particularly preoccupied global public opinion in recent years, due to the Greek economic crisis. A part of it was spent on the reasons that caused it. The causes of the Greek crisis are many and a point of contention to this day. In this article we will deal essentially with one of the points of criticism. The election of the same persons.</p>
@@ -461,8 +438,8 @@ Table&nbsp;1: Preview Dataset (first 6 rows)
 <span>    defaultPageSize <span class="op">=</span> <span class="fl">5</span></span>
 <span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<div class="reactable html-widget html-fill-item" id="htmlwidget-d7302f3e5739ed69edd1" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-d7302f3e5739ed69edd1">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Party":["ANEXARTITOI ELLINES (Independent Hellenes) National Patriotic Democratic Alliance","DEMOCRATIC COALITION (Panhellenic Socialist Movement Democratic Left )","LAIKOS SYNDESMOS - CHRYSI AVGI (People’s Association – Golden Dawn)","ANEXARTITOI ELLINES (Independent Hellenes)","PA.SO.K. (Panhellenic Socialist Movement)","Communist Party of Greece (Interior)","SYNASPISMOS RIZOSPASTIKIS ARISTERAS","Coalition of the Left and Progress","ANEXARTITOI DIMOKRATIKOI VOULEFTES","KOMMOUNISTIKO KOMMA ELLADAS","DHM.AR (Democratic Left)","TO POTAMI (The River)","NEA DIMOKRATIA","LAIKI ENOTITA","INDEPENDENT","DI.K.KI.","DI.ANA.","LA.O.S.","ΟΟ.ΕΟ.","POL.A."],"Length":[81,70,67,42,41,36,35,34,34,27,24,21,14,13,11,8,7,7,6,6]},"columns":[{"id":"Party","name":"Party","type":"character"},{"id":"Length","name":"Length","type":"numeric"}],"defaultPageSize":5,"dataKey":"6290ea4daaf33732cb2712395b66ae78"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div class="reactable html-widget html-fill-item" id="htmlwidget-6062464fbfe51c899d30" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-6062464fbfe51c899d30">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Party":["ANEXARTITOI ELLINES (Independent Hellenes) National Patriotic Democratic Alliance","DEMOCRATIC COALITION (Panhellenic Socialist Movement Democratic Left )","LAIKOS SYNDESMOS - CHRYSI AVGI (People’s Association – Golden Dawn)","ANEXARTITOI ELLINES (Independent Hellenes)","PA.SO.K. (Panhellenic Socialist Movement)","Communist Party of Greece (Interior)","SYNASPISMOS RIZOSPASTIKIS ARISTERAS","Coalition of the Left and Progress","ANEXARTITOI DIMOKRATIKOI VOULEFTES","KOMMOUNISTIKO KOMMA ELLADAS","DHM.AR (Democratic Left)","TO POTAMI (The River)","NEA DIMOKRATIA","LAIKI ENOTITA","INDEPENDENT","DI.K.KI.","DI.ANA.","LA.O.S.","ΟΟ.ΕΟ.","POL.A."],"Length":[81,70,67,42,41,36,35,34,34,27,24,21,14,13,11,8,7,7,6,6]},"columns":[{"id":"Party","name":"Party","type":"character"},{"id":"Length","name":"Length","type":"numeric"}],"defaultPageSize":5,"dataKey":"6290ea4daaf33732cb2712395b66ae78"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p>In our case the parties with the longest name is AN.EL. and Democratic Coalition with 81 and 70 characters, respectively. On the contrary, the shortest party name is POL.A. with 6 characters.</p>
@@ -1640,7 +1617,7 @@ Warning
 
 </div></section><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
 <div id="ref-R-reactable" class="csl-entry" role="listitem">
-Lin, G. (2023). <em>Reactable: Interactive data tables for r</em>. Retrieved from <a href="https://glin.github.io/reactable/">https://glin.github.io/reactable/</a>
+Lin, G. (2024). <em>Reactable: Interactive data tables for r</em>. Retrieved from <a href="https://glin.github.io/reactable/">https://glin.github.io/reactable/</a>
 </div>
 <div id="ref-R-tibble" class="csl-entry" role="listitem">
 Müller, K., &amp; Wickham, H. (2023). <em>Tibble: Simple data frames</em>. Retrieved from <a href="https://tibble.tidyverse.org/">https://tibble.tidyverse.org/</a>
@@ -2315,7 +2292,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       &nbsp;
     </div>
     <div class="nav-footer-right">
-<p>Made with <a href="https://www.r-project.org/"><i class="fa-brands fa-r-project" aria-label="r-project"></i></a> and <strong><a href="https://quarto.org/">Quarto</a> v1.5</strong></p>
+<p>Made with <i class="fa-brands fa-r-project" aria-label="r-project"></i> and <strong><a href="https://quarto.org/">Quarto</a> v1.5</strong></p>
 </div>
   </div>
 </footer>
