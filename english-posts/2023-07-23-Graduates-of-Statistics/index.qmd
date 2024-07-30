@@ -68,6 +68,8 @@ library(packcircles)
 #library(ggcirclepack)
 library(sysfonts)
 library(hrbrthemes)  #theme_ipsum_rs
+library(waffle)
+
 
 library(reactable)
 
@@ -234,12 +236,17 @@ I would like to examine the percentage of students who have been admitted by the
 
 caption_text = glue("<b> Data: </b> Study Guide of Statistics and Insurance Science <br><span style='font-family:fb;'  >&#xf09b;</span> <b>stesiam</b>, 2024")
 
+admitted_students1 =
+ admitted_students %>%
+group_by(Year) %>%
+mutate(lab.ypos = cumsum(Obs) - 0.5*Obs)
 
-ggplot(data = admitted_students, aes(x = "", y = Obs, fill = name)) +
+ggplot(data = admitted_students1, aes(x = "", y = Obs, fill = name)) +
   geom_bar(stat="identity", width=1) +
+  geom_richtext(aes(y = lab.ypos, label = ifelse(name == "perc100", paste0(round(Obs), "%"), "")), color = "white", fontface = "bold",
+      fill = NA, label.color = NA)+
   facet_wrap(~Year, nrow = 3) +
   coord_polar("y", start=0) +
-  
   labs(
     title = "Proportion of Admissions through Panhellenic Exams",
     subtitle = glue("It seems that <span style = 'color:#619CFF; font-weight: bold'>Panhellenic Exams</span> is the prevalent way to be admitted to Statistics <br> Department. Although that was an expected result. It is interesting to study <br> the proportion over the years. The most extraordinary result is in 2011 when almost <br>  everyone came through Panhellenic Exams."),
@@ -279,7 +286,7 @@ sub = glue("Last 20 years the undergraduates have been increased
 A %>%
   dplyr::filter(name == "BSc") %>%
   ggplot(., aes(x = Year, y = Obs, group = "1")) +
-  ylim(2000, 4000) +
+  ylim(2000, 3500) +
   geom_line(color = "white") +
   labs(title = "Number of Undergraduate Students",
        x = "Academic Year",
@@ -308,57 +315,59 @@ A %>%
   )
 ```
 
-## Master Programmes
+## PhD Students Ratio
 
-Our department has two Master options.
-
--   Applied Statistics
--   Actuarial Science and Risk Management
 
 ```{r}
-statistics_tables[[3]] %>%
-  setNames(c("Year", "MSc_AppliedStats", "MSc_Actuar")) %>%
-  slice(-c(1:2))
+# statistics_tables[[3]] %>%
+#   setNames(c("Year", "MSc_AppliedStats", "MSc_Actuar")) %>%
+#   slice(-c(1:2))
 ```
 
 ```{r}
-msc_students = statistics_tables[[2]] %>%
+ms_phd_students = statistics_tables[[2]] %>%
   setNames(c("AcademicYear", "BSc", "MSc (AppliedStat)", "MSc (Actuar)", "PhD")) %>%
   .[-1,]
 
-rownames(msc_students) = 1:nrow(msc_students)
+rownames(ms_phd_students) = 1:nrow(ms_phd_students)
 
-msc_students = msc_students %>%
+ms_phd_students = ms_phd_students %>%
   mutate_at(c("BSc", "MSc (AppliedStat)", "MSc (Actuar)", "PhD"), as.numeric) %>%
-  mutate(pct = round((PhD/BSc)*100, 2))
-
-msc_students %>%
-  reactable(
-    defaultPageSize = 5
-  )
+  mutate(pct = round((PhD/BSc)*100, 2)) %>%
+  mutate(AcademicYear = stringr::str_remove(AcademicYear, "-.*"))
 ```
 
 ```{r}
-library(waffle)
-
-```
-
-```{r}
-ggplot(msc_students, aes(x = AcademicYear, y = pct, group = 1))  +
-  geom_area(fill = rgb(0.3,0.7,0.3,0.4)) +
+library(ggpattern)
+library(MetBrewer)
+bg_gradient <- grid::linearGradient(colours = rev(MetBrewer::met.brewer("Pillement")[5:6]))
+spline.d <- as.data.frame(spline(ms_phd_students$AcademicYear, ms_phd_students$pct))
+ggplot(spline.d, aes(x = x, y = y, group = 1))  +
+  ggpattern::geom_area_pattern(
+                               pattern = "gradient", 
+                               fill = "#00000000",
+                               pattern_fill  = "#00000000",
+                               pattern_fill2 = "#80C02080") +
   labs(
     title = "Ratio of PhD students per Hundreds of Undergraduates",
     subtitle = "The decrease ",
-    caption = "stesiam, 2023"
+    caption = caption_text
   ) +
-  geom_text(data = msc_students %>% dplyr::filter(pct == min(pct) | pct == max(pct)),aes(label = pct, y = pct+0.1), fontface = "bold", family = "uc", nudge_y =0.1) +
-  theme_minimal() +
-  theme(
-    plot.title = element_markdown(family = "uc", face="bold"),
-    plot.subtitle = element_markdown(family = "serif"),
-    plot.caption = element_markdown(family = "serif"),
-    axis.text.x = element_text(face="bold", angle=90),panel.grid = element_blank()
-  )
+  geom_text(data = spline.d %>% dplyr::filter(y == min(y) | y == max(y)),aes(label = round(y,digits = 2), y = y+0.05), fontface = "bold", family = "uc", nudge_y =0.1, size = 2) +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) + 
+  theme_minimal(base_size = 5) +
+  theme(legend.position = "none",
+        plot.title.position = "plot",
+        plot.title = element_markdown(family = "lobster", face="bold",
+        hjust = 0.5),
+        plot.subtitle = element_markdown(family = "economica", 
+                                      margin = margin(t=5,b=5, r=10, l = 10),
+                                      hjust = 0.5,
+                                      lineheight = 1.2),
+        plot.caption = element_markdown(family = "economica",
+                                    lineheight = 1.2),
+        axis.title = element_blank()
+        )
 ```
 
 ## Structure of Students
@@ -388,9 +397,10 @@ B = statistics_tables[[2]] %>%
 
 ```{r, fig.showtext=TRUE, dpi=300, warning=FALSE}
 B %>%
-dplyr::filter(Year == "2022-2023") %>%
-ggplot(., aes(label=name, values=Obs*3)) +
+dplyr::filter(Year == "2021-2022") %>%
+ggplot(., aes(label=name, values=round(Obs))) +
 geom_pictogram(n_rows = 10,
+               flip = TRUE,
                make_proportional = TRUE, 
                family = "fs", size = 5, 
                aes(color = name)) +
@@ -412,17 +422,20 @@ scale_color_manual(
   ) +
   labs(
       title = "Students' Ratio by Degree",
+      subtitle = "**<span style = 'color:#a40000; font-weight: bold'>Undergraduates</span>** are about the 95% of the total student population of our Dept. <br> Next we have **<span style = 'color:#c68958; font-weight: bold'>Postgraduates</span>** are the 5% and **<span style = 'color:black; font-weight: bold'>PhD</span>** candidates are just 0.5%.",
       caption = caption_text
   ) +
   coord_equal() +
   theme_ipsum_rc(grid="") +
   theme_enhance_waffle() +
-  theme(legend.key.height = unit(2.25, "line")) +
-  theme(legend.text = element_text(size = 10, family = "uc",
-                      hjust = 0, vjust = 0.75),
-        plot.title = element_markdown(family = "lobster", face="bold"),
+  theme(legend.position = "none",
+        plot.title.position = "plot",
+        plot.title = element_markdown(family = "lobster", face="bold",
+        hjust = 0.5),
         plot.subtitle = element_markdown(family = "economica", 
-                                      margin = margin(t=5,b=5)),
+                                      margin = margin(t=5,b=5, r=10, l = 10),
+                                      hjust = 0.5, size = 10,
+                                      lineheight = 1.2),
         plot.caption = element_markdown(family = "economica",
                                     lineheight = 1.2))
 ```
@@ -500,13 +513,12 @@ ggplot(data = final_data) +
   geom_richtext(aes(xcirc, 
                 ycirc,
                 size = Graduates,
-                label = glue("{Year}")), 
-            size = 6, 
+                label = glue("{Year}")),
             family = 'uc', 
             fontface = 'bold',
             fill = NA, label.color = NA) +
   labs(title = "Graduates and Graduation Grade per Year",
-       subtitle = "On this bubble chart we visualized the total graduates per Academic Year <br> depending on the size of the circle. Funrthermore, the color of the circle <br> notes if the average grade of graduation of that specific year <br> is <span style = 'color: #0D6E6E'>over</span> or <span style = 'color: #ff6366'>under</span> the historical average graduation grade.",
+       subtitle = "On this bubble chart we visualized the total graduates per Academic Year <br> depending on the size of the circle. Funrthermore, the color of the circle <br> notes if the average grade of graduation of that specific year is **<span style = 'color: #0D6E6E'>over</span>** or <br>**<span style = 'color: #ff6366'>under</span>** the historical average graduation grade.",
        x = NULL,
        y = NULL,
        caption = caption_text) +

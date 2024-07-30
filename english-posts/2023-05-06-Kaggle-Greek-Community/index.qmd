@@ -67,6 +67,7 @@ library(dplyr)
 library(tidyr)
 library(forcats)
 library(gridExtra)
+library(countrycode)
 
 # Tables
 library(kableExtra)
@@ -78,6 +79,7 @@ library(ggtext) # Add support for HTML/CSS on ggplot
 library(showtext)
 library(sysfonts) # System / Google fonts
 library(glue)
+library(ggflags)
 
 # Other R packages
 library(fontawesome)
@@ -243,8 +245,6 @@ data = kaggle_2021 %>%
 ```
 
 ```{r}
-library(countrycode)
-library(ggflags)
 data$iso2c <- countrycode(data$Q3, "country.name", "iso2c")
 data$iso2c = tolower(data$iso2c)
 ```
@@ -252,7 +252,8 @@ data$iso2c = tolower(data$iso2c)
 ```{r, fig.height= 12, fig.showtext=T, dpi = 300, warning=F}
 data %>%
   ggplot() +
-  geom_col(alpha = 0.5, aes(x = pct_women, y = reorder(Q3, pct_women))) +
+  geom_col(aes(x = pct_women, y = reorder(Q3, pct_women), fill = pct_women)) +
+  scale_fill_gradient2(low="purple", high="purple4")+
   geom_label(data = subset(data, pct_women == max(pct_women) | Q3 == "Greece" | pct_women == min(pct_women)), aes(x = pct_women - 1.5, y = reorder(Q3, pct_women), label = paste0(round(pct_women, digits = 1), "%")), family = "text", size = 2.3) +
  ggflags::geom_flag(x = 0.3, aes(y = Q3,
                          country = iso2c), 
@@ -271,6 +272,7 @@ family = "text") +
   coord_cartesian(expand = FALSE) + # push geom_col to not leave space on axis x
   theme_classic() +
   theme(
+    legend.position = "none",
     plot.title = element_markdown(family = "title"),
     plot.subtitle = element_markdown(family = "subtitle", lineheight = 0.4),
     plot.caption = element_markdown(family = "subtitle"),
@@ -349,7 +351,7 @@ kaggle_2021_compare %>%
 # Programming Language
 
 ```{r, fig.showtext=T, dpi = 300, warning=F}
-
+library(ggcirclepack)
 d1 = kaggle_2021_compare %>%
   select(Q3, Q7_Part_1, Q7_Part_2) %>%
   group_by(Q3) %>%
