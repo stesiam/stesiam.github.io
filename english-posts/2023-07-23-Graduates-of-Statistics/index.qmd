@@ -441,20 +441,10 @@ scale_color_manual(
 ```
 
 
-## Master Students
+## Graduation Rate
 
 ```{r}
-statistics_tables[[3]] %>%
-  select(c(1,2)) %>%
-  setNames(c("Year", "S")) %>%
-  .[-c(1,2),] %>%
-  separate(S, c('Admitted', 'Graduated')) %>%
-  na.omit() %>%
-  mutate(Ratio = round(as.numeric(Graduated)/as.numeric(Admitted), 2)) %>%
-  select(Year, Ratio) %>%
-  ggplot(.) +
-  geom_line(aes(x = Year, y = Ratio, group = 1))+
-  theme_classic()
+
 ```
 
 ## Graduates & Graduation Grade
