@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="el" xml:lang="el"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.5.53">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="author" content="stesiam">
 <meta name="description" content="Ένας απλός οδηγός χρήσης του API του data.gov.gr, ώστε να λαμβάνετε τη ροή δεδομένων με τη χρήση της R.">
-
 <title>Πρόσβαση στο API του data.gov.gr – stesiam</title>
 <style>
 code{white-space: pre-wrap;}
@@ -58,7 +55,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
-
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
@@ -79,8 +75,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
-<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
-<script id="quarto-search-options" type="application/json">{
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": true,
   "collapse-after": 3,
@@ -105,21 +100,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Υποβολή",
     "search-label": "Αναζήτηση"
   }
-}</script>
-
-
-<link rel="stylesheet" href="../../styles.css">
+}</script><link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="Πρόσβαση στο API του data.gov.gr – stesiam">
 <meta property="og:description" content="Ένας απλός οδηγός χρήσης του API του data.gov.gr, ώστε να λαμβάνετε τη ροή δεδομένων με τη χρήση της R.">
 <meta property="og:site_name" content="stesiam">
 </head>
-
 <body class="floating nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top quarto-banner">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">stesiam</span>
@@ -131,7 +120,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item">
+<li class="nav-item">
     <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
@@ -139,8 +128,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-posts" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Posts</span>
     </a>
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-posts">    
-        <li>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-posts">
+<li>
     <a class="dropdown-item" href="../../english-posts/index.html">
  <span class="dropdown-text">English Posts</span></a>
   </li>  
@@ -149,7 +138,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="dropdown-text">Greek Posts</span></a>
   </li>  
     </ul>
-  </li>
+</li>
   <li class="nav-item">
     <a class="nav-link" href="../../web-apps/index.html"> 
 <span class="menu-text">Web Projects</span></a>
@@ -167,18 +156,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">CV</span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
+</div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools tools-wide">
     <a href="https://github.com/stesiam" title="" class="quarto-navigation-tool px-1" aria-label="GitHub Page"><i class="bi bi-github"></i></a>
     <a href="../../english-posts/index.xml" title="" class="quarto-navigation-tool px-1" aria-label="Website RSS"><i class="bi bi-rss"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Εναλλαγή σκοτεινού θέματος"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
-    </nav>
-</header>
-<!-- content -->
-<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
-  <div class="quarto-title-banner page-columns page-full">
+    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full"><div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <div class="quarto-title-block"><div><h1 class="title">Πρόσβαση στο API του data.gov.gr</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source" data-quarto-source-url="https://github.com/stesiam/stesiam.github.io/blob/gh-pages/greek-posts/2023-07-04-GovGR-API-Greek/index.qmd"><i class="bi"></i> Κώδικας</button></div></div>
                   <div>
@@ -216,93 +201,71 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Περιεχόμενα</h2>
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Περιεχόμενα</h2>
    
   <ul>
-  <li><a href="#εισαγωγή" id="toc-εισαγωγή" class="nav-link active" data-scroll-target="#εισαγωγή">Εισαγωγή</a></li>
-  <li><a href="#αίτηση-για-api-key" id="toc-αίτηση-για-api-key" class="nav-link" data-scroll-target="#αίτηση-για-api-key">Αίτηση για API Key</a></li>
-  <li><a href="#χρήση-api" id="toc-χρήση-api" class="nav-link" data-scroll-target="#χρήση-api">Χρήση API</a></li>
-  <li><a href="#παράδειγμα-χρήσης" id="toc-παράδειγμα-χρήσης" class="nav-link" data-scroll-target="#παράδειγμα-χρήσης">Παράδειγμα χρήσης</a></li>
-  </ul>
-</nav>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<li><a href="#%CE%B5%CE%B9%CF%83%CE%B1%CE%B3%CF%89%CE%B3%CE%AE" id="toc-εισαγωγή" class="nav-link active" data-scroll-target="#%CE%B5%CE%B9%CF%83%CE%B1%CE%B3%CF%89%CE%B3%CE%AE">Εισαγωγή</a></li>
+  <li><a href="#%CE%B1%CE%AF%CF%84%CE%B7%CF%83%CE%B7-%CE%B3%CE%B9%CE%B1-api-key" id="toc-αίτηση-για-api-key" class="nav-link" data-scroll-target="#%CE%B1%CE%AF%CF%84%CE%B7%CF%83%CE%B7-%CE%B3%CE%B9%CE%B1-api-key">Αίτηση για API Key</a></li>
+  <li><a href="#%CF%87%CF%81%CE%AE%CF%83%CE%B7-api" id="toc-χρήση-api" class="nav-link" data-scroll-target="#%CF%87%CF%81%CE%AE%CF%83%CE%B7-api">Χρήση API</a></li>
+  <li><a href="#%CF%80%CE%B1%CF%81%CE%AC%CE%B4%CE%B5%CE%B9%CE%B3%CE%BC%CE%B1-%CF%87%CF%81%CE%AE%CF%83%CE%B7%CF%82" id="toc-παράδειγμα-χρήσης" class="nav-link" data-scroll-target="#%CF%80%CE%B1%CF%81%CE%AC%CE%B4%CE%B5%CE%B9%CE%B3%CE%BC%CE%B1-%CF%87%CF%81%CE%AE%CF%83%CE%B7%CF%82">Παράδειγμα χρήσης</a></li>
+  </ul></nav>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
     </div>
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content">
-
-
-
-
-
-<section id="εισαγωγή" class="level2">
-<h2 class="anchored" data-anchor-id="εισαγωγή">Εισαγωγή</h2>
-<p>Στην παραδοσιακή ανάλυση δεδομένων συνήθως ο αναλυτής καλείται να &lt;&lt;καθαρίσει&gt;&gt; τα δεδομένα, να τους δώσει μία κατάλληλη μορφή προκειμένου να αναλυθούν. Αυτή η διαδικασία υπονοεί ότι τα δεδομένα υπάρχουν συγκεντρωμένα σε ένα αρχείο. Ωστόσο, δεν είναι πάντα έτσι. Το πρόβλημα με την ανάλυση ενός dataset είναι ότι δεν λαμβάνει υπόψιν τις όποιες νέες τιμές. Σε αυτή τη περίπτωση θα πρέπει να ξανακατεβάσω τα νέα δεδομένα και να ξανατρέξω την ανάλυση μέσω της R ή όποιου εργαλείου χρησιμοποιώ. Αυτό όπως γίνεται αντιληπτό είναι μη παραγωγικό, ωστόσο όταν γίνεται λίγες φορές μέσα στο χρόνο, ίσως να μην είναι και τόσο . Εκεί που πλέον γίνεται εμφανής η μη αποτελεσματικότητα της παραπάνω διαδικασίας είναι όταν υπάρχει συνεχής ροή δεδομένων, άρα πρέπει να γίνεται αυτή η διαδικασία καθημερινά. Σε αυτές τις περιπτώσεις φαίνεται η χρησιμότητα του API αφού μας δίνει τις νέες τιμές με μικρό σχετικά κόπο. Παράλληλα η χρήση του API ευνοεί την ένταξη νέων δεδομένων, συνεπώς αν φτιάχνουμε ένα προβλεπτικό μοντέλο η ακρίβειά του θα παραμένει σε ένα ικανοποιητικό επίπεδο. Τέλος, άλλη μία θετική συμβολή είναι σε Shiny Apps, προκειμένου να αυτοματοποιείται η ανάλυση δεδομένων και οι πληροφορίες να είναι αξιόπιστες για τον επισκέπτη αυτού.</p>
+<main class="content quarto-banner-title-block" id="quarto-document-content"><section id="εισαγωγή" class="level2"><h2 class="anchored" data-anchor-id="εισαγωγή">Εισαγωγή</h2>
+<p>Στην παραδοσιακή ανάλυση δεδομένων συνήθως ο αναλυτής καλείται να &lt;&gt; τα δεδομένα, να τους δώσει μία κατάλληλη μορφή προκειμένου να αναλυθούν. Αυτή η διαδικασία υπονοεί ότι τα δεδομένα υπάρχουν συγκεντρωμένα σε ένα αρχείο. Ωστόσο, δεν είναι πάντα έτσι. Το πρόβλημα με την ανάλυση ενός dataset είναι ότι δεν λαμβάνει υπόψιν τις όποιες νέες τιμές. Σε αυτή τη περίπτωση θα πρέπει να ξανακατεβάσω τα νέα δεδομένα και να ξανατρέξω την ανάλυση μέσω της R ή όποιου εργαλείου χρησιμοποιώ. Αυτό όπως γίνεται αντιληπτό είναι μη παραγωγικό, ωστόσο όταν γίνεται λίγες φορές μέσα στο χρόνο, ίσως να μην είναι και τόσο . Εκεί που πλέον γίνεται εμφανής η μη αποτελεσματικότητα της παραπάνω διαδικασίας είναι όταν υπάρχει συνεχής ροή δεδομένων, άρα πρέπει να γίνεται αυτή η διαδικασία καθημερινά. Σε αυτές τις περιπτώσεις φαίνεται η χρησιμότητα του API αφού μας δίνει τις νέες τιμές με μικρό σχετικά κόπο. Παράλληλα η χρήση του API ευνοεί την ένταξη νέων δεδομένων, συνεπώς αν φτιάχνουμε ένα προβλεπτικό μοντέλο η ακρίβειά του θα παραμένει σε ένα ικανοποιητικό επίπεδο. Τέλος, άλλη μία θετική συμβολή είναι σε Shiny Apps, προκειμένου να αυτοματοποιείται η ανάλυση δεδομένων και οι πληροφορίες να είναι αξιόπιστες για τον επισκέπτη αυτού.</p>
 <p>Γενικά υπάρχουν πάρα πολλά API από τα οποία μπορούμε να λάβουμε σημαντικές πληροφορίες. Για περισσότερες λεπτομέρειες ως προς τη διαθεσιμότητα δωρεάν APIs μπορείτε να δείτε ένα σχετικό <a href="https://github.com/public-apis/public-apis">repository με μία λίστα αυτών</a>. Σε αυτό το άρθρο θα ασχοληθούμε με τα ανοικτά δεδομένα της χώρας μας που διατίθενται μέσω του <a href="data.gov.gr">data.gov.gr</a>.</p>
-</section>
-<section id="αίτηση-για-api-key" class="level2">
-<h2 class="anchored" data-anchor-id="αίτηση-για-api-key">Αίτηση για API Key</h2>
+</section><section id="αίτηση-για-api-key" class="level2"><h2 class="anchored" data-anchor-id="αίτηση-για-api-key">Αίτηση για API Key</h2>
 <p>Ωστόσο, το συγκεκριμένο API (όπως τα περισσότερα χρειάζονται</p>
 <p>Κάνουμε αίτηση στην αντίστοιχη σελίδα και συμπληρώνουμε τα στοιχεία μας και <strong>όλα</strong> τα πεδία της φόρμας όπως αυτή φαίνεται παρακάτω:</p>
 <div class="quarto-figure quarto-figure-center" style="text-align:center; background-color: #fafafa; padding: 20px">
-<figure class="figure">
-<p><img src="images/datagovgr_api_request.png" class="img-fluid figure-img" width="500"></p>
-<figcaption>Προεπισκόπηση σελίδας αίτησης για πρόσβαση στο API</figcaption>
-</figure>
+<figure class="figure"><p><img src="images/datagovgr_api_request.png" class="img-fluid figure-img" width="500"></p>
+<figcaption>Προεπισκόπηση σελίδας αίτησης για πρόσβαση στο API</figcaption></figure>
 </div>
 <p>Στη συνέχεια θα πρέπει να κοιτάξετε το e-mail σας γιατί θα σας έρθει ένα μήνυμα με τον Token μέσω του οποίου θα χρησιμοποιείται το API. Να δείτε οπωσδήποτε και τον φάκελο με την Ανεπιθύμητη αλληλογραφία (spam) καθώς εμένα μου ήρθε εκεί. Παρεμπιπτόντως, σε περίπτωση που χάσετε το token και έχετε σβήσει το mail και ξανακάνετε αίτηση (με το ίδιο mail) θα σας το ξαναστείλει. Το έπαθα μόλις :)</p>
-</section>
-<section id="χρήση-api" class="level2">
-<h2 class="anchored" data-anchor-id="χρήση-api">Χρήση API</h2>
+</section><section id="χρήση-api" class="level2"><h2 class="anchored" data-anchor-id="χρήση-api">Χρήση API</h2>
 <p>Αφού λάβουμε το Token, θα πρέπει με κάποιο τρόπο να λάβουμε τα δεδομένα. Στην συγκεκριμένη πλατφόρμα υπάρχουν δύο τρόποι.</p>
 <ul>
 <li>Χρήση API από την ιστοσελίδα:</li>
 <li>Χρήση API με την R</li>
 </ul>
 <p>Ο ένας τρόπος (και μάλλον ο λιγότερο αποδοτικός) είναι να κάνεις ζητήσεις τα δεδομένα απευθείας από την ιστοσελίδα data.gov.gr. Αυτό είναι από τη μία εξαιρετικά απλό, αλλά από την άλλη κατεβάζουμε μία σταθερή έκδοση των δεδομένων και συνεπώς αν θελήσω να ανανεώσω τα δεδομένα θα πρέπει πάλι να κατεβάσω τα δεδομένα.</p>
-</section>
-<section id="παράδειγμα-χρήσης" class="level2">
-<h2 class="anchored" data-anchor-id="παράδειγμα-χρήσης">Παράδειγμα χρήσης</h2>
+</section><section id="παράδειγμα-χρήσης" class="level2"><h2 class="anchored" data-anchor-id="παράδειγμα-χρήσης">Παράδειγμα χρήσης</h2>
 <p>Πριν ολοκληρωθεί αυτό το άρθρο έκρινα ως σημαντική την εφαρμογή ενός παραδείγματος. Τη στιγμή που γράφεται αυτό το άρθρο, υπάρχουν συνολικά 49 βάσεις δεδομένων από τις οποίες μπορώ να επιλέξω. Προκειμένου να δούμε την ωφέλεια του API θα διαλέξω κάποιο που ανανεώνεται σε αρκετά συχνή βάση. Ένα τέτοιο δεδομένο είναι οι επιβάτες που <a href="https://www.data.gov.gr/datasets/sailing_traffic/">ταξιδεύουν με πλοία</a>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(httr)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite)</span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://httr.r-lib.org/">httr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://jeroen.r-universe.dev/jsonlite">jsonlite</a></span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Στη συνέχεια θέτω σε μία μεταβλητή τον βασικό σύνδεσμο των δεδομένων. Εγώ που επέλεξα την κίνηση των πλοίων θέτω το εξής:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>base <span class="ot">=</span> <span class="st">"https://data.gov.gr/api/v1/query/sailing_traffic"</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">base</span> <span class="op">=</span> <span class="st">"https://data.gov.gr/api/v1/query/sailing_traffic"</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Στη συνέχεια, όπως τονίζει το documentation της σελίδας για τις άλλες γλώσσες, θα πρέπει να ορίσουμε ένα εύρος ημερομηνιών για το οποίο ενδιαφερόμαστε. Αξίζει να σημειωθεί ότι δεν μπορείτε να πάρετε μεγάλο εύρος με μία μόνο κλήση του API. Για να επιστρέψω στο προηγούμενο παράδειγμα, τα δεδομένα της επιβατικής κίνησης των πλοίων ξεκινάνε από το 2017 μέχρι και σήμερα (2023). Ας υποθέσουμε ότι δεν μας πειράζει αυτό και ότι θέλουμε τα δεδομένα από τις 4 πρώτες μέρες του Ιουλίου του 2023.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>date_from <span class="ot">=</span> <span class="st">"2023-07-01"</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>date_to <span class="ot">=</span> <span class="st">"2023-07-04"</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>API_URL <span class="ot">=</span> <span class="fu">paste0</span>(base, <span class="st">"?date_from="</span>, date_from, <span class="st">"&amp;"</span>, <span class="st">"date_to="</span>, date_to)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>call <span class="ot">=</span> httr<span class="sc">::</span><span class="fu">GET</span>(<span class="at">url =</span> API_URL,</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_headers</span>(<span class="st">`</span><span class="at">Authorization</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">'Token token_id'</span>)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">date_from</span> <span class="op">=</span> <span class="st">"2023-07-01"</span></span>
+<span><span class="va">date_to</span> <span class="op">=</span> <span class="st">"2023-07-04"</span></span>
+<span></span>
+<span><span class="va">API_URL</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">base</span>, <span class="st">"?date_from="</span>, <span class="va">date_from</span>, <span class="st">"&amp;"</span>, <span class="st">"date_to="</span>, <span class="va">date_to</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">call</span> <span class="op">=</span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/GET.html">GET</a></span><span class="op">(</span>url <span class="op">=</span> <span class="va">API_URL</span>,</span>
+<span>    <span class="fu"><a href="https://httr.r-lib.org/reference/add_headers.html">add_headers</a></span><span class="op">(</span>`Authorization` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">'Token token_id'</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Όπου στο σημείο που αναφέρεται το <strong>token_id</strong> θα πρέπει να βάλετε το token που σας έστειλε το data.gov.gr μέσω mail. Αφού λοιπόν αιτηθούμε τα δεδομένα μέσω της GET και κάνουμε λίγο υπομονή βλέπουμε ότι λαμβάνω μία λίστα με διάφορες πληροφορίες. Εμάς μας ενδιαφέρουν τα δεδομένα, οπότε κοιτάμε στη κατηγορία <strong>content</strong> της λίστας, ωστόσο παρατηρούμε μία μη αναγνώσιμη μορφή των στοιχειών μιας και είναι σε δεκαεξαδική μορφή.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> base<span class="sc">::</span><span class="fu">rawToChar</span>(call<span class="sc">$</span>content)</span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data</span> <span class="op">=</span> <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/rawConversion.html">rawToChar</a></span><span class="op">(</span><span class="va">call</span><span class="op">$</span><span class="va">content</span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Με την παραπάνω εντολή μετατρέπονται οι χαρακτήρες και είναι πλέον αναγνώσιμοι, ωστόσο τώρα θα πρέπει να πάρουν και μορφή πίνακα προκειμένου να γίνει η ανάλυση.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(data, <span class="at">flatten =</span> T)</span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data</span> <span class="op">=</span> <span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html">fromJSON</a></span><span class="op">(</span><span class="va">data</span>, flatten <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Και τέλος, με τη βοήθεια του πακέτου <code>jsonlite</code> λαμβάνω ένα data.frame με όνομα data που περιέχει όλους τους προορισμούς, τον αριθμό επιβατών, αυτοκινήτων για τη κάθε ημέρα που ζήτησα.</p>
 
 
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -916,14 +879,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
-<script src="https://giscus.app/client.js" data-repo="stesiam/stesiam.github.io" data-repo-id="R_kgDOHuiNDg" data-category="Comments" data-category-id="DIC_kwDOHuiNDs4CQeAf" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="flatly" data-lang="en" crossorigin="anonymous" async="">
-</script>
-<input type="hidden" id="giscus-base-theme" value="flatly">
-<input type="hidden" id="giscus-alt-theme" value="darkly">
+</script><script src="https://giscus.app/client.js" data-repo="stesiam/stesiam.github.io" data-repo-id="R_kgDOHuiNDg" data-category="Comments" data-category-id="DIC_kwDOHuiNDs4CQeAf" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="flatly" data-lang="en" crossorigin="anonymous" async="">
+</script><input type="hidden" id="giscus-base-theme" value="flatly"><input type="hidden" id="giscus-alt-theme" value="darkly">
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">
 <p>© stesiam, 2022-2024</p>
 </div>   
@@ -935,8 +894,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
   </div>
 </footer>
-
-
 
 
 </body></html>
