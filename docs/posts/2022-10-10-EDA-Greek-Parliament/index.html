@@ -124,7 +124,8 @@ div.csl-indent {
 }</script><script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script><link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 <script src="../../site_libs/core-js-2.5.3/shim.min.js"></script><script src="../../site_libs/react-18.2.0/react.min.js"></script><script src="../../site_libs/react-18.2.0/react-dom.min.js"></script><script src="../../site_libs/reactwidget-1.0.0/react-tools.js"></script><link href="../../site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
 <script src="../../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script><link href="../../site_libs/reactable-0.4.4.9000/reactable.css" rel="stylesheet">
-<script src="../../site_libs/reactable-binding-0.4.4.9000/reactable.js"></script><link rel="stylesheet" href="../../styles.css">
+<script src="../../site_libs/reactable-binding-0.4.4.9000/reactable.js"></script><script src="../../site_libs/jquery-3.5.1/jquery.min.js"></script><script src="../../site_libs/proj4js-2.3.15/proj4.js"></script><link href="../../site_libs/highcharts-9.3.1/css/motion.css" rel="stylesheet">
+<script src="../../site_libs/highcharts-9.3.1/highcharts.js"></script><script src="../../site_libs/highcharts-9.3.1/highcharts-3d.js"></script><script src="../../site_libs/highcharts-9.3.1/highcharts-more.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/stock.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/map.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/data.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/exporting.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/offline-exporting.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/drilldown.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/item-series.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/overlapping-datalabels.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/annotations.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/export-data.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/funnel.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/heatmap.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/treemap.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/sankey.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/dependency-wheel.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/organization.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/solid-gauge.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/streamgraph.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/sunburst.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/vector.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/wordcloud.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/xrange.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/tilemap.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/venn.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/gantt.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/timeline.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/parallel-coordinates.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/bullet.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/coloraxis.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/dumbbell.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/lollipop.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/series-label.js"></script><script src="../../site_libs/highcharts-9.3.1/plugins/motion.js"></script><script src="../../site_libs/highcharts-9.3.1/custom/reset.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/boost.js"></script><script src="../../site_libs/highchart-binding-0.9.4/highchart.js"></script><link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="EDA on Greek Parliament – stesiam">
 <meta property="og:description" content="Let’s explore the MPs that got elected the most over the years (1981-2019).">
 <meta property="og:image" content="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/images/houses-of-parliament.jpg">
@@ -267,7 +268,7 @@ div.csl-indent {
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://haozhu233.github.io/kableExtra/">kableExtra</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://glin.github.io/reactable/">reactable</a></span><span class="op">)</span></span>
-<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://jkunst.com/highcharter/">highcharter</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Graphs</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
@@ -429,8 +430,8 @@ Table&nbsp;1: Preview Dataset (first 6 rows)
 <span>    defaultPageSize <span class="op">=</span> <span class="fl">5</span></span>
 <span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
-<div class="reactable html-widget html-fill-item" id="htmlwidget-990d22f04e80060a8b6d" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-990d22f04e80060a8b6d">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Party":["ANEXARTITOI ELLINES (Independent Hellenes) National Patriotic Democratic Alliance","DEMOCRATIC COALITION (Panhellenic Socialist Movement Democratic Left )","LAIKOS SYNDESMOS - CHRYSI AVGI (People’s Association – Golden Dawn)","ANEXARTITOI ELLINES (Independent Hellenes)","PA.SO.K. (Panhellenic Socialist Movement)","Communist Party of Greece (Interior)","SYNASPISMOS RIZOSPASTIKIS ARISTERAS","Coalition of the Left and Progress","ANEXARTITOI DIMOKRATIKOI VOULEFTES","KOMMOUNISTIKO KOMMA ELLADAS","DHM.AR (Democratic Left)","TO POTAMI (The River)","NEA DIMOKRATIA","LAIKI ENOTITA","INDEPENDENT","DI.K.KI.","DI.ANA.","LA.O.S.","ΟΟ.ΕΟ.","POL.A."],"Length":[81,70,67,42,41,36,35,34,34,27,24,21,14,13,11,8,7,7,6,6]},"columns":[{"id":"Party","name":"Party","type":"character"},{"id":"Length","name":"Length","type":"numeric"}],"defaultPageSize":5,"dataKey":"6290ea4daaf33732cb2712395b66ae78"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div class="reactable html-widget html-fill-item" id="htmlwidget-5d153ca1e7690ef0dafe" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-5d153ca1e7690ef0dafe">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Party":["ANEXARTITOI ELLINES (Independent Hellenes) National Patriotic Democratic Alliance","DEMOCRATIC COALITION (Panhellenic Socialist Movement Democratic Left )","LAIKOS SYNDESMOS - CHRYSI AVGI (People’s Association – Golden Dawn)","ANEXARTITOI ELLINES (Independent Hellenes)","PA.SO.K. (Panhellenic Socialist Movement)","Communist Party of Greece (Interior)","SYNASPISMOS RIZOSPASTIKIS ARISTERAS","Coalition of the Left and Progress","ANEXARTITOI DIMOKRATIKOI VOULEFTES","KOMMOUNISTIKO KOMMA ELLADAS","DHM.AR (Democratic Left)","TO POTAMI (The River)","NEA DIMOKRATIA","LAIKI ENOTITA","INDEPENDENT","DI.K.KI.","DI.ANA.","LA.O.S.","ΟΟ.ΕΟ.","POL.A."],"Length":[81,70,67,42,41,36,35,34,34,27,24,21,14,13,11,8,7,7,6,6]},"columns":[{"id":"Party","name":"Party","type":"character"},{"id":"Length","name":"Length","type":"numeric"}],"defaultPageSize":5,"dataKey":"6290ea4daaf33732cb2712395b66ae78"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p>In our case the parties with the longest name is AN.EL. and Democratic Coalition with 81 and 70 characters, respectively. On the contrary, the shortest party name is POL.A. with 6 characters.</p>
@@ -461,7 +462,21 @@ Table&nbsp;1: Preview Dataset (first 6 rows)
 </section><section id="setting-colors" class="level2"><h2 class="anchored" data-anchor-id="setting-colors">Setting colors</h2>
 <p>A few days after, I decided that there should be a consistency in the choice of colors. That’s the reason of this section. Thus, I will assign a dedicated hex color code to each party.</p>
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">kke_color</span> <span class="op">=</span> <span class="st">"#FF6666"</span></span>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">parties</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>  Party <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">parliament</span><span class="op">$</span><span class="va">Party</span><span class="op">)</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>Color <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span><span class="op">(</span></span>
+<span>    <span class="va">Party</span> <span class="op">==</span> <span class="st">"PASOK"</span> <span class="op">~</span> <span class="st">"#95bb72"</span>,</span>
+<span>    <span class="va">Party</span> <span class="op">==</span> <span class="st">"ND"</span> <span class="op">~</span> <span class="st">"#0492c2"</span>,</span>
+<span>    <span class="va">Party</span> <span class="op">==</span> <span class="st">"KKE"</span> <span class="op">~</span> <span class="st">"#FF6666"</span>,</span>
+<span>    <span class="va">Party</span> <span class="op">==</span> <span class="st">"SYRIZA"</span> <span class="op">~</span> <span class="st">"#e27bb1"</span>,</span>
+<span>    <span class="va">Party</span> <span class="op">==</span> <span class="st">"KKE (interior)"</span> <span class="op">~</span> <span class="st">"#FF3366"</span>,</span>
+<span>    <span class="va">Party</span> <span class="op">==</span> <span class="st">"INDEPENDENT"</span> <span class="op">~</span> <span class="st">"white"</span>,</span>
+<span>    <span class="va">Party</span> <span class="op">==</span> <span class="st">"DIANA"</span> <span class="op">~</span> <span class="st">"orange"</span>,</span>
+<span>    <span class="cn">TRUE</span> <span class="op">~</span> <span class="st">"grey80"</span></span>
+<span>  <span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">kke_color</span> <span class="op">=</span> <span class="st">"#FF6666"</span></span>
 <span><span class="va">nd_color</span> <span class="op">=</span> <span class="st">"#0492c2"</span></span>
 <span><span class="va">pasok_color</span> <span class="op">=</span> <span class="st">"#95bb72"</span></span>
 <span><span class="va">syriza_color</span> <span class="op">=</span> <span class="st">"#e27bb1"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -538,7 +553,46 @@ Note
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">3</span>, <span class="st">"Greek Parliament (1981-1985)"</span>, <span class="st">"#f72100"</span>,<span class="st">"#10459c"</span>,<span class="st">"#26d43a"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">term3</span> <span class="op">=</span> <span class="va">parliament</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Term</span> <span class="op">==</span> <span class="fl">3</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Party</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">term3data</span> <span class="op">=</span> <span class="fu">fuzzyjoin</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/fuzzyjoin/man/stringdist_join.html">stringdist_left_join</a></span><span class="op">(</span><span class="va">term3</span>, <span class="va">parties</span>, by <span class="op">=</span> <span class="st">"Party"</span>,</span>
+<span>                                max_dist <span class="op">=</span> <span class="fl">2</span>, distance_col <span class="op">=</span> <span class="st">"distance"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Party.x</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">distance</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">distance</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>Party <span class="op">=</span> <span class="va">Party.x</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Party</span>, <span class="va">n</span>, <span class="va">Color</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">highcharter</span><span class="fu">::</span><span class="fu"><a href="https://jkunst.com/highcharter/reference/hchart.html">hchart</a></span><span class="op">(</span></span>
+<span>  <span class="va">term3data</span>,</span>
+<span>  <span class="st">"item"</span>,</span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hcaes.html">hcaes</a></span><span class="op">(</span></span>
+<span>    name <span class="op">=</span> <span class="va">Party</span>,</span>
+<span>    y <span class="op">=</span> <span class="va">n</span>,</span>
+<span>    label <span class="op">=</span> <span class="va">Party</span>,</span>
+<span>    color <span class="op">=</span> <span class="va">Color</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  name <span class="op">=</span> <span class="st">"Representatives"</span>,</span>
+<span>  showInLegend <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  size <span class="op">=</span> <span class="st">"100%"</span>,</span>
+<span>  center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"50%"</span>, <span class="st">"75%"</span><span class="op">)</span>,</span>
+<span>  startAngle <span class="op">=</span> <span class="op">-</span><span class="fl">100</span>,</span>
+<span>  endAngle  <span class="op">=</span> <span class="fl">100</span></span>
+<span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_title.html">hc_title</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Greek Parliament"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_subtitle.html">hc_subtitle</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Η τρίτη σύνθεση της Βουλής (1981-1984)"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_legend.html">hc_legend</a></span><span class="op">(</span>labelFormat <span class="op">=</span> <span class="st">'{name} &lt;span style="opacity: 0.4"&gt;{y}&lt;/span&gt;'</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div class="highchart html-widget html-fill-item" id="htmlwidget-6dedbaa305eb556f2f33" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-6dedbaa305eb556f2f33">{"x":{"hc_opts":{"chart":{"reflow":true},"title":{"text":"Greek Parliament"},"yAxis":{"title":{"text":"n"}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0,"showInLegend":false},"treemap":{"layoutAlgorithm":"squarified"},"scatter":{"marker":{"symbol":"circle"}}},"series":[{"group":"group","data":[{"Party":"KKE","n":13,"Color":"#FF6666","y":13,"name":"KKE","label":"KKE","color":"#FF6666"},{"Party":"ND","n":115,"Color":"#0492c2","y":115,"name":"ND","label":"ND","color":"#0492c2"},{"Party":"PASOK","n":172,"Color":"#95bb72","y":172,"name":"PASOK","label":"PASOK","color":"#95bb72"}],"type":"item","name":"Representatives","showInLegend":true,"size":"100%","center":["50%","75%"],"startAngle":-100,"endAngle":100}],"xAxis":{"type":null,"title":{"text":[]},"categories":null},"subtitle":{"text":"Η τρίτη σύνθεση της Βουλής (1981-1984)"},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">3</span>, <span class="st">"Greek Parliament (1981-1985)"</span>, <span class="st">"#f72100"</span>,<span class="st">"#10459c"</span>,<span class="st">"#26d43a"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-stderr">
 <pre><code>Warning: The `legend.text.align` argument of `theme()` is deprecated as of ggplot2
 3.5.0.
@@ -550,7 +604,7 @@ Note
 </div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -558,29 +612,7 @@ Note
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">4</span>, <span class="st">"Greek Parliament (1985-1989)"</span>, <span class="st">"#cccccc"</span>,<span class="st">"#f72100"</span>,<span class="st">"#900603"</span>,<span class="st">"#10459c"</span>,<span class="st">"#26d43a"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">5</span>, <span class="st">"Greek Parliament (Jun,1989 - Nov,1989)"</span>, <span class="st">"#d6b85a"</span>,<span class="st">"#cccccc"</span>,<span class="st">"#10459c"</span>,<span class="st">"#26d43a"</span>,<span class="st">"#FFC0CB"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
-<div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">6</span>, <span class="st">"Greek Parliament (Nov,1989 - Apr,1990)"</span>,<span class="st">"#cccccc"</span>,<span class="st">"#10459c"</span>,<span class="st">"#26d43a"</span>,<span class="st">"#FFC0CB"</span>,<span class="st">"#cefad0"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">4</span>, <span class="st">"Greek Parliament (1985-1989)"</span>, <span class="st">"#cccccc"</span>,<span class="st">"#f72100"</span>,<span class="st">"#900603"</span>,<span class="st">"#10459c"</span>,<span class="st">"#26d43a"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
@@ -589,9 +621,9 @@ Note
 </div>
 </div>
 </div>
-<div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">7</span>, <span class="st">"Greek Parliament (Apr,1990 - Oct,1993)"</span>, <span class="st">"#cccccc"</span>, <span class="st">"#f72100"</span>, <span class="st">"#10459c"</span>,<span class="st">"#26d43a"</span>,<span class="st">"#FFC0CB"</span>,<span class="st">"#cefad0"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">5</span>, <span class="st">"Greek Parliament (Jun,1989 - Nov,1989)"</span>, <span class="st">"#d6b85a"</span>,<span class="st">"#cccccc"</span>,<span class="st">"#10459c"</span>,<span class="st">"#26d43a"</span>,<span class="st">"#FFC0CB"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
@@ -600,9 +632,9 @@ Note
 </div>
 </div>
 </div>
-<div id="tabset-1-6" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-6-tab">
+<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">8</span>, <span class="st">"Greek Parliament (Apr,1990 - Oct,1993)"</span>, <span class="st">"#f72100"</span>, <span class="st">"#10459c"</span>,<span class="st">"#26d43a"</span>,<span class="st">"#3944bc"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">6</span>, <span class="st">"Greek Parliament (Nov,1989 - Apr,1990)"</span>,<span class="st">"#cccccc"</span>,<span class="st">"#10459c"</span>,<span class="st">"#26d43a"</span>,<span class="st">"#FFC0CB"</span>,<span class="st">"#cefad0"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
@@ -611,9 +643,9 @@ Note
 </div>
 </div>
 </div>
-<div id="tabset-1-7" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-7-tab">
+<div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">9</span>, <span class="st">"Greek Parliament (Oct,1993 - Aug,1996)"</span>, <span class="st">"#FFA500"</span>, <span class="st">"#cccccc"</span>,<span class="st">"#10459c"</span>,<span class="st">"#3944bc"</span>,<span class="st">"#26d43a"</span>, <span class="st">"#FFC0CB"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">7</span>, <span class="st">"Greek Parliament (Apr,1990 - Oct,1993)"</span>, <span class="st">"#cccccc"</span>, <span class="st">"#f72100"</span>, <span class="st">"#10459c"</span>,<span class="st">"#26d43a"</span>,<span class="st">"#FFC0CB"</span>,<span class="st">"#cefad0"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
@@ -622,9 +654,9 @@ Note
 </div>
 </div>
 </div>
-<div id="tabset-1-8" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-8-tab">
+<div id="tabset-1-6" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-6-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">10</span>, <span class="st">"Greek Parliament (2000 - 2004)"</span>, <span class="st">"#cccccc"</span>,<span class="st">"#f72100"</span>,<span class="st">"#3944bc"</span>,<span class="st">"#26d43a"</span>, <span class="st">"#FFC0CB"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">8</span>, <span class="st">"Greek Parliament (Apr,1990 - Oct,1993)"</span>, <span class="st">"#f72100"</span>, <span class="st">"#10459c"</span>,<span class="st">"#26d43a"</span>,<span class="st">"#3944bc"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
@@ -633,9 +665,9 @@ Note
 </div>
 </div>
 </div>
-<div id="tabset-1-9" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-9-tab">
+<div id="tabset-1-7" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-7-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">11</span>, <span class="st">"Greek Parliament (2004 - 2007)"</span>, <span class="st">"#cccccc"</span>,<span class="st">"#f72100"</span>,<span class="st">"#3944bc"</span>,<span class="st">"#26d43a"</span>, <span class="st">"#FFC0CB"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">9</span>, <span class="st">"Greek Parliament (Oct,1993 - Aug,1996)"</span>, <span class="st">"#FFA500"</span>, <span class="st">"#cccccc"</span>,<span class="st">"#10459c"</span>,<span class="st">"#3944bc"</span>,<span class="st">"#26d43a"</span>, <span class="st">"#FFC0CB"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
@@ -644,9 +676,9 @@ Note
 </div>
 </div>
 </div>
-<div id="tabset-1-10" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-10-tab">
+<div id="tabset-1-8" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-8-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">12</span>, <span class="st">"Greek Parliament (2007 - 2009)"</span>, <span class="st">"#f72100"</span>,<span class="st">"#1E3F66"</span>,<span class="st">"#3944bc"</span>,<span class="st">"#26d43a"</span>, <span class="st">"#FFC0CB"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">10</span>, <span class="st">"Greek Parliament (2000 - 2004)"</span>, <span class="st">"#cccccc"</span>,<span class="st">"#f72100"</span>,<span class="st">"#3944bc"</span>,<span class="st">"#26d43a"</span>, <span class="st">"#FFC0CB"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
@@ -655,9 +687,9 @@ Note
 </div>
 </div>
 </div>
-<div id="tabset-1-11" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-11-tab">
+<div id="tabset-1-9" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-9-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">13</span>, <span class="st">"Greek Parliament (2009 - May,2012)"</span>, <span class="st">"#bcd2e8"</span>, <span class="st">"#680c07"</span>,<span class="st">"#000000"</span>,<span class="st">"#f72100"</span>,<span class="st">"#1E3F66"</span>,<span class="st">"#3944bc"</span>,<span class="st">"#26d43a"</span>, <span class="st">"#FFC0CB"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">11</span>, <span class="st">"Greek Parliament (2004 - 2007)"</span>, <span class="st">"#cccccc"</span>,<span class="st">"#f72100"</span>,<span class="st">"#3944bc"</span>,<span class="st">"#26d43a"</span>, <span class="st">"#FFC0CB"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
@@ -666,9 +698,9 @@ Note
 </div>
 </div>
 </div>
-<div id="tabset-1-12" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-12-tab">
+<div id="tabset-1-10" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-10-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">14</span>, <span class="st">"Greek Parliament (May,2012 - Jun,2012)"</span>, <span class="st">"#bcd2e8"</span>, <span class="st">"#680c07"</span>,<span class="st">"#f72100"</span>,<span class="st">"#3944bc"</span>,<span class="st">"#26d43a"</span>, <span class="st">"#FFC0CB"</span>, <span class="st">"#000000"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">12</span>, <span class="st">"Greek Parliament (2007 - 2009)"</span>, <span class="st">"#f72100"</span>,<span class="st">"#1E3F66"</span>,<span class="st">"#3944bc"</span>,<span class="st">"#26d43a"</span>, <span class="st">"#FFC0CB"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
@@ -677,9 +709,9 @@ Note
 </div>
 </div>
 </div>
-<div id="tabset-1-13" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-13-tab">
+<div id="tabset-1-11" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-11-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">15</span>, <span class="st">"Greek Parliament (Jun,2012 - Jan,2015)"</span>, <span class="st">"#65350f"</span>, <span class="st">"#bcd2e8"</span>, <span class="st">"#680c07"</span>,<span class="st">"#cccccc"</span>,<span class="st">"#f72100"</span>,<span class="st">"#3944bc"</span>, <span class="st">"#26d43a"</span>, <span class="st">"#FFC0CB"</span>, <span class="st">"#000000"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">13</span>, <span class="st">"Greek Parliament (2009 - May,2012)"</span>, <span class="st">"#bcd2e8"</span>, <span class="st">"#680c07"</span>,<span class="st">"#000000"</span>,<span class="st">"#f72100"</span>,<span class="st">"#1E3F66"</span>,<span class="st">"#3944bc"</span>,<span class="st">"#26d43a"</span>, <span class="st">"#FFC0CB"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
@@ -688,12 +720,34 @@ Note
 </div>
 </div>
 </div>
-<div id="tabset-1-14" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-14-tab">
+<div id="tabset-1-12" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-12-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">16</span>, <span class="st">"Greek Parliament (Jan, 2015 - Aug,2015)"</span>, <span class="st">"#bcd2e8"</span>, <span class="st">"#f72100"</span>,<span class="st">"#7a1712"</span>,<span class="st">"#3944bc"</span>,<span class="st">"#26d43a"</span>, <span class="st">"#00ccd3"</span>, <span class="st">"#FFC0CB"</span>, <span class="st">"#000000"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">14</span>, <span class="st">"Greek Parliament (May,2012 - Jun,2012)"</span>, <span class="st">"#bcd2e8"</span>, <span class="st">"#680c07"</span>,<span class="st">"#f72100"</span>,<span class="st">"#3944bc"</span>,<span class="st">"#26d43a"</span>, <span class="st">"#FFC0CB"</span>, <span class="st">"#000000"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-13" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-13-tab">
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">15</span>, <span class="st">"Greek Parliament (Jun,2012 - Jan,2015)"</span>, <span class="st">"#65350f"</span>, <span class="st">"#bcd2e8"</span>, <span class="st">"#680c07"</span>,<span class="st">"#cccccc"</span>,<span class="st">"#f72100"</span>,<span class="st">"#3944bc"</span>, <span class="st">"#26d43a"</span>, <span class="st">"#FFC0CB"</span>, <span class="st">"#000000"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-14" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-14-tab">
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">16</span>, <span class="st">"Greek Parliament (Jan, 2015 - Aug,2015)"</span>, <span class="st">"#bcd2e8"</span>, <span class="st">"#f72100"</span>,<span class="st">"#7a1712"</span>,<span class="st">"#3944bc"</span>,<span class="st">"#26d43a"</span>, <span class="st">"#00ccd3"</span>, <span class="st">"#FFC0CB"</span>, <span class="st">"#000000"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -714,10 +768,10 @@ Warning
 </div>
 </div>
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">17</span>, <span class="st">"Greek Parliament (Sep,2015 - 2019)"</span>, <span class="st">"#cccccc"</span>, <span class="st">"#f72100"</span>,<span class="st">"#3944bc"</span>,<span class="st">"#26d43a"</span>,<span class="st">"#00ccd3"</span>, <span class="st">"#FFC0CB"</span>,<span class="st">"#000000"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">make_parliament_plot</span><span class="op">(</span><span class="fl">17</span>, <span class="st">"Greek Parliament (Sep,2015 - 2019)"</span>, <span class="st">"#cccccc"</span>, <span class="st">"#f72100"</span>,<span class="st">"#3944bc"</span>,<span class="st">"#26d43a"</span>,<span class="st">"#00ccd3"</span>, <span class="st">"#FFC0CB"</span>,<span class="st">"#000000"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -727,7 +781,7 @@ Warning
 </div>
 </section><section id="most-elected-members-of-parliament" class="level1"><h1>Most elected members of parliament</h1>
 <div class="cell" data-layout-valign="bottom">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#total_times_elected_freqs &lt;- function(input_constituency, min_times_elected){</span></span>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#total_times_elected_freqs &lt;- function(input_constituency, min_times_elected){</span></span>
 <span><span class="va">total_times_elected_freqs_df</span> <span class="op">=</span> <span class="va">parliament</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">FullName</span>, <span class="va">Party</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">n</span> <span class="op">&gt;=</span> <span class="fl">9</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>  </span>
 <span><span class="co">#df = table(parliament$FullName)%&gt;% sort(decreasing = T) %&gt;% as.data.frame() %&gt;% filter(Freq&gt;=11)</span></span>
@@ -771,7 +825,7 @@ Warning
 <code>times_elected_min</code> : A argument that I added up later. The problem with its absence is that I have to deal with parties that elect for example 150 MPs and some others just 10. If I set a universal number of elections to visualize I will have diagrams with many problems. Let’s suppose that I set a big value (e.g., 10). Then I would visualize my data for <em>ND</em> and <em>PASOK</em>, although parties with relatively low number of MPs would have only one or noone to show (<em>KKE</em> &amp; <em>SYRIZA</em>, respectively). On the other hand if I set a low value I create a new problem as there will be many MPs of and it creates the need to edit many more things (like width of bars). An argument like <code>times_elected_min</code> can adapt the specific characteristics of each party.</li>
 </ul>
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">party_plot</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">party</span>, <span class="va">party_color</span>, <span class="va">times_elected_min</span><span class="op">)</span><span class="op">{</span></span>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">party_plot</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">party</span>, <span class="va">party_color</span>, <span class="va">times_elected_min</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="va">party_df</span> <span class="op">=</span> <span class="va">parliament</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Party</span> <span class="op">==</span> <span class="va">party</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">FullName</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span>decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Freq</span> <span class="op">&gt;=</span> <span class="va">times_elected_min</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">`colnames&lt;-`</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Full_Name"</span>, <span class="st">"Freq"</span><span class="op">)</span><span class="op">)</span></span>
 <span>  </span>
@@ -791,27 +845,7 @@ Warning
 <p>The visualizations are presented in alphabetical order.</p>
 <section id="kke" class="level2"><h2 class="anchored" data-anchor-id="kke">KKE</h2>
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">party_plot</span><span class="op">(</span><span class="st">"KKE"</span>, <span class="st">"#FF6666"</span>, times_elected_min <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</section><section id="nd" class="level2"><h2 class="anchored" data-anchor-id="nd">ND</h2>
-<div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">party_plot</span><span class="op">(</span><span class="st">"ND"</span>, <span class="st">"#0492c2"</span>, times_elected_min <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</section><section id="pasok" class="level2"><h2 class="anchored" data-anchor-id="pasok">PASOK</h2>
-<div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">party_plot</span><span class="op">(</span><span class="st">"PASOK"</span>, <span class="st">"#95bb72"</span>, times_elected_min <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">party_plot</span><span class="op">(</span><span class="st">"KKE"</span>, <span class="st">"#FF6666"</span>, times_elected_min <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
@@ -819,12 +853,32 @@ Warning
 </div>
 </div>
 </div>
-</section><section id="syriza" class="level2"><h2 class="anchored" data-anchor-id="syriza">SYRIZA</h2>
+</section><section id="nd" class="level2"><h2 class="anchored" data-anchor-id="nd">ND</h2>
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">party_plot</span><span class="op">(</span><span class="st">"SYRIZA"</span>, <span class="st">"#e27bb1"</span>, times_elected_min <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">party_plot</span><span class="op">(</span><span class="st">"ND"</span>, <span class="st">"#0492c2"</span>, times_elected_min <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="pasok" class="level2"><h2 class="anchored" data-anchor-id="pasok">PASOK</h2>
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">party_plot</span><span class="op">(</span><span class="st">"PASOK"</span>, <span class="st">"#95bb72"</span>, times_elected_min <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="syriza" class="level2"><h2 class="anchored" data-anchor-id="syriza">SYRIZA</h2>
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">party_plot</span><span class="op">(</span><span class="st">"SYRIZA"</span>, <span class="st">"#e27bb1"</span>, times_elected_min <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -840,7 +894,7 @@ Warning
 <p>Obviously, the same logic applies to party charts (same processes with minor changes), so the use of a function is almost mandatory (over fifty -50- cases !).</p>
 <p>On my previous workflow I used table() function in order to take frequencies. That’s one easy way to go. Although I didn’t figured out to add characteristics from other columns (like party of the MP). Fir that reason I took the decision to use count() instead of table.</p>
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">constituency_freqs</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input_constituency</span>, <span class="va">min_times_elected</span><span class="op">)</span><span class="op">{</span></span>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">constituency_freqs</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input_constituency</span>, <span class="va">min_times_elected</span><span class="op">)</span><span class="op">{</span></span>
 <span><span class="va">cont_df</span> <span class="op">=</span> <span class="va">parliament</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Constituency</span> <span class="op">==</span> <span class="va">input_constituency</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">FullName</span>, <span class="va">Party</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">n</span> <span class="op">&gt;=</span> <span class="va">min_times_elected</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>  </span>
@@ -858,15 +912,15 @@ Warning
 </div>
 <p>Now I have frequencies and the party for every MP. That will be useful on my diagrams.</p>
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#unique(parliament$Constituency) %&gt;% sort()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#unique(parliament$Constituency) %&gt;% sort()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <section id="state" class="level2 unlisted"><h2 class="unlisted anchored" data-anchor-id="state">State</h2>
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"State"</span>, <span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"State"</span>, <span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -883,29 +937,7 @@ Warning
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Athens A"</span>,<span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
-<div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Athens B"</span>,<span class="fl">7</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
-<div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Piraeus A"</span>,<span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Athens A"</span>,<span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="672"></p>
@@ -914,9 +946,9 @@ Warning
 </div>
 </div>
 </div>
-<div id="tabset-2-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-4-tab">
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Piraeus B"</span>,<span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Athens B"</span>,<span class="fl">7</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="672"></p>
@@ -925,12 +957,34 @@ Warning
 </div>
 </div>
 </div>
-<div id="tabset-2-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-5-tab">
+<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Of Attica (rest)"</span>,<span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Piraeus A"</span>,<span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-4-tab">
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Piraeus B"</span>,<span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-5-tab">
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Of Attica (rest)"</span>,<span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -949,29 +1003,7 @@ Warning
 <div class="tab-content">
 <div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Viotia"</span>,<span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
-<div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Evrytania"</span>,<span class="fl">2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
-<div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Fokida"</span>,<span class="fl">2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Viotia"</span>,<span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="672"></p>
@@ -980,12 +1012,34 @@ Warning
 </div>
 </div>
 </div>
-<div id="tabset-3-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-4-tab">
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Fthiotida"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Evrytania"</span>,<span class="fl">2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Fokida"</span>,<span class="fl">2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-3-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-4-tab">
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Fthiotida"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1007,29 +1061,7 @@ Warning
 <div class="tab-content">
 <div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Thessaloniki A"</span>,<span class="fl">6</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
-<div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Thessaloniki B"</span>,<span class="fl">6</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-4-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-3-tab">
-<div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Kilkis"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Thessaloniki A"</span>,<span class="fl">6</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid figure-img" width="672"></p>
@@ -1038,9 +1070,9 @@ Warning
 </div>
 </div>
 </div>
-<div id="tabset-4-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-4-tab">
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb46"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Pella"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb46"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Thessaloniki B"</span>,<span class="fl">6</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid figure-img" width="672"></p>
@@ -1049,9 +1081,9 @@ Warning
 </div>
 </div>
 </div>
-<div id="tabset-4-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-5-tab">
+<div id="tabset-4-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-3-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Pieria"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Kilkis"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid figure-img" width="672"></p>
@@ -1060,9 +1092,9 @@ Warning
 </div>
 </div>
 </div>
-<div id="tabset-4-6" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-6-tab">
+<div id="tabset-4-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-4-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb48"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Serres"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb48"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Pella"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid figure-img" width="672"></p>
@@ -1071,12 +1103,34 @@ Warning
 </div>
 </div>
 </div>
-<div id="tabset-4-7" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-7-tab">
+<div id="tabset-4-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-5-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Halkidiki"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Pieria"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-4-6" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-6-tab">
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb50"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Serres"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-4-7" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-7-tab">
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb51"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Halkidiki"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-46-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1095,24 +1149,7 @@ Warning
 <div class="tab-content">
 <div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb50"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Chania"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
-<div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb51"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#constituency_freqs("Irakleio",3)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</div>
-<div id="tabset-5-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-3-tab">
-<div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb52"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Lasithi"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb52"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Chania"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid figure-img" width="672"></p>
@@ -1121,12 +1158,29 @@ Warning
 </div>
 </div>
 </div>
-<div id="tabset-5-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-4-tab">
+<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb53"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Rethymno"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb53"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#constituency_freqs("Irakleio",3)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+<div id="tabset-5-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-3-tab">
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb54"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Lasithi"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-48-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-5-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-4-tab">
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb55"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Rethymno"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1146,29 +1200,7 @@ Warning
 <div class="tab-content">
 <div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb54"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Drama"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
-<div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb55"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Evros"</span>,<span class="fl">4</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-6-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-3-tab">
-<div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb56"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Kavala"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb56"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Drama"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-51-1.png" class="img-fluid figure-img" width="672"></p>
@@ -1177,9 +1209,9 @@ Warning
 </div>
 </div>
 </div>
-<div id="tabset-6-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-4-tab">
+<div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb57"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Xanthi"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb57"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Evros"</span>,<span class="fl">4</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-52-1.png" class="img-fluid figure-img" width="672"></p>
@@ -1188,12 +1220,34 @@ Warning
 </div>
 </div>
 </div>
-<div id="tabset-6-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-5-tab">
+<div id="tabset-6-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-3-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb58"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Rodopi"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb58"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Kavala"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-53-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-6-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-4-tab">
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb59"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Xanthi"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-54-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-6-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-5-tab">
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb60"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Rodopi"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-55-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1212,29 +1266,7 @@ Warning
 <div class="tab-content">
 <div id="tabset-7-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-7-1-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb59"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Arta"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-54-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-7-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-2-tab">
-<div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb60"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Ioannina"</span>,<span class="fl">4</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-55-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-7-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-3-tab">
-<div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb61"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Preveza"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb61"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Arta"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-56-1.png" class="img-fluid figure-img" width="672"></p>
@@ -1243,12 +1275,34 @@ Warning
 </div>
 </div>
 </div>
-<div id="tabset-7-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-4-tab">
+<div id="tabset-7-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-2-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb62"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Thesprotia"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb62"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Ioannina"</span>,<span class="fl">4</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-57-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-7-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-3-tab">
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb63"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Preveza"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-58-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-7-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-4-tab">
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb64"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Thesprotia"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-59-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1267,29 +1321,7 @@ Warning
 <div class="tab-content">
 <div id="tabset-8-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-8-1-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb63"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Corfu"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-58-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-8-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-2-tab">
-<div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb64"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Kefallonia"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-59-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-8-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-3-tab">
-<div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb65"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Lefkada"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb65"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Corfu"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-60-1.png" class="img-fluid figure-img" width="672"></p>
@@ -1298,12 +1330,34 @@ Warning
 </div>
 </div>
 </div>
-<div id="tabset-8-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-4-tab">
+<div id="tabset-8-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-2-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb66"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Zakynthos"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb66"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Kefallonia"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-61-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-8-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-3-tab">
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb67"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Lefkada"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-62-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-8-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-4-tab">
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb68"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Zakynthos"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-63-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1321,10 +1375,10 @@ Warning
 <div class="tab-content">
 <div id="tabset-9-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-9-1-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb67"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Chios"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb69"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Chios"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-62-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-64-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1332,10 +1386,10 @@ Warning
 </div>
 <div id="tabset-9-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-9-2-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb68"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Lesvos"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb70"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Lesvos"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-63-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-65-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1343,10 +1397,10 @@ Warning
 </div>
 <div id="tabset-9-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-9-3-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb69"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Samos"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb71"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Samos"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-64-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-66-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1366,29 +1420,7 @@ Warning
 <div class="tab-content">
 <div id="tabset-10-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-10-1-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb70"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Argolida"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-65-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-10-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-10-2-tab">
-<div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb71"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Arcadia"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-66-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-10-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-10-3-tab">
-<div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb72"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Korinthia"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb72"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Argolida"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-67-1.png" class="img-fluid figure-img" width="672"></p>
@@ -1397,9 +1429,9 @@ Warning
 </div>
 </div>
 </div>
-<div id="tabset-10-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-10-4-tab">
+<div id="tabset-10-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-10-2-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb73"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Lakonia"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb73"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Arcadia"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-68-1.png" class="img-fluid figure-img" width="672"></p>
@@ -1408,12 +1440,34 @@ Warning
 </div>
 </div>
 </div>
-<div id="tabset-10-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-10-5-tab">
+<div id="tabset-10-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-10-3-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb74"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Messinia"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb74"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Korinthia"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-69-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-10-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-10-4-tab">
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb75"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Lakonia"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-70-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-10-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-10-5-tab">
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb76"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Messinia"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-71-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1430,10 +1484,10 @@ Warning
 <div class="tab-content">
 <div id="tabset-11-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-11-1-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb75"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Dodecanese Islands"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb77"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Dodecanese Islands"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-70-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-72-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1441,10 +1495,10 @@ Warning
 </div>
 <div id="tabset-11-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-11-2-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb76"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Cyclades"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb78"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Cyclades"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-71-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-73-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1463,29 +1517,7 @@ Warning
 <div class="tab-content">
 <div id="tabset-12-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-12-1-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb77"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Karditsa"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-72-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-12-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-12-2-tab">
-<div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb78"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Larissa"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-73-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-12-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-12-3-tab">
-<div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb79"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Magnesia"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb79"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Karditsa"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-74-1.png" class="img-fluid figure-img" width="672"></p>
@@ -1494,12 +1526,34 @@ Warning
 </div>
 </div>
 </div>
-<div id="tabset-12-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-12-4-tab">
+<div id="tabset-12-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-12-2-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb80"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Trikala"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb80"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Larissa"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-75-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-12-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-12-3-tab">
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb81"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Magnesia"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-76-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-12-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-12-4-tab">
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb82"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Trikala"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-77-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1517,10 +1571,10 @@ Warning
 <div class="tab-content">
 <div id="tabset-13-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-13-1-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb81"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Achaia"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb83"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Achaia"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-76-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-78-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1528,16 +1582,16 @@ Warning
 </div>
 <div id="tabset-13-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-13-2-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb82"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#constituency_freqs("Aitoloakarnania",3)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb84"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#constituency_freqs("Aitoloakarnania",3)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </div>
 <div id="tabset-13-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-13-3-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb83"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Ileia"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb85"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Ileia"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-78-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-80-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1556,29 +1610,7 @@ Warning
 <div class="tab-content">
 <div id="tabset-14-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-14-1-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb84"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Florina"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-79-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-14-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-14-2-tab">
-<div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb85"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Grevena"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-80-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-14-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-14-3-tab">
-<div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb86"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Kastoria"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb86"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Florina"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-81-1.png" class="img-fluid figure-img" width="672"></p>
@@ -1587,12 +1619,34 @@ Warning
 </div>
 </div>
 </div>
-<div id="tabset-14-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-14-4-tab">
+<div id="tabset-14-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-14-2-tab">
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb87"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Kozani"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb87"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Grevena"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-82-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-14-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-14-3-tab">
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb88"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Kastoria"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-83-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-14-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-14-4-tab">
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb89"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">constituency_freqs</span><span class="op">(</span><span class="st">"Kozani"</span>,<span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-84-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1607,6 +1661,9 @@ Warning
 
 
 </div></section><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-R-highcharter" class="csl-entry" role="listitem">
+Kunst, J. (2022). <em>Highcharter: A wrapper for the highcharts library</em>. Retrieved from <a href="https://jkunst.com/highcharter/">https://jkunst.com/highcharter/</a>
+</div>
 <div id="ref-R-reactable" class="csl-entry" role="listitem">
 Lin, G. (2024). <em>Reactable: Interactive data tables for r</em>. Retrieved from <a href="https://glin.github.io/reactable/">https://glin.github.io/reactable/</a>
 </div>

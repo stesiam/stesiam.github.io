@@ -54,7 +54,7 @@ First and foremost, we have to load our libraries.
 library(tidyverse)
 library(kableExtra)
 library(reactable)
-
+library(highcharter)
 
 # Graphs
 library(ggplot2)
@@ -153,11 +153,24 @@ parliament$Party[parliament$Party == "ΟΟ.ΕΟ."] <- "ΟΟ.ΕΟ"
 A few days after, I decided that there should be a consistency in the choice of colors. That's the reason of this section. Thus, I will assign a dedicated hex color code to each party. 
 
 ```{r}
+parties = data.frame(
+  Party = unique(parliament$Party)
+) |>
+  mutate(Color = case_when(
+    Party == "PASOK" ~ "#95bb72",
+    Party == "ND" ~ "#0492c2",
+    Party == "KKE" ~ "#FF6666",
+    Party == "SYRIZA" ~ "#e27bb1",
+    Party == "KKE (interior)" ~ "#FF3366",
+    Party == "INDEPENDENT" ~ "white",
+    Party == "DIANA" ~ "orange",
+    TRUE ~ "grey80"
+  ))
+
 kke_color = "#FF6666"
 nd_color = "#0492c2"
 pasok_color = "#95bb72"
 syriza_color = "#e27bb1"
-
 ```
 
 
@@ -209,6 +222,44 @@ Note that till this moment I have not figure out how to change the position of t
 ::: {.panel-tabset}
 
 ## 3rd Term
+
+```{r}
+term3 = parliament |>
+  dplyr::filter(Term == 3) |>
+  group_by(Party) |>
+  summarise(n = n())
+
+term3data = fuzzyjoin::stringdist_left_join(term3, parties, by = "Party",
+                                max_dist = 2, distance_col = "distance") |>
+  group_by(Party.x) |>
+  dplyr::filter(distance == min(distance)) |>
+  rename(Party = Party.x) |>
+select(Party, n, Color)
+```
+
+
+```{r}
+highcharter::hchart(
+  term3data,
+  "item",
+  hcaes(
+    name = Party,
+    y = n,
+    label = Party,
+    color = Color
+  ),
+  name = "Representatives",
+  showInLegend = TRUE,
+  size = "100%",
+  center = list("50%", "75%"),
+  startAngle = -100,
+  endAngle  = 100
+) %>%
+  hc_title(text = "Greek Parliament") %>%
+  hc_subtitle(text = "Η τρίτη σύνθεση της Βουλής (1981-1984)") |>
+  hc_legend(labelFormat = '{name} <span style="opacity: 0.4">{y}</span>')
+```
+
 
 ```{r}
 make_parliament_plot(3, "Greek Parliament (1981-1985)", "#f72100","#10459c","#26d43a")

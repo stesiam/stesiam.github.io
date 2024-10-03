@@ -294,27 +294,6 @@
     "text": "Acknowledgments\n\nImage by R. E. Beck from Pixabay"
   },
   {
-    "objectID": "gallery/index.html",
-    "href": "gallery/index.html",
-    "title": "Gallery",
-    "section": "",
-    "text": "🎉 A new project ✨\n\n\n\nExpected to be launched on 13th of October, 2024. The only clue I can give is that the date is not randomly selected. It will follow the logic of other popular #dataviz challenges but for a specific subject."
-  },
-  {
-    "objectID": "gallery/index.html#days-challenge",
-    "href": "gallery/index.html#days-challenge",
-    "title": "Gallery",
-    "section": "",
-    "text": "🎉 A new project ✨\n\n\n\nExpected to be launched on 13th of October, 2024. The only clue I can give is that the date is not randomly selected. It will follow the logic of other popular #dataviz challenges but for a specific subject."
-  },
-  {
-    "objectID": "gallery/index.html#day-chart-challenge",
-    "href": "gallery/index.html#day-chart-challenge",
-    "title": "Gallery",
-    "section": "30 Day Chart Challenge",
-    "text": "30 Day Chart Challenge"
-  },
-  {
     "objectID": "gallery/index.html#tidy-tuesday",
     "href": "gallery/index.html#tidy-tuesday",
     "title": "Gallery",
@@ -333,7 +312,7 @@
     "href": "gallery/index.html#greece-in-figures",
     "title": "Gallery",
     "section": "Greece in Figures",
-    "text": "Greece in Figures\n\n\n\n\n\nPharmacies in Greece\n\n\n\n\n\n\n\nGDP per capita\n\n\n\n\n\n\n\nDentists per Region\n\n\n\n\n\n\n\nHeating Oil Consumption\n\n\n\n\n\n\n\nElectricity consumption, 2012\n\n\n\n\n\n\n\nWeddings, 2021"
+    "text": "Greece in Figures\n\n\n\n\n\nPharmacies in Greece\n\n\n\n\n\n\n\nGDP per capita\n\n\n\n\n\n\n\nDentists per Region\n\n\n\n\n\n\n\nHeating Oil Consumption\n\n\n\n\n\n\n\nElectricity consumption, 2012\n\n\n\n\n\n\n\nHousehold Size, 2021"
   },
   {
     "objectID": "gallery/index.html#eu-in-figures",
@@ -361,7 +340,7 @@
     "href": "posts/2022-10-10-EDA-Greek-Parliament/index.html#import-libraries",
     "title": "EDA on Greek Parliament",
     "section": "Import Libraries",
-    "text": "Import Libraries\nFirst and foremost, we have to load our libraries.\n\nShow the code# General purpose R libraries\nlibrary(tidyverse)\nlibrary(kableExtra)\nlibrary(reactable)\n\n\n# Graphs\nlibrary(ggplot2)\nlibrary(ggpol) \nlibrary(ggtext)\n\n# Other settings\noptions(digits=2) # print only 2 decimals"
+    "text": "Import Libraries\nFirst and foremost, we have to load our libraries.\n\nShow the code# General purpose R libraries\nlibrary(tidyverse)\nlibrary(kableExtra)\nlibrary(reactable)\nlibrary(highcharter)\n\n# Graphs\nlibrary(ggplot2)\nlibrary(ggpol) \nlibrary(ggtext)\n\n# Other settings\noptions(digits=2) # print only 2 decimals"
   },
   {
     "objectID": "posts/2022-10-10-EDA-Greek-Parliament/index.html#import-dataset",
@@ -396,7 +375,7 @@
     "href": "posts/2022-10-10-EDA-Greek-Parliament/index.html#setting-colors",
     "title": "EDA on Greek Parliament",
     "section": "Setting colors",
-    "text": "Setting colors\nA few days after, I decided that there should be a consistency in the choice of colors. That’s the reason of this section. Thus, I will assign a dedicated hex color code to each party.\n\nShow the codekke_color = \"#FF6666\"\nnd_color = \"#0492c2\"\npasok_color = \"#95bb72\"\nsyriza_color = \"#e27bb1\""
+    "text": "Setting colors\nA few days after, I decided that there should be a consistency in the choice of colors. That’s the reason of this section. Thus, I will assign a dedicated hex color code to each party.\n\nShow the codeparties = data.frame(\n  Party = unique(parliament$Party)\n) |&gt;\n  mutate(Color = case_when(\n    Party == \"PASOK\" ~ \"#95bb72\",\n    Party == \"ND\" ~ \"#0492c2\",\n    Party == \"KKE\" ~ \"#FF6666\",\n    Party == \"SYRIZA\" ~ \"#e27bb1\",\n    Party == \"KKE (interior)\" ~ \"#FF3366\",\n    Party == \"INDEPENDENT\" ~ \"white\",\n    Party == \"DIANA\" ~ \"orange\",\n    TRUE ~ \"grey80\"\n  ))\n\nkke_color = \"#FF6666\"\nnd_color = \"#0492c2\"\npasok_color = \"#95bb72\"\nsyriza_color = \"#e27bb1\""
   },
   {
     "objectID": "posts/2022-10-10-EDA-Greek-Parliament/index.html#kke",
@@ -746,14 +725,14 @@
     "href": "web-apps/index.html",
     "title": "Web Projects",
     "section": "",
-    "text": "Online\n      \n      A dashboard for an Ageing World (1800 - 2060)\n    \n    \n      \n        \n      \n        \n    \n  \n\n  \n    \n      \n      \n        Online\n      \n      Predict your wage based on your Job Type (onsite, hybrid, remote), employer's country and your job experience.\n    \n    \n      \n        \n      \n        \n    \n  \n\n  \n    \n      \n      \n        Online\n      \n      A Shiny App to calculate parliamentary seats for each party (Greek parliament).\n    \n    \n      \n        \n      \n        \n    \n  \n\n  \n    \n      \n      \n        Coding...\n      \n      A Shiny App to showcase various distributions and their characteristics.\n    \n    \n      \n        \n      \n        \n    \n  \n\n  \n    \n      \n      \n        Coding...\n      \n      A web app to review statistics terms and on-hands practice based on my undergraduate studies."
+    "text": "Online\n      \n      A dashboard for an Ageing World (1800 - 2060)\n    \n    \n      \n        \n      \n        \n    \n  \n\n  \n    \n      \n      \n        Online\n      \n      Predict your wage based on your Job Type (onsite, hybrid, remote), employer's country and your job experience.\n    \n    \n      \n        \n      \n        \n    \n  \n\n  \n    \n      \n      \n        Online\n      \n      A Shiny App to calculate parliamentary seats for each party (Greek parliament).\n    \n    \n      \n        \n      \n        \n    \n  \n\n  \n    \n      \n      \n        Soon...\n      \n      A Shiny App to showcase various distributions and their characteristics.\n    \n    \n      \n        \n      \n        \n    \n  \n\n  \n    \n      \n      \n        Soon...\n      \n      A web app to make predictions about next week's passenger traffic (bus/metro/tram)"
   },
   {
     "objectID": "web-apps/index.html#shiny-apps",
     "href": "web-apps/index.html#shiny-apps",
     "title": "Web Projects",
     "section": "",
-    "text": "Online\n      \n      A dashboard for an Ageing World (1800 - 2060)\n    \n    \n      \n        \n      \n        \n    \n  \n\n  \n    \n      \n      \n        Online\n      \n      Predict your wage based on your Job Type (onsite, hybrid, remote), employer's country and your job experience.\n    \n    \n      \n        \n      \n        \n    \n  \n\n  \n    \n      \n      \n        Online\n      \n      A Shiny App to calculate parliamentary seats for each party (Greek parliament).\n    \n    \n      \n        \n      \n        \n    \n  \n\n  \n    \n      \n      \n        Coding...\n      \n      A Shiny App to showcase various distributions and their characteristics.\n    \n    \n      \n        \n      \n        \n    \n  \n\n  \n    \n      \n      \n        Coding...\n      \n      A web app to review statistics terms and on-hands practice based on my undergraduate studies."
+    "text": "Online\n      \n      A dashboard for an Ageing World (1800 - 2060)\n    \n    \n      \n        \n      \n        \n    \n  \n\n  \n    \n      \n      \n        Online\n      \n      Predict your wage based on your Job Type (onsite, hybrid, remote), employer's country and your job experience.\n    \n    \n      \n        \n      \n        \n    \n  \n\n  \n    \n      \n      \n        Online\n      \n      A Shiny App to calculate parliamentary seats for each party (Greek parliament).\n    \n    \n      \n        \n      \n        \n    \n  \n\n  \n    \n      \n      \n        Soon...\n      \n      A Shiny App to showcase various distributions and their characteristics.\n    \n    \n      \n        \n      \n        \n    \n  \n\n  \n    \n      \n      \n        Soon...\n      \n      A web app to make predictions about next week's passenger traffic (bus/metro/tram)"
   },
   {
     "objectID": "web-apps/index.html#apis",
