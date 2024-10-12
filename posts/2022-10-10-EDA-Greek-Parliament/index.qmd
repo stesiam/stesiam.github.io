@@ -3,8 +3,7 @@ title: "EDA on Greek Parliament"
 author: "stesiam"
 description: |
   Let's explore the MPs that got elected the most over the years (1981-2019).
-freeze: true
-css: custom.css
+freeze: false
 link-external-newwindow: true
 categories: [R, EDA]
 image: images/houses-of-parliament.jpg
@@ -21,7 +20,7 @@ csl: apa-6th-edition.csl
 bibliography: [packages.bib, references.bib]
 format: 
   html:
-    freeze: true
+    freeze: false
     code-link: true
     code-fold: true
     code-summary: "Show the code"
@@ -163,9 +162,9 @@ parties = data.frame(
     Party == "KKE" ~ "#FF6666",
     Party == "SYRIZA" ~ "#e27bb1",
     Party == "KKE (interior)" ~ "#FF3366",
-    Party == "INDEPENDENT" ~ "white",
+    Party == "INDEPENDENT" ~ "#ffffff",
     Party == "DIANA" ~ "orange",
-    TRUE ~ "grey80"
+    TRUE ~ "#808080"
   ))
 
 kke_color = "#FF6666"
@@ -220,83 +219,85 @@ return(p)
 Note that till this moment I have not figure out how to change the position of the parties in an efficient way (in a function) that will somehow represent their potitical view. The next visualizations of the parliament are exclusively about how many MPs got elected by each party.
 :::
 
-::: {.panel-tabset}
+:::{.panel-tabset}
 
 ## 3rd Term
 
 ```{r}
-term3 = parliament |>
-  dplyr::filter(Term == 3) |>
-  group_by(Party) |>
-  summarise(n = n())
+plot_parliament_term <- function(term_num, parliament_data, parties_data) {
+  # Filter the parliament data for the selected term and summarize by party
+  term_data <- parliament_data |>
+    dplyr::filter(Term == term_num) |>
+    group_by(Party) |>
+    summarise(n = n())
 
-term3data = fuzzyjoin::stringdist_left_join(term3, parties, by = "Party",
-                                max_dist = 2, distance_col = "distance") |>
-  group_by(Party.x) |>
-  dplyr::filter(distance == min(distance)) |>
-  rename(Party = Party.x) |>
-select(Party, n, Color)
+  # Perform fuzzy join with parties data based on party name similarity
+  term_data_joined <- fuzzyjoin::stringdist_left_join(term_data, parties_data, by = "Party",
+                                                      max_dist = 2, distance_col = "distance") |>
+    group_by(Party.x) |>
+    dplyr::filter(distance == min(distance)) |>
+    rename(Party = Party.x) |>
+    select(Party, n, Color)
+
+  # Create the highcharter plot for the specific term
+  highcharter::hchart(
+    term_data_joined,
+    "item",
+    hcaes(
+      name = Party,
+      y = n,
+      label = Party,
+      color = Color
+    ),
+    name = "Representatives",
+    showInLegend = TRUE,
+    size = "100%",
+    center = list("50%", "75%"),
+    startAngle = -100,
+    endAngle  = 100
+  ) %>%
+    hc_title(text = "Greek Parliament") %>%
+    hc_subtitle(text = paste("Η σύνθεση της Βουλής για την Θητεία", term_num)) |>
+    hc_legend(labelFormat = '{name} <span style="opacity: 0.4">{y}</span>')
+}
 ```
-
 
 ```{r}
-highcharter::hchart(
-  term3data,
-  "item",
-  hcaes(
-    name = Party,
-    y = n,
-    label = Party,
-    color = Color
-  ),
-  name = "Representatives",
-  showInLegend = TRUE,
-  size = "100%",
-  center = list("50%", "75%"),
-  startAngle = -100,
-  endAngle  = 100
-) %>%
-  hc_title(text = "Greek Parliament") %>%
-  hc_subtitle(text = "Η τρίτη σύνθεση της Βουλής (1981-1984)") |>
-  hc_legend(labelFormat = '{name} <span style="opacity: 0.4">{y}</span>')
+plot_parliament_term(3,parliament, parties)
 ```
 
-
-```{r}
-make_parliament_plot(3, "Greek Parliament (1981-1985)", "#f72100","#10459c","#26d43a")
-```
 
 ## 4th Term
 
 ```{r}
-make_parliament_plot(4, "Greek Parliament (1985-1989)", "#cccccc","#f72100","#900603","#10459c","#26d43a")
+plot_parliament_term(4,parliament, parties)
 ```
 
 
 ## 5th Term
 
 ```{r}
-make_parliament_plot(5, "Greek Parliament (Jun,1989 - Nov,1989)", "#d6b85a","#cccccc","#10459c","#26d43a","#FFC0CB")
+plot_parliament_term(5,parliament, parties)
 ```
 
 ## 6th Term
 
 
 ```{r}
-make_parliament_plot(6, "Greek Parliament (Nov,1989 - Apr,1990)","#cccccc","#10459c","#26d43a","#FFC0CB","#cefad0")
+plot_parliament_term(6,parliament, parties)
 ```
 
 ## 7th Term
 
 ```{r}
-make_parliament_plot(7, "Greek Parliament (Apr,1990 - Oct,1993)", "#cccccc", "#f72100", "#10459c","#26d43a","#FFC0CB","#cefad0")
+plot_parliament_term(7,parliament, parties)
 ```
 
 
 ## 8th Term
 
 ```{r}
-make_parliament_plot(8, "Greek Parliament (Apr,1990 - Oct,1993)", "#f72100", "#10459c","#26d43a","#3944bc")
+plot_parliament_term(8,parliament, parties)
 ```
 
 
@@ -304,7 +305,7 @@ make_parliament_plot(8, "Greek Parliament (Apr,1990 - Oct,1993)", "#f72100", "#1
 ## 9th Term
 
 ```{r}
-make_parliament_plot(9, "Greek Parliament (Oct,1993 - Aug,1996)", "#FFA500", "#cccccc","#10459c","#3944bc","#26d43a", "#FFC0CB")
+plot_parliament_term(9,parliament, parties)
 ```
 
 
@@ -313,49 +314,51 @@ make_parliament_plot(9, "Greek Parliament (Oct,1993 - Aug,1996)", "#FFA500", "#c
 
 
 ```{r}
-make_parliament_plot(10, "Greek Parliament (2000 - 2004)", "#cccccc","#f72100","#3944bc","#26d43a", "#FFC0CB")
+plot_parliament_term(10,parliament, parties)
 ```
 
 ## 11th Term
 
 
 ```{r}
-make_parliament_plot(11, "Greek Parliament (2004 - 2007)", "#cccccc","#f72100","#3944bc","#26d43a", "#FFC0CB")
+plot_parliament_term(11,parliament, parties)
 ```
 
 ## 12th Term
 
 
 ```{r}
-make_parliament_plot(12, "Greek Parliament (2007 - 2009)", "#f72100","#1E3F66","#3944bc","#26d43a", "#FFC0CB")
+plot_parliament_term(12,parliament, parties)
 ```
 
 ## 13th Term
 
 
 ```{r}
-make_parliament_plot(13, "Greek Parliament (2009 - May,2012)", "#bcd2e8", "#680c07","#000000","#f72100","#1E3F66","#3944bc","#26d43a", "#FFC0CB")
+plot_parliament_term(13,parliament, parties)
 ```
 
 ## 14th Term
 
 
 ```{r}
-make_parliament_plot(14, "Greek Parliament (May,2012 - Jun,2012)", "#bcd2e8", "#680c07","#f72100","#3944bc","#26d43a", "#FFC0CB", "#000000")
+plot_parliament_term(14,parliament, parties)
 ```
 
 ## 15th Term
 
 
 ```{r}
-make_parliament_plot(15, "Greek Parliament (Jun,2012 - Jan,2015)", "#65350f", "#bcd2e8", "#680c07","#cccccc","#f72100","#3944bc", "#26d43a", "#FFC0CB", "#000000")
+plot_parliament_term(15,parliament, parties)
 ```
+
 ## 16th Term
 
 
 ```{r}
-make_parliament_plot(16, "Greek Parliament (Jan, 2015 - Aug,2015)", "#bcd2e8", "#f72100","#7a1712","#3944bc","#26d43a", "#00ccd3", "#FFC0CB", "#000000")
+plot_parliament_term(16,parliament, parties)
 ```
+
 ## 17th Term
 
 :::{.callout-warning}
@@ -364,7 +367,7 @@ As you can see on the next plot there are many MPs that are classified as indepe
 
 
 ```{r}
-make_parliament_plot(17, "Greek Parliament (Sep,2015 - 2019)", "#cccccc", "#f72100","#3944bc","#26d43a","#00ccd3", "#FFC0CB","#000000")
+plot_parliament_term(17,parliament, parties)
 ```
 
 :::
