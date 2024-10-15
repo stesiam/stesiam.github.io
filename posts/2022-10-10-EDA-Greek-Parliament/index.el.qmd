@@ -1,8 +1,9 @@
 ---
-title: "EDA on Greek Parliament"
+title: "Περιγραφική Ανάλυση Ελληνικού Κοινοβουλίου"
 author: "stesiam"
+lang: el
 description: |
-  Let's explore the MPs that got elected the most over the years (1981-2019).
+  Μία βασική ανάλυση των διατελέσαντων βουλευτών της περιόδου (1981 - 2019)
 freeze: false
 link-external-newwindow: true
 categories: [R, EDA]
@@ -11,7 +12,7 @@ image-alt: Greek parliament
 fig-cap-location: bottom
 date: "2022-10-10"
 toc: true
-toc-title: Table of Contents
+toc-title: Περιεχόμενα
 toc-location: left
 citation: true
 title-block-banner: true
@@ -33,7 +34,7 @@ editor_options:
     wrap: 80
 ---
 
-# Introduction
+# Εισαγωγή
 
 And here we go...
 
@@ -269,7 +270,7 @@ about how many MPs got elected by each party.
 ## 3rd Term
 
 ```{r}
-plot_parliament_term <- function(term_num, parliament_data, parties_data, lang = "en") {
+plot_parliament_term <- function(term_num, parliament_data, parties_data, lang = "el") {
   # Filter the parliament data for the selected term and summarize by party
   term_data <- parliament_data |>
     dplyr::filter(Term == term_num) |>
