@@ -25,7 +25,7 @@ format:
     code-fold: true
     code-summary: "Show the code"
     code-tools: 
-      source: https://github.com/stesiam/stesiam.github.io/blob/gh-pages/english-posts/2022-10-10-EDA-Greek-Parliament/index.qmd
+     source: https://github.com/stesiam/stesiam.github.io/blob/gh-pages/english-posts/2022-10-10-EDA-Greek-Parliament/index.qmd
 execute:
   echo: true
 editor_options: 
@@ -268,6 +268,9 @@ about how many MPs got elected by each party.
 ::: panel-tabset
 ## 3rd Term
 
+
+
+
 ```{r}
 plot_parliament_term <- function(term_num, parliament_data, parties_data, lang = "en") {
   # Filter the parliament data for the selected term and summarize by party
@@ -332,23 +335,47 @@ plot_parliament_term <- function(term_num, parliament_data, parties_data, lang =
       startAngle = -100,
       endAngle = 100
     ) %>%
-    hc_responsive(
-      rules = list(
-        list(
-          condition = list(maxWidth = 600),
-          chartOptions = list(
-            series = list(
-              list(dataLabels = list(distance = -30))
+ hc_responsive(
+  rules = list(
+    list(
+      condition = list(maxWidth = 600),
+      chartOptions = list(
+        series = list(
+          dataLabels = list(
+            distance = -30,
+            style = list(
+              fontSize = "12px",
+              textOutline = "1px contrast"  # Outline for labels
             )
-          )
+          ),
+          center = list("50%", "75%"),  # Adjust center position for mobile
+          size = "130%"
+        )
+      )
+    ),
+    list(  # New condition for max width of 400px
+      condition = list(maxWidth = 400),
+      chartOptions = list(
+        series = list(
+          dataLabels = list(
+            distance = -20,
+            style = list(
+              fontSize = "9px",        # Smaller font for smaller screens
+              textOutline = "1px contrast"  # Maintain outline
+            )
+          ),
+          center = list("50%", "80%"),  # Further adjust center position for even smaller screens
+          size = "110%"   # Adjust the size for smaller screens
         )
       )
     )
+  )
+)
 }
 ```
 
 ```{r}
-plot_parliament_term(3,parliament, parties, lang = "el")
+plot_parliament_term(3,parliament, parties, lang = "en")
 ```
 
 ## 4th Term
