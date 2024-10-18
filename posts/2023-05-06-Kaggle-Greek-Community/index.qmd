@@ -21,7 +21,7 @@ csl: apa-6th-edition.csl
 bibliography: [packages.bib, references.bib]
 format: 
   html:
-    freeze: true
+    freeze: false
     code-link: true
     code-fold: false
     code-summary: "Show the code"
@@ -45,6 +45,11 @@ full functionality of Kaggle. For example,
 [DrivenData](https://www.drivendata.org/) could be considered an alternative for
 participating in ML competitions, but it neither provides the possibility to
 create notebooks nor has a large number of users.
+
+
+::: {.column-margin}
+<center>![Kaggle's logo](images/kaggle_logo.svg){height=100px}</center>
+:::
 
 **Kaggle Machine Learning & Data Science Survey** is an annual survey conducted
 by Kaggle. The platform asks its users to analyze users' data in the context of
@@ -351,7 +356,6 @@ kaggle_2021_compare %>%
 # Programming Language
 
 ```{r, fig.showtext=T, dpi = 300, warning=F}
-library(ggcirclepack)
 d1 = kaggle_2021_compare %>%
   select(Q3, Q7_Part_1, Q7_Part_2) %>%
   group_by(Q3) %>%
