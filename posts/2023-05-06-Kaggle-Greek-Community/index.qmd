@@ -32,6 +32,13 @@ execute:
 editor_options: 
   markdown: 
     wrap: 80
+knitr: 
+  opts_chunk: 
+    dev: [svglite, darksvglite]
+    fig.ext: [.light.svg, .dark.svg]
+include-after-body:
+  text: |
+    <script type="application/javascript" src="../light-dark.js"></script>
 ---
 
 # Introduction
@@ -110,6 +117,66 @@ font_add_google(name = "Spline Sans", family = "text", db_cache = F)
 knitr::write_bib(.packages(), file = 'packages.bib')
 ```
 
+```{r}
+#| include: false
+theme_light <- function() {
+  theme_minimal(base_size = 11) %+%
+  theme(
+    panel.border = element_blank(),
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    text = element_text(colour = "black"),
+    axis.text = element_text(colour = "black"),
+    rect = element_rect(colour = "white", fill = "black"),
+    plot.background = element_rect(fill = "white", colour = NA),
+    axis.line = element_line(colour = "black"),
+    axis.ticks = element_line(colour = "black"),
+    legend.position = "none",
+    plot.title = element_markdown(family = "title"),
+    plot.subtitle = element_markdown(family = "subtitle", lineheight = 0.4),
+    plot.caption = element_markdown(family = "subtitle"),
+    axis.ticks.y = element_blank(),
+    axis.line.y = element_blank()
+    )
+}
+
+theme_dark <- function() {
+  theme_minimal(base_size = 11) %+%
+  theme(
+    panel.border = element_blank(),
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    text = element_text(colour = "white"),
+    axis.text = element_text(colour = "white"),
+    rect = element_rect(colour = "#272b30", fill = "#272b30"),
+    plot.background = element_rect(fill = "#272b30", colour = NA),
+    axis.line = element_line(colour = "white"),
+    axis.ticks = element_line(colour = "white"),
+    legend.position = "none",
+    plot.title = element_markdown(family = "title"),
+    plot.subtitle = element_markdown(family = "subtitle", lineheight = 0.4),
+    plot.caption = element_markdown(family = "subtitle"),
+    axis.ticks.y = element_blank(),
+    axis.line.y = element_blank()
+    )
+}
+
+darksvglite <- function(file, width, height) {
+  on.exit(reset_theme_settings())
+  theme_set(theme_dark())
+  ggsave(
+    filename = file,
+    width = width,
+    height = height,
+    dev = "svg",
+    bg = "transparent"
+  )
+}
+```
 ## Import data
 
 Using `read.csv()` from readr package, I import my dataset and I name it as
@@ -255,6 +322,7 @@ data$iso2c = tolower(data$iso2c)
 ```
 
 ```{r, fig.height= 12, fig.showtext=T, dpi = 300, warning=F}
+theme_set(theme_light())
 data %>%
   ggplot() +
   geom_col(aes(x = pct_women, y = reorder(Q3, pct_women), fill = pct_women)) +
@@ -274,17 +342,7 @@ family = "text") +
     x = "Percentage (%) of Women",
     y = "Countries"
   ) +
-  coord_cartesian(expand = FALSE) + # push geom_col to not leave space on axis x
-  theme_classic() +
-  theme(
-    legend.position = "none",
-    plot.title = element_markdown(family = "title"),
-    plot.subtitle = element_markdown(family = "subtitle", lineheight = 0.4),
-    plot.caption = element_markdown(family = "subtitle"),
-    axis.ticks.y = element_blank(),
-    axis.line.y = element_blank(),
-    axis.text.y = element_text(margin = margin(r =2))
-  )
+  coord_cartesian(expand = FALSE)
 ```
 
 # Age Distribution
@@ -312,7 +370,7 @@ kaggle_2021_compare %>%
     y = "Percentage",
     fill = ""
   ) +
-  theme_classic() +
+  theme_set(theme_light()) +
     theme(
     plot.title = element_markdown(family = "title"),
     plot.subtitle = element_markdown(family = "subtitle", lineheight = 0.4),
