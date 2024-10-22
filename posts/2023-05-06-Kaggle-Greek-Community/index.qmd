@@ -109,6 +109,9 @@ font_add_google(name = "Lilita One", family = "title", db_cache = F)
 font_add_google(name = "Ysabeau Office", family = "subtitle", db_cache = F)
 font_add_google(name = "Spline Sans", family = "text", db_cache = F)
 
+showtext_auto()
+showtext::showtext_opts(dpi = 300)
+
 ```
 
 ```{r Add references of R libraries, include=FALSE}
@@ -170,8 +173,9 @@ darksvglite <- function(file, width, height) {
   theme_set(theme_dark())
   ggsave(
     filename = file,
-    width = width,
-    height = height,
+    dpi = 300,
+    height = 12,
+    width = 7,
     dev = "svg",
     bg = "transparent"
   )
@@ -321,7 +325,7 @@ data$iso2c <- countrycode(data$Q3, "country.name", "iso2c")
 data$iso2c = tolower(data$iso2c)
 ```
 
-```{r, fig.height= 12, fig.showtext=T, dpi = 300, warning=F}
+```{r, fig.height= 12, fig.width=7, fig.showtext=T, dpi = 300, warning=F}
 theme_set(theme_light())
 data %>%
   ggplot() +

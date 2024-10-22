@@ -16,6 +16,7 @@ Deployed using [GitHub Pages](https://pages.github.com/).
 - 📎 Remove .html endings on several links using folders containing quarto files named as index.qmd
 - 🖊 Use Google fonts locally instead of using Google Fonts API (Alegreya)
 - 🌐 Multilinguality (🇬🇧 / 🇬🇷)
+- 🪄 Custom highlight style ([a11y-light](https://github.com/quarto-dev/quarto-cli/blob/main/src/resources/pandoc/highlight-styles/a11y-light.theme) / [a11y-dark](https://github.com/quarto-dev/quarto-cli/blob/main/src/resources/pandoc/highlight-styles/a11y-dark.theme))
 
 ## TO DOs
 
