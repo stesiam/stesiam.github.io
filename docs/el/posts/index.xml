@@ -8,13 +8,13 @@
 <title>stesiam</title>
 <link>https://stesiam.com/posts/</link>
 <atom:link href="https://stesiam.com/posts/index.xml" rel="self" type="application/rss+xml"/>
-<description>Μία συλλογή ελληνικών άρθρων για τη Στατιστική και την R. Σε αυτή την ενότητα θα βρούμε μία διαφορετική λίστα άρθρων από την αντίστοιχη αγγλική, μιας και υπάρχουν άρθρα που δεν έχει νόημα να μεταφραστούν και έχουν ενδιαφέρον μόνο για το ελληνόφωνο κοινό. Μελλοντικά, σκοπεύω να δημιουργήσω μία ελληνική μετάφραση - περίληψη για κάθε αγγλικό άρθρο. Παρεμπιπτόντως, αν ποτέ αξιωθώ να πάρω πτυχίο αυτό είναι το μέρος που θα το γράψω πρώτα. 😀</description>
+<description>Μία συλλογή ελληνικών άρθρων για τη Στατιστική και την R. Σε αυτή την ενότητα θα βρούμε μία διαφορετική λίστα άρθρων από την αντίστοιχη αγγλική, μιας και υπάρχουν άρθρα που δεν έχει νόημα να μεταφραστούν και έχουν ενδιαφέρον μόνο για το ελληνόφωνο κοινό. Μελλοντικά, σκοπεύω να δημιουργήσω μία ελληνική μετάφραση - περίληψη για κάθε αγγλικό άρθρο. Παρεμπιπτόντως, αν ποτέ αξιωθώ να πάρω πτυχίο αυτό είναι το μέρος που θα το γράψω πρώτα 😀</description>
 <generator>quarto-1.5.53</generator>
 <lastBuildDate>Mon, 03 Jul 2023 21:00:00 GMT</lastBuildDate>
 <item>
   <title>Πρόσβαση στο API του data.gov.gr</title>
   <dc:creator>stesiam </dc:creator>
-  <link>https://stesiam.com/posts/2023-07-04-GovGR-API-Greek/</link>
+  <link>https://stesiam.com/posts/tutorial-govgr-api/</link>
   <description><![CDATA[ <section id="εισαγωγή" class="level2"><h2 class="anchored" data-anchor-id="εισαγωγή">Εισαγωγή</h2>
 <p>Στην παραδοσιακή ανάλυση δεδομένων συνήθως ο αναλυτής καλείται να &lt;&gt; τα δεδομένα, να τους δώσει μία κατάλληλη μορφή προκειμένου να αναλυθούν. Αυτή η διαδικασία υπονοεί ότι τα δεδομένα υπάρχουν συγκεντρωμένα σε ένα αρχείο. Ωστόσο, δεν είναι πάντα έτσι. Το πρόβλημα με την ανάλυση ενός dataset είναι ότι δεν λαμβάνει υπόψιν τις όποιες νέες τιμές. Σε αυτή τη περίπτωση θα πρέπει να ξανακατεβάσω τα νέα δεδομένα και να ξανατρέξω την ανάλυση μέσω της R ή όποιου εργαλείου χρησιμοποιώ. Αυτό όπως γίνεται αντιληπτό είναι μη παραγωγικό, ωστόσο όταν γίνεται λίγες φορές μέσα στο χρόνο, ίσως να μην είναι και τόσο . Εκεί που πλέον γίνεται εμφανής η μη αποτελεσματικότητα της παραπάνω διαδικασίας είναι όταν υπάρχει συνεχής ροή δεδομένων, άρα πρέπει να γίνεται αυτή η διαδικασία καθημερινά. Σε αυτές τις περιπτώσεις φαίνεται η χρησιμότητα του API αφού μας δίνει τις νέες τιμές με μικρό σχετικά κόπο. Παράλληλα η χρήση του API ευνοεί την ένταξη νέων δεδομένων, συνεπώς αν φτιάχνουμε ένα προβλεπτικό μοντέλο η ακρίβειά του θα παραμένει σε ένα ικανοποιητικό επίπεδο. Τέλος, άλλη μία θετική συμβολή είναι σε Shiny Apps, προκειμένου να αυτοματοποιείται η ανάλυση δεδομένων και οι πληροφορίες να είναι αξιόπιστες για τον επισκέπτη αυτού.</p>
 <p>Γενικά υπάρχουν πάρα πολλά API από τα οποία μπορούμε να λάβουμε σημαντικές πληροφορίες. Για περισσότερες λεπτομέρειες ως προς τη διαθεσιμότητα δωρεάν APIs μπορείτε να δείτε ένα σχετικό <a href="https://github.com/public-apis/public-apis">repository με μία λίστα αυτών</a>. Σε αυτό το άρθρο θα ασχοληθούμε με τα ανοικτά δεδομένα της χώρας μας που διατίθενται μέσω του <a href="data.gov.gr">data.gov.gr</a>.</p>
@@ -22,7 +22,7 @@
 <p>Ωστόσο, το συγκεκριμένο API (όπως τα περισσότερα χρειάζονται</p>
 <p>Κάνουμε αίτηση στην αντίστοιχη σελίδα και συμπληρώνουμε τα στοιχεία μας και <strong>όλα</strong> τα πεδία της φόρμας όπως αυτή φαίνεται παρακάτω:</p>
 <div class="quarto-figure quarto-figure-center" style="text-align:center; background-color: #fafafa; padding: 20px">
-<figure class="figure"><p><img src="https://stesiam.com/posts/2023-07-04-GovGR-API-Greek/images/datagovgr_api_request.png" class="img-fluid figure-img" width="500"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/tutorial-govgr-api/images/datagovgr_api_request.png" class="img-fluid figure-img" width="500"></p>
 <figcaption>Προεπισκόπηση σελίδας αίτησης για πρόσβαση στο API</figcaption></figure>
 </div>
 <p>Στη συνέχεια θα πρέπει να κοιτάξετε το e-mail σας γιατί θα σας έρθει ένα μήνυμα με τον Token μέσω του οποίου θα χρησιμοποιείται το API. Να δείτε οπωσδήποτε και τον φάκελο με την Ανεπιθύμητη αλληλογραφία (spam) καθώς εμένα μου ήρθε εκεί. Παρεμπιπτόντως, σε περίπτωση που χάσετε το token και έχετε σβήσει το mail και ξανακάνετε αίτηση (με το ίδιο mail) θα σας το ξαναστείλει. Το έπαθα μόλις :)</p>
@@ -201,13 +201,13 @@ font-style: inherit;">)</span></span></code></pre></div>
 </section> ]]></description>
   <category>R</category>
   <category>API</category>
-  <guid>https://stesiam.com/posts/2023-07-04-GovGR-API-Greek/</guid>
+  <guid>https://stesiam.com/posts/tutorial-govgr-api/</guid>
   <pubDate>Mon, 03 Jul 2023 21:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Σπουδές Στατιστικής στην Ελλάδα</title>
   <dc:creator>stesiam </dc:creator>
-  <link>https://stesiam.com/posts/2023-06-20-Studies-in-Statistics-Greek/</link>
+  <link>https://stesiam.com/posts/studies-in-statistics-greece/</link>
   <description><![CDATA[ <section id="εισαγωγή" class="level2"><h2 class="anchored" data-anchor-id="εισαγωγή">Εισαγωγή</h2>
 <p>Σε αυτό το άρθρο θα ήθελα να συγκεντρώσω όλες αυτές τις διάσπαρτες πληροφορίες που υπάρχουν για τα τμήματα Στατιστικής στη χώρα μας. Θα αναλύσω ως επί το πλείστον πληροφορίες που μπορούν να βρεθούν στο διαδίκτυο σαν να είχα να συμπληρώσω μηχανογραφικό. Ωστόσο, σε κάθε περίπτωση σας αποτρέπω από το να επιλέξετε σχολή βασίζοντας την επιλογή σας σε μόνο αυτό το άρθρο. Σε αυτή τη κατηγορία εντάσσω απλά όσες σχολές σχετίζονται με τη Στατιστική. Τα τμήματα που θα συγκρίνω είναι τα εξής:</p>
 <ul>
@@ -878,7 +878,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="https://stesiam.com/posts/2023-06-20-Studies-in-Statistics-Greek/index.el_files/figure-html/vaseis-eisagogis-1.png" class="img-fluid figure-img" width="2100"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/studies-in-statistics-greece/index_files/figure-html/vaseis-eisagogis-1.png" class="img-fluid figure-img" width="2100"></p>
 <figcaption>Βάσεις εισαγωγής σχολών Στατιστικής (2013 - 2022)</figcaption></figure>
 </div>
 </div>
@@ -1192,7 +1192,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="https://stesiam.com/posts/2023-06-20-Studies-in-Statistics-Greek/index.el_files/figure-html/theseis-eisagogis-plot-1.png" class="img-fluid figure-img" width="2100"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/studies-in-statistics-greece/index_files/figure-html/theseis-eisagogis-plot-1.png" class="img-fluid figure-img" width="2100"></p>
 <figcaption>Διαθέσιμες θέσεις σχολών Στατιστικής (2013 - 2022)</figcaption></figure>
 </div>
 </div>
@@ -1587,7 +1587,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2023-06-20-Studies-in-Statistics-Greek/index.el_files/figure-html/degree_reqs_plot-1.png" class="img-fluid figure-img" width="2100"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/studies-in-statistics-greece/index_files/figure-html/degree_reqs_plot-1.png" class="img-fluid figure-img" width="2100"></p>
 </figure>
 </div>
 </div>
@@ -1883,7 +1883,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2023-06-20-Studies-in-Statistics-Greek/index.el_files/figure-html/electives_plot-1.png" class="img-fluid figure-img" width="2100"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/studies-in-statistics-greece/index_files/figure-html/electives_plot-1.png" class="img-fluid figure-img" width="2100"></p>
 </figure>
 </div>
 </div>
@@ -2310,8 +2310,8 @@ font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 <div class="cell-output-display">
-<div class="reactable html-widget html-fill-item" id="htmlwidget-e9eb88d585a647ed3c01" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-e9eb88d585a647ed3c01">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Uni":["AUEB","UniPi2011","UniPi2017","Aegean","UoWM"],"Diloseis":["Ναι","Όχι","Όχι","Όχι","Όχι"],"Alysides":["Ναι","Όχι","Όχι","Όχι","Όχι"],"Ptyxiaki":["Προαιρετική","Όχι","Όχι","Προαιρετική","Όχι"],"Vathmos":["Αριθμητικός μέσος","Σταθμικός μέσος","Αριθμητικός μέσος","Σταθμικός μέσος","Αριθμητικός μέσος"]},"columns":[{"id":"Uni","name":"Πανεπιστήμιο","type":"character"},{"id":"Diloseis","name":"Όριο δηλώσεων","type":"character","style":[{"color":"#e00000","fontWeight":"bold"},{"color":"#008000","fontWeight":"bold"},{"color":"#008000","fontWeight":"bold"},{"color":"#008000","fontWeight":"bold"},{"color":"#008000","fontWeight":"bold"}]},{"id":"Alysides","name":"Αλυσίδες μαθημάτων","type":"character","style":[{"color":"#e00000","fontWeight":"bold"},{"color":"#008000","fontWeight":"bold"},{"color":"#008000","fontWeight":"bold"},{"color":"#008000","fontWeight":"bold"},{"color":"#008000","fontWeight":"bold"}]},{"id":"Ptyxiaki","name":"Πτυχιακή","type":"character","style":[{"color":"#e8c010","fontWeight":"bold"},{"color":"#008000","fontWeight":"bold"},{"color":"#008000","fontWeight":"bold"},{"color":"#e8c010","fontWeight":"bold"},{"color":"#008000","fontWeight":"bold"}]},{"id":"Vathmos","name":"Υπολογισμός βαθμού","type":"character"}],"dataKey":"237341ab6f93ec5492bc75f7256bcdb0"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div class="reactable html-widget html-fill-item" id="htmlwidget-645e2479874bc06f6df3" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-645e2479874bc06f6df3">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Uni":["AUEB","UniPi2011","UniPi2017","Aegean","UoWM"],"Diloseis":["Ναι","Όχι","Όχι","Όχι","Όχι"],"Alysides":["Ναι","Όχι","Όχι","Όχι","Όχι"],"Ptyxiaki":["Προαιρετική","Όχι","Όχι","Προαιρετική","Όχι"],"Vathmos":["Αριθμητικός μέσος","Σταθμικός μέσος","Αριθμητικός μέσος","Σταθμικός μέσος","Αριθμητικός μέσος"]},"columns":[{"id":"Uni","name":"Πανεπιστήμιο","type":"character"},{"id":"Diloseis","name":"Όριο δηλώσεων","type":"character","style":[{"color":"#e00000","fontWeight":"bold"},{"color":"#008000","fontWeight":"bold"},{"color":"#008000","fontWeight":"bold"},{"color":"#008000","fontWeight":"bold"},{"color":"#008000","fontWeight":"bold"}]},{"id":"Alysides","name":"Αλυσίδες μαθημάτων","type":"character","style":[{"color":"#e00000","fontWeight":"bold"},{"color":"#008000","fontWeight":"bold"},{"color":"#008000","fontWeight":"bold"},{"color":"#008000","fontWeight":"bold"},{"color":"#008000","fontWeight":"bold"}]},{"id":"Ptyxiaki","name":"Πτυχιακή","type":"character","style":[{"color":"#e8c010","fontWeight":"bold"},{"color":"#008000","fontWeight":"bold"},{"color":"#008000","fontWeight":"bold"},{"color":"#e8c010","fontWeight":"bold"},{"color":"#008000","fontWeight":"bold"}]},{"id":"Vathmos","name":"Υπολογισμός βαθμού","type":"character"}],"dataKey":"237341ab6f93ec5492bc75f7256bcdb0"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section><section id="χάρτης" class="level2"><h2 class="anchored" data-anchor-id="χάρτης">Χάρτης</h2>
@@ -2670,7 +2670,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2023-06-20-Studies-in-Statistics-Greek/index.el_files/figure-html/map_statistics_deps-1.png" class="img-fluid figure-img" width="2100"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/studies-in-statistics-greece/index_files/figure-html/map_statistics_deps-1.png" class="img-fluid figure-img" width="2100"></p>
 </figure>
 </div>
 </div>
@@ -2683,21 +2683,21 @@ font-style: inherit;">)</span></span></code></pre></div>
   author = {, stesiam},
   title = {Σπουδές Στατιστικής στην Ελλάδα},
   date = {2023-06-20},
-  url = {https://stesiam.com/posts/2023-06-20-Studies-in-Statistics-Greek/},
+  url = {https://stesiam.com/posts/studies-in-statistics-greece/},
   langid = {el}
 }
 </code></pre><div class="quarto-appendix-secondary-label">Εναλλακτικά, μπορείτε να αναφερθείτε στο παραπάνω άρθρο ως εξής:</div><div id="ref-2023" class="csl-entry quarto-appendix-citeas">
 stesiam. 2023. <span>“Σπουδές Στατιστικής στην Ελλάδα.”</span> June 20,
-2023. <a href="https://stesiam.com/posts/2023-06-20-Studies-in-Statistics-Greek/">https://stesiam.com/posts/2023-06-20-Studies-in-Statistics-Greek/</a>.
+2023. <a href="https://stesiam.com/posts/studies-in-statistics-greece/">https://stesiam.com/posts/studies-in-statistics-greece/</a>.
 </div></div></section></div> ]]></description>
   <category>Σπουδές</category>
-  <guid>https://stesiam.com/posts/2023-06-20-Studies-in-Statistics-Greek/</guid>
+  <guid>https://stesiam.com/posts/studies-in-statistics-greece/</guid>
   <pubDate>Mon, 19 Jun 2023 21:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Συγκεντρωμένο υλικό για την R στα ελληνικά</title>
   <dc:creator>stesiam </dc:creator>
-  <link>https://stesiam.com/posts/2022-10-23-Material-for-R-Greek/</link>
+  <link>https://stesiam.com/posts/greek-material-for-r/</link>
   <description><![CDATA[ 
 
 
@@ -2712,7 +2712,7 @@ stesiam. 2023. <span>“Σπουδές Στατιστικής στην Ελλά�
 <div class="no-row-height column-margin column-container"><div class="">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://stesiam.com/posts/2022-10-23-Material-for-R-Greek/images/Rlogo.png" height="100" class="figure-img"></p>
+<p><img src="https://stesiam.com/posts/greek-material-for-r/images/Rlogo.png" height="100" class="figure-img"></p>
 <figcaption>Λογότυπο γλώσσας προγραμματισμού R</figcaption>
 </figure>
 </div>
@@ -2782,7 +2782,7 @@ stesiam. 2023. <span>“Σπουδές Στατιστικής στην Ελλά�
 <div class="no-row-height column-margin column-container"><div class="">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="https://gr.r4ds.hadley.nz/"><img src="https://stesiam.com/posts/2022-10-23-Material-for-R-Greek/images/cover_RfDS.jpg" height="200" alt="Εξώφυλλο πρωτότυπης έκδοσης RfDS" class="figure-img"></a></p>
+<p><a href="https://gr.r4ds.hadley.nz/"><img src="https://stesiam.com/posts/greek-material-for-r/images/cover_RfDS.jpg" height="200" alt="Εξώφυλλο πρωτότυπης έκδοσης RfDS" class="figure-img"></a></p>
 <figcaption>Εξώφυλλο πρωτότυπης έκδοσης RfDS</figcaption>
 </figure>
 </div>
@@ -2792,7 +2792,7 @@ stesiam. 2023. <span>“Σπουδές Στατιστικής στην Ελλά�
 <div class="no-row-height column-margin column-container"><div class="">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="https://repository.kallipos.gr/handle/11419/2601"><img src="https://stesiam.com/posts/2022-10-23-Material-for-R-Greek/images/Ntzoufras.jpg" height="200" alt="Εξώφυλλο Καρλή &amp; Ντζούφρα (2015)" class="figure-img"></a></p>
+<p><a href="https://repository.kallipos.gr/handle/11419/2601"><img src="https://stesiam.com/posts/greek-material-for-r/images/Ntzoufras.jpg" height="200" alt="Εξώφυλλο Καρλή &amp; Ντζούφρα (2015)" class="figure-img"></a></p>
 <figcaption>Εξώφυλλο Καρλή &amp; Ντζούφρα (2015)</figcaption>
 </figure>
 </div>
@@ -2833,23 +2833,23 @@ stesiam. 2023. <span>“Σπουδές Στατιστικής στην Ελλά�
   author = {, stesiam},
   title = {Συγκεντρωμένο υλικό για την R στα ελληνικά},
   date = {2022-10-23},
-  url = {https://stesiam.com/posts/2022-10-23-Material-for-R-Greek/},
+  url = {https://stesiam.com/posts/greek-material-for-r/},
   langid = {el}
 }
 </code></pre><div class="quarto-appendix-secondary-label">Εναλλακτικά, μπορείτε να αναφερθείτε στο παραπάνω άρθρο ως εξής:</div><div id="ref-2022" class="csl-entry quarto-appendix-citeas">
 stesiam. 2022. <span>“Συγκεντρωμένο υλικό για την R στα
-ελληνικά.”</span> October 23, 2022. <a href="https://stesiam.com/posts/2022-10-23-Material-for-R-Greek/">https://stesiam.com/posts/2022-10-23-Material-for-R-Greek/</a>.
+ελληνικά.”</span> October 23, 2022. <a href="https://stesiam.com/posts/greek-material-for-r/">https://stesiam.com/posts/greek-material-for-r/</a>.
 </div></div></section></div> ]]></description>
   <category>R</category>
   <category>Υλικο</category>
-  <guid>https://stesiam.com/posts/2022-10-23-Material-for-R-Greek/</guid>
+  <guid>https://stesiam.com/posts/greek-material-for-r/</guid>
   <pubDate>Sat, 22 Oct 2022 21:00:00 GMT</pubDate>
-  <media:content url="https://stesiam.com/posts/2022-10-23-Material-for-R-Greek/book.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://stesiam.com/posts/greek-material-for-r/book.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Περιγραφική Ανάλυση Ελληνικού Κοινοβουλίου</title>
   <dc:creator>stesiam </dc:creator>
-  <link>https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/</link>
+  <link>https://stesiam.com/posts/eda-greek-parliament/</link>
   <description><![CDATA[ <section id="εισαγωγή" class="level1"><h1>Εισαγωγή</h1>
 <p>And here we go…</p>
 <p>This is the first notebook on my website and I’d like to be a little special. I didn’t want to just take a ready-made dataset and apply a machine learning technique (I will do this in the next articles). So, I decided to make my own with the help of <a href="hellenicparliament.gr/">hellenic’s parliament website</a>.</p>
@@ -3244,8 +3244,8 @@ font-style: inherit;">5</span></span>
 background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
-<div class="reactable html-widget html-fill-item" id="htmlwidget-b1478ef494fcf34325cc" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-b1478ef494fcf34325cc">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Party":["ANEXARTITOI ELLINES (Independent Hellenes) National Patriotic Democratic Alliance","DEMOCRATIC COALITION (Panhellenic Socialist Movement Democratic Left )","LAIKOS SYNDESMOS - CHRYSI AVGI (People’s Association – Golden Dawn)","ANEXARTITOI ELLINES (Independent Hellenes)","PA.SO.K. (Panhellenic Socialist Movement)","Communist Party of Greece (Interior)","SYNASPISMOS RIZOSPASTIKIS ARISTERAS","Coalition of the Left and Progress","ANEXARTITOI DIMOKRATIKOI VOULEFTES","KOMMOUNISTIKO KOMMA ELLADAS","DHM.AR (Democratic Left)","TO POTAMI (The River)","NEA DIMOKRATIA","LAIKI ENOTITA","INDEPENDENT","DI.K.KI.","DI.ANA.","LA.O.S.","ΟΟ.ΕΟ.","POL.A."],"Length":[81,70,67,42,41,36,35,34,34,27,24,21,14,13,11,8,7,7,6,6]},"columns":[{"id":"Party","name":"Party","type":"character"},{"id":"Length","name":"Length","type":"numeric"}],"defaultPageSize":5,"dataKey":"6290ea4daaf33732cb2712395b66ae78"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div class="reactable html-widget html-fill-item" id="htmlwidget-b74094f954db68f4efaa" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-b74094f954db68f4efaa">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Party":["ANEXARTITOI ELLINES (Independent Hellenes) National Patriotic Democratic Alliance","DEMOCRATIC COALITION (Panhellenic Socialist Movement Democratic Left )","LAIKOS SYNDESMOS - CHRYSI AVGI (People’s Association – Golden Dawn)","ANEXARTITOI ELLINES (Independent Hellenes)","PA.SO.K. (Panhellenic Socialist Movement)","Communist Party of Greece (Interior)","SYNASPISMOS RIZOSPASTIKIS ARISTERAS","Coalition of the Left and Progress","ANEXARTITOI DIMOKRATIKOI VOULEFTES","KOMMOUNISTIKO KOMMA ELLADAS","DHM.AR (Democratic Left)","TO POTAMI (The River)","NEA DIMOKRATIA","LAIKI ENOTITA","INDEPENDENT","DI.K.KI.","DI.ANA.","LA.O.S.","ΟΟ.ΕΟ.","POL.A."],"Length":[81,70,67,42,41,36,35,34,34,27,24,21,14,13,11,8,7,7,6,6]},"columns":[{"id":"Party","name":"Party","type":"character"},{"id":"Length","name":"Length","type":"numeric"}],"defaultPageSize":5,"dataKey":"6290ea4daaf33732cb2712395b66ae78"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p>In our case the parties with the longest name is AN.EL. and Democratic Coalition with 81 and 70 characters, respectively. On the contrary, the shortest party name is POL.A. with 6 characters.</p>
@@ -5270,8 +5270,8 @@ font-style: inherit;">)</span></span></code></pre></div>
 <pre><code>Adding missing grouping variables: `Party`</code></pre>
 </div>
 <div class="cell-output-display">
-<div class="highchart html-widget html-fill-item" id="htmlwidget-d017a5a1db27e21f81f5" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-d017a5a1db27e21f81f5">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Κομμουνιστικό Κόμμα Ελλάδας",13,"#FF6666","ΚΚΕ"],["Νέα Δημοκρατία",115,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",172,"#95bb72","ΠΑΣΟΚ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+<div class="highchart html-widget html-fill-item" id="htmlwidget-d83c1a1c96b9f075fa81" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-d83c1a1c96b9f075fa81">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Κομμουνιστικό Κόμμα Ελλάδας",13,"#FF6666","ΚΚΕ"],["Νέα Δημοκρατία",115,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",172,"#95bb72","ΠΑΣΟΚ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -5298,8 +5298,8 @@ font-style: inherit;">)</span></span></code></pre></div>
 <pre><code>Adding missing grouping variables: `Party`</code></pre>
 </div>
 <div class="cell-output-display">
-<div class="highchart html-widget html-fill-item" id="htmlwidget-03c55a3ef9265077aab2" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-03c55a3ef9265077aab2">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Ανεξάρτητοι",1,"#ffffff","Ανεξάρτητοι"],["Κομμουνιστικό Κόμμα Ελλάδας",11,"#FF6666","ΚΚΕ"],["ΚΚΕ (εσωτερικού)",1,"#FF3366","ΚΚΕ (εσωτερικού)"],["Νέα Δημοκρατία",126,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",161,"#95bb72","ΠΑΣΟΚ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+<div class="highchart html-widget html-fill-item" id="htmlwidget-b68466d22b50bf2c3920" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-b68466d22b50bf2c3920">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Ανεξάρτητοι",1,"#ffffff","Ανεξάρτητοι"],["Κομμουνιστικό Κόμμα Ελλάδας",11,"#FF6666","ΚΚΕ"],["ΚΚΕ (εσωτερικού)",1,"#FF3366","ΚΚΕ (εσωτερικού)"],["Νέα Δημοκρατία",126,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",161,"#95bb72","ΠΑΣΟΚ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -5322,8 +5322,8 @@ font-style: inherit;">)</span></span></code></pre></div>
 <pre><code>Adding missing grouping variables: `Party`</code></pre>
 </div>
 <div class="cell-output-display">
-<div class="highchart html-widget html-fill-item" id="htmlwidget-b2dfa19824e28f574dc8" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-b2dfa19824e28f574dc8">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Δημοκρατική Ανανέωση",1,"orange","ΔΗΑΝΑ"],["Ανεξάρτητοι",1,"#ffffff","Ανεξάρτητοι"],["Νέα Δημοκρατία",145,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",125,"#95bb72","ΠΑΣΟΚ"],["Συνασπισμός Ριζοσπαστικής Αριστεράς",28,"#e27bb1","ΣΥΡΙΖΑ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+<div class="highchart html-widget html-fill-item" id="htmlwidget-9368879caa9a3d158349" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-9368879caa9a3d158349">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Δημοκρατική Ανανέωση",1,"orange","ΔΗΑΝΑ"],["Ανεξάρτητοι",1,"#ffffff","Ανεξάρτητοι"],["Νέα Δημοκρατία",145,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",125,"#95bb72","ΠΑΣΟΚ"],["Συνασπισμός Ριζοσπαστικής Αριστεράς",28,"#e27bb1","ΣΥΡΙΖΑ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -5346,8 +5346,8 @@ font-style: inherit;">)</span></span></code></pre></div>
 <pre><code>Adding missing grouping variables: `Party`</code></pre>
 </div>
 <div class="cell-output-display">
-<div class="highchart html-widget html-fill-item" id="htmlwidget-d73edaf31beb1103c003" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-d73edaf31beb1103c003">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Εναλλακτικοί Οικολόγοι",1,"#808080","ΕΟ"],["Ανεξάρτητοι",2,"#ffffff","Ανεξάρτητοι"],["Νέα Δημοκρατία",148,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",128,"#95bb72","ΠΑΣΟΚ"],["Συνασπισμός Ριζοσπαστικής Αριστεράς",21,"#e27bb1","ΣΥΡΙΖΑ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+<div class="highchart html-widget html-fill-item" id="htmlwidget-63d63f4012b13b6d7ef2" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-63d63f4012b13b6d7ef2">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Εναλλακτικοί Οικολόγοι",1,"#808080","ΕΟ"],["Ανεξάρτητοι",2,"#ffffff","Ανεξάρτητοι"],["Νέα Δημοκρατία",148,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",128,"#95bb72","ΠΑΣΟΚ"],["Συνασπισμός Ριζοσπαστικής Αριστεράς",21,"#e27bb1","ΣΥΡΙΖΑ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -5370,8 +5370,8 @@ font-style: inherit;">)</span></span></code></pre></div>
 <pre><code>Adding missing grouping variables: `Party`</code></pre>
 </div>
 <div class="cell-output-display">
-<div class="highchart html-widget html-fill-item" id="htmlwidget-0db265c48b188bcc5dc2" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-0db265c48b188bcc5dc2">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Εναλλακτικοί Οικολόγοι",1,"#808080","ΕΟ"],["Ανεξάρτητοι",10,"#ffffff","Ανεξάρτητοι"],["Κομμουνιστικό Κόμμα Ελλάδας",7,"#FF6666","ΚΚΕ"],["Νέα Δημοκρατία",150,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",121,"#95bb72","ΠΑΣΟΚ"],["Συνασπισμός Ριζοσπαστικής Αριστεράς",11,"#e27bb1","ΣΥΡΙΖΑ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+<div class="highchart html-widget html-fill-item" id="htmlwidget-80929076e224484a43b8" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-80929076e224484a43b8">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Εναλλακτικοί Οικολόγοι",1,"#808080","ΕΟ"],["Ανεξάρτητοι",10,"#ffffff","Ανεξάρτητοι"],["Κομμουνιστικό Κόμμα Ελλάδας",7,"#FF6666","ΚΚΕ"],["Νέα Δημοκρατία",150,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",121,"#95bb72","ΠΑΣΟΚ"],["Συνασπισμός Ριζοσπαστικής Αριστεράς",11,"#e27bb1","ΣΥΡΙΖΑ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -5394,8 +5394,8 @@ font-style: inherit;">)</span></span></code></pre></div>
 <pre><code>Adding missing grouping variables: `Party`</code></pre>
 </div>
 <div class="cell-output-display">
-<div class="highchart html-widget html-fill-item" id="htmlwidget-17362a57a53bb0d1e81c" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-17362a57a53bb0d1e81c">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Κομμουνιστικό Κόμμα Ελλάδας",9,"#FF6666","ΚΚΕ"],["Νέα Δημοκρατία",110,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",170,"#95bb72","ΠΑΣΟΚ"],["Πολιτική Άνοιξη",11,"#808080","ΠΟΛΑΝ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+<div class="highchart html-widget html-fill-item" id="htmlwidget-d594432be4b1764e2ef6" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-d594432be4b1764e2ef6">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Κομμουνιστικό Κόμμα Ελλάδας",9,"#FF6666","ΚΚΕ"],["Νέα Δημοκρατία",110,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",170,"#95bb72","ΠΑΣΟΚ"],["Πολιτική Άνοιξη",11,"#808080","ΠΟΛΑΝ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -5422,8 +5422,8 @@ font-style: inherit;">)</span></span></code></pre></div>
 <pre><code>Adding missing grouping variables: `Party`</code></pre>
 </div>
 <div class="cell-output-display">
-<div class="highchart html-widget html-fill-item" id="htmlwidget-146d2a5dda3ad32c7d36" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-146d2a5dda3ad32c7d36">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Δημοκρατικό Κοινωννικό Κίνημα",9,"#808080","ΔΗΚΚΙ"],["Ανεξάρτητοι",1,"#ffffff","Ανεξάρτητοι"],["Κομμουνιστικό Κόμμα Ελλάδας",11,"#FF6666","ΚΚΕ"],["Νέα Δημοκρατία",107,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",162,"#95bb72","ΠΑΣΟΚ"],["Συνασπισμός Ριζοσπαστικής Αριστεράς",10,"#e27bb1","ΣΥΡΙΖΑ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+<div class="highchart html-widget html-fill-item" id="htmlwidget-a3652aa9cd8725aca78d" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-a3652aa9cd8725aca78d">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Δημοκρατικό Κοινωννικό Κίνημα",9,"#808080","ΔΗΚΚΙ"],["Ανεξάρτητοι",1,"#ffffff","Ανεξάρτητοι"],["Κομμουνιστικό Κόμμα Ελλάδας",11,"#FF6666","ΚΚΕ"],["Νέα Δημοκρατία",107,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",162,"#95bb72","ΠΑΣΟΚ"],["Συνασπισμός Ριζοσπαστικής Αριστεράς",10,"#e27bb1","ΣΥΡΙΖΑ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -5446,8 +5446,8 @@ font-style: inherit;">)</span></span></code></pre></div>
 <pre><code>Adding missing grouping variables: `Party`</code></pre>
 </div>
 <div class="cell-output-display">
-<div class="highchart html-widget html-fill-item" id="htmlwidget-4025bb33ad2386cbbd36" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-4025bb33ad2386cbbd36">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Ανεξάρτητοι",1,"#ffffff","Ανεξάρτητοι"],["Κομμουνιστικό Κόμμα Ελλάδας",11,"#FF6666","ΚΚΕ"],["Νέα Δημοκρατία",125,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",157,"#95bb72","ΠΑΣΟΚ"],["Συνασπισμός Ριζοσπαστικής Αριστεράς",6,"#e27bb1","ΣΥΡΙΖΑ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+<div class="highchart html-widget html-fill-item" id="htmlwidget-7e1224a41f1a0c4f5b88" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-7e1224a41f1a0c4f5b88">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Ανεξάρτητοι",1,"#ffffff","Ανεξάρτητοι"],["Κομμουνιστικό Κόμμα Ελλάδας",11,"#FF6666","ΚΚΕ"],["Νέα Δημοκρατία",125,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",157,"#95bb72","ΠΑΣΟΚ"],["Συνασπισμός Ριζοσπαστικής Αριστεράς",6,"#e27bb1","ΣΥΡΙΖΑ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -5470,8 +5470,8 @@ font-style: inherit;">)</span></span></code></pre></div>
 <pre><code>Adding missing grouping variables: `Party`</code></pre>
 </div>
 <div class="cell-output-display">
-<div class="highchart html-widget html-fill-item" id="htmlwidget-04ff5b2193165ce36a1c" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-04ff5b2193165ce36a1c">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Ανεξάρτητοι",5,"#ffffff","Ανεξάρτητοι"],["Κομμουνιστικό Κόμμα Ελλάδας",12,"#FF6666","ΚΚΕ"],["Νέα Δημοκρατία",164,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",113,"#95bb72","ΠΑΣΟΚ"],["Συνασπισμός Ριζοσπαστικής Αριστεράς",6,"#e27bb1","ΣΥΡΙΖΑ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+<div class="highchart html-widget html-fill-item" id="htmlwidget-c4e9707724ec879db440" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-c4e9707724ec879db440">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Ανεξάρτητοι",5,"#ffffff","Ανεξάρτητοι"],["Κομμουνιστικό Κόμμα Ελλάδας",12,"#FF6666","ΚΚΕ"],["Νέα Δημοκρατία",164,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",113,"#95bb72","ΠΑΣΟΚ"],["Συνασπισμός Ριζοσπαστικής Αριστεράς",6,"#e27bb1","ΣΥΡΙΖΑ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -5494,8 +5494,8 @@ font-style: inherit;">)</span></span></code></pre></div>
 <pre><code>Adding missing grouping variables: `Party`</code></pre>
 </div>
 <div class="cell-output-display">
-<div class="highchart html-widget html-fill-item" id="htmlwidget-3e8642d51bf617d5278a" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-3e8642d51bf617d5278a">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Κομμουνιστικό Κόμμα Ελλάδας",22,"#FF6666","ΚΚΕ"],["Λαϊκός Ορθόδοξος Συναγερμός",10,"#808080","ΛΑΟΣ"],["Νέα Δημοκρατία",152,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",102,"#95bb72","ΠΑΣΟΚ"],["Συνασπισμός Ριζοσπαστικής Αριστεράς",14,"#e27bb1","ΣΥΡΙΖΑ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+<div class="highchart html-widget html-fill-item" id="htmlwidget-cd4df5e69aa3caa033f6" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-cd4df5e69aa3caa033f6">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Κομμουνιστικό Κόμμα Ελλάδας",22,"#FF6666","ΚΚΕ"],["Λαϊκός Ορθόδοξος Συναγερμός",10,"#808080","ΛΑΟΣ"],["Νέα Δημοκρατία",152,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",102,"#95bb72","ΠΑΣΟΚ"],["Συνασπισμός Ριζοσπαστικής Αριστεράς",14,"#e27bb1","ΣΥΡΙΖΑ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -5518,8 +5518,8 @@ font-style: inherit;">)</span></span></code></pre></div>
 <pre><code>Adding missing grouping variables: `Party`</code></pre>
 </div>
 <div class="cell-output-display">
-<div class="highchart html-widget html-fill-item" id="htmlwidget-c44606419adf322b0d53" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-c44606419adf322b0d53">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Ανεξάρτητοι Έλληνες",10,"#808080","ΑΝΕΛ"],["Δημοκρατική Αριστερά",10,"#808080","ΔΗΜΑΡ"],["Ανεξάρτητοι",31,"#ffffff","Ανεξάρτητοι"],["Κομμουνιστικό Κόμμα Ελλάδας",21,"#FF6666","ΚΚΕ"],["Λαϊκός Ορθόδοξος Συναγερμός",16,"#808080","ΛΑΟΣ"],["Νέα Δημοκρατία",72,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",129,"#95bb72","ΠΑΣΟΚ"],["Συνασπισμός Ριζοσπαστικής Αριστεράς",12,"#e27bb1","ΣΥΡΙΖΑ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+<div class="highchart html-widget html-fill-item" id="htmlwidget-c4c51175c826d0e746b8" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-c4c51175c826d0e746b8">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Ανεξάρτητοι Έλληνες",10,"#808080","ΑΝΕΛ"],["Δημοκρατική Αριστερά",10,"#808080","ΔΗΜΑΡ"],["Ανεξάρτητοι",31,"#ffffff","Ανεξάρτητοι"],["Κομμουνιστικό Κόμμα Ελλάδας",21,"#FF6666","ΚΚΕ"],["Λαϊκός Ορθόδοξος Συναγερμός",16,"#808080","ΛΑΟΣ"],["Νέα Δημοκρατία",72,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",129,"#95bb72","ΠΑΣΟΚ"],["Συνασπισμός Ριζοσπαστικής Αριστεράς",12,"#e27bb1","ΣΥΡΙΖΑ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -5542,8 +5542,8 @@ font-style: inherit;">)</span></span></code></pre></div>
 <pre><code>Adding missing grouping variables: `Party`</code></pre>
 </div>
 <div class="cell-output-display">
-<div class="highchart html-widget html-fill-item" id="htmlwidget-9b958b9ab6298918d76b" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-9b958b9ab6298918d76b">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Ανεξάρτητοι Έλληνες",33,"#808080","ΑΝΕΛ"],["Δημοκρατική Αριστερά",19,"#808080","ΔΗΜΑΡ"],["Κομμουνιστικό Κόμμα Ελλάδας",26,"#FF6666","ΚΚΕ"],["Νέα Δημοκρατία",108,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",41,"#95bb72","ΠΑΣΟΚ"],["Συνασπισμός Ριζοσπαστικής Αριστεράς",52,"#e27bb1","ΣΥΡΙΖΑ"],["Χρυσή Αυγή",21,"#808080","ΧΑ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+<div class="highchart html-widget html-fill-item" id="htmlwidget-fe3f89229b724d21c95d" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-fe3f89229b724d21c95d">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Ανεξάρτητοι Έλληνες",33,"#808080","ΑΝΕΛ"],["Δημοκρατική Αριστερά",19,"#808080","ΔΗΜΑΡ"],["Κομμουνιστικό Κόμμα Ελλάδας",26,"#FF6666","ΚΚΕ"],["Νέα Δημοκρατία",108,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",41,"#95bb72","ΠΑΣΟΚ"],["Συνασπισμός Ριζοσπαστικής Αριστεράς",52,"#e27bb1","ΣΥΡΙΖΑ"],["Χρυσή Αυγή",21,"#808080","ΧΑ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -5566,8 +5566,8 @@ font-style: inherit;">)</span></span></code></pre></div>
 <pre><code>Adding missing grouping variables: `Party`</code></pre>
 </div>
 <div class="cell-output-display">
-<div class="highchart html-widget html-fill-item" id="htmlwidget-948413567cefa17d0681" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-948413567cefa17d0681">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Ανεξ Δημ. Βουλευτές",17,"#808080","ΑΔΒ"],["Ανεξάρτητοι Έλληνες",12,"#808080","ΑΝΕΛ"],["Δημοκρατική Αριστερά",11,"#808080","ΔΗΜΑΡ"],["Ανεξάρτητοι",7,"#ffffff","Ανεξάρτητοι"],["Κομμουνιστικό Κόμμα Ελλάδας",12,"#FF6666","ΚΚΕ"],["Νέα Δημοκρατία",127,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",28,"#95bb72","ΠΑΣΟΚ"],["Συνασπισμός Ριζοσπαστικής Αριστεράς",71,"#e27bb1","ΣΥΡΙΖΑ"],["Χρυσή Αυγή",16,"#808080","ΧΑ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+<div class="highchart html-widget html-fill-item" id="htmlwidget-090776309a67b2c67fcb" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-090776309a67b2c67fcb">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Ανεξ Δημ. Βουλευτές",17,"#808080","ΑΔΒ"],["Ανεξάρτητοι Έλληνες",12,"#808080","ΑΝΕΛ"],["Δημοκρατική Αριστερά",11,"#808080","ΔΗΜΑΡ"],["Ανεξάρτητοι",7,"#ffffff","Ανεξάρτητοι"],["Κομμουνιστικό Κόμμα Ελλάδας",12,"#FF6666","ΚΚΕ"],["Νέα Δημοκρατία",127,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",28,"#95bb72","ΠΑΣΟΚ"],["Συνασπισμός Ριζοσπαστικής Αριστεράς",71,"#e27bb1","ΣΥΡΙΖΑ"],["Χρυσή Αυγή",16,"#808080","ΧΑ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -5590,8 +5590,8 @@ font-style: inherit;">)</span></span></code></pre></div>
 <pre><code>Adding missing grouping variables: `Party`</code></pre>
 </div>
 <div class="cell-output-display">
-<div class="highchart html-widget html-fill-item" id="htmlwidget-976126111c55b5f6bde2" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-976126111c55b5f6bde2">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Ανεξάρτητοι Έλληνες",13,"#808080","ΑΝΕΛ"],["Κομμουνιστικό Κόμμα Ελλάδας",15,"#FF6666","ΚΚΕ"],["Λαϊκή Ενότητα",25,"#808080","ΛΑΕ"],["Νέα Δημοκρατία",76,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",13,"#95bb72","ΠΑΣΟΚ"],["Το Ποτάμι",17,"#808080","ΠΟΤΑΜΙ"],["Συνασπισμός Ριζοσπαστικής Αριστεράς",124,"#e27bb1","ΣΥΡΙΖΑ"],["Χρυσή Αυγή",17,"#808080","ΧΑ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+<div class="highchart html-widget html-fill-item" id="htmlwidget-3d0dc2c72ea433c39350" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-3d0dc2c72ea433c39350">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Ανεξάρτητοι Έλληνες",13,"#808080","ΑΝΕΛ"],["Κομμουνιστικό Κόμμα Ελλάδας",15,"#FF6666","ΚΚΕ"],["Λαϊκή Ενότητα",25,"#808080","ΛΑΕ"],["Νέα Δημοκρατία",76,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",13,"#95bb72","ΠΑΣΟΚ"],["Το Ποτάμι",17,"#808080","ΠΟΤΑΜΙ"],["Συνασπισμός Ριζοσπαστικής Αριστεράς",124,"#e27bb1","ΣΥΡΙΖΑ"],["Χρυσή Αυγή",17,"#808080","ΧΑ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -5627,8 +5627,8 @@ font-style: inherit;">)</span></span></code></pre></div>
 <pre><code>Adding missing grouping variables: `Party`</code></pre>
 </div>
 <div class="cell-output-display">
-<div class="highchart html-widget html-fill-item" id="htmlwidget-70d5b5dbc5e3397f0d08" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-70d5b5dbc5e3397f0d08">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Ανεξάρτητοι",25,"#ffffff","Ανεξάρτητοι"],["Κομμουνιστικό Κόμμα Ελλάδας",15,"#FF6666","ΚΚΕ"],["Νέα Δημοκρατία",77,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",19,"#95bb72","ΠΑΣΟΚ"],["Το Ποτάμι",5,"#808080","ΠΟΤΑΜΙ"],["Συνασπισμός Ριζοσπαστικής Αριστεράς",144,"#e27bb1","ΣΥΡΙΖΑ"],["Χρυσή Αυγή",16,"#808080","ΧΑ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+<div class="highchart html-widget html-fill-item" id="htmlwidget-5927c2faf550ac2ee85f" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-5927c2faf550ac2ee85f">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"item"},"title":{"text":"Κατανομή θέσεων"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Τελική μορφή Ελληνικού Κοινοβουλίου"},"caption":{"text":"<b>Πηγή:<\/b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:<\/b> <a href=\"https://stesiam.com/\" target=\"_blank\">stesiam.com<\/a> ","align":"center","verticalAlign":"bottom","y":10},"legend":{"labelFormat":"{name} <span style=\"opacity: 0.4\">{y}<\/span>"},"series":[{"name":"Βουλευτές","data":[["Ανεξάρτητοι",25,"#ffffff","Ανεξάρτητοι"],["Κομμουνιστικό Κόμμα Ελλάδας",15,"#FF6666","ΚΚΕ"],["Νέα Δημοκρατία",77,"#0492c2","ΝΔ"],["Πανελλήνιο Σοσιαλιστικό Κίνημα",19,"#95bb72","ΠΑΣΟΚ"],["Το Ποτάμι",5,"#808080","ΠΟΤΑΜΙ"],["Συνασπισμός Ριζοσπαστικής Αριστεράς",144,"#e27bb1","ΣΥΡΙΖΑ"],["Χρυσή Αυγή",16,"#808080","ΧΑ"]],"keys":["name","y","color","label"],"dataLabels":{"enabled":true,"format":"{point.label}","style":{"textOutline":"5px contrast"}},"center":["50%","88%"],"size":"170%","startAngle":-100,"endAngle":100}],"responsive":{"rules":[{"condition":{"maxWidth":600},"chartOptions":{"series":[{"dataLabels":{"distance":-30}}]}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -5939,7 +5939,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/fig-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/fig-1.png" class="img-fluid figure-img" width="672"></p>
 <figcaption>Most elected MPs</figcaption></figure>
 </div>
 </div>
@@ -6234,7 +6234,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -6258,7 +6258,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -6282,7 +6282,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -6306,7 +6306,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -6613,7 +6613,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -6643,7 +6643,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -6664,7 +6664,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -6685,7 +6685,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -6706,7 +6706,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -6727,7 +6727,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -6759,7 +6759,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -6780,7 +6780,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -6801,7 +6801,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -6822,7 +6822,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -6857,7 +6857,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -6878,7 +6878,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -6899,7 +6899,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -6920,7 +6920,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -6941,7 +6941,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -6962,7 +6962,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -6983,7 +6983,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-46-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-46-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7015,7 +7015,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7044,7 +7044,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7065,7 +7065,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7098,7 +7098,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-51-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-51-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7119,7 +7119,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-52-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-52-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7140,7 +7140,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-53-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-53-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7161,7 +7161,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-54-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-54-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7182,7 +7182,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-55-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-55-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7214,7 +7214,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-56-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-56-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7235,7 +7235,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-57-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-57-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7256,7 +7256,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-58-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-58-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7277,7 +7277,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-59-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-59-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7309,7 +7309,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-60-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-60-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7330,7 +7330,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-61-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-61-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7351,7 +7351,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-62-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-62-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7372,7 +7372,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-63-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-63-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7403,7 +7403,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-64-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-64-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7424,7 +7424,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-65-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-65-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7445,7 +7445,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-66-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-66-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7478,7 +7478,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-67-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-67-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7499,7 +7499,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-68-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-68-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7520,7 +7520,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-69-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-69-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7541,7 +7541,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-70-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-70-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7562,7 +7562,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-71-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-71-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7592,7 +7592,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-72-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-72-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7613,7 +7613,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-73-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-73-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7645,7 +7645,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-74-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-74-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7666,7 +7666,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-75-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-75-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7687,7 +7687,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-76-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-76-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7708,7 +7708,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-77-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-77-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7739,7 +7739,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-78-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-78-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7768,7 +7768,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-80-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-80-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7800,7 +7800,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-81-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-81-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7821,7 +7821,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-82-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-82-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7842,7 +7842,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-83-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-83-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7863,7 +7863,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/index_files/figure-html/unnamed-chunk-84-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/eda-greek-parliament/index_files/figure-html/unnamed-chunk-84-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -7933,23 +7933,23 @@ Zhu, H. (2021). <em>kableExtra: Construct Complex Table with kable and Pipe Synt
   author = {, stesiam},
   title = {Περιγραφική Ανάλυση Ελληνικού Κοινοβουλίου},
   date = {2022-10-10},
-  url = {https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/},
+  url = {https://stesiam.com/posts/eda-greek-parliament/},
   langid = {el}
 }
 </code></pre><div class="quarto-appendix-secondary-label">Για απόδοση ευγνωμοσύνης, παρακαλούμε αναφερθείτε σε αυτό το έργο ως:</div><div id="ref-2022" class="csl-entry quarto-appendix-citeas">
 stesiam. (2022, October 10). Περιγραφική Ανάλυση Ελληνικού Κοινοβουλίου.
-Retrieved from <a href="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/">https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/</a>
+Retrieved from <a href="https://stesiam.com/posts/eda-greek-parliament/">https://stesiam.com/posts/eda-greek-parliament/</a>
 </div></div></section></div> ]]></description>
   <category>R</category>
   <category>EDA</category>
-  <guid>https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/</guid>
+  <guid>https://stesiam.com/posts/eda-greek-parliament/</guid>
   <pubDate>Sun, 09 Oct 2022 21:00:00 GMT</pubDate>
-  <media:content url="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliament/images/houses-of-parliament.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://stesiam.com/posts/eda-greek-parliament/images/houses-of-parliament.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Συλλογή Quarto ιστοσελίδων</title>
   <dc:creator>stesiam </dc:creator>
-  <link>https://stesiam.com/posts/2022-08-10-List-of-Quarto-Sites/</link>
+  <link>https://stesiam.com/posts/list-of-quarto-sites/</link>
   <description><![CDATA[ <section id="εισαγωγή" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="εισαγωγή">Εισαγωγή</h2>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -7969,7 +7969,7 @@ Retrieved from <a href="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliamen
 <div class="no-row-height column-margin column-container"><div class="">
 <center>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="https://stesiam.com/posts/2022-08-10-List-of-Quarto-Sites/quarto.png" class="img-fluid figure-img"></p>
+<figure class="figure"><p><img src="https://stesiam.com/posts/list-of-quarto-sites/quarto.png" class="img-fluid figure-img"></p>
 <figcaption>Quarto logo</figcaption></figure>
 </div>
 </center>
@@ -8373,22 +8373,22 @@ Retrieved from <a href="https://stesiam.com/posts/2022-10-10-EDA-Greek-Parliamen
   author = {, stesiam},
   title = {Συλλογή Quarto ιστοσελίδων},
   date = {2022-08-10},
-  url = {https://stesiam.com/posts/2022-08-10-List-of-Quarto-Sites/},
+  url = {https://stesiam.com/posts/list-of-quarto-sites/},
   langid = {el}
 }
 </code></pre><div class="quarto-appendix-secondary-label">Για απόδοση ευγνωμοσύνης, παρακαλούμε αναφερθείτε σε αυτό το έργο ως:</div><div id="ref-2022" class="csl-entry quarto-appendix-citeas">
 stesiam. 2022. <span>“Συλλογή Quarto ιστοσελίδων.”</span> August 10,
-2022. <a href="https://stesiam.com/posts/2022-08-10-List-of-Quarto-Sites/">https://stesiam.com/posts/2022-08-10-List-of-Quarto-Sites/</a>.
+2022. <a href="https://stesiam.com/posts/list-of-quarto-sites/">https://stesiam.com/posts/list-of-quarto-sites/</a>.
 </div></div></section></div> ]]></description>
   <category>Quarto</category>
-  <guid>https://stesiam.com/posts/2022-08-10-List-of-Quarto-Sites/</guid>
+  <guid>https://stesiam.com/posts/list-of-quarto-sites/</guid>
   <pubDate>Tue, 09 Aug 2022 21:00:00 GMT</pubDate>
-  <media:content url="https://stesiam.com/posts/2022-08-10-List-of-Quarto-Sites/quarto.png" medium="image" type="image/png" height="35" width="144"/>
+  <media:content url="https://stesiam.com/posts/list-of-quarto-sites/quarto.png" medium="image" type="image/png" height="35" width="144"/>
 </item>
 <item>
   <title>Πρώτο άρθρο!</title>
   <dc:creator>stesiam </dc:creator>
-  <link>https://stesiam.com/posts/2022-07-27-hello/</link>
+  <link>https://stesiam.com/posts/first-article/</link>
   <description><![CDATA[ 
 
 
@@ -8407,7 +8407,7 @@ stesiam. 2022. <span>“Συλλογή Quarto ιστοσελίδων.”</span> 
 <div id="fig-distill-logo" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-distill-logo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="https://stesiam.com/posts/2022-07-27-hello/images/distill.png" data-ref-parent="fig-website-R-packages" height="200" class="figure-img">
+<img src="https://stesiam.com/posts/first-article/images/distill.png" data-ref-parent="fig-website-R-packages" height="200" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-distill-logo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (a) Λογότυπο πακέτου Distill
@@ -8419,7 +8419,7 @@ stesiam. 2022. <span>“Συλλογή Quarto ιστοσελίδων.”</span> 
 <div id="fig-blogdown-logo" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-blogdown-logo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="https://stesiam.com/posts/2022-07-27-hello/images/blogdown.png" data-ref-parent="fig-website-R-packages" height="200" class="figure-img">
+<img src="https://stesiam.com/posts/first-article/images/blogdown.png" data-ref-parent="fig-website-R-packages" height="200" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-blogdown-logo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (b) Λογότυπο πακέτου blogdown
@@ -8467,9 +8467,9 @@ Xie, Y., Dervieux, C., &amp; Hill, A. P. (2022). <em>blogdown: Create Blogs and 
 </div>
 </div></section></div> ]]></description>
   <category>Πρώτο άρθρο</category>
-  <guid>https://stesiam.com/posts/2022-07-27-hello/</guid>
+  <guid>https://stesiam.com/posts/first-article/</guid>
   <pubDate>Tue, 26 Jul 2022 21:00:00 GMT</pubDate>
-  <media:content url="https://stesiam.com/posts/2022-07-27-hello/welcome_sign.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://stesiam.com/posts/first-article/welcome_sign.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="el" xml:lang="el">
-<head>
-<link rel="alternate" hreflang="en" href="https://stesiam.com/posts/index.html" />
-<link rel="alternate" hreflang="el" href="https://stesiam.com/el/posts/index.el.html" />
+<html xmlns="http://www.w3.org/1999/xhtml" lang="el" xml:lang="el"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="alternate" hreflang="en" href="https://stesiam.com/posts/tutorial-govgr-api/index.html" />
+<link rel="alternate" hreflang="el" href="https://stesiam.com/el/posts/tutorial-govgr-api/index.el.html" />
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.5.53">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="description" content="Μία συλλογή ελληνικών άρθρων για τη Στατιστική και την R. Σε αυτή την ενότητα θα βρούμε μία διαφορετική λίστα άρθρων από την αντίστοιχη αγγλική, μιας και υπάρχουν άρθρα που δεν έχει νόημα να μεταφραστούν και έχουν ενδιαφέρον μόνο για το ελληνόφωνο κοινό. Μελλοντικά, σκοπεύω να δημιουργήσω μία ελληνική μετάφραση - περίληψη για κάθε αγγλικό άρθρο. Παρεμπιπτόντως, αν ποτέ αξιωθώ να πάρω πτυχίο αυτό είναι το μέρος που θα το γράψω πρώτα 😀">
-<title>Άρθρα – stesiam</title>
+<meta name="author" content="stesiam">
+<meta name="description" content="Ένας απλός οδηγός χρήσης του API του data.gov.gr, ώστε να λαμβάνετε τη ροή δεδομένων με τη χρήση της R.">
+<title>Πρόσβαση στο API του data.gov.gr – stesiam</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,18 +21,63 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script><script src="../site_libs/quarto-nav/headroom.min.js"></script><script src="../site_libs/clipboard/clipboard.min.js"></script><script src="../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../site_libs/quarto-search/fuse.min.js"></script><script src="../site_libs/quarto-search/quarto-search.js"></script><meta name="quarto:offset" content="../">
-<link href="../assets/images/favicon.ico" rel="icon">
-<script src="../site_libs/quarto-listing/list.min.js"></script><script src="../site_libs/quarto-listing/quarto-listing.js"></script><script src="../site_libs/quarto-html/quarto.js"></script><script src="../site_libs/quarto-html/popper.min.js"></script><script src="../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../site_libs/quarto-html/anchor.min.js"></script><link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script><link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
-<link href="../site_libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet">
-<script id="quarto-search-options" type="application/json">{
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../assets/images/favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": true,
   "collapse-after": 3,
@@ -57,85 +102,17 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Υποβολή",
     "search-label": "Αναζήτηση"
   }
-}</script><script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script><script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script><script>document.addEventListener("DOMContentLoaded", function () {
- var mathElements = document.getElementsByClassName("math");
- var macros = [];
- for (var i = 0; i < mathElements.length; i++) {
-  var texText = mathElements[i].firstChild;
-  if (mathElements[i].tagName == "SPAN") {
-   katex.render(texText.data, mathElements[i], {
-    displayMode: mathElements[i].classList.contains('display'),
-    throwOnError: false,
-    macros: macros,
-    fleqn: false
-   });
-}}});
-  </script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script><link rel="stylesheet" href="../styles.css">
-<link rel="alternate" type="application/rss+xml" title="stesiam" href="index.xml" data-external="1">
-<meta property="og:title" content="Άρθρα – stesiam">
-<meta property="og:description" content="Μία συλλογή ελληνικών άρθρων για τη Στατιστική και την R. Σε αυτή την ενότητα θα βρούμε μία διαφορετική λίστα άρθρων από την αντίστοιχη αγγλική, μιας και υπάρχουν άρθρα που δεν έχει νόημα να μεταφραστούν και έχουν ενδιαφέρον μόνο για το ελληνόφωνο κοινό. Μελλοντικά, σκοπεύω να δημιουργήσω μία ελληνική μετάφραση - περίληψη για κάθε αγγλικό άρθρο. Παρεμπιπτόντως, αν ποτέ αξιωθώ να πάρω πτυχίο αυτό είναι το μέρος που θα το γράψω πρώτα 😀">
+}</script><link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Πρόσβαση στο API του data.gov.gr – stesiam">
+<meta property="og:description" content="Ένας απλός οδηγός χρήσης του API του data.gov.gr, ώστε να λαμβάνετε τη ροή δεδομένων με τη χρήση της R.">
 <meta property="og:site_name" content="stesiam">
 </head>
-<body class="nav-fixed">
+<body class="floating nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">stesiam</span>
     </a>
   </div>
@@ -145,31 +122,28 @@ window.Quarto = {
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-<li class="nav-item"><div class="dropdown" id="languages-links-parent">
-<button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="languages-button"><i class="bi bi-globe2"></i></button><ul class="dropdown-menu" id="languages-links"><li><a class="dropdown-item" href="https://stesiam.com/posts/index.html" id="language-link-en">English</a></li></ul>
-</div></li>
 <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Αρχική</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../posts/index.html" aria-current="page"> 
+    <a class="nav-link" href="../../posts/index.html"> 
 <span class="menu-text">Άρθρα</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../web-apps/index.html"> 
+    <a class="nav-link" href="../../web-apps/index.html"> 
 <span class="menu-text">Εφαρμογές</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../software/index.html"> 
+    <a class="nav-link" href="../../software/index.html"> 
 <span class="menu-text">Λογισμικό</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../material/index.html"> 
+    <a class="nav-link" href="../../material/index.html"> 
 <span class="menu-text">Υλικό</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../gallery/index.html"> 
+    <a class="nav-link" href="../../gallery/index.html"> 
 <span class="menu-text">Γραφήματα</span></a>
   </li>  
   <li class="nav-item">
@@ -180,267 +154,113 @@ window.Quarto = {
 </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools tools-wide">
     <a href="https://github.com/stesiam" title="" class="quarto-navigation-tool px-1" aria-label="Personal (stesiam's) GitHub Page"><i class="bi bi-github"></i></a>
-    <a href="../posts/index.xml" title="" class="quarto-navigation-tool px-1" aria-label="Website RSS"><i class="bi bi-rss"></i></a>
+    <a href="../../posts/index.xml" title="" class="quarto-navigation-tool px-1" aria-label="Website RSS"><i class="bi bi-rss"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Εναλλαγή σκοτεινού θέματος"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
-    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default page-columns page-full"><div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">Άρθρα</h1>
+    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <div class="quarto-title-block"><div><h1 class="title">Πρόσβαση στο API του data.gov.gr</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source" data-quarto-source-url="https://github.com/stesiam/stesiam.github.io/blob/gh-pages/posts/2023-07-04-GovGR-API-Greek/index.qmd"><i class="bi"></i> Κώδικας</button></div></div>
                   <div>
         <div class="description">
-          Μία συλλογή ελληνικών άρθρων για τη Στατιστική και την R. Σε αυτή την ενότητα θα βρούμε μία διαφορετική λίστα άρθρων από την αντίστοιχη αγγλική, μιας και υπάρχουν άρθρα που δεν έχει νόημα να μεταφραστούν και έχουν ενδιαφέρον μόνο για το ελληνόφωνο κοινό. Μελλοντικά, σκοπεύω να δημιουργήσω μία ελληνική μετάφραση - περίληψη για κάθε αγγλικό άρθρο. Παρεμπιπτόντως, αν ποτέ αξιωθώ να πάρω πτυχίο αυτό είναι το μέρος που θα το γράψω πρώτα 😀
+          Ένας απλός οδηγός χρήσης του API του data.gov.gr, ώστε να λαμβάνετε τη ροή δεδομένων με τη χρήση της R.
         </div>
       </div>
-                </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">R</div>
+                <div class="quarto-category">API</div>
+              </div>
+                  </div>
   </div>
     
   
-  <div class="quarto-title-meta column-page-left">
+  <div class="quarto-title-meta">
 
+      <div>
+      <div class="quarto-title-meta-heading">Συντάκτης</div>
+      <div class="quarto-title-meta-contents">
+               <p>stesiam </p>
+            </div>
+    </div>
       
+      <div>
+      <div class="quarto-title-meta-heading">Δημοσιεύτηκε στις</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">4 Ιουλίου 2023</p>
+      </div>
+    </div>
     
       
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Περιεχόμενα</h2>
+   
+  <ul>
+<li><a href="#%CE%B5%CE%B9%CF%83%CE%B1%CE%B3%CF%89%CE%B3%CE%AE" id="toc-εισαγωγή" class="nav-link active" data-scroll-target="#%CE%B5%CE%B9%CF%83%CE%B1%CE%B3%CF%89%CE%B3%CE%AE">Εισαγωγή</a></li>
+  <li><a href="#%CE%B1%CE%AF%CF%84%CE%B7%CF%83%CE%B7-%CE%B3%CE%B9%CE%B1-api-key" id="toc-αίτηση-για-api-key" class="nav-link" data-scroll-target="#%CE%B1%CE%AF%CF%84%CE%B7%CF%83%CE%B7-%CE%B3%CE%B9%CE%B1-api-key">Αίτηση για API Key</a></li>
+  <li><a href="#%CF%87%CF%81%CE%AE%CF%83%CE%B7-api" id="toc-χρήση-api" class="nav-link" data-scroll-target="#%CF%87%CF%81%CE%AE%CF%83%CE%B7-api">Χρήση API</a></li>
+  <li><a href="#%CF%80%CE%B1%CF%81%CE%AC%CE%B4%CE%B5%CE%B9%CE%B3%CE%BC%CE%B1-%CF%87%CF%81%CE%AE%CF%83%CE%B7%CF%82" id="toc-παράδειγμα-χρήσης" class="nav-link" data-scroll-target="#%CF%80%CE%B1%CF%81%CE%AC%CE%B4%CE%B5%CE%B9%CE%B3%CE%BC%CE%B1-%CF%87%CF%81%CE%AE%CF%83%CE%B7%CF%82">Παράδειγμα χρήσης</a></li>
+  </ul></nav>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Κατηγορίες</h5>
-<div class="quarto-listing-category category-cloud">
-<div class="category" data-category="API"><span class="quarto-category-count category-cloud-2">API</span></div>
-<div class="category" data-category="EDA"><span class="quarto-category-count category-cloud-2">EDA</span></div>
-<div class="category" data-category="Quarto"><span class="quarto-category-count category-cloud-2">Quarto</span></div>
-<div class="category" data-category="R"><span class="quarto-category-count category-cloud-5">R</span></div>
-<div class="category" data-category="Πρώτο άρθρο"><span class="quarto-category-count category-cloud-2">Πρώτο άρθρο</span></div>
-<div class="category" data-category="Σπουδές"><span class="quarto-category-count category-cloud-2">Σπουδές</span></div>
-<div class="category" data-category="Υλικο"><span class="quarto-category-count category-cloud-2">Υλικο</span></div>
-</div>
-</div>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content"><div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="R,API" data-listing-date-sort="1688418000000" data-listing-file-modified-sort="1733476519047" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="715">
-<div class="thumbnail">
-<p><a href="../posts/tutorial-govgr-api/index.html" class="no-external"></a></p>
-<a href="../posts/tutorial-govgr-api/index.html" class="no-external">
-<p class="card-img-top"><img src="tutorial-govgr-api/images/datagovgr_api_request.png" class="thumbnail-image card-img"></p>
-</a><p><a href="../posts/tutorial-govgr-api/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../posts/tutorial-govgr-api/index.html" class="no-external">Πρόσβαση στο API του data.gov.gr</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../posts/tutorial-govgr-api/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('API'); return false;">
-API
-</div>
-</div>
-<div class="listing-description">
-<a href="../posts/tutorial-govgr-api/index.html" class="no-external">Ένας απλός οδηγός χρήσης του API του data.gov.gr, ώστε να λαμβάνετε τη ροή δεδομένων με τη χρήση της R.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../posts/tutorial-govgr-api/index.html" class="no-external">
-<div class="listing-date">
-4 Ιουλ 2023
-</div>
-<div class="listing-author">
-stesiam
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="Σπουδές" data-listing-date-sort="1687208400000" data-listing-file-modified-sort="1733476519045" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2900">
-<div class="thumbnail">
-<p><a href="../posts/studies-in-statistics-greece/index.html" class="no-external"></a></p>
-<a href="../posts/studies-in-statistics-greece/index.html" class="no-external">
-<p class="card-img-top"><img src="studies-in-statistics-greece/index_files/figure-html/vaseis-eisagogis-1.png" class="thumbnail-image card-img"></p>
-</a><p><a href="../posts/studies-in-statistics-greece/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../posts/studies-in-statistics-greece/index.html" class="no-external">Σπουδές Στατιστικής στην Ελλάδα</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../posts/studies-in-statistics-greece/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Σπουδές'); return false;">
-Σπουδές
-</div>
-</div>
-<div class="listing-description">
-<a href="../posts/studies-in-statistics-greece/index.html" class="no-external">Συγκεντρώνω σε μία λίστα τις δημόσιες σχολές στατιστικής στην Ελλάδα και συγκρίνω τα βασικά τους στοιχεία με βάση τους οδηγούς σπουδών τους</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../posts/studies-in-statistics-greece/index.html" class="no-external">
-<div class="listing-date">
-20 Ιουν 2023
-</div>
-<div class="listing-author">
-stesiam
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="R,Υλικο" data-listing-date-sort="1666472400000" data-listing-file-modified-sort="1733476518542" data-listing-date-modified-sort="1721595600000" data-listing-reading-time-sort="8" data-listing-word-count-sort="1416">
-<div class="thumbnail">
-<p><a href="../posts/greek-material-for-r/index.html" class="no-external"></a></p>
-<a href="../posts/greek-material-for-r/index.html" class="no-external">
-<p><img loading="lazy" src="../posts/greek-material-for-r/book.jpg" class="thumbnail-image" alt="An open book"></p>
-</a><p><a href="../posts/greek-material-for-r/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../posts/greek-material-for-r/index.html" class="no-external">Συγκεντρωμένο υλικό για την R στα ελληνικά</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../posts/greek-material-for-r/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Υλικο'); return false;">
-Υλικο
-</div>
-</div>
-<div class="listing-description">
-<a href="../posts/greek-material-for-r/index.html" class="no-external">Μία λίστα (που θα ανανεώνεται συνεχώς) με υλικό που υπάρχει ελεύθερα διαθέσιμο στο διαδίκτυο σχετικά με την γλώσσα προγραματισμού R</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../posts/greek-material-for-r/index.html" class="no-external">
-<div class="listing-date">
-23 Οκτ 2022
-</div>
-<div class="listing-author">
-stesiam
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="R,EDA" data-listing-date-sort="1665349200000" data-listing-file-modified-sort="1733476518408" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="17" data-listing-word-count-sort="3332">
-<div class="thumbnail">
-<p><a href="../posts/eda-greek-parliament/index.html" class="no-external"></a></p>
-<a href="../posts/eda-greek-parliament/index.html" class="no-external">
-<p><img loading="lazy" src="../posts/eda-greek-parliament/images/houses-of-parliament.jpg" class="thumbnail-image" alt="Πρόσοψη κτιρίου Ελληνικού Κοινοβουλίου"></p>
-</a><p><a href="../posts/eda-greek-parliament/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../posts/eda-greek-parliament/index.html" class="no-external">Περιγραφική Ανάλυση Ελληνικού Κοινοβουλίου</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../posts/eda-greek-parliament/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('EDA'); return false;">
-EDA
-</div>
-</div>
-<div class="listing-description">
-<a href="../posts/eda-greek-parliament/index.html" class="no-external">Μία βασική ανάλυση των διατελέσαντων βουλευτών της περιόδου (1981 - 2019) </a>
-</div>
-</div>
-<div class="metadata">
-<a href="../posts/eda-greek-parliament/index.html" class="no-external">
-<div class="listing-date">
-10 Οκτ 2022
-</div>
-<div class="listing-author">
-stesiam
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="Quarto" data-listing-date-sort="1660078800000" data-listing-file-modified-sort="1733476518819" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1530">
-<div class="thumbnail">
-<p><a href="../posts/list-of-quarto-sites/index.html" class="no-external"></a></p>
-<a href="../posts/list-of-quarto-sites/index.html" class="no-external">
-<p><img loading="lazy" src="../posts/list-of-quarto-sites/quarto.png" class="thumbnail-image" alt="Λογότυπο του λογισμικού Quarto"></p>
-</a><p><a href="../posts/list-of-quarto-sites/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../posts/list-of-quarto-sites/index.html" class="no-external">Συλλογή Quarto ιστοσελίδων</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../posts/list-of-quarto-sites/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Quarto'); return false;">
-Quarto
-</div>
-</div>
-<div class="listing-description">
-<a href="../posts/list-of-quarto-sites/index.html" class="no-external">Μία λίστα 80+ σελίδων που χρησιμοποιούν το Quarto. Περιλαμβάνονται σύνδεσμοι στις ιστοσελίδες και στον αντίστοιχο κώδικά τους στο GitHub. Τυχόν προσθήκες είναι ευπρόσδεκτες.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../posts/list-of-quarto-sites/index.html" class="no-external">
-<div class="listing-date">
-10 Αυγ 2022
-</div>
-<div class="listing-author">
-stesiam
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-categories="Πρώτο άρθρο" data-listing-date-sort="1658869200000" data-listing-file-modified-sort="1733476518513" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="271">
-<div class="thumbnail">
-<p><a href="../posts/first-article/index.html" class="no-external"></a></p>
-<a href="../posts/first-article/index.html" class="no-external">
-<p><img loading="lazy" src="../posts/first-article/welcome_sign.jpg" class="thumbnail-image" alt="Μία πινακίδα καλωσορίσματος ανάμεσα σε μερικά φύλλα που υποδεικνύει σε μία συγκεκριμένη κατεύθυνση"></p>
-</a><p><a href="../posts/first-article/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../posts/first-article/index.html" class="no-external">Πρώτο άρθρο!</a>
-</h3>
-<div class="listing-subtitle">
-<a href="../posts/first-article/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Πρώτο άρθρο'); return false;">
-Πρώτο άρθρο
-</div>
-</div>
-<div class="listing-description">
-<a href="../posts/first-article/index.html" class="no-external">Το πρώτο μου άρθρό στη προσωπική μου σελίδα χρησιμοποιώντας το Quarto.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="../posts/first-article/index.html" class="no-external">
-<div class="listing-date">
-27 Ιουλ 2022
-</div>
-<div class="listing-author">
-stesiam
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-Δεν υπάρχουν αντιστοιχίες
-</div>
-</div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+<main class="content quarto-banner-title-block" id="quarto-document-content"><section id="εισαγωγή" class="level2"><h2 class="anchored" data-anchor-id="εισαγωγή">Εισαγωγή</h2>
+<p>Στην παραδοσιακή ανάλυση δεδομένων συνήθως ο αναλυτής καλείται να &lt;&gt; τα δεδομένα, να τους δώσει μία κατάλληλη μορφή προκειμένου να αναλυθούν. Αυτή η διαδικασία υπονοεί ότι τα δεδομένα υπάρχουν συγκεντρωμένα σε ένα αρχείο. Ωστόσο, δεν είναι πάντα έτσι. Το πρόβλημα με την ανάλυση ενός dataset είναι ότι δεν λαμβάνει υπόψιν τις όποιες νέες τιμές. Σε αυτή τη περίπτωση θα πρέπει να ξανακατεβάσω τα νέα δεδομένα και να ξανατρέξω την ανάλυση μέσω της R ή όποιου εργαλείου χρησιμοποιώ. Αυτό όπως γίνεται αντιληπτό είναι μη παραγωγικό, ωστόσο όταν γίνεται λίγες φορές μέσα στο χρόνο, ίσως να μην είναι και τόσο . Εκεί που πλέον γίνεται εμφανής η μη αποτελεσματικότητα της παραπάνω διαδικασίας είναι όταν υπάρχει συνεχής ροή δεδομένων, άρα πρέπει να γίνεται αυτή η διαδικασία καθημερινά. Σε αυτές τις περιπτώσεις φαίνεται η χρησιμότητα του API αφού μας δίνει τις νέες τιμές με μικρό σχετικά κόπο. Παράλληλα η χρήση του API ευνοεί την ένταξη νέων δεδομένων, συνεπώς αν φτιάχνουμε ένα προβλεπτικό μοντέλο η ακρίβειά του θα παραμένει σε ένα ικανοποιητικό επίπεδο. Τέλος, άλλη μία θετική συμβολή είναι σε Shiny Apps, προκειμένου να αυτοματοποιείται η ανάλυση δεδομένων και οι πληροφορίες να είναι αξιόπιστες για τον επισκέπτη αυτού.</p>
+<p>Γενικά υπάρχουν πάρα πολλά API από τα οποία μπορούμε να λάβουμε σημαντικές πληροφορίες. Για περισσότερες λεπτομέρειες ως προς τη διαθεσιμότητα δωρεάν APIs μπορείτε να δείτε ένα σχετικό <a href="https://github.com/public-apis/public-apis">repository με μία λίστα αυτών</a>. Σε αυτό το άρθρο θα ασχοληθούμε με τα ανοικτά δεδομένα της χώρας μας που διατίθενται μέσω του <a href="data.gov.gr">data.gov.gr</a>.</p>
+</section><section id="αίτηση-για-api-key" class="level2"><h2 class="anchored" data-anchor-id="αίτηση-για-api-key">Αίτηση για API Key</h2>
+<p>Ωστόσο, το συγκεκριμένο API (όπως τα περισσότερα χρειάζονται</p>
+<p>Κάνουμε αίτηση στην αντίστοιχη σελίδα και συμπληρώνουμε τα στοιχεία μας και <strong>όλα</strong> τα πεδία της φόρμας όπως αυτή φαίνεται παρακάτω:</p>
+<div class="quarto-figure quarto-figure-center" style="text-align:center; background-color: #fafafa; padding: 20px">
+<figure class="figure"><p><img src="images/datagovgr_api_request.png" class="img-fluid figure-img" width="500"></p>
+<figcaption>Προεπισκόπηση σελίδας αίτησης για πρόσβαση στο API</figcaption></figure>
+</div>
+<p>Στη συνέχεια θα πρέπει να κοιτάξετε το e-mail σας γιατί θα σας έρθει ένα μήνυμα με τον Token μέσω του οποίου θα χρησιμοποιείται το API. Να δείτε οπωσδήποτε και τον φάκελο με την Ανεπιθύμητη αλληλογραφία (spam) καθώς εμένα μου ήρθε εκεί. Παρεμπιπτόντως, σε περίπτωση που χάσετε το token και έχετε σβήσει το mail και ξανακάνετε αίτηση (με το ίδιο mail) θα σας το ξαναστείλει. Το έπαθα μόλις :)</p>
+</section><section id="χρήση-api" class="level2"><h2 class="anchored" data-anchor-id="χρήση-api">Χρήση API</h2>
+<p>Αφού λάβουμε το Token, θα πρέπει με κάποιο τρόπο να λάβουμε τα δεδομένα. Στην συγκεκριμένη πλατφόρμα υπάρχουν δύο τρόποι.</p>
+<ul>
+<li>Χρήση API από την ιστοσελίδα:</li>
+<li>Χρήση API με την R</li>
+</ul>
+<p>Ο ένας τρόπος (και μάλλον ο λιγότερο αποδοτικός) είναι να κάνεις ζητήσεις τα δεδομένα απευθείας από την ιστοσελίδα data.gov.gr. Αυτό είναι από τη μία εξαιρετικά απλό, αλλά από την άλλη κατεβάζουμε μία σταθερή έκδοση των δεδομένων και συνεπώς αν θελήσω να ανανεώσω τα δεδομένα θα πρέπει πάλι να κατεβάσω τα δεδομένα.</p>
+</section><section id="παράδειγμα-χρήσης" class="level2"><h2 class="anchored" data-anchor-id="παράδειγμα-χρήσης">Παράδειγμα χρήσης</h2>
+<p>Πριν ολοκληρωθεί αυτό το άρθρο έκρινα ως σημαντική την εφαρμογή ενός παραδείγματος. Τη στιγμή που γράφεται αυτό το άρθρο, υπάρχουν συνολικά 49 βάσεις δεδομένων από τις οποίες μπορώ να επιλέξω. Προκειμένου να δούμε την ωφέλεια του API θα διαλέξω κάποιο που ανανεώνεται σε αρκετά συχνή βάση. Ένα τέτοιο δεδομένο είναι οι επιβάτες που <a href="https://www.data.gov.gr/datasets/sailing_traffic/">ταξιδεύουν με πλοία</a>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://httr.r-lib.org/">httr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://jeroen.r-universe.dev/jsonlite">jsonlite</a></span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Στη συνέχεια θέτω σε μία μεταβλητή τον βασικό σύνδεσμο των δεδομένων. Εγώ που επέλεξα την κίνηση των πλοίων θέτω το εξής:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">base</span> <span class="op">=</span> <span class="st">"https://data.gov.gr/api/v1/query/sailing_traffic"</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Στη συνέχεια, όπως τονίζει το documentation της σελίδας για τις άλλες γλώσσες, θα πρέπει να ορίσουμε ένα εύρος ημερομηνιών για το οποίο ενδιαφερόμαστε. Αξίζει να σημειωθεί ότι δεν μπορείτε να πάρετε μεγάλο εύρος με μία μόνο κλήση του API. Για να επιστρέψω στο προηγούμενο παράδειγμα, τα δεδομένα της επιβατικής κίνησης των πλοίων ξεκινάνε από το 2017 μέχρι και σήμερα (2023). Ας υποθέσουμε ότι δεν μας πειράζει αυτό και ότι θέλουμε τα δεδομένα από τις 4 πρώτες μέρες του Ιουλίου του 2023.</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">date_from</span> <span class="op">=</span> <span class="st">"2023-07-01"</span></span>
+<span><span class="va">date_to</span> <span class="op">=</span> <span class="st">"2023-07-04"</span></span>
+<span></span>
+<span><span class="va">API_URL</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">base</span>, <span class="st">"?date_from="</span>, <span class="va">date_from</span>, <span class="st">"&amp;"</span>, <span class="st">"date_to="</span>, <span class="va">date_to</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">call</span> <span class="op">=</span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/GET.html">GET</a></span><span class="op">(</span>url <span class="op">=</span> <span class="va">API_URL</span>,</span>
+<span>    <span class="fu"><a href="https://httr.r-lib.org/reference/add_headers.html">add_headers</a></span><span class="op">(</span>`Authorization` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">'Token token_id'</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Όπου στο σημείο που αναφέρεται το <strong>token_id</strong> θα πρέπει να βάλετε το token που σας έστειλε το data.gov.gr μέσω mail. Αφού λοιπόν αιτηθούμε τα δεδομένα μέσω της GET και κάνουμε λίγο υπομονή βλέπουμε ότι λαμβάνω μία λίστα με διάφορες πληροφορίες. Εμάς μας ενδιαφέρουν τα δεδομένα, οπότε κοιτάμε στη κατηγορία <strong>content</strong> της λίστας, ωστόσο παρατηρούμε μία μη αναγνώσιμη μορφή των στοιχειών μιας και είναι σε δεκαεξαδική μορφή.</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data</span> <span class="op">=</span> <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/rawConversion.html">rawToChar</a></span><span class="op">(</span><span class="va">call</span><span class="op">$</span><span class="va">content</span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Με την παραπάνω εντολή μετατρέπονται οι χαρακτήρες και είναι πλέον αναγνώσιμοι, ωστόσο τώρα θα πρέπει να πάρουν και μορφή πίνακα προκειμένου να γίνει η ανάλυση.</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data</span> <span class="op">=</span> <span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html">fromJSON</a></span><span class="op">(</span><span class="va">data</span>, flatten <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Και τέλος, με τη βοήθεια του πακέτου <code>jsonlite</code> λαμβάνω ένα data.frame με όνομα data που περιέχει όλους τους προορισμούς, τον αριθμό επιβατών, αυτοκινήτων για τη κάθε ημέρα που ζήτησα.</p>
+
+
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -673,6 +493,57 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       container: window.document.getElementById('quarto-embedded-source-code-modal')
     });
     clipboardModal.on('success', onCopySuccess);
+  }
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
@@ -1003,7 +874,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
+</script><script src="https://giscus.app/client.js" data-repo="stesiam/stesiam.github.io" data-repo-id="R_kgDOHuiNDg" data-category="Comments" data-category-id="DIC_kwDOHuiNDs4CQeAf" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="flatly" data-lang="gr" crossorigin="anonymous" async="">
+</script><input type="hidden" id="giscus-base-theme" value="flatly"><input type="hidden" id="giscus-alt-theme" value="darkly">
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">
@@ -1017,5 +889,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
   </div>
 </footer>
-</body>
-</html>
+
+
+</body></html>
