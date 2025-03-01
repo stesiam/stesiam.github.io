@@ -96,7 +96,7 @@ div.csl-indent {
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap-42666fafc540d79e7d202decec39277c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-13522a645d270005a4350744476a79c2.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-dark-f153c7400d7813f93e1e8715d4c41f3c.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <link href="../../site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
@@ -330,9 +330,9 @@ window.Quarto = {
 <p>So, we can assume that there will be a serious interest for that product mostly on people with significant amount of savings (<span class="math inline">&gt;1000</span>) and do not have large, extraordinary expenses (loan, kids, etc.).</p>
 </section><section id="prerequisites" class="level1"><h1>Prerequisites</h1>
 <section id="import-libraries" class="level2"><h2 class="anchored" data-anchor-id="import-libraries">Import libraries</h2>
-<p>For this analysis we will need standard libraries for importing and processing my data, such as readr <span class="citation" data-cites="R-readr">(<a href="#ref-R-readr" role="doc-biblioref">Wickham, Hester, &amp; Bryan, 2022</a>)</span> and dplyr <span class="citation" data-cites="R-dplyr">(<a href="#ref-R-dplyr" role="doc-biblioref">Wickham, François, Henry, Müller, &amp; Vaughan, 2023</a>)</span>. The kableExtra <span class="citation" data-cites="R-kableExtra">(<a href="#ref-R-kableExtra" role="doc-biblioref">Zhu, 2021</a>)</span> package was used to print the results in table format. Concerning general purpose R libraries, I also used gridExtra in order to show ggplot items side to side.</p>
+<p>For this analysis we will need standard libraries for importing and processing my data, such as readr <span class="citation" data-cites="R-readr">(<a href="#ref-R-readr" role="doc-biblioref">Wickham, Hester, &amp; Bryan, 2024</a>)</span> and dplyr <span class="citation" data-cites="R-dplyr">(<a href="#ref-R-dplyr" role="doc-biblioref">Wickham, François, Henry, Müller, &amp; Vaughan, 2023</a>)</span>. The kableExtra <span class="citation" data-cites="R-kableExtra">(<a href="#ref-R-kableExtra" role="doc-biblioref">Zhu, 2024</a>)</span> package was used to print the results in table format. Concerning general purpose R libraries, I also used gridExtra in order to show ggplot items side to side.</p>
 <p>On its basis this analysis is about to predict if someone is interested or not to have a term deposit. Thus, we need to build a ML model. The all-in-one solution package tidymodels is crucial to this. Although, there are some concerns about our data (imbalanced predicted value and our implementation of LightGBM. Thankfully, these are solved by bonsai and treesnip packages, respectively.</p>
-<p>Finally, the ggplot2 <span class="citation" data-cites="R-ggplot2">(<a href="#ref-R-ggplot2" role="doc-biblioref">Wickham et al., 2024</a>)</span> package was used to create some visualizations, as well as an auxiliary package, ggtext <span class="citation" data-cites="R-ggtext">(<a href="#ref-R-ggtext" role="doc-biblioref">Wilke &amp; Wiernik, 2022</a>)</span>, for further formatting those.</p>
+<p>Finally, the ggplot2 <span class="citation" data-cites="R-ggplot2">(<a href="#ref-R-ggplot2" role="doc-biblioref">Wickham, Chang, et al., 2024</a>)</span> package was used to create some visualizations, as well as an auxiliary package, ggtext <span class="citation" data-cites="R-ggtext">(<a href="#ref-R-ggtext" role="doc-biblioref">Wilke &amp; Wiernik, 2022</a>)</span>, for further formatting those.</p>
 <div class="cell">
 <details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># General purpose R libraries</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org">readr</a></span><span class="op">)</span></span>
@@ -2464,7 +2464,7 @@ Table&nbsp;1: Dataset after <code>recipes</code>
 <p>Our first results based on resamples for LightGBM</p>
 <div class="cell">
 <details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb76"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lightgbm_tuned_model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">show_best</span><span class="op">(</span><span class="st">"roc_auc"</span>,n<span class="op">=</span><span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">show_best</span><span class="op">(</span><span class="va">.</span>, metric <span class="op">=</span> <span class="st">"roc_auc"</span>, n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span>toprule <span class="op">=</span> <span class="cn">T</span>,align <span class="op">=</span> <span class="st">'c'</span>,booktabs <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">F</span>, position <span class="op">=</span> <span class="st">"center"</span>, html_font <span class="op">=</span> <span class="st">"Cambria"</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
@@ -2543,7 +2543,7 @@ Table&nbsp;1: Dataset after <code>recipes</code>
 <p>and XGBoost</p>
 <div class="cell">
 <details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb77"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">xgboost_tuned_model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">show_best</span><span class="op">(</span><span class="st">"roc_auc"</span>,n<span class="op">=</span><span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">show_best</span><span class="op">(</span><span class="va">.</span>, metric <span class="op">=</span> <span class="st">"roc_auc"</span>, n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span>toprule <span class="op">=</span> <span class="cn">T</span>,align <span class="op">=</span> <span class="st">'c'</span>,booktabs <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">F</span>, position <span class="op">=</span> <span class="st">"center"</span>, html_font <span class="op">=</span> <span class="st">"Cambria"</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
@@ -2628,56 +2628,29 @@ Table&nbsp;1: Dataset after <code>recipes</code>
 <span> min_n <span class="op">=</span> <span class="fl">33</span>,</span>
 <span> learn_rate <span class="op">=</span> <span class="fl">0.0787</span>,</span>
 <span> tree_depth <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"lightgbm"</span>, loss_function <span class="op">=</span> <span class="st">"squarederror"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"lightgbm"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb79"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">last_fit_workflow</span> <span class="op">&lt;-</span> <span class="va">lightgbm_workflow</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu">update_model</span><span class="op">(</span><span class="va">last_fit_lightgbm_model</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">last_lightgbm_fit</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">last_fit_workflow</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu">last_fit</span><span class="op">(</span><span class="va">bank_dataset_split</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stderr">
-<pre><code>! train/test split: preprocessor 1/1, model 1/1: NAs introduced by coercion</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>! train/test split: preprocessor 1/1, model 1/1 (predictions): NAs introduced by coercion</code></pre>
-</div>
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb82"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">last_lightgbm_fit</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu">collect_metrics</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span>toprule <span class="op">=</span> <span class="cn">T</span>,align <span class="op">=</span> <span class="st">'c'</span>,booktabs <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">F</span>, position <span class="op">=</span> <span class="st">"center"</span>, html_font <span class="op">=</span> <span class="st">"Cambria"</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
-<thead><tr class="header">
-<th style="text-align: center;" data-quarto-table-cell-role="th">.metric</th>
-<th style="text-align: center;" data-quarto-table-cell-role="th">.estimator</th>
-<th style="text-align: center;" data-quarto-table-cell-role="th">.estimate</th>
-<th style="text-align: center;" data-quarto-table-cell-role="th">.config</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">accuracy</td>
-<td style="text-align: center;">binary</td>
-<td style="text-align: center;">0.8833</td>
-<td style="text-align: center;">Preprocessor1_Model1</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">roc_auc</td>
-<td style="text-align: center;">binary</td>
-<td style="text-align: center;">0.8471</td>
-<td style="text-align: center;">Preprocessor1_Model1</td>
-</tr>
-</tbody>
-</table>
-</div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb79"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## TODO</span></span>
+<span><span class="co"># options(digits = 4)</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># last_fit_workflow &lt;- lightgbm_workflow %&gt;% </span></span>
+<span><span class="co">#   update_model(last_fit_lightgbm_model)</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># last_lightgbm_fit &lt;- </span></span>
+<span><span class="co">#   last_fit_workflow %&gt;% </span></span>
+<span><span class="co">#   last_fit(bank_dataset_split)</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># last_lightgbm_fit %&gt;% </span></span>
+<span><span class="co">#   collect_metrics() %&gt;%</span></span>
+<span><span class="co">#   kbl(toprule = T,align = 'c',booktabs = T)  %&gt;%</span></span>
+<span><span class="co">#   kable_styling(full_width = F, position = "center", html_font = "Cambria") </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>and XGBoost, 0.8736.</p>
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb83"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">last_fit_xgboost_model</span> <span class="op">=</span> <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html">boost_tree</a></span><span class="op">(</span></span>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb80"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">last_fit_xgboost_model</span> <span class="op">=</span> <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/boost_tree.html">boost_tree</a></span><span class="op">(</span></span>
 <span> mode <span class="op">=</span> <span class="st">"classification"</span>,</span>
 <span> trees <span class="op">=</span> <span class="fl">100</span>,</span>
 <span> min_n <span class="op">=</span> <span class="fl">21</span>,</span>
@@ -2687,7 +2660,7 @@ Table&nbsp;1: Dataset after <code>recipes</code>
 </details>
 </div>
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb84"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb81"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">last_fit_xgboost_workflow</span> <span class="op">&lt;-</span> <span class="va">xgboost_workflow</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">update_model</span><span class="op">(</span><span class="va">last_fit_xgboost_model</span><span class="op">)</span></span>
@@ -2719,6 +2692,12 @@ Table&nbsp;1: Dataset after <code>recipes</code>
 <td style="text-align: center;">roc_auc</td>
 <td style="text-align: center;">binary</td>
 <td style="text-align: center;">0.8693</td>
+<td style="text-align: center;">Preprocessor1_Model1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">brier_class</td>
+<td style="text-align: center;">binary</td>
+<td style="text-align: center;">0.0750</td>
 <td style="text-align: center;">Preprocessor1_Model1</td>
 </tr>
 </tbody>
@@ -2753,19 +2732,19 @@ Table&nbsp;1: Dataset after <code>recipes</code>
 <p>In conclusion LightGBM model is less time consuming in comparison with XGBoost. On the other hand, XGBoost model needed more time to be built (which was expected) but outperformed LightGBM.</p>
 <p>So, we got some results, so what? The main question is still unanswered. All this modelling was about to find out who is interested to a term deposit. Usually, I would use predict function with the corresponding data to mark my predictions. However, I wasn’t able to do that as I received an error about class. Nevermind, the function collect_predictions() does the same.</p>
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb85"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pr</span> <span class="op">=</span> <span class="va">last_lightgbm_fit</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">collect_predictions</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb82"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pr</span> <span class="op">=</span> <span class="va">last_xgboost_fit</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">collect_predictions</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Now, I will select the predicted value and the result and I will paste them on my test data.</p>
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb86"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pr</span> <span class="op">=</span> <span class="va">pr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">.pred_class</span>, <span class="va">y</span><span class="op">)</span> </span>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb83"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pr</span> <span class="op">=</span> <span class="va">pr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">.pred_class</span>, <span class="va">y</span><span class="op">)</span> </span>
 <span></span>
 <span><span class="va">final</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">pr</span>, <span class="va">bank_test</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>And now let’s say that I want to give a list of only the interested ones. I will filter pred class to show only “Yes” values. We should also take into consideration that the dataset does not include any personal information, so I will also include an ID.</p>
 <div class="cell">
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb87"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">final</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb84"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">final</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span>toprule <span class="op">=</span> <span class="cn">T</span>,align <span class="op">=</span> <span class="st">'c'</span>,booktabs <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">F</span>, position <span class="op">=</span> <span class="st">"center"</span>, html_font <span class="op">=</span> <span class="st">"Cambria"</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2929,7 +2908,7 @@ Table&nbsp;1: Dataset after <code>recipes</code>
 </tbody>
 </table>
 </div>
-<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb88"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">final</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">.pred_class</span>, <span class="va">ID</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb85"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">final</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">.pred_class</span>, <span class="va">ID</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.pred_class</span> <span class="op">==</span> <span class="st">"yes"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span>toprule <span class="op">=</span> <span class="cn">T</span>,align <span class="op">=</span> <span class="st">'c'</span>,booktabs <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>full_width <span class="op">=</span> <span class="cn">F</span>, position <span class="op">=</span> <span class="st">"center"</span>, html_font <span class="op">=</span> <span class="st">"Cambria"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -2964,19 +2943,11 @@ Table&nbsp;1: Dataset after <code>recipes</code>
 </tr>
 <tr class="even">
 <td style="text-align: center;">yes</td>
-<td style="text-align: center;">219</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">242</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">299</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">yes</td>
 <td style="text-align: center;">301</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">313</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">yes</td>
@@ -2988,15 +2959,31 @@ Table&nbsp;1: Dataset after <code>recipes</code>
 </tr>
 <tr class="even">
 <td style="text-align: center;">yes</td>
-<td style="text-align: center;">685</td>
+<td style="text-align: center;">510</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">yes</td>
-<td style="text-align: center;">703</td>
+<td style="text-align: center;">620</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">yes</td>
-<td style="text-align: center;">806</td>
+<td style="text-align: center;">662</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">685</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">703</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">838</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">856</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">yes</td>
@@ -3008,31 +2995,15 @@ Table&nbsp;1: Dataset after <code>recipes</code>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">yes</td>
-<td style="text-align: center;">1176</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">yes</td>
 <td style="text-align: center;">1193</td>
 </tr>
-<tr class="odd">
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">1277</td>
-</tr>
 <tr class="even">
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">1279</td>
-</tr>
-<tr class="odd">
 <td style="text-align: center;">yes</td>
 <td style="text-align: center;">1280</td>
 </tr>
-<tr class="even">
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">1350</td>
-</tr>
 <tr class="odd">
 <td style="text-align: center;">yes</td>
-<td style="text-align: center;">1370</td>
+<td style="text-align: center;">1343</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">yes</td>
@@ -3040,15 +3011,15 @@ Table&nbsp;1: Dataset after <code>recipes</code>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">yes</td>
-<td style="text-align: center;">1455</td>
+<td style="text-align: center;">1612</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">yes</td>
-<td style="text-align: center;">1502</td>
+<td style="text-align: center;">1739</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">yes</td>
-<td style="text-align: center;">1593</td>
+<td style="text-align: center;">1761</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">yes</td>
@@ -3056,27 +3027,35 @@ Table&nbsp;1: Dataset after <code>recipes</code>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">yes</td>
-<td style="text-align: center;">1878</td>
+<td style="text-align: center;">1780</td>
 </tr>
 <tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">1897</td>
+</tr>
+<tr class="odd">
 <td style="text-align: center;">yes</td>
 <td style="text-align: center;">1904</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: center;">yes</td>
 <td style="text-align: center;">1915</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: center;">yes</td>
 <td style="text-align: center;">1946</td>
 </tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">1975</td>
+</tr>
 <tr class="odd">
 <td style="text-align: center;">yes</td>
-<td style="text-align: center;">1992</td>
+<td style="text-align: center;">1981</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">yes</td>
-<td style="text-align: center;">2038</td>
+<td style="text-align: center;">1992</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">yes</td>
@@ -3084,59 +3063,19 @@ Table&nbsp;1: Dataset after <code>recipes</code>
 </tr>
 <tr class="even">
 <td style="text-align: center;">yes</td>
-<td style="text-align: center;">2139</td>
+<td style="text-align: center;">2161</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">2160</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">2203</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">2214</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">2218</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">2255</td>
-</tr>
-<tr class="even">
 <td style="text-align: center;">yes</td>
 <td style="text-align: center;">2259</td>
 </tr>
-<tr class="odd">
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">2432</td>
-</tr>
 <tr class="even">
 <td style="text-align: center;">yes</td>
-<td style="text-align: center;">2465</td>
+<td style="text-align: center;">2376</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">yes</td>
-<td style="text-align: center;">2481</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">2652</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">2655</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">2666</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">2732</td>
+<td style="text-align: center;">2634</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">yes</td>
@@ -3144,15 +3083,23 @@ Table&nbsp;1: Dataset after <code>recipes</code>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">yes</td>
-<td style="text-align: center;">2828</td>
+<td style="text-align: center;">2880</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">yes</td>
-<td style="text-align: center;">2920</td>
+<td style="text-align: center;">2918</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">yes</td>
-<td style="text-align: center;">3420</td>
+<td style="text-align: center;">2986</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">3089</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">yes</td>
+<td style="text-align: center;">3306</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">yes</td>
@@ -3168,23 +3115,7 @@ Table&nbsp;1: Dataset after <code>recipes</code>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">yes</td>
-<td style="text-align: center;">3659</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">3738</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">3751</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">yes</td>
 <td style="text-align: center;">3755</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">3787</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">yes</td>
@@ -3192,39 +3123,15 @@ Table&nbsp;1: Dataset after <code>recipes</code>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">yes</td>
-<td style="text-align: center;">3862</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">yes</td>
 <td style="text-align: center;">3932</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: center;">yes</td>
 <td style="text-align: center;">3957</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: center;">yes</td>
 <td style="text-align: center;">3969</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">4055</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">4067</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">4124</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">4214</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">4224</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">yes</td>
@@ -3236,11 +3143,11 @@ Table&nbsp;1: Dataset after <code>recipes</code>
 </tr>
 <tr class="even">
 <td style="text-align: center;">yes</td>
-<td style="text-align: center;">4481</td>
+<td style="text-align: center;">4266</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">yes</td>
-<td style="text-align: center;">4504</td>
+<td style="text-align: center;">4276</td>
 </tr>
 </tbody>
 </table>
@@ -3263,7 +3170,7 @@ Table&nbsp;1: Dataset after <code>recipes</code>
 Auguie, B. (2017). <em>gridExtra: Miscellaneous functions for "grid" graphics</em>. Retrieved from <a href="https://CRAN.R-project.org/package=gridExtra">https://CRAN.R-project.org/package=gridExtra</a>
 </div>
 <div id="ref-R-infer" class="csl-entry" role="listitem">
-Bray, A., Ismay, C., Chasnovski, E., Couch, S., Baumer, B., &amp; Cetinkaya-Rundel, M. (2022). <em>Infer: Tidy statistical inference</em>. Retrieved from <a href="https://github.com/tidymodels/infer">https://github.com/tidymodels/infer</a>
+Bray, A., Ismay, C., Chasnovski, E., Couch, S., Baumer, B., &amp; Cetinkaya-Rundel, M. (2024). <em>Infer: Tidy statistical inference</em>. Retrieved from <a href="https://github.com/tidymodels/infer">https://github.com/tidymodels/infer</a>
 </div>
 <div id="ref-infer2021" class="csl-entry" role="listitem">
 Couch, S. P., Bray, A. P., Ismay, C., Chasnovski, E., Baumer, B. S., &amp; Çetinkaya-Rundel, M. (2021). <span class="nocase">infer</span>: An <span>R</span> package for tidyverse-friendly statistical inference. <em>Journal of Open Source Software</em>, <em>6</em>(65), 3661. <a href="https://doi.org/10.21105/joss.03661">https://doi.org/10.21105/joss.03661</a>
@@ -3272,13 +3179,16 @@ Couch, S. P., Bray, A. P., Ismay, C., Chasnovski, E., Baumer, B. S., &amp; Çeti
 Dua, D., &amp; Graff, C. (2017). <em><span>UCI</span> machine learning repository</em>. University of California, Irvine, School of Information; Computer Sciences. Retrieved from <a href="http://archive.ics.uci.edu/ml">http://archive.ics.uci.edu/ml</a>
 </div>
 <div id="ref-R-bonsai" class="csl-entry" role="listitem">
-Falbel, D., Damiani, A., Hogervorst, R. M., Kuhn, M., &amp; Couch, S. (2022). <em>Bonsai: Model wrappers for tree-based models</em>. Retrieved from <a href="https://bonsai.tidymodels.org/">https://bonsai.tidymodels.org/</a>
+Falbel, D., Damiani, A., Hogervorst, R. M., Kuhn, M., &amp; Couch, S. (2025). <em>Bonsai: Model wrappers for tree-based models</em>. Retrieved from <a href="https://bonsai.tidymodels.org/">https://bonsai.tidymodels.org/</a>
+</div>
+<div id="ref-R-rsample" class="csl-entry" role="listitem">
+Frick, H., Chow, F., Kuhn, M., Mahoney, M., Silge, J., &amp; Wickham, H. (2024). <em>Rsample: General resampling infrastructure</em>. Retrieved from <a href="https://rsample.tidymodels.org">https://rsample.tidymodels.org</a>
 </div>
 <div id="ref-R-themis" class="csl-entry" role="listitem">
-Hvitfeldt, E. (2022). <em>Themis: Extra recipes steps for dealing with unbalanced data</em>. Retrieved from <a href="https://github.com/tidymodels/themis">https://github.com/tidymodels/themis</a>
+Hvitfeldt, E. (2025). <em>Themis: Extra recipes steps for dealing with unbalanced data</em>. Retrieved from <a href="https://github.com/tidymodels/themis">https://github.com/tidymodels/themis</a>
 </div>
 <div id="ref-R-fontawesome" class="csl-entry" role="listitem">
-Iannone, R. (2023). <em>Fontawesome: Easily work with font awesome icons</em>. Retrieved from <a href="https://github.com/rstudio/fontawesome">https://github.com/rstudio/fontawesome</a>
+Iannone, R. (2024). <em>Fontawesome: Easily work with font awesome icons</em>. Retrieved from <a href="https://github.com/rstudio/fontawesome">https://github.com/rstudio/fontawesome</a>
 </div>
 <div id="ref-kabacoff2019data" class="csl-entry" role="listitem">
 Kabacoff, R. (2019). Data visualization with r. <em>URL Https://Rkabacoff. Github. Io/Datavis</em>.
@@ -3287,31 +3197,31 @@ Kabacoff, R. (2019). Data visualization with r. <em>URL Https://Rkabacoff. Githu
 Kirenz, J. (2021). Classification with tidymodels, workflows and recipes. Retrieved November 22, 2022, from <a href="https://www.kirenz.com/post/2021-02-17-r-classification-tidymodels/#data-preparation">https://www.kirenz.com/post/2021-02-17-r-classification-tidymodels/#data-preparation</a>
 </div>
 <div id="ref-R-modeldata" class="csl-entry" role="listitem">
-Kuhn, M. (2022a). <em>Modeldata: Data sets useful for modeling examples</em>. Retrieved from <a href="https://modeldata.tidymodels.org">https://modeldata.tidymodels.org</a>
+Kuhn, M. (2024). <em>Modeldata: Data sets useful for modeling examples</em>. Retrieved from <a href="https://modeldata.tidymodels.org">https://modeldata.tidymodels.org</a>
 </div>
 <div id="ref-R-tune" class="csl-entry" role="listitem">
-Kuhn, M. (2022b). <em>Tune: Tidy tuning tools</em>. Retrieved from <a href="https://tune.tidymodels.org/">https://tune.tidymodels.org/</a>
+Kuhn, M. (2025). <em>Tune: Tidy tuning tools</em>. Retrieved from <a href="https://tune.tidymodels.org/">https://tune.tidymodels.org/</a>
 </div>
 <div id="ref-R-workflowsets" class="csl-entry" role="listitem">
-Kuhn, M., &amp; Couch, S. (2022). <em>Workflowsets: Create a collection of tidymodels workflows</em>. Retrieved from <a href="https://github.com/tidymodels/workflowsets">https://github.com/tidymodels/workflowsets</a>
+Kuhn, M., &amp; Couch, S. (2024). <em>Workflowsets: Create a collection of tidymodels workflows</em>. Retrieved from <a href="https://github.com/tidymodels/workflowsets">https://github.com/tidymodels/workflowsets</a>
 </div>
 <div id="ref-R-dials" class="csl-entry" role="listitem">
-Kuhn, M., &amp; Frick, H. (2022). <em>Dials: Tools for creating tuning parameter values</em>. Retrieved from <a href="https://dials.tidymodels.org">https://dials.tidymodels.org</a>
+Kuhn, M., &amp; Frick, H. (2025). <em>Dials: Tools for creating tuning parameter values</em>. Retrieved from <a href="https://dials.tidymodels.org">https://dials.tidymodels.org</a>
 </div>
 <div id="ref-R-parsnip" class="csl-entry" role="listitem">
-Kuhn, M., &amp; Vaughan, D. (2022). <em>Parsnip: A common API to modeling and analysis functions</em>. Retrieved from <a href="https://github.com/tidymodels/parsnip">https://github.com/tidymodels/parsnip</a>
+Kuhn, M., &amp; Vaughan, D. (2025). <em>Parsnip: A common API to modeling and analysis functions</em>. Retrieved from <a href="https://github.com/tidymodels/parsnip">https://github.com/tidymodels/parsnip</a>
 </div>
 <div id="ref-R-yardstick" class="csl-entry" role="listitem">
-Kuhn, M., Vaughan, D., &amp; Hvitfeldt, E. (2022). <em>Yardstick: Tidy characterizations of model performance</em>. Retrieved from <a href="https://github.com/tidymodels/yardstick">https://github.com/tidymodels/yardstick</a>
+Kuhn, M., Vaughan, D., &amp; Hvitfeldt, E. (2025). <em>Yardstick: Tidy characterizations of model performance</em>. Retrieved from <a href="https://github.com/tidymodels/yardstick">https://github.com/tidymodels/yardstick</a>
 </div>
 <div id="ref-tidymodels2020" class="csl-entry" role="listitem">
 Kuhn, M., &amp; Wickham, H. (2020). <em>Tidymodels: A collection of packages for modeling and machine learning using tidyverse principles.</em> Retrieved from <a href="https://www.tidymodels.org">https://www.tidymodels.org</a>
 </div>
-<div id="ref-R-recipes" class="csl-entry" role="listitem">
-Kuhn, M., &amp; Wickham, H. (2022a). <em>Recipes: Preprocessing and feature engineering steps for modeling</em>. Retrieved from <a href="https://github.com/tidymodels/recipes">https://github.com/tidymodels/recipes</a>
-</div>
 <div id="ref-R-tidymodels" class="csl-entry" role="listitem">
-Kuhn, M., &amp; Wickham, H. (2022b). <em>Tidymodels: Easily install and load the tidymodels packages</em>. Retrieved from <a href="https://tidymodels.tidymodels.org">https://tidymodels.tidymodels.org</a>
+Kuhn, M., &amp; Wickham, H. (2025). <em>Tidymodels: Easily install and load the tidymodels packages</em>. Retrieved from <a href="https://tidymodels.tidymodels.org">https://tidymodels.tidymodels.org</a>
+</div>
+<div id="ref-R-recipes" class="csl-entry" role="listitem">
+Kuhn, M., Wickham, H., &amp; Hvitfeldt, E. (2025). <em>Recipes: Preprocessing and feature engineering steps for modeling</em>. Retrieved from <a href="https://github.com/tidymodels/recipes">https://github.com/tidymodels/recipes</a>
 </div>
 <div id="ref-moro2014data" class="csl-entry" role="listitem">
 Moro, S., Cortez, P., &amp; Rita, P. (2014). A data-driven approach to predict the success of bank telemarketing. <em>Decision Support Systems</em>, <em>62</em>, 22–31.
@@ -3320,7 +3230,7 @@ Moro, S., Cortez, P., &amp; Rita, P. (2014). A data-driven approach to predict t
 Müller, K., &amp; Wickham, H. (2023). <em>Tibble: Simple data frames</em>. Retrieved from <a href="https://tibble.tidyverse.org/">https://tibble.tidyverse.org/</a>
 </div>
 <div id="ref-R-base" class="csl-entry" role="listitem">
-R Core Team. (2021). <em>R: A language and environment for statistical computing</em>. Vienna, Austria: R Foundation for Statistical Computing. Retrieved from <a href="https://www.R-project.org/">https://www.R-project.org/</a>
+R Core Team. (2024). <em>R: A language and environment for statistical computing</em>. Vienna, Austria: R Foundation for Statistical Computing. Retrieved from <a href="https://www.R-project.org/">https://www.R-project.org/</a>
 </div>
 <div id="ref-Rbloggers2017" class="csl-entry" role="listitem">
 R-Bloggers. (2017). 5 ways to measure running time of r code. Retrieved November 20, 2022, from <a href="https://www.r-bloggers.com/2017/05/5-ways-to-measure-running-time-of-r-code/">https://www.r-bloggers.com/2017/05/5-ways-to-measure-running-time-of-r-code/</a>
@@ -3331,17 +3241,14 @@ R-Bloggers. (2020). How to use lightgbm with tidymodels. Retrieved November 20, 
 <div id="ref-R-broom" class="csl-entry" role="listitem">
 Robinson, D., Hayes, A., &amp; Couch, S. (2024). <em>Broom: Convert statistical objects into tidy tibbles</em>. Retrieved from <a href="https://broom.tidymodels.org/">https://broom.tidymodels.org/</a>
 </div>
-<div id="ref-R-rsample" class="csl-entry" role="listitem">
-Silge, J., Chow, F., Kuhn, M., &amp; Wickham, H. (2022). <em>Rsample: General resampling infrastructure</em>. Retrieved from <a href="https://rsample.tidymodels.org">https://rsample.tidymodels.org</a>
-</div>
 <div id="ref-R-workflows" class="csl-entry" role="listitem">
-Vaughan, D., &amp; Couch, S. (2022). <em>Workflows: Modeling workflows</em>. Retrieved from <a href="https://github.com/tidymodels/workflows">https://github.com/tidymodels/workflows</a>
+Vaughan, D., &amp; Couch, S. (2025). <em>Workflows: Modeling workflows</em>. Retrieved from <a href="https://github.com/tidymodels/workflows">https://github.com/tidymodels/workflows</a>
 </div>
 <div id="ref-ggplot22016" class="csl-entry" role="listitem">
 Wickham, H. (2016). <em>ggplot2: Elegant graphics for data analysis</em>. Springer-Verlag New York. Retrieved from <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>
 </div>
 <div id="ref-R-forcats" class="csl-entry" role="listitem">
-Wickham, H. (2022). <em>Forcats: Tools for working with categorical variables (factors)</em>. Retrieved from <a href="https://forcats.tidyverse.org/">https://forcats.tidyverse.org/</a>
+Wickham, H. (2023). <em>Forcats: Tools for working with categorical variables (factors)</em>. Retrieved from <a href="https://forcats.tidyverse.org/">https://forcats.tidyverse.org/</a>
 </div>
 <div id="ref-R-ggplot2" class="csl-entry" role="listitem">
 Wickham, H., Chang, W., Henry, L., Pedersen, T. L., Takahashi, K., Wilke, C., … van den Brand, T. (2024). <em>ggplot2: Create elegant data visualisations using the grammar of graphics</em>. Retrieved from <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>
@@ -3350,10 +3257,10 @@ Wickham, H., Chang, W., Henry, L., Pedersen, T. L., Takahashi, K., Wilke, C., �
 Wickham, H., François, R., Henry, L., Müller, K., &amp; Vaughan, D. (2023). <em>Dplyr: A grammar of data manipulation</em>. Retrieved from <a href="https://dplyr.tidyverse.org">https://dplyr.tidyverse.org</a>
 </div>
 <div id="ref-R-purrr" class="csl-entry" role="listitem">
-Wickham, H., &amp; Henry, L. (2023). <em>Purrr: Functional programming tools</em>. Retrieved from <a href="https://purrr.tidyverse.org/">https://purrr.tidyverse.org/</a>
+Wickham, H., &amp; Henry, L. (2025). <em>Purrr: Functional programming tools</em>. Retrieved from <a href="https://purrr.tidyverse.org/">https://purrr.tidyverse.org/</a>
 </div>
 <div id="ref-R-readr" class="csl-entry" role="listitem">
-Wickham, H., Hester, J., &amp; Bryan, J. (2022). <em>Readr: Read rectangular text data</em>. Retrieved from <a href="https://readr.tidyverse.org">https://readr.tidyverse.org</a>
+Wickham, H., Hester, J., &amp; Bryan, J. (2024). <em>Readr: Read rectangular text data</em>. Retrieved from <a href="https://readr.tidyverse.org">https://readr.tidyverse.org</a>
 </div>
 <div id="ref-R-scales" class="csl-entry" role="listitem">
 Wickham, H., Pedersen, T. L., &amp; Seidel, D. (2023). <em>Scales: Scale functions for visualization</em>. Retrieved from <a href="https://scales.r-lib.org">https://scales.r-lib.org</a>
@@ -3365,7 +3272,7 @@ Wickham, H., Vaughan, D., &amp; Girlich, M. (2024). <em>Tidyr: Tidy messy data</
 Wilke, C. O., &amp; Wiernik, B. M. (2022). <em>Ggtext: Improved text rendering support for ggplot2</em>. Retrieved from <a href="https://wilkelab.org/ggtext/">https://wilkelab.org/ggtext/</a>
 </div>
 <div id="ref-R-kableExtra" class="csl-entry" role="listitem">
-Zhu, H. (2021). <em>kableExtra: Construct complex table with kable and pipe syntax</em>. Retrieved from <a href="http://haozhu233.github.io/kableExtra/">http://haozhu233.github.io/kableExtra/</a>
+Zhu, H. (2024). <em>kableExtra: Construct complex table with kable and pipe syntax</em>. Retrieved from <a href="http://haozhu233.github.io/kableExtra/">http://haozhu233.github.io/kableExtra/</a>
 </div>
 </div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{2022,
   author = {, stesiam},

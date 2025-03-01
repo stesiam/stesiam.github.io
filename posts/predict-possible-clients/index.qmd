@@ -1094,7 +1094,7 @@ Our first results based on resamples for LightGBM
 
 ```{r}
 lightgbm_tuned_model %>%
-  show_best("roc_auc",n=5) %>% 
+  show_best(., metric = "roc_auc", n = 5) %>% 
   kbl(toprule = T,align = 'c',booktabs = T)  %>%
   kable_styling(full_width = F, position = "center", html_font = "Cambria") 
 ```
@@ -1102,7 +1102,7 @@ lightgbm_tuned_model %>%
 and XGBoost
 ```{r}
 xgboost_tuned_model %>%
-  show_best("roc_auc",n=5) %>% 
+  show_best(., metric = "roc_auc", n = 5) %>% 
   kbl(toprule = T,align = 'c',booktabs = T)  %>%
   kable_styling(full_width = F, position = "center", html_font = "Cambria") 
 ```
@@ -1118,23 +1118,25 @@ last_fit_lightgbm_model = parsnip::boost_tree(
  min_n = 33,
  learn_rate = 0.0787,
  tree_depth = 4) %>%
-set_engine("lightgbm", loss_function = "squarederror")
+set_engine("lightgbm")
 ```
 
 ```{r}
-options(digits = 4)
 
-last_fit_workflow <- lightgbm_workflow %>% 
-  update_model(last_fit_lightgbm_model)
-
-last_lightgbm_fit <- 
-  last_fit_workflow %>% 
-  last_fit(bank_dataset_split)
-
-last_lightgbm_fit %>% 
-  collect_metrics() %>%
-  kbl(toprule = T,align = 'c',booktabs = T)  %>%
-  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
+## TODO
+# options(digits = 4)
+# 
+# last_fit_workflow <- lightgbm_workflow %>% 
+#   update_model(last_fit_lightgbm_model)
+# 
+# last_lightgbm_fit <- 
+#   last_fit_workflow %>% 
+#   last_fit(bank_dataset_split)
+# 
+# last_lightgbm_fit %>% 
+#   collect_metrics() %>%
+#   kbl(toprule = T,align = 'c',booktabs = T)  %>%
+#   kable_styling(full_width = F, position = "center", html_font = "Cambria") 
 ```
 
 
@@ -1185,7 +1187,7 @@ In conclusion LightGBM model is less time consuming in comparison with XGBoost. 
 So, we got some results, so what? The main question is still unanswered. All this modelling was about to find out who is interested to a term deposit. Usually, I would use predict function with the corresponding data to mark my predictions. However, I wasn't able to do that as I received an error about class. Nevermind, the function collect_predictions() does the same. 
 
 ```{r}
-pr = last_lightgbm_fit %>% collect_predictions()
+pr = last_xgboost_fit %>% collect_predictions()
 ```
 
 Now, I will select the predicted value and the result and I will paste them on my test data. 

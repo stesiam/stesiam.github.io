@@ -54,7 +54,7 @@ As I will extract tables from a pdf file, I will definitely need `tabulizer` pac
 comment](https://github.com/s-u/rJava/issues/255#issuecomment-794473988) solved the issue. After installing `rJava`, I was able to install successfully tabulizer as below:
 
 ```{r}
-# remotes::install_github(c("ropensci/tabulizerjars", "ropensci/tabulizer"))
+#remotes::install_github(c("ropensci/tabulizerjars", "ropensci/tabulizer"))
 ```
 
 ```{r Import R libraries and fonts, warning=F, message=FALSE}
@@ -75,7 +75,7 @@ library(waffle)
 library(reactable)
 
 library(rJava)
-library(tabulizer)
+library(tabulapdf)
 library(pdftools)
 
 
@@ -119,10 +119,6 @@ pdf_subset('sg22.pdf',
 So, we extracted the pages which we are interested in. Let's take a look at
 them:
 
-```{=html}
-<iframe width="100%" height="600" src="./subset.pdf">
-</iframe>
-```
 
 Thankfully, tabulizer comes with a very handy function to extract all the tables from a PDF file. Yeap, I know the original study guide is written in greek but don't worry that's just to take a basic understanding of how the pdf and the tables look. I will translate the column names when I will work with the data. But look at the bright side. At least we will get a notebook with ggplot2
 visualizations as an alternative of those Excel graphs :)
@@ -131,7 +127,7 @@ visualizations as an alternative of those Excel graphs :)
 statistics_tables <- extract_tables(
     file   = "subset.pdf", 
     method = "decide", 
-    output = "data.frame")
+    output = "tibble")
 ```
 
 Extracting the tables from splitted PDF I get a list of 5 tables with my data. It's amazing that in a matter of seconds I get all the information in a format ready for analysis. If I were to write them the traditional way (copy-paste) it would definitely take me an hour.
