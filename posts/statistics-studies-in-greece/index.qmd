@@ -1,5 +1,5 @@
 ---
-title: "Σπουδές Στατιστικής στην Ελλάδα"
+title: "Statistics Studies in Greece"
 author: "stesiam"
 description: "Συγκεντρώνω σε μία λίστα τις δημόσιες σχολές στατιστικής στην Ελλάδα και συγκρίνω τα βασικά τους στοιχεία με βάση τους οδηγούς σπουδών τους"
 freeze: false
@@ -18,7 +18,7 @@ title-block-banner: true
 nocite: '@*'
 #csl: apa-6th-edition.csl
 #bibliography: [packages.bib, references.bib]
-lang: el
+lang: en
 format: 
   html:
     freeze: false
@@ -43,37 +43,26 @@ editor_options:
 - [Τμήμα Στατιστικής και Αναλογιστικών - Χρηματοοικονομικών Μαθηματικών](https://www.aegean.gr/departments/%CF%84%CE%BC%CE%AE%CE%BC%CE%B1-%CF%83%CF%84%CE%B1%CF%84%CE%B9%CF%83%CF%84%CE%B9%CE%BA%CE%AE%CF%82-%CE%BA%CE%B1%CE%B9-%CE%B1%CE%BD%CE%B1%CE%BB%CE%BF%CE%B3%CE%B9%CF%83%CF%84%CE%B9%CE%BA%CF%8E%CE%BD-%E2%80%93-%CF%87%CF%81%CE%B7%CE%BC%CE%B1%CF%84%CE%BF%CE%BF%CE%B9%CE%BA%CE%BF%CE%BD%CE%BF%CE%BC%CE%B9%CE%BA%CF%8E%CE%BD-%CE%BC%CE%B1%CE%B8%CE%B7%CE%BC%CE%B1%CF%84%CE%B9%CE%BA%CF%8E%CE%BD) του Πανεπιστημίου Αιγαίου
 - [Tμήμα Στατιστικής και Ασφαλιστικής Επιστήμης](https://stat.uowm.gr/) του Πανεπιστημίου Δυτικής Μακεδονίας
 
+
 ```{r Import R libraries, warning=FALSE, message=FALSE}
 library(dplyr)
-library(ggplot2)
-library(ggtext)
-library(geomtextpath)
-library(ggimage)
-library(glue)
-library(ggrepel)
-library(rnaturalearth) # ne_countries
-library(rnaturalearthdata) # medium scale option
 library(sysfonts)
 library(reactable)
 library(showtext)
 library(reactablefmtr)
+library(highcharter)
+library(here)
+```
 
-
-
-font_add_google("Roboto Slab", family = "clim")
-font_add_google("EB Garamond", family = "mont")
-
+```{r Further settings, echo=FALSE}
+# font_add_google("Roboto Slab", family = "clim")
+# font_add_google("EB Garamond", family = "mont")
 
 sysfonts::font_add('fb', '_extensions/quarto-ext/fontawesome/assets/webfonts/fa-brands-400.ttf')
 sysfonts::font_add('fs', '_extensions/quarto-ext/fontawesome/assets/webfonts/fa-solid-900.ttf')
 
-
 showtext_auto()
 showtext::showtext_opts(dpi = 300)
-
-
-library(here)
-w = here::here("greek-posts/2023-06-20-Studies-in-Statistics-Greek")
 ```
 
 
@@ -103,79 +92,47 @@ tmimata_statistikis = tmimata_statistikis |>
 
 
 
-```{r vaseis_eisagogis_plot, fig.showtext=T, height = 5, dpi = 300, warning=F}
+```{r vaseis_eisagogis_plot}
 #| label: vaseis-eisagogis
 #| fig-cap: "Βάσεις εισαγωγής σχολών Στατιστικής (2013 - 2022)"
 
-title_text = glue("<b>Βάσεις εισαγωγής σε τμήματα Στατιστικής</b>")
-subtitle_text = glue("Η βάση εισαγωγής είναι ο μικρότερος αριθμός μορίων - βαθμολογίας που πρέπει να συγκεντρώσει κάποιος <br> προκειμένου να εισαχθεί στη συγκεκριμένη σχολή. Διαχρονικά, οι σχολές με τη μεγαλύτερη βάση είναι του <br> <b>Οικονομικού Πανεπιστημίου Αθηνών</b> και του <b>Πανεπιστημίου Πειραιά</b>. Τέλος, παρατηρούμε ότι όλες <br> οι  σχολές Στατιστικής έχουν σχετικά χαμηλή βάση εισαγωγής.")
-caption_text = glue("<b>Πηγή:</b>Βάσεις Πανελληνίων<br><span style='font-family:fb;'  >&#xf09b;</span> <b>stesiam</b>, 2024")
+title_text = "<strong>Βάσεις εισαγωγής σε τμήματα Στατιστικής</strong>"
+subtitle_text = "Η βάση εισαγωγής είναι ο μικρότερος αριθμός μορίων - βαθμολογίας που πρέπει να συγκεντρώσει κάποιος προκειμένου να εισαχθεί στη συγκεκριμένη σχολή. Διαχρονικά, οι σχολές με τη μεγαλύτερη βάση είναι του <b>Οικονομικού Πανεπιστημίου Αθηνών</b> και του <b>Πανεπιστημίου Πειραιά</b>. Τέλος, παρατηρούμε ότι όλες <br> οι  σχολές Στατιστικής έχουν σχετικά χαμηλή βάση εισαγωγής."
+caption_text = "Πηγή:</b>Βάσεις Πανελληνίων<br><span style='font-family:fb;'  >&#xf09b;</span> <b>stesiam</b>, 2024"
 
-ggplot2::ggplot(data = tmimata_statistikis, aes(x = Year, y = Vasi, 
-                                                color= University, 
-                                                label = University),
-                                                group = University) +
-  geom_point(data = tmimata_statistikis |> dplyr::filter(Year == 2022),
-             size = 9) +
-  geom_textline(size = 4.5, vjust = -0.1,
-                linewidth = 1.5, fontface = "bold", hjust = 0.5) +
-  geom_text(data = tmimata_statistikis %>% group_by(University) %>% filter(Year == max(Year)), aes(x = Year, y = Vasi, label = round(Vasi/1000, digits = 1)),
-                  fontface = "bold", color = "white", size = 3.5) +
-  scale_x_continuous("Έτος", breaks = 2013:2023) +
-  labs(
-    title = title_text,
-    subtitle = subtitle_text,
-    caption = caption_text,
-    x = "Έτος",
-    y = "Βάση εισαγωγής",
-    color = "Πανεπιστήμιο"
-  ) +
-  theme_classic(base_size = 15) +
- theme(
-     plot.title = element_markdown(family = "clim", size = 15),
-     plot.subtitle = element_markdown(family = "mont", size = 10, lineheight = 0.7),
-     plot.caption = element_markdown(family = "mont", size = 10, lineheight = 1.2),
-     axis.title = element_markdown(family = "mont", size = 12),
-     legend.position = "none"
-)
+hchart(tmimata_statistikis, "line", hcaes(x = Year, y = Vasi, group = University)) |>
+  hc_title(
+    text = title_text,
+    align = "left") |>
+  hc_xAxis(title = "Έτος") |>
+  hc_yAxis(title = "Βάση εισαγωγής") |>
+  hc_subtitle(text = subtitle_text, align = "left")
 ```
+
+
 
 ## Θέσεις
 
 Κάθε χρόνο το Υπουργείο Παιδείας ανακοινώνει τις διαθέσιμες θέσεις για κάθε σχολή και για κάθε κατηγορία εξεταζόμενων. Σε αυτή την ανάλυση ασχολούμαι με τους υποψήφιους των Γενικών Λυκείων που αποτελούν και τη συντριπτική πλειοψηφία των συμμετεχόντων. Με μία πρώτη ματιά παρατηρώ μία αντιστροφή των αποτελεσμάτων σε σύγκριση με τη βάση εισαγωγής. Δηλαδή, στις σχολές με την σχετικά υψηλότερη βάση παρέχονται λιγότερες θέσεις, ενώ οι περισσότερες θέσεις διατίθενται στις σχολές χαμηλότερης βάσης.
 
-```{r Available Admission Seats, fig.showtext=T, height = 5, dpi = 300, warning=F}
+```{r Available Admission Seats}
 #| label: theseis-eisagogis-plot
 #| fig-cap: "Διαθέσιμες θέσεις σχολών Στατιστικής (2013 - 2022)"
 
-title_text = glue("<b>Θέσεις εισαγωγής σε τμήματα Στατιστικής (ΓΛ90)</b>")
-subtitle_text = glue("Oι θέσεις για όσους θέλουν να φοιτήσουν στο τμήμα **<span style='color:#7cae00;'>Στατιστικής του ΟΠΑ</span>** φαίνεται να είναι αρκετά περιορισμένες για τους <br> υποψήφιους των Γενικών Λυκείων προσφέροντας λίγες παραπάνω από 100. Τα τμήματα **<span style='color:#f8766d;'>Αιγαίου</span>** και **<span style='color:#00bfc4;'>Πειραιά</span>** τουλάχιστον <br> τα τελευταία χρόνια ταυτίζονται ως προς τους πόσους θα δεχτούν (από τη κατηγορία ΓΛ90) με το τμήμα του Πειραιά να μειώνει <br> σημαντικά τους εισακτέους του, σε σύγκριση με το 2013. Τέλος, το νεοσυσταθέν τμήμα της **<span style='color:#c77cff;'>Δυτικής Μακεδονίας</span>** ανακοινώνει <br>σημαντικά περισσότερες θέσεις και με μεγάλες αποκλίσεις από έτος σε έτος που μπορεί να οφείλεται σε μη πλήρωση αυτών από<br> προηγούμενες χρονιές.")
 
-caption_text = glue("<b> Πηγή:</b> Βάσεις Πανελληνίων<br><span style='font-family:fb;'  >&#xf09b;</span> <b>stesiam</b>, 2024")
+title_text = "<b>Θέσεις εισαγωγής σε τμήματα Στατιστικής (ΓΛ90)</b>"
+subtitle_text = "Oι θέσεις για όσους θέλουν να φοιτήσουν στο τμήμα <b>Στατιστικής του ΟΠΑ</b> φαίνεται να είναι αρκετά περιορισμένες για τους υποψήφιους των Γενικών Λυκείων προσφέροντας λίγες παραπάνω από 100. Τα τμήματα <b>Αιγαίου</b> και <b>Πειραιά</b> τουλάχιστον τα τελευταία χρόνια ταυτίζονται ως προς τους πόσους θα δεχτούν (από τη κατηγορία ΓΛ90) με το τμήμα του Πειραιά να μειώνει σημαντικά τους εισακτέους του, σε σύγκριση με το 2013."
 
-ggplot2::ggplot(data = tmimata_statistikis, aes(x = Year, y = Theseis, color= University)) +
-  geom_line() +
-  geom_point(size = 8) +
-  geom_richtext(aes(x = Year, y = Theseis, label = Theseis),
-                color = "white", size = 3.2, fontface = "bold",
-                fill = NA, label.color = NA) +
-  scale_x_continuous("Έτος", breaks = 2013:2022) +
-  labs(
-    title = title_text,
-    subtitle = subtitle_text,
-    caption = caption_text,
-    x = "Έτος",
-    y = "Διαθέσιμες θέσεις",
-    color = "Πανεπιστήμιο"
-  ) +
-  theme_classic() + 
-   theme(
-     plot.title = element_markdown(family = "clim", size = 15),
-     plot.subtitle = element_markdown(family = "mont", size = 10, lineheight = 0.7),
-     plot.caption = element_markdown(family = "mont", size = 10, lineheight = 1.2),
-     axis.title = element_markdown(family = "mont", size = 12),
-     legend.position = "none"
-)
+caption_text = "<b> Πηγή:</b> Βάσεις Πανελληνίων<br><span style='font-family:fb;'  >&#xf09b;</span> <b>stesiam</b>, 2024"
+
+
+hchart(tmimata_statistikis, "line", hcaes(x = Year, y = Theseis, group = University)) |>
+  hc_title(
+    text = title_text,
+    align = "left") |>
+  hc_xAxis(title = "Έτος") |>
+  hc_yAxis(title = "Θέσεις εισαγωγής") |>
+  hc_subtitle(text = subtitle_text, align = "left")
 ```
 
 Βέβαια, η παροχή των θέσεων δεν συνεπάγεται πάντοτε και πλήρωση αυτών. Πολλές από αυτές μπορεί να μείνουν αδιάθετες λόγω χαμηλής ζήτησης. Αυτό το φαινόμενο παρατηρείται σε σχολές εκτός των αστικών κέντρων. Τα τελευταία χρόνια υπάρχει και ένας επιπρόσθετος λόγος μιας και έχει θεσμοθετηθεί η ελάχιστη βάση εισαγωγής (ΕΒΕ), η οποία αποτρέπει την βάση μιας σχολής να πέσει κάτω από έναν συγκεκριμένο βαθμό (π.χ. κάτω από 7 ή 13) και για αυτό παρατηρείται στο πρώτο διάγραμμα των βάσεων μία απότομη αύξηση στις σχολές του Αιγαίου και της Δυτικής Μακεδονίας. από την εφαρμογή της να δούμε και άλλες αδιάθετες θέσεις. Έτσι, ο αριθμός των εισακτέων μπορεί πλέον να διαφέρει σημαντικά όχι απλώς μεταξύ τμημάτων εντός και μεγάλων αστικών κέντρων (π.χ. Πανεπιστήμιο Αιγαίου, Πανεπιστήμιο Δυτικής Μακεδονίας - Γρεβενά), αλλά και ως προς τον διαθέσιμο αριθμό εισακτέων και των εγγεγραμμένων φοιτητών.
@@ -190,73 +147,44 @@ ggplot2::ggplot(data = tmimata_statistikis, aes(x = Year, y = Theseis, color= Un
 Το UniPi2011 αναφέρεται στο πρόγραμμα σπουδών του τμήματος Στατιστικής του Πειραιά που ίσχυε για τους φοιτητές που μπήκαν στο τμήμα από το 2011 μέχρι το 2016. Οι εισακτέοι του τμήματος από το 2017 ακολουθούν το νέο πρόγραμμα σπουδών του 2017 (UniPI2017)
 :::
 
-
-```{r, collapse=T}
+```{r Data, echo = FALSE}
 degree_requirements = data.frame(
   "University" = c("AUEB", "UniPi2011", "UniPi2017", "Aegean", "UoWM"),
   "Courses" = c(32, 47, 40, 34, 48),
   "Comp" = c(14, 31, 19, 18, 41),
   "Elective" = c(18, 16, 21, 16, 7),
-  "Ptixiaki" = c("Yes", "No", "No", "Yes", "No")
-)
+  "Ptixiaki" = c("Yes", "No", "No", "Yes", "No")) |>
+dplyr::arrange(-Courses) |>
+mutate(Electivepct = round((Elective/Courses)*100, digits = 1))
 ```
 
-```{r degree_reqs_plot, fig.showtext=T, height = 5, dpi = 300, warning=F}
-caption_text = glue("<b> Πηγή:</b> Οδηγοί σπουδών (2022) τμημάτων Στατιστικής <br><span style='font-family:fb;'  >&#xf09b;</span> <b>stesiam</b>, 2024")
-
-ggplot(data = degree_requirements) +
-  geom_col(aes(x = reorder(University, - Courses), y = Courses)) +
-    geom_text(aes(x = reorder(University, - Courses), y = Courses + 2 , label = Courses)) +
-  labs(
-    title = "<b>Προϋποθέσεις λήψης πτυχίου</b>",
-    subtitle = "Κάθε τμήμα έχει αρκετά διαφορετικούς κανόνες για να θεωρήσει κάποιος ως πτυχιούχο. Παρατηρούμε μεγάλες διαφορές <br> ανάμεσα στα τμήματα με το τμήμα Στατιστικής της Δυτικής Μακεδονίας να έχει την μεγαλύτερη απαίτηση όσον <br> αφορά τον αριθμό μαθημάτων. Από την άλλη μερια'",
-    caption = caption_text,
-    x = "Τμήμα",
-    y = "Μαθήματα για λήψη πτυχίου"
-  ) +
-  scale_y_continuous(expand = c(0, 0), limits = c(0, 55)) + 
-  theme_classic() +
-    theme(
-     plot.title = element_markdown(family = "clim", size = 15),
-     plot.subtitle = element_markdown(family = "mont", size = 10, lineheight = 0.7),
-     plot.caption = element_markdown(family = "mont", size = 10, lineheight = 1.2),
-     axis.title = element_markdown(family = "mont", size = 12)
-)
+```{r Courses to Graduate Graph, collapse=T}
+highchart() %>%
+  hc_chart(type = "bar") %>%
+  hc_title(text = "Δομή μαθημάτων τμημάτων Στατιστικής") %>%
+  hc_subtitle(text = "Ο αριθμός των μαθημάτων που απαιτούνται για την απόκτηση προπτυχιακού τίτλου σπουδών από τα δημόσια τμήματα Στατιστικής της χώρας μας. Αναλύεται και η σύνθεση των προγραμμάτων με βάση την ευελιξία προσαρμογής του προγράμματος σπουδών (αριθμός επιλεγόμενων ως ποσοστό των υποχρεωτικών).")  %>%
+  hc_caption(text = "stesiam, 2025") %>%
+  hc_xAxis(categories = degree_requirements$University) %>%
+  hc_yAxis(title = list(text = "Μαθήματα για πτυχίο")) %>%
+  hc_plotOptions(series = list(stacking = "normal")) %>%
+  hc_add_series(name = "Επιλεγόμενα", data = degree_requirements$Elective, stack = "courses") %>%
+  hc_add_series(name = "Υποχρεωτικά", data = degree_requirements$Comp, stack = "courses")
 ```
+
 
 
 ## Επιλεγόμενα μαθήματα
 
 Παραπάνω είδαμε σε πόσα μαθήματα θα πρέπει να εξεταστεί ένας σπουδαστής του αντίστοιχου τμήματος για να πάρει πτυχίο. Πόση ελευθερία υπάρχει σε κάθε τμήμα προκειμένου ο ίδιος ο φοιτητής να προσαρμόσει τις σπουδές του στις προτιμήσεις του και τα προσωπικά του ερευνητικά ενδιαφέροντα; Αυτό προσπάθησα να μελετήσω με την προσθήκη της μεταβλητής των ελεύθερων μαθημάτων και του ποσοστού που αποτελούν αυτά ως προς τα συνολικά μαθήματα.
 
-```{r electives_plot, fig.showtext=T, height = 5, dpi = 300, warning=F}
-degree_requirements %>%
-  mutate(pct = Elective/Courses) %>%
-  ggplot() +
-  geom_col(aes(x = reorder(University, - pct), y = pct)) +
-  geom_text(aes(x = reorder(University, - pct), y = pct + 0.03 , label = paste0(round(pct*100, 1), " %"))) +
-  labs(
-    title = "<b>Ποσοστό ελεύθερων επιλογών</b>",
-    subtitle = "Κάθε τμήμα δίνει διαφορετικό ποσοστό ελευθερίας στους σπουδαστές του όσον αφορά τη δομή του προγράμματος και τη <br> παρακολούθηση των μαθημάτων. Άλλα δίνουν περισσότερη ελευθερία στους φοιτητές ώστε να επιλέξουν <br> μαθήματα που τους ενδιαφέρουν και άλλα σε μικρότερο βαθμό.",
-    caption = caption_text,
-    x = "Τμήμα",
-    y = "Ποσοστό ελεύθερων επιλογών"
-  ) +
-  scale_y_continuous(expand = c(0, 0), limits = c(0, 0.6)) + 
-  theme_classic() +
-    theme(
-     plot.title = element_markdown(family = "clim", size = 15),
-     plot.subtitle = element_markdown(family = "mont", size = 10, lineheight = 0.7),
-     plot.caption = element_markdown(family = "mont", size = 10, lineheight = 1.2),
-     axis.title = element_markdown(family = "mont", size = 12),
-)
-```
+
+
 
 
 ## Άλλες πληροφορίες
 
 
-```{r, collapse=TRUE}
+```{r, echo=FALSE}
 others = data.frame(
   Uni = c("AUEB", "UniPi2011","UniPi2017", "Aegean", "UoWM"),
   Diloseis = c("Ναι", "Όχι", "Όχι", "Όχι", "Όχι"),
@@ -309,42 +237,44 @@ reactable::reactable(others,
 
 Τέλος, θα είχε ενδιαφέρον να εξασκήσω τις ικανότητές μου στη δημιουργία χαρτών με την R. Συνήθως χρησιμοποιώ Shapefiles για να έχω μία βάση (στη προκειμένη περίπτωση τα όρια της Ελλάδας), ωστόσο αυτή τη φορά αποφάσισα να χρησιμοποιήσω το πακέτο rnaturalearth. Αξίζει να σημειωθεί ότι απαιτούνται και τα πακέτα rnaturalearthdata και rnaturalhires.
 
-```{r map_statistics_deps, fig.showtext=T, height = 8, dpi = 300, warning=F}
+```{r map_statistics_deps}
 uni_coord = data.frame(
   uni = c("ΠαΠει", "Αιγαίου", "ΟΠΑ", "Δυτικής Μακεδονίας"),
   long = c(23.6529793, 26.5664138,23.7300928, 21.4565181),
   lat = c(37.77, 39.0851185, 38.1940201, 40.1197471),
-  img = c("images/UniPi.png", "images/Aegean.png", "images/AUEB.png","images/UoWM.png")
+  img = c("./posts/studies-in-statistics-greece//images/UniPi.png", "./posts/studies-in-statistics-greece/Aegean.png", "./posts/studies-in-statistics-greece/images/AUEB.png","./posts/studies-in-statistics-greece/images/UoWM.png"),
+  established = c(1938, 1984, 1920, 2003),
+  dpt_est = c(0,0, 1989, 2019)
 )
 
-grc = ne_countries(country = "greece", 
-                   type = "countries", 
-                   scale = 'large',
-                   returnclass = "sf")
-
-
-caption_text = glue("<span style='font-family:fb;'  >&#xf09b;</span> <b>stesiam</b>, 2024")
-
-ggplot() +
-  geom_sf(data = grc) +
-  geom_point(data = uni_coord, aes(x = long, y = lat)) +
-  # geom_image(data = uni_coord, aes(x = long, y = lat, image = img)) +
-  geom_image(data = uni_coord, aes(x = long, y = lat, image = img)) +
-  labs(
-    title = "<b>Τμήματα Στατιστικής στην Ελλάδα</b>",
-    subtitle = "Στην Ελλάδα υπάρχουν συνολικά 4 τμήματα Στατιστικής.",
-    caption = caption_text,
-    x = "",
-    y = ""
-  ) +
-  theme_void() +
-    theme(
-     plot.title = element_markdown(family = "clim", size = 15),
-     plot.subtitle = element_markdown(family = "mont", size = 10, lineheight = 0.7),
-     plot.caption = element_markdown(family = "mont", size = 10),
-     axis.title = element_markdown(family = "mont", size = 12),
-     text = element_text(family = "mont", size = 10)
-)
+# Load Greece Map
+hcmap("countries/gr/gr-all", name = "SA") %>%
+hc_add_series(
+    data = uni_coord,
+    type = "mappoint",  # Scatter points on map
+    hcaes(lon = long, lat = lat, name = uni),
+    name = "Departments",
+    color = "brown4", fill = "none",
+    marker = list(symbol = "circle", radius = 5)
+  ) %>%
+  hc_title(text = "<b>Σχολές Στατιστικής</b>") %>%
+  hc_subtitle(text = "Στην Ελλάδα υπάρχουν συνολικά τέσσερις δημόσιες σχολές στατιστικής προπτυχιακού επιπέδου. Η φοίτηση σε αυτές είναι 4ετούς φοίτησης. Αυτές έχουν έδρα στην Αθήνα, στον Πειραιά, στη Σάμο και στα Γρεβενά") %>%
+  hc_caption(text = "stesiam, 2025") |>
+  hc_tooltip(
+  useHTML = TRUE,  # Enables HTML formatting
+  formatter = JS("
+    function() {
+      return '<div style=\"text-align: center;\">' + 
+               '<b>' + this.point.name + '</b></div>' + 
+               '<br>' +
+               '<img src=\"' + this.point.img + '\" width=\"40\" height=\"20\" style=\"border-radius:10px; margin-top:5px;\" /><br>' +
+               '<b>Uni established:</b> ' + this.point.established + '<br>' + 
+               '<b>Dept. Est.:</b> ' + this.point.dpt_est + '<br>' + 
+               '<b>Students:</b>';
+    }
+  ")
+) %>%
+  hc_add_theme(hc_theme_flat())
 ```
 
 

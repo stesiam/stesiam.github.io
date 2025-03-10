@@ -74,6 +74,7 @@ library(tidymodels)
 # Graphs
 library(ggplot2)
 library(ggtext) # Add support for HTML/CSS on ggplot
+library(highcharter)
 
 # Other R packages
 library(fontawesome)
@@ -207,6 +208,24 @@ plot =  ggplot(data = table, aes(x = fct_reorder(Var1,Freq, .desc = T), fill=Var
   
 return(plot)
 }
+
+univariateQualitativeBarPlot = function(data, column){
+  freq_table = data %>%
+     count({{ column }}, name = "Frequency") %>%
+     arrange(desc(Frequency)) |>
+     rename(Variable = {{column}})
+ 
+  plot =   plot = highchart() %>%
+    hc_chart(type = "bar") %>%  # Change to "column" for vertical bars
+    hc_title(text = "Job Frequency Distribution") %>%
+    hc_xAxis(categories = freq_table$Variable, title = list(text = "Job Category")) %>%
+    hc_yAxis(title = list(text = "Frequency")) %>%
+    hc_series(list(name = "Frequency", data = freq_table$Frequency)) %>%
+    hc_tooltip(pointFormat = "Frequency: {point.y}") %>%
+    hc_legend(enabled = FALSE)
+
+return(plot)
+}
 ```
 
 I will do the same for univariate numeric data. 
@@ -250,14 +269,14 @@ On this dataset there are `r how_many_nas` missing values, in total. So, there i
 #### Job
 
 ```{r Figure : Job, fig.align='center'}
-univariate_qualitative("job", "Job of Respondent")
+univariateQualitativeBarPlot(bank_dataset, job)
 ```
 
 
 ####  Marital status
 
 ```{r Figure : Marital Status, fig.align='center'}
-univariate_qualitative("marital", "Marital Status of the respondent")
+univariateQualitativeBarPlot(bank_dataset, marital)
 ```
 
 
@@ -1227,3 +1246,8 @@ Image by <a href="https://pixabay.com/users/geralt-9301/?utm_source=link-attribu
 
 
 # References {.appendix .unlisted}
+
+
+
+
+
