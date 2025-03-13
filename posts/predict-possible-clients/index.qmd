@@ -209,24 +209,47 @@ plot =  ggplot(data = table, aes(x = fct_reorder(Var1,Freq, .desc = T), fill=Var
 return(plot)
 }
 
-univariateQualitativeBarPlot = function(data, column){
-  freq_table = data %>%
-     count({{ column }}, name = "Frequency") %>%
-     arrange(desc(Frequency)) |>
-     rename(Variable = {{column}})
- 
-  plot =   plot = highchart() %>%
-    hc_chart(type = "bar") %>%  # Change to "column" for vertical bars
-    hc_title(text = "Job Frequency Distribution") %>%
-    hc_xAxis(categories = freq_table$Variable, title = list(text = "Job Category")) %>%
-    hc_yAxis(title = list(text = "Frequency")) %>%
-    hc_series(list(name = "Frequency", data = freq_table$Frequency)) %>%
-    hc_tooltip(pointFormat = "Frequency: {point.y}") %>%
-    hc_legend(enabled = FALSE)
+univariateQualitativePlot <- function(data, column, title, subtitle, chart_type = "bar") {
+  library(dplyr)
+  library(highcharter)
 
-return(plot)
+  # Compute frequency table
+  freq_table <- data %>%
+    count({{ column }}, name = "Frequency") %>%
+    arrange(desc(Frequency)) %>%
+    rename(Variable = {{ column }})
+
+  # Define common chart properties
+  hc <- highchart() %>%
+    hc_title(text = title) %>%
+    hc_subtitle(text = subtitle) %>%
+    hc_tooltip(pointFormat = "{point.name}: {point.y}") %>%
+    hc_legend(enabled = chart_type == "pie")  # Enable legend only for pie chart
+
+  # Choose chart type
+  hc <- if (chart_type == "bar") {
+    hc %>%
+      hc_chart(type = "bar") %>%
+      hc_xAxis(categories = freq_table$Variable, title = list(text = "Job Category")) %>%
+      hc_yAxis(title = list(text = "Frequency")) %>%
+      hc_series(list(name = "Frequency", data = freq_table$Frequency))
+  } else if (chart_type == "pie") {
+    pie_data <- lapply(1:nrow(freq_table), function(i) {
+      list(name = freq_table$Variable[i], y = freq_table$Frequency[i])
+    })
+    
+    hc %>%
+      hc_chart(type = "pie") %>%
+      hc_series(list(name = "Frequency", data = pie_data))
+  } else {
+    stop("Invalid chart type. Use 'bar' or 'pie'.")
+  }
+
+  return(hc)
 }
+
 ```
+
 
 I will do the same for univariate numeric data. 
 
@@ -269,14 +292,18 @@ On this dataset there are `r how_many_nas` missing values, in total. So, there i
 #### Job
 
 ```{r Figure : Job, fig.align='center'}
-univariateQualitativeBarPlot(bank_dataset, job)
+univariateQualitativePlot(bank_dataset, job, 
+                          title = "Sector of employment of the respondent?", 
+                          subtitle = "Number and (%) of total respondents")
 ```
 
 
 ####  Marital status
 
 ```{r Figure : Marital Status, fig.align='center'}
-univariateQualitativeBarPlot(bank_dataset, marital)
+univariateQualitativePlot(bank_dataset, marital, 
+                          title = "What is your marital status?", 
+                          subtitle = "Most of the participants are married.", "pie")
 ```
 
 
@@ -286,26 +313,32 @@ univariateQualitativeBarPlot(bank_dataset, marital)
 #### Education
 
 ```{r Figure : Education, fig.align='center'}
-univariate_qualitative("education", "Educational Backgroung")
+univariateQualitativePlot(bank_dataset, education, title = "Type of your education", subtitle = "")
 ```
 
 #### Default
 
 ```{r Figure : Default, fig.align='center'}
-univariate_qualitative("default", "Has credit in default ?")
+univariateQualitativePlot(bank_dataset, default, 
+                          title = "Has credit in default?", 
+                          subtitle = "(%) of respondents that have failed to meet their payment obligations",                            "pie")
 ```
 
 ####  Housing 
 
 ```{r Figure : Housing, fig.align='center'}
-univariate_qualitative("housing", "Has housing loan?")
+univariateQualitativePlot(bank_dataset, housing, 
+                          title = "Has housing loan?", 
+                          subtitle = "(%) of respondents who have acquired a housing loan",                            "pie")
 ```
 
 
 #### Loan 
 
 ```{r Figure : Loan, fig.align='center'}
-univariate_qualitative("loan", "Has personal loan ?")
+univariateQualitativePlot(bank_dataset, loan, 
+                          title = "Has personal loan?", 
+                          subtitle = "(%) of respondents who have acquired a personal loan",                            "pie")
 ```
 
 
@@ -360,7 +393,11 @@ univariate_qualitative("poutcome", "Outcome of previous approach")
 
 
 ```{r Figure : Output Variable (Deposit Account (Y/N)), fig.align='center'}
-univariate_qualitative("y", "How many people made a deposit account ?")
+univariateQualitativePlot(bank_dataset, y, 
+                          title = "How many people made a deposit account?", 
+                          subtitle = "(%) of respondents who have decided to open a deposit account
+                                      as a result of the current approach",
+                          "pie")
 ```
 
 :::
@@ -372,22 +409,12 @@ univariate_qualitative("y", "How many people made a deposit account ?")
 
 #### Age 
 
-```{r Figure : Age, fig.align='center', fig.height=4}
-ggplot(bank_dataset, aes(x = age )) +
-  geom_bar() +
-  scale_fill_hue(c = 40) +
-  labs(
-    title = "Age Distribution of Respondents",
-    caption = "Bank Marketing Dataset from <b>UCI</b>",
-    x = "Age of Respondent",
-    y = "Observations"
-  ) +
-  theme_classic() + 
-  theme(
-    plot.caption = element_markdown(lineheight = 1.2),
-    plot.title = element_text(hjust = 0.5))
-
-# NOTE : In order to make HTML tags to work I need to specify element on theme command.
+```{r Figure : Age, fig.align='center'}
+hchart(bank_dataset$age) %>%
+    hc_title(text = "Age Distribution") %>%
+    hc_subtitle(text = "") %>%
+    hc_tooltip(pointFormat = "{point.name}: {point.y}") %>%
+    hc_legend(enabled = FALSE)
 ```
 
 
@@ -463,30 +490,59 @@ On the previous section I learned a lot about my dataset. Now, I have to reveal 
 plotjob <- bank_dataset %>%
   group_by(job, y) %>%
   summarize(n = n()) %>% 
-  mutate(pct = n/sum(n),
-         lbl = scales::percent(pct))
+  mutate(pct = round(100*(n/sum(n)), digits = 1),
+         lbl = scales::percent(pct)) %>%
+  arrange(desc(pct))
 
-plot_job = ggplot(plotjob, 
-       aes(x = fct_reorder(job, pct),
-           y = pct,
-           fill = y)) + 
-  geom_bar(stat = "identity",
-           position = "fill") +
-  geom_text(aes(label = lbl), 
-            size = 3, 
-            position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Set2") +
-  labs(y = "Percent", 
-       fill = "Drive Train",
-       x = "Class",
-       title = "Job of Respondent by Interest to Term Deposit") +
-  theme_classic() +
-  theme(legend.position = "none",
-        axis.text.x = element_text(angle = 30, vjust = 0.5),
-        plot.caption = element_markdown(lineheight = 1.2),
-        plot.title = element_text(hjust = 0.5))
+#categories <- unique(plotjob$job)
 
-plot_job
+# series_data <- plotjob %>%
+#     group_by(y) %>%
+#     summarise(series = list(list(name = first(y), data = pct))) %>%
+#     pull(series)
+
+highchart() %>%
+  hc_chart(type = "column") %>%
+  hc_xAxis(categories = plotjob$job) %>%
+  hc_yAxis(
+    min = 0,
+    max = 100,
+    title = list(text = "Percentage"),
+    labels = list(format = "{value}%")
+  ) %>%
+  hc_plotOptions(
+    column = list(
+      stacking = "percent",
+      dataLabels = list(
+        enabled = TRUE,
+        format = "{point.y:.0f}%"
+      )
+    )
+  ) %>%
+  hc_series(
+    list(name = "No", data = plotjob$pct[plotjob$y == "no"], color = "#FF5733"),
+    list(name = "Yes", data = plotjob$pct[plotjob$y == "yes"], color = "#33FF57")
+  ) %>%
+  hc_tooltip(pointFormat = "<b>{series.name}</b>: {point.y}%") %>%
+  hc_title(text = "Job of Respondent by Interest to Term Deposit") %>%
+  hc_subtitle(text = "Students and retirees are the population groups with a proportionally lower interest in term deposits compared to other groups.") %>%
+  hc_responsive(
+    rules = list(
+      list(
+        condition = list(
+          maxWidth = 500 # Hide labels when screen width is ≤500px
+        ),
+        chartOptions = list(
+          plotOptions = list(
+            column = list(
+              dataLabels = list(enabled = FALSE) # Disable labels
+            )
+          )
+        )
+      )
+    )
+)
+
 ```
 
 #### Marital status
