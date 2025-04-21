@@ -75,7 +75,7 @@ library(tidymodels)
 library(ggplot2)
 library(ggtext) # Add support for HTML/CSS on ggplot
 library(highcharter)
-
+library(glue)
 # Other R packages
 library(fontawesome)
 
@@ -345,7 +345,9 @@ univariateQualitativePlot(bank_dataset, loan,
 #### Contact
 
 ```{r Figure : Contact , fig.align='center'}
-univariate_qualitative("contact", "Type of Contact")
+univariateQualitativePlot(bank_dataset, contact, 
+                          title = "Type of Contact", 
+                          subtitle = "Vast majority of apporaches are via cellular phones.", "pie")
 ```
 
 
@@ -387,6 +389,10 @@ perc_month %>%
 
 ```{r Figure : poutcome}
 univariate_qualitative("poutcome", "Outcome of previous approach")
+
+univariateQualitativePlot(bank_dataset, poutcome, 
+                          title = "Which was the outcome of the previous approaches?", 
+                          subtitle = "For every five failed approaches there was one succussful.", "pie")
 ```
 
 #### Deposit 
@@ -410,9 +416,12 @@ univariateQualitativePlot(bank_dataset, y,
 #### Age 
 
 ```{r Figure : Age, fig.align='center'}
+subtitle_text = glue("The meadian age is <b>{median(bank_dataset$age)}</b>.")
+
 hchart(bank_dataset$age) %>%
     hc_title(text = "Age Distribution") %>%
-    hc_subtitle(text = "") %>%
+    hc_subtitle(text = subtitle_text) %>%
+    hc_caption(text = "Bank Marketing Dataset from UCI") %>%
     hc_tooltip(pointFormat = "{point.name}: {point.y}") %>%
     hc_legend(enabled = FALSE)
 ```
@@ -421,19 +430,16 @@ hchart(bank_dataset$age) %>%
 #### Balance
 
 ```{r Figure : Balance, fig.align='center'}
-ggplot(bank_dataset, aes(x=balance)) + 
-  geom_histogram(bins = 20) +
-  scale_fill_hue(c = 40) +
-  labs(
-    title = "Average yearly balance",
-    caption = " Bank Marketing Data Set from <b>UCI</b>",
-    x = "Response",
-    y = "Observations"
-  ) +
-  theme_bw() +
-  theme(legend.position = "none",
-        plot.caption = element_markdown(lineheight = 1.2),
-        plot.title = element_text(hjust = 0.5))
+hchart(bank_dataset$balance) %>%
+    hc_title(text = "Balance Distribution") %>%
+    hc_subtitle(text = glue("The most prevalent group is the one with balance between 0$ and 200$. The median balance is {median(bank_dataset$balance)}")) %>%
+    hc_caption(text = "Bank Marketing Dataset from UCI") %>%
+    hc_tooltip(pointFormat = "{point.name}: {point.y}") %>%
+    hc_legend(enabled = FALSE) %>%
+    hc_xAxis(
+    title = list(text = "Balance in $"),
+      max = 10000
+)
 ```
 
 
@@ -521,7 +527,7 @@ highchart() %>%
   ) %>%
   hc_series(
     list(name = "No", data = plotjob$pct[plotjob$y == "no"], color = "#FF5733"),
-    list(name = "Yes", data = plotjob$pct[plotjob$y == "yes"], color = "#33FF57")
+    list(name = "Yes", data = sort(plotjob$pct[plotjob$y == "yes"]), color = "#33FF57")
   ) %>%
   hc_tooltip(pointFormat = "<b>{series.name}</b>: {point.y}%") %>%
   hc_title(text = "Job of Respondent by Interest to Term Deposit") %>%
@@ -547,219 +553,220 @@ highchart() %>%
 
 #### Marital status
 
-```{r}
-plot_marital1 <- ggplot(bank_dataset, 
-       aes(x = marital, 
-           fill = y)) + 
-       scale_fill_hue(c = 40) +
-       theme_bw() +
-       geom_bar(position = position_dodge(preserve = "single"))
-```
-
 ```{r, warning=FALSE, message=FALSE}
 plotmarital <- bank_dataset %>%
   group_by(marital, y) %>%
   summarize(n = n()) %>% 
   mutate(pct = n/sum(n),
-         lbl = scales::percent(pct))
+         lbl = pct *100 ) |>
+ arrange(y)
 
-plot_marital2 = ggplot(plotmarital, 
-       aes(x = marital,
-           y = pct,
-           fill = y)) + 
-  geom_bar(stat = "identity",
-           position = "fill") +
-  geom_text(aes(label = lbl), 
-            size = 3, 
-            position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Set2") +
-  labs(y = "Percent", 
-       fill = "Drive Train",
-       x = "Class",
-       title = "Marital Status by Interest to Term Deposit") +
-  theme_classic() +
-  theme(legend.position = "none",
-        axis.text.x = element_text(angle = 30, vjust = 0.5),
-        plot.caption = element_markdown(lineheight = 1.2),
-        plot.title = element_text(hjust = 0.5))
-```
-
-```{r}
-gridExtra::grid.arrange(plot_marital1, plot_marital2, nrow =1)
+highchart() %>%
+  hc_chart(type = "column") %>%
+  hc_xAxis(categories = plotmarital$marital) %>%
+  hc_yAxis(
+    min = 0,
+    max = 100,
+    title = list(text = "Percentage"),
+    labels = list(format = "{value}%")
+  ) %>%
+  hc_plotOptions(
+    column = list(
+      stacking = "percent",
+      dataLabels = list(
+        enabled = TRUE,
+        format = "{point.y:.0f}%"
+      )
+    )
+  ) %>%
+  hc_series(
+    list(name = "No", data = plotmarital$lbl[plotmarital$y == "no"], color = "#FF5733"),
+    list(name = "Yes", data = plotmarital$lbl[plotmarital$y == "yes"], color = "#33FF57")
+  ) %>%
+  hc_tooltip(pointFormat = "<b>{series.name}</b>: {point.y:.2f}%") %>%
+  hc_title(text = "Marital Status by Interest to Term Deposit") %>%
+  hc_subtitle(text = "Couples are less interested in comparison to singles / divorced people in term deposit accounts. The increased expenses of a hpusehold may averts people from maintaining a term deposit.") %>%
+  hc_responsive(
+    rules = list(
+      list(
+        condition = list(
+          maxWidth = 500 # Hide labels when screen width is ≤500px
+        ),
+        chartOptions = list(
+          plotOptions = list(
+            column = list(
+              dataLabels = list(enabled = FALSE) # Disable labels
+            )
+          )
+        )
+      )
+    )
+)
 ```
 
 
 #### Education
 
-```{r}
-plot_education1 <- ggplot(bank_dataset, 
-       aes(x = education, 
-           fill = y)) + 
-       scale_fill_hue(c = 40) +
-       theme_bw() +
-       geom_bar(position = position_dodge(preserve = "single"))
-```
-
 ```{r, message=FALSE, warning=FALSE}
-plot_education2 = bank_dataset %>%
+educdata = bank_dataset %>%
   group_by(education, y) %>%
   summarize(n = n()) %>% 
-  mutate(pct = n/sum(n),
-         lbl = scales::percent(pct)) %>%
-    ggplot(aes(x = education,
-           y = pct,
-           fill = y)) + 
-  geom_bar(stat = "identity",
-           position = "fill") +
-  geom_text(aes(label = lbl), 
-            size = 3, 
-            position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Set2") +
-  labs(y = "Percent", 
-       fill = "Drive Train",
-       x = "Class",
-       title = "Educational Background by Interest to Term Deposit") +
-  theme_classic() +
-  theme(legend.position = "none",
-        axis.text.x = element_text(angle = 30, vjust = 0.5),
-        plot.caption = element_markdown(lineheight = 1.2),
-        plot.title = element_text(hjust = 0.5))
+  mutate(pct = n/sum(n)*100) %>%
+  arrange(y)
+
+
+highchart() %>%
+  hc_chart(type = "column") %>%
+  hc_xAxis(categories = educdata$education) %>%
+  hc_yAxis(
+    min = 0,
+    max = 100,
+    title = list(text = "Percentage"),
+    labels = list(format = "{value}%")
+  ) %>%
+  hc_plotOptions(
+    column = list(
+      stacking = "percent",
+      dataLabels = list(
+        enabled = TRUE,
+        format = "{point.y:.0f}%"
+      )
+    )
+  ) %>%
+  hc_series(
+    list(name = "No", data = educdata$pct[educdata$y == "no"], color = "#FF5733"),
+    list(name = "Yes", data = educdata$pct[educdata$y == "yes"], color = "#33FF57")
+  ) %>%
+  hc_tooltip(pointFormat = "<b>{series.name}</b>: {point.y:.2f}%") %>%
+  hc_title(text = "Education Level & Interest to Term Deposit") %>%
+  hc_subtitle(text = "The more educated people tend to be more interested to new bank/finanial products. ") %>%
+  hc_responsive(
+    rules = list(
+      list(
+        condition = list(
+          maxWidth = 500 # Hide labels when screen width is ≤500px
+        ),
+        chartOptions = list(
+          plotOptions = list(
+            column = list(
+              dataLabels = list(enabled = FALSE) # Disable labels
+            )
+          )
+        )
+      )
+    )
+)
 ```
 
-```{r}
-gridExtra::grid.arrange(plot_education1, plot_education2, nrow =1)
-```
-
-
-#### Default
-
-```{r}
-plot_default1 <- ggplot(bank_dataset, 
-       aes(x = default, 
-           fill = y)) + 
-        scale_fill_hue(c = 40) +
-        theme_bw() +
-  geom_bar(position = position_dodge(preserve = "single"))
-```
-
-```{r}
-plot_default2 = bank_dataset %>%
-  group_by(default, y) %>%
-  summarize(n = n()) %>% 
-  mutate(pct = n/sum(n),
-         lbl = scales::percent(pct)) %>%
-    ggplot(aes(x = default,
-           y = pct,
-           fill = y)) + 
-  geom_bar(stat = "identity",
-           position = "fill") +
-  geom_text(aes(label = lbl), 
-            size = 3, 
-            position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Set2") +
-  labs(y = "Percent", 
-       fill = "Drive Train",
-       x = "Class",
-       title = "Has credit in default ?") +
-  theme_classic() +
-  theme(legend.position = "none",
-        axis.text.x = element_text(angle = 30, vjust = 0.5),
-        plot.caption = element_markdown(lineheight = 1.2),
-        plot.title = element_text(hjust = 0.5))
-```
-
-
-
-```{r}
-gridExtra::grid.arrange(plot_default1, plot_default2, nrow =1)
-```
 
 #### Housing
-
-```{r}
-plot_housing1 <- ggplot(bank_dataset, 
-       aes(x = housing, 
-           fill = y)) + 
-       scale_fill_hue(c = 40) +
-       theme_bw() +
-  geom_bar(position = position_dodge(preserve = "single"))
-```
-
 
 ```{r}
 plot_housing2 = bank_dataset %>%
   group_by(housing, y) %>%
   summarize(n = n()) %>% 
-  mutate(pct = n/sum(n),
-         lbl = scales::percent(pct)) %>%
-    ggplot(aes(x = housing,
-           y = pct,
-           fill = y)) + 
-  geom_bar(stat = "identity",
-           position = "fill") +
-  geom_text(aes(label = lbl), 
-            size = 3, 
-            position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Set2") +
-  labs(y = "Percent", 
-       fill = "Drive Train",
-       x = "Class",
-       title = "Has housing loan ?") +
-  theme_classic() +
-  theme(legend.position = "none",
-        axis.text.x = element_text(angle = 30, vjust = 0.5),
-        plot.caption = element_markdown(lineheight = 1.2),
-        plot.title = element_text(hjust = 0.5))
+  mutate(pct = n/sum(n)*100) %>%
+  arrange(y)
+
+
+highchart() %>%
+  hc_chart(type = "column") %>%
+  hc_xAxis(categories = plot_housing2$housing) %>%
+  hc_yAxis(
+    min = 0,
+    max = 100,
+    title = list(text = "Percentage"),
+    labels = list(format = "{value}%")
+  ) %>%
+  hc_plotOptions(
+    column = list(
+      stacking = "percent",
+      dataLabels = list(
+        enabled = TRUE,
+        format = "{point.y:.0f}%"
+      )
+    )
+  ) %>%
+  hc_series(
+    list(name = "No", data = plot_housing2$pct[plot_housing2$y == "no"], color = "#FF5733"),
+    list(name = "Yes", data = plot_housing2$pct[plot_housing2$y == "yes"], color = "#33FF57")
+  ) %>%
+  hc_tooltip(pointFormat = "<b>{series.name}</b>: {point.y:.2f}%") %>%
+  hc_title(text = "Do you have housing loan?") %>%
+  hc_subtitle(text = "People without loans tend to open more willingly deposit accounts.") %>%
+  hc_responsive(
+    rules = list(
+      list(
+        condition = list(
+          maxWidth = 500 # Hide labels when screen width is ≤500px
+        ),
+        chartOptions = list(
+          plotOptions = list(
+            column = list(
+              dataLabels = list(enabled = FALSE) # Disable labels
+            )
+          )
+        )
+      )
+    )
+)
 ```
-
-```{r}
-gridExtra::grid.arrange(plot_housing1, plot_housing2, nrow =1)
-```
-
-
-
 
 #### Loan
 
 ```{r}
-plot_loan1 <- ggplot(bank_dataset, 
-       aes(x = loan, 
-           fill = y)) + 
-      scale_fill_hue(c = 40) +
-      theme_bw() +
-      geom_bar(position = position_dodge(preserve = "single"))
-```
-
-
-```{r}
-plot_loan2 = bank_dataset %>%
+plot_loan = bank_dataset %>%
   group_by(loan, y) %>%
   summarize(n = n()) %>% 
-  mutate(pct = n/sum(n),
-         lbl = scales::percent(pct)) %>%
-    ggplot(aes(x = loan,
-           y = pct,
-           fill = y)) + 
-  geom_bar(stat = "identity",
-           position = "fill") +
-  geom_text(aes(label = lbl), 
-            size = 3, 
-            position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Set2") +
-  labs(y = "Percent", 
-       fill = "Interested",
-       x = "Class",
-       title = "Has personal loan ?") +
-  theme_classic() +
-  theme(legend.position = "none",
-        axis.text.x = element_text(angle = 30, vjust = 0.5),
-        plot.caption = element_markdown(lineheight = 1.2),
-        plot.title = element_text(hjust = 0.5))
+  mutate(pct = n/sum(n)*100) %>%
+  arrange(y)
 ```
 
+
 ```{r}
-gridExtra::grid.arrange(plot_loan1, plot_loan2, nrow =1)
+highchart() %>%
+  hc_chart(type = "column") %>%
+  hc_xAxis(categories = plot_loan$loan) %>%
+  hc_yAxis(
+    min = 0,
+    max = 100,
+    title = list(text = "Percentage"),
+    labels = list(format = "{value}%")
+  ) %>%
+  hc_plotOptions(
+    column = list(
+      stacking = "percent",
+      dataLabels = list(
+        enabled = TRUE,
+        format = "{point.y:.0f}%"
+      )
+    )
+  ) %>%
+  hc_series(
+    list(name = "No", data = plot_loan$pct[plot_loan$y == "no"], color = "#FF5733"),
+    list(name = "Yes", data = plot_loan$pct[plot_loan$y == "yes"], color = "#33FF57")
+  ) %>%
+  hc_tooltip(pointFormat = "<b>{series.name}</b>: {point.y:.2f}%") %>%
+  hc_title(text = "Do you have personal loan?") %>%
+  hc_subtitle(text = "People without loans tend to open more willingly deposit accounts.") %>%
+  hc_responsive(
+    rules = list(
+      list(
+        condition = list(
+          maxWidth = 500 # Hide labels when screen width is ≤500px
+        ),
+        chartOptions = list(
+          plotOptions = list(
+            column = list(
+              dataLabels = list(enabled = FALSE) # Disable labels
+            )
+          )
+        )
+      )
+    )
+)
 ```
+
 
 #### Contact
 
@@ -878,28 +885,26 @@ gridExtra::grid.arrange(plot_poutcome1, plot_poutcome2, nrow =1)
 #### Age 
 
 ```{r}
-bank_dataset %>%
-ggplot(aes(x=y, y=age, fill=y)) +
-  geom_boxplot() +
-  scale_fill_hue(c = 40) +
-  theme_classic() +
-  labs(
-     title = "Age & Desire of Bank Deposit Account" 
-  )
+dat <- data_to_boxplot(bank_dataset, age, y)
+highchart() %>%
+    hc_xAxis(type = "category") %>%
+    hc_add_series_list(dat) %>%
+    hc_title(text = "Age & Desire of Bank Deposit Account") %>%
+    hc_subtitle(text = "There are not significant demographic differences concerning people that choose to open term deposit accounts.")  %>%
+    hc_legend(enabled = FALSE)
 ```
 
 #### Balance
 
 ```{r, warning=FALSE, message=FALSE}
+dat <- data_to_boxplot(bank_dataset, balance, y)
 
-plot1 = bank_dataset[bank_dataset$balance < 15000, ] %>%
-ggplot(aes(x = balance, 
-           fill = y)) + 
-        scale_fill_hue(c = 40) +
-        theme_bw() +
-  geom_histogram(bins=15)
-
-plot1
+highchart() %>%
+    hc_xAxis(type = "category") %>%
+    hc_add_series_list(dat) %>%
+    hc_title(text = "Balance & Desire of Bank Deposit Account") %>%
+    hc_subtitle(text = "")  %>%
+    hc_legend(enabled = FALSE)
 ```
 
 
@@ -953,6 +958,14 @@ bank_test <- bank_dataset_split %>%
                     testing()
 ```
 
+<center>
+```{mermaid, echo = FALSE}
+graph TD;
+  A(Data) --> B(Train Dataset <br> 3390 obs.)
+  A(Data) --> C(Test  Dataset <br> 1131 obs.)
+```
+</center>
+
 
 
 ::: {.panel-tabset}
@@ -993,7 +1006,6 @@ bank_recipe <- recipes::recipe(y~.,
   step_dummy(all_nominal(), -all_outcomes()) %>% prep() %>%
   step_smote(y) %>%
   prep()
-
 ```
 
 Let's preview our dataset after applying our recipes :
@@ -1268,7 +1280,7 @@ pr = last_xgboost_fit %>% collect_predictions()
 Now, I will select the predicted value and the result and I will paste them on my test data. 
 
 ```{r}
-pr = pr %>% select(.pred_class, y) 
+pr = pr %>% select(.pred_class, y) %>% rename(prediction = .pred_class) 
 
 final = cbind(pr, bank_test)
 ```
@@ -1281,14 +1293,31 @@ final %>%
   kbl(toprule = T,align = 'c',booktabs = T)  %>%
   kable_styling(full_width = F, position = "center", html_font = "Cambria") 
 
-final %>% select(.pred_class, ID) %>%
-  filter(.pred_class == "yes") %>% 
+interested_clients = final %>% select(ID, prediction) %>%
+  filter(prediction == "yes") %>% 
   kbl(toprule = T,align = 'c',booktabs = T)  %>%
   kable_styling(full_width = F, position = "center", html_font = "Cambria") %>%
   scroll_box(width = "100%", height = "200px")
+
+interested_clients
 ```
 
 So, from 1131 possible clients, I finally got 75 that are actually interested. So, I reduced the required phone calls by 93 \% (and therefore the working hours allocated to this task). But at what cost ? 
+
+
+```{r}
+ds <- final %>%
+  select(prediction) %>%
+  dplyr::count(prediction) %>%
+  dplyr::mutate(pct = round(n/sum(n) * 100, digits = 2))
+
+ds %>%
+  hchart("pie", hcaes(x = prediction, y = pct))%>%
+    hc_title(text = "Expected number of clients") %>%
+    hc_subtitle(text = glue("From {nrow(final)}, only {nrow(interested_clients)} are interested to open a deposit account.")) %>%
+    hc_caption("stesiam, 2023")
+```
+
 
 # Hypothesis
 
@@ -1302,8 +1331,4 @@ Image by <a href="https://pixabay.com/users/geralt-9301/?utm_source=link-attribu
 
 
 # References {.appendix .unlisted}
-
-
-
-
 

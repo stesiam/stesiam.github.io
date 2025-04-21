@@ -71,6 +71,7 @@ library(highcharter)
 library(ggplot2)
 library(ggpol) 
 library(ggtext)
+library(glue)
 
 # Other settings
 options(digits=2) # print only 2 decimals
@@ -536,20 +537,37 @@ Yourself). On the following function we can see that I set 3 variables :
     `times_elected_min` can adapt the specific characteristics of each party.
 
 ```{r}
-party_plot <- function(party, party_color, times_elected_min){
-  party_df = parliament %>% filter(Party == party) %>%
-  select(FullName) %>% table() %>% sort(decreasing = TRUE) %>% as.data.frame() %>% filter(Freq >= times_elected_min) %>% `colnames<-`(c("Full_Name", "Freq"))
+party_plot <- function(party, party_color, times_elected_min) {
   
-ggplot(data = party_df, aes(x = reorder(Full_Name , Freq), y = Freq))+
-  geom_bar(stat = "identity",width = 0.88, fill = party_color) +
-  geom_text(aes(label=Freq), hjust = 1.5, vjust=0.5, color="white", size=4)+
-  theme_minimal() +
-   labs(title = "Most elected MPs",
-       subtitle = "",
-       caption = "Source: stesiam | stesiam.github.io, 2022",
-       x = "Times elected",
-       y = "Members of Parliament") +
-  coord_flip()
+  party_df <- parliament %>%
+    dplyr::filter(Party == party) %>%
+    count(FullName) %>%
+    arrange(-n) %>%
+    as.data.frame() %>%
+    dplyr::filter(n >= times_elected_min)
+  
+
+highchart() %>%
+    hc_chart(type = "bar", inverted = TRUE) %>%
+    hc_title(text = glue("Most elected MPs of {party}")) %>%
+    hc_subtitle(text = glue()) %>%
+    hc_xAxis(
+      categories = party_df$FullName,
+      title = list(text = "Members of Parliament"),
+      labels = list(
+        style = list(fontSize = "11px", whiteSpace = "normal"),
+        useHTML = TRUE
+      )
+    ) %>%
+    hc_yAxis(title = list(text = "Times elected")) %>%
+    hc_add_series(
+      name = "Times elected",
+      data = party_df$n,
+      color = party_color
+    ) %>%
+    hc_plotOptions(bar = list(dataLabels = list(enabled = TRUE))) %>%
+    hc_tooltip(pointFormat = "<b>{point.category}</b>: {point.y} times elected") %>%
+    hc_legend(enabled = FALSE)  # Hides the legend
 }
 ```
 

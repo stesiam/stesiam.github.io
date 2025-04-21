@@ -33,36 +33,6 @@ editor_options:
     wrap: 80
 ---
 
-# Table of Contents {.unlisted}
-
-<hr>
-
-1. [Introduction](#introduction) <br>
-2. [Prerequisites](#prerequisites) <br>
-&nbsp; 2.1 [Import Libraries](#import-libraries) <br>
-&nbsp; 2.2 [Import Dataset](#import-dataset) <br>
-&nbsp; 2.3 [Preview Datasset](#preview-dataset) <br>
-&nbsp; 2.4 [Dataset Structure](#dataset-structure) <br>
-&nbsp; 2.5 [Time Series Preprocessing](#time-series-preprocessing) <br>
-3. [Missing Values](#missing-values) <br>
-4. [Descriptive Statistics](#descriptive-statistics) <br>
-5. [Examine Stationarity](#examine-stationarity) <br>
-&nbsp; 5.1 [Definition of stationarity](#definition-of-stationarity) <br>
-&nbsp; 5.2 [Examine Stationarity Graphically](#examine-stationarity-graphically) <br>
-&nbsp; 5.3 [Examine Stationarity with Statistical Tests](#examine-stationarity-with-statistical-tests) <br>
-&nbsp; &nbsp; 5.3.1 [ADF test](#adf-test) <br>
-&nbsp; &nbsp; 5.3.2 [PP test](#pp-test) <br>
-&nbsp; &nbsp; 5.3.3 [KPSS test](#kpss-test) <br>
-6. [Identify Model](#identify-model) <br>
-7. [Build Time Series Model](#build-time-series-model) <br>
-8. [Compare Models](#compare-models) <br>
-9. [Forecast Future Unemployment](#forecast-future-unemployment) <br>
-&nbsp; 9.1 [ARIMA (0,2,1) forecasts](#arima-021-forecasts) <br>
-&nbsp; 9.2 [ARIMA (9,2,1) forecasts](#arima-921-forecastst) <br>
-10. [Results](#results)
-
-<hr>
-
 # Introduction
 
 [...editing...]
@@ -104,6 +74,7 @@ library(flextable)
 # Graphs
 library(ggplot2)
 library(ggtext) # Add support for HTML/CSS on ggplot
+library(highcharter)
 
 # Time Series 
 
@@ -144,7 +115,7 @@ kbl(preview_dataset,
     booktabs = T,
     centering = T,
     valign = T) %>%
-  kable_paper() %>%
+  kable_material() %>%
   scroll_box(width = "600px", height = "250px")
 ```
 
@@ -236,15 +207,35 @@ Finally, it is evident that in the case of Greece the changes are more intense t
 All of the above can be summarized by the following graph:
 
 ```{r}
-grc_unemployment <- unemployment %>% filter(LOCATION == "GRC")
+g = unemployment %>%
+  mutate(Year = year(TIME)) %>%
+  group_by(LOCATION, Year) %>%
+  summarise(mean_unemployment = mean(Value))
 
-unemployment %>%
-  ggplot(aes(x= TIME, y=Value, color = LOCATION)) +
-  geom_line() + 
-  geom_vline(aes(xintercept = as.POSIXct(as.Date("2010-11-03"))), color = "#000000", size = 1, linetype = "dashed")+
-  scale_color_manual(values=c('black', 'dodgerblue2', 'orange')) +
-  scale_x_date(date_labels = "%m-%Y") +
-  theme_minimal()
+highchart() %>%
+    hc_chart(type = "line") %>%
+    hc_title(text = "Unemployment Rates") %>%
+    hc_xAxis(title = list(text = "Year")) %>%
+    hc_yAxis(title = list(text = "Value")) %>%
+    hc_tooltip(shared = TRUE, valueDecimals = 2, valueSuffix = " %") %>%
+    hc_add_series(
+        data = g,
+        type = "line",
+        hcaes(x = Year, y = mean_unemployment, group = LOCATION)
+    ) %>%
+  hc_plotOptions(
+  series = list(
+    dataLabels = list(
+      enabled = TRUE,
+      formatter = JS("function() {
+        if (this.point.index === this.series.data.length - 1) {
+          return this.y.toFixed(2) + ' %';
+        }
+        return null;
+      }")
+    )
+  )
+)
 ```
 
 
@@ -255,9 +246,9 @@ unemployment %>%
 
 An important concept in studying time series is stationarity. A time series is called stationary [@appliedtimeseriespenn] if: \br
 
-1.  $E(X_t) = \text{constant}$ \br
-2.  $Var(X_t) = \text{constant}$ \br
-3.  $Cov(X_t, X_s) = \text{constant}$
+1.  $E(X_t):\text{constant}$ \br
+2.  $Var(X_t): \text{constant}$ \br
+3.  $Cov(X_t, X_s): \text{constant}$
 
 ## Examine Stationarity Graphically
 
@@ -269,7 +260,30 @@ It is apparent that there is a big variation on the values of unemployment. This
 
 
 ```{r}
-plot(grc_unemployment$Value,type = "l")
+highchart() %>%
+    hc_chart(type = "line") %>%
+    hc_title(text = "Unemployment Rates") %>%
+    hc_xAxis(title = list(text = "Year")) %>%
+    hc_yAxis(title = list(text = "Value")) %>%
+    hc_tooltip(shared = TRUE, valueDecimals = 2, valueSuffix = " %") %>%
+    hc_add_series(
+        data = g,
+        type = "line",
+        hcaes(x = Year, y = mean_unemployment, group = LOCATION)
+    ) %>%
+  hc_plotOptions(
+  series = list(
+    dataLabels = list(
+      enabled = TRUE,
+      formatter = JS("function() {
+        if (this.point.index === this.series.data.length - 1) {
+          return this.y.toFixed(2) + ' %';
+        }
+        return null;
+      }")
+    )
+  )
+)
 ```
 
 
@@ -278,9 +292,18 @@ plot(grc_unemployment$Value,type = "l")
 Here we can see a big improvement in comparison with original data. I have some concerns about points close to 150 (mildly upwards trend) and 250 (outlier). 
 
 ```{r}
+grc_unemployment = unemployment %>% dplyr::filter(LOCATION == "GRC")
 grc_unemployment_diff1 <- diff(grc_unemployment$Value, differences = 1)
 
-plot(grc_unemployment_diff1,type = "l")
+highchart() %>%
+    hc_chart(type = "line") %>%
+    hc_title(text = "Unemployment Rates") %>%
+    hc_xAxis(title = list(text = "Year")) %>%
+    hc_yAxis(title = list(text = "Value")) %>%
+    hc_tooltip(shared = TRUE, valueDecimals = 2, valueSuffix = " %") %>%
+    hc_add_series(
+        data = grc_unemployment_diff1
+    )
 ```
 
 
@@ -333,24 +356,19 @@ summary_stationarity_results  %>% kbl() %>% kable_styling()
 ### ADF test
 
 
-
-
 $$
-\begin{array}{l}
-H_0 : \text{Time series is not stationary} \\
-H_1 : \text{Alternatively} 
-\end{array}
-\equiv
-\begin{array}{l}
-H_0 : \text{There is a unit root} \\
-H_1 : \text{Alternatively} 
-\end{array}
+H_0 : \text{The time series has a unit root} \\
+H_1 : \text{The time series has not a unit root} 
 $$
 
 
 
 ```{r}
-adf.test(grc_unemployment$Value) %>% as_flextable()
+adf_results = adf.test(grc_unemployment$Value)
+
+data = data.frame(c("Dickey-Fuller", adf_results$statistic), c("lag order", 6), c("p-value", adf_results$p.value)) %>% as.data.frame()
+
+
 ```
 
 Συνεπώς, είναι προφανές από τα αποτελέσματα του
@@ -358,7 +376,7 @@ adf.test(grc_unemployment$Value) %>% as_flextable()
 
 
 ```{r}
-adf.test(grc_unemployment_diff1) %>% as_flextable()
+adf.test(grc_unemployment_diff1)
 ```
 
 And finally the results for the second differences are :

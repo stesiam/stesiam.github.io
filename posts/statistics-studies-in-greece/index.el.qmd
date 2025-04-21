@@ -137,6 +137,33 @@ hchart(tmimata_statistikis, "line", hcaes(x = Year, y = Theseis, group = Univers
 
 Βέβαια, η παροχή των θέσεων δεν συνεπάγεται πάντοτε και πλήρωση αυτών. Πολλές από αυτές μπορεί να μείνουν αδιάθετες λόγω χαμηλής ζήτησης. Αυτό το φαινόμενο παρατηρείται σε σχολές εκτός των αστικών κέντρων. Τα τελευταία χρόνια υπάρχει και ένας επιπρόσθετος λόγος μιας και έχει θεσμοθετηθεί η ελάχιστη βάση εισαγωγής (ΕΒΕ), η οποία αποτρέπει την βάση μιας σχολής να πέσει κάτω από έναν συγκεκριμένο βαθμό (π.χ. κάτω από 7 ή 13) και για αυτό παρατηρείται στο πρώτο διάγραμμα των βάσεων μία απότομη αύξηση στις σχολές του Αιγαίου και της Δυτικής Μακεδονίας. από την εφαρμογή της να δούμε και άλλες αδιάθετες θέσεις. Έτσι, ο αριθμός των εισακτέων μπορεί πλέον να διαφέρει σημαντικά όχι απλώς μεταξύ τμημάτων εντός και μεγάλων αστικών κέντρων (π.χ. Πανεπιστήμιο Αιγαίου, Πανεπιστήμιο Δυτικής Μακεδονίας - Γρεβενά), αλλά και ως προς τον διαθέσιμο αριθμό εισακτέων και των εγγεγραμμένων φοιτητών.
 
+```{r Proportion of Seats}
+years <- unique(tmimata_statistikis$Year)
+
+# Step 3: Prepare series data
+series_data <- tmimata_statistikis %>%
+  group_by(University) %>%
+  summarise(data = list(Theseis)) %>%
+  mutate(name = University) %>%
+  select(name, data) %>%
+  list_parse()
+
+
+highchart() %>%
+    hc_chart(type = "area") %>%
+    hc_title(text = "Historic and Estimated Worldwide Population Distribution by Region") %>%
+    hc_subtitle(text = "Using tidy data (long format)") %>%
+    hc_xAxis(categories = years, tickmarkPlacement = "on", title = list(enabled = FALSE)) %>%
+    hc_yAxis(title = list(text = "Percent"), labels = list(format = "{value}%")) %>%
+    hc_tooltip(shared = TRUE, pointFormat = "<span style='color:{series.color}'>{series.name}</span>: <b>{point.percentage:.1f}%</b> ({point.y:,.0f})<br/>") %>%
+    hc_plotOptions(area = list(
+        stacking = "percent",
+        lineColor = "#ffffff",
+        lineWidth = 1,
+        marker = list(lineWidth = 1, lineColor = "#ffffff")
+    )) %>%
+    hc_add_series_list(series_data)
+```
 
 
 ## Προϋποθέσεις για πτυχίο
@@ -153,7 +180,12 @@ degree_requirements = data.frame(
   "Courses" = c(32, 47, 40, 34, 48),
   "Comp" = c(14, 31, 19, 18, 41),
   "Elective" = c(18, 16, 21, 16, 7),
-  "Ptixiaki" = c("Yes", "No", "No", "Yes", "No")) |>
+  "Ptixiaki" = c("Yes", "No", "No", "Yes", "No"),
+  "Images" = c("<img src='https://upload.wikimedia.org/wikipedia/el/thumb/2/2c/AUEBEMBLEM.png/250px-AUEBEMBLEM.png' height='20'/>",
+               "<img src='https://upload.wikimedia.org/wikipedia/en/7/7e/UNIPI.jpg' height='20'/>",
+               "<img src='https://upload.wikimedia.org/wikipedia/en/7/7e/UNIPI.jpg' height='20'/>",
+               "<img src='https://upload.wikimedia.org/wikipedia/el/thumb/7/7d/%CE%A0%CE%B1%CE%BD%CE%B5%CF%80%CE%B9%CF%83%CF%84%CE%AE%CE%BC%CE%B9%CE%BF_%CE%91%CE%B9%CE%B3%CE%B1%CE%AF%CE%BF%CF%85_%28logo%29.svg/250px-%CE%A0%CE%B1%CE%BD%CE%B5%CF%80%CE%B9%CF%83%CF%84%CE%AE%CE%BC%CE%B9%CE%BF_%CE%91%CE%B9%CE%B3%CE%B1%CE%AF%CE%BF%CF%85_%28logo%29.svg.png' height='20'/>",
+              "<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/UoWM.png/120px-UoWM.png' height='20'/>")) |>
 dplyr::arrange(-Courses) |>
 mutate(Electivepct = round((Elective/Courses)*100, digits = 1))
 ```
@@ -164,7 +196,11 @@ highchart() %>%
   hc_title(text = "Δομή μαθημάτων τμημάτων Στατιστικής") %>%
   hc_subtitle(text = "Ο αριθμός των μαθημάτων που απαιτούνται για την απόκτηση προπτυχιακού τίτλου σπουδών από τα δημόσια τμήματα Στατιστικής της χώρας μας. Αναλύεται και η σύνθεση των προγραμμάτων με βάση την ευελιξία προσαρμογής του προγράμματος σπουδών (αριθμός επιλεγόμενων ως ποσοστό των υποχρεωτικών).")  %>%
   hc_caption(text = "stesiam, 2025") %>%
-  hc_xAxis(categories = degree_requirements$University) %>%
+  hc_xAxis(
+       categories = degree_requirements$Images,
+         labels = list(useHTML = TRUE),
+         title = list(text = "Fruits")
+   ) %>%
   hc_yAxis(title = list(text = "Μαθήματα για πτυχίο")) %>%
   hc_plotOptions(series = list(stacking = "normal")) %>%
   hc_add_series(name = "Επιλεγόμενα", data = degree_requirements$Elective, stack = "courses") %>%
@@ -173,10 +209,31 @@ highchart() %>%
 
 
 
+
+
 ## Επιλεγόμενα μαθήματα
 
 Παραπάνω είδαμε σε πόσα μαθήματα θα πρέπει να εξεταστεί ένας σπουδαστής του αντίστοιχου τμήματος για να πάρει πτυχίο. Πόση ελευθερία υπάρχει σε κάθε τμήμα προκειμένου ο ίδιος ο φοιτητής να προσαρμόσει τις σπουδές του στις προτιμήσεις του και τα προσωπικά του ερευνητικά ενδιαφέροντα; Αυτό προσπάθησα να μελετήσω με την προσθήκη της μεταβλητής των ελεύθερων μαθημάτων και του ποσοστού που αποτελούν αυτά ως προς τα συνολικά μαθήματα.
 
+
+```{r Electives Percentage, collapse=T}
+degree_requirements = degree_requirements |>
+  arrange(-Electivepct)
+
+highchart() %>%
+  hc_chart(type = "bar") %>%
+  hc_title(text = "Ευελιξία προγραμμάτων σπουδών") %>%
+  hc_subtitle(text = "Ο αριθμός των επιλεγόμενων μαθημάτων ως ποσοστό των συνολικών μαθημάτων που απαιτούνται για το πτυχίο.")  %>%
+  hc_caption(text = "stesiam, 2025") %>%
+ hc_xAxis(
+       categories = degree_requirements$Images,
+         labels = list(useHTML = TRUE),
+         title = list(text = "")
+   ) %>%
+  hc_yAxis(title = list(text = "Ποσοστό επιλεγόμενων/συνολικών μαθημάτων")) %>%
+  hc_plotOptions(series = list(stacking = "normal")) %>%
+  hc_add_series(name = "Επιλεγόμενα", data = degree_requirements$Electivepct, stack = "courses")
+```
 
 
 
