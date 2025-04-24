@@ -1,6 +1,7 @@
 ---
 title: "Forecasting Unemployment in Greece"
 author: "stesiam"
+lang: en
 description: |
   Make a prediction about the future value of Greece's unemployment using ARIMA model.
 freeze: false
@@ -33,28 +34,26 @@ editor_options:
     wrap: 80
 ---
 
-# Introduction
+## Introduction
 
-[...editing...]
-
-## Background
+### Background
 
 
-## Time series
+### Time series
 
 
-## Procedure
+### Procedure
 
 
-## Short Answer
+### Short Answer
 
 If you are in a hurry, I predicted that unemployment on Greece is expected to further reduce. It will range between 10\% - 13\% in February, 2023.
 
 
 
-# Prerequisites
+## Prerequisites
 
-## Import Libraries
+### Import Libraries
 
 For this analysis we will need standard libraries for importing and processing my data, such as readr [@R-readr] and dplyr [@R-dplyr]. The kableExtra [@R-kableExtra] package was used to print the results in table format, while the flextable [@R-flextable] package was used to print the results of the Dickey-Fuller and KPSS tests.
 
@@ -91,7 +90,7 @@ options(digits=2) # print only 2 decimals
 knitr::write_bib(.packages(), file = 'packages.bib')
 ```
 
-## Import dataset
+### Import dataset
 
 After loading the libraries I am able to use the commands of the readr package to import my data. My data is in .csv format, so I'll use the `read_csv()` command [@R-readr] to import them.
 
@@ -102,24 +101,21 @@ unemployment <- read_csv("data/unemployment.csv") %>%
   select(LOCATION, TIME, Value) %>% filter(LOCATION != "EA19")
 ```
 
-## Preview Dataset
+### Preview Dataset
 
 ```{r Preview Data}
-
 #| label: tbl-preview-dataset
 #| tbl-cap: "Preview Dataset (first 6 rows)"
-#| 
-preview_dataset = head(unemployment, 10)
-kbl(preview_dataset, 
+head(unemployment, 10) %>%
+  kbl(., 
     align = 'c',
     booktabs = T,
     centering = T,
     valign = T) %>%
-  kable_material() %>%
-  scroll_box(width = "600px", height = "250px")
+  kable_styling()
 ```
 
-## Dataset Structure
+### Dataset Structure
 
 Our dataset is consisted by `r ncol(unemployment)` variables (columns). More specifically, concerning my variables, are as follows
 :
@@ -139,7 +135,8 @@ The `TIME` variable needs to be a Date variable which is not fulfilled on our
 case.
 
 ```{r}
-sapply(unemployment, class) %>% kbl() %>% kable_styling(full_width = F, position = "center")
+sapply(unemployment, class) %>% 
+  kbl() %>% kable_styling(full_width = F, position = "center")
 ```
 
 So, above I see that I have dates in a format "YYYY-MM" (Year - Month) and they
@@ -158,7 +155,7 @@ sapply(unemployment, class) %>% kbl() %>% kable_styling(full_width = F, position
 
 And now I got the Date format. I am able to continue my analysis.
 
-# Missing Values
+## Missing Values
 
 ```{r, results='hide'}
 sum(is.na(unemployment))
@@ -168,7 +165,7 @@ Good news! On this dataset there are `r sum(is.na(unemployment))` missing values
 
 In case the dataset had missing values, I would first look at which variables those were.In a second phase, it might be necessary to replace the missing values.
 
-# Descriptive Statistics
+## Descriptive Statistics
 
 The unemployment data for Greece refer to the period from April 1998 το August 2022. Regarding Europe we have data from January 2000 to August 2022.
 
@@ -238,10 +235,32 @@ highchart() %>%
 )
 ```
 
+## Examine trend and seasonality
 
-# Examine stationarity
+In time series analysis, it's important to distinguish where the variability in the final form of the series originates from. Time series consist of three main components: trend, seasonality, and randomness. The trend refers to whether the series shows a specific direction (upward/downward). Seasonality refers to recurring patterns at regular intervals.
 
-## Definition of stationarity
+$$
+y_t = S_t + T_t + E_t
+$$
+Όπου:
+
+- $y_t$ δηλώνουν τα δεδομένα που έχουμε διαθέσιμα, 
+- $S_t$
+- $T_t$
+- $E_t$
+
+Similarly, the multiplicative model is defined:
+
+$$
+y_t = S_t \cdot T_t \cdot E_t
+$$
+
+where the components that make up the time series are multiplied instead of added.
+
+
+## Examine stationarity
+
+### Definition of stationarity
 
 
 An important concept in studying time series is stationarity. A time series is called stationary [@appliedtimeseriespenn] if: \br
@@ -250,11 +269,11 @@ An important concept in studying time series is stationarity. A time series is c
 2.  $Var(X_t): \text{constant}$ \br
 3.  $Cov(X_t, X_s): \text{constant}$
 
-## Examine Stationarity Graphically
+### Examine Stationarity Graphically
 
 ::: {.panel-tabset}
 
-### Level
+#### Level
 
 It is apparent that there is a big variation on the values of unemployment. This time series is not stationary and the differencing is justified.
 
@@ -287,7 +306,7 @@ highchart() %>%
 ```
 
 
-### First Diff.
+#### First Diff.
 
 Here we can see a big improvement in comparison with original data. I have some concerns about points close to 150 (mildly upwards trend) and 250 (outlier). 
 
@@ -307,7 +326,7 @@ highchart() %>%
 ```
 
 
-### Second Diff.
+#### Second Diff.
 
 
 Given the concerns of above, I made also a second difference plot. It seems to solve the problem on points close to 150.
@@ -324,7 +343,7 @@ plot(grc_unemployment_diff2, type = "l")
 :::
 
 
-## Examine Stationarity with Statistical tests
+### Examine Stationarity with Statistical tests
 
 
 The graphical interpretation of stationarity can be beneficial for a quick assessment on topic of stationarity. However it can be considered a subjective metric, which leads on a non consistent decision (someone may consider the second figure as stationary and some others not. 
@@ -334,10 +353,19 @@ Thankfully, there are some statistical tests which can help us on our decisions.
 
 - **Augmented Dickey-Fuller** (ADF) test
 - **Phillips- Perron** (PP) test
-- **Kwiatkowski-Phillips-Schmidt-Shin** (KPSS) test 
+- **Kwiatkowski-Phillips-Schmidt-Shin** (KPSS) test
+- **Zivot-Andrews** (ZA) test 
+
+But an other problem arises. We are not in a fancy IDE with menus and checkboxes. We use R and its packages. There are many packages that have already write functions to study stationarity with the aforementioned tests. Some of them are:
+
+- tseries
+- urca
+- CADFtest
+
+We should carefully evaluate our choices, as these packages advertise similar functionality but differ significantly in the scope of their functions and, more importantly, in the level of flexibility they offer for handling time series characteristics. In short, the `tseries` package is the one I'm most familiar with, but it is also the most limited in terms of configurable parameters. Although many tutorials use this package, I found that I couldn’t set the number of lags for tests or specify characteristics like trends when applicable. On the other hand, the `urca` package addresses these limitations by allowing users to specify both the trend component and the number of lags in the respective tests. One minor drawback of urca, however, is that it only provides critical values, not p-values.
 
 
-### Summary
+#### Summary
 
 
 ```{r}
@@ -349,101 +377,189 @@ summary_stationarity_results <- data.frame(
 )
 
 
-summary_stationarity_results  %>% kbl() %>% kable_styling()
+summary_stationarity_results  %>% kbl() %>% kable_styling() 
 ```
 
 
-### ADF test
+#### ADF test
+
+One of the most
 
 
 $$
 H_0 : \text{The time series has a unit root} \\
 H_1 : \text{The time series has not a unit root} 
 $$
+Selecting the lags
+
+```{r}
+library(vars)
+G = VARselect(grc_unemployment$Value, lag.max = 20, type = "const")
+
+
+```
 
 
 
 ```{r}
-adf_results = adf.test(grc_unemployment$Value)
+get_adf_results = function(variable){
 
-data = data.frame(c("Dickey-Fuller", adf_results$statistic), c("lag order", 6), c("p-value", adf_results$p.value)) %>% as.data.frame()
+    # Ensure variable is numeric (e.g., a time series or numeric vector)
+    if (!is.numeric(variable)) {
+        stop("Input variable must be numeric.")
+    }
+    
+    # Perform ADF tests
+    adf_orig = adf.test(variable)
+    adf_diff1 = adf.test(diff(variable, differences = 1))
+    adf_diff2 = adf.test(diff(variable, differences = 2))
+    
+    # Extract results
+    adf_table = data.frame(
+        "Transformation" = c("Level", "1st Difference", "2nd Difference"),
+        "Dickey-Fuller" = c(
+            adf_orig$statistic[["Dickey-Fuller"]],
+            adf_diff1$statistic[["Dickey-Fuller"]],
+            adf_diff2$statistic[["Dickey-Fuller"]]
+        ),
+        "Lag Order" = c(
+            adf_orig$parameter[["Lag order"]],
+            adf_diff1$parameter[["Lag order"]],
+            adf_diff2$parameter[["Lag order"]]
+        ),
+        "p-value" = c(
+            adf_orig$p.value,
+            adf_diff1$p.value,
+            adf_diff2$p.value
+        )
+    ) %>%
+        kbl(digits = 5) %>%
+        kable_styling(full_width = FALSE)
+    
+    return(adf_table)
+}
+```
 
-
+```{r, warning = FALSE}
+#| tbl-cap: "Augmented Dickey-Fuller test results"
+get_adf_results(grc_unemployment$Value)
 ```
 
 Συνεπώς, είναι προφανές από τα αποτελέσματα του
 στατιστικού ελέγχου Dickey Fuller ότι η χρονοσειρά μου δεν είναι στάσιμη. Θα πρέπει να εφαρμόσω τον έλεγχο Dickey-Fuller στις δοαφορές.
 
 
+#### PP  test
+
+$$
+H_0 : \text{The time series has a unit root} \\
+H_1 : \text{The time series has not a unit root} 
+$$
+
 ```{r}
-adf.test(grc_unemployment_diff1)
+get_pp_results = function(variable){
+
+    # Ensure variable is numeric (e.g., a time series or numeric vector)
+    if (!is.numeric(variable)) {
+        stop("Input variable must be numeric.")
+    }
+    
+    # Perform ADF tests
+    pp_orig = pp.test(variable)
+    pp_diff1 = pp.test(diff(variable, differences = 1))
+    pp_diff2 = pp.test(diff(variable, differences = 2))
+    
+    # Extract results
+    pp_table = data.frame(
+        "Transformation" = c("Level", "1st Difference", "2nd Difference"),
+        "Phillips-Perron" = c(
+            pp_orig$statistic[["Dickey-Fuller Z(alpha)"]],
+            pp_diff1$statistic[["Dickey-Fuller Z(alpha)"]],
+            pp_diff2$statistic[["Dickey-Fuller Z(alpha)"]]
+        ),
+        "Lag Order" = c(
+            pp_orig[["parameter"]][["Truncation lag parameter"]],
+            pp_diff1[["parameter"]][["Truncation lag parameter"]],
+            pp_diff2[["parameter"]][["Truncation lag parameter"]]
+        ),
+        "p-value" = c(
+            pp_orig$p.value,
+            pp_diff1$p.value,
+            pp_diff2$p.value
+        )
+    ) %>%
+        kbl(digits = 5) %>%
+        kable_styling(full_width = FALSE)
+    
+    return(pp_table)
+}
 ```
 
-And finally the results for the second differences are :
+```{r, warning = FALSE}
+#| tbl-cap: "Phillips-Perron test results"
+#| warning: false
+get_pp_results(grc_unemployment$Value)
+```
+
+
+#### KPSS test
+
+$$
+H_0 : \text{The time series has not a unit root} \\
+H_1 : \text{Alternatively} 
+$$
+
 
 ```{r}
-adf.test(grc_unemployment_diff2) %>% as_flextable()
+get_kpss_results = function(variable){
+
+    # Ensure variable is numeric (e.g., a time series or numeric vector)
+    if (!is.numeric(variable)) {
+        stop("Input variable must be numeric.")
+    }
+    
+    # Perform ADF tests
+    kpss_orig = kpss.test(variable)
+    kpss_diff1 = kpss.test(diff(variable, differences = 1))
+    kpss_diff2 = kpss.test(diff(variable, differences = 2))
+    
+    # Extract results
+    pp_table = data.frame(
+        "Transformation" = c("Level", "1st Difference", "2nd Difference"),
+        "KPSS" = c(
+            kpss_orig[["statistic"]][["KPSS Level"]],
+            kpss_diff1[["statistic"]][["KPSS Level"]],
+            kpss_diff2[["statistic"]][["KPSS Level"]]
+        ),
+        "Lag Order" = c(
+            kpss_orig[["parameter"]][["Truncation lag parameter"]],
+            kpss_diff1[["parameter"]][["Truncation lag parameter"]],
+            kpss_diff2[["parameter"]][["Truncation lag parameter"]]
+        ),
+        "p-value" = c(
+            kpss_orig$p.value,
+            kpss_diff1$p.value,
+            kpss_diff2$p.value
+        )
+    ) %>%
+        kbl(digits = 5) %>%
+        kable_styling(full_width = FALSE)
+    
+    return(pp_table)
+}
+```
+
+```{r, warning = FALSE}
+#| tbl-cap: "KPSS test results"
+get_kpss_results(grc_unemployment$Value)
 ```
 
 
-### PP  test
-
-$$
-\begin{array}{l}
-H_0 : \text{Time series is not stationary} \\
-H_1 : \text{Alternatively} 
-\end{array}
-\equiv
-\begin{array}{l}
-H_0 : \text{There is a unit root} \\
-H_1 : \text{Alternatively} 
-\end{array}
-$$
-
-```{r, warning=FALSE}
-pp.test(grc_unemployment$Value,) %>% as_flextable()
-```
-
-```{r, warning=FALSE}
-pp.test(grc_unemployment_diff1) %>% as_flextable()
-```
-
-```{r, warning=FALSE}
-pp.test(grc_unemployment_diff2) %>% as_flextable()
-```
-
-### KPSS test
-
-$$
-\begin{array}{l}
-H_0 : \text{Time series is stationary} \\
-H_1 : \text{Alternatively} 
-\end{array}
-\equiv
-\begin{array}{l}
-H_0 : \text{There is not  unit root} \\
-H_1 : \text{Alternatively} 
-\end{array}
-$$
-
-
-```{r, warning=FALSE}
-kpss.test(grc_unemployment$Value,) %>% as_flextable()
-```
-
-```{r, warning=FALSE}
-kpss.test(grc_unemployment_diff1) %>% as_flextable()
-```
-
-```{r, warning=FALSE}
-kpss.test(grc_unemployment_diff2) %>% as_flextable()
-```
-
-# Identify Model
+## Identify Model
 
 ::: {.panel-tabset}
 
-## Levels
+### Levels
 
 ```{r}
 par(mfrow = c(1, 2))
@@ -452,7 +568,7 @@ acf(grc_unemployment$Value)
 pacf(grc_unemployment$Value )
 ```
 
-## First Diff.
+### First Diff.
 
 ```{r}
 par(mfrow = c(1, 2))
@@ -461,7 +577,7 @@ acf(grc_unemployment_diff1 )
 pacf(grc_unemployment_diff1 )
 ```
 
-## Second Diff.
+### Second Diff.
 
 ```{r}
 par(mfrow = c(1, 2))
@@ -472,20 +588,20 @@ pacf(grc_unemployment_diff2 )
 
 :::
 
-# Build Time Series Model
+## Build Time Series Model
 
 ::: {.panel-tabset}
 
-## Automated model
+### Automated model
 
 ```{r}
-grc_unemployment = grc_unemployment%>% select(Value)
+grc_unemployment = grc_unemployment %>% dplyr::select(Value)
 auto_model <- auto.arima(grc_unemployment, trace = T,seasonal = TRUE)
 auto_model 
 ```
 
 
-## ARIMA candidate 1
+### ARIMA candidate 1
 
 ```{r}
 arimaModel_1=arima(grc_unemployment, order=c(0,1,2))
@@ -493,7 +609,7 @@ arimaModel_1
 ```
 
 
-## ARIMA candidate 2
+### ARIMA candidate 2
 
 ```{r}
 arimaModel_2=arima(grc_unemployment, order=c(1,1,2))
@@ -501,7 +617,7 @@ arimaModel_2
 ```
 
 
-## ARIMA candidate 3
+### ARIMA candidate 3
 
 ```{r}
 arimaModel_3=arima(grc_unemployment, order=c(9,2,1))
@@ -510,7 +626,7 @@ arimaModel_3
 
 :::
 
-# Compare Models
+## Compare Models
 
 After building some ARIMA models, I should
 decide which is the best one to make my estimations. One metric to evaluate those models is **AIC** (Akaike Information Criterion). The lower the value of AIC, the better my model.
@@ -531,16 +647,16 @@ accuracy_table %>% kbl() %>% kable_styling()
 So, the best model is the Auto Model (ARIMA(9,2,1)), which has the lowest AIC value. 
 
 
-# Checking best models
+## Checking best models
 
 
 
 
-# Forecast Future Unemployment
+## Forecast Future Unemployment
 
 Previously, I identify which is the best model. Now, I will use this model in order to predict unemployment for the next 6 months. It should be recalled that the last available value was from August of 2022 (12.2\%). Therefore, I will make a prediction for unemployment in Greece until February 2023.
 
-## ARIMA (0,2,1) forecasts
+### ARIMA (0,2,1) forecasts
 
 ```{r}
 forecast(auto_model,6) %>% autoplot()
@@ -549,7 +665,7 @@ forecast(auto_model,6) %>% kbl() %>% kable_paper()
 
 ```
 
-## ARIMA (9,2,1) forecasts
+### ARIMA (9,2,1) forecasts
 
 ```{r}
 forecast(arimaModel_3,6) %>% autoplot()
@@ -557,12 +673,11 @@ forecast(arimaModel_3,6) %>% autoplot()
 forecast(arimaModel_3,6) %>% kbl() %>% kable_paper()
 ```
 
-# Results
+## Results
 
 Given the diagram as well as the forecast table (of the best performing model, candidate #3), I conclude that a reduction in unemployment in Greece is expected in the next period of time (in the next six months). More specifically, **Greece's unemployment** in **February 2023** will range between **10\%** (9.4\%) and **13\%** (14\%) with an **80\%** (95\%) probability (based on **ARIMA(9,2,1)** model).
 
-# Acknowledgements {.appendix .unlisted}
+## Acknowledgements {.appendix .unlisted}
 
 Image by <a href="https://pixabay.com/users/publicdomainpictures-14/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=19907">PublicDomainPictures</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=19907">Pixabay</a>
-
 
