@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="el" xml:lang="el">
-<head>
-<link rel="alternate" hreflang="en" href="https://stesiam.com/software/index.html" />
-<link rel="alternate" hreflang="el" href="https://stesiam.com/el/software/index.el.html" />
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="el" xml:lang="el"><head>
+
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.8.6">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="description" content="Το μέρος στο οποίο θα μοιράζομαι τα πακέτα μου στην R. Επίσης, θα ανεβάζω το ορισμένα εξορυγμένα δεδομένα από διάφορες ιστοσελίδες">
-<title>Λογισμικό και Δεδομένα – stesiam</title>
+
+<meta name="author" content="stesiam">
+<meta name="description" content="Μία βραχυπρόθεσμη πρόβλεψη για την πορεία την ανεργίας τους επόμενους μήνες στην Ελλάδα, χρησιμοποιώντας μοντέλα ARIMA.">
+
+<title>Προβλέποντας την Ανεργία στην Ελλάδα – stesiam</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,19 +22,52 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script><script src="../site_libs/quarto-nav/headroom.min.js"></script><script src="../site_libs/clipboard/clipboard.min.js"></script><script src="../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../site_libs/quarto-search/fuse.min.js"></script><script src="../site_libs/quarto-search/quarto-search.js"></script><meta name="quarto:offset" content="../">
-<link href="../assets/images/favicon.ico" rel="icon">
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script><script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script><script src="../site_libs/quarto-html/popper.min.js"></script><script src="../site_libs/quarto-html/tippy.umd.min.js"></script><link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-24b016fb7318414bb959975a294e78cf.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-e8699710350341fa18b948e7ad6c9fad.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-24b016fb7318414bb959975a294e78cf.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script><link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-3a6de1fafccda7b18e23c644f342d790.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-6b5e1c594046d237c3b9190a9fc268f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-3a6de1fafccda7b18e23c644f342d790.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
-<link href="../site_libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet">
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../assets/images/favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-24b016fb7318414bb959975a294e78cf.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-e8699710350341fa18b948e7ad6c9fad.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-24b016fb7318414bb959975a294e78cf.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-3a6de1fafccda7b18e23c644f342d790.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-6b5e1c594046d237c3b9190a9fc268f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-3a6de1fafccda7b18e23c644f342d790.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": true,
@@ -59,13 +93,18 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Υποβολή",
     "search-label": "Αναζήτηση"
   }
-}</script><link rel="stylesheet" href="../styles.css">
-<meta property="og:title" content="Λογισμικό και Δεδομένα – stesiam">
-<meta property="og:description" content="Το μέρος στο οποίο θα μοιράζομαι τα πακέτα μου στην R. Επίσης, θα ανεβάζω το ορισμένα εξορυγμένα δεδομένα από διάφορες ιστοσελίδες">
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Προβλέποντας την Ανεργία στην Ελλάδα – stesiam">
+<meta property="og:description" content="Μία βραχυπρόθεσμη πρόβλεψη για την πορεία την ανεργίας τους επόμενους μήνες στην Ελλάδα, χρησιμοποιώντας μοντέλα ARIMA.">
+<meta property="og:image" content="https://stesiam.com/posts/forecasting-greek-unemployment/unemployment.jpg">
 <meta property="og:site_name" content="stesiam">
+<meta property="og:image:alt" content="Word cloud comprised with words related to unemployment">
 </head>
-<body class="nav-fixed quarto-light">
-<script id="quarto-html-before-body" type="application/javascript">
+
+<body class="floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -227,158 +266,159 @@ ul.task-list li input[type="checkbox"] {
     } else {
       toggleColorMode(false);
     }
-  </script><div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top quarto-banner"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">stesiam</span>
     </a>
   </div>
-            <div id="quarto-search" class="" title="Αναζήτηση"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Εναλλαγή πλοήγησης" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-  <span class="navbar-toggler-icon"></span>
-</button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
-<li class="nav-item"><div class="dropdown" id="languages-links-parent">
-<button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="languages-button"><i class="bi bi-globe2"></i> Greek</button><ul class="dropdown-menu" id="languages-links"><li><a class="dropdown-item" href="https://stesiam.com/software/index.html" id="language-link-en">English</a></li></ul>
-</div></li>
-<li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
-<span class="menu-text">Αρχική</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../posts/index.html"> 
-<span class="menu-text">Άρθρα</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../web-apps/index.html"> 
-<span class="menu-text">Εφαρμογές</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link active" href="../software/index.html" aria-current="page"> 
-<span class="menu-text">Λογισμικό</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../material/index.html"> 
-<span class="menu-text">Υλικό</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../gallery/index.html"> 
-<span class="menu-text">Γραφήματα</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="https://github.com/stesiam/cvDSen"> 
-<span class="menu-text">CV</span></a>
-  </li>  
-</ul>
-</div> <!-- /navcollapse -->
-            <div class="quarto-navbar-tools tools-wide">
-    <a href="https://github.com/stesiam" title="" class="quarto-navigation-tool px-1" aria-label="Σύνδεσμος για το προφίλ μου στο GitHub (stesiam)"><i class="bi bi-github"></i></a>
-    <a href="../posts/index.xml" title="" class="quarto-navigation-tool px-1" aria-label="Το RSS για τα άρθρα της ιστοσελίδας, ώστε να ενημερώνεται ο αναγνώστης για νέα άρθρα"><i class="bi bi-rss"></i></a>
+        <div class="quarto-navbar-tools tools-end">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Εναλλαγή σκοτεινού θέματος"><i class="bi"></i></a>
 </div>
+          <div id="quarto-search" class="" title="Αναζήτηση"></div>
       </div> <!-- /container-fluid -->
-    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default page-columns page-full"><div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page">
-      <h1 class="title">Λογισμικό και Δεδομένα</h1>
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <div class="quarto-title-block"><div><h1 class="title">Προβλέποντας την Ανεργία στην Ελλάδα</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source" data-quarto-source-url="https://github.com/stesiam/stesiam.github.io/blob/gh-pages/posts/el/forecasting-greek-unemployment/index.el.qmd"><i class="bi"></i> Κώδικας</button></div></div>
                   <div>
         <div class="description">
-          Το μέρος στο οποίο θα μοιράζομαι τα πακέτα μου στην R. Επίσης, θα ανεβάζω το ορισμένα εξορυγμένα δεδομένα από διάφορες ιστοσελίδες
+          <p>Μία βραχυπρόθεσμη πρόβλεψη για την πορεία την ανεργίας τους επόμενους μήνες στην Ελλάδα, χρησιμοποιώντας μοντέλα ARIMA.</p>
         </div>
       </div>
-                </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">R</div>
+                <div class="quarto-category">Χρονοσειρες</div>
+              </div>
+                  </div>
   </div>
     
   
-  <div class="quarto-title-meta column-page">
+  <div class="quarto-title-meta">
 
+      <div>
+      <div class="quarto-title-meta-heading">Συγγραφέας</div>
+      <div class="quarto-title-meta-contents">
+               <p>stesiam </p>
+            </div>
+    </div>
       
+      <div>
+      <div class="quarto-title-meta-heading">Δημοσιευμένο</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">22 Οκτωβρίου 2022</p>
+      </div>
+    </div>
     
       
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Περιεχόμενα</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
 <!-- main -->
-<main class="content quarto-banner-title-block column-page" id="quarto-document-content"><section id="πακέτα" class="level2"><h2 data-anchor-id="πακέτα">
-<i class="fa-brands fa-r-project" aria-label="r-project"></i> πακέτα</h2>
-<p>⏳🔨 Υπό επεξεργασία⏳🔨</p>
-</section><section id="συλλογές-δεδομένων" class="level2"><h2 data-anchor-id="συλλογές-δεδομένων">Συλλογές δεδομένων</h2>
-<div class="cards-wrapper">
-<div class="card">
-  <div class="card-body">
-    <h4 class="card-title">Εκλεγμένοι βουλευτές</h4>
-    <h6 class="card-subtitle mb-2 text-muted text-center">Ελληνικό κοινοβούλιο</h6>
-    <p class="card-text">Κατάλογος εκλεγμένων και αναπληρωτών βουλευτών κατά τις περιόδους 1981-2019</p>
-    <div class="card-details">
-      <button type="button" class="btn  btn-outline-primary btn-rounded btn-sm"><i class="fa-brands fa-github"></i> GitHub</button>
-      <button type="button" class="btn  btn-outline-primary btn-rounded btn-sm"><i class="bi bi-bar-chart-line-fill"></i> Dashboard</button>
-    </div>
-  </div>
-</div>
-<div class="card">
-  <div class="card-body">
-    <h4 class="card-title">Μητρώο ασφαλιστικών εταιριών</h4>
-    <h6 class="card-subtitle mb-2 text-muted text-center">Τράπεζα της Ελλάδας</h6>
-    <p class="card-text">Μία λίστα με τις (αντασ)ασφαλιστικές επιχειρήσεις στην Ελλάδα και υπο-κλάδους ασφάλισης</p>
-    <div class="card-details">
-      <button type="button" class="btn  btn-outline-primary btn-rounded btn-sm"><i class="fa-brands fa-github"></i> GitHub</button>
-      <button type="button" class="btn  btn-outline-primary btn-rounded btn-sm"><i class="bi bi-bar-chart-line-fill"></i> Dashboard</button>
-    </div>
-  </div>
-</div>
-<div class="card">
-  <div class="card-body">
-    <h4 class="card-title">Αγγελίες εργασίας</h4>
-    <h6 class="card-subtitle mb-2 text-muted text-center">Χρυσή ευκαιρία - xe.gr</h6>
-    <p class="card-text">Συλλογή 5000+ αγγελιών εργασίας κατά το μήνα Φεβρουάριο του 2025</p>
-    <div class="card-details">
-      <button type="button" class="btn  btn-outline-primary btn-rounded btn-sm"><i class="bi bi-github"></i> GitHub</button>
-      <button type="button" class="btn  btn-outline-primary btn-rounded btn-sm"><i class="bi bi-bar-chart-line-fill"></i> Dashboard</button>
-    </div>
-  </div>
-</div>
-<div class="card">
-  <div class="card-body">
-    <h4 class="card-title">Τιμές φρούτων</h4>
-    <h6 class="card-subtitle mb-2 text-muted text-center">Κεντρική αγορά Θεσ/νίκης</h6>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <div class="card-details">
-      <button type="button" class="btn  btn-outline-primary btn-rounded btn-sm"><i class="bi bi-github"></i> GitHub</button>
-      <button type="button" class="btn  btn-outline-primary btn-rounded btn-sm"><i class="bi bi-bar-chart-line-fill"></i> Dashboard</button>
-    </div>
-  </div>
-</div>
-<div class="card">
-  <div class="card-body">
-    <h4 class="card-title">Ενοικιάσεις - Πωλήσεις σπιτιών</h4>
-    <h6 class="card-subtitle mb-2 text-muted text-center">Σπιτόγατος</h6>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <div class="card-details">
-      <button type="button" class="btn  btn-outline-primary btn-rounded btn-sm"><i class="bi bi-github"></i> GitHub</button>
-      <button type="button" class="btn  btn-outline-primary btn-rounded btn-sm"><i class="bi bi-bar-chart-line-fill"></i> Dashboard</button>
-    </div>
-  </div>
-</div>
-<div class="card">
-  <div class="card-body">
-    <h4 class="card-title">Δικαιόχρηση στην Ελλάδα</h4>
-    <h6 class="card-subtitle mb-2 text-muted text-center">Σπιτόγατος</h6>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <div class="card-details">
-      <button type="button" class="btn  btn-outline-primary btn-rounded btn-sm"><i class="bi bi-github"></i> GitHub</button>
-      <button type="button" class="btn  btn-outline-primary btn-rounded btn-sm"><i class="bi bi-bar-chart-line-fill"></i> Dashboard</button>
-    </div>
-  </div>
-</div>
-</div>
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+
+
+
+
+<section id="introduction" class="level2">
+
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Introduction</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-appliedtimeseriespenn" class="csl-entry" role="listitem">
+Applied Time Series Analysis. (χ.χ.). Ανακτήθηκε 19 Οκτώβριος 2022, από <a href="https://online.stat.psu.edu/stat510/">https://online.stat.psu.edu/stat510/</a>
+</div>
+<div id="ref-R-flextable" class="csl-entry" role="listitem">
+Gohel, D., &amp; Skintzos, P. (2024). <em>flextable: Functions for Tabular Reporting</em>. Ανακτήθηκε από <a href="https://ardata-fr.github.io/flextable-book/">https://ardata-fr.github.io/flextable-book/</a>
+</div>
+<div id="ref-lubridate2011" class="csl-entry" role="listitem">
+Grolemund, G., &amp; Wickham, H. (2011). Dates and Times Made Easy with <span>lubridate</span>. <em>Journal of Statistical Software</em>, <em>40</em>(3), 1–25. Ανακτήθηκε από <a href="https://www.jstatsoft.org/v40/i03/">https://www.jstatsoft.org/v40/i03/</a>
+</div>
+<div id="ref-hyndman2018forecasting" class="csl-entry" role="listitem">
+Hyndman, R. J., &amp; Athanasopoulos, G. (2018). <em>Forecasting: principles and practice</em>. OTexts.
+</div>
+<div id="ref-forecast2008" class="csl-entry" role="listitem">
+Hyndman, R. J., &amp; Khandakar, Y. (2008). Automatic time series forecasting: the forecast package for <span>R</span>. <em>Journal of Statistical Software</em>, <em>27</em>(3), 1–22. <a href="https://doi.org/10.18637/jss.v027.i03">https://doi.org/10.18637/jss.v027.i03</a>
+</div>
+<div id="ref-R-forecast" class="csl-entry" role="listitem">
+Hyndman, R., Athanasopoulos, G., Bergmeir, C., Caceres, G., Chhay, L., Kuroptev, K., … Yasmeen, F. (2025). <em>forecast: Forecasting Functions for Time Series and Linear Models</em>. Ανακτήθηκε από <a href="https://pkg.robjhyndman.com/forecast/">https://pkg.robjhyndman.com/forecast/</a>
+</div>
+<div id="ref-R-highcharter" class="csl-entry" role="listitem">
+Kunst, J. (2022). <em>highcharter: A Wrapper for the Highcharts Library</em>. Ανακτήθηκε από <a href="https://jkunst.com/highcharter/">https://jkunst.com/highcharter/</a>
+</div>
+<div id="ref-oecd2022" class="csl-entry" role="listitem">
+OECD. (2022). Unemployment rate (indicator). Ανακτήθηκε 14 Οκτώβριος 2022, από <a href="https://doi: 10.1787/52570002-en">doi: 10.1787/52570002-en</a>
+</div>
+<div id="ref-R-base" class="csl-entry" role="listitem">
+R Core Team. (2025). <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. Ανακτήθηκε από <a href="https://www.R-project.org/">https://www.R-project.org/</a>
+</div>
+<div id="ref-krgraphgallerytimeseries" class="csl-entry" role="listitem">
+R Graph Gallery. (2018). Time Series. <em>URL https://r-graph-gallery.com/time-series.html</em>.
+</div>
+<div id="ref-R-lubridate" class="csl-entry" role="listitem">
+Spinu, V., Grolemund, G., &amp; Wickham, H. (2024). <em>lubridate: Make Dealing with Dates a Little Easier</em>. Ανακτήθηκε από <a href="https://lubridate.tidyverse.org">https://lubridate.tidyverse.org</a>
+</div>
+<div id="ref-R-tseries" class="csl-entry" role="listitem">
+Trapletti, A., &amp; Hornik, K. (2024). <em>tseries: Time Series Analysis and Computational Finance</em>. <a href="https://doi.org/10.32614/CRAN.package.tseries">https://doi.org/10.32614/CRAN.package.tseries</a>
+</div>
+<div id="ref-ggplot22016" class="csl-entry" role="listitem">
+Wickham, H. (2016). <em>ggplot2: Elegant Graphics for Data Analysis</em>. Springer-Verlag New York. Ανακτήθηκε από <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>
+</div>
+<div id="ref-R-ggplot2" class="csl-entry" role="listitem">
+Wickham, H., Chang, W., Henry, L., Pedersen, T. L., Takahashi, K., Wilke, C., … van den Brand, T. (2025). <em>ggplot2: Create Elegant Data Visualisations Using the Grammar of Graphics</em>. Ανακτήθηκε από <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>
+</div>
+<div id="ref-R-dplyr" class="csl-entry" role="listitem">
+Wickham, H., François, R., Henry, L., Müller, K., &amp; Vaughan, D. (2023). <em>dplyr: A Grammar of Data Manipulation</em>. Ανακτήθηκε από <a href="https://dplyr.tidyverse.org">https://dplyr.tidyverse.org</a>
+</div>
+<div id="ref-R-readr" class="csl-entry" role="listitem">
+Wickham, H., Hester, J., &amp; Bryan, J. (2024). <em>readr: Read Rectangular Text Data</em>. Ανακτήθηκε από <a href="https://readr.tidyverse.org">https://readr.tidyverse.org</a>
+</div>
+<div id="ref-R-ggtext" class="csl-entry" role="listitem">
+Wilke, C. O., &amp; Wiernik, B. M. (2022). <em>ggtext: Improved Text Rendering Support for ggplot2</em>. Ανακτήθηκε από <a href="https://wilkelab.org/ggtext/">https://wilkelab.org/ggtext/</a>
+</div>
+<div id="ref-R-kableExtra" class="csl-entry" role="listitem">
+Zhu, H. (2024). <em>kableExtra: Construct Complex Table with kable and Pipe Syntax</em>. Ανακτήθηκε από <a href="http://haozhu233.github.io/kableExtra/">http://haozhu233.github.io/kableExtra/</a>
+</div>
+</div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Αναφορά</h2><div><div class="quarto-appendix-secondary-label">Αναφορά BibTeX:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{2022,
+  author = {, stesiam},
+  title = {Προβλέποντας την Ανεργία στην Ελλάδα},
+  date = {2022-10-22},
+  url = {https://stesiam.com/posts/forecasting-greek-unemployment/index.el.html},
+  langid = {el}
+}
+</code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">Για απόδοση ευγνωμοσύνης, παρακαλούμε αναφερθείτε σε αυτό το έργο ως:</div><div id="ref-2022" class="csl-entry quarto-appendix-citeas" role="listitem">
+stesiam. (2022, October 22). Προβλέποντας την Ανεργία στην Ελλάδα.
+Retrieved from <a href="https://stesiam.com/posts/forecasting-greek-unemployment/index.el.html">https://stesiam.com/posts/forecasting-greek-unemployment/index.el.html</a>
+</div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -393,6 +433,13 @@ ul.task-list li input[type="checkbox"] {
       window.document.body.appendChild(a);
     }
     setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
     const isCodeAnnotation = (el) => {
       for (const clz of el.classList) {
         if (clz.startsWith('code-annotation-')) {                     
@@ -453,6 +500,57 @@ ul.task-list li input[type="checkbox"] {
         container: window.document.getElementById('quarto-embedded-source-code-modal')
       });
       clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
@@ -788,18 +886,41 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      if (authorPrefersDark) {
+          [baseTheme, altTheme] = [altTheme, baseTheme];
+      }
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "stesiam/stesiam.github.io";
+    script.dataset.repoId = "R_kgDOHuiNDg";
+    script.dataset.category = "Comments";
+    script.dataset.categoryId = "DIC_kwDOHuiNDs4CQeAf";
+    script.dataset.mapping = "title";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "top";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer">
-    <div class="nav-footer-left">
-<p>Φιλοξενείται μέσω του <i class="bi bi-github"></i> GitHub Pages <br><i class="bi bi-code-slash"></i> <a href="https://github.com/stesiam/stesiam.github.io">Κώδικας ιστοσελίδας</a></p>
-</div>   
-    <div class="nav-footer-center">
-<p>© stesiam, 2022-2025</p>
-</div>
-    <div class="nav-footer-right">
-<p>Χρησιμοποιήθηκε η γλώσσα προγραμματισμού R (Rstats),<br>το λογισμικό <a href="https://quarto.org/">Quarto</a>, το πακέτο <a href="https://github.com/ropensci-review-tools/babelquarto">babelquarto</a>,<br> αρκετή αγάπη και υπομονή</p>
-</div>
-  </div>
-</footer>
-</body>
-</html>
+
+
+
+
+</body></html>
