@@ -1,45 +1,24 @@
 [
   {
-    "objectID": "material/index.html",
-    "href": "material/index.html",
-    "title": "Material",
+    "objectID": "404/index.html",
+    "href": "404/index.html",
+    "title": "404: Page not found",
     "section": "",
-    "text": "Some quick example text to build on the card title and make up the bulk of the card’s content.\n    \n       Download\n       Repo\n    \n  \n\n\n        \n  \n    \n    A collection of most common statistical distibutions and their respective characteristics\n    \n       Download\n       Repo"
-  },
-  {
-    "objectID": "material/index.html#fancy-posters",
-    "href": "material/index.html#fancy-posters",
-    "title": "Material",
-    "section": "",
-    "text": "Some quick example text to build on the card title and make up the bulk of the card’s content.\n    \n       Download\n       Repo\n    \n  \n\n\n        \n  \n    \n    A collection of most common statistical distibutions and their respective characteristics\n    \n       Download\n       Repo"
-  },
-  {
-    "objectID": "material/index.html#simple-posters",
-    "href": "material/index.html#simple-posters",
-    "title": "Material",
-    "section": "Simple Posters",
-    "text": "Simple Posters\n\n\n\n\nTitle\nType\nSource\n\n\n\n\n\nSummary of Distributions\n\nRepo URL\n\n\n\nBefore my First Stats Lecture\n\nRepo URL"
-  },
-  {
-    "objectID": "material/index.html#assignments-in-greek",
-    "href": "material/index.html#assignments-in-greek",
-    "title": "Material",
-    "section": "Assignments (in greek)",
-    "text": "Assignments (in greek)\n\n\n  \n    \n      \n    \n    Sampling Assignment\n    Semester assignment on which I solve exercises about SRS, SSRW, Systematic and Cluster Sampling\n  \n  \n      \n        141\n        \n        \n        \n      \n  \n\n\n  \n    \n      \n    \n    Analysis of Variance\n    Exercises appliying One-way and Two-way ANOVA\n  \n  \n      \n        54\n        \n        \n        \n      \n  \n\n\n  \n    \n      \n    \n    Statistical Programs II\n    Application of statistical tests (normality, correlation etc.) using Rstats.\n  \n  \n      \n        44\n        \n        \n        \n      \n  \n\n\n  \n    \n      \n    \n    Non Parametric Statistics\n    A collection of solved assignments testing normality, differences between 2/3 samples (t-test, Kruskal etc.)\n  \n  \n      \n        92"
+    "text": "The page you requested cannot be found. Instead you can check:\n\nHomepage\nPosts\nWeb Projects (Shiny Apps & APIs)\nMaterial - Personal Notes\nVisualizations"
   },
   {
     "objectID": "software/index.html",
     "href": "software/index.html",
     "title": "Software & Data",
     "section": "",
-    "text": "⏳🔨 Still working on this⏳🔨"
+    "text": "Το πακέτο greekElectionsR παρέχει δεδομένα σχετικά με το ελληνικό κοινοβούλιο από το 1981 μέχρι και το 2019. Μέσω του πακέτου μπορείτε να βρείτε πληροφορίες για τους εκλεγμένους βουλευτές της περιόδου, τα αποτελέσματα των εκλογών, τις ψηφοφορίες των εκλεγμένων προέδρων της Βουλής.\n\n See Code"
   },
   {
-    "objectID": "software/index.html#packages",
-    "href": "software/index.html#packages",
+    "objectID": "software/index.html#r-packages",
+    "href": "software/index.html#r-packages",
     "title": "Software & Data",
     "section": "",
-    "text": "⏳🔨 Still working on this⏳🔨"
+    "text": "Το πακέτο greekElectionsR παρέχει δεδομένα σχετικά με το ελληνικό κοινοβούλιο από το 1981 μέχρι και το 2019. Μέσω του πακέτου μπορείτε να βρείτε πληροφορίες για τους εκλεγμένους βουλευτές της περιόδου, τα αποτελέσματα των εκλογών, τις ψηφοφορίες των εκλεγμένων προέδρων της Βουλής.\n\n See Code"
   },
   {
     "objectID": "software/index.html#datasets",
@@ -627,7 +606,7 @@
     "href": "posts/eda-graduates-of-statistics/index.html#extract-data",
     "title": "Statistics of Statistics’ Graduates",
     "section": "Extract Data",
-    "text": "Extract Data\nThe study guide gives a general description of the university, as well as the prerequisites for a degree and a detailed description of each course. In total, the guide is a little bit less than 200 pages! Of course we don’t need My main source of data is the Department’s study guide. The most recent one (2022) has data on admissions, graduations etc., since 2004. The study guide gives a general description of the university, as well as the prerequisites for a degree and a detailed description of each course. In total, the guide is a little bit less than 200 pages! Of course we don’t need everything in there. I am just interested on the tables of the last pages, so I will extract those pages first from the original pdf.\n\n# url = \"https://www.unipi.gr/faculty/mbouts/anak/OS_22_23.pdf\"\n# \n# download.file(url, \n#               destfile = \"sg22.pdf\",\n#               method = \"wget\",\n#               extra = \"--no-check-certificate\")\n\npdf_subset('sg22.pdf',\n  pages = 186:190,  output = \"subset.pdf\")\n\n[1] \"/tmp/RtmpX4uaBf/file182f62d98c70/posts/eda-graduates-of-statistics/subset.pdf\"\n\n\nSo, we extracted the pages which we are interested in. Let’s take a look at them:\nThankfully, tabulizer comes with a very handy function to extract all the tables from a PDF file. Yeap, I know the original study guide is written in greek but don’t worry that’s just to take a basic understanding of how the pdf and the tables look. I will translate the column names when I will work with the data. But look at the bright side. At least we will get a notebook with ggplot2 visualizations as an alternative of those Excel graphs :)\n\nstatistics_tables &lt;- extract_tables(\n    file   = \"subset.pdf\", \n    method = \"decide\", \n    output = \"tibble\")\n\nNew names:\nNew names:\nNew names:\nNew names:\nNew names:\n• `` -&gt; `...1`\n\n\nExtracting the tables from splitted PDF I get a list of 5 tables with my data. It’s amazing that in a matter of seconds I get all the information in a format ready for analysis. If I were to write them the traditional way (copy-paste) it would definitely take me an hour."
+    "text": "Extract Data\nThe study guide gives a general description of the university, as well as the prerequisites for a degree and a detailed description of each course. In total, the guide is a little bit less than 200 pages! Of course we don’t need My main source of data is the Department’s study guide. The most recent one (2022) has data on admissions, graduations etc., since 2004. The study guide gives a general description of the university, as well as the prerequisites for a degree and a detailed description of each course. In total, the guide is a little bit less than 200 pages! Of course we don’t need everything in there. I am just interested on the tables of the last pages, so I will extract those pages first from the original pdf.\n\n# url = \"https://www.unipi.gr/faculty/mbouts/anak/OS_22_23.pdf\"\n# \n# download.file(url, \n#               destfile = \"sg22.pdf\",\n#               method = \"wget\",\n#               extra = \"--no-check-certificate\")\n\npdf_subset('sg22.pdf',\n  pages = 186:190,  output = \"subset.pdf\")\n\n[1] \"/tmp/RtmpplBZpC/file13071201feb0/posts/eda-graduates-of-statistics/subset.pdf\"\n\n\nSo, we extracted the pages which we are interested in. Let’s take a look at them:\nThankfully, tabulizer comes with a very handy function to extract all the tables from a PDF file. Yeap, I know the original study guide is written in greek but don’t worry that’s just to take a basic understanding of how the pdf and the tables look. I will translate the column names when I will work with the data. But look at the bright side. At least we will get a notebook with ggplot2 visualizations as an alternative of those Excel graphs :)\n\nstatistics_tables &lt;- extract_tables(\n    file   = \"subset.pdf\", \n    method = \"decide\", \n    output = \"tibble\")\n\nNew names:\nNew names:\nNew names:\nNew names:\nNew names:\n• `` -&gt; `...1`\n\n\nExtracting the tables from splitted PDF I get a list of 5 tables with my data. It’s amazing that in a matter of seconds I get all the information in a format ready for analysis. If I were to write them the traditional way (copy-paste) it would definitely take me an hour."
   },
   {
     "objectID": "posts/eda-graduates-of-statistics/index.html#admitted-students",
@@ -908,5 +887,26 @@
     "title": "Web Projects",
     "section": "APIs with R",
     "text": "APIs with R\n\n\n    \n      Developers' Wages API\n      Predict your wage based on your dev role (frontend, backend, analytics) and your job experience.\n    \n    \n     \n    \n\n\n    \n      Glass API\n      Determine the type of glass (window/non-window) based on its components"
+  },
+  {
+    "objectID": "material/index.html",
+    "href": "material/index.html",
+    "title": "Material",
+    "section": "",
+    "text": "A collection of most common statistical distibutions and their respective characteristics\n      \n         Download\n         GitHub\n      \n    \n\n    \n    \n      \n        \n      \n      \n      A summary of the basic mathematical concepts and properties that are typically covered in the secondary education levels\n      \n Download\n         GitHub\n      \n    \n\n    \n    \n      \n        \n      \n      \n      An introduction to simple and multiple linear regression concepts.\n      \n         Download\n         GitHub\n      \n    \n\n    \n    \n      \n        \n      \n      \n      Overview of null and alternative hypotheses, and types of testing errors.\n      \n         Download\n         GitHub"
+  },
+  {
+    "objectID": "material/index.html#fancy-posters",
+    "href": "material/index.html#fancy-posters",
+    "title": "Material",
+    "section": "",
+    "text": "A collection of most common statistical distibutions and their respective characteristics\n      \n         Download\n         GitHub\n      \n    \n\n    \n    \n      \n        \n      \n      \n      A summary of the basic mathematical concepts and properties that are typically covered in the secondary education levels\n      \n Download\n         GitHub\n      \n    \n\n    \n    \n      \n        \n      \n      \n      An introduction to simple and multiple linear regression concepts.\n      \n         Download\n         GitHub\n      \n    \n\n    \n    \n      \n        \n      \n      \n      Overview of null and alternative hypotheses, and types of testing errors.\n      \n         Download\n         GitHub"
+  },
+  {
+    "objectID": "material/index.html#assignments-in-greek",
+    "href": "material/index.html#assignments-in-greek",
+    "title": "Material",
+    "section": "Assignments (in greek)",
+    "text": "Assignments (in greek)\n \n    \n    \n      Sampling Assignment\n      \n        \n          \n        \n        \n          \n            \n          \n          \n            104 Pages\n          \n        \n      \n      Semester assignment on which I solve exercises about SRS, SSRW, Systematic and Cluster Sampling\n      \n         Preview\n         GitHub\n      \n    \n\n    \n    \n      Analysis of Variance\n      \n        \n          \n        \n        \n          \n            \n          \n          \n            104 Pages\n          \n        \n      \n      Exercises applyding One-way and Two-way ANOVA\n      \n Download\n         GitHub\n      \n    \n\n    \n    \n      Statistical Programs II\n      \n        \n          \n        \n        \n          \n            \n          \n          \n            104 Pages\n          \n        \n      \n      Application of statistical tests (normality, correlation etc.) using Rstats.\n      \n         Preview\n      \n    \n\n    \n    \n      Non Parametric Statistics\n      \n        \n          \n        \n        \n          \n            \n          \n          \n            104 Pages\n          \n        \n      \n      A collection of solved assignments testing normality, differences between 2/3 samples (t-test, Kruskal etc.)\n      \n         Preview"
   }
 ]

@@ -1,104 +1,103 @@
-.card-wrapper {
+/* Material Cards */
+
+.card-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 2em;
+  gap: 1.5rem;
+  align-items: stretch;
 }
 
-.card svg{
+/* Make all cards same height and consistent layout */
+.modern-card {
+ /* background: rgba(30, 30, 30, 0.95); */
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+  border: 1px solid #2c2c2c;
+  color: #e0e0e0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex: 1 1 100%;
+  max-width: 340px;
   display: flex;
-  width: 50%;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 360px; /* optional: ensures consistent vertical size */
+}
+
+    .modern-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.6);
+    }
+
+  .modern-card svg {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1rem;
+    flex-shrink: 0;
+  }
+
+    .modern-card h3 {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .modern-card p {
+      flex-grow: 1;
+      margin-bottom: 1.2rem;
+    }
+
+    .card-buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .card-buttons a {
+      flex: 1;
+      text-align: center;
+      font-size: 0.85rem;
+      padding: 0.6rem;
+      border-radius: 8px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      transition: background 0.2s ease;
+    }
+
+.wrapper-thumbnail-info{
+  display: flex;
+  flex-direction: row;
   justify-content: center;
-  align-self: center;
-}
-
-.card .card-body {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	align-content: center;
-}
-
-.card .card-body .card-buttons{
-  display: flex;
-  justify-content: space-around;
   align-items: center;
+  gap: 0.5rem;
 }
 
-.card .card-body .card-buttons .btn{
-  padding: 0.3rem 0.6rem;
+.book_thumbnail img{
+  width: 8rem;
 }
 
-
-.foot div:nth-last-child(n-1){
-  margin-left: 10px;
+.book_emoji{
+  text-align: centerdd;
 }
 
-.text1 + .text1::before {
-  content: "";
-  width: 2px; /* Adjust separator width as needed */
-  background-color: #ccc;
-  margin-left: 10px; /* Adjust separator margin as needed */
+h3{
+  margin-top: 0.4rem;
 }
-
-.text1{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-  .emoji-button:hover{
-    color: #ceb234;
-  }
-  
-.card-image{
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-}
-
-.foot{
-  display: flex;
-  justify-content: space-around;
-  padding: 0.5em;
-}
-
-.foot img{
-  width: 20px;
-  height: 15px;
-}
-
-.pages-card {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	gap: 0em;
-	font-size: 1.5em;
-}
-
-.anchorjs-link{
-  display: none;
-}
-.card {
-  flex: 0 0 calc(33% - 2rem); /* Each card takes up 50% of the width with some spacing between */
-  margin-bottom: 1rem;
-}
-
-@media (max-width: 576px) {
-  .card {
-    flex: 0 0 calc(100% - 1rem); /* Each card takes up 100% of the width on small screens */
+    
+      /* Responsive media queries */
+/* ≥576px: 2 cards */
+@media (min-width: 576px) {
+  .modern-card {
+    flex: 1 1 calc(50% - 1.5rem);
   }
 }
 
-@media ((max-width: 1100px) and (min-width: 600px)) {
-  .card {
-    flex: 0 0 calc(50% - 1rem); /* Each card takes up 100% of the width on small screens */
+/* ≥768px: 3 cards */
+@media (min-width: 1180px) {
+  .modern-card {
+    flex: 1 1 calc(33.333% - 1.5rem);
   }
 }
-  
-  /* Add some padding inside the card container */
-  .container {
-    padding: 2px 16px;
-  }
