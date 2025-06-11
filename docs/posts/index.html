@@ -67,9 +67,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-title','listing-description','listing-categories','listing-image','listing-date','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-title','listing-description','listing-categories','listing-image','listing-date','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-date-modified-sort'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
       
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
+      searchColumns: ["listing-project","listing-website","listing-format","listing-babelquarto","listing-lang","listing-language","listing-title","listing-author","listing-description","listing-freeze","listing-link-external-newwindow","listing-categories","listing-image","listing-image-alt","listing-fig-cap-location","listing-date","listing-toc","listing-toc-title","listing-toc-location","listing-citation","listing-title-block-banner","listing-nocite","listing-csl","listing-bibliography","listing-execute","listing-editor_options","listing-path","listing-outputHref","listing-date-modified","listing-filename","listing-file-modified","listing-reading-time","listing-word-count","listing-knitr","listing-include-after-body"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -125,12 +125,13 @@ window.Quarto = {
   typesetMath
 };
 </script><link rel="stylesheet" href="../assets/styles/styles.css">
+<link rel="stylesheet" href="posts.css">
 <link rel="alternate" type="application/rss+xml" title="stesiam" href="index.xml" data-external="1">
 <meta property="og:title" content="Posts – stesiam">
 <meta property="og:description" content="A collection of English notebooks. Everything that includes coding in R or in other data analysis programming language (such as Python or Julia) will be listed here. Articles that has a general purpose has also a place in here. It seems to be the right place to post an article when I will finally graduate 😀">
 <meta property="og:image" content="https://stesiam.com/posts/eda-graduates-of-statistics/graduation-cap.jpg">
 <meta property="og:site_name" content="stesiam">
-<meta property="og:image:alt" content="graduation cap">
+<meta property="og:image:alt" content="Statistics of Statistics' Graduates">
 </head>
 <body class="nav-fixed quarto-light">
 <script id="quarto-html-before-body" type="application/javascript">
@@ -348,7 +349,7 @@ window.Quarto = {
 </div>
       </div> <!-- /container-fluid -->
     </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default page-columns page-full"><div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
+    <div class="quarto-title column-page">
       <h1 class="title">Posts</h1>
                   <div>
         <div class="description">
@@ -359,7 +360,7 @@ window.Quarto = {
   </div>
     
   
-  <div class="quarto-title-meta column-page-left">
+  <div class="quarto-title-meta column-page">
 
       
     
@@ -370,347 +371,186 @@ window.Quarto = {
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
         
-    <h5 class="quarto-listing-category-title">Categories</h5>
-<div class="quarto-listing-category category-cloud">
-<div class="category" data-category="QVBJ"><span class="quarto-category-count category-cloud-1">API</span></div>
-<div class="category" data-category="Q2F0Qm9vc3Q="><span class="quarto-category-count category-cloud-1">CatBoost</span></div>
-<div class="category" data-category="Q2xhc3NpZmljYXRpb24="><span class="quarto-category-count category-cloud-1">Classification</span></div>
-<div class="category" data-category="RURB"><span class="quarto-category-count category-cloud-4">EDA</span></div>
-<div class="category" data-category="R2VuZXJhbA=="><span class="quarto-category-count category-cloud-1">General</span></div>
-<div class="category" data-category="R2l0"><span class="quarto-category-count category-cloud-1">Git</span></div>
-<div class="category" data-category="TGlnaHRHQk0="><span class="quarto-category-count category-cloud-1">LightGBM</span></div>
-<div class="category" data-category="TGludXg="><span class="quarto-category-count category-cloud-1">Linux</span></div>
-<div class="category" data-category="UERG"><span class="quarto-category-count category-cloud-1">PDF</span></div>
-<div class="category" data-category="UXVhcnRv"><span class="quarto-category-count category-cloud-1">Quarto</span></div>
-<div class="category" data-category="Ug=="><span class="quarto-category-count category-cloud-7">R</span></div>
-<div class="category" data-category="dGFidWxpemVy"><span class="quarto-category-count category-cloud-1">tabulizer</span></div>
-<div class="category" data-category="VGlkeW1vZGVscw=="><span class="quarto-category-count category-cloud-1">Tidymodels</span></div>
-<div class="category" data-category="VGltZSUyMFNlcmllcw=="><span class="quarto-category-count category-cloud-1">Time Series</span></div>
-<div class="category" data-category="WEdCb29zdA=="><span class="quarto-category-count category-cloud-1">XGBoost</span></div>
-</div>
-</div>
+    </div>
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content"><div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="UiUyQ0VEQSUyQ1BERiUyQ3RhYnVsaXplcg==" data-listing-date-sort="1690059600000" data-listing-file-modified-sort="1749266480577" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="20" data-listing-word-count-sort="3854">
-<div class="thumbnail"><a href="../posts/eda-graduates-of-statistics/index.html" class="no-external">
+<main class="content quarto-banner-title-block column-page" id="quarto-document-content"><div class="quarto-listing quarto-listing-container-custom" id="listing-listing">
+<div class="post-list">
+  
+    
+    <a href="../posts/eda-graduates-of-statistics/" class="post-card">
+      <div class="image_area">
+      <img src="../posts/eda-graduates-of-statistics/graduation-cap.jpg" alt="Statistics of Statistics' Graduates" class="thumbnail">
+</div>
+      <div class="post-content">
+        <h2 class="anchored">Statistics of Statistics' Graduates</h2>
+         <div class="meta">
+          <i class="bi bi-alarm"></i><span class="date"> Jul 23, 2023</span> •
+          <i class="bi bi-clock"></i><span class="reading-time"> 20 min</span>  
+        </div>
+        <p>Extracting tabular data from PDF file, in order to explore facts about graduates of Statistics and Insurance Department in University of Piraeus
+</p>
+      </div>
+    </a>
+  
+    
+    <a href="../posts/tutorial-govgr-api/" class="post-card">
+      <div class="image_area">
+      <img src="" alt="Accessing API of data.gov.gr" class="thumbnail">
+</div>
+      <div class="post-content">
+        <h2 class="anchored">Accessing API of data.gov.gr</h2>
+         <div class="meta">
+          <i class="bi bi-alarm"></i><span class="date"> Jul 4, 2023</span> •
+          <i class="bi bi-clock"></i><span class="reading-time"> 4 min</span>  
+        </div>
+        <p>A simple guide to using the data.gov.gr API to get the data stream using R.</p>
+      </div>
+    </a>
+  
+    
+    <a href="../posts/statistics-studies-in-greece/" class="post-card">
+      <div class="image_area">
+      <img src="" alt="Statistics Studies in Greece" class="thumbnail">
+</div>
+      <div class="post-content">
+        <h2 class="anchored">Statistics Studies in Greece</h2>
+         <div class="meta">
+          <i class="bi bi-alarm"></i><span class="date"> Jun 20, 2023</span> •
+          <i class="bi bi-clock"></i><span class="reading-time"> 11 min</span>  
+        </div>
+        <p>Συγκεντρώνω σε μία λίστα τις δημόσιες σχολές στατιστικής στην Ελλάδα και συγκρίνω τα βασικά τους στοιχεία με βάση τους οδηγούς σπουδών τους</p>
+      </div>
+    </a>
+  
+    
+    <a href="../posts/kaggle-greek-community/" class="post-card">
+      <div class="image_area">
+      <img src="../posts/kaggle-greek-community/survey.png" alt="Kaggle's Greek Community" class="thumbnail">
+</div>
+      <div class="post-content">
+        <h2 class="anchored">Kaggle's Greek Community</h2>
+         <div class="meta">
+          <i class="bi bi-alarm"></i><span class="date"> May 6, 2023</span> •
+          <i class="bi bi-clock"></i><span class="reading-time"> 15 min</span>  
+        </div>
+        <p>An exploratory data analysis about Kaggle's Greek community, based on its 2021 survey. A comparison with the rest DS community.
+</p>
+      </div>
+    </a>
+  
+    
+    <a href="../posts/predict-possible-clients/" class="post-card">
+      <div class="image_area">
+      <img src="../posts/predict-possible-clients/client_predict.jpg" alt="Predict Possible Interested Clients" class="thumbnail">
+</div>
+      <div class="post-content">
+        <h2 class="anchored">Predict Possible Interested Clients</h2>
+         <div class="meta">
+          <i class="bi bi-alarm"></i><span class="date"> Nov 24, 2022</span> •
+          <i class="bi bi-clock"></i><span class="reading-time"> 37 min</span>  
+        </div>
+        <p>Build a classification machine learning model (using LightGBM &amp; XGBoost) in order to classify people based on their interest to have a term deposit or not.
+</p>
+      </div>
+    </a>
+  
+    
+    <a href="../posts/install-gbm-in-ubuntu/" class="post-card">
+      <div class="image_area">
+      <img src="../posts/install-gbm-in-ubuntu/images/installation_ubuntu.png" alt="Install LightGBM and CatBoost on Ubuntu 22.04" class="thumbnail">
+</div>
+      <div class="post-content">
+        <h2 class="anchored">Install LightGBM and CatBoost on Ubuntu 22.04</h2>
+         <div class="meta">
+          <i class="bi bi-alarm"></i><span class="date"> Nov 13, 2022</span> •
+          <i class="bi bi-clock"></i><span class="reading-time"> 2 min</span>  
+        </div>
+        <p>Install high performance algorithms (LightGBM, CatBoost &amp; XGBoost) on your Linux device</p>
+      </div>
+    </a>
+  
+    
+    <a href="../posts/git-commands/" class="post-card">
+      <div class="image_area">
+      <img src="../posts/git-commands/images/git_new.png" alt="Git Series (Part I - Configuration)" class="thumbnail">
+</div>
+      <div class="post-content">
+        <h2 class="anchored">Git Series (Part I - Configuration)</h2>
+         <div class="meta">
+          <i class="bi bi-alarm"></i><span class="date"> Nov 4, 2022</span> •
+          <i class="bi bi-clock"></i><span class="reading-time"> 7 min</span>  
+        </div>
+        <p>An article that brings together some configuration setttings of Git. A beginner's approach to Git.</p>
+      </div>
+    </a>
+  
+    
+    <a href="../posts/forecasting-greek-unemployment/" class="post-card">
+      <div class="image_area">
+      <img src="../posts/forecasting-greek-unemployment/unemployment.jpg" alt="Forecasting Unemployment in Greece" class="thumbnail">
+</div>
+      <div class="post-content">
+        <h2 class="anchored">Forecasting Unemployment in Greece</h2>
+         <div class="meta">
+          <i class="bi bi-alarm"></i><span class="date"> Oct 22, 2022</span> •
+          <i class="bi bi-clock"></i><span class="reading-time"> 17 min</span>  
+        </div>
+        <p>Make a prediction about the future value of Greece's unemployment using ARIMA model.
+</p>
+      </div>
+    </a>
+  
+    
+    <a href="../posts/eda-greek-parliament/" class="post-card">
+      <div class="image_area">
+      <img src="../posts/eda-greek-parliament/images/houses-of-parliament.jpg" alt="EDA on Greek Parliament" class="thumbnail">
+</div>
+      <div class="post-content">
+        <h2 class="anchored">EDA on Greek Parliament</h2>
+         <div class="meta">
+          <i class="bi bi-alarm"></i><span class="date"> Oct 10, 2022</span> •
+          <i class="bi bi-clock"></i><span class="reading-time"> 19 min</span>  
+        </div>
+        <p>Let's explore the MPs that got elected the most over the years (1981-2019).
+</p>
+      </div>
+    </a>
+  
+    
+    <a href="../posts/list-of-quarto-sites/" class="post-card">
+      <div class="image_area">
+      <img src="../posts/list-of-quarto-sites/quarto.png" alt="List of Quarto Websites" class="thumbnail">
+</div>
+      <div class="post-content">
+        <h2 class="anchored">List of Quarto Websites</h2>
+         <div class="meta">
+          <i class="bi bi-alarm"></i><span class="date"> Aug 10, 2022</span> •
+          <i class="bi bi-clock"></i><span class="reading-time"> 8 min</span>  
+        </div>
+        <p>A collection of websites built with Quarto. Includes links to websites and their respective repositories. Further additions are always welcome.</p>
+      </div>
+    </a>
+  
+    
+    <a href="../posts/first-article/" class="post-card">
+      <div class="image_area">
+      <img src="../posts/first-article/welcome_sign.jpg" alt="Hello, Quarto" class="thumbnail">
+</div>
+      <div class="post-content">
+        <h2 class="anchored">Hello, Quarto</h2>
+         <div class="meta">
+          <i class="bi bi-alarm"></i><span class="date"> Jul 27, 2022</span> •
+          <i class="bi bi-clock"></i><span class="reading-time"> 3 min</span>  
+        </div>
+        <p>My very first article in my personal site which is built using Quarto!
+</p>
+      </div>
+    </a>
+  
+</div>
 
-<img loading="lazy" src="../posts/eda-graduates-of-statistics/graduation-cap.jpg" class="thumbnail-image" alt="graduation cap"></a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../posts/eda-graduates-of-statistics/index.html" class="no-external">Statistics of Statistics’ Graduates</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('RURB'); return false;">EDA</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UERG'); return false;">PDF</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('dGFidWxpemVy'); return false;">tabulizer</div>
-
-</div>
-<div class="delink listing-description"><a href="../posts/eda-graduates-of-statistics/index.html" class="no-external">
-<p>Extracting tabular data from PDF file, in order to explore facts about graduates of Statistics and Insurance Department in University of Piraeus</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../posts/eda-graduates-of-statistics/index.html" class="no-external">
-<div class="listing-date">
-Jul 23, 2023
-</div>
-<div class="listing-reading-time">20 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="UiUyQ0FQSQ==" data-listing-date-sort="1688418000000" data-listing-file-modified-sort="1749266481169" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="684">
-<div class="thumbnail"><a href="../posts/tutorial-govgr-api/index.html" class="no-external">
-
-<p class="card-img-top"><img src="tutorial-govgr-api/images/datagovgr_api_request.png" class="thumbnail-image card-img"></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../posts/tutorial-govgr-api/index.html" class="no-external">Accessing API of data.gov.gr</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('QVBJ'); return false;">API</div>
-
-</div>
-<div class="delink listing-description"><a href="../posts/tutorial-govgr-api/index.html" class="no-external">
-<p>A simple guide to using the data.gov.gr API to get the data stream using R.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../posts/tutorial-govgr-api/index.html" class="no-external">
-<div class="listing-date">
-Jul 4, 2023
-</div>
-<div class="listing-reading-time">4 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="UiUyQ0VEQQ==" data-listing-date-sort="1687208400000" data-listing-file-modified-sort="1749266481150" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2122">
-<div class="thumbnail"><a href="../posts/statistics-studies-in-greece/index.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top"> </div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../posts/statistics-studies-in-greece/index.html" class="no-external">Statistics Studies in Greece</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('RURB'); return false;">EDA</div>
-
-</div>
-<div class="delink listing-description"><a href="../posts/statistics-studies-in-greece/index.html" class="no-external">
-<p>Συγκεντρώνω σε μία λίστα τις δημόσιες σχολές στατιστικής στην Ελλάδα και συγκρίνω τα βασικά τους στοιχεία με βάση τους οδηγούς σπουδών τους</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../posts/statistics-studies-in-greece/index.html" class="no-external">
-<div class="listing-date">
-Jun 20, 2023
-</div>
-<div class="listing-reading-time">11 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="UiUyQ0VEQQ==" data-listing-date-sort="1683320400000" data-listing-file-modified-sort="1749266480983" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2993">
-<div class="thumbnail"><a href="../posts/kaggle-greek-community/index.html" class="no-external">
-
-<img loading="lazy" src="../posts/kaggle-greek-community/survey.png" class="thumbnail-image" alt="random survey with ticked values"></a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../posts/kaggle-greek-community/index.html" class="no-external">Kaggle’s Greek Community</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('RURB'); return false;">EDA</div>
-
-</div>
-<div class="delink listing-description"><a href="../posts/kaggle-greek-community/index.html" class="no-external">
-<p>An exploratory data analysis about Kaggle’s Greek community, based on its 2021 survey. A comparison with the rest DS community.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../posts/kaggle-greek-community/index.html" class="no-external">
-<div class="listing-date">
-May 6, 2023
-</div>
-<div class="listing-reading-time">15 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="UiUyQ0NsYXNzaWZpY2F0aW9uJTJDVGlkeW1vZGVscw==" data-listing-date-sort="1669240800000" data-listing-file-modified-sort="1749266481096" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="37" data-listing-word-count-sort="7280">
-<div class="thumbnail"><a href="../posts/predict-possible-clients/index.html" class="no-external">
-
-<img loading="lazy" src="../posts/predict-possible-clients/client_predict.jpg" class="thumbnail-image" alt="Μagnifying glass shows human figures"></a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../posts/predict-possible-clients/index.html" class="no-external">Predict Possible Interested Clients</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q2xhc3NpZmljYXRpb24='); return false;">Classification</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('VGlkeW1vZGVscw=='); return false;">Tidymodels</div>
-
-</div>
-<div class="delink listing-description"><a href="../posts/predict-possible-clients/index.html" class="no-external">
-<p>Build a classification machine learning model (using LightGBM &amp; XGBoost) in order to classify people based on their interest to have a term deposit or not.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../posts/predict-possible-clients/index.html" class="no-external">
-<div class="listing-date">
-Nov 24, 2022
-</div>
-<div class="listing-reading-time">37 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-categories="TGludXglMkNMaWdodEdCTSUyQ0NhdEJvb3N0JTJDWEdCb29zdA==" data-listing-date-sort="1668290400000" data-listing-file-modified-sort="1749266480686" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="310">
-<div class="thumbnail"><a href="../posts/install-gbm-in-ubuntu/index.html" class="no-external">
-
-<img loading="lazy" src="../posts/install-gbm-in-ubuntu/images/installation_ubuntu.png" class="thumbnail-image" alt="LightGBM and CatBoost on Ubuntu 22.04"></a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../posts/install-gbm-in-ubuntu/index.html" class="no-external">Install LightGBM and CatBoost on Ubuntu 22.04</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('TGludXg='); return false;">Linux</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('TGlnaHRHQk0='); return false;">LightGBM</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q2F0Qm9vc3Q='); return false;">CatBoost</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('WEdCb29zdA=='); return false;">XGBoost</div>
-
-</div>
-<div class="delink listing-description"><a href="../posts/install-gbm-in-ubuntu/index.html" class="no-external">
-<p>Install high performance algorithms (LightGBM, CatBoost &amp; XGBoost) on your Linux device</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../posts/install-gbm-in-ubuntu/index.html" class="no-external">
-<div class="listing-date">
-Nov 13, 2022
-</div>
-<div class="listing-reading-time">2 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-categories="R2l0" data-listing-date-sort="1667512800000" data-listing-file-modified-sort="1749266480680" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1325">
-<div class="thumbnail"><a href="../posts/git-commands/index.html" class="no-external">
-
-<img loading="lazy" src="../posts/git-commands/images/git_new.png" class="thumbnail-image" alt="Git commands"></a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../posts/git-commands/index.html" class="no-external">Git Series (Part I - Configuration)</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('R2l0'); return false;">Git</div>
-
-</div>
-<div class="delink listing-description"><a href="../posts/git-commands/index.html" class="no-external">
-<p>An article that brings together some configuration setttings of Git. A beginner’s approach to Git.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../posts/git-commands/index.html" class="no-external">
-<div class="listing-date">
-Nov 4, 2022
-</div>
-<div class="listing-reading-time">7 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="7" data-categories="UiUyQ1RpbWUlMjBTZXJpZXM=" data-listing-date-sort="1666386000000" data-listing-file-modified-sort="1749266480667" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="17" data-listing-word-count-sort="3311">
-<div class="thumbnail"><a href="../posts/forecasting-greek-unemployment/index.html" class="no-external">
-
-<img loading="lazy" src="../posts/forecasting-greek-unemployment/unemployment.jpg" class="thumbnail-image" alt="Word cloud comprised with words related to unemployment"></a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../posts/forecasting-greek-unemployment/index.html" class="no-external">Forecasting Unemployment in Greece</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('VGltZSUyMFNlcmllcw=='); return false;">Time Series</div>
-
-</div>
-<div class="delink listing-description"><a href="../posts/forecasting-greek-unemployment/index.html" class="no-external">
-<p>Make a prediction about the future value of Greece’s unemployment using ARIMA model.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../posts/forecasting-greek-unemployment/index.html" class="no-external">
-<div class="listing-date">
-Oct 22, 2022
-</div>
-<div class="listing-reading-time">17 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="8" data-categories="UiUyQ0VEQQ==" data-listing-date-sort="1665349200000" data-listing-file-modified-sort="1749266480663" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="19" data-listing-word-count-sort="3717">
-<div class="thumbnail"><a href="../posts/eda-greek-parliament/index.html" class="no-external">
-
-<img loading="lazy" src="../posts/eda-greek-parliament/images/houses-of-parliament.jpg" class="thumbnail-image" alt="Facade of the Greek Parliament building"></a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../posts/eda-greek-parliament/index.html" class="no-external">EDA on Greek Parliament</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('RURB'); return false;">EDA</div>
-
-</div>
-<div class="delink listing-description"><a href="../posts/eda-greek-parliament/index.html" class="no-external">
-<p>Let’s explore the MPs that got elected the most over the years (1981-2019).</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../posts/eda-greek-parliament/index.html" class="no-external">
-<div class="listing-date">
-Oct 10, 2022
-</div>
-<div class="listing-reading-time">19 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="9" data-categories="UXVhcnRv" data-listing-date-sort="1660078800000" data-listing-file-modified-sort="1749266480994" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1530">
-<div class="thumbnail"><a href="../posts/list-of-quarto-sites/index.html" class="no-external">
-
-<img loading="lazy" src="../posts/list-of-quarto-sites/quarto.png" class="thumbnail-image" alt="Quarto logo"></a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../posts/list-of-quarto-sites/index.html" class="no-external">List of Quarto Websites</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UXVhcnRv'); return false;">Quarto</div>
-
-</div>
-<div class="delink listing-description"><a href="../posts/list-of-quarto-sites/index.html" class="no-external">
-<p>A collection of websites built with Quarto. Includes links to websites and their respective repositories. Further additions are always welcome.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../posts/list-of-quarto-sites/index.html" class="no-external">
-<div class="listing-date">
-Aug 10, 2022
-</div>
-<div class="listing-reading-time">8 min</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="10" data-categories="R2VuZXJhbA==" data-listing-date-sort="1658869200000" data-listing-file-modified-sort="1749266480664" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="566">
-<div class="thumbnail"><a href="../posts/first-article/index.html" class="no-external">
-
-<img loading="lazy" src="../posts/first-article/welcome_sign.jpg" class="thumbnail-image" alt="A welcome sign between some leefs which indicates a specific direction"></a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../posts/first-article/index.html" class="no-external">Hello, Quarto</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('R2VuZXJhbA=='); return false;">General</div>
-
-</div>
-<div class="delink listing-description"><a href="../posts/first-article/index.html" class="no-external">
-<p>My very first article in my personal site which is built using Quarto!</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../posts/first-article/index.html" class="no-external">
-<div class="listing-date">
-Jul 27, 2022
-</div>
-<div class="listing-reading-time">3 min</div>
-</a>
-</div>
-</div>
-</div>
 <div class="listing-no-matching d-none">No matching items</div>
 </div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {

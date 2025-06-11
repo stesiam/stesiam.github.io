@@ -67,9 +67,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-title','listing-description','listing-categories','listing-image','listing-date','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-title','listing-description','listing-categories','listing-image','listing-date','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-date-modified-sort'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
       
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
+      searchColumns: ["listing-project","listing-website","listing-format","listing-babelquarto","listing-lang","listing-language","listing-title","listing-author","listing-description","listing-freeze","listing-link-external-newwindow","listing-categories","listing-image","listing-image-alt","listing-fig-cap-location","listing-date","listing-toc","listing-toc-title","listing-toc-location","listing-citation","listing-title-block-banner","listing-nocite","listing-csl","listing-bibliography","listing-execute","listing-editor_options","listing-path","listing-outputHref","listing-date-modified","listing-filename","listing-file-modified","listing-reading-time","listing-word-count"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -125,12 +125,13 @@ window.Quarto = {
   typesetMath
 };
 </script><link rel="stylesheet" href="../assets/styles/styles.css">
+<link rel="stylesheet" href="posts.css">
 <link rel="alternate" type="application/rss+xml" title="stesiam" href="index.xml" data-external="1">
 <meta property="og:title" content="Άρθρα – stesiam">
 <meta property="og:description" content="Μία συλλογή ελληνικών άρθρων για τη Στατιστική και την R. Σε αυτή την ενότητα θα βρούμε μία διαφορετική λίστα άρθρων από την αντίστοιχη αγγλική, μιας και υπάρχουν άρθρα που δεν έχει νόημα να μεταφραστούν και έχουν ενδιαφέρον μόνο για το ελληνόφωνο κοινό. Μελλοντικά, σκοπεύω να δημιουργήσω μία ελληνική μετάφραση - περίληψη για κάθε αγγλικό άρθρο. Παρεμπιπτόντως, αν ποτέ αξιωθώ να πάρω πτυχίο αυτό είναι το μέρος που θα το γράψω πρώτα 😀">
 <meta property="og:image" content="https://stesiam.com/posts/eda-graduates-of-statistics/graduation-cap.jpg">
 <meta property="og:site_name" content="stesiam">
-<meta property="og:image:alt" content="graduation cap">
+<meta property="og:image:alt" content="Στατιστικά των Αποφοίτων Στατιστικής">
 </head>
 <body class="nav-fixed quarto-light">
 <script id="quarto-html-before-body" type="application/javascript">
@@ -348,7 +349,7 @@ window.Quarto = {
 </div>
       </div> <!-- /container-fluid -->
     </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default page-columns page-full"><div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
+    <div class="quarto-title column-page">
       <h1 class="title">Άρθρα</h1>
                   <div>
         <div class="description">
@@ -359,7 +360,7 @@ window.Quarto = {
   </div>
     
   
-  <div class="quarto-title-meta column-page-left">
+  <div class="quarto-title-meta column-page">
 
       
     
@@ -370,253 +371,138 @@ window.Quarto = {
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
         
-    <h5 class="quarto-listing-category-title">Κατηγορίες</h5>
-<div class="quarto-listing-category category-cloud">
-<div class="category" data-category="QVBJ"><span class="quarto-category-count category-cloud-2">API</span></div>
-<div class="category" data-category="UERG"><span class="quarto-category-count category-cloud-2">PDF</span></div>
-<div class="category" data-category="UXVhcnRv"><span class="quarto-category-count category-cloud-2">Quarto</span></div>
-<div class="category" data-category="Ug=="><span class="quarto-category-count category-cloud-8">R</span></div>
-<div class="category" data-category="dGFidWxpemVy"><span class="quarto-category-count category-cloud-2">tabulizer</span></div>
-<div class="category" data-category="JUNFJTkzJUNFJUI1JUNFJUJEJUNFJUI5JUNFJUJBJUNFJUIx"><span class="quarto-category-count category-cloud-2">Γενικα</span></div>
-<div class="category" data-category="JUNFJUEwJUNFJUI1JUNGJTgxJUNFJUI5JUNFJUIzJUNGJTgxJUNFJUIxJUNGJTg2JUNFJUI5JUNFJUJBJUNFJUI3JTIwJUNFJUIxJUNFJUJEJUNFJUIxJUNFJUJCJUNGJTg1JUNGJTgzJUNFJUI3"><span class="quarto-category-count category-cloud-4">Περιγραφικη αναλυση</span></div>
-<div class="category" data-category="JUNFJUE1JUNFJUJCJUNFJUI5JUNFJUJBJUNFJUJG"><span class="quarto-category-count category-cloud-2">Υλικο</span></div>
-<div class="category" data-category="JUNFJUE3JUNGJTgxJUNFJUJGJUNFJUJEJUNFJUJGJUNGJTgzJUNFJUI1JUNFJUI5JUNGJTgxJUNFJUI1JUNGJTgy"><span class="quarto-category-count category-cloud-2">Χρονοσειρες</span></div>
-</div>
-</div>
+    </div>
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content"><div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="UiUyQyVDRSVBMCVDRSVCNSVDRiU4MSVDRSVCOSVDRSVCMyVDRiU4MSVDRSVCMSVDRiU4NiVDRSVCOSVDRSVCQSVDRSVCNyUyMCVDRSVCMSVDRSVCRCVDRSVCMSVDRSVCQiVDRiU4NSVDRiU4MyVDRSVCNyUyQ1BERiUyQ3RhYnVsaXplcg==" data-listing-date-sort="1690059600000" data-listing-file-modified-sort="1749267024496" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="414">
-<div class="thumbnail"><a href="../posts/eda-graduates-of-statistics/index.html" class="no-external">
+<main class="content quarto-banner-title-block column-page" id="quarto-document-content"><div class="quarto-listing quarto-listing-container-custom" id="listing-listing">
+<div class="post-list">
+  
+    
+    <a href="../posts/eda-graduates-of-statistics/" class="post-card">
+      <div class="image_area">
+      <img src="../posts/eda-graduates-of-statistics/graduation-cap.jpg" alt="Στατιστικά των Αποφοίτων Στατιστικής" class="thumbnail">
+</div>
+      <div class="post-content">
+        <h2 class="anchored">Στατιστικά των Αποφοίτων Στατιστικής</h2>
+         <div class="meta">
+          <i class="bi bi-alarm"></i><span class="date"> 23 Ιουλ 2023</span> •
+          <i class="bi bi-clock"></i><span class="reading-time"> 3 λεπτά</span>  
+        </div>
+        <p>Εξαγωγή δεδομένων από αρχεία pdf, με σκοπό τη περιγραφική μελέτη στοιχείων των απόφοιτων του τμήματος Στατιστικής και Ασφαλιστικής Επιστήμης του Πανεπιστημίου Πειραιά
+</p>
+      </div>
+    </a>
+  
+    
+    <a href="../posts/tutorial-govgr-api/" class="post-card">
+      <div class="image_area">
+      <img src="" alt="Πρόσβαση στο API του data.gov.gr" class="thumbnail">
+</div>
+      <div class="post-content">
+        <h2 class="anchored">Πρόσβαση στο API του data.gov.gr</h2>
+         <div class="meta">
+          <i class="bi bi-alarm"></i><span class="date"> 4 Ιουλ 2023</span> •
+          <i class="bi bi-clock"></i><span class="reading-time"> 4 λεπτά</span>  
+        </div>
+        <p>Ένας απλός οδηγός χρήσης του API του data.gov.gr, ώστε να λαμβάνετε τη ροή δεδομένων με τη χρήση της R.</p>
+      </div>
+    </a>
+  
+    
+    <a href="../posts/statistics-studies-in-greece/" class="post-card">
+      <div class="image_area">
+      <img src="" alt="Σπουδές Στατιστικής στην Ελλάδα" class="thumbnail">
+</div>
+      <div class="post-content">
+        <h2 class="anchored">Σπουδές Στατιστικής στην Ελλάδα</h2>
+         <div class="meta">
+          <i class="bi bi-alarm"></i><span class="date"> 20 Ιουν 2023</span> •
+          <i class="bi bi-clock"></i><span class="reading-time"> 13 λεπτά</span>  
+        </div>
+        <p>Συγκεντρώνω σε μία λίστα τις δημόσιες σχολές στατιστικής στην Ελλάδα και συγκρίνω τα βασικά τους στοιχεία με βάση τους οδηγούς σπουδών τους</p>
+      </div>
+    </a>
+  
+    
+    <a href="../posts/greek-material-for-r/" class="post-card">
+      <div class="image_area">
+      <img src="../posts/greek-material-for-r/book.jpg" alt="Συγκεντρωμένο υλικό για την R στα ελληνικά" class="thumbnail">
+</div>
+      <div class="post-content">
+        <h2 class="anchored">Συγκεντρωμένο υλικό για την R στα ελληνικά</h2>
+         <div class="meta">
+          <i class="bi bi-alarm"></i><span class="date"> 23 Οκτ 2022</span> •
+          <i class="bi bi-clock"></i><span class="reading-time"> 8 λεπτά</span>  
+        </div>
+        <p>Μία λίστα (που θα ανανεώνεται συνεχώς) με υλικό που υπάρχει ελεύθερα διαθέσιμο στο διαδίκτυο σχετικά με την γλώσσα προγραματισμού R</p>
+      </div>
+    </a>
+  
+    
+    <a href="../posts/forecasting-greek-unemployment/" class="post-card">
+      <div class="image_area">
+      <img src="../posts/forecasting-greek-unemployment/unemployment.jpg" alt="Προβλέποντας την Ανεργία στην Ελλάδα" class="thumbnail">
+</div>
+      <div class="post-content">
+        <h2 class="anchored">Προβλέποντας την Ανεργία στην Ελλάδα</h2>
+         <div class="meta">
+          <i class="bi bi-alarm"></i><span class="date"> 22 Οκτ 2022</span> •
+          <i class="bi bi-clock"></i><span class="reading-time"> 1 λεπτά</span>  
+        </div>
+        <p>Μία βραχυπρόθεσμη πρόβλεψη για την πορεία την ανεργίας τους επόμενους μήνες στην Ελλάδα, χρησιμοποιώντας μοντέλα ARIMA.
+</p>
+      </div>
+    </a>
+  
+    
+    <a href="../posts/eda-greek-parliament/" class="post-card">
+      <div class="image_area">
+      <img src="../posts/eda-greek-parliament/images/houses-of-parliament.jpg" alt="Περιγραφική Ανάλυση Ελληνικού Κοινοβουλίου" class="thumbnail">
+</div>
+      <div class="post-content">
+        <h2 class="anchored">Περιγραφική Ανάλυση Ελληνικού Κοινοβουλίου</h2>
+         <div class="meta">
+          <i class="bi bi-alarm"></i><span class="date"> 10 Οκτ 2022</span> •
+          <i class="bi bi-clock"></i><span class="reading-time"> 17 λεπτά</span>  
+        </div>
+        <p>Μία βασική ανάλυση των διατελέσαντων βουλευτών της περιόδου (1981 - 2019)
+</p>
+      </div>
+    </a>
+  
+    
+    <a href="../posts/list-of-quarto-sites/" class="post-card">
+      <div class="image_area">
+      <img src="../posts/list-of-quarto-sites/quarto.png" alt="Συλλογή Quarto ιστοσελίδων" class="thumbnail">
+</div>
+      <div class="post-content">
+        <h2 class="anchored">Συλλογή Quarto ιστοσελίδων</h2>
+         <div class="meta">
+          <i class="bi bi-alarm"></i><span class="date"> 10 Αυγ 2022</span> •
+          <i class="bi bi-clock"></i><span class="reading-time"> 9 λεπτά</span>  
+        </div>
+        <p>Μία λίστα 80+ σελίδων που χρησιμοποιούν το Quarto. Περιλαμβάνονται σύνδεσμοι στις ιστοσελίδες και στον αντίστοιχο κώδικά τους στο GitHub. Τυχόν προσθήκες είναι ευπρόσδεκτες.</p>
+      </div>
+    </a>
+  
+    
+    <a href="../posts/first-article/" class="post-card">
+      <div class="image_area">
+      <img src="../posts/first-article/welcome_sign.jpg" alt="Πρώτο άρθρο!" class="thumbnail">
+</div>
+      <div class="post-content">
+        <h2 class="anchored">Πρώτο άρθρο!</h2>
+         <div class="meta">
+          <i class="bi bi-alarm"></i><span class="date"> 27 Ιουλ 2022</span> •
+          <i class="bi bi-clock"></i><span class="reading-time"> 6 λεπτά</span>  
+        </div>
+        <p>Το πρώτο μου άρθρό στη προσωπική μου σελίδα χρησιμοποιώντας το Quarto.</p>
+      </div>
+    </a>
+  
+</div>
 
-<img loading="lazy" src="../posts/eda-graduates-of-statistics/graduation-cap.jpg" class="thumbnail-image" alt="graduation cap"></a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../posts/eda-graduates-of-statistics/index.html" class="no-external">Στατιστικά των Αποφοίτων Στατιστικής</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('JUNFJUEwJUNFJUI1JUNGJTgxJUNFJUI5JUNFJUIzJUNGJTgxJUNFJUIxJUNGJTg2JUNFJUI5JUNFJUJBJUNFJUI3JTIwJUNFJUIxJUNFJUJEJUNFJUIxJUNFJUJCJUNGJTg1JUNGJTgzJUNFJUI3'); return false;">Περιγραφικη αναλυση</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UERG'); return false;">PDF</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('dGFidWxpemVy'); return false;">tabulizer</div>
-
-</div>
-<div class="delink listing-description"><a href="../posts/eda-graduates-of-statistics/index.html" class="no-external">
-<p>Εξαγωγή δεδομένων από αρχεία pdf, με σκοπό τη περιγραφική μελέτη στοιχείων των απόφοιτων του τμήματος Στατιστικής και Ασφαλιστικής Επιστήμης του Πανεπιστημίου Πειραιά</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../posts/eda-graduates-of-statistics/index.html" class="no-external">
-<div class="listing-date">
-23 Ιουλ 2023
-</div>
-<div class="listing-reading-time">3 λεπτά</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="UiUyQ0FQSQ==" data-listing-date-sort="1688418000000" data-listing-file-modified-sort="1749267024909" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="692">
-<div class="thumbnail"><a href="../posts/tutorial-govgr-api/index.html" class="no-external">
-
-<p class="card-img-top"><img src="tutorial-govgr-api/images/datagovgr_api_request.png" class="thumbnail-image card-img"></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../posts/tutorial-govgr-api/index.html" class="no-external">Πρόσβαση στο API του data.gov.gr</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('QVBJ'); return false;">API</div>
-
-</div>
-<div class="delink listing-description"><a href="../posts/tutorial-govgr-api/index.html" class="no-external">
-<p>Ένας απλός οδηγός χρήσης του API του data.gov.gr, ώστε να λαμβάνετε τη ροή δεδομένων με τη χρήση της R.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../posts/tutorial-govgr-api/index.html" class="no-external">
-<div class="listing-date">
-4 Ιουλ 2023
-</div>
-<div class="listing-reading-time">4 λεπτά</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="UiUyQyVDRSVBMCVDRSVCNSVDRiU4MSVDRSVCOSVDRSVCMyVDRiU4MSVDRSVCMSVDRiU4NiVDRSVCOSVDRSVCQSVDRSVCNyUyMCVDRSVCMSVDRSVCRCVDRSVCMSVDRSVCQiVDRiU4NSVDRiU4MyVDRSVCNw==" data-listing-date-sort="1687208400000" data-listing-file-modified-sort="1749267024903" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2511">
-<div class="thumbnail"><a href="../posts/statistics-studies-in-greece/index.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top"> </div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../posts/statistics-studies-in-greece/index.html" class="no-external">Σπουδές Στατιστικής στην Ελλάδα</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('JUNFJUEwJUNFJUI1JUNGJTgxJUNFJUI5JUNFJUIzJUNGJTgxJUNFJUIxJUNGJTg2JUNFJUI5JUNFJUJBJUNFJUI3JTIwJUNFJUIxJUNFJUJEJUNFJUIxJUNFJUJCJUNGJTg1JUNGJTgzJUNFJUI3'); return false;">Περιγραφικη αναλυση</div>
-
-</div>
-<div class="delink listing-description"><a href="../posts/statistics-studies-in-greece/index.html" class="no-external">
-<p>Συγκεντρώνω σε μία λίστα τις δημόσιες σχολές στατιστικής στην Ελλάδα και συγκρίνω τα βασικά τους στοιχεία με βάση τους οδηγούς σπουδών τους</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../posts/statistics-studies-in-greece/index.html" class="no-external">
-<div class="listing-date">
-20 Ιουν 2023
-</div>
-<div class="listing-reading-time">13 λεπτά</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="UiUyQyVDRSVBNSVDRSVCQiVDRSVCOSVDRSVCQSVDRSVCRg==" data-listing-date-sort="1666472400000" data-listing-file-modified-sort="1749267024622" data-listing-date-modified-sort="1721595600000" data-listing-reading-time-sort="8" data-listing-word-count-sort="1416">
-<div class="thumbnail"><a href="../posts/greek-material-for-r/index.html" class="no-external">
-
-<img loading="lazy" src="../posts/greek-material-for-r/book.jpg" class="thumbnail-image" alt="An open book"></a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../posts/greek-material-for-r/index.html" class="no-external">Συγκεντρωμένο υλικό για την R στα ελληνικά</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('JUNFJUE1JUNFJUJCJUNFJUI5JUNFJUJBJUNFJUJG'); return false;">Υλικο</div>
-
-</div>
-<div class="delink listing-description"><a href="../posts/greek-material-for-r/index.html" class="no-external">
-<p>Μία λίστα (που θα ανανεώνεται συνεχώς) με υλικό που υπάρχει ελεύθερα διαθέσιμο στο διαδίκτυο σχετικά με την γλώσσα προγραματισμού R</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../posts/greek-material-for-r/index.html" class="no-external">
-<div class="listing-date">
-23 Οκτ 2022
-</div>
-<div class="listing-reading-time">8 λεπτά</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="UiUyQyVDRSVBNyVDRiU4MSVDRSVCRiVDRSVCRCVDRSVCRiVDRiU4MyVDRSVCNSVDRSVCOSVDRiU4MSVDRSVCNSVDRiU4Mg==" data-listing-date-sort="1666386000000" data-listing-file-modified-sort="1749267024608" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
-<div class="thumbnail"><a href="../posts/forecasting-greek-unemployment/index.html" class="no-external">
-
-<img loading="lazy" src="../posts/forecasting-greek-unemployment/unemployment.jpg" class="thumbnail-image" alt="Word cloud comprised with words related to unemployment"></a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../posts/forecasting-greek-unemployment/index.html" class="no-external">Προβλέποντας την Ανεργία στην Ελλάδα</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('JUNFJUE3JUNGJTgxJUNFJUJGJUNFJUJEJUNFJUJGJUNGJTgzJUNFJUI1JUNFJUI5JUNGJTgxJUNFJUI1JUNGJTgy'); return false;">Χρονοσειρες</div>
-
-</div>
-<div class="delink listing-description"><a href="../posts/forecasting-greek-unemployment/index.html" class="no-external">
-<p>Μία βραχυπρόθεσμη πρόβλεψη για την πορεία την ανεργίας τους επόμενους μήνες στην Ελλάδα, χρησιμοποιώντας μοντέλα ARIMA.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../posts/forecasting-greek-unemployment/index.html" class="no-external">
-<div class="listing-date">
-22 Οκτ 2022
-</div>
-<div class="listing-reading-time">1 λεπτά</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-categories="UiUyQyVDRSVBMCVDRSVCNSVDRiU4MSVDRSVCOSVDRSVCMyVDRiU4MSVDRSVCMSVDRiU4NiVDRSVCOSVDRSVCQSVDRSVCNyUyMCVDRSVCMSVDRSVCRCVDRSVCMSVDRSVCQiVDRiU4NSVDRiU4MyVDRSVCNw==" data-listing-date-sort="1665349200000" data-listing-file-modified-sort="1749267024559" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="17" data-listing-word-count-sort="3346">
-<div class="thumbnail"><a href="../posts/eda-greek-parliament/index.html" class="no-external">
-
-<img loading="lazy" src="../posts/eda-greek-parliament/images/houses-of-parliament.jpg" class="thumbnail-image" alt="Πρόσοψη κτιρίου Ελληνικού Κοινοβουλίου"></a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../posts/eda-greek-parliament/index.html" class="no-external">Περιγραφική Ανάλυση Ελληνικού Κοινοβουλίου</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('JUNFJUEwJUNFJUI1JUNGJTgxJUNFJUI5JUNFJUIzJUNGJTgxJUNFJUIxJUNGJTg2JUNFJUI5JUNFJUJBJUNFJUI3JTIwJUNFJUIxJUNFJUJEJUNFJUIxJUNFJUJCJUNGJTg1JUNGJTgzJUNFJUI3'); return false;">Περιγραφικη αναλυση</div>
-
-</div>
-<div class="delink listing-description"><a href="../posts/eda-greek-parliament/index.html" class="no-external">
-<p>Μία βασική ανάλυση των διατελέσαντων βουλευτών της περιόδου (1981 - 2019)</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../posts/eda-greek-parliament/index.html" class="no-external">
-<div class="listing-date">
-10 Οκτ 2022
-</div>
-<div class="listing-reading-time">17 λεπτά</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-categories="UXVhcnRv" data-listing-date-sort="1660078800000" data-listing-file-modified-sort="1749267024867" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1726">
-<div class="thumbnail"><a href="../posts/list-of-quarto-sites/index.html" class="no-external">
-
-<img loading="lazy" src="../posts/list-of-quarto-sites/quarto.png" class="thumbnail-image" alt="Λογότυπο του λογισμικού Quarto"></a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../posts/list-of-quarto-sites/index.html" class="no-external">Συλλογή Quarto ιστοσελίδων</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UXVhcnRv'); return false;">Quarto</div>
-
-</div>
-<div class="delink listing-description"><a href="../posts/list-of-quarto-sites/index.html" class="no-external">
-<p>Μία λίστα 80+ σελίδων που χρησιμοποιούν το Quarto. Περιλαμβάνονται σύνδεσμοι στις ιστοσελίδες και στον αντίστοιχο κώδικά τους στο GitHub. Τυχόν προσθήκες είναι ευπρόσδεκτες.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../posts/list-of-quarto-sites/index.html" class="no-external">
-<div class="listing-date">
-10 Αυγ 2022
-</div>
-<div class="listing-reading-time">9 λεπτά</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="7" data-categories="JUNFJTkzJUNFJUI1JUNFJUJEJUNFJUI5JUNFJUJBJUNFJUIx" data-listing-date-sort="1658869200000" data-listing-file-modified-sort="1749267024605" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1036">
-<div class="thumbnail"><a href="../posts/first-article/index.html" class="no-external">
-
-<img loading="lazy" src="../posts/first-article/welcome_sign.jpg" class="thumbnail-image" alt="Μία πινακίδα καλωσορίσματος ανάμεσα σε μερικά φύλλα που υποδεικνύει σε μία συγκεκριμένη κατεύθυνση"></a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../posts/first-article/index.html" class="no-external">Πρώτο άρθρο!</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('JUNFJTkzJUNFJUI1JUNFJUJEJUNFJUI5JUNFJUJBJUNFJUIx'); return false;">Γενικα</div>
-
-</div>
-<div class="delink listing-description"><a href="../posts/first-article/index.html" class="no-external">
-<p>Το πρώτο μου άρθρό στη προσωπική μου σελίδα χρησιμοποιώντας το Quarto.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../posts/first-article/index.html" class="no-external">
-<div class="listing-date">
-27 Ιουλ 2022
-</div>
-<div class="listing-reading-time">6 λεπτά</div>
-</a>
-</div>
-</div>
-</div>
 <div class="listing-no-matching d-none">Δεν υπάρχουν αντιστοιχίες</div>
 </div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
