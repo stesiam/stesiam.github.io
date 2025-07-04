@@ -90,6 +90,79 @@ options(digits=2) # print only 2 decimals
 knitr::write_bib(.packages(), file = 'packages.bib')
 ```
 
+
+```{r}
+acf_plot_function = function(data, min = -1, max = 1){
+  ts_data <- data
+  N <- length(ts_data)
+
+# Compute confidence limit
+conf_limit <- qnorm(0.975) / sqrt(N)
+
+# Use forecast::Acf (biased estimator, recommended for ARIMA)
+acf_obj <- Acf(ts_data, plot = FALSE, lag.max = 20)
+
+# Extract lags and values
+# Note: Acf() returns acf_obj$acf as a matrix; acf_obj$lag as a matrix
+lags_acf <- as.numeric(acf_obj$lag[-1])             # skip lag 0
+acf_values <- as.numeric(acf_obj$acf[-1])           # skip lag 0
+
+# Build the highcharter ACF plot
+acf_chart <- highchart() %>%
+  hc_chart(type = "column") %>%
+  hc_title(text = "Autocorrelation Plot") %>%
+  hc_xAxis(categories = lags_acf, title = list(text = "Lag")) %>%
+  hc_yAxis(min = min, max = max,
+    title = list(text = "ACF"),
+    plotLines = list(
+      list(value = 0, color = "#000000", width = 3),
+      list(value = conf_limit, color = "#FF0000", dashStyle = "ShortDash", width = 1),
+      list(value = -conf_limit, color = "#FF0000", dashStyle = "ShortDash", width = 1)
+    )
+  ) %>%
+  hc_legend(enabled = FALSE) %>%
+  hc_add_series(name = "ACF", data = round(acf_values, digits = 4))
+
+# Show chart
+acf_chart
+}
+
+pacf_plot_function <- function(data, min = -1, max = 1) {
+  ts_data <- data
+  N <- length(ts_data)
+  
+  # Compute confidence limit (same formula as for ACF)
+  conf_limit <- qnorm(0.975) / sqrt(N)
+  
+  # Compute PACF using forecast::Pacf (biased estimator, recommended for ARIMA)
+  pacf_obj <- forecast::Pacf(ts_data, plot = FALSE, lag.max = 20)
+  
+  # Extract lags and PACF values
+  lags_pacf <- as.numeric(pacf_obj$lag)  # already excludes lag 0
+  pacf_values <- as.numeric(pacf_obj$acf)
+  
+  # Build the highcharter PACF plot
+  pacf_chart <- highcharter::highchart() %>%
+    highcharter::hc_chart(type = "column") %>%
+    highcharter::hc_title(text = "Partial Autocorrelation Plot") %>%
+    highcharter::hc_xAxis(categories = lags_pacf, title = list(text = "Lag")) %>%
+    highcharter::hc_yAxis(
+      min = min, max = max,
+      title = list(text = "PACF"),
+      plotLines = list(
+        list(value = 0, color = "#000000", width = 3),
+        list(value = conf_limit, color = "#FF0000", dashStyle = "ShortDash", width = 1),
+        list(value = -conf_limit, color = "#FF0000", dashStyle = "ShortDash", width = 1)
+      )
+    ) %>%
+    highcharter::hc_legend(enabled = FALSE) %>%
+    highcharter::hc_add_series(name = "PACF", data = round(pacf_values, digits = 4))
+  
+  # Show chart
+  pacf_chart
+}
+```
+
 ### Import dataset
 
 After loading the libraries I am able to use the commands of the readr package to import my data. My data is in .csv format, so I'll use the `read_csv()` command [@R-readr] to import them.
@@ -335,7 +408,15 @@ Given the concerns of above, I made also a second difference plot. It seems to s
 
 grc_unemployment_diff2<- diff(grc_unemployment$Value, differences = 2)
 
-plot(grc_unemployment_diff2, type = "l")
+highchart() %>%
+    hc_chart(type = "line") %>%
+    hc_title(text = "Unemployment Rates") %>%
+    hc_xAxis(title = list(text = "Year")) %>%
+    hc_yAxis(title = list(text = "Value")) %>%
+    hc_tooltip(shared = TRUE, valueDecimals = 2, valueSuffix = " %") %>%
+    hc_add_series(
+        data = grc_unemployment_diff2
+    )
 
 ```
 
@@ -559,32 +640,52 @@ get_kpss_results(grc_unemployment$Value)
 
 ::: {.panel-tabset}
 
+
+
 ### Levels
 
-```{r}
-par(mfrow = c(1, 2))
-
-acf(grc_unemployment$Value)
-pacf(grc_unemployment$Value )
+::: grid
+::: {.g-col-12 .g-col-md-6}
+```{r, fig.height=4}
+acf_plot_function(unemployment$Value, min=-0.2, max=1)
 ```
+:::
+::: {.g-col-12 .g-col-md-6}
+```{r, fig.height=4}
+pacf_plot_function(unemployment$Value, min=-0.2, max=1)
+```
+:::
+:::
 
 ### First Diff.
 
-```{r}
-par(mfrow = c(1, 2))
-
-acf(grc_unemployment_diff1 )
-pacf(grc_unemployment_diff1 )
+::: grid
+::: {.g-col-12 .g-col-md-6}
+```{r, fig.height=4}
+acf_plot_function(grc_unemployment_diff1, min=-0.1, max = 0.6)
 ```
+:::
+::: {.g-col-12 .g-col-md-6}
+```{r, fig.height=4}
+pacf_plot_function(grc_unemployment_diff1, min=-0.2, max=0.5)
+```
+:::
+:::
 
 ### Second Diff.
 
-```{r}
-par(mfrow = c(1, 2))
-
-acf(grc_unemployment_diff2 )
-pacf(grc_unemployment_diff2 )
+::: grid
+::: {.g-col-12 .g-col-md-6}
+```{r, fig.height=4}
+acf_plot_function(grc_unemployment_diff2, min=-0.5, max = 0.5)
 ```
+:::
+::: {.g-col-12 .g-col-md-6}
+```{r, fig.height=4}
+pacf_plot_function(grc_unemployment_diff2, min=-0.5, max = 0.5)
+```
+:::
+:::
 
 :::
 
@@ -595,8 +696,7 @@ pacf(grc_unemployment_diff2 )
 ### Automated model
 
 ```{r}
-grc_unemployment = grc_unemployment %>% dplyr::select(Value)
-auto_model <- auto.arima(grc_unemployment, trace = T,seasonal = TRUE)
+auto_model <- auto.arima(grc_unemployment$Value, trace = T,seasonal = TRUE)
 auto_model 
 ```
 
@@ -604,7 +704,7 @@ auto_model
 ### ARIMA candidate 1
 
 ```{r}
-arimaModel_1=arima(grc_unemployment, order=c(0,1,2))
+arimaModel_1=arima(grc_unemployment$Value, order=c(0,1,2))
 arimaModel_1
 ```
 
@@ -612,7 +712,7 @@ arimaModel_1
 ### ARIMA candidate 2
 
 ```{r}
-arimaModel_2=arima(grc_unemployment, order=c(1,1,2))
+arimaModel_2=arima(grc_unemployment$Value, order=c(1,1,2))
 arimaModel_2
 ```
 
@@ -620,7 +720,7 @@ arimaModel_2
 ### ARIMA candidate 3
 
 ```{r}
-arimaModel_3=arima(grc_unemployment, order=c(9,2,1))
+arimaModel_3=arima(grc_unemployment$Value, order=c(9,2,1))
 arimaModel_3
 ```
 
@@ -659,18 +759,73 @@ Previously, I identify which is the best model. Now, I will use this model in or
 ### ARIMA (0,2,1) forecasts
 
 ```{r}
-forecast(auto_model,6) %>% autoplot()
+s = forecast(auto_model,20)
 
-forecast(auto_model,6) %>% kbl() %>% kable_paper()
+month = seq(max(grc_unemployment$TIME) %m+% months(1),  # start at next month
+              by = "1 month",
+              length.out = 20)
+
+highchart() %>%
+    hc_title(text = "Prediction of Unemployment with ARIMA(0,2,1)") %>%
+    hc_xAxis(type = "datetime")  %>%
+    hc_yAxis(title = list(text="Unemployment (%)")) %>%
+  hc_add_series(name="Historic Data",
+    data = list_parse2(data.frame(x = datetime_to_timestamp(grc_unemployment$TIME), y = grc_unemployment$Value)),
+    type = "line"
+  )  %>%
+  hc_add_series(name = "Forecast",
+                  data = list_parse2(data.frame(
+                      x = datetime_to_timestamp(month),
+                      y = round(s$mean, digits=2)
+                  )),
+                  type = "line",
+                  color = "#d62728") %>%
+    hc_add_series(name = "Confidence Interval",
+                data = list_parse2(data.frame(
+                  x = datetime_to_timestamp(month),
+                  low = round(s$lower[, "80%"], digits=2),
+                  high = round(s$upper[, "80%"], digits=2)
+                )),
+                type = "arearange",
+                color = hex_to_rgba("#d62728", 0.2),
+                linkedTo = ":previous")
+
 
 ```
 
 ### ARIMA (9,2,1) forecasts
 
 ```{r}
-forecast(arimaModel_3,6) %>% autoplot()
+s1 = forecast(arimaModel_3,20)
 
-forecast(arimaModel_3,6) %>% kbl() %>% kable_paper()
+month = seq(max(grc_unemployment$TIME) %m+% months(1),  # start at next month
+              by = "1 month",
+              length.out = 20)
+
+highchart() %>%
+    hc_title(text = "Prediction of Unemployment with ARIMA(0,2,1)") %>%
+    hc_xAxis(type = "datetime")  %>%
+    hc_yAxis(title = list(text="Unemployment (%)")) %>%
+  hc_add_series(name="Historic Data",
+    data = list_parse2(data.frame(x = datetime_to_timestamp(grc_unemployment$TIME), y = grc_unemployment$Value)),
+    type = "line"
+  )  %>%
+  hc_add_series(name = "Forecast",
+                  data = list_parse2(data.frame(
+                      x = datetime_to_timestamp(month),
+                      y = round(s1$mean, digits=2)
+                  )),
+                  type = "line",
+                  color = "#d62728") %>%
+    hc_add_series(name = "Confidence Interval",
+                data = list_parse2(data.frame(
+                  x = datetime_to_timestamp(month),
+                  low = round(s1$lower[, "80%"], digits=2),
+                  high = round(s1$upper[, "80%"], digits=2)
+                )),
+                type = "arearange",
+                color = hex_to_rgba("#d62728", 0.2),
+                linkedTo = ":previous")
 ```
 
 ## Results

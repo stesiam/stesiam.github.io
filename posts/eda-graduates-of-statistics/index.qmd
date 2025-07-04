@@ -60,36 +60,12 @@ comment](https://github.com/s-u/rJava/issues/255#issuecomment-794473988) solved 
 ```{r Import R libraries and fonts, warning=F, message=FALSE}
 library(dplyr)
 library(tidyr)
-
-library(ggplot2)
-library(ggtext)
-library(glue)
-library(showtext)
-library(packcircles)
-#library(ggcirclepack)
-library(sysfonts)
-library(hrbrthemes)  #theme_ipsum_rs
-library(waffle)
-
-
+library(highcharter)
 library(reactable)
-
 library(rJava)
 library(tabulapdf)
 library(pdftools)
-
-
-font_add_google("Lobster", "lobster")
-font_add_google("Lato", "economica")
-font_add_google("Creepster", "Creepster")
-font_add_google("Oswald", "Oswald")
-font_add_google("Ubuntu Condensed", "uc")
-
-sysfonts::font_add('fb', '_extensions/quarto-ext/fontawesome/assets/webfonts/fa-brands-400.ttf')
-sysfonts::font_add('fs', '_extensions/quarto-ext/fontawesome/assets/webfonts/fa-solid-900.ttf')
-
-showtext_auto()
-showtext::showtext_opts(dpi = 300)
+library(highcharter)
 ```
 
 ```{r Add references of R libraries, include=FALSE}
@@ -189,128 +165,81 @@ Panhellenic Exams.
 ```{r, warning=FALSE}
 admitted_students = statistics_tables[[1]] %>%
   .[-1,] %>%
-  setNames(c("Year", "Main_exams", "Transfer", "Entry_exams", "Other", "Total"))
-
-
-admitted_students$Main_exams = admitted_students$Main_exams %>% as.integer()
-admitted_students$Transfer= admitted_students$Transfer %>% as.integer()
-admitted_students$Entry_exams = admitted_students$Entry_exams %>% as.integer()
-admitted_students$Other = admitted_students$Other %>% as.integer()
-admitted_students$Pct_Non_Main = (admitted_students$Main_exams/admitted_students$Total) %>% as.double()
-rownames(admitted_students) = 1:nrow(admitted_students)
-
-
-
-admitted_students = admitted_students %>% 
-  pivot_longer(
-    cols = !Year, 
-    names_to = "Admission_Type", 
-    values_to = "count"
-  )
-
-admitted_students = admitted_students %>%
-  dplyr::filter(Admission_Type == "Pct_Non_Main" &
-                !(Year %in% c("2020-2121","2021-2022", "2022-2023"))) %>%
-  mutate(perc = round((1 - count)*100, digits = 2),
-         perc100 = 100-perc) %>%
-  dplyr::select(c(-Admission_Type, -count)) %>%
-  tidyr::pivot_longer(., cols = !Year,values_to = "Obs") %>%
-  dplyr::rename(
-    
-  )
-
-admitted_students %>%
-  reactable(
-    defaultPageSize = 5
-  )
+  setNames(c("Year", "Main_exams", "Transfer", "Entry_exams", "Other", "Total")) %>%
+  tidyr::drop_na() %>%
+  dplyr::filter(Transfer >= 0) %>%
+  select(-Total)
 ```
 
 I would like to examine the percentage of students who have been admitted by the other 3 ways over the years.
 
-```{r Visualization of Admitted Undergrads, fig.showtext=T, dpi = 300, warning=F}
-#| label: fig-line-plot
-#| fig-cap: "Admitted Undergrads through Panhellnic Exams"
-
-caption_text = glue("<b> Data: </b> Study Guide of Statistics and Insurance Science <br><span style='font-family:fb;'  >&#xf09b;</span> <b>stesiam</b>, 2024")
-
-admitted_students1 =
- admitted_students %>%
-group_by(Year) %>%
-mutate(lab.ypos = cumsum(Obs) - 0.5*Obs)
-
-ggplot(data = admitted_students1, aes(x = "", y = Obs, fill = name)) +
-  geom_bar(stat="identity", width=1) +
-  geom_richtext(aes(y = lab.ypos, label = ifelse(name == "perc100", paste0(round(Obs), "%"), "")), color = "white", fontface = "bold",
-      fill = NA, label.color = NA)+
-  facet_wrap(~Year, nrow = 3) +
-  coord_polar("y", start=0) +
-  labs(
-    title = "Proportion of Admissions through Panhellenic Exams",
-    subtitle = glue("It seems that <span style = 'color:#619CFF; font-weight: bold'>Panhellenic Exams</span> is the prevalent way to be admitted to Statistics <br> Department. Although that was an expected result. It is interesting to study <br> the proportion over the years. The most extraordinary result is in 2011 when almost <br>  everyone came through Panhellenic Exams."),
-    caption = caption_text
-  ) +
-  theme_void(base_size = 12) +
-  theme(
-    legend.position = "none",
-    plot.title = element_markdown(family = "lobster", face="bold"),
-    plot.subtitle = element_markdown(family = "economica", 
-                                      margin = margin(t=5,b=5)),
-    plot.caption = element_markdown(family = "economica",
-                                    lineheight = 1.2)
-  )
-```
-
 
 ## Student Population
 
-```{r, fig.height=4, warning=FALSE, dpi = 300, fig.showtext=TRUE}
-
-A = statistics_tables[[2]] %>%
-  setNames(c("Year", "BSc", "MScAppliedStat", "MScActuar", "PhD")) %>%
-  .[-1,] %>%
-  mutate_at(., vars(-Year), as.integer) %>%
-  tidyr::pivot_longer(., cols = !Year, values_to = "Obs")
- 
-d = A %>% 
-  dplyr::filter(name == "BSc" & (Year == "2003-2004" | Year == "2022-2023"))
-
-e = A %>% dplyr::filter(name == "BSc") %>% dplyr::filter(.,Obs == max(Obs) | Obs == min(Obs)) %>%
-  .$Year
-
-sub = glue("Last 20 years the undergraduates have been increased
-           by <span style = 'color:orange; font-weight: bold'>{d$Obs[2] - d$Obs[1]}</span> ({round(((d$Obs[2] - d$Obs[1])/d$Obs[1])*100, digits = 2)} %). <br>The highest number of undergrads is observed at the academic term of <span style = 'color:red; font-weight: bold'>{e[1]}</span> <br> and the lowest at <span style = 'color:#0a5c36; font-weight: bold'>{e[2]}</span>" ) 
-
-A %>%
-  dplyr::filter(name == "BSc") %>%
-  ggplot(., aes(x = Year, y = Obs, group = "1")) +
-  ylim(2000, 3500) +
-  geom_line(color = "white") +
-  labs(title = "Number of Undergraduate Students",
-       x = "Academic Year",
-       y = "Undergraduate Students",
-       caption = caption_text,
-       subtitle = sub) +
-  geom_point(data= A %>% dplyr::filter(name == "BSc") %>% dplyr::filter(.,Obs == max(Obs)), aes(x = Year, y = Obs), color = "red3") +
-  geom_point(data= A %>% dplyr::filter(name == "BSc") %>% dplyr::filter(.,Obs == min(Obs)), aes(x = Year, y = Obs), color = "green4") +
-  geom_point(data = A %>% dplyr::filter(Year == "2003-2004" | Year == "2022-2023") %>% dplyr::filter(name == "BSc"), color = "orange") +
-  geom_text(data= A %>% dplyr::filter(Year == "2003-2004" | Year == "2022-2023") %>% dplyr::filter(name == "BSc"),aes(x = Year, y = Obs+200, label = Obs), color = "orange", fontface = "bold", size = 4) +
-  theme_minimal(base_size = 12) +
-  theme(axis.text.x = element_text(angle = 60,color = "white"),
-        axis.text.y = element_text(color = "white"),
-        axis.title = element_text(color = "white"),
-        panel.grid = element_blank(),
-        plot.title = element_text(family = "Oswald", hjust = 0.5),
-        plot.title.position = "plot",
-        plot.subtitle = element_markdown(family = "Oswald",
-                                     margin = margin(l = 10, r = 10),
-                                     lineheight = 1.2, hjust = 0.5),
-        plot.caption = element_markdown(family = "Oswald", size = 10,
-                                    lineheight = 1.2),
-        plot.background = element_rect(fill = "black", color = "black"),
-        panel.background = element_rect(fill = "black", color = "black"),
-        text = element_text(color = "white")
-  )
+```{r}
+f = statistics_tables[[2]] %>%
+  setNames(c("Year", "BSc", "MSc_A","MSc_B", "PhD")) %>%
+  drop_na() %>%
+  mutate(MSc_B = stringr::str_replace(MSc_B, "-", "0")) %>%
+  mutate(across(-Year, ~ as.integer(.))) %>%
+  mutate(MSc = MSc_A + MSc_B)
 ```
+
+```{r}
+highchart() %>%
+  hc_chart(type = "area") %>%
+  hc_title(text = "Stacked Area Chart Example") %>%
+  hc_xAxis(categories = f$Year) %>%
+  hc_yAxis(title = list(text = "Population (millions)")) %>%
+  hc_plotOptions(area = list(stacking = "normal", marker = list(enabled = FALSE))) %>%
+  hc_add_series(name = "Bachelor", data = f$BSc) %>%
+  hc_add_series(name = "Master", data = f$MSc) %>%
+  hc_add_series(name = "PhD", data = f$PhD) %>%
+  hc_legend(enabled = TRUE)
+```
+
+
+```{r}
+latest_data <- f %>%
+  filter(Year == "2022-2023") %>%
+  select(-Year) %>%
+  tidyr::pivot_longer(cols = everything(), names_to = "continent", values_to = "population") %>%
+  dplyr::filter(continent %in% c("BSc", "MSc", "PhD"))
+
+highchart() %>%
+  hc_chart(type = "treemap") %>%
+  hc_title(text = "Interactive Population by Continent in 2017") %>%
+  hc_add_series(
+    data = list_parse(
+      latest_data %>%
+        mutate(
+          name = continent,
+          value = population
+        )
+    ),
+    layoutAlgorithm = "squarified"
+  ) %>%
+  hc_tooltip(pointFormat = "<b>{point.name}</b>: {point.value}")
+```
+
+
+## Master Students
+
+```{r}
+highchart() %>%
+  hc_chart(type = "area") %>%
+  hc_title(text = "Stude") %>%
+  hc_xAxis(categories = f$Year) %>%
+  hc_yAxis(title = list(text = "# of students")) %>%
+  hc_plotOptions(area = list(stacking = "normal", marker = list(enabled = FALSE))) %>%
+  hc_add_series(name = "Applied Statistics", data = f$MSc_A) %>%
+  hc_add_series(name = "Actuarial Science", data = f$MSc_B) %>%
+  hc_legend(enabled = FALSE) %>%
+  hc_title(text = "Total population of students") %>%
+  hc_subtitle(text = "The total number of postgraduate students enrolled on the department's two programmes.")
+```
+
+
 
 ## PhD Students Ratio
 
@@ -335,36 +264,7 @@ ms_phd_students = ms_phd_students %>%
 ```
 
 ```{r}
-library(ggpattern)
-library(MetBrewer)
-bg_gradient <- grid::linearGradient(colours = rev(MetBrewer::met.brewer("Pillement")[5:6]))
-spline.d <- as.data.frame(spline(ms_phd_students$AcademicYear, ms_phd_students$pct))
-ggplot(spline.d, aes(x = x, y = y, group = 1))  +
-  ggpattern::geom_area_pattern(
-                               pattern = "gradient", 
-                               fill = "#00000000",
-                               pattern_fill  = "#00000000",
-                               pattern_fill2 = "#80C02080") +
-  labs(
-    title = "Ratio of PhD students per Hundreds of Undergraduates",
-    subtitle = "The decrease ",
-    caption = caption_text
-  ) +
-  geom_text(data = spline.d %>% dplyr::filter(y == min(y) | y == max(y)),aes(label = round(y,digits = 2), y = y+0.05), fontface = "bold", family = "uc", nudge_y =0.1, size = 2) +
-  scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) + 
-  theme_minimal(base_size = 5) +
-  theme(legend.position = "none",
-        plot.title.position = "plot",
-        plot.title = element_markdown(family = "lobster", face="bold",
-        hjust = 0.5),
-        plot.subtitle = element_markdown(family = "economica", 
-                                      margin = margin(t=5,b=5, r=10, l = 10),
-                                      hjust = 0.5,
-                                      lineheight = 1.2),
-        plot.caption = element_markdown(family = "economica",
-                                    lineheight = 1.2),
-        axis.title = element_blank()
-        )
+
 ```
 
 ## Structure of Students
@@ -393,48 +293,7 @@ B = statistics_tables[[2]] %>%
 
 
 ```{r, fig.showtext=TRUE, dpi=300, warning=FALSE}
-B %>%
-dplyr::filter(Year == "2021-2022") %>%
-ggplot(., aes(label=name, values=round(Obs))) +
-geom_pictogram(n_rows = 10,
-               flip = TRUE,
-               make_proportional = TRUE, 
-               family = "fs", size = 5, 
-               aes(color = name)) +
-  scale_label_pictogram(
-    name = NULL,
-    values = c(
-      "BSc_students" = "graduation-cap", 
-      "MSc_Students" = "graduation-cap", 
-      "PhD" = "graduation-cap"
-    )
-  ) +
-scale_color_manual(
-    name = NULL,
-    values = c(
-      BSc_students = "#a40000",
-      MSc_Students = "#c68958", 
-      PhD = "black"
-    )
-  ) +
-  labs(
-      title = "Students' Ratio by Degree",
-      subtitle = "**<span style = 'color:#a40000; font-weight: bold'>Undergraduates</span>** are about the 95% of the total student population of our Dept. <br> Next we have **<span style = 'color:#c68958; font-weight: bold'>Postgraduates</span>** are the 5% and **<span style = 'color:black; font-weight: bold'>PhD</span>** candidates are just 0.5%.",
-      caption = caption_text
-  ) +
-  coord_equal() +
-  theme_ipsum_rc(grid="") +
-  theme_enhance_waffle() +
-  theme(legend.position = "none",
-        plot.title.position = "plot",
-        plot.title = element_markdown(family = "lobster", face="bold",
-        hjust = 0.5),
-        plot.subtitle = element_markdown(family = "economica", 
-                                      margin = margin(t=5,b=5, r=10, l = 10),
-                                      hjust = 0.5, size = 10,
-                                      lineheight = 1.2),
-        plot.caption = element_markdown(family = "economica",
-                                    lineheight = 1.2))
+
 ```
 
 
@@ -467,55 +326,11 @@ extractGraduatesAndGrades = statistics_tables[[4]] %>%
 
 
 ```{r Prepare data for Bubble chart, collapse=T}
-data = extractGraduatesAndGrades %>%
-  mutate(
-    AVG_Group = ifelse(AVG_Grade >= mean(AVG_Grade), "over", "under")
-  ) %>%
-  mutate(
-    Year = stringr::str_remove_all(Year, "-.*")
-  )
 
-packing <- circleProgressiveLayout(data$Graduates, sizetype='area')
-data <- cbind(data, packing)
-data <- data |> 
-  rename(xcirc = x, 
-         ycirc = y, 
-         radius_circ = radius) |> 
-  tibble::rowid_to_column('id')
-# Calculate the 50 vertices points for each circle
-dat.gg <- circleLayoutVertices(packing, npoints=50)
-final_data <- left_join(data, dat.gg, by = join_by(id))
 ```
 
 ```{r, fig.showtext=TRUE, dpi= 300}
-ggplot(data = final_data) + 
-  geom_polygon(aes(x, 
-                   y, 
-                   group = Year,
-                   fill = AVG_Group), 
-               colour = "white", 
-               # alpha = 0.7
-               ) +
-  scale_fill_manual(values = c("under"="#ff6366","over" = "#0D6E6E"))+
-  geom_richtext(aes(xcirc, 
-                ycirc,
-                size = Graduates,
-                label = glue("{Year}")),
-            family = 'uc', 
-            fontface = 'bold',
-            fill = NA, label.color = NA) +
-  labs(title = "Graduates and Graduation Grade per Year",
-       subtitle = "On this bubble chart we visualized the total graduates per Academic Year <br> depending on the size of the circle. Funrthermore, the color of the circle <br> notes if the average grade of graduation of that specific year is **<span style = 'color: #0D6E6E'>over</span>** or <br>**<span style = 'color: #ff6366'>under</span>** the historical average graduation grade.",
-       x = NULL,
-       y = NULL,
-       caption = caption_text) +
-  coord_equal() +
-  theme_void(base_size = 10) +
-  theme(
-      legend.position = "none",
-      plot.subtitle = element_markdown(family = "serif"),
-      plot.caption = element_markdown(lineheight = 1.2)
-  )
+
 ```
 
 ## Online vs On-campus Exams

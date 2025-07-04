@@ -260,6 +260,46 @@ return(p)
 }
 ```
 
+
+```{r}
+# f1 = parliament %>%
+#   dplyr::count(FullName, Party) %>%
+#   arrange(-n) %>%
+#   dplyr::filter(n>=9) %>%
+#   mutate(lastName = extract_name_parts_vec(FullName))
+# 
+# party_colors = c(
+# kke_color = "#FF6666",
+# nd_color = "#0492c2",
+# pasok_color = "#95bb72",
+# syriza_color = "#e27bb1")
+# 
+# points <- purrr::pmap(
+#   list(
+#     y = f1$n,
+#     color = party_colors[f1$Party]
+#   ),
+#   function(y, color) list(y = y, color = color)
+# )
+
+# highchart() %>%
+#   hc_chart(type = "bar") %>%
+#   hc_title(text = "Top 20 Politicians by Times Elected") %>%
+#   hc_xAxis(
+#     categories = f1$lastName$last_name,
+#     title = list(text = "Politician")
+#   ) %>%
+#   hc_yAxis(title = list(text = "Times Elected")) %>%
+#   hc_add_series(
+#     data = points,
+#     name = "Times Elected",
+#     colorByPoint = TRUE,
+#     showInLegend = FALSE
+#   ) %>%
+#   hc_tooltip(pointFormat = "<b>{point.category}</b><br>Times elected: {point.y}")
+```
+
+
 ::: callout-note
 Note that till this moment I have not figure out how to change the position of
 the parties in an efficient way (in a function) that will somehow represent
@@ -269,8 +309,6 @@ about how many MPs got elected by each party.
 
 ::: panel-tabset
 ## 3rd Term
-
-
 
 
 ```{r}

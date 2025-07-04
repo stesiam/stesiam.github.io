@@ -1,3 +1,82 @@
+/* Certificates */
+
+/* Material Cards */
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+/* Make all cards same height and consistent layout */
+
+.modern-card {
+ /* background: rgba(30, 30, 30, 0.95); */
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+  border: 1px solid #2c2c2c;
+  color: #e0e0e0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex: 1 1 100%;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 360px; /* optional: ensures consistent vertical size */
+}
+
+.modern-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.6);
+}
+
+
+.modern-card h3 {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+}
+
+.modern-card p {
+      flex-grow: 1;
+      margin-bottom: 1.2rem;
+  }
+  
+
+.card-buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.5rem;
+  }
+  
+.modern-card img {
+	width: 50%;
+	margin: auto;
+	min-height: 150px;
+}
+
+
+  
+        /* Responsive media queries */
+/* ≥576px: 2 cards */
+@media (min-width: 576px) {
+  .modern-card {
+    flex: 1 1 calc(50% - 1.5rem);
+  }
+}
+
+/* ≥768px: 3 cards */
+@media (min-width: 1180px) {
+  .modern-card {
+    flex: 1 1 calc(33.333% - 1.5rem);
+  }
+}
+  
+/* Studies */
+
+
 .studies {
       display: flex;
       flex-direction: column;
@@ -68,9 +147,7 @@
       margin-right: 5px;
     }
     @media (max-width: 600px) {
-      body {
-        padding: 20px;
-      }
+
       .study .icon {
         left: -20px;
         top: 20px;

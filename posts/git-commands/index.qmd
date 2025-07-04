@@ -57,28 +57,57 @@ Having seen what a VCS is, it would be interesting to see which one is the most 
 library(readr)
 library(dplyr)
 library(lubridate)
-library(ggplot2)
+library(highcharter)
 ```
 
 
 ```{r Import data, echo=FALSE, message=FALSE, warning=FALSE}
 trends_vcs <- read_csv("multiTimeline.csv", 
-    skip = 2)
+    skip = 2) %>%
+  mutate(Date = lubridate::ym(Month)) %>%
+  mutate(Year = lubridate::year(Date)) %>%
+  select(-c(Month, Date))
 
-trends_vcs$Month <- lubridate::ym(trends_vcs$Month)
-
-
-trends_vcs_tidy = tidyr::pivot_longer(trends_vcs, !Month, names_to = "VCS", values_to = "counts")
+trends_vcs_tidy = tidyr::pivot_longer(trends_vcs, !Year, names_to = "VCS", values_to = "counts") %>%
+  group_by(Year, VCS) %>%
+  summarize(AVG = sum(counts)/n()) %>%
+  mutate(AVG = round(AVG, digits = 1))
 ```
 
-```{r, fig.width= 7}
-  ggplot(data = trends_vcs_tidy, aes(x= Month, y = counts)) +
-  geom_line(aes(color = VCS)) +
-  labs(title = "Trends on Version Control Systems",
-              subtitle = "Compare trends of Git and SVN (Subversion) from 2004 to 2022",
-              caption = "Data source: Google Trends") +
-  theme_classic()
+```{r, fig.width= 7,include=FALSE}
+  # ggplot(data = trends_vcs_tidy, aes(x= Month, y = counts)) +
+  # geom_line(aes(color = VCS)) +
+  # labs(title = "Trends on Version Control Systems",
+  #             subtitle = "Compare trends of Git and SVN (Subversion) from 2004 to 2022",
+  #             caption = "Data source: Google Trends") +
+  # theme_classic()
 ```
+
+```{r}
+avgPercentageGit = trends_vcs_tidy %>% dplyr::filter(VCS == "git: (Worldwide)") %>% pull(AVG)
+avgPercentageSVN = trends_vcs_tidy %>% dplyr::filter(VCS == "svn: (Worldwide)") %>% pull(AVG)
+
+highchart() %>%
+  hc_title(text = "Trends on Version Control Systems") %>%
+  hc_subtitle(text = "Compare trends of Git and SVN (Subversion) from 2004 to 2022") %>%
+  hc_caption(
+    useHTML = TRUE,
+    text = '<b>Source:</b> <a href="https://trends.google.com/trends/" target="_blank">Google Trends</a>') %>%
+  hc_plotOptions(
+    series = list(
+      marker = list(
+        enabled = FALSE
+      )
+    )
+  ) %>%
+  hc_xAxis(categories = unique(trends_vcs_tidy$Year)) %>%
+  hc_yAxis(title = list(text = "Search Interest"),
+           max = 90) %>%
+  hc_add_series(name = "Git", data = avgPercentageGit, type = "line", color = "orange") %>%
+  hc_add_series(name = "SVN", data = avgPercentageSVN, type = "line", color = "steelblue") %>%
+  hc_tooltip(shared = TRUE, valueSuffix = "%")
+```
+
 
 The figure above makes clear the dominance of Git as a version control tool. Also, we notice that Subversion (SVN) was quite popular and a capable competitor of Git until 2010. After that period there is a continuous decline in SVN's interest and the exact opposite for Git. Today, in 2022, the difference is chaotic between them.
 

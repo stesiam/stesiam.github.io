@@ -112,6 +112,8 @@ font_add_google(name = "Spline Sans", family = "text", db_cache = F)
 showtext_auto()
 showtext::showtext_opts(dpi = 300)
 
+library(highcharter)
+
 ```
 
 ```{r Add references of R libraries, include=FALSE}
@@ -349,6 +351,27 @@ family = "text") +
   coord_cartesian(expand = FALSE)
 ```
 
+```{r fig.height= 12}
+data_decreasing = data %>% dplyr::arrange(-pct_women)
+
+highchart() %>%
+    hc_chart(type = "bar", inverted = TRUE) %>%
+    hc_title(text = "Horizontal Bar Chart with Thicker Bars") %>%
+    hc_xAxis(categories = data_decreasing$Q3, title = list(text = NULL)) %>%
+    hc_yAxis(title = list(text = "Percent (%)")) %>%
+    hc_title(text = "<b>Women participation in DS community per country</b>") %>%
+    hc_subtitle(text = glue("Based on Kaggle's 2021 Survey women are underrepresented in DS. The country with the highest women participation is Tunisia and Peru is one with the lowest. Last but not least, <b>Greece</b> has a relatively disappointing rate of women participation holding 15th place with 15.7%, given the fact that the average is {round(mean(data$pct_women),digits = 2)} %")  ) %>%
+    hc_caption(text="Data: Kaggle Survey 2021 | <b>stesiam</b>, 2023") %>%
+    hc_legend(enabled = FALSE) %>%
+    hc_series(
+        list(
+            name = "Values",
+            data = data_decreasing$pct_women
+        )
+    )
+```
+
+
 # Age Distribution
 
 Greece's Kaggle Community it is comprised from more elerly people comapred to the rest of Kaggle's community. More specifically, Greece's most prevalent age group is 25-29 and a sufficient proportion of users on their 40s. On the contrary, Kaggle's community is quite youthy with most prevalent the three youngest age groups. Aggrevetating, those groups consist six out of ten userbase of Kaggle's community.
@@ -356,64 +379,90 @@ Greece's Kaggle Community it is comprised from more elerly people comapred to th
 ```{r, fig.showtext=T, dpi = 300, warning=F}
 theme_set(theme_light())
 
-kaggle_2021_compare %>%
+data1 = kaggle_2021_compare %>%
   select(Q3, Q1) %>%
   group_by(Q3,Q1) %>%
   summarise(n = n()) %>%
   group_by(Q3) %>%
   mutate(total = sum(n),
          pct = round(n/total *100, digits = 1)) %>%
-  select(Q3, Q1, pct) %>%
-  ggplot(aes(x = Q1, y = pct+1, fill = Q3)) +
-  geom_bar(stat = "identity", alpha = 0.5, position = "identity") +
-  scale_fill_manual(values = c("Greece" = "#1f77b4", "Other" = "#ff7f0e"))+ 
-  scale_y_continuous(expand = c(0, 0)) +
-  labs(
-    title = "<b>Age Distribution of Kaggle Community</b>",
-    subtitle = "Greek Kagglers have a proportionally lower presence at younger ages (<24 years) compared to the rest <br> of the world and almost zero presence at older ages (>60 years). For the most part, Greek analysts on <br> the  platform belong to the 25-29, 30-34 and 45-49 age groups. On the other hand, the rest of Kaggle's <br> users have a tremendous superiority to the three smaller age groups (18-21, 22-24, 25-29).",
-    caption = "stesiam, 2023",
-    x = "Age Group",
-    y = "Percentage",
-    fill = ""
-  ) +
-  theme_set(theme_light()) +
-    theme(
-    plot.title = element_markdown(family = "title"),
-    plot.subtitle = element_markdown(family = "subtitle", lineheight = 0.4),
-    plot.caption = element_markdown(family = "subtitle"),
-    text = element_text(family = "subtitle"),
-    legend.position = c(0.85, 0.85)
+  select(Q3, Q1, pct)
+```
+
+
+```{r}
+library(highcharter)
+
+highchart() |>
+  hc_chart(type = "areaspline") |>
+  hc_title(text = "Age Distribution of Kaggle Community (GR / Rest World)") |>
+  hc_xAxis(categories = unique(data1$Q1)) |>
+  hc_yAxis(title = list(text = "Population (%)")) |>
+  hc_tooltip(shared = TRUE, valueSuffix = " units") |>
+  hc_plotOptions(
+    areaspline = list(
+      fillOpacity = 0.5  # match the Highcharts demo's fill
+    )
+  ) |>
+  hc_legend(
+    layout = "vertical",
+    align = "left",
+    verticalAlign = "top",
+    x = 450,
+    y = 100,
+    floating = TRUE,
+    borderWidth = 1,
+    backgroundColor = "#FFFFFF"
+  ) |>
+  hc_add_series(
+    name = "Greece",
+    data = data1 %>% dplyr::filter(Q3 =="Greece") %>% pull(pct)
+  ) |>
+  hc_add_series(
+    name = "Rest of the World",
+    data = data1 %>% dplyr::filter(Q3 =="Other") %>% pull(pct)
   )
 ```
+
 
 # Educational Background
 
 ```{r, fig.showtext=T, dpi = 300, warning=F}
-kaggle_2021_compare %>%
+data3 = kaggle_2021_compare %>%
   select(Q3, Q4) %>%
   group_by(Q3, Q4) %>%
   summarise(n = n()) %>%
   group_by(Q3) %>%
-  mutate(pct = round(n/sum(n)*100, digits = 1)) %>%
-  ungroup() %>%
-  ggplot() +
-  geom_col(stat = "identity", alpha = 0.5, position = "identity", aes(x = Q4, y = pct, fill = Q3)) +
-  scale_fill_manual(values = c("Greece" = "#1f77b4", "Other" = "#ff7f0e"))+ 
-  labs(
-    title = "Educational Background of Kagglers",
-    subtitle = "Γρεεκ,",
-    caption = "stesiam, 2023",
-    x = "Education",
-    y = "Percentage"
-  ) +
-  scale_y_continuous(expand = c(0, 0)) +
-  theme_classic() +
-    theme(
-    plot.title = element_markdown(family = "title"),
-    plot.subtitle = element_markdown(family = "subtitle", lineheight = 0.4),
-    plot.caption = element_markdown(family = "subtitle"),
-    text = element_text(family = "subtitle"),
-    legend.position = c(0.85, 0.85)
+  mutate(pct = round(n/sum(n)*100, digits = 1))  %>%
+  ungroup()
+```
+
+
+```{r}
+d = data3 %>% dplyr::filter(Q4 %in% c("Bachelor", "Master", "PhD"))
+```
+
+```{r}
+highchart() %>%
+  hc_chart(type = "bar") %>%
+  hc_title(text = "Age Distribution of Kaggle Community (GR / Rest World)") %>%
+  hc_subtitle(text="Greek Kagglers have attained higher studies.") %>%
+  hc_caption(text="stesiam, 2023") %>%
+  hc_xAxis(categories = d$Q4,
+           title = list(text = NULL)) %>%
+  hc_yAxis(min = 0,
+           title = list(text = "Percentage (%) of total respondents by Country / Region", align = "high"),
+           labels = list(overflow = "justify")) %>%
+  hc_tooltip(valueSuffix = " units") %>%
+  hc_plotOptions(bar = list(dataLabels = list(enabled = TRUE))) %>%
+  hc_series(
+    list(name = "Greece", data = d %>% dplyr::filter(Q3 =="Greece") %>% pull(pct)),
+    list(name = "Rest World", data = d %>% dplyr::filter(Q3 =="Other") %>% pull(pct))
+  ) %>%
+  hc_legend(
+    align = "right",
+    verticalAlign = "top",
+    layout = "vertical"
   )
 ```
 

@@ -242,21 +242,33 @@ uni_coord = data.frame(
   uni = c("ΠαΠει", "Αιγαίου", "ΟΠΑ", "Δυτικής Μακεδονίας"),
   long = c(23.6529793, 26.5664138,23.7300928, 21.4565181),
   lat = c(37.77, 39.0851185, 38.1940201, 40.1197471),
-  img = c("./posts/studies-in-statistics-greece//images/UniPi.png", "./posts/studies-in-statistics-greece/Aegean.png", "./posts/studies-in-statistics-greece/images/AUEB.png","./posts/studies-in-statistics-greece/images/UoWM.png"),
+  img = c("https://upload.wikimedia.org/wikipedia/en/7/7e/UNIPI.jpg", "https://upload.wikimedia.org/wikipedia/en/d/df/Aegean_University_logo.gif", "https://upload.wikimedia.org/wikipedia/en/thumb/8/89/AUEB_EMBLEM.png/250px-AUEB_EMBLEM.png","https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/UoWM.png/120px-UoWM.png"),
   established = c(1938, 1984, 1920, 2003),
-  dpt_est = c(0,0, 1989, 2019)
+  dpt_est = c(1977,2000, 1989, 2019),
+  town = c("Piraeus", "Samos", "Athens", "Kozani")
+)
+
+uni_coord$symbol <- c(
+  "url(https://upload.wikimedia.org/wikipedia/commons/e/e4/Map_marker_icon_%E2%80%93_Nicolas_Mollet_%E2%80%93_Pin.svg)",
+  "url(https://upload.wikimedia.org/wikipedia/commons/e/e4/Map_marker_icon_%E2%80%93_Nicolas_Mollet_%E2%80%93_Pin.svg)",
+  "url(https://upload.wikimedia.org/wikipedia/commons/e/e4/Map_marker_icon_%E2%80%93_Nicolas_Mollet_%E2%80%93_Pin.svg)",
+  "url(https://upload.wikimedia.org/wikipedia/commons/e/e4/Map_marker_icon_%E2%80%93_Nicolas_Mollet_%E2%80%93_Pin.svg)"
 )
 
 # Load Greece Map
 hcmap("countries/gr/gr-all", name = "SA") %>%
 hc_add_series(
-    data = uni_coord,
-    type = "mappoint",  # Scatter points on map
-    hcaes(lon = long, lat = lat, name = uni),
-    name = "Departments",
-    color = "brown4", fill = "none",
-    marker = list(symbol = "circle", radius = 5)
-  ) %>%
+  data = uni_coord,
+  type = "mappoint",
+  hcaes(lon = long, lat = lat, name = uni),
+  name = "Departments",
+  color = "brown4",
+  marker = list(
+    symbol = "url(https://cdn-icons-png.flaticon.com/512/5081/5081368.png)",  # example map pin SVG
+    width = 20,
+    height = 20
+  )
+) %>%
   hc_title(text = "<b>Σχολές Στατιστικής</b>") %>%
   hc_subtitle(text = "Στην Ελλάδα υπάρχουν συνολικά τέσσερις δημόσιες σχολές στατιστικής προπτυχιακού επιπέδου. Η φοίτηση σε αυτές είναι 4ετούς φοίτησης. Αυτές έχουν έδρα στην Αθήνα, στον Πειραιά, στη Σάμο και στα Γρεβενά") %>%
   hc_caption(text = "stesiam, 2025") |>
@@ -267,14 +279,14 @@ hc_add_series(
       return '<div style=\"text-align: center;\">' + 
                '<b>' + this.point.name + '</b></div>' + 
                '<br>' +
-               '<img src=\"' + this.point.img + '\" width=\"40\" height=\"20\" style=\"border-radius:10px; margin-top:5px;\" /><br>' +
+               '<img style=\"margin: auto; display:flex; justify-content: center;\" src=\"' + this.point.img + '\" width=\"40\" height=\"40\" style=\"border-radius:10px; margin-top:5px;\" /><br>' +
                '<b>Uni established:</b> ' + this.point.established + '<br>' + 
                '<b>Dept. Est.:</b> ' + this.point.dpt_est + '<br>' + 
                '<b>Students:</b>';
     }
   ")
 ) %>%
-  hc_add_theme(hc_theme_flat())
+  hc_legend(enabled = FALSE)
 ```
 
 
