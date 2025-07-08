@@ -153,7 +153,12 @@ degree_requirements = data.frame(
   "Courses" = c(32, 47, 40, 34, 48),
   "Comp" = c(14, 31, 19, 18, 41),
   "Elective" = c(18, 16, 21, 16, 7),
-  "Ptixiaki" = c("Yes", "No", "No", "Yes", "No")) |>
+  "Ptixiaki" = c("Yes", "No", "No", "Yes", "No"),
+  "Images" = c("<img src='https://upload.wikimedia.org/wikipedia/el/thumb/2/2c/AUEBEMBLEM.png/250px-AUEBEMBLEM.png' height='20'/>",
+               "<img src='https://upload.wikimedia.org/wikipedia/en/7/7e/UNIPI.jpg' height='20'/>",
+               "<img src='https://upload.wikimedia.org/wikipedia/en/7/7e/UNIPI.jpg' height='20'/>",
+               "<img src='https://upload.wikimedia.org/wikipedia/el/thumb/7/7d/%CE%A0%CE%B1%CE%BD%CE%B5%CF%80%CE%B9%CF%83%CF%84%CE%AE%CE%BC%CE%B9%CE%BF_%CE%91%CE%B9%CE%B3%CE%B1%CE%AF%CE%BF%CF%85_%28logo%29.svg/250px-%CE%A0%CE%B1%CE%BD%CE%B5%CF%80%CE%B9%CF%83%CF%84%CE%AE%CE%BC%CE%B9%CE%BF_%CE%91%CE%B9%CE%B3%CE%B1%CE%AF%CE%BF%CF%85_%28logo%29.svg.png' height='20'/>",
+              "<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/UoWM.png/120px-UoWM.png' height='20'/>")) |>
 dplyr::arrange(-Courses) |>
 mutate(Electivepct = round((Elective/Courses)*100, digits = 1))
 ```
@@ -164,7 +169,11 @@ highchart() %>%
   hc_title(text = "Δομή μαθημάτων τμημάτων Στατιστικής") %>%
   hc_subtitle(text = "Ο αριθμός των μαθημάτων που απαιτούνται για την απόκτηση προπτυχιακού τίτλου σπουδών από τα δημόσια τμήματα Στατιστικής της χώρας μας. Αναλύεται και η σύνθεση των προγραμμάτων με βάση την ευελιξία προσαρμογής του προγράμματος σπουδών (αριθμός επιλεγόμενων ως ποσοστό των υποχρεωτικών).")  %>%
   hc_caption(text = "stesiam, 2025") %>%
-  hc_xAxis(categories = degree_requirements$University) %>%
+  hc_xAxis(
+       categories = degree_requirements$Images,
+         labels = list(useHTML = TRUE),
+         title = list(text = "")
+   ) %>%
   hc_yAxis(title = list(text = "Μαθήματα για πτυχίο")) %>%
   hc_plotOptions(series = list(stacking = "normal")) %>%
   hc_add_series(name = "Επιλεγόμενα", data = degree_requirements$Elective, stack = "courses") %>%

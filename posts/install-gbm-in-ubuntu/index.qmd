@@ -48,16 +48,38 @@ Thus, on this article I gather all that information.
 | XGBoost  |  [Link](https://xgboost.readthedocs.io/en/stable/install.html)  |
 
 
-```{r}
-# library(highcharter)
-# library(gtrendsR)
+```{r, warning=FALSE, message=FALSE}
+library(highcharter)
+library(gtrendsR)
+library(dplyr)
+googleTrendsData = gtrendsR::gtrends(keyword = c("LightGBM", "CatBoost", "XGBoost"), gprop = "web", onlyInterest = TRUE)
 
-# interestOverTime = r[["interest_over_time"]] %>%
-#   dplyr::mutate(date = lubridate::ymd(date)) %>%
-#   dplyr::mutate(Year = lubridate::year(date)) %>%
-#   select(Year, keyword, hits) %>%
-#   group_by(Year, keyword) %>%
-#   summarise(Average = mean(hits))
+interestOverTime = googleTrendsData[["interest_over_time"]] %>%
+  dplyr::mutate(date = lubridate::ymd(date)) %>%
+  dplyr::mutate(Year = lubridate::year(date)) %>%
+  select(Year, keyword, hits) %>%
+  group_by(Year, keyword) %>%
+  summarise(Average = round(mean(hits), digits = 1))
+  
+
+highchart() %>%
+    hc_chart(type = "line") %>%
+    hc_title(text = "Search Interest of various GBMs") %>%
+    hc_xAxis(categories = unique(interestOverTime$Year)) %>%
+    hc_yAxis(title = list(text = "Average")) %>%
+    hc_add_series(
+        name = "XGBoost",
+        data = interestOverTime %>% filter(keyword == "XGBoost") %>% pull(Average)
+    ) %>%
+    hc_add_series(
+        name = "CatBoost",
+        data = interestOverTime %>% filter(keyword == "CatBoost") %>% pull(Average)
+    ) %>%
+    hc_add_series(
+        name = "LightGBM",
+        data = interestOverTime %>% filter(keyword == "LightGBM") %>% pull(Average)
+    )
+
 ```
 
 ## LightGBM

@@ -34,11 +34,874 @@ editor_options:
     wrap: 80
 ---
 
-## Introduction
+## Εισαγωγή
+
+### Υπόβαθρο
+
+Η ανεργία αποτελεί ένα χρόνιο πρόβλημα της χώρας μας, μιας και ιστορικά τα τελευταία 25 χρόνια είναι σε υψηλότερα επίπεδα του ευρωπαικού μέσου και τις χώρες του ΟΟΣΑ. Το φαινόμενο επιδεινώθηκε τα χρόνια της οικονομικής κρίσης όπου στις χειρότερες στιγμές της το ένα τέταρτο του ενεργού πληθυσμού δεν μπορούσε να βρει εργασία. Ακόμα χειρότερη ήταν η κατάσταση για τους νέους της χώρας μιας και η νεανική ανεργία ανήλθε στο 46% , η οποία είναι και χειρότερη επίδοση στην ΕΕ. 
+
+Πριν ξεκινήσουμε να αναλύουμε κρίνω σημαντικό να δούμε τι σημαίνει ο όρος ανεργία και πώς προκύπτει αυτό το ποσοστό. Όταν αναφερόμαστε σε άνεργους αναφερόμαστε σε άτομα τα οποία δεν εργάζονται, αλλά δεν περιλαμβάνονται σε αυτά σπουδαστές, συνταξιούχοι, δηλαδή άτομα τα οποία έχουν την ηλικία (18-67), αλλά και τη δυνατότητα να εργαστούν. Για να υπολογιστεί το ποσοστό ανεργίας:
+
+$$\textsf{Ποσοστό ανεργίας} = \frac{\textsf{Αριθμός ανέργων}}{\textsf{Εργατικό Δυναμικό}}$$
+
+### Χρονοσειρές
+
+Σε αυτό το άρθρο έχω ως σκοπό τη πρόβλεψη της πορείας της ανεργίας τους επόμενους μήνες. Έτσι λοιπόν πήρα κάποια ιστορικά δεδομένα για την ανεργία στην ΕΕ, τον ΟΟΣΑ και την χώρα μας. Θα χρησιμοποιήσω ένα απλό μοντέλο (S)ARIMA, προκειμένου να κάνω μία εκτίμηση του μεγέθους της τους επόμενους μήνες.
+
+
+### Μεθοδολογία
 
 
 
 
-## Acknowledgements {.appendix .unlisted}
+
+### Συνοπτική Απάντηση
+
+
+Αν θέλετε μία γρήγορη απάντηση, στη συγκεκριμένη ανάλυση προβλέπω ότι η πτωτική τάση της ανεργίας αναμένεται να συνεχιστεί τους επόμενους μήνες. Τον Φεβρουάσιο του 2023, αυτή θα κυμαίνεται μεταξύ του 10\% - 13\%.
+
+## Προαπαιτούμενα
+
+
+### Εισαγωγή βιβλιοθηκών
+
+Για την ανάλυση αυτή θα χρειαστούμε τυπικές βιβλιοθήκες για την εισαγωγή και την επεξεργασία των δεδομένων μου, όπως οι readr [@R-readr] και dplyr [@R-dplyr]. Το πακέτο kableExtra [@R-kableExtra] χρησιμοποιήθηκε για την αποτύπωση των αποτελεσμάτων σε μορφή πίνακα, ενώ το πακέτο flextable [@R-flextable] χρησιμοποιήθηκε για τους πίνακες των αποτελεσμάτων των τεστ Dickey-Fuller και KPSS.
+
+Στη συνέχεια, λόγω της φύσης των δεδομένων (χρονοσειρές) κρίθηκε απαραίτητη η χρήση σχετικών βιβλιοθηκών όπως τα πακέτα lubridate[@R-lubridate], tseries[@R-tseries] & forecast[@R-forecast].
+
+Τέλος, χρησιμοποιήθηκε το highcharter, ώστε να δημιουργήσω βασικά τα διαγράμματα pacf, acf μέσω ραβδογραμμάτων και κάποια διαγράμματα πρόβλεψης τάσης της ανεργίας με απλά γραφήματα γραμμών.
+
+```{r Import R Libraries, message=FALSE, results='hide', echo=TRUE}
+# General purpose R libraries
+library(dplyr)
+library(readr)
+library(kableExtra)
+library(flextable)
+
+# Graphs
+
+library(highcharter)
+
+# Time Series 
+
+library(lubridate)
+library(tseries)
+library(forecast)
+library(tsibble)
+library(feasts)
+library(fable)
+```
+
+```{r, include=FALSE}
+knitr::write_bib(.packages(), file = 'packages.bib')
+```
+
+
+```{r}
+acf_plot_function = function(data, min = -1, max = 1){
+  ts_data <- data
+  N <- length(ts_data)
+
+# Compute confidence limit
+conf_limit <- qnorm(0.975) / sqrt(N)
+
+# Use forecast::Acf (biased estimator, recommended for ARIMA)
+acf_obj <- Acf(ts_data, plot = FALSE, lag.max = 20)
+
+# Extract lags and values
+# Note: Acf() returns acf_obj$acf as a matrix; acf_obj$lag as a matrix
+lags_acf <- as.numeric(acf_obj$lag[-1])             # skip lag 0
+acf_values <- as.numeric(acf_obj$acf[-1])           # skip lag 0
+
+# Build the highcharter ACF plot
+acf_chart <- highchart() %>%
+  hc_chart(type = "column") %>%
+  hc_title(text = "Autocorrelation Plot") %>%
+  hc_xAxis(categories = lags_acf, title = list(text = "Lag")) %>%
+  hc_yAxis(min = min, max = max,
+    title = list(text = "ACF"),
+    plotLines = list(
+      list(value = 0, color = "#000000", width = 3),
+      list(value = conf_limit, color = "#FF0000", dashStyle = "ShortDash", width = 1),
+      list(value = -conf_limit, color = "#FF0000", dashStyle = "ShortDash", width = 1)
+    )
+  ) %>%
+  hc_legend(enabled = FALSE) %>%
+  hc_add_series(name = "ACF", data = round(acf_values, digits = 4))
+
+# Show chart
+acf_chart
+}
+
+pacf_plot_function <- function(data, min = -1, max = 1) {
+  ts_data <- data
+  N <- length(ts_data)
+  
+  # Compute confidence limit (same formula as for ACF)
+  conf_limit <- qnorm(0.975) / sqrt(N)
+  
+  # Compute PACF using forecast::Pacf (biased estimator, recommended for ARIMA)
+  pacf_obj <- forecast::Pacf(ts_data, plot = FALSE, lag.max = 20)
+  
+  # Extract lags and PACF values
+  lags_pacf <- as.numeric(pacf_obj$lag)  # already excludes lag 0
+  pacf_values <- as.numeric(pacf_obj$acf)
+  
+  # Build the highcharter PACF plot
+  pacf_chart <- highcharter::highchart() %>%
+    highcharter::hc_chart(type = "column") %>%
+    highcharter::hc_title(text = "Partial Autocorrelation Plot") %>%
+    highcharter::hc_xAxis(categories = lags_pacf, title = list(text = "Lag")) %>%
+    highcharter::hc_yAxis(
+      min = min, max = max,
+      title = list(text = "PACF"),
+      plotLines = list(
+        list(value = 0, color = "#000000", width = 3),
+        list(value = conf_limit, color = "#FF0000", dashStyle = "ShortDash", width = 1),
+        list(value = -conf_limit, color = "#FF0000", dashStyle = "ShortDash", width = 1)
+      )
+    ) %>%
+    highcharter::hc_legend(enabled = FALSE) %>%
+    highcharter::hc_add_series(name = "PACF", data = round(pacf_values, digits = 4))
+  
+  # Show chart
+  pacf_chart
+}
+```
+
+### Εισαγωγή δεδομένων
+
+Αφού συμπεριλάβω τις απολύτως απαραίτητες βιβλιοθήκες, μπορώ να εισάγω τα δεδομένα μου, μέσω της βιλιοθήκης readr. Το αρχείο δεδομένων μου είναι ένα τυπικό αρχείο csv και για την χρήση αυτού θα χρησιμοποιήσω την εντολή `read_csv()`. Το αρχείο περιέχει δεδομένα ανεργίας
+
+```{r Import dataset, cache=TRUE, message=FALSE,results='hide',echo=TRUE, warning=FALSE}
+unemployment <- read_csv("data/unemployment.csv") %>%
+  select(LOCATION, TIME, Value) %>% filter(LOCATION != "EA19")
+```
+
+### Δομή δεδομένων
+
+Το αρχείο περιέχει δεδομένα ανεργίας για διάφορες χώρες ή οντότητες χωρών όπως η Ευρωπαϊκή Ένωση και οι χώρες του ΟΟΣΑ (Οργανισμός Οικονομικής Συνεργασίας και Ανάπτυξης), γ
+
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/OECD_logo.svg/120px-OECD_logo.svg.png)
+
+```{r Preview Data}
+#| label: tbl-preview-dataset
+#| tbl-cap: "Προεπισκόπηση δεδομένων (πρώτες 6 σειρές)"
+head(unemployment, 6) %>%
+  kbl(., 
+    align = 'c',
+    booktabs = T,
+    centering = T,
+    valign = T) %>%
+  kable_styling()
+```
+
+Τα δεδομένα μου αποτελούνται από  `r ncol(unemployment)` μεταβλητές (στήλες). Πιο συγκεκριμένα οι στήλες μου είναι οι εξής:
+
+|  Μεταβλητή  |             Τύπος Μεταβλητής             |                Περιγραφή                 |
+|:---------------:|:-------------------------:|:----------------------------------:|
+| `LOCATION` |   *Ποιοτική* <br> (nominal)   |       Χώρα ή Οντότητα χωρών |
+|   `TIME`   |   *Ποιοτική* <br> (ordinal)   | Μήνας-Έτος που αναφέρεται η μέτρηση |
+|  `Value`   | *Ποσοτική* <br> (συνεχής) | Ύψος ανεργίας (βάσει περιοχής και μήνα) |
+
+Thus, my sample has `r ncol(unemployment)` variables, of which 2 are qualitative
+and 1 is quantitative property.
+
+## Time Series Preprocessing
+
+The `TIME` variable needs to be a Date variable which is not fulfilled on our
+case.
+
+```{r}
+sapply(unemployment, class) %>% 
+  kbl() %>% kable_styling(full_width = F, position = "center")
+```
+
+So, above I see that I have dates in a format "YYYY-MM" (Year - Month) and they
+are considered as characters. With the help of `lubridate` package I will
+convert my time series on a Date format.
+
+```{r}
+unemploymentType <- unemployment %>%
+  mutate(TIME = yearmonth(TIME)) %>%
+  as_tsibble(index = TIME, key = LOCATION)
+```
+
+And let's check again :
+
+```{r}
+sapply(unemploymentType, class) %>% kbl() %>% kable_styling(full_width = F, position = "center")
+``` 
+
+And now I got the Date format. I am able to continue my analysis.
+
+## Missing Values
+
+```{r, results='hide'}
+sum(is.na(unemployment))
+```
+
+Good news! On this dataset there are `r sum(is.na(unemployment))` missing values, in total. 
+
+In case the dataset had missing values, I would first look at which variables those were.In a second phase, it might be necessary to replace the missing values.
+
+## Descriptive Statistics
+
+The unemployment data for Greece refer to the period from April 1998 το August 2022. Regarding Europe we have data from January 2000 to August 2022.
+
+The last 20 years have seen particularly large changes mainly in Greece, due to the domestic economic crisis. There is a noticeable change between September 2010 (10.1\%) and September 2013 (28.1 \%), in terms of unemployment in Greece. For the record, below you can find a table with the months that presented the highest unemployment in Greece.  As you will notice the five highest values were observed in 2013.
+
+
+```{r}
+unemploymentType %>% dplyr::filter(LOCATION == "GRC") %>% select(TIME, Value) %>% as.data.frame() %>%
+  arrange(Value) %>% tail(5) %>% kbl() %>% kable_styling(full_width = F, position = "center")
+```
+
+Accordingly, the highest unemployment rates observed at the European level are the following:
+
+```{r}
+unemploymentType %>% dplyr::filter(LOCATION == "EU27_2020") %>% select(TIME, Value)  %>%
+  as.data.frame() %>% arrange(Value) %>% tail(5) %>% kbl() %>% kable_styling(full_width = F, position = "center")
+```
+
+
+The lowest unemployment ever recorded in Greece was in the period of 2008:
+
+```{r}
+unemploymentType %>% dplyr::filter(LOCATION == "GRC") %>% select(TIME, Value) %>% as.data.frame() %>%
+  arrange(Value) %>% head(5) %>% kbl() %>% kable_styling(full_width = F, position = "center")
+```
+
+On the other hand, at the moment in Europe we are at the lowest levels of the last 20 years, with unemployment hovering around 6\%.
+
+```{r}
+unemploymentType %>% dplyr::filter(LOCATION == "EU27_2020") %>% select(TIME, Value) %>%
+  as.data.frame() %>% arrange(Value) %>% head(5) %>% kbl() %>% kable_styling(full_width = F, position = "center")
+```
+
+Finally, it is evident that in the case of Greece the changes are more intense than in Europe.
+
+All of the above can be summarized by the following graph:
+
+```{r}
+#| fig-height: 5
+#| fig-cap: "Unemployment comparison in Greece, OECD & EU27 (incl. Brexit)"  
+g = unemploymentType %>%
+  as.data.frame() %>%
+  mutate(Year = year(TIME)) %>%
+  select(-TIME) %>%
+  group_by(LOCATION, Year) %>%
+  summarise(mean_unemployment = mean(Value))
+
+highchart() %>%
+    hc_chart(type = "line") %>%
+    hc_title(text = "Unemployment Rates") %>%
+    hc_xAxis(title = list(text = "Έτος")) %>%
+    hc_yAxis(title = list(text = "Ανεργία (%)")) %>%
+    hc_tooltip(shared = TRUE, valueDecimals = 2, valueSuffix = " %") %>%
+    hc_add_series(
+        data = g,
+        type = "line",
+        hcaes(x = Year, y = mean_unemployment, group = LOCATION)
+    ) %>%
+  hc_plotOptions(
+  series = list(
+    dataLabels = list(
+      enabled = TRUE,
+      formatter = JS("function() {
+        if (this.point.index === this.series.data.length - 1) {
+          return this.y.toFixed(2) + ' %';
+        }
+        return null;
+      }")
+    )
+  )
+)
+```
+
+## Examine trend and seasonality
+
+In time series analysis, it's important to distinguish where the variability in the final form of the series originates from. Time series consist of three main components: trend, seasonality, and randomness. The trend refers to whether the series shows a specific direction (upward/downward). Seasonality refers to recurring patterns at regular intervals.
+
+$$
+y_t = S_t + T_t + E_t
+$$
+Όπου:
+
+- $y_t$ δηλώνουν τα δεδομένα που έχουμε διαθέσιμα, 
+- $S_t$
+- $T_t$
+- $E_t$
+
+Similarly, the multiplicative model is defined:
+
+$$
+y_t = S_t \cdot T_t \cdot E_t
+$$
+
+
+where the components that make up the time series are multiplied instead of added.
+
+```{r}
+library(forecast)
+library(highcharter)
+decomp <- unemploymentType %>%
+  model(stl = STL(Value)) %>%
+  components() %>%
+  as_tibble() %>%
+  dplyr::filter(LOCATION == "GRC") %>%
+  mutate(TIME = as.Date(TIME),
+    trend = round(trend, 2),
+    season_year = round(season_year, 4),
+    remainder = round(remainder, 4)
+  )
+
+# Build highchart with multiple y-axes (stacked)
+highchart(type = "stock") %>%
+    hc_title(text = "Κατάτμηση χρονοσειράς σε τάση, εποχικότητα και θόρυβο") %>%
+    hc_subtitle(text = "Τα ιστορικά δεδομένα της ανεργίας στην Ελλάδα δείχνουν ότι δεν υπάρχει κάποια ξεκάθαρη τάση. Επιπλέον, παρατηρούμε μία ανεμική εποχικότητα μέχρι το 2012, ενώ τα επόμενα χρόνια παρατηρείται εντονότερα το φαινόμενο αυτής.") %>%
+    hc_caption(text="stesiam, 2023") %>%
+
+    # Observed
+    hc_add_series(decomp, "line", hcaes(x = datetime_to_timestamp(TIME), y = Value), name = "Παρατήρηση", yAxis = 0) %>%
+    
+    # Trend
+    hc_add_series(decomp, "line", hcaes(x = datetime_to_timestamp(TIME), y = trend), name = "Τάση", yAxis = 1) %>%
+    
+    # Seasonal
+    hc_add_series(decomp, "line", hcaes(x = datetime_to_timestamp(TIME), y = season_year), name = "Εποχικότητα", yAxis = 2) %>%
+    
+    # Random
+    hc_add_series(decomp, "line", hcaes(x = datetime_to_timestamp(TIME), y = remainder), name = "Θόρυβος", yAxis = 3) %>%
+    # 
+    # # Define 4 stacked y-axes
+  hc_yAxis_multiples(
+  list(
+    title = list(text = "Δεδομένα"),
+    height = "25%", top = "0%",
+    offset=0, labels = list(enabled = FALSE), gridLineWidth = 0),
+  list(
+    title = list(text = "Τάση"),
+    height = "25%", top = "25%",
+    offset=0, labels = list(enabled = FALSE), gridLineWidth = 0),
+  list(
+    title = list(text = "Εποχικότητα"),
+    height = "25%", top = "50%",
+    offset=0, labels = list(enabled = FALSE), gridLineWidth = 0),
+  list(
+    title = list(text = "Υπόλοιπο"),
+    height = "25%", top = "75%",
+    offset=0, labels = list(enabled = FALSE), gridLineWidth = 0)
+) %>%
+    hc_tooltip(shared = TRUE) %>%
+    hc_rangeSelector(enabled = FALSE) %>%
+    hc_scrollbar(enabled = FALSE) %>%
+    hc_navigator(enabled = FALSE)
+```
+
+
+
+## Έλεγχος στασιμότητας
+
+### Ορισμός στασιμότητας
+
+
+Μία σημαντική έννοια στις χρονοσειρές είναι η **στασιμότητα**. Μία χρονοσειρά καλείται στάσιμη [@appliedtimeseriespenn] αν: \br
+
+1.  $E(X_t):\text{σταθερή}$ \br
+2.  $Var(X_t): \text{σταθερή}$ \br
+3.  $Cov(X_t, X_s): \text{σταθερή}$
+
+### Εξέταση στασιμότητας γραφικά
+
+::: {.panel-tabset}
+
+#### Level
+
+It is apparent that there is a big variation on the values of unemployment. This time series is not stationary and the differencing is justified.
+
+
+```{r}
+highchart() %>%
+    hc_chart(type = "line") %>%
+    hc_title(text = "Unemployment Rates") %>%
+    hc_xAxis(title = list(text = "Year")) %>%
+    hc_yAxis(title = list(text = "Value")) %>%
+    hc_tooltip(shared = TRUE, valueDecimals = 2, valueSuffix = " %") %>%
+    hc_add_series(
+        data = g,
+        type = "line",
+        hcaes(x = Year, y = mean_unemployment, group = LOCATION)
+    ) %>%
+  hc_plotOptions(
+  series = list(
+    dataLabels = list(
+      enabled = TRUE,
+      formatter = JS("function() {
+        if (this.point.index === this.series.data.length - 1) {
+          return this.y.toFixed(2) + ' %';
+        }
+        return null;
+      }")
+    )
+  )
+)
+```
+
+
+#### First Diff.
+
+Here we can see a big improvement in comparison with original data. I have some concerns about points close to 150 (mildly upwards trend) and 250 (outlier). 
+
+```{r}
+grc_unemployment = unemployment %>% dplyr::filter(LOCATION == "GRC")
+grc_unemployment_diff1 <- diff(grc_unemployment$Value, differences = 1)
+
+highchart() %>%
+    hc_chart(type = "line") %>%
+    hc_title(text = "Unemployment Rates") %>%
+    hc_xAxis(title = list(text = "Year")) %>%
+    hc_yAxis(title = list(text = "Value")) %>%
+    hc_tooltip(shared = TRUE, valueDecimals = 2, valueSuffix = " %") %>%
+    hc_add_series(
+        data = grc_unemployment_diff1
+    )
+```
+
+
+#### Second Diff.
+
+
+Given the concerns of above, I made also a second difference plot. It seems to solve the problem on points close to 150.
+
+```{r}
+
+grc_unemployment_diff2<- diff(grc_unemployment$Value, differences = 2)
+
+highchart() %>%
+    hc_chart(type = "line") %>%
+    hc_title(text = "Unemployment Rates") %>%
+    hc_xAxis(title = list(text = "Year")) %>%
+    hc_yAxis(title = list(text = "Value")) %>%
+    hc_tooltip(shared = TRUE, valueDecimals = 2, valueSuffix = " %") %>%
+    hc_add_series(
+        data = grc_unemployment_diff2
+    )
+
+```
+
+
+:::
+
+
+### Examine Stationarity with Statistical tests
+
+
+The graphical interpretation of stationarity can be beneficial for a quick assessment on topic of stationarity. However it can be considered a subjective metric, which leads on a non consistent decision (someone may consider the second figure as stationary and some others not. 
+
+
+Thankfully, there are some statistical tests which can help us on our decisions. Some commonly used are :
+
+- **Augmented Dickey-Fuller** (ADF) test
+- **Phillips- Perron** (PP) test
+- **Kwiatkowski-Phillips-Schmidt-Shin** (KPSS) test
+- **Zivot-Andrews** (ZA) test 
+
+But an other problem arises. We are not in a fancy IDE with menus and checkboxes. We use R and its packages. There are many packages that have already write functions to study stationarity with the aforementioned tests. Some of them are:
+
+- tseries
+- urca
+- CADFtest
+
+We should carefully evaluate our choices, as these packages advertise similar functionality but differ significantly in the scope of their functions and, more importantly, in the level of flexibility they offer for handling time series characteristics. In short, the `tseries` package is the one I'm most familiar with, but it is also the most limited in terms of configurable parameters. Although many tutorials use this package, I found that I couldn’t set the number of lags for tests or specify characteristics like trends when applicable. On the other hand, the `urca` package addresses these limitations by allowing users to specify both the trend component and the number of lags in the respective tests. One minor drawback of urca, however, is that it only provides critical values, not p-values.
+
+
+#### Summary
+
+
+```{r}
+summary_stationarity_results <- data.frame(
+                             "Type" = c("levels", "Diff(GRC)", "Diff2(GRC)"),
+                             "ADF test" = c("Non Stationary", "Stationary", "Stationary"),
+                              "PP test" = c("Non Stationary", "Stationary", "Stationary"),
+                             "KPSS test" =c("Non Stationary", "Non Stationary", "Stationary")
+)
+
+
+summary_stationarity_results  %>% kbl() %>% kable_styling() 
+```
+
+
+#### ADF test
+
+One of the most
+
+
+$$
+H_0 : \text{The time series has a unit root} \\
+H_1 : \text{The time series has not a unit root} 
+$$
+Selecting the lags
+
+```{r}
+library(vars)
+G = VARselect(grc_unemployment$Value, lag.max = 20, type = "const")
+
+
+```
+
+
+
+```{r}
+get_adf_results = function(variable){
+
+    # Ensure variable is numeric (e.g., a time series or numeric vector)
+    if (!is.numeric(variable)) {
+        stop("Input variable must be numeric.")
+    }
+    
+    # Perform ADF tests
+    adf_orig = adf.test(variable)
+    adf_diff1 = adf.test(diff(variable, differences = 1))
+    adf_diff2 = adf.test(diff(variable, differences = 2))
+    
+    # Extract results
+    adf_table = data.frame(
+        "Transformation" = c("Level", "1st Difference", "2nd Difference"),
+        "Dickey-Fuller" = c(
+            adf_orig$statistic[["Dickey-Fuller"]],
+            adf_diff1$statistic[["Dickey-Fuller"]],
+            adf_diff2$statistic[["Dickey-Fuller"]]
+        ),
+        "Lag Order" = c(
+            adf_orig$parameter[["Lag order"]],
+            adf_diff1$parameter[["Lag order"]],
+            adf_diff2$parameter[["Lag order"]]
+        ),
+        "p-value" = c(
+            adf_orig$p.value,
+            adf_diff1$p.value,
+            adf_diff2$p.value
+        )
+    ) %>%
+        kbl(digits = 5) %>%
+        kable_styling(full_width = FALSE)
+    
+    return(adf_table)
+}
+```
+
+```{r, warning = FALSE}
+#| tbl-cap: "Augmented Dickey-Fuller test results"
+get_adf_results(grc_unemployment$Value)
+```
+
+Συνεπώς, είναι προφανές από τα αποτελέσματα του
+στατιστικού ελέγχου Dickey Fuller ότι η χρονοσειρά μου δεν είναι στάσιμη. Θα πρέπει να εφαρμόσω τον έλεγχο Dickey-Fuller στις δοαφορές.
+
+
+#### PP  test
+
+$$
+H_0 : \text{The time series has a unit root} \\
+H_1 : \text{The time series has not a unit root} 
+$$
+
+```{r}
+get_pp_results = function(variable){
+
+    # Ensure variable is numeric (e.g., a time series or numeric vector)
+    if (!is.numeric(variable)) {
+        stop("Input variable must be numeric.")
+    }
+    
+    # Perform ADF tests
+    pp_orig = pp.test(variable)
+    pp_diff1 = pp.test(diff(variable, differences = 1))
+    pp_diff2 = pp.test(diff(variable, differences = 2))
+    
+    # Extract results
+    pp_table = data.frame(
+        "Transformation" = c("Level", "1st Difference", "2nd Difference"),
+        "Phillips-Perron" = c(
+            pp_orig$statistic[["Dickey-Fuller Z(alpha)"]],
+            pp_diff1$statistic[["Dickey-Fuller Z(alpha)"]],
+            pp_diff2$statistic[["Dickey-Fuller Z(alpha)"]]
+        ),
+        "Lag Order" = c(
+            pp_orig[["parameter"]][["Truncation lag parameter"]],
+            pp_diff1[["parameter"]][["Truncation lag parameter"]],
+            pp_diff2[["parameter"]][["Truncation lag parameter"]]
+        ),
+        "p-value" = c(
+            pp_orig$p.value,
+            pp_diff1$p.value,
+            pp_diff2$p.value
+        )
+    ) %>%
+        kbl(digits = 5) %>%
+        kable_styling(full_width = FALSE)
+    
+    return(pp_table)
+}
+```
+
+```{r, warning = FALSE}
+#| tbl-cap: "Phillips-Perron test results"
+#| warning: false
+get_pp_results(grc_unemployment$Value)
+```
+
+
+#### KPSS test
+
+$$
+H_0 : \text{The time series has not a unit root} \\
+H_1 : \text{Alternatively} 
+$$
+
+
+```{r}
+get_kpss_results = function(variable){
+
+    # Ensure variable is numeric (e.g., a time series or numeric vector)
+    if (!is.numeric(variable)) {
+        stop("Input variable must be numeric.")
+    }
+    
+    # Perform ADF tests
+    kpss_orig = kpss.test(variable)
+    kpss_diff1 = kpss.test(diff(variable, differences = 1))
+    kpss_diff2 = kpss.test(diff(variable, differences = 2))
+    
+    # Extract results
+    pp_table = data.frame(
+        "Transformation" = c("Level", "1st Difference", "2nd Difference"),
+        "KPSS" = c(
+            kpss_orig[["statistic"]][["KPSS Level"]],
+            kpss_diff1[["statistic"]][["KPSS Level"]],
+            kpss_diff2[["statistic"]][["KPSS Level"]]
+        ),
+        "Lag Order" = c(
+            kpss_orig[["parameter"]][["Truncation lag parameter"]],
+            kpss_diff1[["parameter"]][["Truncation lag parameter"]],
+            kpss_diff2[["parameter"]][["Truncation lag parameter"]]
+        ),
+        "p-value" = c(
+            kpss_orig$p.value,
+            kpss_diff1$p.value,
+            kpss_diff2$p.value
+        )
+    ) %>%
+        kbl(digits = 5) %>%
+        kable_styling(full_width = FALSE)
+    
+    return(pp_table)
+}
+```
+
+```{r, warning = FALSE}
+#| tbl-cap: "KPSS test results"
+get_kpss_results(grc_unemployment$Value)
+```
+
+
+## Identify Model
+
+::: {.panel-tabset}
+
+
+
+### Levels
+
+::: grid
+::: {.g-col-12 .g-col-md-6}
+```{r, fig.height=4}
+acf_plot_function(unemployment$Value, min=-0.2, max=1)
+```
+:::
+::: {.g-col-12 .g-col-md-6}
+```{r, fig.height=4}
+pacf_plot_function(unemployment$Value, min=-0.2, max=1)
+```
+:::
+:::
+
+### First Diff.
+
+::: grid
+::: {.g-col-12 .g-col-md-6}
+```{r, fig.height=4}
+acf_plot_function(grc_unemployment_diff1, min=-0.1, max = 0.6)
+```
+:::
+::: {.g-col-12 .g-col-md-6}
+```{r, fig.height=4}
+pacf_plot_function(grc_unemployment_diff1, min=-0.2, max=0.5)
+```
+:::
+:::
+
+### Second Diff.
+
+::: grid
+::: {.g-col-12 .g-col-md-6}
+```{r, fig.height=4}
+acf_plot_function(grc_unemployment_diff2, min=-0.5, max = 0.5)
+```
+:::
+::: {.g-col-12 .g-col-md-6}
+```{r, fig.height=4}
+pacf_plot_function(grc_unemployment_diff2, min=-0.5, max = 0.5)
+```
+:::
+:::
+
+:::
+
+## Build Time Series Model
+
+::: {.panel-tabset}
+
+### Automated model
+
+```{r}
+auto_model <- auto.arima(grc_unemployment$Value, trace = T,seasonal = TRUE)
+auto_model 
+```
+
+
+### ARIMA candidate 1
+
+```{r}
+arimaModel_1=arima(grc_unemployment$Value, order=c(0,1,2))
+arimaModel_1
+```
+
+
+### ARIMA candidate 2
+
+```{r}
+arimaModel_2=arima(grc_unemployment$Value, order=c(1,1,2))
+arimaModel_2
+```
+
+
+### ARIMA candidate 3
+
+```{r}
+arimaModel_3=arima(grc_unemployment$Value, order=c(9,2,1))
+arimaModel_3
+```
+
+:::
+
+## Compare Models
+
+After building some ARIMA models, I should
+decide which is the best one to make my estimations. One metric to evaluate those models is **AIC** (Akaike Information Criterion). The lower the value of AIC, the better my model.
+
+
+
+```{r}
+accuracy_table <- data.frame(
+                             "Name of Model" = c("Auto Model", "ARIMA Candidate #1", "ARIMA Candidate #2", "ARIMA Candidate #3"),
+                             Model = c("ARIMA(0,2,1)", "ARIMA(0,1,2)", "ARIMA(1,1,2)", "ARIMA(9,2,1)"),
+                             AIC =c(auto_model$aic, arimaModel_1$aic, arimaModel_2$aic, arimaModel_3$aic)
+)
+
+
+accuracy_table %>% kbl() %>% kable_styling()
+```
+
+So, the best model is the Auto Model (ARIMA(9,2,1)), which has the lowest AIC value. 
+
+
+## Checking best models
+
+
+
+
+## Forecast Future Unemployment
+
+Previously, I identify which is the best model. Now, I will use this model in order to predict unemployment for the next 6 months. It should be recalled that the last available value was from August of 2022 (12.2\%). Therefore, I will make a prediction for unemployment in Greece until February 2023.
+
+### ARIMA (0,2,1) forecasts
+
+```{r}
+# s = forecast(auto_model,20)
+# 
+# month = seq(max(grc_unemployment$TIME) %m+% months(1),  # start at next month
+#               by = "1 month",
+#               length.out = 20)
+# 
+# highchart() %>%
+#     hc_title(text = "Prediction of Unemployment with ARIMA(0,2,1)") %>%
+#     hc_xAxis(type = "datetime")  %>%
+#     hc_yAxis(title = list(text="Unemployment (%)")) %>%
+#   hc_add_series(name="Historic Data",
+#     data = list_parse2(data.frame(x = datetime_to_timestamp(grc_unemployment$TIME), y = grc_unemployment$Value)),
+#     type = "line"
+#   )  %>%
+#   hc_add_series(name = "Forecast",
+#                   data = list_parse2(data.frame(
+#                       x = datetime_to_timestamp(month),
+#                       y = round(s$mean, digits=2)
+#                   )),
+#                   type = "line",
+#                   color = "#d62728") %>%
+#     hc_add_series(name = "Confidence Interval",
+#                 data = list_parse2(data.frame(
+#                   x = datetime_to_timestamp(month),
+#                   low = round(s$lower[, "80%"], digits=2),
+#                   high = round(s$upper[, "80%"], digits=2)
+#                 )),
+#                 type = "arearange",
+#                 color = hex_to_rgba("#d62728", 0.2),
+#                 linkedTo = ":previous")
+# 
+
+```
+
+### ARIMA (9,2,1) forecasts
+
+```{r}
+# s1 = forecast(arimaModel_3,20)
+# 
+# month = seq(max(grc_unemployment$TIME) %m+% months(1),  # start at next month
+#               by = "1 month",
+#               length.out = 20)
+# 
+# highchart() %>%
+#     hc_title(text = "Prediction of Unemployment with ARIMA(0,2,1)") %>%
+#     hc_xAxis(type = "datetime")  %>%
+#     hc_yAxis(title = list(text="Unemployment (%)")) %>%
+#   hc_add_series(name="Historic Data",
+#     data = list_parse2(data.frame(x = datetime_to_timestamp(grc_unemployment$TIME), y = grc_unemployment$Value)),
+#     type = "line"
+#   )  %>%
+#   hc_add_series(name = "Forecast",
+#                   data = list_parse2(data.frame(
+#                       x = datetime_to_timestamp(month),
+#                       y = round(s1$mean, digits=2)
+#                   )),
+#                   type = "line",
+#                   color = "#d62728") %>%
+#     hc_add_series(name = "Confidence Interval",
+#                 data = list_parse2(data.frame(
+#                   x = datetime_to_timestamp(month),
+#                   low = round(s1$lower[, "80%"], digits=2),
+#                   high = round(s1$upper[, "80%"], digits=2)
+#                 )),
+#                 type = "arearange",
+#                 color = hex_to_rgba("#d62728", 0.2),
+#                 linkedTo = ":previous")
+```
+
+## Results
+
+Given the diagram as well as the forecast table (of the best performing model, candidate #3), I conclude that a reduction in unemployment in Greece is expected in the next period of time (in the next six months). More specifically, **Greece's unemployment** in **February 2023** will range between **10\%** (9.4\%) and **13\%** (14\%) with an **80\%** (95\%) probability (based on **ARIMA(9,2,1)** model).
+
+## Ευχαριστίες {.appendix .unlisted}
 
 Φωτογραφία από <a href="https://pixabay.com/el/users/roszie-6000120/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=7386581">Rosy / Bad Homburg / Germany</a> από το <a href="https://pixabay.com/el//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=7386581">Pixabay</a>
