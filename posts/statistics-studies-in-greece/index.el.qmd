@@ -26,7 +26,7 @@ format:
     code-fold: false
     code-summary: "Δείξε τον κώδικα"
     code-tools: 
-      source: https://github.com/stesiam/stesiam.github.io/blob/gh-pages/posts/studies-in-statistics-greece/index.qmd
+      source: https://github.com/stesiam/stesiam.github.io/blob/gh-pages/posts/statistics-studies-in-greece/index.el.qmd
 execute:
   echo: true
 editor_options: 
@@ -294,13 +294,17 @@ reactable::reactable(others,
 
 ```{r map_statistics_deps}
 uni_coord = data.frame(
-  uni = c("ΠαΠει", "Αιγαίου", "ΟΠΑ", "Δυτικής Μακεδονίας"),
+  uni = c("ΠαΠει", "Αιγαίου", "ΟΠΑ", "ΠαΔΜ"),
+  unilong = c("Πανεπιστήμιο Πειραιά", "Πανεπιστήμιο Αιγαίου",
+              "Οικονομικό Πανεπιστήμιο Αθηνών",
+              "Πανεπιστήμιο Δυτικής Μακεδονίας"),
+  dept = c("Στατιστική και Ασφαλιστική Επιστήμη", "Στατιστική και Αναλογιστική Επιστήμη", "Στατιστική", "Στατιστική"),
   long = c(23.6529793, 26.5664138,23.7300928, 21.4565181),
   lat = c(37.77, 39.0851185, 38.1940201, 40.1197471),
   img = c("https://upload.wikimedia.org/wikipedia/en/7/7e/UNIPI.jpg", "https://upload.wikimedia.org/wikipedia/en/d/df/Aegean_University_logo.gif", "https://upload.wikimedia.org/wikipedia/en/thumb/8/89/AUEB_EMBLEM.png/250px-AUEB_EMBLEM.png","https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/UoWM.png/120px-UoWM.png"),
   established = c(1938, 1984, 1920, 2003),
   dpt_est = c(1977,2000, 1989, 2019),
-  town = c("Piraeus", "Samos", "Athens", "Kozani")
+  town = c("Πειραιάς", "Σάμος", "Αθήνα", "Γρεβενά")
 )
 
 uni_coord$symbol <- c(
@@ -331,13 +335,18 @@ hc_add_series(
   useHTML = TRUE,  # Enables HTML formatting
   formatter = JS("
     function() {
-      return '<div style=\"text-align: center;\">' + 
-               '<b>' + this.point.name + '</b></div>' + 
+      return '<div style=\"max-width: 300px; min-width: 200px; white-space: normal;\">' +
+      '<div style=\"text-align: center; \">' + 
+               '<b>' + this.point.unilong + '</b><br>(' + this.point.uni + ')</div>' + 
                '<br>' +
+               '<div style=\"text-align: center;\"><em>' + this.point.dept + '</em></div>' +
+                '<br>' +
                '<img style=\"margin: auto; display:flex; justify-content: center;\" src=\"' + this.point.img + '\" width=\"40\" height=\"40\" style=\"border-radius:10px; margin-top:5px;\" /><br>' +
-               '<b>Uni established:</b> ' + this.point.established + '<br>' + 
-               '<b>Dept. Est.:</b> ' + this.point.dpt_est + '<br>' + 
-               '<b>Students:</b>';
+               '<b>Πόλη:</b>' + this.point.town + '<br>' +
+               '<b>Ίδρυση πανεπιστημίου:</b> ' + this.point.established + '<br>' + 
+               '<b>Ίδρυση τμήματος:</b> ' + this.point.dpt_est + '<br>' + 
+               '<b>Φοιτητές:</b>' +
+               '</div>';
     }
   ")
 ) %>%
@@ -350,6 +359,71 @@ hc_add_series(
 
 Η προσωπική μου άποψη είναι ότι το τμήμα Στατιστικής του Αιγαίου είναι μία πολύ δελεαστική επιλογή. Παρουσιάζεται (το τονίζω αυτό, παρουσιάζεται) ως ένα σοβαρό τμήμα με έναν σύγχρονο οδηγό σπουδών (λίγα μαθήματα που αντισταθμίζεται με τον ανάλογο φόρτο εργασίας). Το συγκεκριμένο τμήμα κατά τη γνώμη μου αδικείται από τη βάση που έχει. Αν είχα την επιλογή να διαλέξω δίχως να λάβω υπόψιν το οικονομικό κριτήριο (κόστος ενοικίου κτλ.) θα ήταν η πρώτη μου επιλογή. Βέβαια, αυτή η επιλογή όπως έγραψα και στην αρχή βασίζεται αποκλειστικά σε πράγματα που θα έβρισκα στο διαδίκτυο και απλά τα μάζεψα σε ένα άρθρο. Υπάρχουν και άλλα πράγματα που έχουν σημαντικότατο ρόλο, όπως οι διδάσκοντες, το επίπεδο μαθήματος, τήρηση κανονισμών, εγκαταστάσεις, προσβασιμότητα και άλλα που δυστυχώς θα τα μάθετε, όταν θα είναι πολύ αργά.
 
-## Acknowledgements {.appendix .unlisted}
+## Ευχαριστίες {.appendix .unlisted}
 
 Φωτογραφία από <a href="https://pixabay.com/el/users/wokandapix-614097/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=2093746">WOKANDAPIX</a> από το <a href="https://pixabay.com/el//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=2093746">Pixabay</a>
+
+
+#######
+
+
+```{r}
+url = "https://www.statistics.gr/el/statistics?p_p_id=documents_WAR_publicationsportlet_INSTANCE_VBZOni0vs5VJ&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_cacheability=cacheLevelPage&p_p_col_id=column-2&p_p_col_count=4&p_p_col_pos=2&_documents_WAR_publicationsportlet_INSTANCE_VBZOni0vs5VJ_javax.faces.resource=document&_documents_WAR_publicationsportlet_INSTANCE_VBZOni0vs5VJ_ln=downloadResources&_documents_WAR_publicationsportlet_INSTANCE_VBZOni0vs5VJ_documentID=563442&_documents_WAR_publicationsportlet_INSTANCE_VBZOni0vs5VJ_locale=el"
+```
+
+```{r}
+work_dir = here::here("posts", "statistics-studies-in-greece")
+download.file(url = url, destfile = "undergrads_by_year.xls")
+```
+
+```{r, message=FALSE}
+library(readxl)
+library(stringr)
+undergrads_by_year <- read_excel(here::here(work_dir, "undergrads_by_year.xls")) %>%
+  dplyr::select(c(3,4,25)) %>%
+  setNames(c("Dept", "StudentsUnEq6", "studentsOv6")) %>%
+  tidyr::drop_na(Dept) %>%
+  .[-c(1),] %>%
+  mutate(across(c(StudentsUnEq6, studentsOv6), ~ as.integer(.))) %>%
+  mutate(totalStudents = StudentsUnEq6 + studentsOv6,
+         pctOv6 = studentsOv6 / totalStudents,
+         nonPctOv6 = 1 - pctOv6) %>%
+  arrange(-pctOv6) %>%
+  dplyr::filter(str_detect(Dept, "ΣΤΑΤΙΣΤΙΚΗ"))
+```
+
+
+
+```{r}
+highchart() %>%
+  hc_chart(type = "bar") %>%
+  hc_title(text = "Ποσοστό φοιτητών που ξεπέρασαν τα ν+2 έτη") %>%
+  hc_subtitle(text = "Το τμήμα του Πειραιά έχει το μεγαλύτερο ποσοστό καθυστερημένης αποφοίτησης με 7 στους 10 φοιτητές του τμήματος να αποτελούν φοιτητές 7ου ή μεγαλύτερου έτους. Με μεγάλη ποσοστιαία διαφορά ακολουθούν τα τμήματα της Αθήνας και της Σάμου. Το τμήμα των Γρεβενών είναι νεοσύστατο και δεν έχει φοιτητές ν+2.") %>%
+  hc_xAxis(categories = undergrads_by_year$Dept) %>%
+  hc_yAxis(title = list(text = "Value")) %>%
+  hc_plotOptions(series = list(stacking = "normal")) %>%
+  hc_add_series(name = "Until 6 Years", data = undergrads_by_year$nonPctOv6) %>%
+  hc_add_series(name = "Over 6 Years", data = undergrads_by_year$pctOv6) %>%
+  hc_yAxis(
+    title = list(text = "Value"),
+    plotLines = list(
+      list(
+        color = "orange",
+        width = 2,
+        value = 0.5,
+        dashStyle = "ShortDash",
+        label = list(
+          y = 200,
+          text = paste0("Average: ", round(50, 1)),
+          align = "left",
+          style = list(color = "orange", fontWeight = "bold", fontSize = 10)
+        )
+      )
+    )
+  ) %>%
+  hc_tooltip(
+  valueDecimals = 2
+)
+
+```
+

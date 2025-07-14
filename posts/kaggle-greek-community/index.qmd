@@ -411,9 +411,8 @@ highchart() |>
     x = 450,
     y = 100,
     floating = TRUE,
-    borderWidth = 1,
-    backgroundColor = "#FFFFFF"
-  ) |>
+    borderWidth = 1
+    ) |>
   hc_add_series(
     name = "Greece",
     data = data1 %>% dplyr::filter(Q3 =="Greece") %>% pull(pct)
@@ -445,7 +444,7 @@ d = data3 %>% dplyr::filter(Q4 %in% c("Bachelor", "Master", "PhD"))
 ```{r}
 highchart() %>%
   hc_chart(type = "bar") %>%
-  hc_title(text = "Age Distribution of Kaggle Community (GR / Rest World)") %>%
+  hc_title(text = "Age Distribution of Kaggle Community (🇬🇷 / 🌍)") %>%
   hc_subtitle(text="Greek Kagglers have attained higher studies.") %>%
   hc_caption(text="stesiam, 2023") %>%
   hc_xAxis(categories = d$Q4,
@@ -462,7 +461,9 @@ highchart() %>%
   hc_legend(
     align = "right",
     verticalAlign = "top",
-    layout = "vertical"
+    layout = "vertical",
+    y = -100,
+    x = -50
   )
 ```
 

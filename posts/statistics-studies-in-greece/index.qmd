@@ -1,7 +1,7 @@
 ---
 title: "Statistics Studies in Greece"
 author: "stesiam"
-description: "Συγκεντρώνω σε μία λίστα τις δημόσιες σχολές στατιστικής στην Ελλάδα και συγκρίνω τα βασικά τους στοιχεία με βάση τους οδηγούς σπουδών τους"
+description: "Compiling a list of public statistics schools in Greece and comparing their key features based on their study guides."
 freeze: false
 link-external-newwindow: true
 categories: [R, EDA]
@@ -10,7 +10,6 @@ image-alt: "Empty university lecture hall with rows of wooden seats facing a sta
 fig-cap-location: bottom
 date: "2023-06-20"
 toc: true
-toc-title: Περιεχόμενα
 toc-location: left
 citation: true
 #df_print: paged
@@ -26,7 +25,7 @@ format:
     code-fold: false
     code-summary: "Δείξε τον κώδικα"
     code-tools: 
-      source: https://github.com/stesiam/stesiam.github.io/blob/gh-pages/posts/studies-in-statistics-greece/index.qmd
+      source: https://github.com/stesiam/stesiam.github.io/blob/gh-pages/posts/statistics-studies-in-greece/index.qmd
 execute:
   echo: true
 editor_options: 
@@ -34,14 +33,14 @@ editor_options:
     wrap: 80
 ---
 
-## Εισαγωγή
+## Introduction
 
 Σε αυτό το άρθρο θα ήθελα να συγκεντρώσω όλες αυτές τις διάσπαρτες πληροφορίες που υπάρχουν για τα τμήματα Στατιστικής στη χώρα μας. Θα αναλύσω ως επί το πλείστον πληροφορίες που μπορούν να βρεθούν στο διαδίκτυο σαν να είχα να συμπληρώσω μηχανογραφικό. Ωστόσο, σε κάθε περίπτωση σας αποτρέπω από το να επιλέξετε σχολή βασίζοντας την επιλογή σας σε μόνο αυτό το άρθρο. Σε αυτή τη κατηγορία εντάσσω απλά όσες σχολές σχετίζονται με τη Στατιστική. Τα τμήματα που θα συγκρίνω είναι τα εξής:
 
-- [Τμήμα Στατιστικής](https://www.dept.aueb.gr/el/stat/content/%CF%84%CE%BC%CE%AE%CE%BC%CE%B1-%CF%83%CF%84%CE%B1%CF%84%CE%B9%CF%83%CF%84%CE%B9%CE%BA%CE%AE%CF%82) του Οικονομικού Πανεπιστημίου Αθηνών
-- [Τμήμα Στατιστικής και Ασφαλιστικής Επιστήμης](https://www.unipi.gr/unipi/el/sta-home.html) του Πανεπιστημίου Πειραιά
+- [Department of Statistics](https://www.dept.aueb.gr/el/stat/content/%CF%84%CE%BC%CE%AE%CE%BC%CE%B1-%CF%83%CF%84%CE%B1%CF%84%CE%B9%CF%83%CF%84%CE%B9%CE%BA%CE%AE%CF%82) of Athens University of Economics and Business
+- [Department of Statistics and Insurance Science](https://www.unipi.gr/unipi/el/sta-home.html) of University of Piraeus
 - [Τμήμα Στατιστικής και Αναλογιστικών - Χρηματοοικονομικών Μαθηματικών](https://www.aegean.gr/departments/%CF%84%CE%BC%CE%AE%CE%BC%CE%B1-%CF%83%CF%84%CE%B1%CF%84%CE%B9%CF%83%CF%84%CE%B9%CE%BA%CE%AE%CF%82-%CE%BA%CE%B1%CE%B9-%CE%B1%CE%BD%CE%B1%CE%BB%CE%BF%CE%B3%CE%B9%CF%83%CF%84%CE%B9%CE%BA%CF%8E%CE%BD-%E2%80%93-%CF%87%CF%81%CE%B7%CE%BC%CE%B1%CF%84%CE%BF%CE%BF%CE%B9%CE%BA%CE%BF%CE%BD%CE%BF%CE%BC%CE%B9%CE%BA%CF%8E%CE%BD-%CE%BC%CE%B1%CE%B8%CE%B7%CE%BC%CE%B1%CF%84%CE%B9%CE%BA%CF%8E%CE%BD) του Πανεπιστημίου Αιγαίου
-- [Tμήμα Στατιστικής και Ασφαλιστικής Επιστήμης](https://stat.uowm.gr/) του Πανεπιστημίου Δυτικής Μακεδονίας
+- [Department of Statistics](https://stat.uowm.gr/) of University of Western Macedonia
 
 
 ```{r Import R libraries, warning=FALSE, message=FALSE}
@@ -66,7 +65,7 @@ showtext::showtext_opts(dpi = 300)
 ```
 
 
-## Βάση εισαγωγής
+## Minimum admission scores
 
 Ένα πρώτο κριτήριο για αρκετούς είναι η βάση εισαγωγής. Αν και κατά τη γνώμη μου αυτός ο δείκτης δείχνει κατά πόσο είναι επιθυμητή αυτή η σχολή και όχι το κατά πόσο καλή ή κακή είναι αυτή. Παρακάτω, συγκέντρωσα ιστορικά στοιχεία βάσεων (από το 2013 μέχρι το 2022) από τις τέσσερις σχολές Στατιστικής και έκανα ένα απλό διάγραμμα. Σε αυτό φαίνεται ότι ιστορικά το τμήμα με τη μεγαλύτερη βάση είναι του ΟΠΑ (με μόνη εξαίρεση το 2015). Δεύτερο σε προτίμηση έρχεται το τμήμα Στατιστικής του Πειραιά. Επιπλέον, τα υπόλοιπα δύο τμήματα Στατιστικής (Αιγαίου και Δυτικής Μακεδονίας) ταυτίζονται αρκετά ως προς τη βάση εισαγωγής τους. 
 
@@ -137,9 +136,36 @@ hchart(tmimata_statistikis, "line", hcaes(x = Year, y = Theseis, group = Univers
 
 Βέβαια, η παροχή των θέσεων δεν συνεπάγεται πάντοτε και πλήρωση αυτών. Πολλές από αυτές μπορεί να μείνουν αδιάθετες λόγω χαμηλής ζήτησης. Αυτό το φαινόμενο παρατηρείται σε σχολές εκτός των αστικών κέντρων. Τα τελευταία χρόνια υπάρχει και ένας επιπρόσθετος λόγος μιας και έχει θεσμοθετηθεί η ελάχιστη βάση εισαγωγής (ΕΒΕ), η οποία αποτρέπει την βάση μιας σχολής να πέσει κάτω από έναν συγκεκριμένο βαθμό (π.χ. κάτω από 7 ή 13) και για αυτό παρατηρείται στο πρώτο διάγραμμα των βάσεων μία απότομη αύξηση στις σχολές του Αιγαίου και της Δυτικής Μακεδονίας. από την εφαρμογή της να δούμε και άλλες αδιάθετες θέσεις. Έτσι, ο αριθμός των εισακτέων μπορεί πλέον να διαφέρει σημαντικά όχι απλώς μεταξύ τμημάτων εντός και μεγάλων αστικών κέντρων (π.χ. Πανεπιστήμιο Αιγαίου, Πανεπιστήμιο Δυτικής Μακεδονίας - Γρεβενά), αλλά και ως προς τον διαθέσιμο αριθμό εισακτέων και των εγγεγραμμένων φοιτητών.
 
+```{r Proportion of Seats}
+years <- unique(tmimata_statistikis$Year)
+
+# Step 3: Prepare series data
+series_data <- tmimata_statistikis %>%
+  group_by(University) %>%
+  summarise(data = list(Theseis)) %>%
+  mutate(name = University) %>%
+  select(name, data) %>%
+  list_parse()
 
 
-## Προϋποθέσεις για πτυχίο
+highchart() %>%
+    hc_chart(type = "area") %>%
+    hc_title(text = "Historic and Estimated Worldwide Population Distribution by Region") %>%
+    hc_subtitle(text = "Using tidy data (long format)") %>%
+    hc_xAxis(categories = years, tickmarkPlacement = "on", title = list(enabled = FALSE)) %>%
+    hc_yAxis(title = list(text = "Percent"), labels = list(format = "{value}%")) %>%
+    hc_tooltip(shared = TRUE, pointFormat = "<span style='color:{series.color}'>{series.name}</span>: <b>{point.percentage:.1f}%</b> ({point.y:,.0f})<br/>") %>%
+    hc_plotOptions(area = list(
+        stacking = "percent",
+        lineColor = "#ffffff",
+        lineWidth = 1,
+        marker = list(lineWidth = 1, lineColor = "#ffffff")
+    )) %>%
+    hc_add_series_list(series_data)
+```
+
+
+## Requirements to Graduate
 
 Και τα τέσσερα τμήματα προσφέρουν 4ετή φοίτηση και κάποιος ορίζεται ως πτυχιούχος με την απόκτηση 240 ECTS. Οι διαφορές τους ανάγονται κυρίως στο πλήθος των μαθημάτων ή στο αν υπάρχει προϋπόθεση για πτυχιακή. Σημειώνεται ότι οι παραπάνω πληροφορίες βασίζονται στους πρόσφατους οδηγούς σπουδών των παραπάνω τμημάτων (2022-2023).
 
@@ -190,7 +216,7 @@ highchart() %>%
 
 
 
-## Άλλες πληροφορίες
+## Other Information
 
 
 ```{r, echo=FALSE}
@@ -242,19 +268,24 @@ reactable::reactable(others,
 ```
 
 
-## Χάρτης
+## Mapping Departments
 
-Τέλος, θα είχε ενδιαφέρον να εξασκήσω τις ικανότητές μου στη δημιουργία χαρτών με την R. Συνήθως χρησιμοποιώ Shapefiles για να έχω μία βάση (στη προκειμένη περίπτωση τα όρια της Ελλάδας), ωστόσο αυτή τη φορά αποφάσισα να χρησιμοποιήσω το πακέτο rnaturalearth. Αξίζει να σημειωθεί ότι απαιτούνται και τα πακέτα rnaturalearthdata και rnaturalhires.
+Finally, it would be interesting to practice my skills in creating maps with R. I usually use Shapefiles to have a base map (in this case, the boundaries of Greece) or a package to define them, such as the `rnaturalearth` accompanied by the `rnaturalearthdata` και `rnaturalhires` packages. This was my approach in the first version of my article. Fortunately, in the past period, I have made a great effort to transform my static plots into interactive ones using highcharter. That's what I am also trying to do with maps, as the aforemntioned library offers relevant mapping tools. On our specific example, we need Greece's boundaries which are available from the library (as are the boundaries of other countries).
 
 ```{r map_statistics_deps}
 uni_coord = data.frame(
-  uni = c("ΠαΠει", "Αιγαίου", "ΟΠΑ", "Δυτικής Μακεδονίας"),
+  uni = c("UniPi", "Aegean", "AUEB", "UoWM"),
+  unilong = c("University of Piraeus", "University of Aegean",
+              "Athens University of Economics and Business",
+              "University of Western Macedonia"),
+  dept = c("Statistics and Insurance Science", "Statistics and Actuarial Science",
+           "Statistics", "Statistics"),
   long = c(23.6529793, 26.5664138,23.7300928, 21.4565181),
   lat = c(37.77, 39.0851185, 38.1940201, 40.1197471),
   img = c("https://upload.wikimedia.org/wikipedia/en/7/7e/UNIPI.jpg", "https://upload.wikimedia.org/wikipedia/en/d/df/Aegean_University_logo.gif", "https://upload.wikimedia.org/wikipedia/en/thumb/8/89/AUEB_EMBLEM.png/250px-AUEB_EMBLEM.png","https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/UoWM.png/120px-UoWM.png"),
   established = c(1938, 1984, 1920, 2003),
   dpt_est = c(1977,2000, 1989, 2019),
-  town = c("Piraeus", "Samos", "Athens", "Kozani")
+  town = c("Piraeus", "Samos", "Athens", "Grevena")
 )
 
 uni_coord$symbol <- c(
@@ -278,20 +309,25 @@ hc_add_series(
     height = 20
   )
 ) %>%
-  hc_title(text = "<b>Σχολές Στατιστικής</b>") %>%
-  hc_subtitle(text = "Στην Ελλάδα υπάρχουν συνολικά τέσσερις δημόσιες σχολές στατιστικής προπτυχιακού επιπέδου. Η φοίτηση σε αυτές είναι 4ετούς φοίτησης. Αυτές έχουν έδρα στην Αθήνα, στον Πειραιά, στη Σάμο και στα Γρεβενά") %>%
+  hc_title(text = "<b>Departments of Statistics</b>") %>%
+  hc_subtitle(text = "In Greece there are in total four public departments of undergraduate degree on Statistics. The duration of studies is 4 years. They are based in Athens, Piraeus, Samos and Grevena.") %>%
   hc_caption(text = "stesiam, 2025") |>
   hc_tooltip(
   useHTML = TRUE,  # Enables HTML formatting
   formatter = JS("
     function() {
-      return '<div style=\"text-align: center;\">' + 
-               '<b>' + this.point.name + '</b></div>' + 
+      return '<div style=\"max-width: 300px; min-width: 150px; white-space: normal;\">' +
+      '<div style=\"text-align: center; \">' + 
+               '<b>' + this.point.unilong + '</b><br>(' + this.point.uni + ')</div>' + 
                '<br>' +
+               '<div style=\"text-align: center;\"><em>' + this.point.dept + '</em></div>' +
+                '<br>' +
                '<img style=\"margin: auto; display:flex; justify-content: center;\" src=\"' + this.point.img + '\" width=\"40\" height=\"40\" style=\"border-radius:10px; margin-top:5px;\" /><br>' +
+               '<b>Town:</b>' + this.point.town + '<br>' +
                '<b>Uni established:</b> ' + this.point.established + '<br>' + 
                '<b>Dept. Est.:</b> ' + this.point.dpt_est + '<br>' + 
-               '<b>Students:</b>';
+               '<b>Students:</b>' +
+               '</div>';
     }
   ")
 ) %>%

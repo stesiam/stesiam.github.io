@@ -50,72 +50,55 @@ a predictive model its accuracy will remain at a satisfactory level. Finally,
 another positive contribution is in Shiny Apps in order to automate data
 analysis and the information is reliable and up-to-date for the visitor.
 
-Γενικά υπάρχουν πάρα πολλά API από τα οποία μπορούμε να λάβουμε σημαντικές
-πληροφορίες. Για περισσότερες λεπτομέρειες ως προς τη διαθεσιμότητα δωρεάν APIs
-μπορείτε να δείτε ένα σχετικό [repository με μία λίστα
-αυτών](https://github.com/public-apis/public-apis). Σε αυτό το άρθρο θα
-ασχοληθούμε με τα ανοικτά δεδομένα της χώρας μας που διατίθενται μέσω του
+In general there are many APIs from which we can get important information. 
+For more details about the availability of free APIs you can see a relevant 
+[repository with a list of them](https://github.com/public-apis/public-apis). 
+In this article we will deal with Greek Government'sAPI available through
 [data.gov.gr](data.gov.gr).
 
 ## Requesting an API Key
 
-Ωστόσο, το συγκεκριμένο API (όπως τα περισσότερα χρειάζονται
+However, like most APIs, this one requires us to register with the platform. 
+We can do this on the relevant page by filling in our details.
+All the fields of the form must be completed, as shown below:
 
-Κάνουμε αίτηση στην αντίστοιχη σελίδα και συμπληρώνουμε τα στοιχεία μας και
-**όλα** τα πεδία της φόρμας όπως αυτή φαίνεται παρακάτω:
-
-![Προεπισκόπηση σελίδας αίτησης για πρόσβαση στο
-API](images/datagovgr_api_request.png){.white_bg
+![Preview request page for access to the API](images/datagovgr_api_request.png){.white_bg
 style="text-align:center; padding: 20px" width="500"}
 
-Στη συνέχεια θα πρέπει να κοιτάξετε το e-mail σας γιατί θα σας έρθει ένα μήνυμα
-με τον Token μέσω του οποίου θα χρησιμοποιείται το API. Να δείτε οπωσδήποτε και
-τον φάκελο με την Ανεπιθύμητη αλληλογραφία (spam) καθώς εμένα μου ήρθε εκεί.
-Παρεμπιπτόντως, σε περίπτωση που χάσετε το token και έχετε σβήσει το mail και
-ξανακάνετε αίτηση (με το ίδιο mail) θα σας το ξαναστείλει. Το έπαθα μόλις :)
+Next, you should check your e-mail because you will get a message
+with a Token through which the API will be used. Be sure to also check
+the spam folder. By the way, in case you lose the token and have deleted the mail and reapply (with the same mail) it will be resent to your email.
 
 ## Using API
 
-Αφού λάβουμε το Token, θα πρέπει με κάποιο τρόπο να λάβουμε τα δεδομένα. Στην
-συγκεκριμένη πλατφόρμα υπάρχουν δύο τρόποι.
+Once we receive the Token, we need to somehow get the data. On the
+specific platform there are two ways.
 
--   Χρήση API από την ιστοσελίδα:
--   Χρήση API με την R
+- Using API from the website:
+- Using API with R
 
-Ο ένας τρόπος (και μάλλον ο λιγότερο αποδοτικός) είναι να κάνεις ζητήσεις τα
-δεδομένα απευθείας από την ιστοσελίδα data.gov.gr. Αυτό είναι από τη μία
-εξαιρετικά απλό, αλλά από την άλλη κατεβάζουμε μία σταθερή έκδοση των δεδομένων
-και συνεπώς αν θελήσω να ανανεώσω τα δεδομένα θα πρέπει πάλι να κατεβάσω τα
-δεδομένα.
+One way (and probably the least efficient) is to request the
+data directly from the data.gov.gr website. This is on the one hand
+extremely simple, but on the other hand we are downloading a fixed version of the
+data and therefore if I want to update the data I have to download the
+data again.
 
 ## Just a use-case
 
-Πριν ολοκληρωθεί αυτό το άρθρο έκρινα ως σημαντική την εφαρμογή ενός
-παραδείγματος. Τη στιγμή που γράφεται αυτό το άρθρο, υπάρχουν συνολικά 49 βάσεις
-δεδομένων από τις οποίες μπορώ να επιλέξω. Προκειμένου να δούμε την ωφέλεια του
-API θα διαλέξω κάποιο που ανανεώνεται σε αρκετά συχνή βάση. Ένα τέτοιο δεδομένο
-είναι οι επιβάτες που [ταξιδεύουν με
-πλοία](https://www.data.gov.gr/datasets/sailing_traffic/).
+Before completing this article, I decided it would be helpful to provide an example. At the time of writing, there are 49 databases to choose from. To demonstrate the usefulness of the API, I will select a database that is updated fairly frequently. One such dataset is that of [passengers travelling on ships](https://www.data.gov.gr/datasets/sailing_traffic/).
 
 ```{r}
 library(httr)
 library(jsonlite)
 ```
 
-Στη συνέχεια θέτω σε μία μεταβλητή τον βασικό σύνδεσμο των δεδομένων. Εγώ που
-επέλεξα την κίνηση των πλοίων θέτω το εξής:
+I set the base url of my data. Given the fact that I am interested on sailing traffic I will use the respective endpoint:
 
 ```{r}
 base = "https://data.gov.gr/api/v1/query/sailing_traffic"
 ```
 
-Στη συνέχεια, όπως τονίζει το documentation της σελίδας για τις άλλες γλώσσες,
-θα πρέπει να ορίσουμε ένα εύρος ημερομηνιών για το οποίο ενδιαφερόμαστε. Αξίζει
-να σημειωθεί ότι δεν μπορείτε να πάρετε μεγάλο εύρος με μία μόνο κλήση του API.
-Για να επιστρέψω στο προηγούμενο παράδειγμα, τα δεδομένα της επιβατικής κίνησης
-των πλοίων ξεκινάνε από το 2017 μέχρι και σήμερα (2023). Ας υποθέσουμε ότι δεν
-μας πειράζει αυτό και ότι θέλουμε τα δεδομένα από τις 4 πρώτες μέρες του Ιουλίου
-του 2023.
+As the documentation points out, we need to set the date range we are interested in. It is worth noting that you cannot retrieve a large range with a single API call. Returning to the previous example, ship passenger traffic data starts in 2017 and goes up to the present day (2023). Let's assume that we don't mind that, and we want the data from the first four days of July in 2023.
 
 ```{r}
 date_from = "2023-07-01"
@@ -129,27 +112,20 @@ call = httr::GET(url = API_URL,
 )
 ```
 
-Όπου στο σημείο που αναφέρεται το **token_id** θα πρέπει να βάλετε το token που
-σας έστειλε το data.gov.gr μέσω mail. Αφού λοιπόν αιτηθούμε τα δεδομένα μέσω της
-GET και κάνουμε λίγο υπομονή βλέπουμε ότι λαμβάνω μία λίστα με διάφορες
-πληροφορίες. Εμάς μας ενδιαφέρουν τα δεδομένα, οπότε κοιτάμε στη κατηγορία
-**content** της λίστας, ωστόσο παρατηρούμε μία μη αναγνώσιμη μορφή των στοιχειών
-μιας και είναι σε δεκαεξαδική μορφή.
+Where it refers to token_id, you should insert the token that was sent to you by data.gov.gr via email. So, after requesting the data through a GET request and waiting a bit, we receive a list with various pieces of information. What we are interested in is the data, so we look into the content category of the list. However, we notice that the information is in an unreadable format since it is in hexadecimal form.
 
 ```{r}
 data = base::rawToChar(call$content)
 ```
 
-Με την παραπάνω εντολή μετατρέπονται οι χαρακτήρες και είναι πλέον αναγνώσιμοι,
-ωστόσο τώρα θα πρέπει να πάρουν και μορφή πίνακα προκειμένου να γίνει η ανάλυση.
+Using rawToChar converts the response into readable characters but I still need to convert my data to tabular format in order to begin with my analysis.
 
 ```{r}
 #data = jsonlite::fromJSON(data, flatten = T)
 ```
 
-Και τέλος, με τη βοήθεια του πακέτου `jsonlite` λαμβάνω ένα data.frame με όνομα
-data που περιέχει όλους τους προορισμούς, τον αριθμό επιβατών, αυτοκινήτων για
-τη κάθε ημέρα που ζήτησα.
+
+Finally, using the `jsonlite` package, I receive a data frame named as data which includes every destination, passenger/car count for the requested date.
 
 ## Acknowledgements {.appendix .unlisted}
 
