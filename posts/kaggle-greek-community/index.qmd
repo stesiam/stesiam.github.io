@@ -351,25 +351,56 @@ family = "text") +
   coord_cartesian(expand = FALSE)
 ```
 
-```{r fig.height= 12}
+
+```{r,  fig.height= 12}
+library(purrr)
 data_decreasing = data %>% dplyr::arrange(-pct_women)
+
+# Add emoji flags
+data_decreasing <- data_decreasing %>%
+    mutate(flag = map_chr(iso2c, ~ {
+        chars <- utf8ToInt(toupper(.x))
+        paste0(
+            intToUtf8(127397 + chars[1]),
+            intToUtf8(127397 + chars[2])
+        )
+    }))
+
 
 highchart() %>%
     hc_chart(type = "bar", inverted = TRUE) %>%
-    hc_title(text = "Horizontal Bar Chart with Thicker Bars") %>%
-    hc_xAxis(categories = data_decreasing$Q3, title = list(text = NULL)) %>%
-    hc_yAxis(title = list(text = "Percent (%)")) %>%
     hc_title(text = "<b>Women participation in DS community per country</b>") %>%
     hc_subtitle(text = glue("Based on Kaggle's 2021 Survey women are underrepresented in DS. The country with the highest women participation is Tunisia and Peru is one with the lowest. Last but not least, <b>Greece</b> has a relatively disappointing rate of women participation holding 15th place with 15.7%, given the fact that the average is {round(mean(data$pct_women),digits = 2)} %")  ) %>%
-    hc_caption(text="Data: Kaggle Survey 2021 | <b>stesiam</b>, 2023") %>%
+    hc_caption(text="Data: Kaggle Survey 2021 | <b>stesiam</b>, 2023") %>%    hc_xAxis(categories = data_decreasing$Q3, title = list(text = NULL)) %>%
+    hc_yAxis(title = list(text = "Percent (%)")) %>%
     hc_legend(enabled = FALSE) %>%
-    hc_series(
-        list(
-            name = "Values",
-            data = data_decreasing$pct_women
-        )
+    hc_add_series(
+        name = "Women %",
+        data = map(seq_len(nrow(data_decreasing)), function(i) {
+            list(
+                y = data_decreasing$pct_women[i],
+                Women = data_decreasing$Women[i],
+                n = data_decreasing$n[i],
+                country = data_decreasing$Q3[i],
+                flag = data_decreasing$flag[i]
+            )
+        })
+    ) %>%
+    hc_tooltip(
+        useHTML = TRUE,
+        formatter = JS("
+      function() {
+        var point = this.point;
+        return '<span style=\"font-size:22px\">' + point.flag + '</span> ' +
+               '<b>' + point.country + '</b><br>' +
+               'Percent: ' + Highcharts.numberFormat(this.y, 2) + '%<br>' +
+               'Women: ' + point.Women + ' / ' + point.n;
+      }
+    ")
     )
 ```
+
+
 
 
 # Age Distribution
@@ -459,11 +490,9 @@ highchart() %>%
     list(name = "Rest World", data = d %>% dplyr::filter(Q3 =="Other") %>% pull(pct))
   ) %>%
   hc_legend(
-    align = "right",
+    align = "center",
     verticalAlign = "top",
-    layout = "vertical",
-    y = -100,
-    x = -50
+    layout = "horizontal"
   )
 ```
 
