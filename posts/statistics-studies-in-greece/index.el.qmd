@@ -275,6 +275,8 @@ highchart() %>%
   hc_add_series(name = "Until 6 Years", data = undergrads_by_year$nonPctOv6) %>%
   hc_add_series(name = "Over 6 Years", data = undergrads_by_year$pctOv6) %>%
   hc_yAxis(
+    min = 0,
+    max = 1,
     title = list(text = "Value"),
     plotLines = list(
       list(
@@ -294,7 +296,6 @@ highchart() %>%
   hc_tooltip(
   valueDecimals = 2
 )
-
 ```
 
 
@@ -354,6 +355,13 @@ reactable::reactable(others,
 
 Τέλος, θα είχε ενδιαφέρον να εξασκήσω τις ικανότητές μου στη δημιουργία χαρτών με την R. Συνήθως χρησιμοποιώ Shapefiles για να έχω μία βάση (στη προκειμένη περίπτωση τα όρια της Ελλάδας), ωστόσο αυτή τη φορά αποφάσισα να χρησιμοποιήσω το πακέτο rnaturalearth. Αξίζει να σημειωθεί ότι απαιτούνται και τα πακέτα rnaturalearthdata και rnaturalhires.
 
+```{r}
+students_by_dept = undergrads_by_year |>
+  dplyr::filter(stringr::str_detect(Dept, "ΣΤΑΤΙΣΤΙΚΗ")) %>%
+  mutate(Short = c("UniPi", "AUEB", "Aegean", "Grevena"))
+```
+
+
 ```{r map_statistics_deps}
 uni_coord = data.frame(
   uni = c("ΠαΠει", "Αιγαίου", "ΟΠΑ", "ΠαΔΜ"),
@@ -361,6 +369,7 @@ uni_coord = data.frame(
               "Οικονομικό Πανεπιστήμιο Αθηνών",
               "Πανεπιστήμιο Δυτικής Μακεδονίας"),
   dept = c("Στατιστική και Ασφαλιστική Επιστήμη", "Στατιστική και Αναλογιστική Επιστήμη", "Στατιστική", "Στατιστική"),
+  studs = c(3207, 1035, 1203, 555),
   long = c(23.6529793, 26.5664138,23.7300928, 21.4565181),
   lat = c(37.77, 39.0851185, 38.1940201, 40.1197471),
   img = c("https://upload.wikimedia.org/wikipedia/en/7/7e/UNIPI.jpg", "https://upload.wikimedia.org/wikipedia/en/d/df/Aegean_University_logo.gif", "https://upload.wikimedia.org/wikipedia/en/thumb/8/89/AUEB_EMBLEM.png/250px-AUEB_EMBLEM.png","https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/UoWM.png/120px-UoWM.png"),
@@ -368,6 +377,8 @@ uni_coord = data.frame(
   dpt_est = c(1977,2000, 1989, 2019),
   town = c("Πειραιάς", "Σάμος", "Αθήνα", "Γρεβενά")
 )
+
+
 
 uni_coord$symbol <- c(
   "url(https://upload.wikimedia.org/wikipedia/commons/e/e4/Map_marker_icon_%E2%80%93_Nicolas_Mollet_%E2%80%93_Pin.svg)",
@@ -407,7 +418,7 @@ hc_add_series(
                '<b>Town:</b>' + this.point.town + '<br>' +
                '<b>Uni established:</b> ' + this.point.established + '<br>' + 
                '<b>Dept. Est.:</b> ' + this.point.dpt_est + '<br>' + 
-               '<b>Students:</b>' +
+               '<b>Students:</b> ' + this.point.studs +
                '</div>';
     }
   ")
