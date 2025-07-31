@@ -107,6 +107,9 @@ bank_dataset <- read_delim("bank_dataset_files/bank.csv",  delim = ";", escape_d
 bank_dataset = bank_dataset %>% tibble::rowid_to_column("ID")
 ```
 
+
+
+
 ## Preview dataset
 
 Here we can see a small chunk of my dataset (first 10 rows / observations) just to understand the dataset's structure and type of variables.
@@ -181,34 +184,6 @@ It depends. If you want to do a simple analysis then yes. Although most of the t
 On this occasion, I found beneficial the definition of a function for qualitative data.
 
 ```{r}
-univariate_qualitative = function(variable, title_plot){
-table = bank_dataset %>%
-    select(variable) %>%
-    table() %>%
-    prop.table() %>%
-    as.data.frame() %>%
-    magrittr::set_colnames(c("Var1", "Freq"))
-  
-plot =  ggplot(data = table, aes(x = fct_reorder(Var1,Freq, .desc = T), fill=Var1, y = Freq)) + 
-     geom_bar(stat = "identity")+
-     scale_fill_hue(c = 40) +
-     geom_text(aes(label = sprintf("%.2f %%", Freq*100),  stat="identity",
-        vjust = -.1)) +
-     labs(
-       title = title_plot,
-       caption = "Bank Marketing Dataset from <b>UCI</b>",
-       x = "Response",
-       y = "Observations"
-        ) +
-     theme_classic() +
-     theme(legend.position = "none",
-        axis.text.x = element_text(angle = 30, vjust = 0.5),
-        plot.caption = element_markdown(lineheight = 1.2),
-        plot.title = element_text(hjust = 0.5),)
-  
-return(plot)
-}
-
 univariateQualitativePlot <- function(data, column, title, subtitle, chart_type = "bar") {
   library(dplyr)
   library(highcharter)
@@ -247,7 +222,6 @@ univariateQualitativePlot <- function(data, column, title, subtitle, chart_type 
 
   return(hc)
 }
-
 ```
 
 
@@ -1041,7 +1015,7 @@ Next, parsnip helps us to specify our models. Initially, I will define a LightGB
 ```{r}
 lightgbm_model<- parsnip::boost_tree(
  mode = "classification",
- trees = 100,
+ trees = 50,
  min_n = tune(),
  learn_rate = tune(),
  tree_depth = tune()) %>%
@@ -1053,7 +1027,7 @@ and an XGBoost one.
 ```{r}
 xgboost_model<- parsnip::boost_tree(
  mode = "classification",
- trees = 100,
+ trees = 50,
  min_n = tune(),
  learn_rate = tune(),
  tree_depth = tune()) %>%

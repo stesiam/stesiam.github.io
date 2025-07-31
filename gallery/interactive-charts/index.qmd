@@ -1,0 +1,208 @@
+---
+title: "Interactive charts"
+description: "A collection of my visualizations. Some of them are based on popular challenges such as #TidyTuesday and #30DayMapChallenge. The collection is not restricted to those, as I find from time to time interesting datasets to work with."
+link-external-newwindow: true
+page-layout: full
+comments: false
+lang: el
+title-block-banner: true
+---
+
+## Supermarket Sales
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+library(highcharter)
+library(glue)
+library(dplyr)
+library(tidyr)
+sm_sales = 14.8
+data = data.frame(
+  "Brand" = c("Sklavenitis", "LIDL", "AB", "Metro", "Masoutis", "Kritikos","Other"),
+  "Sales" = c(5.35, 2, 1.94, 1.65, 1.15, 0.78, sm_sales - 5.35 - 2 - 1.94 - 1.65 - 1.15 - 0.78),
+  "Image" = c("https://www.sklavenitis.gr/favicon.ico", 
+              "https://www.lidl-hellas.gr/static/assets/lidl-onlineshop-hellas-271731.svg", 
+              "https://static.ab.gr/static/next/icons/favicon.png",
+              "https://www.metrocashandcarry.gr/assets/img/logo_metro.svg",
+              "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/%CE%9C%CE%B1%CF%83%CE%BF%CF%8D%CF%84%CE%B7%CF%82_%28logo%29.svg/250px-%CE%9C%CE%B1%CF%83%CE%BF%CF%8D%CF%84%CE%B7%CF%82_%28logo%29.svg.png",
+              "https://kritikos-sm.gr/assets/kritikos/logo.svg", NA),
+  stringsAsFactors = F
+)
+
+title_text = glue("<b>Supermarkets' Sales in Greece (2022)</b>")
+subtitle_text = glue( "According to the latest survey of IELKA, the total sales of Greek 
+    supermarkets are <br> amounted to € <b>14.8</b> bil. <b><span style = 'color: #c6a464;'>Sklavenitis</span></b> is by far the most
+    prevalent of all its competitors <br> with € <b>5.35</b> bil. in sales (36% of total market)." )
+caption_text = "30 Day Chart Challenge, Day 1 (2024) <br> <b> Data:</b> Panorama of The Greek Supermarkets, selfservice.gr<br><span style='font-family:fb;'  >&#xf09b;</span> <b>stesiam</b>, 2024"
+
+data_list <- purrr::pmap(data, function(Brand, Sales, Image) {
+  if (is.na(Image)) img <- "https://via.placeholder.com/80x80.png?text=No+Image"
+  list(name = Brand, y = Sales, img = Image)
+})
+
+# Create the pie chart
+highchart() %>%
+  hc_add_dependency("modules/accessibility") %>%
+  hc_chart(type = "pie") %>%
+  hc_title(text = title_text) %>%
+  hc_subtitle(text = subtitle_text) %>%
+  hc_caption(text = caption_text) %>%
+  hc_series(
+    list(
+      name = "Sales",
+      colorByPoint = TRUE,
+      data = data_list
+    )
+  ) %>%
+  hc_tooltip(
+    valueDecimals = 2,
+    useHTML = TRUE,
+    style = list(width = "150px"), # Prevent overflow
+    formatter = JS("
+      function() {
+        return '<div style=\"text-align:center; max-width:140px; min-width: \">' +
+                 '<img src=\"' + this.point.img + '\" ' +
+                 'style=\"max-width:100%; height:50px; border-radius:8px; display:block; margin:auto;\" /><br>' +
+                 '<b>' + this.point.name + '</b><br>' +
+                 'Sales: ' + this.point.y + ' bn €<br>' +
+                  'Share: ' + this.point.y + ' %<br>' +
+               '</div>';
+      }
+    ")
+  )
+```
+
+## Vehicles
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+url = "https://www.statistics.gr/el/statistics?p_p_id=documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_cacheability=cacheLevelPage&p_p_col_id=column-2&p_p_col_count=4&p_p_col_pos=3&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_javax.faces.resource=document&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_ln=downloadResources&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_documentID=116414&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_locale=el"
+download.file(url, destfile = "text.xlsx")
+
+
+vehicles_in_operation = readxl::read_excel("text.xlsx",
+                                           range = "A3:V37")
+
+dataset_part_1 = vehicles_in_operation[1:16, -1]
+dataset_part_2 = vehicles_in_operation[18:34,-1]
+
+#Use the first row of dataset as my variable names and delete the duplicated line
+
+colnames(dataset_part_2) = dataset_part_2[1,]
+dataset_part_2 = dataset_part_2[-1,]
+dataset_part_1
+# Remove duplicated columns
+
+dataset_part_1 = dataset_part_1 %>%
+  relocate(`Category and use`, .before = "1985")
+
+dataset_part_2 = dataset_part_2[,-ncol(dataset_part_2)]
+
+# Bind columns along each other
+
+bind_dataset = dplyr::bind_cols(dataset_part_1, dataset_part_2)
+
+## Now it's time to tidy my original dataset
+
+dataset = bind_dataset %>%
+  slice(c(1, 2, 6, 9, 12)) %>%
+  rename(
+    "category" = `Category and use`
+  ) %>%
+  mutate(category = case_when(
+    grepl("Vehicles", category) ~ "Total",
+    grepl("cars", category) ~ "Car",
+    grepl("Buses", category) ~ "Bus",
+    grepl("Motorcycle", category) ~ "Motorcycle",
+    grepl("Truck", category) ~ "Truck",
+    TRUE ~ category  # Keep other values unchanged
+  )) %>%
+  dplyr::filter(category != "Total")
+
+
+df_wide = dataset %>%
+  tidyr::pivot_longer(., cols = c(!category), names_to = "Year", values_to = "Obs") %>%
+  pivot_wider(names_from = category, values_from = Obs) %>%
+  mutate(Year = as.integer(Year)) %>%
+  arrange(Year)
+
+title_text = "Vehicles in Greece"
+subtitle_text = glue("We observe that in recent years there<br> 
+                     has been a <span style = 'font-family:uc; color:red;'>3x</span><span style = 'font-family:fs; color:red;'> &#xe098;</span> of wheeled vehicles. <br>
+                     The most notable change is the doubling in <br>
+                     the proportion of motorcycles.")
+caption_text = "30 Day Chart Challenge, Day 15 (2024) | <b> Data:</b> Hellenic Statistical Authority<br><span style='font-family:fb;'  >&#xf09b;</span> <b>stesiam</b>, 2024"
+
+title_text_gr = "Οχήματα στην Ελλάδα"
+subtitle_text_gr = glue("Παρατηρούμε ότι τα πρόσφατα χρόνια<br> 
+                     υπάρχει <span style = 'font-family:uc; color:red;'>3x</span><span style = 'font-family:fs; color:red;'> &#xe098; </span> των συνολικών οχημάτων. <br>
+                     Η πιο αξιοσημείωτη αλλαγή είναι ο <br>
+                     διπλασιασμός του ποσοστού των μηχανών")
+caption_text_gr = "30 Day Chart Challenge, Day 15 (2024) | <b> Δεδομένα:</b> Ελληνική Στατιστική Υπηρεσία<br><span style='font-family:fb;'  >&#xf09b;</span> <b>stesiam</b>, 2024"
+
+
+pal=c("#ffa600",
+      "#2f4b7c",
+      "#f95d6a",
+      "#a05195")
+
+
+
+highchart() %>%
+    hc_chart(type = "area") %>%
+    hc_title(text = title_text) %>%
+    hc_subtitle(text = subtitle_text) %>%
+    hc_caption(text = caption_text) %>%
+    hc_xAxis(categories = df_wide$Year,
+             title = list(text = "Year")) %>%
+    hc_yAxis(title = list(text = "Observations")) %>%
+    hc_tooltip(shared = TRUE) %>%
+    hc_plotOptions(area = list(
+        stacking = "normal",  # or "percent" for percent stacked
+        lineColor = "#666666",
+        lineWidth = 1,
+        marker = list(
+            lineWidth = 1,
+            lineColor = "#666666"
+        )
+    )) %>%
+    hc_add_series(name = "Car", data = df_wide$Car, color = "#2f4b7c") %>%
+    hc_add_series(name = "Bus", data = df_wide$Bus, color = "#ffa600") %>%
+    hc_add_series(name = "Truck", data = df_wide$Truck, color = "#a05195") %>%
+    hc_add_series(name = "Motrocycle", data = df_wide$Motorcycle, color = "#f95d6a") %>%  hc_plotOptions(area = list(
+        stacking = "percent",
+        marker = list(enabled = FALSE)  # ← disables the pointers
+    ))
+
+highchart() %>%
+    hc_chart(type = "area") %>%
+    hc_title(text = title_text) %>%
+    hc_subtitle(text = subtitle_text) %>%
+    hc_caption(text = caption_text) %>%
+    hc_xAxis(categories = df_wide$Year,
+             title = list(text = "Year")) %>%
+    hc_yAxis(title = list(text = "Observations")) %>%
+   hc_tooltip(shared = TRUE) %>%
+    hc_plotOptions(area = list(
+        stacking = "normal",  # or "percent" for percent stacked
+        lineColor = "#666666",
+        lineWidth = 1,
+        marker = list(
+            lineWidth = 1,
+            lineColor = "#666666"
+        )
+    )) %>%
+    hc_add_series(name = "Car", data = df_wide$Car, color = "#2f4b7c") %>%
+    hc_add_series(name = "Bus", data = df_wide$Bus, color = "#ffa600") %>%
+    hc_add_series(name = "Truck", data = df_wide$Truck, color = "#a05195") %>%
+    hc_add_series(name = "Motrocycle", data = df_wide$Motorcycle, color = "#f95d6a") %>%  hc_plotOptions(area = list(
+        stacking = "normal",
+        marker = list(enabled = FALSE)  # ← disables the pointers
+    ))
+```
+
+

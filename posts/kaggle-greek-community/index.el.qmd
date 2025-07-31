@@ -1,0 +1,443 @@
+---
+title: "Ελληνική κοινότητα επιστήμης δεδομένων"
+author: "stesiam"
+lang: el
+description: |
+  Μία περιγραφική ανάλυση σχετικά με τους Έλληνες χρήστες του Kaggle, που αποτελεί τη πλατφόρμα με αναλυτές και επιστήμονες δεδομένων. Με βάση τα στοιχεία της έρευνας των χρηστών της πλατφόρμας του 2021, πώς συγκρίνονται οι Έλληνες χρήστες με τον υπόλοιπο κόσμο;
+freeze: false
+link-external-newwindow: true
+categories: [R, Περιγραφική Ανάλυση]
+image: survey.png
+image-alt: random survey with ticked values
+fig-cap-location: bottom
+date: "2023-05-06"
+toc: true
+toc-title: Περιεχόμενα
+toc-location: left
+citation: true
+#df_print: paged
+title-block-banner: true
+nocite: '@*'
+csl: apa-6th-edition.csl
+bibliography: [packages.bib, references.bib]
+format: 
+  html:
+    freeze: false
+    code-link: true
+    code-fold: false
+    code-summary: "Show the code"
+    code-tools: 
+      source: https://github.com/stesiam/stesiam.github.io/blob/gh-pages/posts/kaggle-greek-community/index.el.qmd
+execute:
+  echo: true
+editor_options: 
+  markdown: 
+    wrap: 80
+---
+
+## Εισαγωγή
+
+To [Kaggle](https://www.kaggle.com/) είναι από τις πιο γνωστές πλατφόρμες αναλυτών / επιστημόνων δεδομένων μιας και έχει πάνω από 10 εκατομμύρια χρήστες [@headsortails2022].
+Εκτός από αυτό, το Kaggle προσφέρει πάρα πολλές λειτουργίες, όπως:
+- Δημιουργία notebooks, άρθρα που περιέχουν εκτελέσιμο κώδικα και περιέχουν και τα αποτελέσματα αυτού (γραφήματα, στατιστικά αποτελέσματα κτλ.)
+- Επικοινωνία χρηστών μέσω του φόρουμ συζήτησης και επίλυσης αποριών
+- Προσφορά αρκετού υλικού επιμόρφωσης των χρηστών και διάφορων μαθημάτων, όπου τα περισσότερα βασίζονται στη Python και σε βιβλιοθήκες της για οπτικοποίηση δεδομένων και θέματα ανάλυσης δεδομένων, μηχανικής και βαθιάς μάθησης
+- Πολλούς διαγωνισμούς στους οποίους μπορεί να συμμετέχει ο χρήστης
+
+Αξίζει να σημειωθεί ότι υπάρχουν και άλλες παρόμοιες πλατφόρμες με το Kaggle, ωστόσο καμία τους δεν έχει ούτε τη αντίστοιχη βάση χρηστών, ούτε προσφέρει αντίστοιχες λειτουργίες. Μία εναλλακτική του Kaggle μπορεί να θεωρηθεί το [DrivenData](https://www.drivendata.org/), όσον αφορά το κομμάτι των διαγωνισμών μηχανικής/βαθιάς μάθησης. Προφανώς, δεν μπορείς να δημιουργήσεις δικό σου notebooks στη πλατφόρμα συμμετέχουν αρκετά λιγότεροι χρήστες.
+
+
+::: {.column-margin}
+<center>![Λογότυπο της πλατφόρμας Kaggle](images/kaggle_logo.svg){height=100px}</center>
+:::
+
+Η έρευνα μηχανικής μάθησης και επιστήμης δεδομένων (Kaggle Machine Learning & Data Science Survey)  είναι μία έρευνα η οποία υλοποιείται σε ετήσια βάση από την ίδια τη πλατφόρμα. Οι χρήστες της απαντάνε σε διάφορα δημογραφικά στοιχεία και 
+The platform asks its users to analyze users' data in the context of
+a competition. In this notebook, I conduct an analysis based on 2021's survey in
+order to compare Greek data analysts with the rest of the world.
+
+## Προετοιμασία
+
+### Εισαγωγή βιβλιοθηκών
+
+Σε αυτό το άρθρο θα χρειαστώ να εισάγω και να τροποποιήσω τα δεδομένα μου, συνεπώς η σουίτα πακέτων του tidyverse κρίνεται απαραίτητη μιας και θα αξιοποιήσω λειτουργίες από πακέτα όπως το readr, το dplyr & το tidyr. Ο όγκος των δεδομένων είναι τεράστιος που μας δίνει αρκετές επιλογές ανάλυσης και μας δίνεται η ευκαιρία να οπτικοποιήσουμε αρκετά δεδομένα, μέσω του πακέτου highcharter. Τέλος, σε μεταβλητές οι οποίες έχουν αρκετές τιμές (π.χ. χώρες) ενδεχομένως να χρειαστεί να αναλύσω τα δεδομένα μου και σε πίνακε και για αυτό το λόγο ενδείκνειται η χρήση πινάκων μέσω των πακέτων reactable ή reactablefmtr.
+
+
+```{r Import R Libraries, message=FALSE, results='hide', echo=TRUE}
+#| message: false
+#| results: hide
+#| echo: true
+# Βιβλιοθήκες της R για γενική χρήση
+library(readr)
+library(dplyr)
+library(tidyr)
+library(glue)
+library(forcats)
+
+# Δημιουργία πινάκων
+library(kableExtra)
+library(reactablefmtr)
+
+# Δημιουργία διαγραμμάτων
+library(highcharter)
+library(showtext)
+library(sysfonts)
+```
+
+```{r Add fonts and misc. settings}
+#| include: false
+# Άλλες ρυθμίσεις
+options(digits=4) # print only 4 decimals
+options(warn = -1)
+
+## Load fonts
+
+# font_families_google() ## see list with available Google fonts
+
+font_add_google(name = "Lilita One", family = "title", db_cache = F)
+font_add_google(name = "Ysabeau Office", family = "subtitle", db_cache = F)
+font_add_google(name = "Spline Sans", family = "text", db_cache = F)
+
+showtext_auto()
+showtext::showtext_opts(dpi = 300)
+```
+
+
+```{r Add references of R libraries}
+#| include: false
+# Προσθήκη βιβλιοθηκών που χρησιμοποιώ στη βιβλιογραφία
+
+knitr::write_bib(.packages(), file = 'packages.bib')
+```
+
+### Εισαγωγή δεδομένων
+
+Το Kaggle μας προσφέρει το σύνολο των δεδομένων σε ένα αρχείο csv, συνεπώς θα χρειαστώ την εντολή `read_csv` από το πακέτο readr. Θα φορτώσω το αντίστοιχο σύνολο δεδομένων ονομάζοντάς το kaggle_2021. Σε αυτό το σύνολο περιλαμβάνεται στη πρώτη σειρά και η ερώτηση που έθεσε στους χρήστες η οποία καλό θα ήταν να μην τη συμπεριλάβω για να διευκολύνω την ανάλυσή μου.
+
+```{r Import data}
+#| message: false
+#| warning: false
+kaggle_2021 = read_csv("data/kaggle_survey_2021.csv")
+
+# Delete second line
+kaggle_2021 = kaggle_2021[-c(1),]
+```
+
+## Προετοιμασία δεδομένων
+
+Σε αυτό το σημείο χρειάζεται να κάνω ορισμένα βήματα πριν ξεκινήσω. Με δεδομένο ότι η ανάλυσή μου έχει ως κύριο σκοπό να συγκρίνει τα χαρακτηριστικά των Ελλήνων χρηστών με των υπολοίπων χρηστών θα πρέπει να διακρίνω τα δεδομένα με αυτό το κριτήριο. Υπάρχουν δύο τρόποι με τους οποίους μπορείς να γίνει αυτό:
+
+- Δημιουργία νέας μεταβλητής και ομαδοποίηση δεδομένων
+- Φιλτράρισμα και διαχωρισμός συνόλου δεδομένων σε δύο υποσύνολα (Ελλήνων και ξένων χρηστών)
+
+Με οποιονδήποτε από τους δύο τρόπους θα είμαστε σε θέση να συγκρίνουμε βασικά χαρακτηριστικά των χρηστών.
+
+```{r, message=FALSE, warning=F}
+# Recoding Q2 variable
+
+kaggle_2021$Q2 <- kaggle_2021$Q2 |>
+  fct_recode(
+    "Άνδρας" = "Man",
+    "Μη δυαδικό" = "Nonbinary",
+    "Άλλο" = "Prefer not to say",
+    "Άλλο" = "Prefer to self-describe",
+    "Γυναίκα" = "Woman"
+  )
+
+kaggle_2021$Q3_iso2c <- countrycode::countrycode(kaggle_2021$Q3, "country.name.en", "iso2c") |>
+  fct_na_value_to_level("Άλλο")
+
+kaggle_2021$Q3 <- countrycode::countrycode(kaggle_2021$Q3, "country.name.en", "cldr.name.el") |>
+  fct_na_value_to_level("Άλλο")
+
+kaggle_2021$Q4 <- kaggle_2021$Q4 |>
+  fct_recode(
+    "Προπτυχιακό" = "Bachelor’s degree",
+    "Διδακτορικό" = "Doctoral degree",
+    "Άλλο" = "I prefer not to answer",
+    "Μεταπτυχιακό" = "Master’s degree",
+    "Απόφοιτος Λυκείου" = "No formal education past high school",
+    "Διδακτορικό" = "Professional doctorate",
+    "Μεταλυκειακές σπουδές" = "Some college/university study without earning a bachelor’s degree"
+  )
+
+kaggle_2021$Q5 <- kaggle_2021$Q5 |>
+  fct_recode(
+    "Αναλυτής Επιχειρήσεων" = "Business Analyst",
+    "Άνεργος" = "Currently not employed",
+    "Αναλυτής Δεδομένων" = "Data Analyst",
+    "Μηχανικός Δεδομένων" = "Data Engineer",
+    "Επιστήμονας Δεδομένων" = "Data Scientist",
+    "Μηχανικός Βάσης Δεδομένων" = "DBA/Database Engineer",
+    "Υπεύθυνος Σχέσεων/Υποστήριξης Προγραμματιστών" = "Developer Relations/Advocacy",
+    "Μηχανικός Μηχανικής Μάθησης" = "Machine Learning Engineer",
+    "Άλλο" = "Other",
+    "Project Manager" = "Program/Project Manager",
+    "Μηχανικός Έρευνας" = "Research Scientist",
+    "Μηχανικός Λογισμικού" = "Software Engineer",
+    "Στατιστικός" = "Statistician",
+    "Φοιτητής" = "Student"
+  )
+
+## Recoding kaggle_2021$Q6
+kaggle_2021$Q6 <- kaggle_2021$Q6 |>
+  fct_recode(
+    "< 1" = "< 1 years",
+    "1-3" = "1-3 years",
+    "10-20" = "10-20 years",
+    "20+" = "20+ years",
+    "3-5" = "3-5 years",
+    "5-10" = "5-10 years",
+    "0" = "I have never written code"
+  )
+
+kaggle_2021$Q11 <- kaggle_2021$Q11 |>
+  fct_recode(
+    "Πλατφόρμα Cloud" = "A cloud computing platform (AWS, Azure, GCP, hosted notebooks, etc)",
+    "Workstation για βαθιά μάθηση" = "A deep learning workstation (NVIDIA GTX, LambdaLabs, etc)",
+    "Λάπτοπ" = "A laptop",
+    "Επιτραπέζιο υπολογιστή" = "A personal computer / desktop",
+    "Κανένα" = "None",
+    "Άλλο" = "Other"
+  )
+
+kaggle_2021$Q13 <- kaggle_2021$Q13 |>
+  fct_recode(
+    "2-5" = "2-5 times",
+    "6-25" = "6-25 times",
+    "> 25" = "More than 25 times",
+    "0" = "Never",
+    "1" = "Once"
+  )
+
+kaggle_2021$Q21 <- kaggle_2021$Q21 |>
+  fct_recode(
+    "0-49" = "0-49 employees",
+    "> 10,000" = "10,000 or more employees",
+    "1000-9,999" = "1000-9,999 employees",
+    "250-999" = "250-999 employees",
+    "50-249" = "50-249 employees"
+  )
+
+
+kaggle_2021_compare = kaggle_2021 %>%
+  mutate(Q3 = if_else(Q3 != "Ελλάδα", "Άλλο", Q3))
+```
+
+### Προεπισκόπηση δεδομένων
+
+```{r}
+#| label: tbl-preview-kaggle-dataset
+#| tbl-cap: "Προεπισκόπηση πρώτων 5 σειρών του συνόλου δεδομένων"
+#| tbl-cap-location: top
+
+reactable(head(kaggle_2021_compare))
+```
+
+## Η κοινότητα του Kaggle
+
+One of the first thing I observed when I signed up on Kaggle was the vast
+majority of nationalities and the multicultural origin of the platform. Many
+people from many countries all in one platform gathered sharing the same passion
+for Data Science and Data Analytics. Something like Facebook but for Statistics
+:)
+
+Nevermind, I decided to make a `reactable` to see from which nationalities the
+platform is comprised from. One out of four users are from India which makes
+them the most populous nation in platform. By the way, Greek users are way less
+making a 0.39% of Kaggle's userbase.
+
+
+::: callout-note
+### Μία σύντομη σημείωση
+
+Θα πρέπει να σημειώσουμε ότι τα δεδομένα και συνεπώς και τα αποτελέσματα προέρχονται αποκλειστικά από την έρευνα που έχει διεξάγει η πλατφορμα του Kaggle. Δεν είναι μία συνολική εικόνα της κοινότητας της επιστήμης δεδομένων. Επίσης, θα πρέπει να σημειωθεί ότι η έρευνα είναι προαιρετική επομένως μελετάμε τα χαρακτηριστικά αυτών που επιθυμούσαν να συμμετέχουν στην έρευνα.
+:::
+
+```{r}
+a = kaggle_2021 %>%
+  group_by(Q3) %>%
+  summarise(n = n()) %>%
+  mutate(pct = round(n/nrow(kaggle_2021) * 100, digits = 2)) %>%
+  arrange(desc(pct)) %>%
+            reactable(.,
+              defaultPageSize = 6,
+              theme = espn(),
+              columns = list(
+                Q3 = colDef(name = "Χώρα"),
+                n = colDef(name = "Αριθμός χρηστών", 
+                           defaultSortOrder = "desc"),
+                pct = colDef(name = "Ποσοστό (%)")),
+              defaultColDef = colDef(
+                cell = data_bars(data = ., 
+                                 text_position = "outside-base",
+                                 fill_opacity = 0.5, round_edges = T
+                )
+              )
+            ) %>%
+ add_title(
+    title = reactablefmtr::html("Πληθυσμιακή κατανομή της Κοινότητας του Kaggle <img src='https://www.svgrepo.com/show/387896/laptop.svg' alt='' width='40' height='40'>"),
+    margin = reactablefmtr::margin(t=0,r=0,b=3,l=0)
+    )  %>% 
+            add_subtitle("Η Ινδία είναι η χώρα με τη μεγαλύτερη εκπροσώπηση σε απόλυτους αριθμούς, ακολουθούμενη από τις ΗΠΑ.", font_size = 14, font_weight = "normal") %>% 
+            add_source("stesiam | Δεδομένα : Kaggle Survey 2021", font_size = 12, align = "right")
+
+a
+```
+
+## Συμμετοχή γυναικών στον κλάδο
+
+Γενικότερα, παρατηρείται διαχρονικά σε παγκόσμιο επίπεδο μία υποεκπρωσόπηση των γυναικών στην αγορά εργασίας. Σύμφωνα με την [-@worldbank2023] μόλις 5 στις 10 γυναίκες απασχολούνται, σε αντίθεση με τους άνδρες όπου η αντίστοιχη αναλογία προσεγγίζει τους 7 στους 10. Εδώ όμως θέλουμε να μελετήσουμε συγκεκριμένα για το πεδίο της επιστήμης δεδομένων. Τελικά, στον κλάδο μας ακολουθείται το ίδιο μοτίβο μη συμπερίληψης; Η απάντηση είναι ΝΑΙ, αλλά με ισχυρές διαφοροποιήσεις ανά χώρα. 
+
+```{r}
+#| warning: false
+#| message: false
+
+data = kaggle_2021 %>%
+  group_by(Q3, Q3_iso2c) %>%
+  summarise(n = n(),
+            Women = sum(factor(Q2) == "Γυναίκα"),
+            pct_women = Women/n *100) %>%
+  mutate(iso2c = tolower(Q3_iso2c))
+```
+
+
+```{r}
+#| fig-height: 12
+library(purrr)
+data_decreasing = data %>% dplyr::arrange(-pct_women)
+
+# Add emoji flags
+data_decreasing <- data_decreasing %>%
+    mutate(flag = map_chr(iso2c, ~ {
+        chars <- utf8ToInt(toupper(.x))
+        paste0(
+            intToUtf8(127397 + chars[1]),
+            intToUtf8(127397 + chars[2])
+        )
+    }))
+
+
+highchart() %>%
+    hc_chart(type = "bar", inverted = TRUE) %>%
+    hc_title(text = "<b>Συμμετοχή γυναικών στη κοινότητα της επιστήμης δεδομένων</b>") %>%
+    hc_subtitle(text = glue("Σύμφωνα με τη πρόσφατη έρευνα του Kaggle, οι γυναίκες υποεκπροσωπούνται στην κοινότητα της επιστήμης των δεδομένων. Η χώρα με την ισχυρότερη (αναλογικά) συμμετοχή είναι η Τυνησία και αυτή με τη χαμηλότερη το Περού. Τέλος, η <b>Ελλάδα</b> έχει μία σχετικά απογοητευτική απόδοση στον συγκεκριμένο δείκτη καταλαμβάνοντας τη 40η θέση με ποσοστό 15.7%, και με δεδομένο ότι ο μέσος όρος συμμετοχής είναι στο {round(mean(data$pct_women),digits = 2)} %")  ) %>%
+    hc_caption(text="Δεδομένα: Έρευνα χρηστών του Kaggle 2021 | <b>stesiam</b>, 2023") %>%    hc_xAxis(categories = data_decreasing$Q3, title = list(text = NULL)) %>%
+    hc_yAxis(title = list(text = "Percent (%)")) %>%
+    hc_legend(enabled = FALSE) %>%
+    hc_add_series(
+        name = "Women %",
+        data = map(seq_len(nrow(data_decreasing)), function(i) {
+            list(
+                y = data_decreasing$pct_women[i],
+                Women = data_decreasing$Women[i],
+                n = data_decreasing$n[i],
+                country = data_decreasing$Q3[i],
+                flag = data_decreasing$flag[i]
+            )
+        })
+    ) %>%
+    hc_tooltip(
+        useHTML = TRUE,
+        formatter = JS("
+      function() {
+        var point = this.point;
+        return '<span style=\"font-size:22px\">' + point.flag + '</span> ' +
+               '<b>' + point.country + '</b><br>' +
+               'Percent: ' + Highcharts.numberFormat(this.y, 2) + '%<br>' +
+               'Women: ' + point.Women + ' / ' + point.n;
+      }
+    ")
+    )
+```
+## Ηλικιακή Κατανομή
+
+Η κοινότητα των Ελλήνων χρηστών αποτελείται από μεγαλύτερης ηλικίας άτομα
+Greece's Kaggle Community it is comprised from more elerly people comapred to the rest of Kaggle's community. More specifically, Greece's most prevalent age group is 25-29 and a sufficient proportion of users on their 40s. On the contrary, Kaggle's community is quite youthy with most prevalent the three youngest age groups. Aggrevetating, those groups consist six out of ten userbase of Kaggle's community.
+
+```{r, fig.showtext=T, dpi = 300, warning=F}
+
+data1 = kaggle_2021_compare %>%
+  select(Q3, Q1) %>%
+  group_by(Q3,Q1) %>%
+  summarise(n = n()) %>%
+  group_by(Q3) %>%
+  mutate(total = sum(n),
+         pct = round(n/total *100, digits = 1)) %>%
+  select(Q3, Q1, pct)
+```
+
+
+```{r}
+library(highcharter)
+
+highchart() |>
+  hc_chart(type = "areaspline") |>
+  hc_title(text = "Ηλικιακή κατανομή χρηστών ανά χώρα προέλευσης (🇬🇷 / 🌍)") |>
+  hc_xAxis(categories = unique(data1$Q1)) |>
+  hc_yAxis(title = list(text = "Population (%)")) |>
+  hc_tooltip(shared = TRUE, valueSuffix = " %") |>
+  hc_plotOptions(
+    areaspline = list(
+      fillOpacity = 0.5  # match the Highcharts demo's fill
+    )
+  ) |>
+  hc_legend(
+    layout = "vertical",
+    align = "left",
+    verticalAlign = "top",
+    x = 450,
+    y = 100,
+    floating = TRUE,
+    borderWidth = 1
+    ) |>
+  hc_add_series(
+    name = "Ελλάδα",
+    data = data1 %>% dplyr::filter(Q3 =="Ελλάδα") %>% pull(pct)
+  ) |>
+  hc_add_series(
+    name = "Υπόλοιπος Κόσμος",
+    data = data1 %>% dplyr::filter(Q3 =="Άλλο") %>% pull(pct)
+  )
+```
+
+# Εκπαιδευτικό Υπόβαθρο
+
+```{r}
+data3 = kaggle_2021_compare %>%
+  select(Q3, Q4) %>%
+  group_by(Q3, Q4) %>%
+  summarise(n = n()) %>%
+  group_by(Q3) %>%
+  mutate(pct = round(n/sum(n)*100, digits = 1))  %>%
+  ungroup()
+```
+
+
+```{r}
+d = data3 %>% dplyr::filter(Q4 %in% c("Προπτυχιακό", "Μεταπτυχιακό", "Διδακτορικό"))
+```
+
+```{r}
+highchart() %>%
+  hc_chart(type = "bar") %>%
+  hc_title(text = "Εκπαιδευτικό υπόβαθρο χρηστών (🇬🇷 / 🌍)") %>%
+  hc_subtitle(text="Οι Έλληνες χρήστες έχουν υψηλότερους τίτλους σπουδών με 77% να έχει μεταπτυχιακό ή διδακτορικό δίπλωμα. Το αντίστοιχο ποσοστό στις υπόλοιπες χώρες είναι 50%.") %>%
+  hc_caption(text="Σημείωση: Τα ποσοστά αναφέρονται σε επίπεδο χώρας. <br> stesiam, 2023") %>%
+  hc_xAxis(categories = d$Q4,
+           title = list(text = NULL)) %>%
+  hc_yAxis(min = 0,
+           title = list(text = "Ποσοστό (%) ερωτηθέντων ανά χώρα", align = "high"),
+           labels = list(overflow = "justify")) %>%
+  hc_tooltip(valueSuffix = " %") %>%
+  hc_plotOptions(bar = list(dataLabels = list(enabled = TRUE))) %>%
+  hc_series(
+    list(name = "Ελλάδα", data = d %>% dplyr::filter(Q3 =="Ελλάδα") %>% pull(pct)),
+    list(name = "Υπόλοιπος Κόσμος", data = d %>% dplyr::filter(Q3 =="Άλλο") %>% pull(pct))
+  ) %>%
+  hc_legend(
+    align = "center",
+    verticalAlign = "top",
+    layout = "horizontal"
+  )
+```
