@@ -50,17 +50,39 @@ A Version Control System (VCS) is a way to manage and track code changes. As we 
 
 ### Δημοφιλία VCS
 
-Έχοντας περιγράψει τι είναι το VCS, it would be interesting to see which one is the most widely used. In order to study which VCS is the most popular, I pulled data from [Google Trends](https://trends.google.com/trends/).
+Έχοντας περιγράψει τι είναι το VCS, θα ήταν χρήσιμο να μελετήσουμε ποιο ήταν το πιο γνωστό ή πιο χρησιμοποιούμενο διαχρονικά. Για να το μελετήσω θα χρησιμοποιήσω ιστορικά δεδομένα αναζητήσεων στη μηχανή αναζήτησης της Google και πιο συγκεκριμένα από τη πλατφόρμα  [Google Trends](https://trends.google.com/trends/) που διατηρεί δεδομένα τάσεων αναζητήσεων ορισμένων όρων.
 
-```{r Import libraries, echo=FALSE, warning=FALSE, message=FALSE}
+```{r}
+#| label: import_r_libs
+#| title: "Εισαγωγή R πακέτων"
+#| warning: false
+#| message: false
+
 library(readr)
 library(dplyr)
 library(lubridate)
 library(highcharter)
 ```
 
+```{r}
+#| label: further_settings
+#| title: "Εισάγω βιβλιογραφία από φορτωμένα πακέτα"
+#| include: false
 
-```{r Import data, echo=FALSE, message=FALSE, warning=FALSE}
+options(digits=4) # print only 4 decimals
+options(warn = -1)
+
+knitr::write_bib(.packages(), file = 'packages.bib')
+```
+
+
+```{r}
+#| label: import_data
+#| title: "Import data"
+#| echo: false
+#| message: false
+#| warning: false
+
 trends_vcs <- read_csv("multiTimeline.csv", 
     skip = 2) %>%
   mutate(Date = lubridate::ym(Month)) %>%
@@ -73,16 +95,10 @@ trends_vcs_tidy = tidyr::pivot_longer(trends_vcs, !Year, names_to = "VCS", value
   mutate(AVG = round(AVG, digits = 1))
 ```
 
-```{r, fig.width= 7,include=FALSE}
-  # ggplot(data = trends_vcs_tidy, aes(x= Month, y = counts)) +
-  # geom_line(aes(color = VCS)) +
-  # labs(title = "Trends on Version Control Systems",
-  #             subtitle = "Compare trends of Git and SVN (Subversion) from 2004 to 2022",
-  #             caption = "Data source: Google Trends") +
-  # theme_classic()
-```
 
 ```{r}
+#| label: fig-vcs-trends
+#| fig-cap: "Χρονοσειρές σύγκρισης των τάσεων μεταξύ λογισμικών ελέγχου εκδόσεων κώδικα (Version Control Systems - VCS)"
 avgPercentageGit = trends_vcs_tidy %>% dplyr::filter(VCS == "git: (Worldwide)") %>% pull(AVG)
 avgPercentageSVN = trends_vcs_tidy %>% dplyr::filter(VCS == "svn: (Worldwide)") %>% pull(AVG)
 
@@ -124,27 +140,27 @@ highchart() %>%
   )
 )) %>%
   hc_xAxis(categories = unique(trends_vcs_tidy$Year)) %>%
-  hc_yAxis(title = list(text = "Search Interest"),
+  hc_yAxis(title = list(text = "Τάση αναζήτησης"),
            max = 90) %>%
   hc_add_series(name = "Git", data = avgPercentageGit, type = "line", color = "orange") %>%
   hc_add_series(name = "SVN", data = avgPercentageSVN, type = "line", color = "steelblue") %>%
   hc_tooltip(shared = TRUE)
 ```
 
-
+Το διάγραμμα 
 The figure above makes clear the dominance of Git as a version control tool. Also, we notice that Subversion (SVN) was quite popular and a capable competitor of Git until 2010. After that period there is a continuous decline in SVN's interest and the exact opposite for Git. Today, in 2022, the difference is chaotic between them.
 
 
-### Benefits
+### Πλεονεκτήματα
 
-> Why should I use VCS ? 
+> Για ποιο λόγο να χρησιμοποιήσω ένα τέτοιο λογισμικό; 
 
-- Easy transition between versions
+- ΕΕύκολη μετάβαση σε προηγούμενες εκδόσεις του κώδικα
 - More productive, Time saver if a version produces error
 - Enables cooperation with other developers (especially with a hosting service like GitHub).
 
 
-### Drawbacks
+### Αδυναμίες
 
 > Ok. There are some good points. But where is the catch ?
 
@@ -156,9 +172,9 @@ The figure above makes clear the dominance of Git as a version control tool. Als
 
 We have mentioned some of the most important programs for managing the code of an application. Of course, there are not a few times when we want to save the progress of our application somewhere else to enable developers communicate their code commits to each other. The solution is some code hosting services. The best known are **GitHub**, **GitLab** and **Bitbucket**. Finally, in case none of the options outlined earlier satisfy us, there is also the self-host solution. For example, if I had concerns about the terms of the above services, I could host [Gitea](https://gitea.io/en-us/) on my own server or even to rent a cloud server. That way I would have my own "GitHub", without depending on a third party service. 
 
-## Git settings
+## Ρυθμίσεις του Git
 
-### Set up Name & Email
+### Ορισμός ονόματος και email
 
 So, you decided to start Git without setting Name and Email? 
 
@@ -170,9 +186,8 @@ git config --global user.email your_email
 ```
 
 :::{.callout-note}
-If you are planning to host your repository on GitHub, you may want to hide your casual email. In that case GitHub offers a `noreply` email for this purpose. You can read more [here](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address).
+Αν σχεδιάζεις να φιλοξενήσεις τον κώδικά σου στο GitHub, ίσως να έχει νόημα να κρύψεις τη προσωπική σου διεύθυνση email. Σε μία τέτοια περίπτωση το GitHub προσφέρει ένα `noreply` email προκειμένου να μην την εκθέτεις στο διαδίκτυο. Αν επιθυμείτε, μπορείτε να διαβάσετε περισσότερα για αυτό το θέμα [στον ακόλουθο σύνδεσμο](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address).
 :::
-
 
 ### Set editor
 
@@ -189,7 +204,7 @@ Most notable is Visual Studio Code, which is the most popular IDE, according to 
 | Atom     | git config --global core.editor "atom --wait" |
 | Visual Studio Code   | git config --global core.editor "code --wait" |
 
-### Default branch name to main
+### Προεπιλεγμένο όνομα 
 
 In October of 2020, GitHub [announced](https://github.blog/changelog/2020-10-01-the-default-branch-for-newly-created-repositories-is-now-main/) that will change the default name of initial branch from `master` to `main`. <br>
 

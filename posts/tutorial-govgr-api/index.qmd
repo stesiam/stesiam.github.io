@@ -29,7 +29,10 @@ editor_options:
     wrap: 80
 ---
 
-```{r, include =FALSE}
+```{r}
+#| label: set_directory
+#| title: "Setting working directory of my article"
+#| include: false
 library(here)
 here::here("posts/tutorial-govgr-api")
 ```
@@ -88,6 +91,8 @@ data again.
 Before completing this article, I decided it would be helpful to provide an example. At the time of writing, there are 49 databases to choose from. To demonstrate the usefulness of the API, I will select a database that is updated fairly frequently. One such dataset is that of [passengers travelling on ships](https://www.data.gov.gr/datasets/sailing_traffic/).
 
 ```{r}
+#| label: import_r_libs
+#| title: "Import R libraries"
 library(httr)
 library(jsonlite)
 ```
@@ -95,12 +100,16 @@ library(jsonlite)
 I set the base url of my data. Given the fact that I am interested on sailing traffic I will use the respective endpoint:
 
 ```{r}
+#| label: api_base_url
+#| title: "Setting base url of API"
 base = "https://data.gov.gr/api/v1/query/sailing_traffic"
 ```
 
 As the documentation points out, we need to set the date range we are interested in. It is worth noting that you cannot retrieve a large range with a single API call. Returning to the previous example, ship passenger traffic data starts in 2017 and goes up to the present day (2023). Let's assume that we don't mind that, and we want the data from the first four days of July in 2023.
 
 ```{r}
+#| label: api_call
+#| title: "Call API to get some data"
 date_from = "2023-07-01"
 date_to = "2023-07-04"
 
@@ -115,12 +124,16 @@ call = httr::GET(url = API_URL,
 Where it refers to token_id, you should insert the token that was sent to you by data.gov.gr via email. So, after requesting the data through a GET request and waiting a bit, we receive a list with various pieces of information. What we are interested in is the data, so we look into the content category of the list. However, we notice that the information is in an unreadable format since it is in hexadecimal form.
 
 ```{r}
+#| label: toReadableChars
+#| title: "Convert data to readable chars"
 data = base::rawToChar(call$content)
 ```
 
 Using rawToChar converts the response into readable characters but I still need to convert my data to tabular format in order to begin with my analysis.
 
 ```{r}
+#| label: tabularize_data
+#| title: "Tabularize data"
 #data = jsonlite::fromJSON(data, flatten = T)
 ```
 

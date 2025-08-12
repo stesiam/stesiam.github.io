@@ -66,7 +66,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2b336ac022a9048902f1b6fb56aa45ab.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap-26b8a2f0c7a19612a3ea8e912ee74e20.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-a6e0c2b080ee18248799026bdcfe4cbb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-dark-9e8b9ce22a23469d63b14da38bc8c721.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <link href="../../site_libs/bootstrap/bootstrap-26b8a2f0c7a19612a3ea8e912ee74e20.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
@@ -375,25 +375,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content"><section id="εισαγωγή" class="level2"><h2 class="anchored" data-anchor-id="εισαγωγή">Εισαγωγή</h2>
-<p>Στην παραδοσιακή ανάλυση δεδομένων συνήθως ο αναλυτής καλείται να «καθαρίσει» τα δεδομένα, να τους δώσει μία κατάλληλη μορφή προκειμένου να αναλυθούν. Αυτή η διαδικασία υπονοεί ότι τα δεδομένα υπάρχουν συγκεντρωμένα σε ένα αρχείο. Ωστόσο, δεν είναι πάντα έτσι. Το πρόβλημα με την ανάλυση ενός dataset είναι ότι δεν λαμβάνει υπόψιν τις όποιες νέες τιμές. Σε αυτή τη περίπτωση θα πρέπει να ξανακατεβάσω τα νέα δεδομένα και να ξανατρέξω την ανάλυση μέσω της R ή όποιου εργαλείου χρησιμοποιώ. Αυτό όπως γίνεται αντιληπτό είναι μη παραγωγικό, ωστόσο όταν γίνεται λίγες φορές μέσα στο χρόνο, ίσως να μην είναι και τόσο . Εκεί που πλέον γίνεται εμφανής η μη αποτελεσματικότητα της παραπάνω διαδικασίας είναι όταν υπάρχει συνεχής ροή δεδομένων, άρα πρέπει να γίνεται αυτή η διαδικασία καθημερινά. Σε αυτές τις περιπτώσεις φαίνεται η χρησιμότητα του API αφού μας δίνει τις νέες τιμές με μικρό σχετικά κόπο. Παράλληλα η χρήση του API ευνοεί την ένταξη νέων δεδομένων, συνεπώς αν φτιάχνουμε ένα προβλεπτικό μοντέλο η ακρίβειά του θα παραμένει σε ένα ικανοποιητικό επίπεδο. Τέλος, άλλη μία θετική συμβολή είναι σε Shiny Apps, προκειμένου να αυτοματοποιείται η ανάλυση δεδομένων και οι πληροφορίες να είναι αξιόπιστες για τον επισκέπτη αυτού.</p>
-<p>Γενικά υπάρχουν πάρα πολλά API από τα οποία μπορούμε να λάβουμε σημαντικές πληροφορίες. Για περισσότερες λεπτομέρειες ως προς τη διαθεσιμότητα δωρεάν APIs μπορείτε να δείτε ένα σχετικό <a href="https://github.com/public-apis/public-apis">repository με μία λίστα αυτών</a>. Σε αυτό το άρθρο θα ασχοληθούμε με τα ανοικτά δεδομένα της χώρας μας που διατίθενται μέσω του <a href="data.gov.gr">data.gov.gr</a>.</p>
+<p>Στην παραδοσιακή ανάλυση δεδομένων συνήθως ο αναλυτής καλείται να «καθαρίσει» τα δεδομένα, να τους δώσει μία κατάλληλη μορφή προκειμένου να αναλυθούν. Αυτή η διαδικασία υπονοεί ότι τα δεδομένα υπάρχουν συγκεντρωμένα σε ένα αρχείο. Ωστόσο, δεν είναι πάντα έτσι. Το πρόβλημα με την ανάλυση ενός συνόλου δεδομένων είναι ότι δεν λαμβάνει υπόψιν τις όποιες νέες τιμές. Σε αυτή τη περίπτωση θα πρέπει να ανακτήσω τα νέα δεδομένα και να επανεκτελέσω την ανάλυση μέσω της R ή όποιου εργαλείου χρησιμοποιώ. Αυτό όπως γίνεται αντιληπτό είναι μη παραγωγικό, ωστόσο όταν γίνεται λίγες φορές μέσα στο χρόνο, ίσως να μην είναι και τόσο επίπονο. Εκεί που πλέον γίνεται εμφανής η μη αποτελεσματικότητα της παραπάνω διαδικασίας είναι όταν υπάρχει συνεχής ροή δεδομένων, άρα πρέπει να γίνεται αυτή η διαδικασία καθημερινά ή έστω εβδομαδιαία. Σε αυτές τις περιπτώσεις φαίνεται η χρησιμότητα του API, αφού μας δίνει τις νέες τιμές με μικρό σχετικά κόπο. Παράλληλα η χρήση του API ευνοεί την ένταξη νέων δεδομένων, συνεπώς αν φτιάχνουμε ένα προβλεπτικό μοντέλο η ακρίβειά του θα παραμένει σε ένα ικανοποιητικό επίπεδο. Τέλος, άλλη μία θετική συμβολή είναι σε Shiny Apps, προκειμένου να αυτοματοποιείται η ανάλυση δεδομένων και οι πληροφορίες να είναι αξιόπιστες για τον επισκέπτη αυτού.</p>
+<p>Γενικά υπάρχουν πάρα πολλά API από τα οποία μπορούμε να λάβουμε σημαντικές πληροφορίες. Για περισσότερες λεπτομέρειες ως προς τη διαθεσιμότητα δωρεάν APIs μπορείτε να δείτε μία σχετική <a href="https://github.com/public-apis/public-apis">λίστα αυτών</a>. Σε αυτό το άρθρο θα ασχοληθούμε με τα ανοικτά δεδομένα της χώρας μας που διατίθενται μέσω του <a href="data.gov.gr">data.gov.gr</a>.</p>
 </section><section id="αίτηση-για-api-key" class="level2"><h2 class="anchored" data-anchor-id="αίτηση-για-api-key">Αίτηση για API Key</h2>
-<p>Ωστόσο, το συγκεκριμένο API (όπως τα περισσότερα) απαιτούν να κάνουμε εγγραφή στη πλατφόρμα. Κάνουμε αίτηση στην αντίστοιχη σελίδα και συμπληρώνουμε τα στοιχεία μας και <strong>όλα</strong> τα πεδία της φόρμας όπως αυτή φαίνεται παρακάτω:</p>
+<p>Το API της χώρας μας (όπως τα περισσότερα) απαιτούν να κάνουμε εγγραφή στη πλατφόρμα. Κάνουμε αίτηση στην αντίστοιχη σελίδα και συμπληρώνουμε τα στοιχεία μας και <strong>όλα</strong> τα πεδία της φόρμας όπως αυτή φαίνεται παρακάτω:</p>
 <div class="quarto-figure quarto-figure-center" style="text-align:center; padding: 20px">
 <figure class="figure"><p><img src="images/datagovgr_api_request.png" class="white_bg img-fluid figure-img" width="500"></p>
 <figcaption>Προεπισκόπηση σελίδας αίτησης για πρόσβαση στο API</figcaption></figure>
 </div>
-<p>Στη συνέχεια θα πρέπει να κοιτάξετε το e-mail σας γιατί θα σας έρθει ένα μήνυμα με ένα Token μέσω του οποίου θα χρησιμοποιείται το API. Να δείτε οπωσδήποτε και τον φάκελο με την Ανεπιθύμητη αλληλογραφία (spam). Παρεμπιπτόντως, σε περίπτωση που χάσετε το token και έχετε σβήσει το mail και ξανακάνετε αίτηση (με το ίδιο mail) θα σας το ξαναστείλει.</p>
+<p>Στη συνέχεια θα πρέπει να κοιτάξετε το e-mail σας γιατί θα σας έρθει ένα μήνυμα με ένα Token μέσω του οποίου θα χρησιμοποιείται το API. Να δείτε οπωσδήποτε και τον φάκελο με την Ανεπιθύμητη αλληλογραφία (spam). Παρεμπιπτόντως, σε περίπτωση που χάσετε το token και έχετε σβήσει το mail και ξανακάνετε αίτηση, ακόμα και με την ίδια διεύθυνση ταχυδρομείου, θα σας το ξαναστείλει.</p>
 </section><section id="χρήση-api" class="level2"><h2 class="anchored" data-anchor-id="χρήση-api">Χρήση API</h2>
 <p>Αφού λάβουμε το Token, θα πρέπει με κάποιο τρόπο να λάβουμε τα δεδομένα. Στην συγκεκριμένη πλατφόρμα υπάρχουν δύο τρόποι.</p>
 <ul>
 <li>Χρήση API από την ιστοσελίδα:</li>
 <li>Χρήση API με την R</li>
 </ul>
-<p>Ο ένας τρόπος (και μάλλον ο λιγότερο αποδοτικός) είναι να κάνεις ζητήσεις τα δεδομένα απευθείας από την ιστοσελίδα data.gov.gr. Αυτό είναι από τη μία εξαιρετικά απλό, αλλά από την άλλη κατεβάζουμε μία σταθερή έκδοση των δεδομένων και συνεπώς αν θελήσω να ανανεώσω τα δεδομένα θα πρέπει πάλι να κατεβάσω τα δεδομένα.</p>
+<p>Ο ένας τρόπος (και μάλλον ο λιγότερο αποδοτικός) είναι να αιτηθούμε τα δεδομένα απευθείας από την ιστοσελίδα data.gov.gr. Αυτό είναι από τη μία εξαιρετικά απλό, αλλά από την άλλη κατεβάζουμε μία σταθερή έκδοση των δεδομένων και συνεπώς αν θελήσω να ανανεώσω τα δεδομένα θα πρέπει πάλι να κατεβάσω τα δεδομένα. Έτσι λοιπόν παρακάτω θα δούμε ένα παράδειγμα πραγματικής χρήσης του API με την R. Η ίδια η πλατφόρμα έμμεσα ενθαρρύνει αυτή τη χρήση μιας και δίνει παραδείγματα με άλλες δημοφιλείς γλώσσες προγρεαμματισμού (Python &amp; JavaScript).</p>
 </section><section id="παράδειγμα-χρήσης" class="level2"><h2 class="anchored" data-anchor-id="παράδειγμα-χρήσης">Παράδειγμα χρήσης</h2>
 <p>Πριν ολοκληρωθεί αυτό το άρθρο έκρινα ως σημαντική την εφαρμογή ενός παραδείγματος. Τη στιγμή που γράφεται αυτό το άρθρο, υπάρχουν συνολικά 49 βάσεις δεδομένων από τις οποίες μπορώ να επιλέξω. Προκειμένου να δούμε την ωφέλεια του API θα διαλέξω κάποιο που ανανεώνεται σε αρκετά συχνή βάση. Ένα τέτοιο δεδομένο είναι οι επιβάτες που <a href="https://www.data.gov.gr/datasets/sailing_traffic/">ταξιδεύουν με πλοία</a>.</p>
-<div class="cell">
+<div class="cell" title="Εισαγωγή R βιβλιοθηκών">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://httr.r-lib.org/">httr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://jeroen.r-universe.dev/jsonlite">jsonlite</a></span><span class="op">)</span></span></code></pre></div>
@@ -401,14 +401,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Στη συνέχεια θέτω σε μία μεταβλητή τον βασικό σύνδεσμο των δεδομένων. Εγώ που επέλεξα την κίνηση των πλοίων θέτω το εξής:</p>
-<div class="cell">
+<div class="cell" title="Θέτω βασικό σύνδεσμο API">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">base</span> <span class="op">=</span> <span class="st">"https://data.gov.gr/api/v1/query/sailing_traffic"</span></span></code></pre></div>
 <button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
 <p>Στη συνέχεια, όπως τονίζει το documentation της σελίδας για τις άλλες γλώσσες, θα πρέπει να ορίσουμε ένα εύρος ημερομηνιών για το οποίο ενδιαφερόμαστε. Αξίζει να σημειωθεί ότι δεν μπορείτε να πάρετε μεγάλο εύρος με μία μόνο κλήση του API. Για να επιστρέψω στο προηγούμενο παράδειγμα, τα δεδομένα της επιβατικής κίνησης των πλοίων ξεκινάνε από το 2017 μέχρι και σήμερα (2023). Ας υποθέσουμε ότι δεν μας πειράζει αυτό και ότι θέλουμε τα δεδομένα από τις 4 πρώτες μέρες του Ιουλίου του 2023.</p>
-<div class="cell">
+<div class="cell" title="Χρήση-Κλήση του API">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">date_from</span> <span class="op">=</span> <span class="st">"2023-07-01"</span></span>
 <span><span class="va">date_to</span> <span class="op">=</span> <span class="st">"2023-07-04"</span></span>
@@ -423,14 +423,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Όπου στο σημείο που αναφέρεται το <strong>token_id</strong> θα πρέπει να βάλετε το token που σας έστειλε το data.gov.gr μέσω mail. Αφού λοιπόν αιτηθούμε τα δεδομένα μέσω της GET και κάνουμε λίγο υπομονή βλέπουμε ότι λαμβάνω μία λίστα με διάφορες πληροφορίες. Εμάς μας ενδιαφέρουν τα δεδομένα, οπότε κοιτάμε στη κατηγορία <strong>content</strong> της λίστας, ωστόσο παρατηρούμε μία μη αναγνώσιμη μορφή των στοιχειών μιας και είναι σε δεκαεξαδική μορφή.</p>
-<div class="cell">
+<div class="cell" title="Μετατροπή δεδομένων σε αναγνώσιμη μορφή">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data</span> <span class="op">=</span> <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/rawConversion.html">rawToChar</a></span><span class="op">(</span><span class="va">call</span><span class="op">$</span><span class="va">content</span><span class="op">)</span></span></code></pre></div>
 <button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
 <p>Με την παραπάνω εντολή μετατρέπονται οι χαρακτήρες και είναι πλέον αναγνώσιμοι, ωστόσο τώρα θα πρέπει να πάρουν και μορφή πίνακα προκειμένου να γίνει η ανάλυση.</p>
-<div class="cell">
+<div class="cell" title="Πινακοποίηση δεδομένων">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#data = jsonlite::fromJSON(data, flatten = T)</span></span></code></pre></div>
 <button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button>

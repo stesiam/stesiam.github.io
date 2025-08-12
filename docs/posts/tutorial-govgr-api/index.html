@@ -67,7 +67,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2b336ac022a9048902f1b6fb56aa45ab.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap-26b8a2f0c7a19612a3ea8e912ee74e20.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-a6e0c2b080ee18248799026bdcfe4cbb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-dark-9e8b9ce22a23469d63b14da38bc8c721.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <link href="../../site_libs/bootstrap/bootstrap-26b8a2f0c7a19612a3ea8e912ee74e20.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
@@ -394,7 +394,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>One way (and probably the least efficient) is to request the data directly from the data.gov.gr website. This is on the one hand extremely simple, but on the other hand we are downloading a fixed version of the data and therefore if I want to update the data I have to download the data again.</p>
 </section><section id="just-a-use-case" class="level2"><h2 class="anchored" data-anchor-id="just-a-use-case">Just a use-case</h2>
 <p>Before completing this article, I decided it would be helpful to provide an example. At the time of writing, there are 49 databases to choose from. To demonstrate the usefulness of the API, I will select a database that is updated fairly frequently. One such dataset is that of <a href="https://www.data.gov.gr/datasets/sailing_traffic/">passengers travelling on ships</a>.</p>
-<div class="cell">
+<div class="cell" title="Import R libraries">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://httr.r-lib.org/">httr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://jeroen.r-universe.dev/jsonlite">jsonlite</a></span><span class="op">)</span></span></code></pre></div>
@@ -402,14 +402,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>I set the base url of my data. Given the fact that I am interested on sailing traffic I will use the respective endpoint:</p>
-<div class="cell">
+<div class="cell" title="Setting base url of API">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">base</span> <span class="op">=</span> <span class="st">"https://data.gov.gr/api/v1/query/sailing_traffic"</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
 <p>As the documentation points out, we need to set the date range we are interested in. It is worth noting that you cannot retrieve a large range with a single API call. Returning to the previous example, ship passenger traffic data starts in 2017 and goes up to the present day (2023). Let’s assume that we don’t mind that, and we want the data from the first four days of July in 2023.</p>
-<div class="cell">
+<div class="cell" title="Call API to get some data">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">date_from</span> <span class="op">=</span> <span class="st">"2023-07-01"</span></span>
 <span><span class="va">date_to</span> <span class="op">=</span> <span class="st">"2023-07-04"</span></span>
@@ -424,14 +424,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Where it refers to token_id, you should insert the token that was sent to you by data.gov.gr via email. So, after requesting the data through a GET request and waiting a bit, we receive a list with various pieces of information. What we are interested in is the data, so we look into the content category of the list. However, we notice that the information is in an unreadable format since it is in hexadecimal form.</p>
-<div class="cell">
+<div class="cell" title="Convert data to readable chars">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data</span> <span class="op">=</span> <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/rawConversion.html">rawToChar</a></span><span class="op">(</span><span class="va">call</span><span class="op">$</span><span class="va">content</span><span class="op">)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
 </div>
 </div>
 <p>Using rawToChar converts the response into readable characters but I still need to convert my data to tabular format in order to begin with my analysis.</p>
-<div class="cell">
+<div class="cell" title="Tabularize data">
 <div class="code-copy-outer-scaffold">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#data = jsonlite::fromJSON(data, flatten = T)</span></span></code></pre></div>
 <button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>

@@ -60,40 +60,35 @@ On its basis this analysis is about to predict if someone is interested or not t
 
 Finally, the ggplot2 [@R-ggplot2] package was used to create some visualizations, as well as an auxiliary package, ggtext [@R-ggtext], for further formatting those.
 
-```{r Import R Libraries, message=FALSE, results='hide', echo=TRUE}
-# General purpose R libraries
+```{r}
+#| label: import_r_libs
+#| title: "Import R Libraries"
+#| message: false
+#| results: hide
+#| echo: true
+
 library(readr)
 library(dplyr)
 library(forcats)
 library(kableExtra)
-library(gridExtra)
-
-# Build ML models
-library(tidymodels)
-
-# Graphs
-library(ggplot2)
-library(ggtext) # Add support for HTML/CSS on ggplot
 library(highcharter)
 library(glue)
-# Other R packages
-library(fontawesome)
-
+library(reactable)
 
 # Build ML models
 
 library(tidymodels)
 library(bonsai)
 library(themis)
-
-# Other settings
-options(digits=4) # print only 4 decimals
-options(warn = -1)
 ```
 
-```{r, include=FALSE}
-# Add loaded libraries to bibliography section
+```{r}
+#| label: futher_settings
+#| title: "Further settings"
+#| include: false
 
+options(digits=4)
+options(warn = -1)
 knitr::write_bib(.packages(), file = 'packages.bib')
 ```
 
@@ -101,41 +96,59 @@ knitr::write_bib(.packages(), file = 'packages.bib')
 
 After loading R libraries, then I will load my data. The initial source of my dataset has various versions of the same dataset. I will use the smaller one, as the fitting process on Boosting algorithms it is more time consuming in comparison with other methods (e.g. Logistic Regression, k-Nearest Neighbours etc.).
 
-```{r Import dataset, cache=TRUE, message=FALSE,results='hide',echo=TRUE}
+```{r}
+#| label: import_data
+#| title: "Import dataset"
+#| message: false
+#| results: hide
+#| echo: true
+
 bank_dataset <- read_delim("bank_dataset_files/bank.csv",  delim = ";", escape_double = FALSE, trim_ws = TRUE)
 
 bank_dataset = bank_dataset %>% tibble::rowid_to_column("ID")
 ```
 
 
-
-
 ## Preview dataset
 
 Here we can see a small chunk of my dataset (first 10 rows / observations) just to understand the dataset's structure and type of variables.
 
-```{r Preview Data}
-
+```{r}
 #| label: tbl-preview-dataset
-#| tbl-cap: "Preview Dataset (first 6 rows)"
-#| 
-preview_bank_dataset = head(bank_dataset, 10)
-kbl(preview_bank_dataset, 
-    align = 'c',
-    booktabs = T,
-    centering = T,
-    valign = T) %>%
-  kable_paper() %>%
-  scroll_box(width = "600px", height = "250px")
+#| title: "Preview Data"
+#| tbl-cap: "Preview dataset (first six rows)"
+#| tbl-cap-location: top
+
+preview_bank_dataset = head(bank_dataset, 6)
+reactable(
+  preview_bank_dataset,
+  bordered = FALSE,     # No borders (booktabs style)
+  striped = FALSE,      # No stripes for a clean look
+  highlight = FALSE,    # No hover highlighting
+  defaultColDef = colDef(align = "center"),
+  style = list(fontSize = "14px", border = "none"),
+  theme = reactableTheme(
+    borderColor = "transparent", # Remove border
+    cellStyle = list(
+      borderBottom = "transparent"  # Subtle line between rows
+    ),
+    headerStyle = list(
+      borderBottom = "2px solid rgb(117, 117, 117)", # Thick top rule
+      borderTop = "2px solid rgb(117, 117, 117)",
+      fontWeight = "bold"
+    )
+  )
+)
 ```
-
-
-## Dataset structure
 
 Before we do any analysis we have to define what kind of data we have available. We can assess this type of information by looking on the values of each variable. Generally, we can classify our variables, depending their values, as follows :
 
 <center>
-```{mermaid, echo = FALSE}
+```{mermaid}
+%%| echo: false
+%%| label: fig-diagram-var-types
+%%| title: "Diagram about type of variables"
+%%| fig-cap: Type of variables based on its values
 graph TD;
   A(Type of variables) --> B(Quantitative)
   A(Type of variables) --> C(Qualitative)
@@ -171,6 +184,8 @@ Thus, my sample has `r ncol(bank_dataset)` variables, of which 7 are quantitativ
 
 
 ```{r}
+#| label: response_var_to_factor
+#| title: "Convert response variable to factor"
 bank_dataset$y = as.factor(bank_dataset$y)
 ```
 
@@ -184,6 +199,8 @@ It depends. If you want to do a simple analysis then yes. Although most of the t
 On this occasion, I found beneficial the definition of a function for qualitative data.
 
 ```{r}
+#| label: function_plot_qual_vars
+#| title: "Function: Create single variable plots - Qualitative"
 univariateQualitativePlot <- function(data, column, title, subtitle, chart_type = "bar") {
   library(dplyr)
   library(highcharter)
@@ -227,30 +244,17 @@ univariateQualitativePlot <- function(data, column, title, subtitle, chart_type 
 
 I will do the same for univariate numeric data. 
 
-```{r}
-univ_quanti = function(variable_sel){
-  ggplot(bank_dataset, aes(x = variable_sel )) +
-  geom_histogram(x = variable_sel, stat = "count") +
-  scale_fill_hue(c = 40) +
-  labs(
-    title = "Age Distribution of Respondents",
-    caption = "Bank Marketing Dataset from <b>UCI</b>",
-    x = "Age of Respondent",
-    y = "Observations"
-  ) +
-  theme_classic() + 
-  theme(
-    plot.caption = element_markdown(lineheight = 1.2),
-    plot.title = element_text(hjust = 0.5))
-}
-```
+[EDITTING]
 
 
 # EDA with R
 
 ## Missing Values
 
-```{r, results='hide'}
+```{r}
+#| label: how_many_na_values
+#| title: "How many NAs do I have"
+#| results: hide
 how_many_nas = sum(is.na(bank_dataset))
 ```
 
@@ -265,7 +269,10 @@ On this dataset there are `r how_many_nas` missing values, in total. So, there i
 
 #### Job
 
-```{r Figure : Job, fig.align='center'}
+```{r}
+#| label: fig-job
+#| title: "Figure : Job"
+#| fig-cap: "Figure: Job"
 univariateQualitativePlot(bank_dataset, job, 
                           title = "Sector of employment of the respondent?", 
                           subtitle = "Number and (%) of total respondents")
@@ -274,7 +281,10 @@ univariateQualitativePlot(bank_dataset, job,
 
 ####  Marital status
 
-```{r Figure : Marital Status, fig.align='center'}
+```{r}
+#| label: fig-marital-status
+#| title: "Figure : Marital Status"
+#| fig-cap: "Figure : Marital Status"
 univariateQualitativePlot(bank_dataset, marital, 
                           title = "What is your marital status?", 
                           subtitle = "Most of the participants are married.", "pie")
@@ -327,35 +337,12 @@ univariateQualitativePlot(bank_dataset, contact,
 
 #### Month
 
-```{r Figure : Month , fig.align='center'}
-options(digits =2)
-
-perc_month = table(bank_dataset$month) %>%
-  prop.table() %>%
-  sort(decreasing = T) %>%
-  as.data.frame()
-
-num_month = table(bank_dataset$month) %>%
-  sort(decreasing = T) %>%
-  as.data.frame()
-
-perc_month %>%
-    ggplot(aes(x = factor(Var1, level = c('jan', 'feb', 'mar', 'apr','may','jun','jul','aug','sep', 'oct', 'nov', 'dec')), y = Freq)) + 
-  geom_bar(stat = "identity")+
-  scale_fill_hue(c = 40) +
-  geom_text(aes(label = sprintf("%.2f", Freq*100),  stat="identity",
-        vjust = -.25)) +
-  labs(
-    title = "Calls per month",
-    caption = "Bank Marketing Dataset from <b>UCI</b>",
-    x = "Response",
-    y = "Observations"
-  ) +
-  theme_classic() +
-  theme(legend.position = "none",
-        axis.text.x = element_text(vjust = 0.5),
-        plot.caption = element_markdown(lineheight = 1.2),
-        plot.title = element_text(hjust = 0.5))
+```{r Διάγραμμα: Μήνας τελευταίας προσέγγισης}
+#| label: fig-last-month
+#| fig-cap: "Κυκλικό διάγραμμα τρόπων προσέγγισης ατόμων - πελατών"
+univariateQualitativePlot(bank_dataset, month, 
+                          title = "Μέσο επικοινωνίας", 
+                          subtitle = "Η προώθηση μέσω κινητού είναι πιο εκτεταμένη σε σχέση με το σταθερό")
 ```
 
 
@@ -415,37 +402,43 @@ hchart(bank_dataset$balance) %>%
 ```
 
 
-####  Duration
+####  Διάρκεια κλήσης
 
 ```{r}
-ggplot(bank_dataset, aes(x=duration, fill=duration)) + 
-  geom_histogram( ) +
-  scale_fill_hue(c = 40) +
-  theme_bw() +
-  labs(
-    title = "How many people made a deposit account ?",
-    caption = "Data from the 1974 Motor Trend US magazine.",
-    x = "Response",
-    y = "Observations"
-  ) +
-  theme_classic() +
-  theme(legend.position = "none")
+hchart(bank_dataset$duration) %>%
+    hc_title(text = "Διάρκεια κλήσης") %>%
+    hc_subtitle(text = glue("Οι περισσότερες καταθέσεις κυμαίνονται μεταξύ των 0$ και 200$ δολαρίων. Το διάμεσο υπόλοιπο λογαριασμού είναι {median(bank_dataset$balance)} $. Το 75ο τεταρτημόριο είναι τα 1480$, άρα το ένα τέταρτο των πελατών έχει καταθέσεις υψηλότερες αυτού του ποσού. Τα ύψη των λογαριασμών κυμαίνονται από {min(bank_dataset$balance)} μέχρι και τα {max(bank_dataset$balance)} $")) %>%
+    hc_caption(text = "Bank Marketing Dataset from UCI") %>%
+    hc_tooltip(pointFormat = "{point.name}: {point.y}") %>%
+    hc_legend(enabled = FALSE) %>%
+    hc_xAxis(
+    title = list(text = "Διάρκεια κλήσης (σε δευτερόλεπτα)"),
+    max = 1000)
 ```
-
 
 ####  Campaign
 
+```{r}
+s = bank_dataset %>%
+  mutate(category = case_when(
+    campaign >= 1 & campaign <= 7 ~ as.character(campaign),
+    campaign > 7              ~ "8+",
+    TRUE                   ~ NA_character_
+  )) %>%
+  mutate(category = factor(category, levels = c(as.character(1:7), "8+"), ordered = TRUE))
+
+```
+
+
 ```{r Figure : Campaign - Num of Approaches to specific person, fig.align='center'}
-ggplot(bank_dataset, aes(x= campaign, fill=campaign )) + 
-  geom_bar() +
-  scale_fill_hue(c = 40) +
-  theme_bw() +
-  labs(
-    title = "Number of Approaches to a specific person",
-    x = "# of Approaches",
-    y = "Observations"
-  ) + 
-  theme_classic()
+hchart(s$category) %>%
+    hc_title(text = "Αριθμός προσεγγίσεων") %>%
+    hc_subtitle(text = glue("Οι περισσότερες καταθέσεις κυμαίνονται μεταξύ των 0€ και 200€ ευρώ. Το διάμεσο υπόλοιπο λογαριασμού είναι {median(bank_dataset$balance)} €. Το 75ο τεταρτημόριο είναι τα 1480€, άρα το ένα τέταρτο των πελατών έχει καταθέσεις υψηλότερες αυτού του ποσού. Τα ύψη των λογαριασμών κυμαίνονται από {min(bank_dataset$balance)} μέχρι και τα {max(bank_dataset$balance)} $")) %>%
+    hc_caption(text = "Bank Marketing Dataset from UCI") %>%
+    hc_legend(enabled = FALSE) %>%
+    hc_xAxis(
+    title = list(text = "Ύψος καταθέσεων σε ευρώ €")
+)
 ```
 
 :::
@@ -552,8 +545,8 @@ highchart() %>%
     )
   ) %>%
   hc_series(
-    list(name = "No", data = plotmarital$lbl[plotmarital$y == "no"], color = "#FF5733"),
-    list(name = "Yes", data = plotmarital$lbl[plotmarital$y == "yes"], color = "#33FF57")
+    list(name = "Όχι", data = plotmarital$lbl[plotmarital$y == "Όχι"], color = "#FF5733"),
+    list(name = "Ναι", data = plotmarital$lbl[plotmarital$y == "Ναι"], color = "#33FF57")
   ) %>%
   hc_tooltip(pointFormat = "<b>{series.name}</b>: {point.y:.2f}%") %>%
   hc_title(text = "Marital Status by Interest to Term Deposit") %>%
@@ -743,109 +736,14 @@ highchart() %>%
 #### Contact
 
 
-```{r}
-plot_contact1 <- ggplot(bank_dataset, 
-       aes(x = contact, 
-           fill = y)) + 
-        scale_fill_hue(c = 40) +
-        theme_bw() +
-  geom_bar(position = position_dodge(preserve = "single"))
-```
-
-```{r}
-plot_contact2 = bank_dataset %>%
-  group_by(contact, y) %>%
-  summarize(n = n()) %>% 
-  mutate(pct = n/sum(n),
-         lbl = scales::percent(pct)) %>%
-    ggplot(aes(x = contact,
-           y = pct,
-           fill = y)) + 
-  geom_bar(stat = "identity",
-           position = "fill") +
-  geom_text(aes(label = lbl), 
-            size = 3, 
-            position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Set2") +
-  labs(y = "Percent", 
-       fill = "Interested",
-       x = "Class",
-       title = "Forms of contact") +
-  theme_classic() +
-  theme(legend.position = "none",
-        axis.text.x = element_text(angle = 30, vjust = 0.5),
-        plot.caption = element_markdown(lineheight = 1.2),
-        plot.title = element_text(hjust = 0.5))
-```
-
-```{r}
-gridExtra::grid.arrange(plot_contact1, plot_contact2, nrow =1)
-```
 
 
 #### Month
 
-```{r}
-plot_month1 <- ggplot(bank_dataset, 
-       aes(x = factor(month, level = c('jan', 'feb', 'mar', 'apr','may','jun','jul','aug','sep', 'oct', 'nov', 'dec')), 
-           fill = y)) + 
-       scale_fill_hue(c = 40) +
-       theme_bw() +
-  geom_bar(position = position_dodge(preserve = "single"))
-```
 
-```{r}
-plot_month2 <- ggplot(bank_dataset, 
-       aes(x = factor(month, level = c('jan', 'feb', 'mar', 'apr','may','jun','jul','aug','sep', 'oct', 'nov', 'dec')), fill = y)) + 
-       geom_bar(position = "fill") +
-  scale_fill_brewer(palette = "Set2") +
-  theme_minimal()
-```
-
-```{r}
-gridExtra::grid.arrange(plot_month1, plot_month2, nrow =1)
-```
 
 #### poutcome
 
-```{r}
-plot_poutcome1 <- ggplot(bank_dataset, 
-       aes(x = poutcome, 
-           fill = y)) + 
-       scale_fill_hue(c = 40) +
-       theme_bw() +
-  geom_bar(position = position_dodge(preserve = "single"))
-```
-
-```{r, message=FALSE}
-plot_poutcome2 = bank_dataset %>%
-  group_by(poutcome, y) %>%
-  summarize(n = n()) %>% 
-  mutate(pct = n/sum(n),
-         lbl = scales::percent(pct)) %>%
-   ggplot(aes(x = poutcome,
-           y = pct,
-           fill = y)) + 
-  geom_bar(stat = "identity",
-           position = "fill") +
-  geom_text(aes(label = lbl), 
-            size = 3, 
-            position = position_stack(vjust = 0.5)) +
-  scale_fill_brewer(palette = "Set2") +
-  labs(y = "Percent", 
-       fill = "Interested",
-       x = "Class",
-       title = "Previous Campaign outcome") +
-  theme_classic() +
-  theme(legend.position = "none",
-        axis.text.x = element_text(angle = 30, vjust = 0.5),
-        plot.caption = element_markdown(lineheight = 1.2),
-        plot.title = element_text(hjust = 0.5))
-```
-
-```{r}
-gridExtra::grid.arrange(plot_poutcome1, plot_poutcome2, nrow =1)
-```
 
 :::
 
@@ -883,24 +781,14 @@ highchart() %>%
 #### Duration
 
 ```{r}
-ggplot(bank_dataset, 
-       aes(x = duration, 
-           fill = y)) + 
-       scale_fill_hue(c = 40) +
-       theme_bw() +
-  geom_histogram()
+
 ```
 
 
 #### Campaign
 
 ```{r}
-ggplot(bank_dataset, 
-       aes(x = campaign, 
-           fill = y)) + 
-       scale_fill_hue(c = 40) +
-       theme_bw() +
-  geom_histogram()
+
 ```
 :::
 

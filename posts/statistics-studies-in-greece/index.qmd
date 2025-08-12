@@ -43,7 +43,14 @@ editor_options:
 - [Department of Statistics](https://stat.uowm.gr/) of University of Western Macedonia
 
 
-```{r Import R libraries, warning=FALSE, message=FALSE}
+```{r}
+#| label: import_r_libs
+#| title: "Import R libraries"
+#| warning: false
+#| message: false
+
+library(readxl)
+library(stringr)
 library(dplyr)
 library(sysfonts)
 library(reactable)
@@ -53,9 +60,10 @@ library(highcharter)
 library(here)
 ```
 
-```{r Further settings, echo=FALSE}
-# font_add_google("Roboto Slab", family = "clim")
-# font_add_google("EB Garamond", family = "mont")
+```{r}
+#| label: further_settings
+#| title: "Further settings - Add fonts"
+#| echo: false
 
 sysfonts::font_add('fb', '_extensions/quarto-ext/fontawesome/assets/webfonts/fa-brands-400.ttf')
 sysfonts::font_add('fs', '_extensions/quarto-ext/fontawesome/assets/webfonts/fa-solid-900.ttf')
@@ -69,7 +77,11 @@ showtext::showtext_opts(dpi = 300)
 
 Ένα πρώτο κριτήριο για αρκετούς είναι η βάση εισαγωγής. Αν και κατά τη γνώμη μου αυτός ο δείκτης δείχνει κατά πόσο είναι επιθυμητή αυτή η σχολή και όχι το κατά πόσο καλή ή κακή είναι αυτή. Παρακάτω, συγκέντρωσα ιστορικά στοιχεία βάσεων (από το 2013 μέχρι το 2022) από τις τέσσερις σχολές Στατιστικής και έκανα ένα απλό διάγραμμα. Σε αυτό φαίνεται ότι ιστορικά το τμήμα με τη μεγαλύτερη βάση είναι του ΟΠΑ (με μόνη εξαίρεση το 2015). Δεύτερο σε προτίμηση έρχεται το τμήμα Στατιστικής του Πειραιά. Επιπλέον, τα υπόλοιπα δύο τμήματα Στατιστικής (Αιγαίου και Δυτικής Μακεδονίας) ταυτίζονται αρκετά ως προς τη βάση εισαγωγής τους. 
 
-```{r Edit Grade Data, echo=FALSE}
+```{r}
+#| label: import_min_adm_grade
+#| title: "Import data about minimum admission grade"
+#| echo: false
+
 tmimata_statistikis = data.frame(
   "Year" = rep(c(2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022),4),
   "University" = c(rep("AUEB",10), rep("UniPi",10), rep("Aegean",10), rep("UoWM",10)),
@@ -90,9 +102,9 @@ tmimata_statistikis = tmimata_statistikis |>
 ```
 
 
-
-```{r vaseis_eisagogis_plot}
-#| label: vaseis-eisagogis
+```{r}
+#| label: fig-min-adm-grades
+#| title: "Graph: Admission grades for Statistics Dept."
 #| fig-cap: "Βάσεις εισαγωγής σχολών Στατιστικής (2013 - 2022)"
 
 title_text = "<strong>Βάσεις εισαγωγής σε τμήματα Στατιστικής</strong>"
@@ -114,10 +126,10 @@ hchart(tmimata_statistikis, "line", hcaes(x = Year, y = Vasi, group = University
 
 Κάθε χρόνο το Υπουργείο Παιδείας ανακοινώνει τις διαθέσιμες θέσεις για κάθε σχολή και για κάθε κατηγορία εξεταζόμενων. Σε αυτή την ανάλυση ασχολούμαι με τους υποψήφιους των Γενικών Λυκείων που αποτελούν και τη συντριπτική πλειοψηφία των συμμετεχόντων. Με μία πρώτη ματιά παρατηρώ μία αντιστροφή των αποτελεσμάτων σε σύγκριση με τη βάση εισαγωγής. Δηλαδή, στις σχολές με την σχετικά υψηλότερη βάση παρέχονται λιγότερες θέσεις, ενώ οι περισσότερες θέσεις διατίθενται στις σχολές χαμηλότερης βάσης.
 
-```{r Available Admission Seats}
-#| label: theseis-eisagogis-plot
-#| fig-cap: "Διαθέσιμες θέσεις σχολών Στατιστικής (2013 - 2022)"
-
+```{r}
+#| label: fig-available-adm-seats
+#| title: "Graph: Number of available admission seats"
+#| fig-cap: "Availability of admission seats on Statistics Departments (2013 - 2022)"
 
 title_text = "<b>Θέσεις εισαγωγής σε τμήματα Στατιστικής (ΓΛ90)</b>"
 subtitle_text = "Oι θέσεις για όσους θέλουν να φοιτήσουν στο τμήμα <b>Στατιστικής του ΟΠΑ</b> φαίνεται να είναι αρκετά περιορισμένες για τους υποψήφιους των Γενικών Λυκείων προσφέροντας λίγες παραπάνω από 100. Τα τμήματα <b>Αιγαίου</b> και <b>Πειραιά</b> τουλάχιστον τα τελευταία χρόνια ταυτίζονται ως προς τους πόσους θα δεχτούν (από τη κατηγορία ΓΛ90) με το τμήμα του Πειραιά να μειώνει σημαντικά τους εισακτέους του, σε σύγκριση με το 2013."
@@ -136,7 +148,11 @@ hchart(tmimata_statistikis, "line", hcaes(x = Year, y = Theseis, group = Univers
 
 Βέβαια, η παροχή των θέσεων δεν συνεπάγεται πάντοτε και πλήρωση αυτών. Πολλές από αυτές μπορεί να μείνουν αδιάθετες λόγω χαμηλής ζήτησης. Αυτό το φαινόμενο παρατηρείται σε σχολές εκτός των αστικών κέντρων. Τα τελευταία χρόνια υπάρχει και ένας επιπρόσθετος λόγος μιας και έχει θεσμοθετηθεί η ελάχιστη βάση εισαγωγής (ΕΒΕ), η οποία αποτρέπει την βάση μιας σχολής να πέσει κάτω από έναν συγκεκριμένο βαθμό (π.χ. κάτω από 7 ή 13) και για αυτό παρατηρείται στο πρώτο διάγραμμα των βάσεων μία απότομη αύξηση στις σχολές του Αιγαίου και της Δυτικής Μακεδονίας. από την εφαρμογή της να δούμε και άλλες αδιάθετες θέσεις. Έτσι, ο αριθμός των εισακτέων μπορεί πλέον να διαφέρει σημαντικά όχι απλώς μεταξύ τμημάτων εντός και μεγάλων αστικών κέντρων (π.χ. Πανεπιστήμιο Αιγαίου, Πανεπιστήμιο Δυτικής Μακεδονίας - Γρεβενά), αλλά και ως προς τον διαθέσιμο αριθμό εισακτέων και των εγγεγραμμένων φοιτητών.
 
-```{r Proportion of Seats}
+```{r}
+#| label: fig-proportion-seats
+#| title: "Graph: Proportion of Statistics Seats"
+#| fig-cap: "Proportion of seats offered in Statistics departments(2013 - 2022)"
+
 years <- unique(tmimata_statistikis$Year)
 
 # Step 3: Prepare series data
@@ -150,10 +166,10 @@ series_data <- tmimata_statistikis %>%
 
 highchart() %>%
     hc_chart(type = "area") %>%
-    hc_title(text = "Historic and Estimated Worldwide Population Distribution by Region") %>%
-    hc_subtitle(text = "Using tidy data (long format)") %>%
+    hc_title(text = "Distribution of available places by Department") %>%
+    hc_subtitle(text = "Το τμήμα Στατιστικής του Πειραιά είναι αυτό που προσέφερε περισσότερες θέσεις αναλογικά με τις συνολικά προσφερόμενες σε πανελλήνιο επίπεδο. Πλέον το νεοσύστατο τμήμα των Γρεβενών έχει τη μεγαλύτερη προσφορά θέσεων.") %>%
     hc_xAxis(categories = years, tickmarkPlacement = "on", title = list(enabled = FALSE)) %>%
-    hc_yAxis(title = list(text = "Percent"), labels = list(format = "{value}%")) %>%
+    hc_yAxis(title = list(text = "Percent (%)"), labels = list(format = "{value}%")) %>%
     hc_tooltip(shared = TRUE, pointFormat = "<span style='color:{series.color}'>{series.name}</span>: <b>{point.percentage:.1f}%</b> ({point.y:,.0f})<br/>") %>%
     hc_plotOptions(area = list(
         stacking = "percent",
@@ -173,7 +189,11 @@ highchart() %>%
 Το UniPi2011 αναφέρεται στο πρόγραμμα σπουδών του τμήματος Στατιστικής του Πειραιά που ίσχυε για τους φοιτητές που μπήκαν στο τμήμα από το 2011 μέχρι το 2016. Οι εισακτέοι του τμήματος από το 2017 ακολουθούν το νέο πρόγραμμα σπουδών του 2017 (UniPI2017)
 :::
 
-```{r Data, echo = FALSE}
+```{r}
+#| label: import_data_chars_departments
+#| title: "Data: Department Characteristics"
+#| echo: FALSE
+
 degree_requirements = data.frame(
   "University" = c("AUEB", "UniPi2011", "UniPi2017", "Aegean", "UoWM"),
   "Courses" = c(32, 47, 40, 34, 48),
@@ -181,29 +201,34 @@ degree_requirements = data.frame(
   "Elective" = c(18, 16, 21, 16, 7),
   "Ptixiaki" = c("Yes", "No", "No", "Yes", "No"),
   "Images" = c("<img src='https://upload.wikimedia.org/wikipedia/el/thumb/2/2c/AUEBEMBLEM.png/250px-AUEBEMBLEM.png' height='20'/>",
-               "<img src='https://upload.wikimedia.org/wikipedia/en/7/7e/UNIPI.jpg' height='20'/>",
-               "<img src='https://upload.wikimedia.org/wikipedia/en/7/7e/UNIPI.jpg' height='20'/>",
+               "<img src='https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/UNIPI_Emblem.png/250px-UNIPI_Emblem.png' height='20'/>",
+               "<img src='https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/UNIPI_Emblem.png/250px-UNIPI_Emblem.png' height='20'/>",
                "<img src='https://upload.wikimedia.org/wikipedia/el/thumb/7/7d/%CE%A0%CE%B1%CE%BD%CE%B5%CF%80%CE%B9%CF%83%CF%84%CE%AE%CE%BC%CE%B9%CE%BF_%CE%91%CE%B9%CE%B3%CE%B1%CE%AF%CE%BF%CF%85_%28logo%29.svg/250px-%CE%A0%CE%B1%CE%BD%CE%B5%CF%80%CE%B9%CF%83%CF%84%CE%AE%CE%BC%CE%B9%CE%BF_%CE%91%CE%B9%CE%B3%CE%B1%CE%AF%CE%BF%CF%85_%28logo%29.svg.png' height='20'/>",
               "<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/UoWM.png/120px-UoWM.png' height='20'/>")) |>
 dplyr::arrange(-Courses) |>
 mutate(Electivepct = round((Elective/Courses)*100, digits = 1))
 ```
 
-```{r Courses to Graduate Graph, collapse=T}
+```{r}
+#| label: fig-courses-to-graduate
+#| title: "Graph: Courses to Graduate"
+#| fig-cap: "Required courses for obtaining a degree per department"
+#| collapse: true
+
 highchart() %>%
   hc_chart(type = "bar") %>%
-  hc_title(text = "Δομή μαθημάτων τμημάτων Στατιστικής") %>%
-  hc_subtitle(text = "Ο αριθμός των μαθημάτων που απαιτούνται για την απόκτηση προπτυχιακού τίτλου σπουδών από τα δημόσια τμήματα Στατιστικής της χώρας μας. Αναλύεται και η σύνθεση των προγραμμάτων με βάση την ευελιξία προσαρμογής του προγράμματος σπουδών (αριθμός επιλεγόμενων ως ποσοστό των υποχρεωτικών).")  %>%
+  hc_title(text = "Course structure of Statistics departments") %>%
+  hc_subtitle(text = "The number of courses required to obtain an undergraduate degree from public statistics departments in Greece. The composition of the programs is also analyzed based on the flexibility of the curriculum (number of electives as a percentage of required courses).")  %>%
   hc_caption(text = "stesiam, 2025") %>%
   hc_xAxis(
        categories = degree_requirements$Images,
          labels = list(useHTML = TRUE),
          title = list(text = "")
    ) %>%
-  hc_yAxis(title = list(text = "Μαθήματα για πτυχίο")) %>%
+  hc_yAxis(title = list(text = "Number of courses to graduate")) %>%
   hc_plotOptions(series = list(stacking = "normal")) %>%
-  hc_add_series(name = "Επιλεγόμενα", data = degree_requirements$Elective, stack = "courses") %>%
-  hc_add_series(name = "Υποχρεωτικά", data = degree_requirements$Comp, stack = "courses")
+  hc_add_series(name = "Electives", data = degree_requirements$Elective, stack = "courses") %>%
+  hc_add_series(name = "Obligatory", data = degree_requirements$Comp, stack = "courses")
 ```
 
 
@@ -213,20 +238,50 @@ highchart() %>%
 Παραπάνω είδαμε σε πόσα μαθήματα θα πρέπει να εξεταστεί ένας σπουδαστής του αντίστοιχου τμήματος για να πάρει πτυχίο. Πόση ελευθερία υπάρχει σε κάθε τμήμα προκειμένου ο ίδιος ο φοιτητής να προσαρμόσει τις σπουδές του στις προτιμήσεις του και τα προσωπικά του ερευνητικά ενδιαφέροντα; Αυτό προσπάθησα να μελετήσω με την προσθήκη της μεταβλητής των ελεύθερων μαθημάτων και του ποσοστού που αποτελούν αυτά ως προς τα συνολικά μαθήματα.
 
 
+```{r}
+#| collapse: true
+#| label: fig-elective-courses
+#| title: "Graph: Percentage of elective courses"
+#| fig-cap: "The percentage of electives out of the total number of courses that are required to obtain a degree."
+
+degree_requirements = degree_requirements |>
+  arrange(-Electivepct)
+
+highchart() %>%
+  hc_chart(type = "bar") %>%
+  hc_title(text = "Flexibility of Study Guides") %>%
+  hc_subtitle(text = "Ο αριθμός των επιλεγόμενων μαθημάτων ως ποσοστό των συνολικών μαθημάτων που απαιτούνται για το πτυχίο.")  %>%
+  hc_caption(text = "stesiam, 2025") %>%
+ hc_xAxis(
+       categories = degree_requirements$Images,
+         labels = list(useHTML = TRUE),
+         title = list(text = "")
+   ) %>%
+  hc_yAxis(title = list(text = "Percentage of electives/total courses")) %>%
+  hc_plotOptions(series = list(stacking = "normal")) %>%
+  hc_add_series(name = "Electives", data = degree_requirements$Electivepct, stack = "courses")
+```
+
+
+
 ## Late graduation
 
 ```{r}
-url = "https://www.statistics.gr/el/statistics?p_p_id=documents_WAR_publicationsportlet_INSTANCE_VBZOni0vs5VJ&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_cacheability=cacheLevelPage&p_p_col_id=column-2&p_p_col_count=4&p_p_col_pos=2&_documents_WAR_publicationsportlet_INSTANCE_VBZOni0vs5VJ_javax.faces.resource=document&_documents_WAR_publicationsportlet_INSTANCE_VBZOni0vs5VJ_ln=downloadResources&_documents_WAR_publicationsportlet_INSTANCE_VBZOni0vs5VJ_documentID=563442&_documents_WAR_publicationsportlet_INSTANCE_VBZOni0vs5VJ_locale=el"
-```
+#| label: data_url_num_of_students
+#| title: "Data: URL Data of Number of Students on Greek Depts"
+#| echo: false
 
-```{r}
+url = "https://www.statistics.gr/el/statistics?p_p_id=documents_WAR_publicationsportlet_INSTANCE_VBZOni0vs5VJ&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_cacheability=cacheLevelPage&p_p_col_id=column-2&p_p_col_count=4&p_p_col_pos=2&_documents_WAR_publicationsportlet_INSTANCE_VBZOni0vs5VJ_javax.faces.resource=document&_documents_WAR_publicationsportlet_INSTANCE_VBZOni0vs5VJ_ln=downloadResources&_documents_WAR_publicationsportlet_INSTANCE_VBZOni0vs5VJ_documentID=563442&_documents_WAR_publicationsportlet_INSTANCE_VBZOni0vs5VJ_locale=el"
+
 work_dir = here::here("posts", "statistics-studies-in-greece")
 download.file(url = url, destfile = "undergrads_by_year.xls")
 ```
 
-```{r, message=FALSE}
-library(readxl)
-library(stringr)
+
+```{r}
+#| label: filter_stats_student_late_graduation_data
+#| title: "Filter number of students that have exceeded 6 years"
+#| message: false
 undergrads_by_year <- read_excel(here::here(work_dir, "undergrads_by_year.xls")) %>%
   dplyr::select(c(3,4,25)) %>%
   setNames(c("Dept", "StudentsUnEq6", "studentsOv6")) %>%
@@ -243,9 +298,14 @@ undergrads_by_year <- read_excel(here::here(work_dir, "undergrads_by_year.xls"))
 
 
 ```{r}
+#| collapse: true
+#| label: fig-late-graduation
+#| title: "Graph: Late graduation by Stats Dept."
+#| fig-cap: "Barplot of late graduation rates by department"
+
 highchart() %>%
   hc_chart(type = "bar") %>%
-  hc_title(text = "Ποσοστό φοιτητών που ξεπέρασαν τα ν+2 έτη") %>%
+  hc_title(text = "Percentage of students that have exceeded n+2 years") %>%
   hc_subtitle(text = "Το τμήμα του Πειραιά έχει το μεγαλύτερο ποσοστό καθυστερημένης αποφοίτησης με 7 στους 10 φοιτητές του τμήματος να αποτελούν φοιτητές 7ου ή μεγαλύτερου έτους. Με μεγάλη ποσοστιαία διαφορά ακολουθούν τα τμήματα της Αθήνας και της Σάμου. Το τμήμα των Γρεβενών είναι νεοσύστατο και δεν έχει φοιτητές ν+2.") %>%
   hc_xAxis(categories = undergrads_by_year$Dept) %>%
   hc_yAxis(title = list(text = "Value")) %>%
@@ -279,7 +339,10 @@ highchart() %>%
 ## Other Information
 
 
-```{r, echo=FALSE}
+```{r}
+#| label: import_data_chars_depsII
+#| title: "Manual insertion of data - Characteristics of depts II"
+#| echo: false
 others = data.frame(
   Uni = c("AUEB", "UniPi2011","UniPi2017", "Aegean", "UoWM"),
   Diloseis = c("Ναι", "Όχι", "Όχι", "Όχι", "Όχι"),
@@ -290,6 +353,9 @@ others = data.frame(
 ```
 
 ```{r}
+#| label: tbl-basic-tables
+#| title: "Table: Characteristics of study guides II"
+#| tbl-cap: "Characteristics of study guides"
 reactable::reactable(others,
                      columns = list(
 
@@ -332,7 +398,18 @@ reactable::reactable(others,
 
 Finally, it would be interesting to practice my skills in creating maps with R. I usually use Shapefiles to have a base map (in this case, the boundaries of Greece) or a package to define them, such as the `rnaturalearth` accompanied by the `rnaturalearthdata` και `rnaturalhires` packages. This was my approach in the first version of my article. Fortunately, in the past period, I have made a great effort to transform my static plots into interactive ones using highcharter. That's what I am also trying to do with maps, as the aforemntioned library offers relevant mapping tools. On our specific example, we need Greece's boundaries which are available from the library (as are the boundaries of other countries).
 
-```{r map_statistics_deps}
+```{r}
+#| label: filter-number-stats-students
+#| title: "Number of Statistics Students"
+students_by_dept = undergrads_by_year |>
+  dplyr::filter(stringr::str_detect(Dept, "ΣΤΑΤΙΣΤΙΚΗ")) %>%
+  mutate(Short = c("UniPi", "AUEB", "Aegean", "Grevena"))
+```
+
+```{r}
+#| label: fig-mapping-stats-departments
+#| title: "Mapping Stats Depts in Greece"
+#| fig-cap: "Map of Greece with the four Statistics Departments"
 uni_coord = data.frame(
   uni = c("UniPi", "Aegean", "AUEB", "UoWM"),
   unilong = c("University of Piraeus", "University of Aegean",
@@ -342,7 +419,7 @@ uni_coord = data.frame(
            "Statistics", "Statistics"),
   long = c(23.6529793, 26.5664138,23.7300928, 21.4565181),
   lat = c(37.77, 39.0851185, 38.1940201, 40.1197471),
-  img = c("https://upload.wikimedia.org/wikipedia/en/7/7e/UNIPI.jpg", "https://upload.wikimedia.org/wikipedia/en/d/df/Aegean_University_logo.gif", "https://upload.wikimedia.org/wikipedia/en/thumb/8/89/AUEB_EMBLEM.png/250px-AUEB_EMBLEM.png","https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/UoWM.png/120px-UoWM.png"),
+  img = c("https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/UNIPI_Emblem.png/250px-UNIPI_Emblem.png", "https://upload.wikimedia.org/wikipedia/en/d/df/Aegean_University_logo.gif", "https://upload.wikimedia.org/wikipedia/en/thumb/8/89/AUEB_EMBLEM.png/250px-AUEB_EMBLEM.png","https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/UoWM.png/120px-UoWM.png"),
   established = c(1938, 1984, 1920, 2003),
   dpt_est = c(1977,2000, 1989, 2019),
   town = c("Piraeus", "Samos", "Athens", "Grevena")
@@ -369,8 +446,8 @@ hc_add_series(
     height = 20
   )
 ) %>%
-  hc_title(text = "<b>Departments of Statistics</b>") %>%
-  hc_subtitle(text = "In Greece there are in total four public departments of undergraduate degree on Statistics. The duration of studies is 4 years. They are based in Athens, Piraeus, Samos and Grevena.") %>%
+  hc_title(text = "<b>Statistics Departments of Greece</b>") %>%
+  hc_subtitle(text = "In Greece, there are a total of four public undergraduate statistics schools. The duration of study at these schools is four years. They are located in Athens, Piraeus, Samos, and Grevena.") %>%
   hc_caption(text = "stesiam, 2025") |>
   hc_tooltip(
   useHTML = TRUE,  # Enables HTML formatting
@@ -384,13 +461,13 @@ hc_add_series(
                 '<br>' +
                '<img style=\"margin: auto; display:flex; justify-content: center;\" src=\"' + this.point.img + '\" width=\"40\" height=\"40\" style=\"border-radius:10px; margin-top:5px;\" /><br>' +
                '<b>Town:</b>' + this.point.town + '<br>' +
-               '<b>Uni established:</b> ' + this.point.established + '<br>' + 
-               '<b>Dept. Est.:</b> ' + this.point.dpt_est + '<br>' + 
-               '<b>Students:</b>' +
+               '<b>Est. University:</b> ' + this.point.established + '<br>' + 
+               '<b>Est. Dept.:</b> ' + this.point.dpt_est + '<br>' + 
+               '<b>Undergrads:</b> ' + this.point.studs +
                '</div>';
     }
   ")
-) %>%
+)  %>%
   hc_legend(enabled = FALSE)
 ```
 

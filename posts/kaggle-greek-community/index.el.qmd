@@ -60,10 +60,10 @@ order to compare Greek data analysts with the rest of the world.
 
 ### Εισαγωγή βιβλιοθηκών
 
-Σε αυτό το άρθρο θα χρειαστώ να εισάγω και να τροποποιήσω τα δεδομένα μου, συνεπώς η σουίτα πακέτων του tidyverse κρίνεται απαραίτητη μιας και θα αξιοποιήσω λειτουργίες από πακέτα όπως το readr, το dplyr & το tidyr. Ο όγκος των δεδομένων είναι τεράστιος που μας δίνει αρκετές επιλογές ανάλυσης και μας δίνεται η ευκαιρία να οπτικοποιήσουμε αρκετά δεδομένα, μέσω του πακέτου highcharter. Τέλος, σε μεταβλητές οι οποίες έχουν αρκετές τιμές (π.χ. χώρες) ενδεχομένως να χρειαστεί να αναλύσω τα δεδομένα μου και σε πίνακε και για αυτό το λόγο ενδείκνειται η χρήση πινάκων μέσω των πακέτων reactable ή reactablefmtr.
+Σε αυτό το άρθρο θα χρειαστώ να εισάγω και να τροποποιήσω τα δεδομένα μου, συνεπώς η σουίτα πακέτων του tidyverse κρίνεται απαραίτητη μιας και θα αξιοποιήσω λειτουργίες από πακέτα όπως το readr, το dplyr & το tidyr. Ο όγκος των δεδομένων είναι τεράστιος που μας δίνει αρκετές επιλογές ανάλυσης και μας δίνεται η ευκαιρία να οπτικοποιήσουμε αρκετά δεδομένα, μέσω του πακέτου highcharter. Τέλος, σε μεταβλητές οι οποίες έχουν αρκετές τιμές (π.χ. χώρες) ενδεχομένως να χρειαστεί να αναλύσω τα δεδομένα μου και σε πίνακες και για αυτό το λόγο ενδείκνυνται η χρήση πινάκων μέσω των πακέτων reactable ή reactablefmtr.
 
 
-```{r Import R Libraries, message=FALSE, results='hide', echo=TRUE}
+```{r Εισαγωγή R πακέτων, message=FALSE, results='hide', echo=TRUE}
 #| message: false
 #| results: hide
 #| echo: true
@@ -71,6 +71,7 @@ order to compare Greek data analysts with the rest of the world.
 library(readr)
 library(dplyr)
 library(tidyr)
+library(purrr)
 library(glue)
 library(forcats)
 
@@ -84,26 +85,28 @@ library(showtext)
 library(sysfonts)
 ```
 
-```{r Add fonts and misc. settings}
+```{r Προσθήκη φόντων και επιπλέον ρυθμίσεις}
 #| include: false
-# Άλλες ρυθμίσεις
-options(digits=4) # print only 4 decimals
+
+# library(showtext)
+# library(sysfonts)
+options(digits=4)
 options(warn = -1)
 
 ## Load fonts
 
 # font_families_google() ## see list with available Google fonts
 
-font_add_google(name = "Lilita One", family = "title", db_cache = F)
-font_add_google(name = "Ysabeau Office", family = "subtitle", db_cache = F)
-font_add_google(name = "Spline Sans", family = "text", db_cache = F)
+# font_add_google(name = "Lilita One", family = "title", db_cache = F)
+# font_add_google(name = "Ysabeau Office", family = "subtitle", db_cache = F)
+# font_add_google(name = "Spline Sans", family = "text", db_cache = F)
 
 showtext_auto()
 showtext::showtext_opts(dpi = 300)
 ```
 
 
-```{r Add references of R libraries}
+```{r Δημιουργία βιβλιοαναφοράς των φορτωμένων πακέτων}
 #| include: false
 # Προσθήκη βιβλιοθηκών που χρησιμοποιώ στη βιβλιογραφία
 
@@ -114,7 +117,7 @@ knitr::write_bib(.packages(), file = 'packages.bib')
 
 Το Kaggle μας προσφέρει το σύνολο των δεδομένων σε ένα αρχείο csv, συνεπώς θα χρειαστώ την εντολή `read_csv` από το πακέτο readr. Θα φορτώσω το αντίστοιχο σύνολο δεδομένων ονομάζοντάς το kaggle_2021. Σε αυτό το σύνολο περιλαμβάνεται στη πρώτη σειρά και η ερώτηση που έθεσε στους χρήστες η οποία καλό θα ήταν να μην τη συμπεριλάβω για να διευκολύνω την ανάλυσή μου.
 
-```{r Import data}
+```{r Εισαγωγή δεδομένων}
 #| message: false
 #| warning: false
 kaggle_2021 = read_csv("data/kaggle_survey_2021.csv")
@@ -123,7 +126,7 @@ kaggle_2021 = read_csv("data/kaggle_survey_2021.csv")
 kaggle_2021 = kaggle_2021[-c(1),]
 ```
 
-## Προετοιμασία δεδομένων
+### Eπανακωδικοποίηση δεδομένων
 
 Σε αυτό το σημείο χρειάζεται να κάνω ορισμένα βήματα πριν ξεκινήσω. Με δεδομένο ότι η ανάλυσή μου έχει ως κύριο σκοπό να συγκρίνει τα χαρακτηριστικά των Ελλήνων χρηστών με των υπολοίπων χρηστών θα πρέπει να διακρίνω τα δεδομένα με αυτό το κριτήριο. Υπάρχουν δύο τρόποι με τους οποίους μπορείς να γίνει αυτό:
 
@@ -132,8 +135,9 @@ kaggle_2021 = kaggle_2021[-c(1),]
 
 Με οποιονδήποτε από τους δύο τρόπους θα είμαστε σε θέση να συγκρίνουμε βασικά χαρακτηριστικά των χρηστών.
 
-```{r, message=FALSE, warning=F}
-# Recoding Q2 variable
+```{r Επανακωδικοποίηση μεταβλητών}
+#| message: false
+#| warning: false
 
 kaggle_2021$Q2 <- kaggle_2021$Q2 |>
   fct_recode(
@@ -142,6 +146,13 @@ kaggle_2021$Q2 <- kaggle_2021$Q2 |>
     "Άλλο" = "Prefer not to say",
     "Άλλο" = "Prefer to self-describe",
     "Γυναίκα" = "Woman"
+  )
+
+kaggle_2021$Q1 <- kaggle_2021$Q1 |>
+  fct_recode(
+    "55+" = "55-59",
+    "55+" = "60-69",
+    "55+" = "70+"
   )
 
 kaggle_2021$Q3_iso2c <- countrycode::countrycode(kaggle_2021$Q3, "country.name.en", "iso2c") |>
@@ -160,6 +171,14 @@ kaggle_2021$Q4 <- kaggle_2021$Q4 |>
     "Διδακτορικό" = "Professional doctorate",
     "Μεταλυκειακές σπουδές" = "Some college/university study without earning a bachelor’s degree"
   )
+
+kaggle_2021$Q4 <- factor(kaggle_2021$Q4,
+  levels = c(
+    "Απόφοιτος Λυκείου", "Μεταλυκειακές σπουδές",
+    "Προπτυχιακό", "Μεταπτυχιακό", "Διδακτορικό",
+    "Άλλο"
+  )
+)
 
 kaggle_2021$Q5 <- kaggle_2021$Q5 |>
   fct_recode(
@@ -226,7 +245,7 @@ kaggle_2021_compare = kaggle_2021 %>%
 
 ### Προεπισκόπηση δεδομένων
 
-```{r}
+```{r Εκτύπωση πρώτων γραμμών των δεδομένων}
 #| label: tbl-preview-kaggle-dataset
 #| tbl-cap: "Προεπισκόπηση πρώτων 5 σειρών του συνόλου δεδομένων"
 #| tbl-cap-location: top
@@ -254,7 +273,7 @@ making a 0.39% of Kaggle's userbase.
 Θα πρέπει να σημειώσουμε ότι τα δεδομένα και συνεπώς και τα αποτελέσματα προέρχονται αποκλειστικά από την έρευνα που έχει διεξάγει η πλατφορμα του Kaggle. Δεν είναι μία συνολική εικόνα της κοινότητας της επιστήμης δεδομένων. Επίσης, θα πρέπει να σημειωθεί ότι η έρευνα είναι προαιρετική επομένως μελετάμε τα χαρακτηριστικά αυτών που επιθυμούσαν να συμμετέχουν στην έρευνα.
 :::
 
-```{r}
+```{r Πίνακας: Χώρες συμμετεχόντων στην έρευνα}
 a = kaggle_2021 %>%
   group_by(Q3) %>%
   summarise(n = n()) %>%
@@ -285,11 +304,13 @@ a = kaggle_2021 %>%
 a
 ```
 
+
+
 ## Συμμετοχή γυναικών στον κλάδο
 
 Γενικότερα, παρατηρείται διαχρονικά σε παγκόσμιο επίπεδο μία υποεκπρωσόπηση των γυναικών στην αγορά εργασίας. Σύμφωνα με την [-@worldbank2023] μόλις 5 στις 10 γυναίκες απασχολούνται, σε αντίθεση με τους άνδρες όπου η αντίστοιχη αναλογία προσεγγίζει τους 7 στους 10. Εδώ όμως θέλουμε να μελετήσουμε συγκεκριμένα για το πεδίο της επιστήμης δεδομένων. Τελικά, στον κλάδο μας ακολουθείται το ίδιο μοτίβο μη συμπερίληψης; Η απάντηση είναι ΝΑΙ, αλλά με ισχυρές διαφοροποιήσεις ανά χώρα. 
 
-```{r}
+```{r Εξαγωγή δεδομένων - Συμμετοχή γυναικών στην έρευνα ανά χώρα}
 #| warning: false
 #| message: false
 
@@ -299,12 +320,7 @@ data = kaggle_2021 %>%
             Women = sum(factor(Q2) == "Γυναίκα"),
             pct_women = Women/n *100) %>%
   mutate(iso2c = tolower(Q3_iso2c))
-```
 
-
-```{r}
-#| fig-height: 12
-library(purrr)
 data_decreasing = data %>% dplyr::arrange(-pct_women)
 
 # Add emoji flags
@@ -316,14 +332,19 @@ data_decreasing <- data_decreasing %>%
             intToUtf8(127397 + chars[2])
         )
     }))
+```
 
 
+```{r Διάγραμμα: Ραβδόγραμμα συμμετoxής γυναικών στην έρευνα του Kaggle}
+#| fig-height: 12
+#| label: fig-women-pct-ds-community
+#| fig-cap: "Ραβδόγραμμα συμμετοχής γυναικών στην έρευνα του Kaggle"
 highchart() %>%
     hc_chart(type = "bar", inverted = TRUE) %>%
     hc_title(text = "<b>Συμμετοχή γυναικών στη κοινότητα της επιστήμης δεδομένων</b>") %>%
     hc_subtitle(text = glue("Σύμφωνα με τη πρόσφατη έρευνα του Kaggle, οι γυναίκες υποεκπροσωπούνται στην κοινότητα της επιστήμης των δεδομένων. Η χώρα με την ισχυρότερη (αναλογικά) συμμετοχή είναι η Τυνησία και αυτή με τη χαμηλότερη το Περού. Τέλος, η <b>Ελλάδα</b> έχει μία σχετικά απογοητευτική απόδοση στον συγκεκριμένο δείκτη καταλαμβάνοντας τη 40η θέση με ποσοστό 15.7%, και με δεδομένο ότι ο μέσος όρος συμμετοχής είναι στο {round(mean(data$pct_women),digits = 2)} %")  ) %>%
     hc_caption(text="Δεδομένα: Έρευνα χρηστών του Kaggle 2021 | <b>stesiam</b>, 2023") %>%    hc_xAxis(categories = data_decreasing$Q3, title = list(text = NULL)) %>%
-    hc_yAxis(title = list(text = "Percent (%)")) %>%
+    hc_yAxis(title = list(text = "Ποσοστό (%)")) %>%
     hc_legend(enabled = FALSE) %>%
     hc_add_series(
         name = "Women %",
@@ -350,12 +371,14 @@ highchart() %>%
     ")
     )
 ```
+
 ## Ηλικιακή Κατανομή
 
 Η κοινότητα των Ελλήνων χρηστών αποτελείται από μεγαλύτερης ηλικίας άτομα
 Greece's Kaggle Community it is comprised from more elerly people comapred to the rest of Kaggle's community. More specifically, Greece's most prevalent age group is 25-29 and a sufficient proportion of users on their 40s. On the contrary, Kaggle's community is quite youthy with most prevalent the three youngest age groups. Aggrevetating, those groups consist six out of ten userbase of Kaggle's community.
 
-```{r, fig.showtext=T, dpi = 300, warning=F}
+```{r Εξαγωγή δεδομένων - Ηλικιακή κατανομή Ελλήνων - Ξένων χρηστών}
+#| warning: false
 
 data1 = kaggle_2021_compare %>%
   select(Q3, Q1) %>%
@@ -368,14 +391,16 @@ data1 = kaggle_2021_compare %>%
 ```
 
 
-```{r}
-library(highcharter)
+```{r Διάγραμμα: Ηλικιακή κατανομή Ελλήνων - Ξένων χρηστών}
+#| label: fig-age-distribution
+#| fig-cap: "Διάγραμμα περιοχής για τη μελέτη της κατανομής των ηλικιακών ομάδων μεταξύ των χρηστών από την Ελλάδα και των χρηστών άλλων χωρών."
 
 highchart() |>
   hc_chart(type = "areaspline") |>
   hc_title(text = "Ηλικιακή κατανομή χρηστών ανά χώρα προέλευσης (🇬🇷 / 🌍)") |>
+  hc_subtitle(text = "Το ένα τέταρτο των Ελλήνων χρηστών ανήκουν στη ηλικιακή ομάδα των 25-29 ετών. Γενικότερα τα άτομα κάτω των 29 ετών αποτελούν το 42% των Ελλήνων χρηστών και το 56% από άλλες χώρες.") |>
   hc_xAxis(categories = unique(data1$Q1)) |>
-  hc_yAxis(title = list(text = "Population (%)")) |>
+  hc_yAxis(title = list(text = "Κατανομή (%)")) |>
   hc_tooltip(shared = TRUE, valueSuffix = " %") |>
   hc_plotOptions(
     areaspline = list(
@@ -403,7 +428,7 @@ highchart() |>
 
 # Εκπαιδευτικό Υπόβαθρο
 
-```{r}
+```{r Εξαγωγή δεδομένων - Εκπαιδευτικό υπόβαθρο Ελλήνων - Ξένων χρηστών}
 data3 = kaggle_2021_compare %>%
   select(Q3, Q4) %>%
   group_by(Q3, Q4) %>%
@@ -411,14 +436,11 @@ data3 = kaggle_2021_compare %>%
   group_by(Q3) %>%
   mutate(pct = round(n/sum(n)*100, digits = 1))  %>%
   ungroup()
-```
 
-
-```{r}
 d = data3 %>% dplyr::filter(Q4 %in% c("Προπτυχιακό", "Μεταπτυχιακό", "Διδακτορικό"))
 ```
 
-```{r}
+```{r Διάγραμμα: Ραβδόγραμμα εκπαιδευτικού υπόβαθρου Ελλήνων - Ξένων χρηστών}
 highchart() %>%
   hc_chart(type = "bar") %>%
   hc_title(text = "Εκπαιδευτικό υπόβαθρο χρηστών (🇬🇷 / 🌍)") %>%
@@ -441,3 +463,157 @@ highchart() %>%
     layout = "horizontal"
   )
 ```
+
+## Εργασιακές συνθήκες
+
+```{r}
+kaggle_2021_compare$Q6 <- kaggle_2021_compare$Q6 |>
+  fct_relevel(
+    "0", "< 1", "1-3", "3-5", "5-10", "10-20", "20+"
+  )
+```
+
+
+```{r}
+data = kaggle_2021_compare %>%
+  group_by(Q3) %>%
+  count(Q6) |>
+  mutate(sum = sum(n),
+         pct = round((n / sum) * 100, digits = 1)) %>%
+  select(Q3, Q6, pct) %>%
+  pivot_wider(names_from = "Q3", values_from = "pct")
+```
+
+```{r}
+highchart() |>
+  hc_chart(type = "areaspline") |>
+  hc_title(text = "Χρόνια προϋπηρεσίας ανά χώρα προέλευσης (🇬🇷 / 🌍)") |>
+  hc_subtitle(text = "Το ένα τέταρτο των Ελλήνων χρηστών ανήκουν στη ηλικιακή ομάδα των 25-29 ετών. Γενικότερα τα άτομα κάτω των 29 ετών αποτελούν το 42% των Ελλήνων χρηστών και το 56% από άλλες χώρες.") |>
+  hc_xAxis(categories = unique(data$Q6)) |>
+  hc_yAxis(title = list(text = "Κατανομή (%)")) |>
+  hc_tooltip(shared = TRUE, valueSuffix = " %") |>
+  hc_plotOptions(
+    areaspline = list(
+      fillOpacity = 0.5  # match the Highcharts demo's fill
+    )
+  ) |>
+  hc_legend(
+    layout = "vertical",
+    align = "left",
+    verticalAlign = "top",
+    x = 450,
+    y = 110,
+    floating = TRUE,
+    borderWidth = 1
+    ) |>
+  hc_add_series(
+    name = "Ελλάδα",
+    data = data$Ελλάδα
+  ) |>
+  hc_add_series(
+    name = "Υπόλοιπος Κόσμος",
+    data = data$Άλλο
+  )
+```
+
+
+```{r}
+da = kaggle_2021_compare |>
+  group_by(Q3) |>
+  count(Q5) |>
+  arrange(-n) |>
+  mutate(sum = sum(n),
+         pct = round((n/sum)*100, digits = 2)) |>
+  ungroup(Q3) |>
+  select(Q3, Q5, pct) |>
+  pivot_wider(names_from = Q3, values_from = pct)
+```
+
+::: grid
+::: {.g-col-12 .g-col-md-6}
+```{r}
+r = arrange(da, -`Ελλάδα`)
+r = head(r)
+highchart() %>%
+    hc_chart(type = "bar") %>%
+    hc_title(text = "Εργασίες με μεγαλύτερη συχνότητα στην Ελλάδα") %>%
+    hc_xAxis(categories = r$Q5, title = NULL) %>%
+    hc_yAxis(title = list(text = "Ποσοστό (%) χρηστών")) %>%
+    hc_series(list(
+        name = "Fruits",
+        data = r$Ελλάδα
+    )) %>%
+  hc_legend(enabled = FALSE)
+```
+
+
+:::
+::: {.g-col-12 .g-col-md-6}
+```{r}
+r = arrange(da, -`Άλλο`)
+r = head(r)
+highchart() %>%
+    hc_chart(type = "bar") %>%
+    hc_title(text = "Εργασίες με μεγαλύτερη συχνότητα ξένων χρηστών") %>%
+    hc_xAxis(categories = r$Q5, title = list(text = NULL)) %>%
+    hc_yAxis(title = list(text = "Ποσοστό (%) χρηστών")) %>%
+    hc_series(list(
+        name = "Fruits",
+        data = r$Άλλο
+    )) %>%
+  hc_legend(enabled = FALSE)
+```
+:::
+:::
+
+
+
+## Δημοφιλής γλώσσα προγραμματισμού
+
+```{r}
+y = kaggle_2021_compare |>
+  group_by(Q3, Q8) |>
+  count() |>
+  ungroup(Q8) |>
+  top_n(3) |>
+  mutate(sum = sum(n),
+         pct = round((n/sum)*100, digits = 1)) %>%
+  ungroup(Q3) |>
+  select(Q3, Q8, pct) |>
+  pivot_wider(names_from = "Q3", values_from = "pct")
+
+y$img = c(
+  '<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/150px-Python-logo-notext.svg.png" height="40">',
+  '<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/R_logo.svg/250px-R_logo.svg.png" height="40">',
+  '<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Julia_Programming_Language_Logo.svg/250px-Julia_Programming_Language_Logo.svg.png" height="40">'
+)
+```
+
+```{r Διάγραμμα: Ραβδόγραμμα gd}
+highchart() %>%
+  hc_chart(type = "bar",marginLeft = 100) %>%
+  hc_title(text = "Εκπαιδευτικό υπόβαθρο χρηστών (🇬🇷 / 🌍)") %>%
+  hc_subtitle(text="Οι Έλληνες χρήστες έχουν υψηλότερους τίτλους σπουδών με 77% να έχει μεταπτυχιακό ή διδακτορικό δίπλωμα. Το αντίστοιχο ποσοστό στις υπόλοιπες χώρες είναι 50%.") %>%
+  hc_caption(text="Σημείωση: Τα ποσοστά αναφέρονται σε επίπεδο χώρας. <br> stesiam, 2023") %>%
+  hc_xAxis(categories = y$img,
+           title = list(text = NULL),
+           labels = list(useHTML = TRUE, x = -20, align = "right")) %>%
+  hc_yAxis(min = 0,
+           title = list(text = "Ποσοστό (%) ερωτηθέντων ανά χώρα", align = "high"),
+           labels = list(overflow = "justify")) %>%
+  hc_tooltip(valueSuffix = " %") %>%
+  hc_plotOptions(bar = list(dataLabels = list(enabled = TRUE))) %>%
+  hc_series(
+    list(name = "Ελλάδα", data = y$Ελλάδα),
+    list(name = "Υπόλοιπος Κόσμος", data = y$Άλλο)
+  ) %>%
+  hc_legend(
+    align = "center",
+    verticalAlign = "top",
+    layout = "horizontal"
+  )
+```
+
+
+
+

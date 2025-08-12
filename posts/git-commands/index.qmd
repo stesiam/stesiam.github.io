@@ -53,15 +53,36 @@ Some popular Version Control Software are the following :
 
 Having seen what a VCS is, it would be interesting to see which one is the most widely used. In order to study which VCS is the most popular, I pulled data from [Google Trends](https://trends.google.com/trends/).
 
-```{r Import libraries, echo=FALSE, warning=FALSE, message=FALSE}
+```{r}
+#| label: import_r_libs
+#| title: "Import R libraries"
+#| warning: false
+#| message: false
+
 library(readr)
 library(dplyr)
 library(lubridate)
 library(highcharter)
 ```
 
+```{r}
+#| label: further_settings
+#| title: "Εισάγω βιβλιογραφία από φορτωμένα πακέτα"
+#| include: false
 
-```{r Import data, echo=FALSE, message=FALSE, warning=FALSE}
+options(digits=4) # print only 4 decimals
+options(warn = -1)
+
+knitr::write_bib(.packages(), file = 'packages.bib')
+```
+
+```{r}
+#| label: import_data
+#| title: "Import data"
+#| echo: false
+#| message: false
+#| warning: false
+
 trends_vcs <- read_csv("multiTimeline.csv", 
     skip = 2) %>%
   mutate(Date = lubridate::ym(Month)) %>%
@@ -74,16 +95,10 @@ trends_vcs_tidy = tidyr::pivot_longer(trends_vcs, !Year, names_to = "VCS", value
   mutate(AVG = round(AVG, digits = 1))
 ```
 
-```{r, fig.width= 7,include=FALSE}
-  # ggplot(data = trends_vcs_tidy, aes(x= Month, y = counts)) +
-  # geom_line(aes(color = VCS)) +
-  # labs(title = "Trends on Version Control Systems",
-  #             subtitle = "Compare trends of Git and SVN (Subversion) from 2004 to 2022",
-  #             caption = "Data source: Google Trends") +
-  # theme_classic()
-```
 
 ```{r}
+#| label: fig-vcs-trends
+#| fig-cap: "Time series of trends on Version Control Systems"
 avgPercentageGit = trends_vcs_tidy %>% dplyr::filter(VCS == "git: (Worldwide)") %>% pull(AVG)
 avgPercentageSVN = trends_vcs_tidy %>% dplyr::filter(VCS == "svn: (Worldwide)") %>% pull(AVG)
 

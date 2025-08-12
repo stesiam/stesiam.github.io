@@ -8,20 +8,31 @@ lang: el
 title-block-banner: true
 ---
 
-## Πωλήσεις αλυσίδων σουπερμάρκετ
+## 30 Day Chart Challenge
+
+### Πωλήσεις αλυσίδων σουπερμάρκετ
 
 ```{r}
 #| echo: false
-#| warning: false
 #| message: false
 library(highcharter)
 library(glue)
 library(dplyr)
 library(tidyr)
+library(stringr)
+library(rvest)
+library(jsonlite)
+```
+
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
 sm_sales = 14.8
 data = data.frame(
-  "Brand" = c("Σκλαβενίτης", "LIDL", "AB", "Metro", "Μασούτης", "Κρητικός","Άλλο"),
-  "Sales" = c(5.35, 2, 1.94, 1.65, 1.15, 0.78, sm_sales - 5.35 - 2 - 1.94 - 1.65 - 1.15 - 0.78),
+  "Brand" = c("Σκλαβενίτης", "LIDL", "AB Βασιλόπουλος", "Μέτρο ΑΕΒΕ", "Μασούτης", "Κρητικός","Άλλο"),
+  "Sales" = c(5.35, 2, 1.94, 1.65, 1.15, 0.78, round(sm_sales - 5.35 - 2 - 1.94 - 1.65 - 1.15 - 0.78, digits = 2)),
   "Image" = c("https://www.sklavenitis.gr/favicon.ico", 
               "https://www.lidl-hellas.gr/static/assets/lidl-onlineshop-hellas-271731.svg", 
               "https://static.ab.gr/static/next/icons/favicon.png",
@@ -29,15 +40,19 @@ data = data.frame(
               "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/%CE%9C%CE%B1%CF%83%CE%BF%CF%8D%CF%84%CE%B7%CF%82_%28logo%29.svg/250px-%CE%9C%CE%B1%CF%83%CE%BF%CF%8D%CF%84%CE%B7%CF%82_%28logo%29.svg.png",
               "https://kritikos-sm.gr/assets/kritikos/logo.svg", NA),
   stringsAsFactors = F
-)
+) %>%
+  mutate(pct = round((Sales/sum(Sales))*100, digits = 2))
 
 title_text_gr = glue("<b>Τζίρος Ελληνικών Σουπερμάρκετ (2022)</b>")
-subtitle_text_gr = glue( "Σύμφωνα με τη τελευταία έκθεση του ΙΕΛΚΑ, οι συνολικές πωλήσεις ανέρχονται <br> στα € <b>11.2</b> δις." )
-caption_text_gr = "30 Day Chart Challenge, Day 1 (2024) <br> <b> Δεδομένα:</b> Πανόραμα ελληνικών σουπερμάρκετ, selfservice.gr<br><span style='font-family:fb;'  >&#xf09b;</span> <b>stesiam</b>, 2024"
+subtitle_text_gr = glue( "Σύμφωνα με τη τελευταία έκθεση του ΙΕΛΚΑ, οι συνολικές πωλήσεις ανέρχονται στα € <b>11.2</b> δις.
+                         Ο Σκλαβενίτης αποτελεί την κυρίαρχη αλυσίδα σούπερμαρκετ κατέχοντας πάνω από το ένα τρίτο της αγοράς." )
+caption_text_gr = glue("30 Day Chart Challenge, Day 1 (2024) <br> 
+                    <b> Δεδομένα:</b> Πανόραμα ελληνικών σουπερμάρκετ, selfservice.gr | 
+                    <b>Γράφημα:</b> stesiam, 2024")
 
-data_list <- purrr::pmap(data, function(Brand, Sales, Image) {
-  if (is.na(Image)) img <- "https://via.placeholder.com/80x80.png?text=No+Image"
-  list(name = Brand, y = Sales, img = Image)
+data_list <- purrr::pmap(data, function(Brand, Sales, Image, pct) {
+  if (is.na(Image)) img <- NULL
+  list(name = Brand, y = Sales, img = Image, perc = pct)
 })
 
 # Create the pie chart
@@ -46,7 +61,7 @@ highchart() %>%
   hc_chart(type = "pie") %>%
   hc_title(text = title_text_gr) %>%
   hc_subtitle(text = subtitle_text_gr) %>%
-  hc_caption(text = caption_text_gr) %>%
+  hc_caption(text = caption_text_gr, useHTML = TRUE) %>%
   hc_series(
     list(
       name = "Sales",
@@ -60,27 +75,31 @@ highchart() %>%
     style = list(width = "150px"), # Prevent overflow
     formatter = JS("
       function() {
-        return '<div style=\"text-align:center; max-width:140px; min-width: \">' +
+        return '<div style=\"text-align:center; max-width:140px; \">' +
                  '<img src=\"' + this.point.img + '\" ' +
                  'style=\"max-width:100%; height:50px; border-radius:8px; display:block; margin:auto;\" /><br>' +
                  '<b>' + this.point.name + '</b><br>' +
-                 'Sales: ' + this.point.y + ' bn €<br>' +
-                  'Share: ' + this.point.y + ' %<br>' +
+                 'Πωλήσεις: ' + this.point.y + ' δις €<br>' +
+                  'Μερίδιο αγοράς: ' + this.point.perc + ' %<br>' +
                '</div>';
       }
     ")
   )
 ```
 
-## Στόλος οχημάτων
+### Στόλος οχημάτων
 
 ```{r}
 #| echo: false
 #| warning: false
 #| message: false
-url = "https://www.statistics.gr/el/statistics?p_p_id=documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_cacheability=cacheLevelPage&p_p_col_id=column-2&p_p_col_count=4&p_p_col_pos=3&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_javax.faces.resource=document&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_ln=downloadResources&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_documentID=116414&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_locale=el"
-download.file(url, destfile = "text.xlsx")
+#| include: false
+# url = "https://www.statistics.gr/el/statistics?p_p_id=documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_cacheability=cacheLevelPage&p_p_col_id=column-2&p_p_col_count=4&p_p_col_pos=3&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_javax.faces.resource=document&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_ln=downloadResources&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_documentID=116414&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_locale=el"
+# download.file(url, destfile = "text.xlsx")
 
+options(highcharter.lang = list(
+  numericSymbols = c("χιλ.", "εκ.", "δισ.", "τρις.", "τετρ.", "πεντ.")
+))
 
 vehicles_in_operation = readxl::read_excel("text.xlsx",
                                            range = "A3:V37")
@@ -92,7 +111,6 @@ dataset_part_2 = vehicles_in_operation[18:34,-1]
 
 colnames(dataset_part_2) = dataset_part_2[1,]
 dataset_part_2 = dataset_part_2[-1,]
-dataset_part_1
 # Remove duplicated columns
 
 dataset_part_1 = dataset_part_1 %>%
@@ -128,17 +146,10 @@ df_wide = dataset %>%
   mutate(Year = as.integer(Year)) %>%
   arrange(Year)
 
-title_text = "Vehicles in Greece"
-subtitle_text = glue("We observe that in recent years there<br> 
-                     has been a <span style = 'font-family:uc; color:red;'>3x</span><span style = 'font-family:fs; color:red;'> &#xe098;</span> of wheeled vehicles. <br>
-                     The most notable change is the doubling in <br>
-                     the proportion of motorcycles.")
-caption_text = "30 Day Chart Challenge, Day 15 (2024) | <b> Data:</b> Hellenic Statistical Authority<br><span style='font-family:fb;'  >&#xf09b;</span> <b>stesiam</b>, 2024"
-
 title_text_gr = "Οχήματα στην Ελλάδα"
-subtitle_text_gr = glue("Παρατηρούμε ότι τα πρόσφατα χρόνια<br> 
-                     υπάρχει <span style = 'font-family:uc; color:red;'>3x</span><span style = 'font-family:fs; color:red;'> &#xe098; </span> των συνολικών οχημάτων. <br>
-                     Η πιο αξιοσημείωτη αλλαγή είναι ο <br>
+subtitle_text_gr = glue("Παρατηρούμε ότι τα πρόσφατα χρόνια
+                     υπάρχει <span style = 'font-family:uc; color:red;'>3x</span><span style = 'font-family:fs; color:red;'> &#xe098; </span> των συνολικών οχημάτων.
+                     Η πιο αξιοσημείωτη αλλαγή είναι ο
                      διπλασιασμός του ποσοστού των μηχανών")
 caption_text_gr = "30 Day Chart Challenge, Day 15 (2024) | <b> Δεδομένα:</b> Ελληνική Στατιστική Υπηρεσία<br><span style='font-family:fb;'  >&#xf09b;</span> <b>stesiam</b>, 2024"
 
@@ -147,9 +158,10 @@ pal=c("#ffa600",
       "#2f4b7c",
       "#f95d6a",
       "#a05195")
+```
 
-
-
+```{r}
+#| echo: false
 highchart() %>%
     hc_chart(type = "area") %>%
     hc_title(text = title_text_gr) %>%
@@ -157,7 +169,7 @@ highchart() %>%
     hc_caption(text = caption_text_gr) %>%
     hc_xAxis(categories = df_wide$Year,
              title = list(text = "Year")) %>%
-    hc_yAxis(title = list(text = "Observations")) %>%
+    hc_yAxis(title = list(text = "Ποαοστό (%)")) %>%
     hc_tooltip(shared = TRUE) %>%
     hc_plotOptions(area = list(
         stacking = "normal",  # or "percent" for percent stacked
@@ -168,14 +180,18 @@ highchart() %>%
             lineColor = "#666666"
         )
     )) %>%
-    hc_add_series(name = "Car", data = df_wide$Car, color = "#2f4b7c") %>%
-    hc_add_series(name = "Bus", data = df_wide$Bus, color = "#ffa600") %>%
-    hc_add_series(name = "Truck", data = df_wide$Truck, color = "#a05195") %>%
-    hc_add_series(name = "Motrocycle", data = df_wide$Motorcycle, color = "#f95d6a") %>%  hc_plotOptions(area = list(
+    hc_add_series(name = "Αυτοκίνητο", data = df_wide$Car, color = "#2f4b7c") %>%
+    hc_add_series(name = "Λεωφορείο", data = df_wide$Bus, color = "#ffa600") %>%
+    hc_add_series(name = "Φορτηγό", data = df_wide$Truck, color = "#a05195") %>%
+    hc_add_series(name = "Μηχανή", data = df_wide$Motorcycle, color = "#f95d6a") %>%  hc_plotOptions(area = list(
         stacking = "percent",
         marker = list(enabled = FALSE)  # ← disables the pointers
     ))
+```
 
+
+```{r}
+#| echo: false
 highchart() %>%
     hc_chart(type = "area") %>%
     hc_title(text = title_text_gr) %>%
@@ -183,7 +199,7 @@ highchart() %>%
     hc_caption(text = caption_text_gr) %>%
     hc_xAxis(categories = df_wide$Year,
              title = list(text = "Year")) %>%
-    hc_yAxis(title = list(text = "Observations")) %>%
+    hc_yAxis(title = list(text = "Πλήθος οχημάτων")) %>%
    hc_tooltip(shared = TRUE) %>%
     hc_plotOptions(area = list(
         stacking = "normal",  # or "percent" for percent stacked
@@ -194,12 +210,251 @@ highchart() %>%
             lineColor = "#666666"
         )
     )) %>%
-    hc_add_series(name = "Car", data = df_wide$Car, color = "#2f4b7c") %>%
-    hc_add_series(name = "Bus", data = df_wide$Bus, color = "#ffa600") %>%
-    hc_add_series(name = "Truck", data = df_wide$Truck, color = "#a05195") %>%
-    hc_add_series(name = "Motrocycle", data = df_wide$Motorcycle, color = "#f95d6a") %>%  hc_plotOptions(area = list(
+    hc_add_series(name = "Αυτοκίνητο", data = df_wide$Car, color = "#2f4b7c") %>%
+    hc_add_series(name = "Λεωφορείο", data = df_wide$Bus, color = "#ffa600") %>%
+    hc_add_series(name = "Φορτηγό", data = df_wide$Truck, color = "#a05195") %>%
+    hc_add_series(name = "Μηχανή", data = df_wide$Motorcycle, color = "#f95d6a") %>%  hc_plotOptions(area = list(
         stacking = "normal",
         marker = list(enabled = FALSE)  # ← disables the pointers
     ))
+```
+
+
+### Κύπελλο Ποδοσφαίρου Ελλάδας
+
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+library(dplyr)
+library(stringr)
+library(rvest)
+library(jsonlite)
+library(highcharter)
+library(forcats)
+
+
+url = "https://en.wikipedia.org/wiki/Greek_Football_Cup"
+
+html <- read_html(url)
+
+df <- data.frame(html %>% 
+                   html_element("table.wikitable.sortable") %>% 
+                   html_table()) %>%
+  select(Club, Winners, Runners.up) %>%
+  dplyr::filter(Winners >=1) %>%
+  mutate(Image = case_when(
+    Club == "Olympiacos" ~ "https://upload.wikimedia.org/wikipedia/en/thumb/a/a2/Olympiacos_FC_crest.svg/250px-Olympiacos_FC_crest.svg.png",
+    Club == "Panathinaikos"   ~ "https://upload.wikimedia.org/wikipedia/en/thumb/8/84/Panathinaikos_F.C._logo.svg/250px-Panathinaikos_F.C._logo.svg.png",
+    Club == "AEK"   ~ "https://upload.wikimedia.org/wikipedia/en/thumb/0/04/AEK_Athens_FC_logo.svg/155px-AEK_Athens_FC_logo.svg.png",
+    Club == "PAOK"   ~ "https://upload.wikimedia.org/wikipedia/en/thumb/e/e6/PAOK_FC_EMBLEM.png/250px-PAOK_FC_EMBLEM.png",
+    Club == "Panionios"   ~ "https://upload.wikimedia.org/wikipedia/en/thumb/7/70/Panionios_FC.png/250px-Panionios_FC.png",
+    Club == "AEL"   ~ "https://upload.wikimedia.org/wikipedia/en/thumb/8/8e/AEL1964-Crest.svg/120px-AEL1964-Crest.svg.png",
+    Club == "Aris"   ~ "https://upload.wikimedia.org/wikipedia/en/thumb/e/e4/Aris_Thessaloniki_F.C._logo.svg/130px-Aris_Thessaloniki_F.C._logo.svg.png",
+    Club == "Iraklis"   ~ "https://upload.wikimedia.org/wikipedia/en/thumb/a/a9/IraklisSportNewLogo.png/250px-IraklisSportNewLogo.png",
+    Club == "OFI"   ~ "https://upload.wikimedia.org/wikipedia/en/thumb/7/7f/OFI_emblem.png/250px-OFI_emblem.png",
+    Club == "Ethnikos"   ~ "https://upload.wikimedia.org/wikipedia/en/thumb/4/4f/Ethnikos_Piraeus_FC_logo.png/250px-Ethnikos_Piraeus_FC_logo.png",
+    Club == "Kastoria"   ~ "https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Kastoria_1980.png/250px-Kastoria_1980.png",
+    TRUE                    ~ NA_character_
+  )) %>% 
+  dplyr::mutate(
+    Runners.up = stringr::str_remove_all(Runners.up, "\\[.*")
+  ) %>%
+  dplyr::mutate(Runners.up = as.numeric(Runners.up)) %>%
+  dplyr::arrange(-Winners) %>%
+  mutate(Club = fct_recode(Club,
+    "ΑΕΚ" = "AEK",
+    "ΑΕΛ" = "AEL",
+    "Άρης" = "Aris",
+    "Εθνικός" = "Ethnikos",
+    "Ηρακλής" = "Iraklis",
+    "Καστοριά" = "Kastoria",
+    "ΟΦΗ" = "OFI",
+    "Ολυμπιακός" = "Olympiacos",
+    "Παναθηναϊκός" = "Panathinaikos",
+    "Πανιώνιος" = "Panionios",
+    "ΠΑΟΚ" = "PAOK"
+  ))
+
+image_js <- toJSON(df$Image, auto_unbox = TRUE)
+
+title_text_gr = glue("Νικητές 🏆 κυπέλλου Ελλάδας στο ποδόσφαιρο ⚽")
+subtitle_text_gr = glue("Ο Ολυμπιακός είναι η ομάδα με τις περισσότερες κατακτήσεις (29) στο κύπελλο Ελλάδας")
+caption_text_gr = glue("30 Day Chart Challenge, Day 4 | <b>Data:</b> Wikipedia | <b>Graph:</b> stesiam, 2024")
+
+highchart() %>%
+  hc_chart(type = "bar") %>%
+  hc_title(text = title_text_gr) %>%
+  hc_subtitle(text = subtitle_text_gr) %>%
+  hc_caption(text = caption_text_gr) %>%
+  hc_xAxis(title = list(text = NULL), categories = df$Club) %>%
+  hc_yAxis(title = list(text = "Κατακτήσεις κυπέλλου")) %>%
+  hc_plotOptions(bar = list(
+    pointPadding = 0.05,
+    groupPadding = 0.1,
+    borderWidth = 0
+  )) %>%
+  hc_tooltip(
+    useHTML = TRUE,
+    style = list(
+      fontSize = "12px",
+      whiteSpace = "normal",
+      padding = "10px",
+      overflow = "visible",
+      color = "#000"
+    ),
+    formatter = JS(sprintf("
+    function() {
+      const images = %s;
+      return '<div style=\"display:flex; align-items:center; width:115px;\">' +
+             '<img src=\"' + images[this.point.index] + '\" style=\"height:25px; margin-right:10px;\" />' +
+             '<div><b>' + this.key + 
+             '</b><br/>Κατακτήσεις: ' + this.y + 
+             '</div>' +
+             
+             '</div>';
+    }
+  ", image_js))
+  )%>%
+  hc_series(list(
+    name = "Κατακτήσεις",
+    data = df$Winners
+  )
+  ) %>%
+  hc_legend(enabled = FALSE)
+
+```
+
+### Εργαλεία Ανάλυσης Δεδομένων
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+library(readr)
+library(dplyr)
+library(tidyr)
+library(glue)
+library(highcharter)
+library(lubridate)
+
+data <- read_csv("AnalyticsTrends.csv", 
+                 skip = 1)
+
+data_edit = data %>%
+  setNames(c("Month", "R", "SPSS", "MATLAB")) |>
+  mutate(
+    Month = lubridate::ym(Month),
+    Year = year(Month)
+  ) |>
+  dplyr::relocate(Year, .before = "Month") |>
+  select(-Month) |>
+  tidyr::pivot_longer(
+    cols = !c("Year")
+  ) |>
+  group_by(Year, name) |>
+  summarise(
+    mean = round(mean(value), digits = 1)
+  ) %>%
+  tidyr::pivot_wider(names_from = name, values_from = mean)
+
+title_text = glue("Τάσεις Aναζήτησης Εργαλείων Ανάλυσης")
+subtitle_text = glue("Ερευνώντας το ενδιαφέρον αναζήτησης για λογισμικά ή γλώσσες προγραμματισμού <br>επικεντρωμένα στην ανάλυση δεδομένων,
+                     συμπεραίνω ότι η <b><span style='color:#019b98;'>R</span></b> έχει καθιερωθεί στο πεδίο της ανάλυσης τη τελευταία δεκαετία
+                     έναντι του  <b><span style='color:#F18F01;'>MATLAB</span></b> και του <b><span style='color:#dd0025;'>SPSS</span></b>")
+caption_text = "30 Day Chart Challenge, Day 28 (2024) | <b>Δεδομένα:</b> Google Trends | <b>Γράφημα:</b> stesiam, 2024"
+
+highchart() %>%
+  hc_chart(type = "line") %>%
+  hc_title(text = title_text) %>%
+  hc_subtitle(text = subtitle_text) %>%
+  hc_caption(text = caption_text) %>%
+  hc_xAxis(categories = data_edit$Year) %>%
+  hc_add_series(name = "R", data = data_edit$R) %>%
+  hc_add_series(name = "MATLAB", data = data_edit$MATLAB, color = "orange") %>%
+  hc_add_series(name = "SPSS", data = data_edit$SPSS, color="#db9f92") %>%
+  hc_tooltip(shared = TRUE) %>%
+  hc_plotOptions(line = list(
+    marker = list(enabled = FALSE)))
+```
+
+### Καθυστερημένη Αποφοίτηση
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+library(dplyr)
+library(tidyr)
+library(glue)
+library(stringr)
+library(qpdf)
+library(tabulapdf)
+
+url = "https://www.unipi.gr/faculty/mbouts/anak/OS_22_23.pdf"
+
+download.file(url,
+              destfile = "sg22.pdf",
+              method = "wget",
+              extra = "--no-check-certificate")
+
+pdf_subset('sg22.pdf',
+           pages = 186:190,  output = "subset.pdf")
+
+statistics_tables <- extract_tables(
+  file   = "subset.pdf", 
+  method = "decide", 
+  output = "tibble")
+
+graduate_data = statistics_tables[[5]] %>%
+  setNames(c("Year", "4Y", "5Y", "6Y", "7Y", "8Y", "9Y", "10Y", "11Y+","AVGY")) %>%
+  .[-c(1:2),] %>%
+  drop_na() %>%
+  dplyr::filter(Year != "2009-2022") %>%
+  mutate(across(contains("Y") & !matches("^Year$"), as.numeric)) %>%
+  mutate("4y" = `4Y`,
+         "4to6" = `5Y` + `6Y`,
+         "6to8" = `7Y` + `8Y`,
+         "9plus" = `9Y` + `10Y` + `11Y+`) %>%
+  select(Year, `4y`, `4to6`, `6to8`, `9plus`) %>%
+  mutate(
+    Year = stringr::str_replace(Year, ".*-", "")
+  )
+
+
+title_text = "Vehicle fleet mix in Greece "
+subtitle_text = glue("In terms of proportions, cars consistently make up 7 out of every 10 vehicles. 
+                     Since 2007, motorcycles have been the second most common type of vehicle,
+                     followed by trucks.")
+caption_text = "30 Day Chart Challenge, Day 15 (2024) | 
+<b> Data:</b> Hellenic Statistical Authority | <b>Graph:</b> stesiam, 2024"
+
+highchart() %>%
+  hc_chart(type = "area") %>%
+  hc_title(text = title_text) %>%
+  hc_subtitle(text = subtitle_text) %>%
+  hc_caption(text = caption_text) %>%
+  hc_xAxis(categories = graduate_data$Year,
+           title = NULL) %>%
+  hc_yAxis(title = list(text = "Percentage (%)")) %>%
+  hc_tooltip(shared = TRUE) %>%
+  hc_plotOptions(area = list(
+    stacking = "normal",  # or "percent" for percent stacked
+    lineColor = "#666666",
+    lineWidth = 1,
+    marker = list(
+      lineWidth = 1,
+      lineColor = "#666666"
+    )
+  )) %>%
+  hc_add_series(name = "9 Years +", data = graduate_data$`9plus`, color = "#ff1155") %>%
+  hc_add_series(name = "7 to 8 Years", data = graduate_data$`6to8`, color = "#ffcccc") %>%
+  hc_add_series(name = "5 to 6 Years", data = graduate_data$`4to6`, color = "#cce5ff") %>%
+  hc_add_series(name = "4 Years", data = graduate_data$`4y`, color = "#3399ff") %>%
+  hc_plotOptions(area = list(
+    stacking = "percent",
+    marker = list(enabled = FALSE)  # ← disables the pointers
+  ))
 ```
 
