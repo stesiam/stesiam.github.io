@@ -638,6 +638,9 @@ hchart(s$category) %>%
 
 ### Διμεταβλητή ανάλυση
 
+Στη προηγούμενη υπο-ενότητα εξετάστηκαν κάποια βασικά περιγραφικά στοιχεία ανά μεταβλητή τα οποία μπορούν να μας δώσουν μία αίσθηση για το πελατολόγιο της τράπεζας. Αν εξετάσω αυτά τα στοιχεία από μόνα τους ενδεχομένως να μην επαρκούν για να βγάλω αρκετά συμπεράσματα και η διμεταβλητή ανάλυση (σύγκριση δύο μεταβλητών) είναι αναγκαία. Μία προσέγγιση θα ήταν να εξετάσω τη συσχέτιση (ή συνάφεια) μεταξύ των ποσοτικών (ποιοτικών) μεταβλητών. Στη προκειμένη περίπτωση θα είχε επιπλέον όφελος να συγκρίνουμε τις προηγούμενες μεταβλητές με τη μεταβλητή απόκρισης (δηλαδή με την επιθυμία ανοίγματος προθεσμιακού λογαριασμού).
+
+Μία σημαντική σύγκριση είναι ο κλάδος εργασίας του πελάτη με την τελική του απόφαση - ενδιαφέρον. Με το παρακάτω σχήμα δηλώνεται η χαμηλότερη ποσοστιαία ζήτηση ατόμων με χειρονακτική εργασία, ενώ οι συνταξιούχοι είναι αυτή μρ την υψηλότερη. 
 
 
 ```{r}
@@ -690,6 +693,138 @@ highchart() %>%
     )
 )
 ```
+
+Τα παραπάνω αποτελέσματα ίσως να ήταν αναμενόμενα ως ένα βαθμό εξετάζοντας τη δυνητική οικονομική κατάσταση κάποιου. Υπάρχουν όμως και μεταβλητές υπό εξέταση στις οποίες η απάντηση δεν είναι προφανής, όπως στην οικογενειακή κατάσταση. Στο σχήμα, εξετάζεται η σημαντικά μεγαλύτερη αναλογικά συμμετοχή ατόμων που είναι μόνοι τους (είτε ως ανύπαντροι είτε ως διαζευγμένοι), έχοντας σημαντική απόκλιση από την αντίστοιχη απόκριση ατόμων που έχουν παντρευτεί.
+
+
+```{r}
+plotmarital <- bank_dataset %>%
+  group_by(marital, y) %>%
+  summarize(n = n()) %>% 
+  mutate(pct = round(100*(n/sum(n)), digits = 1),
+         lbl = scales::percent(pct)) %>%
+  arrange(desc(pct))
+
+highchart() %>%
+  hc_chart(type = "column") %>%
+  hc_xAxis(categories = plotmarital$marital) %>%
+  hc_yAxis(
+    min = 0,
+    max = 100,
+    title = list(text = "Percentage"),
+    labels = list(format = "{value}%")
+  ) %>%
+  hc_plotOptions(
+    column = list(
+      stacking = "percent",
+      dataLabels = list(
+        enabled = TRUE,
+        format = "{point.y:.0f}%"
+      )
+    )
+  ) %>%
+  hc_series(
+    list(name = "Όχι", data = plotmarital$pct[plotmarital$y == "όχι"], color = "#FF5733"),
+    list(name = "Ναι", data = sort(plotmarital$pct[plotmarital$y == "ναι"]), color = "#33FF57")
+  ) %>%
+  hc_tooltip(pointFormat = "<b>{series.name}</b>: {point.y}%") %>%
+  hc_title(text = "Job of Respondent by Interest to Term Deposit") %>%
+  hc_subtitle(text = "Students and retirees are the population groups with a proportionally lower interest in term deposits compared to other groups.") %>%
+  hc_responsive(
+    rules = list(
+      list(
+        condition = list(
+          maxWidth = 500 # Hide labels when screen width is ≤500px
+        ),
+        chartOptions = list(
+          plotOptions = list(
+            column = list(
+              dataLabels = list(enabled = FALSE) # Disable labels
+            )
+          )
+        )
+      )
+    )
+)
+```
+
+```{r}
+custom_df = 
+  tibble(
+    r = bank_dataset$education,
+    t = bank_dataset$marital,
+    m = bank_dataset$y
+  )
+
+df_sankey = custom_df %>%
+  group_by(r, t ,m) %>%
+  summarise(weight = n(), .groups = "drop")
+
+
+links2 = df_sankey %>%
+  group_by(t, r) %>%
+  summarise(weight = sum(weight), .groups = "drop") %>%
+  rename(from = t, to = r)
+
+links3 = df_sankey %>%
+  group_by(r, m) %>%
+  summarise(weight = sum(weight), .groups = "drop") %>%
+  rename(from = r, to = m)
+
+
+
+links_all <- bind_rows(links2, links3)
+
+highchart() %>%
+  hc_chart(type = "sankey") %>%
+  hc_title(text = "Alluvial Chart: Gender → Preference → Region") %>%
+  hc_add_series(
+    keys = c("from", "to", "weight"),
+    data = list_parse(links_all),
+    name = "Flow"
+  ) %>%
+  hc_tooltip(pointFormat = "{point.from} → {point.to}: <b>{point.weight}</b>")
+
+```
+
+
+```{r}
+custom_df = 
+  tibble(
+    t = bank_dataset$poutcome,
+    l = bank_dataset$y
+  )
+
+df_sankey = custom_df %>%
+  group_by(t , l) %>%
+  summarise(weight = n(), .groups = "drop")
+
+
+# links2 = df_sankey %>%
+#   group_by(r, t) %>%
+#   summarise(weight = sum(weight), .groups = "drop") %>%
+#   rename(from = r, to = t)
+
+links3 = df_sankey %>%
+  group_by(t, l) %>%
+  summarise(weight = sum(weight), .groups = "drop") %>%
+  rename(from = t, to = l)
+
+links_all <- bind_rows(links3)
+
+highchart() %>%
+  hc_chart(type = "sankey") %>%
+  hc_title(text = "Alluvial Chart: Gender → Preference → Region") %>%
+  hc_add_series(
+    keys = c("from", "to", "weight"),
+    data = list_parse(links_all),
+    name = "Flow"
+  ) %>%
+  hc_tooltip(pointFormat = "{point.from} → {point.to}: <b>{point.weight}</b>")
+
+```
+
+
 
 
 

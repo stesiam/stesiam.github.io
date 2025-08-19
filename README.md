@@ -3,7 +3,7 @@
 [![pages-build-deployment](https://github.com/stesiam/stesiam.github.io/actions/workflows/pages/pages-build-deployment/badge.svg?branch=gh-pages)](https://github.com/stesiam/stesiam.github.io/actions/workflows/pages/pages-build-deployment)
 
 
-A multilingual website (English / Greek) built with [Quarto](https://quarto.org/) and [babelquartp](https://docs.ropensci.org/babelquarto/).
+A multilingual website (English / Greek) built with [Quarto](https://quarto.org/) and [babelquarto](https://docs.ropensci.org/babelquarto/).
 Deployed using [GitHub Pages](https://pages.github.com/).
 
 🔗 [Website Link](https://stesiam.com)

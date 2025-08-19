@@ -6,6 +6,8 @@ page-layout: full
 comments: false
 lang: el
 title-block-banner: true
+toc: true
+column: body
 ---
 
 ## 30 Day Chart Challenge
@@ -24,7 +26,7 @@ library(rvest)
 library(jsonlite)
 ```
 
-
+:::{.column-body}
 ```{r}
 #| echo: false
 #| warning: false
@@ -86,6 +88,7 @@ highchart() %>%
     ")
   )
 ```
+:::
 
 ### Στόλος οχημάτων
 
@@ -94,8 +97,9 @@ highchart() %>%
 #| warning: false
 #| message: false
 #| include: false
-# url = "https://www.statistics.gr/el/statistics?p_p_id=documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_cacheability=cacheLevelPage&p_p_col_id=column-2&p_p_col_count=4&p_p_col_pos=3&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_javax.faces.resource=document&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_ln=downloadResources&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_documentID=116414&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_locale=el"
-# download.file(url, destfile = "text.xlsx")
+#| label: fig-dsfs
+url = "https://www.statistics.gr/el/statistics?p_p_id=documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_cacheability=cacheLevelPage&p_p_col_id=column-2&p_p_col_count=4&p_p_col_pos=3&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_javax.faces.resource=document&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_ln=downloadResources&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_documentID=116414&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_locale=el"
+download.file(url, destfile = "text.xlsx")
 
 options(highcharter.lang = list(
   numericSymbols = c("χιλ.", "εκ.", "δισ.", "τρις.", "τετρ.", "πεντ.")
@@ -227,6 +231,7 @@ highchart() %>%
 #| echo: false
 #| warning: false
 #| message: false
+#| column: body-outset-left
 library(dplyr)
 library(stringr)
 library(rvest)
@@ -332,6 +337,7 @@ highchart() %>%
 #| echo: false
 #| warning: false
 #| message: false
+#| column: body-outset-left
 library(readr)
 library(dplyr)
 library(tidyr)
@@ -456,5 +462,179 @@ highchart() %>%
     stacking = "percent",
     marker = list(enabled = FALSE)  # ← disables the pointers
   ))
+```
+
+## Greece in Figures
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+
+library(dplyr)
+library(readxl)
+library(highcharter)
+library(fuzzyjoin)
+library(tidyr)
+library(RColorBrewer)
+library(tabulapdf)
+library(qpdf)
+
+
+download.file(
+  url = "https://www.statistics.gr/en/statistics?p_p_id=documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_cacheability=cacheLevelPage&p_p_col_id=column-2&p_p_col_count=4&p_p_col_pos=3&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_javax.faces.resource=document&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_ln=downloadResources&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_documentID=115793&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_locale=en",
+  destfile = "pharmacies.xlsx"
+)
+
+download.file(url = "https://elstat-outsourcers.statistics.gr/census_results_2022_en.pdf",
+              destfile = "census.pdf")
+
+qpdf::pdf_subset(input = "census.pdf", pages = 6, output = "census_custom.pdf")
+
+pharmacies_raw = read_excel("pharmacies.xlsx", 
+                            sheet = "Φαρμακεία 2010-2022") |>
+  select(last_col(), last_col(1)) |>
+  tidyr::drop_na() |>
+  setNames(c("Region", "Pharmacies"))
+
+
+extract_census <- extract_tables(
+  file   = "census_custom.pdf", 
+  method = "decide", 
+  output = "tibble") %>%
+  .[[1]]
+
+regional_population = extract_census |>
+  select(-1) |>
+  select(1,3) |>
+  setNames(c("Region", "Population")) |>
+  mutate(
+    Population = stringr::str_replace_all(Population, ",", "")
+  ) |>
+  tidyr::drop_na() |>
+  mutate(
+    Region = stringr::str_to_title(Region)
+  ) |>
+  slice(-nrow(statistics_tables[[1]]))
+
+data_join = fuzzyjoin::stringdist_left_join(regional_population, pharmacies_raw,
+                                            by = "Region",distance_col = "distance") |>
+  rename(Region = Region.x) |>
+  mutate(Pharmacies10000Capita = round(Pharmacies * 10000 / as.numeric(Population), digits = 2 )) |>
+  select(Region, Pharmacies10000Capita) %>%
+  add_row(Region = "Ayio Oros", Pharmacies10000Capita = NA)
+
+
+mapdata <- get_data_from_map(download_map_data("countries/gr/gr-all")) |>
+  rename(Region = "name")
+
+matches <- stringdist_inner_join(
+  mapdata, data_join,
+  by = "Region",
+  max_dist = 20,           # allow wider search, will filter later
+  method = "jw",          # Jaro-Winkler similarity
+  distance_col = "dist"   # store the distance
+)
+
+matches <- matches %>%
+  mutate(similarity = 1 - dist)
+
+best_matches <- matches %>%
+  group_by(Region.x) %>%
+  slice_max(similarity, n = 1, with_ties = FALSE) %>%
+  ungroup() %>%
+  rename(code = `hc-key`, 
+         PER = `alt-name`)
+
+
+
+hcmap("countries/gr/gr-all",
+      data = best_matches,value = "Pharmacies10000Capita",
+      joinBy = c("hc-key", "code"),
+      name = "Φαρμακεία ανά 100000 κατοίκους",
+      dataLabels = list(enabled = FALSE)) |>
+  hc_title(text = "Αριθμός φαμρακείων") |>
+  hc_legend(enabled = FALSE) |>
+  hc_colorAxis(
+    stops = color_stops(n = 4, colors = brewer.pal(4, "YlGn")),
+    min = min(best_matches$Pharmacies10000Capita, na.rm = TRUE),
+    max = max(best_matches$Pharmacies10000Capita, na.rm = TRUE)
+  ) |>
+  hc_tooltip(
+    useHTML = TRUE,
+    pointFormat = '<b>{point.name}</b><br/>Πλήθος φαρμακείων: {point.value}'
+  )
+
+
+library(highcharter)
+library(fuzzyjoin)
+library(dplyr)
+library(RColorBrewer)
+library(tidyr)
+
+mapdata <- get_data_from_map(download_map_data("countries/gr/gr-all")) |>
+  rename(PER = "alt-name")
+
+dt = data.frame(
+  PER = c("Macedonia East and Thrace","Macedonia Central","Macedonia West",
+                          "Epirus", "Thessaly", "Aegean North", "Aegean South", "Greece Central",
+                          "Greece West", "Peloponnese", "Ionian Islands", "Crete", "Attica", "Holy Mountain"),
+  PERgr = c("Ανατολική Μακεδονία και Θράκη", "Κεντρική Μακεδονία", "Δυτική Μακεδονία", "Ήπειρος",
+          "Θεσσαλία", "Βόρειο Αιγαίο", "Νότιο Αιγαίο", "Στερεά Ελλάδα", "Δυτική Ελλάδα", "Πελοπόννησος", 
+          "Ιόνιων Νήσων", "Κρήτη", "Αττική", "Άγιο Όρος"),
+  gdp = c(11643, 13343, 14656, 
+          12098, 13064, 11355, 
+          18332, 15497, 12424, 
+          14553, 16041, 14490, 
+          23430, NA))
+
+matches <- stringdist_inner_join(
+  mapdata, dt,
+  by = "PER",
+  max_dist = 15,           # allow wider search, will filter later
+  method = "lv",          # Jaro-Winkler similarity
+  distance_col = "dist"   # store the distance
+)
+
+matches <- matches %>%
+  mutate(similarity = 1 - dist)
+
+best_matches <- matches %>%
+  group_by(PER.x) %>%
+  slice_max(similarity, n = 1, with_ties = FALSE) %>%
+  ungroup() %>%
+  rename(code = `hc-key`)
+
+hcmap("countries/gr/gr-all",
+      data = best_matches,value = "gdp",
+      joinBy = c("hc-key", "code"),
+      name = "Κατά κεφαλήν ΑΕΠ",
+      dataLabels = list(enabled = FALSE)) |>
+  hc_title(text = "Κατά κεφαλήν ΑΕΠ ανά περιφέρεια") |>
+  hc_legend(enabled = FALSE) |>
+  hc_colorAxis(
+    stops = color_stops(n = 4, colors = brewer.pal(4, "YlOrBr")),
+    min = min(best_matches$gdp, na.rm = TRUE),
+    max = max(best_matches$gdp, na.rm = TRUE)
+  ) |>
+  hc_tooltip(
+             useHTML = TRUE,
+             headerFormat = "",
+           pointFormat = "<b>{point.PERgr}</b><br/>Κατά κεφαλήν ΑΕΠ: {point.value} €"
+         )
+```
+
+
+
+```{r}
+#| echo: false
+#| results: hide
+
+file.remove("census.pdf")
+file.remove("census_custom.pdf")
+file.remove("pharmacies.xlsx")
+file.remove("sg22.pdf")
+file.remove("text.xlsx")
 ```
 
