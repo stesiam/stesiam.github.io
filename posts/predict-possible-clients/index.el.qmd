@@ -670,8 +670,8 @@ highchart() %>%
     )
   ) %>%
   hc_series(
-    list(name = "Όχι", data = plotjob$pct[plotjob$y == "όχι"], color = "#FF5733"),
-    list(name = "Ναι", data = sort(plotjob$pct[plotjob$y == "ναι"]), color = "#33FF57")
+    list(name = "Όχι", data = plotjob$pct[plotjob$y == "όχι"], color = "#AA5733"),
+    list(name = "Ναι", data = sort(plotjob$pct[plotjob$y == "ναι"]), color = "#33bb57")
   ) %>%
   hc_tooltip(pointFormat = "<b>{series.name}</b>: {point.y}%") %>%
   hc_title(text = "Job of Respondent by Interest to Term Deposit") %>%
@@ -724,8 +724,8 @@ highchart() %>%
     )
   ) %>%
   hc_series(
-    list(name = "Όχι", data = plotmarital$pct[plotmarital$y == "όχι"], color = "#FF5733"),
-    list(name = "Ναι", data = sort(plotmarital$pct[plotmarital$y == "ναι"]), color = "#33FF57")
+    list(name = "Όχι", data = plotmarital$pct[plotmarital$y == "όχι"], color = "#AA5733"),
+    list(name = "Ναι", data = sort(plotmarital$pct[plotmarital$y == "ναι"]), color = "#33bb57")
   ) %>%
   hc_tooltip(pointFormat = "<b>{series.name}</b>: {point.y}%") %>%
   hc_title(text = "Job of Respondent by Interest to Term Deposit") %>%
@@ -747,6 +747,8 @@ highchart() %>%
     )
 )
 ```
+
+Μία σύνοψη των παραπάνω μπορεί να γίνει και με το παρακάτω διάγραμμα αλληλουχιών. Με τη πρώτη στήλη να δηλώνει τη κατανομή στις οικογενειακές καταστάσεις συνδυαζόμενες από το εκπαιδευτικό υπόβαθρο των συμμετεχόντων και καταλλήγω στη τρίτη στήλη που είναι και η τελική απάντηση του πελάτη (αν ενδιαφέρεται να ανοίξει προθεσμιακό λογιαραισμό).
 
 ```{r}
 custom_df = 
@@ -787,6 +789,8 @@ highchart() %>%
 
 ```
 
+Έκρινα σημαντικό να συγκρίνω την διαφορά μεταξύ των προηγούμενων και της τωρινής καμπάνιας και τελικά από που προκύπτουν οι ενδιαφερόμενοι. Έχουν κάνει εκ νέου χρήση των προιόντων ή η τράπεζα κατάφερε να εδραιώσει το πελατολόγιό της / το εύρος των υπηρεσιών προϊόντων που προσφέρει στους πελάτες της; Αυτό θα μελετήσω με άλλο ένα διάγραμμα αλληλουχίας. Αρχικά η τράπεζα διατηρεί μεγάλο μέρος της εμπιστοσύνης των προηγούμενων χρηστών της υπηρεσίας μιας και το 64\% αυτών που είχαν συμφωνήσει να ανοίξουν προθεσμιακό λογαριασμό το πράττουν και με τη νέα καμπάνια. Το κρίσιμο δεδομένο βέβαια σε αυτή τη διμεταβλητή ανάλυση είναι το κατά πόσο έπεισε τους πελάτες που αρνήθηκαν την υπηρεσία. Αυτό το νούμερο προσεγγίζει το 13\% που είναι μία αρκετά ικανοποιητική επίδοση με βάση ότι είχαν αρνηθεί προηγουμένως.
+
 
 ```{r}
 custom_df = 
@@ -814,7 +818,8 @@ links_all <- bind_rows(links3)
 
 highchart() %>%
   hc_chart(type = "sankey") %>%
-  hc_title(text = "Alluvial Chart: Gender → Preference → Region") %>%
+  hc_title(text = "Διάγραμμα αλληλουχιών: Σύγκριση παλιών και νέας καμπάνιας") %>%
+  hc_subtitle(text = "Στο διάγραμμα τονίζεται τα καλύτερα αποτελέσματα της τωρινής καμπάνιας (δεύτερη στήλη) σε σχέση με τις προηγούμενες. Περίπου 12% (63 άτομα) όσων απέρριψαν το ενδιαφέρον τους για τέτοια προιόντα πείστηκαν με τη τωρινή καμπάνια να ανοίξουν τέτοιο λογαριασμό.") %>%
   hc_add_series(
     keys = c("from", "to", "weight"),
     data = list_parse(links_all),
@@ -823,8 +828,6 @@ highchart() %>%
   hc_tooltip(pointFormat = "{point.from} → {point.to}: <b>{point.weight}</b>")
 
 ```
-
-
 
 
 
@@ -1027,7 +1030,7 @@ bank_recipe %>%
 
 -   k Κοντινότερων Γειτόνων (k - Nearest Neighbors)
 -   Λογιστική Παλινδρόμηση (Logistic Regression)
--   Naive Bayes
+-   Ταξινόμηση Naive Bayes
 -   Τυχαίου δάσους (Random Forest)
 -   LightGBM
 

@@ -106,10 +106,10 @@ kbl(preview_dataset,
 
 |    Μεταβλητή    |           Τύπος μεταβλητής           |                 Περιγραφή                  |
 |:----------------:|:----------------------:|:------------------------------------:|
-|  `Full Name`   | *qualitative* <br> (nominal) | Surname and name of the member of parliament |
-|    `Party`     | *qualitative* <br> (nominal) |    The party on which the MP got elected     |
-| `Constituency` | *qualitative* <br> (nominal) |         MP got elected on this area          |
-|     `Term`     | *qualitative* <br> (ordinal) |                 Plenum term                  |
+|  `Full Name`   | *qualitative* <br> (nominal) | Επώνυμο / Όνομα / Όνομα πατέρα |
+|    `Party`     | *qualitative* <br> (nominal) |    Κοινοβουλευτική όμάδα - Κόμμα που εκπροσωπεί     |
+| `Constituency` | *qualitative* <br> (nominal) |       Εκλογική περιφέρεια          |
+|     `Term`     | *qualitative* <br> (ordinal) |                 Περίοδος θητείας                 |
 
 Thus, my sample has `r ncol(parliament)` variables, of which 0 are quantitative
 and 4 are quantitative properties, of which 3 are nominal and the rest one
@@ -128,9 +128,25 @@ data.frame(
   Length = str_length(unique(parliament$Party))
 ) %>%
   arrange(-Length) %>%
-  reactable(
-    defaultPageSize = 5
+ reactable(.,
+  bordered = FALSE,     # No borders (booktabs style)
+  striped = FALSE,      # No stripes for a clean look
+  highlight = FALSE,    # No hover highlighting
+  defaultColDef = colDef(align = "center"),
+  defaultPageSize = 7,
+  style = list(fontSize = "14px", border = "none"),
+  theme = reactableTheme(
+    borderColor = "transparent", # Remove border
+    cellStyle = list(
+      borderBottom = "transparent"  # Subtle line between rows
+    ),
+    headerStyle = list(
+      borderBottom = "2px solid rgb(117, 117, 117)", # Thick top rule
+      borderTop = "2px solid rgb(117, 117, 117)",
+      fontWeight = "bold"
+    )
   )
+) 
 ```
 
 In our case the parties with the longest name is AN.EL. and Democratic Coalition

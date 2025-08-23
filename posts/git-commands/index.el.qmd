@@ -34,7 +34,7 @@ editor_options:
 
 ## Εισαγωγή
 
-### What is Version Control System
+### Τι είναι το Version Control System
 
 A Version Control System (VCS) is a way to manage and track code changes. As we build an application, we add functions, change frontend features, fix bugs. We will need to edit the code many times. So we need a way to manage these changes. The tracking of every change to our code is the key point of VCS.
 
@@ -147,15 +147,14 @@ highchart() %>%
   hc_tooltip(shared = TRUE)
 ```
 
-Το διάγραμμα 
-The figure above makes clear the dominance of Git as a version control tool. Also, we notice that Subversion (SVN) was quite popular and a capable competitor of Git until 2010. After that period there is a continuous decline in SVN's interest and the exact opposite for Git. Today, in 2022, the difference is chaotic between them.
+Το διάγραμμα [@fig-vcs-trends] ξεκαθαρίζει ως κυρίαρχο εργαλείο για την διαχείριση των εκδόσεων (VCS) του κώδικά μας, το Git. Το Subversion (SVN) ήταν δημοιλέστερο του Git μέχρι και το 2010, ενώ από εκείνη τη χρονιά και έπειτα άρχισε και είχε πτωτική πορεία η οποία δεν έχει ανακάμψει για το προαναφερόμενο λογισμικό μέχρι και σήμερα. Σήμερα το de facto λογισμικό για τη διαχείριση του κώδικα είναι το Git και κυριαρχούν πλατφόρμες που υποστηρίζουν τη φιλοξενεία στο διαδίκτυο όπως το GitHub και το GitLab.
 
 
 ### Πλεονεκτήματα
 
 > Για ποιο λόγο να χρησιμοποιήσω ένα τέτοιο λογισμικό; 
 
-- ΕΕύκολη μετάβαση σε προηγούμενες εκδόσεις του κώδικα
+- Εύκολη μετάβαση σε προηγούμενες εκδόσεις του κώδικα
 - More productive, Time saver if a version produces error
 - Enables cooperation with other developers (especially with a hosting service like GitHub).
 
@@ -168,7 +167,7 @@ The figure above makes clear the dominance of Git as a version control tool. Als
 - Kind of steep learning curve.
 
 
-### Hosting platforms
+### Φιλοξενία κώδικα
 
 We have mentioned some of the most important programs for managing the code of an application. Of course, there are not a few times when we want to save the progress of our application somewhere else to enable developers communicate their code commits to each other. The solution is some code hosting services. The best known are **GitHub**, **GitLab** and **Bitbucket**. Finally, in case none of the options outlined earlier satisfy us, there is also the self-host solution. For example, if I had concerns about the terms of the above services, I could host [Gitea](https://gitea.io/en-us/) on my own server or even to rent a cloud server. That way I would have my own "GitHub", without depending on a third party service. 
 
@@ -176,9 +175,7 @@ We have mentioned some of the most important programs for managing the code of a
 
 ### Ορισμός ονόματος και email
 
-So, you decided to start Git without setting Name and Email? 
-
-You may think of it again. In case you try to commit without setting a Name and email. Git will not commit your changes, without prior setting those.
+Αποφάσισες να χρησιμοποιήσεις το Git, ώστε να το δοκιμάσεις σε κάποια απλά project ή απλά να κρατάς αρχείο εκδόσεων για τις εργασίες σου; Είσαι σε καλό δρόμο. Όταν χρησιμοποιήσεις το Git για πρώτη φορά θα σου ζητήσει να θέσεις ένα όνομα και ένα email. Το Git δεν θα σου επιτρέψει να καταγράψεις τη σύνθεση - έκδοση του project σου προτού τα καθορίσεις. 
 
 ```{.bash filename="Terminal"}
 git config --global user.name "YourName"
@@ -189,8 +186,9 @@ git config --global user.email your_email
 Αν σχεδιάζεις να φιλοξενήσεις τον κώδικά σου στο GitHub, ίσως να έχει νόημα να κρύψεις τη προσωπική σου διεύθυνση email. Σε μία τέτοια περίπτωση το GitHub προσφέρει ένα `noreply` email προκειμένου να μην την εκθέτεις στο διαδίκτυο. Αν επιθυμείτε, μπορείτε να διαβάσετε περισσότερα για αυτό το θέμα [στον ακόλουθο σύνδεσμο](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address).
 :::
 
-### Set editor
+### Προτιμόμενο πρόγραμμα επεξεργασίας
 
+Γενικότερα το GIt
 A part that I considered a little bit hard is editing Git commits. By default, Ubuntu has installed Vim, so this was my first editor for my commits. I think this choice is good if you are writing short commit messages or you are acquainted with Vim options/shortcuts. In case you are in a hurry, the use of an alterantive (most familiar) IDE is justified. 
 
 ```{.bash filename="Terminal"}
@@ -300,12 +298,8 @@ Of course you can access your git config file on your Home directory (at least o
 Note that the .gitconfig file, which contains our settings, may not be visible in the Home directory. In general, files whose names begin with a period are not displayed. However, if everything has been done correctly, it's probably there. For example, in Ubuntu you should choose to show hidden files.
 :::
 
-In case you open that file you will see probably something like the above :
-
-<script src="https://gist.github.com/stesiam/c4c1541fd57dad0cafdb3c8be9b95a12.js"></script>
-
 
 
 ## Ευχαριστίες {.appendix .unlisted}
 
-Image by <a href="https://pixabay.com/users/skorec-16694100/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=7522129">Daniel Skovran</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=7522129">Pixabay</a>
+Φωτογραφία από <a href="https://pixabay.com/users/skorec-16694100/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=7522129">Daniel Skovran</a> από το <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=7522129">Pixabay</a>
