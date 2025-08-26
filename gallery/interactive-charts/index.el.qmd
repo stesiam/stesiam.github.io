@@ -470,7 +470,7 @@ highchart() %>%
 #| echo: false
 #| warning: false
 #| message: false
-
+#| eval: false
 
 library(dplyr)
 library(readxl)
@@ -573,7 +573,7 @@ library(dplyr)
 library(RColorBrewer)
 library(tidyr)
 
-mapdata <- get_data_from_map(download_map_data("countries/gr/gr-all")) |>
+mapdata <- mapdata |>
   rename(PER = "alt-name")
 
 dt = data.frame(

@@ -63,6 +63,7 @@ editor_options:
 
 library(dplyr)
 library(tidyr)
+library(stringr)
 library(highcharter)
 library(reactable)
 library(rJava)
@@ -154,7 +155,7 @@ highchart() %>%
     hc_xAxis(categories = admitted_students$Year) %>%
     hc_yAxis(title = list(text = "Αριθμός φοιτητών")) %>%
   hc_title(text = "Συνολικές εγγραφές φοιτητών ανά ακαδημαϊκό έτος") %>%
-  hc_subtitle(text = "") %>%
+  hc_subtitle(text = "Απόλυτος αριθμός εγγραφών με βάση την κατηγορία εισαγωγής") %>%
   hc_colors(colors) %>%  # apply custom colors
   hc_plotOptions(
     areaspline = list(
@@ -170,7 +171,8 @@ highchart() %>%
     hc_tooltip(shared = TRUE)
 ```
 
-Αφού διαπιστώ είναι ωφέλιμο να δούμε τη κατανομή των φοιτητών,
+
+Αφού μελετήσαμε στο [@fig-adm-students-normal] τις απόλυτες τιμές των επιτυχόντων. Ωστόσο, ο αριθμός των φοιτητών αυτή τη τελυταία 20ετία κυμαίνεται μεταξύ του 200 και του 300 που κάνει την σύγκριση μεταξύ των ετών δύσκολη. Έτσι θα υπολογίσω και τη ποσοστιαία συμμετοχή κάθε κατηγορίας ανά έτος. Ένα πολύ ενδιαφέρον στοιχείο είναι ότι κάποια ακαδημαικά έτη ο αριθμός των φοιτητών που εισήλθαν στο τμήμα εκτός Πανελληνιών Εξετάσεων προσέγγιζε το ένα τρίτο των συνολικών εγγραφών. Αυτό φαίνεται να έχει συμβεί σε δύο ακαδημαϊκά έτη, το 2010-2011 και το 2013-2014.
 
 ```{r}
 #| label: fig-adm-students-percent
@@ -209,6 +211,178 @@ f = statistics_tables[[2]] %>%
   drop_na() %>%
   mutate(MSc_B = stringr::str_replace(MSc_B, "-", "0")) %>%
   mutate(across(-Year, ~ as.integer(.))) %>%
-  mutate(MSc = MSc_A + MSc_B)
+  mutate(MSc = MSc_A + MSc_B) %>%
+  mutate(PhDperBSc = round((PhD/BSc)*100, digits = 1)) %>%
+  mutate(PhDperMSc = round((PhD/MSc)*100, digits = 1))
+
+```
+
+```{r}
+colors <- c("rgba(52, 152, 219, 0.6)",  # blue
+            "rgba(231, 76, 60, 0.6)",   # red
+            "rgba(46, 204, 113, 0.6)")
+highchart() %>%
+  hc_chart(type = "areaspline") %>%  # smooth stacked lines    hc_title(text = "Stacked Line Chart Example") %>%
+    hc_xAxis(categories = admitted_students$Year) %>%
+    hc_yAxis(title = list(text = "Αριθμός φοιτητών")) %>%
+  hc_title(text = "Συνολικές εγγραφές φοιτητών ανά ακαδημαϊκό έτος") %>%
+  hc_subtitle(text = "Απόλυτος αριθμός εγγραφών με βάση την κατηγορία εισαγωγής") %>%
+  hc_colors(colors) %>%  # apply custom colors
+  hc_plotOptions(
+    areaspline = list(
+      stacking = "normal",
+      marker = list(enabled = FALSE),
+      lineWidth = 2,      # thicker smooth line
+      fillOpacity = 0.6   # subtle transparency
+    )) %>%
+   hc_add_series(name = "Προπτυχιακοί", data = f$BSc) %>%
+    hc_add_series(name = "Μεταπτυχιακοί", data = f$MSc) %>%
+    hc_add_series(name = "Διδακτορικοί", data = f$PhD) %>%
+    hc_tooltip(shared = TRUE)
+```
+
+```{r}
+colors <- c("rgba(52, 152, 219, 0.6)",  # blue
+            "rgba(231, 76, 60, 0.6)",   # red
+            "rgba(46, 204, 113, 0.6)",  # green
+            "rgba(155, 89, 182, 0.6)")  # purple
+
+highchart() %>%
+  hc_chart(type = "areaspline") %>%  # smooth stacked lines    hc_title(text = "Stacked Line Chart Example") %>%
+    hc_xAxis(categories = admitted_students$Year) %>%
+    hc_yAxis(title = list(text = "Αριθμός φοιτητών")) %>%
+  hc_title(text = "Συνολικές εγγραφές φοιτητών ανά ακαδημαϊκό έτος") %>%
+  hc_subtitle(text = "Απόλυτος αριθμός εγγραφών με βάση την κατηγορία εισαγωγής") %>%
+  hc_colors(colors) %>%  # apply custom colors
+  hc_plotOptions(
+    areaspline = list(
+      stacking = "normal",
+      marker = list(enabled = FALSE),
+      lineWidth = 2,      # thicker smooth line
+      fillOpacity = 0.6   # subtle transparency
+    )) %>%
+   hc_add_series(name = "Μεταπτυχιακό Εφαρμοσμένη Στατιστική", data = f$MSc_A) %>%
+    hc_add_series(name = "Μεταπτυχιακό Αναλογιστικά", data = f$MSc_B) %>%
+    hc_add_series(name = "Διδακτορικοί", data = f$PhD) %>%
+    hc_tooltip(shared = TRUE)
+```
+
+
+## Κατανομή βαθμών αποφοίτησης
+
+Όλα τα παραπάνω στοιχεία ήταν κατά κάποιο τρόπο δημογραφικά και δεν είχαν και κάποια ιδιαίτερη αξία. Πάμε λοιπόν να εξετάσουμε το πρώτο ενδιαφέρον στοιχείο που που είναι η κατανομή των βαθμών αποφοίτησης. Στα στοιχεία που δημοσιεύει το τμήμα οι βαθμοί έχουν χωριστεί σε τέσσερις κατηγορίες ανάλογα του βαθμού αποφοίτησης:
+
+- Από τη βάση (5) μέχρι 6
+- Από 6 εώς 7
+- Από 7 μέχρι 8.5 και
+- αυτοί που πήραν πάνω από 8.5
+
+```{r}
+graduates_distr_grades = statistics_tables[[4]] %>%
+  setNames(c("Year", "5to6", "6to7", "7to8p5", "over8p5", "AVG")) %>%
+  drop_na() %>%
+  mutate(across(everything(), ~ str_remove(., "\\(.*\\)")),
+         across(everything(), ~ str_trim(.)),
+         across(everything(), ~ str_replace_all(.,pattern = ",",replacement = ".")),
+         across(-Year, ~ round(as.numeric(.), digits = 1)))
+```
+
+```{r}
+#| label: fig-graduates__grades_distr_stacked
+#| fig-cap: "Χρονοσειρά"
+colors <- c(
+  "#E24A4A",
+  "#FF9090",
+  "#90C3FF",
+  "#4A90E2"  
+)
+
+highchart() %>%
+  hc_chart(type = "areaspline") %>%  # smooth stacked lines    hc_title(text = "Stacked Line Chart Example") %>%
+    hc_xAxis(categories = graduates_distr_grades$Year) %>%
+    hc_yAxis(title = list(text = "Αριθμός φοιτητών")) %>%
+  hc_title(text = "Συνολικές εγγραφές φοιτητών ανά ακαδημαϊκό έτος") %>%
+  hc_subtitle(text = "") %>%
+  hc_colors(colors) %>%  # apply custom colors
+  hc_plotOptions(
+    areaspline = list(
+      stacking = "percent",
+      marker = list(enabled = FALSE),
+      lineWidth = 2,      # thicker smooth line
+      fillOpacity = 0.6   # subtle transparency
+    )) %>%
+   hc_add_series(name = "Βαθμός 5-6", data = graduates_distr_grades$`5to6`) %>%
+    hc_add_series(name = "Βαθμός 6-7", data = graduates_distr_grades$`6to7`) %>%
+    hc_add_series(name = "Βαθμός 7-8.5", data = graduates_distr_grades$`7to8p5`) %>%
+    hc_add_series(name = "Βαθμός 8.5+", data = graduates_distr_grades$over8p5) %>%
+    hc_tooltip(shared = TRUE)
+```
+
+
+## Κατανομή έτους αποφοίτησης
+
+```{r}
+graduate_data = statistics_tables[[5]] %>%
+  setNames(c("Year", "4Y", "5Y", "6Y", "7Y", "8Y", "9Y", "10Y", "11Y+","AVGY")) %>%
+  .[-c(1:2),] %>%
+  drop_na() %>%
+  dplyr::filter(Year != "2009-2022") %>%
+  mutate(across(contains("Y") & !matches("^Year$"), as.numeric)) %>%
+  mutate("4y" = `4Y`,
+         "4to6" = `5Y` + `6Y`,
+         "6to8" = `7Y` + `8Y`,
+         "9plus" = `9Y` + `10Y` + `11Y+`) %>%
+  select(Year, `4y`, `4to6`, `6to8`, `9plus`) %>%
+  mutate(
+    Year = stringr::str_replace(Year, ".*-", "")
+  )
+```
+
+```{r}
+colors <- c(
+  "#E24A4A",
+  "#FF9090",
+  "#90C3FF",
+  "#4A90E2"  
+)
+highchart() %>%
+  hc_chart(type = "area") %>%
+  hc_title(text = "Κατανομή διάρκειας σπουδών μέχρι την αποφοίτηση") %>%
+  hc_subtitle(text = "Οι περισσότεροι φοιτητές ξεπερνάνε τα ν+2 έτη για να λάβουν πτυχίο!") %>%
+  hc_caption(text = "stesiam, 2023") %>%
+  hc_xAxis(categories = graduate_data$Year,
+           title = NULL) %>%
+  hc_yAxis(title = list(text = "Percentage (%)")) %>%
+  hc_tooltip(shared = TRUE) %>%
+  hc_add_series(name = "9 έτη και πάνω", data = graduate_data$`9plus`) %>%
+  hc_add_series(name = "7-8 έτη", data = graduate_data$`6to8`) %>%
+  hc_add_series(name = "5-6 έτη", data = graduate_data$`4to6`) %>%
+  hc_add_series(name = "4 έτη", data = graduate_data$`4y`) %>%
+  hc_plotOptions(area = list(
+    stacking = "percent",
+    marker = list(enabled = FALSE)
+  )) %>%
+  hc_colors(colors)
+```
+
+## Σχέση ετών και μέσου όρου
+
+```{r}
+statistics_tables[[5]] %>%
+  .[,c(1,10)] %>%
+  drop_na() %>%
+  .[-c(1),] %>%
+  setNames(c("GradYear", "AvgGradDuration")) %>%
+  mutate(AvgGradDuration = stringr::str_remove_all(AvgGradDuration, pattern = " έτη"),
+         AvgGradDuration = stringr::str_replace(AvgGradDuration, pattern = ",", replacement = "."),
+         AvgGradDuration = as.numeric(AvgGradDuration))
+
+statistics_tables[[4]] %>%
+  .[,c(1,6)] %>%
+  drop_na() %>%
+  .[-c(1:2),] %>%
+  setNames(c("Year", "AvgGrade")) %>%
+  separate(AvgGrade, into = c("Grade", "Number"), sep = " ") %>%
+  
 ```
 
