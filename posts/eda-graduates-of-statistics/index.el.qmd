@@ -60,7 +60,7 @@ editor_options:
 #| label: import_r_libs
 #| warning: false
 #| message: false
-
+library(readr)
 library(dplyr)
 library(tidyr)
 library(stringr)
@@ -368,21 +368,72 @@ highchart() %>%
 ## Σχέση ετών και μέσου όρου
 
 ```{r}
-statistics_tables[[5]] %>%
+table1 = statistics_tables[[5]] %>%
   .[,c(1,10)] %>%
   drop_na() %>%
   .[-c(1),] %>%
-  setNames(c("GradYear", "AvgGradDuration")) %>%
+  setNames(c("Year", "AvgGradDuration")) %>%
   mutate(AvgGradDuration = stringr::str_remove_all(AvgGradDuration, pattern = " έτη"),
          AvgGradDuration = stringr::str_replace(AvgGradDuration, pattern = ",", replacement = "."),
          AvgGradDuration = as.numeric(AvgGradDuration))
 
-statistics_tables[[4]] %>%
+table2 = statistics_tables[[4]] %>%
   .[,c(1,6)] %>%
   drop_na() %>%
   .[-c(1:2),] %>%
   setNames(c("Year", "AvgGrade")) %>%
   separate(AvgGrade, into = c("Grade", "Number"), sep = " ") %>%
+  mutate(Number = parse_number(Number)) %>%
+  mutate(Grade = str_replace_all(Grade, ",", "."))
+
+joined_tables = left_join(table2, table1, by = "Year") %>%
+  drop_na() %>%
+  mutate(Grade = as.numeric(Grade))
   
+```
+
+```{r}
+highchart() %>%
+  hc_title(text = "Βαθμός αποφοίτησης και μέση διάρκεια φοίτησης", style = list(fontSize = "18px")) %>%
+  hc_subtitle(text = "Ιστορικά η μέση διάρκεια σπουδών είναι μεγαλύτερη των ν+2 ετών για το τμήμα Στατιστικής και τα τελευταία χρόνια έχει ανέλθει σε επίπεδα που προσεγγίζουν το διπλάσιο της καθορισμένης φοίτησης (2ν). Η δυσκολία της σχολής εδράζεται και στον χαμηλό βαθμό αποφοίτησης ο οποίος τα τελευταία χρόνια που παραμένει σταθερά μεταξύ του 6.2 και 6.4, με εξαίρεση την εξεταστική του κορονοϊού.", 
+              style = list(color = "#666")) %>%
+  hc_xAxis(categories = joined_tables$Year, title = list(text = "Year")) %>%
+  
+  # Three y-axes
+  hc_yAxis_multiples(
+    list(title = list(text = "Βαθμός Αποφοίτησης"), opposite = FALSE, labels = list(style = list(color = "#1f77b4"))),
+    list(title = list(text = "Διάρκεια σπουδών"), opposite = TRUE, labels = list(style = list(color = "#ff7f0e")))
+  ) %>%
+  
+  # Sales series
+  hc_add_series(
+    name = "Βαθμός αποφοίτησης",
+    data = joined_tables$Grade,
+    type = "line",
+    yAxis = 0,
+    color = "#1f77b4",
+    lineWidth = 3,
+    marker = list(symbol = "circle", radius = 5)
+  ) %>%
+  
+  # Profit series
+  hc_add_series(
+    name = "Διάρκεια σπουδών",
+    data = joined_tables$AvgGradDuration,
+    type = "line",
+    yAxis = 1,
+    color = "#ff7f0e",
+    lineWidth = 3,
+    marker = list(symbol = "diamond", radius = 5)
+  ) %>%
+  
+  
+  # Tooltip
+  hc_tooltip(shared = TRUE, crosshairs = TRUE, useHTML = TRUE,
+             backgroundColor = "#f7f7f7", borderColor = "#333",
+             style = list(fontSize = "13px")) %>%
+  
+  # Legend
+  hc_legend(enabled = TRUE, layout = "horizontal", align = "center", verticalAlign = "bottom")
 ```
 
