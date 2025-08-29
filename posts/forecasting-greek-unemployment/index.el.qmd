@@ -38,38 +38,50 @@ editor_options:
 
 ### Υπόβαθρο
 
-Η ανεργία αποτελεί ένα χρόνιο πρόβλημα της χώρας μας, μιας και ιστορικά τα τελευταία 25 χρόνια είναι σε υψηλότερα επίπεδα του ευρωπαικού μέσου και τις χώρες του ΟΟΣΑ. Το φαινόμενο επιδεινώθηκε τα χρόνια της οικονομικής κρίσης όπου στις χειρότερες στιγμές της το ένα τέταρτο του ενεργού πληθυσμού δεν μπορούσε να βρει εργασία. Ακόμα χειρότερη ήταν η κατάσταση για τους νέους της χώρας μιας και η νεανική ανεργία ανήλθε στο 46% , η οποία είναι και χειρότερη επίδοση στην ΕΕ. 
+Η ανεργία αποτελεί ένα χρόνιο πρόβλημα της χώρας μας, μιας και ιστορικά τα
+τελευταία 25 χρόνια είναι σε υψηλότερα επίπεδα του ευρωπαικού μέσου και τις
+χώρες του ΟΟΣΑ. Το φαινόμενο επιδεινώθηκε τα χρόνια της οικονομικής κρίσης όπου
+στις χειρότερες στιγμές της το ένα τέταρτο του ενεργού πληθυσμού δεν μπορούσε να
+βρει εργασία. Ακόμα χειρότερη ήταν η κατάσταση για τους νέους της χώρας μιας και
+η νεανική ανεργία ανήλθε στο 46% , η οποία είναι και χειρότερη επίδοση στην ΕΕ.
 
-Πριν ξεκινήσουμε να αναλύουμε κρίνω σημαντικό να δούμε τι σημαίνει ο όρος ανεργία και πώς προκύπτει αυτό το ποσοστό. Όταν αναφερόμαστε σε άνεργους αναφερόμαστε σε άτομα τα οποία δεν εργάζονται, αλλά δεν περιλαμβάνονται σε αυτά σπουδαστές, συνταξιούχοι, δηλαδή άτομα τα οποία έχουν την ηλικία (18-67), αλλά και τη δυνατότητα να εργαστούν. Για να υπολογιστεί το ποσοστό ανεργίας:
+Πριν ξεκινήσουμε να αναλύουμε κρίνω σημαντικό να δούμε τι σημαίνει ο όρος
+ανεργία και πώς προκύπτει αυτό το ποσοστό. Όταν αναφερόμαστε σε άνεργους
+αναφερόμαστε σε άτομα τα οποία δεν εργάζονται, αλλά δεν περιλαμβάνονται σε αυτά
+σπουδαστές, συνταξιούχοι, δηλαδή άτομα τα οποία έχουν την ηλικία (18-67), αλλά
+και τη δυνατότητα να εργαστούν. Για να υπολογιστεί το ποσοστό ανεργίας:
 
-$$\textsf{Ποσοστό ανεργίας} = \frac{\textsf{Αριθμός ανέργων}}{\textsf{Εργατικό Δυναμικό}}$$
-
-### Χρονοσειρές
-
-Σε αυτό το άρθρο έχω ως σκοπό τη πρόβλεψη της πορείας της ανεργίας τους επόμενους μήνες. Έτσι λοιπόν πήρα κάποια ιστορικά δεδομένα για την ανεργία στην ΕΕ, τον ΟΟΣΑ και την χώρα μας. Θα χρησιμοποιήσω ένα απλό μοντέλο (S)ARIMA, προκειμένου να κάνω μία εκτίμηση του μεγέθους της τους επόμενους μήνες. 
-
-
-### Μεθοδολογία
-
-
-
-
+$$\text{Ποσοστό ανεργίας} = \frac{\text{Αριθμός ανέργων}}{\text{Εργατικό Δυναμικό}}$$
 
 ### Συνοπτική Απάντηση
 
-
-Αν θέλετε μία γρήγορη απάντηση, στη συγκεκριμένη ανάλυση προβλέπω ότι η πτωτική τάση της ανεργίας αναμένεται να συνεχιστεί τους επόμενους μήνες. Τον Φεβρουάριο του 2023, αυτή θα κυμαίνεται μεταξύ του 10\% - 13\%.
+Σε αυτό το άρθρο έχω ως σκοπό τη πρόβλεψη της πορείας της ανεργίας τους
+επόμενους μήνες. Έτσι λοιπόν πήρα κάποια ιστορικά δεδομένα για την ανεργία στην
+ΕΕ, τον ΟΟΣΑ και την χώρα μας. Θα χρησιμοποιήσω ένα απλό μοντέλο (S)ARIMA,
+προκειμένου να κάνω μία εκτίμηση του μεγέθους της τους επόμενους μήνες. Τα
+δεδομένα που χρησιμοποιώ κυμαίνονται από τη περίοδο του 1998 μέχρι και το 2022.
+Αν θέλετε μία γρήγορη απάντηση, στη συγκεκριμένη ανάλυση προβλέπω ότι η πτωτική
+τάση της ανεργίας αναμένεται να συνεχιστεί τους επόμενους μήνες. Τον Φεβρουάριο
+του 2023, αυτή θα κυμαίνεται μεταξύ του 10% - 13%.
 
 ## Προαπαιτούμενα
 
-
 ### Εισαγωγή βιβλιοθηκών
 
-Για την ανάλυση αυτή θα χρειαστούμε τυπικές βιβλιοθήκες για την εισαγωγή και την επεξεργασία των δεδομένων μου, όπως οι readr [@R-readr] και dplyr [@R-dplyr]. Το πακέτο kableExtra [@R-kableExtra] χρησιμοποιήθηκε για την αποτύπωση των αποτελεσμάτων σε μορφή πίνακα, ενώ το πακέτο flextable [@R-flextable] χρησιμοποιήθηκε για τους πίνακες των αποτελεσμάτων των τεστ Dickey-Fuller και KPSS.
+Για την ανάλυση αυτή θα χρειαστούμε τυπικές βιβλιοθήκες για την εισαγωγή και την
+επεξεργασία των δεδομένων μου, όπως οι readr [@R-readr] και dplyr [@R-dplyr]. Το
+πακέτο kableExtra [@R-kableExtra] χρησιμοποιήθηκε για την αποτύπωση των
+αποτελεσμάτων σε μορφή πίνακα, ενώ το πακέτο flextable [@R-flextable]
+χρησιμοποιήθηκε για τους πίνακες των αποτελεσμάτων των τεστ Dickey-Fuller και
+KPSS.
 
-Στη συνέχεια, λόγω της φύσης των δεδομένων (χρονοσειρές) κρίθηκε απαραίτητη η χρήση σχετικών βιβλιοθηκών όπως τα πακέτα lubridate[@R-lubridate], tseries[@R-tseries] & forecast[@R-forecast].
+Στη συνέχεια, λόγω της φύσης των δεδομένων (χρονοσειρές) κρίθηκε απαραίτητη η
+χρήση σχετικών βιβλιοθηκών όπως τα πακέτα lubridate[@R-lubridate],
+tseries[@R-tseries] & forecast[@R-forecast].
 
-Τέλος, χρησιμοποιήθηκε το highcharter, ώστε να δημιουργήσω βασικά τα διαγράμματα pacf, acf μέσω ραβδογραμμάτων και κάποια διαγράμματα πρόβλεψης τάσης της ανεργίας με απλά γραφήματα γραμμών.
+Τέλος, χρησιμοποιήθηκε το highcharter, ώστε να δημιουργήσω βασικά τα διαγράμματα
+pacf, acf μέσω ραβδογραμμάτων και κάποια διαγράμματα πρόβλεψης τάσης της
+ανεργίας με απλά γραφήματα γραμμών.
 
 ```{r}
 #| label: import_r_libs
@@ -81,6 +93,9 @@ library(dplyr)
 library(readr)
 library(kableExtra)
 library(flextable)
+library(reactable)
+library(purrr)
+library(tibble)
 
 # Graphs
 
@@ -96,12 +111,63 @@ library(feasts)
 library(fable)
 ```
 
-```{r, include=FALSE}
+```{r}
+#| label: write_bibliography
+#| include: false
 knitr::write_bib(.packages(), file = 'packages.bib')
 ```
 
+### Εισαγωγή δεδομένων
+
+Αφού συμπεριλάβω τις απολύτως απαραίτητες βιβλιοθήκες, μπορώ να εισάγω τα
+δεδομένα μου, μέσω της βιλιοθήκης readr. Το αρχείο δεδομένων μου είναι ένα
+τυπικό αρχείο csv και για την χρήση αυτού θα χρησιμοποιήσω την εντολή
+`read_csv()`. Το αρχείο περιέχει δεδομένα ανεργίας
 
 ```{r}
+#| label: import_dataset
+#| title: "Εισαγωγή δεδομένων"
+#| message: false
+#| warning: false
+
+unemployment <- read_csv("data/unemployment.csv") %>%
+  select(LOCATION, TIME, Value) %>% filter(LOCATION != "EA19")
+```
+
+### Ορισμός συναρτήσεων
+
+Προκειμένου να αποφύφω την επανάληψη του κώδικά μου θα ορίσω και μερικές συναρτήσεις. Αρχικά, θέλω να έχω πίνακες που βασίζονται στη βιβλιοθήκη `reactable` με ορισμένες αλλαγές στην εμφάνιση για να φαίνονται ωραία. Για αυτό σε πολλούς πίνακες θα δείτε χρήση της `reactable_custom` αντί απλώς της `reactable` εντολής.
+
+```{r}
+#| label: function_reactable_tables
+reactable_custom = function(data){
+  reactable(
+  head(data, 5),
+  bordered = FALSE,     # No borders (booktabs style)
+  striped = FALSE,      # No stripes for a clean look
+  highlight = FALSE,    # No hover highlighting
+  defaultColDef = colDef(align = "center"),
+  style = list(fontSize = "14px", border = "none"),
+  theme = reactableTheme(
+    borderColor = "transparent", # Remove border
+    cellStyle = list(
+      borderBottom = "transparent"  # Subtle line between rows
+    ),
+    headerStyle = list(
+      borderBottom = "2px solid rgb(117, 117, 117)", # Thick top rule
+      borderTop = "2px solid rgb(117, 117, 117)",
+      fontWeight = "bold"
+    )
+  )
+) 
+}
+```
+
+
+Επιπλέον, έχω γράψει και άλλες δύο συναρτήσεις για τη κατασκευή διαγραμμάτων αυτοσυσχέτισης (ACF) και μερικής αυτοσυσχέτισης (pACF). Τις έχω ονομάσει `acf_plot_function` και `pacf_plot_function` αντίστοιχα. Και οι δύο συναρτήσεις βασίζονται στη βιβλιοθήκη `highcharter` για τη δημιουργία των αντίστοιχων διαγραμμάτων.
+
+```{r}
+#| label: acf_pacf_plot_function
 acf_plot_function = function(data, min = -1, max = 1){
   ts_data <- data
   N <- length(ts_data)
@@ -172,118 +238,176 @@ pacf_plot_function <- function(data, min = -1, max = 1) {
   pacf_chart
 }
 ```
-
-### Εισαγωγή δεδομένων
-
-Αφού συμπεριλάβω τις απολύτως απαραίτητες βιβλιοθήκες, μπορώ να εισάγω τα δεδομένα μου, μέσω της βιλιοθήκης readr. Το αρχείο δεδομένων μου είναι ένα τυπικό αρχείο csv και για την χρήση αυτού θα χρησιμοποιήσω την εντολή `read_csv()`. Το αρχείο περιέχει δεδομένα ανεργίας
-
-```{r Import dataset, cache=TRUE, message=FALSE,results='hide',echo=TRUE, warning=FALSE}
-unemployment <- read_csv("data/unemployment.csv") %>%
-  select(LOCATION, TIME, Value) %>% filter(LOCATION != "EA19")
-```
-
 ### Δομή δεδομένων
 
-Το αρχείο περιέχει δεδομένα ανεργίας για διάφορες χώρες ή οντότητες χωρών όπως η Ευρωπαϊκή Ένωση και οι χώρες του ΟΟΣΑ (Οργανισμός Οικονομικής Συνεργασίας και Ανάπτυξης), γ
+Το αρχείο περιέχει δεδομένα ανεργίας για διάφορες χώρες ή οντότητες χωρών όπως η
+Ευρωπαϊκή Ένωση και οι χώρες του ΟΟΣΑ (Οργανισμός Οικονομικής Συνεργασίας και
+Ανάπτυξης), γ
 
 ![](https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/OECD_logo.svg/120px-OECD_logo.svg.png)
 
-```{r Preview Data}
+```{r}
 #| label: tbl-preview-dataset
+#| title: "Προεπισκόπηση δεδομένων"
 #| tbl-cap: "Προεπισκόπηση δεδομένων (πρώτες 6 σειρές)"
-head(unemployment, 6) %>%
-  kbl(., 
-    align = 'c',
-    booktabs = T,
-    centering = T,
-    valign = T) %>%
-  kable_styling()
+reactable_custom(unemployment)
 ```
 
-Τα δεδομένα μου αποτελούνται από  `r ncol(unemployment)` μεταβλητές (στήλες). Πιο συγκεκριμένα οι στήλες μου είναι οι εξής:
+Τα δεδομένα μου αποτελούνται από `r ncol(unemployment)` μεταβλητές (στήλες). Πιο
+συγκεκριμένα οι στήλες μου είναι οι εξής:
 
-|  Μεταβλητή  |             Τύπος Μεταβλητής             |                Περιγραφή                 |
-|:---------------:|:-------------------------:|:----------------------------------:|
-| `LOCATION` |   *Ποιοτική* <br> (nominal)   |       Χώρα ή Οντότητα χωρών |
-|   `TIME`   |   *Ποιοτική* <br> (ordinal)   | Μήνας-Έτος που αναφέρεται η μέτρηση |
-|  `Value`   | *Ποσοτική* <br> (συνεχής) | Ύψος ανεργίας (βάσει περιοχής και μήνα) |
+| Μεταβλητή  |       Τύπος Μεταβλητής       |                Περιγραφή                |
+|:------------------:|:------------------------:|:---------------------------------:|
+| `LOCATION` | *Ποιοτική* <br> (κατηγορική) |          Χώρα ή Οντότητα χωρών          |
+|   `TIME`   | *Ποιοτική* <br> (διατάξιμη)  |   Μήνας-Έτος που αναφέρεται η μέτρηση   |
+|  `Value`   |  *Ποσοτική* <br> (συνεχής)   | Ύψος ανεργίας (βάσει περιοχής και μήνα) |
 
-Thus, my sample has `r ncol(unemployment)` variables, of which 2 are qualitative
-and 1 is quantitative property.
+Συνεπώς, το δείγμα μου αποτελείται από `r ncol(unemployment)` μεταβλητές, εκ των
+οποίων οι δύο είναι ποιοτικές και μία ποσοτική που είναι και η τιμή που θέλω να
+προβλέψω (ανεργία). Σε αυτό το σημείο ίσως να πρέπει να τονιστεί ότι στη
+μεταβλητή LOCATION έχει τρεις τιμές, την Ελλάδα, τις χώρες του ΟΟΣΑ και τις
+χώρες των 27 Ευρωπαϊκών χωρών. Τέλος, όσον αφορά τη κατηγοριοποίηση της
+μεταβλητής του χρόνου, με δεδομένο ότι οι τιμές μου έχουν τη μορφή μήνα-έτος
+(μμ/ετος), δεν είναι ξεκάθαρο το είδος της. Θα μπορούσαμε να τη χωρίσουμε σε δύο
+επιπλέον μεταβλητές όπου η μία να είναι το έτος και να τη χαρακτηρίσουμε ως μία
+ποσοτική μεταβλητή και ο μήνας μία ποιοτική διατάξιμη μεταβλητή.
 
-## Time Series Preprocessing
+## Προεπεξεργασία χρονοσειρών
 
-The `TIME` variable needs to be a Date variable which is not fulfilled on our
-case.
+Η μεταβλητή που δηλώνει το μήνα για τον οποίο αναφέρεται η αντίστοιχη ανεργία
+(`TIME`) αναγνωρίζεται αυτόματα ως ένα διάνυσμα χαρακτήρων. Ένα από τα πρώτα
+πράγματα που πρέπει να κάνουμε όταν χειριζόμαστε δεδομένα που δηλώνουν διάστημα
+χρόνου είναι να τα μετατρέψουμε στο αντίστοιχο είδος μεταβλητής, που στην R,
+αυτό το είδος καλείται Date. Ο παρακάτω πίνακας δηλώνει τις υπάρχουσες
+μεταβλητές, καθώς και το είδος το οποίο τους έχει αποδοθεί αυτόματα με βάση τις
+τιμές που περιέχουν. Η R έκανε καλή δουλειά και εντόπισε ότι η μεταβλητή `Value`
+πρόκειται για ένα διάνυσμα αριθμών μιας και αντιπορσωπεύει το ύψος της ανεργίας.
+Η αντιστοίχιση των τριών ονοτήτων είναι και αυτή σωστή μιας και αναφερόμαστε σε
+ονόματα αυτών και άρα θα είναι ένα διάνυσμα χαρακτήρων.
 
 ```{r}
-sapply(unemployment, class) %>% 
-  kbl() %>% kable_styling(full_width = F, position = "center")
+#| label: fig-extract_type_of_variables-before
+#| fig-cap: "Σύνοψη τύπων μεταβλητών (χωρίς προεπεξεργασία)"
+map_chr(unemployment, class) %>% 
+  enframe("Όνομα μεταβλητής", "Τύπος μεταβλητής") %>%
+  reactable_custom() 
 ```
 
-So, above I see that I have dates in a format "YYYY-MM" (Year - Month) and they
-are considered as characters. With the help of `lubridate` package I will
-convert my time series on a Date format.
+Παραπάνω επισημάνθηκε ότι οι ημερομηνίες έχουν την μορφή "ΕΕΕΕ-ΜΜ" (Έτος-Μήνας)
+και από το λογισμικό αναγνωρίστηκαν αυτόματα ως χαρακτήρες. Με τη βοήθεια του
+πακέτου `lubridate` θα μετατρέψω τη μεταβλητή του χρόνου σε τύπου Date.
 
 ```{r}
+unemployment <- unemployment %>%
+  mutate(TIME = ym(TIME))
+
 unemploymentType <- unemployment %>%
   mutate(TIME = yearmonth(TIME)) %>%
   as_tsibble(index = TIME, key = LOCATION)
 ```
 
-And let's check again :
+Και αφού κάναμε τη μετατροπή, αν ελέγξουμε άλλη μία φορά θα δούμε ότι η αλλαγή
+ήταν επιτυχημένη.
 
 ```{r}
-sapply(unemploymentType, class) %>% kbl() %>% kable_styling(full_width = F, position = "center")
-``` 
+#| label: fig-extract_type_of_variables-after
+#| fig-cap: "Σύνοψη τύπων μεταβλητών (μετά από προεπεξεργασία)"
+map_chr(unemployment, class) %>% 
+  enframe("Όνομα μεταβλητής", "Τύπος μεταβλητής") %>%
+  reactable_custom() 
+```
 
-And now I got the Date format. I am able to continue my analysis.
+Και τώρα που μετέτρεψα τη κύρια μεταβλητή μου σε τύπου Date είμαι έτοιμος να συνεχίσω την ανάλυσή μου. 
 
-## Missing Values
+## Ελλείπουσες τιμές
 
-```{r, results='hide'}
+```{r}
+#| label: missing_values
+#| results: hide
 sum(is.na(unemployment))
 ```
 
-Good news! On this dataset there are `r sum(is.na(unemployment))` missing values, in total. 
+Ούφ! Έχουμε κάποια καλά νέα. Σε αυτό το σύνολο δεδομένων υπάρχουν συνολικά `r sum(is.na(unemployment))` ελλείπουσες τιμές. Σε περίπτωση που το σύνολό μου έλειπαν παρατηρήσεις θα έπρεπε να ερευνήσω σε πρώτη φάση ποια από τις μεταβλητές αυτές παρατηρήθηκαν. Σε δεύτερη φάση και αναλόγως του τύπου της μεταβλητής θα έπρεπε είτε να διώξω εντελώς εκείνες τις σειρές - παρατηρήσεις ή θα μπορούσα να προσπαθήσω με διάφορες μεθόδους να προβλέψω τις τιμές τους.
 
-In case the dataset had missing values, I would first look at which variables those were.In a second phase, it might be necessary to replace the missing values.
+## Περιγραφικά στοιχεία
 
-## Descriptive Statistics
-
-The unemployment data for Greece refer to the period from April 1998 το August 2022. Regarding Europe we have data from January 2000 to August 2022.
-
-The last 20 years have seen particularly large changes mainly in Greece, due to the domestic economic crisis. There is a noticeable change between September 2010 (10.1\%) and September 2013 (28.1 \%), in terms of unemployment in Greece. For the record, below you can find a table with the months that presented the highest unemployment in Greece.  As you will notice the five highest values were observed in 2013.
-
+Τα δεδομένα της ανεργίας για την Ελλάδα αναφέρονται στη περίοδο του Απριλίου του
+1998 μέχρι και τον Αύγουστο του 2022. Όσον αφορά τα δεδομένα της ΕΕ, ξεκινάνε
+από τον Ιανουάριο του 2000 μέχρι και τον Αύγουστο το 2022. Τα τελευταία 20
+χρόνια έχουν γίνει σοκαριστικά μεγάλες αλλαγές όσον αφορά το ποσοστό ανεργίας στη χώρα μας με την πιο απότομη μεταβολή να σημειώνεται τις περιόδους τις οικονικής κρίσης (μετά το 2009). Ενδεικτικά μπορούμε να παρατηρήσουμε τη διαφορά στο ύψος της ανεργίας μεταξύ του Σεπτέμβρίου του 2010, που ήταν στο 10\% και τρία χρόνια αργότερα, τον Σεπτέμβριο του 2013, έφτασε στο 28.1\%. Για λόγους πληρότητας παρακάτω επισυνάπτονται πίνακες που δείχνουν τους 5 μήνες με τη μεγαλύτερη και τη μικρότερη ανεργία στην Ελλάδα και στην Ευρώπη τα τελευταία 20 χρόνια.
 
 ```{r}
-unemploymentType %>% dplyr::filter(LOCATION == "GRC") %>% select(TIME, Value) %>% as.data.frame() %>%
-  arrange(Value) %>% tail(5) %>% kbl() %>% kable_styling(full_width = F, position = "center")
-```
-
-Accordingly, the highest unemployment rates observed at the European level are the following:
-
-```{r}
-unemploymentType %>% dplyr::filter(LOCATION == "EU27_2020") %>% select(TIME, Value)  %>%
-  as.data.frame() %>% arrange(Value) %>% tail(5) %>% kbl() %>% kable_styling(full_width = F, position = "center")
+unemploymentType$TIMEchr <- format(unemploymentType$TIME, "%Y %b")
 ```
 
 
-The lowest unemployment ever recorded in Greece was in the period of 2008:
-
 ```{r}
-unemploymentType %>% dplyr::filter(LOCATION == "GRC") %>% select(TIME, Value) %>% as.data.frame() %>%
-  arrange(Value) %>% head(5) %>% kbl() %>% kable_styling(full_width = F, position = "center")
+#| label: tbl-higher-unemployment-rates
+#| tbl-cap: "Υψηλότερα ποσοστά ανεργίας"
+#| tbl-subcap: 
+#| - "Ελλάδα"
+#| - "Ευρώπη των 27 (εκτός Ηνωμένου Βασιλείου)"
+#| warning: false
+#| layout-ncol: 2
+
+unemploymentType %>% 
+  as.tibble() %>%
+  dplyr::filter(LOCATION == "GRC") %>% 
+  select(TIMEchr, Value) %>% 
+  arrange(Value) %>%
+  tail(5) %>%
+  setNames(c("Μήνας", "Ποσοστό ανεργίας (%)")) %>%
+  reactable_custom()
+
+unemploymentType %>% 
+  as.tibble() %>%
+  dplyr::filter(LOCATION == "EU27_2020") %>% 
+  select(TIMEchr, Value) %>% 
+  arrange(Value) %>%
+  tail(5) %>%
+  setNames(c("Μήνας", "Ποσοστό ανεργίας (%)")) %>%
+  reactable_custom()
+
 ```
 
-On the other hand, at the moment in Europe we are at the lowest levels of the last 20 years, with unemployment hovering around 6\%.
+Από την άλλη μεριά έχει ενδιαφέρον να παρατηρήσουμε και τις περιόδους με τη χαμηλότερη παρατηρούμενη ανεργία. Στην Ελλάδα αυτή η περίοδος ήταν λίγο πριν την οικονομική κρίση, το 2008
+
 
 ```{r}
-unemploymentType %>% dplyr::filter(LOCATION == "EU27_2020") %>% select(TIME, Value) %>%
-  as.data.frame() %>% arrange(Value) %>% head(5) %>% kbl() %>% kable_styling(full_width = F, position = "center")
+#| label: tbl-lower-unemployment-rates
+#| tbl-cap: "Χαμηλότερα ποσοστά ανεργίας"
+#| tbl-subcap: 
+#| - "Ελλάδα"
+#| - "Ευρώπη των 27 (εκτός Ηνωμένου Βασιλείου)"
+#| warning: false
+#| layout-ncol: 2
+#| layout-align: center
+
+unemploymentType %>% 
+  as.tibble() %>%
+  dplyr::filter(LOCATION == "GRC") %>% 
+  select(TIMEchr, Value) %>% 
+  arrange(Value) %>%
+  head(5) %>%
+  setNames(c("Μήνας", "Ποσοστό ανεργίας (%)")) %>%
+  reactable_custom()
+
+unemploymentType %>% 
+  as.tibble() %>%
+  dplyr::filter(LOCATION == "EU27_2020") %>% 
+  select(TIMEchr, Value) %>% 
+  arrange(Value) %>%
+  head(5) %>%
+  setNames(c("Μήνας", "Ποσοστό ανεργίας (%)")) %>%
+  reactable_custom()
 ```
 
-Finally, it is evident that in the case of Greece the changes are more intense than in Europe.
+On the other hand, at the moment in Europe we are at the lowest levels of the
+last 20 years, with unemployment hovering around 6%.
+
+
+Finally, it is evident that in the case of Greece the changes are more intense
+than in Europe.
 
 All of the above can be summarized by the following graph:
 
@@ -362,17 +486,21 @@ highchart() %>%
 
 ## Εξέταση τάσης και περιοδικότητας
 
-Στην ανάλυση χρονοσειρών είναι σημαντικό να ξεχωρίσουμε τις πηγές της διασποράς μιας χρονοσειράς και να διαπιστώσουμε από που προέρχεται αυτή. Οι χρονοσειρές έχουν τρία βασικά στοιχεία, τη τάση ($T$), την εποχικότητα ($S$) και την τυχαιότητα ($E$). Η τάση αναφέρεται στην The trend refers to whether the series shows a specific direction (upward/downward). Seasonality refers to recurring patterns at regular intervals.
+Στην ανάλυση χρονοσειρών είναι σημαντικό να ξεχωρίσουμε τις πηγές της διασποράς
+μιας χρονοσειράς και να διαπιστώσουμε από που προέρχεται αυτή. Οι χρονοσειρές
+έχουν τρία βασικά στοιχεία, τη τάση ($T$), την εποχικότητα ($S$) και την
+τυχαιότητα ($E$). Η τάση αναφέρεται στην The trend refers to whether the series
+shows a specific direction (upward/downward). Seasonality refers to recurring
+patterns at regular intervals.
 
 $$
 y_t = S_t + T_t + E_t
-$$
-Όπου:
+$$ Όπου:
 
-- $y_t$ δηλώνουν τα δεδομένα που έχουμε διαθέσιμα, 
-- $S_t$ εποχική συνιστώσα
-- $T_t$ τάση χρονοσειράς
-- $E_t$ τυχαία συνιστώσα
+-   $y_t$ δηλώνουν τα δεδομένα που έχουμε διαθέσιμα,
+-   $S_t$ εποχική συνιστώσα
+-   $T_t$ τάση χρονοσειράς
+-   $E_t$ τυχαία συνιστώσα
 
 Παρόμοια, το πολλαπλασιαστικό μοντέλο:
 
@@ -380,8 +508,8 @@ $$
 y_t = S_t \cdot T_t \cdot E_t
 $$
 
-
-όπου τα στοιχεία που συνθέτουν τη χρονοσειρά πολλαπλασιάζονται, αντί να προσθέτονται.
+όπου τα στοιχεία που συνθέτουν τη χρονοσειρά πολλαπλασιάζονται, αντί να
+προσθέτονται.
 
 ```{r}
 library(forecast)
@@ -440,14 +568,12 @@ highchart(type = "stock") %>%
     hc_navigator(enabled = FALSE)
 ```
 
-
-
 ## Έλεγχος στασιμότητας
 
 ### Ορισμός στασιμότητας
 
-
-Μία σημαντική έννοια στις χρονοσειρές είναι η **στασιμότητα**. Μία χρονοσειρά καλείται στάσιμη [@appliedtimeseriespenn] αν: \br
+Μία σημαντική έννοια στις χρονοσειρές είναι η **στασιμότητα**. Μία χρονοσειρά
+καλείται στάσιμη [@appliedtimeseriespenn] αν: \br
 
 1.  $E(X_t):\text{σταθερή}$ \br
 2.  $Var(X_t): \text{σταθερή}$ \br
@@ -455,19 +581,19 @@ highchart(type = "stock") %>%
 
 ### Εξέταση στασιμότητας γραφικά
 
-::: {.panel-tabset}
-
+::: panel-tabset
 #### Level
 
-It is apparent that there is a big variation on the values of unemployment. This time series is not stationary and the differencing is justified.
-
+It is apparent that there is a big variation on the values of unemployment. This
+time series is not stationary and the differencing is justified.
 
 ```{r}
 highchart() %>%
     hc_chart(type = "line") %>%
-    hc_title(text = "Unemployment Rates") %>%
-    hc_xAxis(title = list(text = "Year")) %>%
-    hc_yAxis(title = list(text = "Value")) %>%
+    hc_title(text = "Ποσοστό ανεργίας") %>%
+    hc_subtitle(text = "Η κορύφωση της ανεργίας στην Ελλάδα συνέβη το 2013 όπου εκείνη τη περίοδο άνω του ένα τέταρτου του εργατικού δυναμικού δεν μπορούσε να βρει εργασία.") %>%
+    hc_xAxis(title = list(text = "Έτος")) %>%
+    hc_yAxis(title = list(text = "Ποσοστό ανεργίας (%)")) %>%
     hc_tooltip(shared = TRUE, valueDecimals = 2, valueSuffix = " %") %>%
     hc_add_series(
         data = g,
@@ -489,10 +615,10 @@ highchart() %>%
 )
 ```
 
-
 #### First Diff.
 
-Here we can see a big improvement in comparison with original data. I have some concerns about points close to 150 (mildly upwards trend) and 250 (outlier). 
+Here we can see a big improvement in comparison with original data. I have some
+concerns about points close to 150 (mildly upwards trend) and 250 (outlier).
 
 ```{r}
 grc_unemployment = unemployment %>% dplyr::filter(LOCATION == "GRC")
@@ -509,11 +635,10 @@ highchart() %>%
     )
 ```
 
-
 #### Second Diff.
 
-
-Given the concerns of above, I made also a second difference plot. It seems to solve the problem on points close to 150.
+Given the concerns of above, I made also a second difference plot. It seems to
+solve the problem on points close to 150.
 
 ```{r}
 
@@ -530,33 +655,70 @@ highchart() %>%
     )
 
 ```
-
-
 :::
-
 
 ### Εξέταση στασιμότητας
 
-Ο γραφικός έλεγχος της στασιμότητας είναι ένας αρκετά εύκολος τρόπος για να διαπιστώσουμε την ύπαρξη τάσεων ή αν η σειρά μας έχει γενικότερα σταθερή συμπεριφορά. Αν εξαιρέσουμε κάποιες αρκετά ξεκάθαρες περιπτώσεις, θα υπάρχουν φορές που πολλοί μπορεί να διαφωνήσουν ως προς τη στασιμότητα της σειράς απλώς από τη πορεία της. Αυτό είναι λογικό μιας και ως μέτρο είναι κατά κάποιο τρόπο υποκειμενικό μιας και βασίζεται στην  άποψη / ερμηνεία του καθενός που θα δώσει στη κίνηση της χρονοσειράς.  Έτσι λοιπόν η χρήση αυτού του τρόπου μπορεί να οδηγήσει σε μη συνεπείς ή σταθερές αποφάσεις μιας και ένα άτομο μπορεί να θεωρήσει μία ελαφριά αυξητική τάση που επανέρχεται ως στάσιμη σε και κάποιο άλλο άτομο να μεταφράσει το μοτίβο ως ισχνή αλλά υπαρκτή τάση. Σε αναλογία των ελέγχων κανονικότητας που έχουμε γραφικούς (quantile-quantile γράφημα) αλλά και στατιστικούς ελέγχους (έλεγχος Kolmogorov-Smirnov, έλεγχος Shapiro-Wilk), έτσι έχουμε ανάλογες εναλλακτικές και για τον έλεγχο στασιμότητας. Με αυτό το τρόπο μπορούμε να έχουμε ένα πιο αντικειμενικό κριτήριο για το αν οι σειρές μας είναι στάσιμες ή όχι. Κάποιοι από τους πιο γνωστούς ελέγχους στασιμότητας, οι οποίοι είναι γνωστοί και ως έλεγχοι μοναδιαίας ρίζας, είναι οι εξής:
+Ο γραφικός έλεγχος της στασιμότητας είναι ένας αρκετά εύκολος τρόπος για να
+διαπιστώσουμε την ύπαρξη τάσεων ή αν η σειρά μας έχει γενικότερα σταθερή
+συμπεριφορά. Αν εξαιρέσουμε κάποιες αρκετά ξεκάθαρες περιπτώσεις, θα υπάρχουν
+φορές που πολλοί μπορεί να διαφωνήσουν ως προς τη στασιμότητα της σειράς απλώς
+από τη πορεία της. Αυτό είναι λογικό μιας και ως μέτρο είναι κατά κάποιο τρόπο
+υποκειμενικό μιας και βασίζεται στην άποψη / ερμηνεία του καθενός που θα δώσει
+στη κίνηση της χρονοσειράς. Έτσι λοιπόν η χρήση αυτού του τρόπου μπορεί να
+οδηγήσει σε μη συνεπείς ή σταθερές αποφάσεις μιας και ένα άτομο μπορεί να
+θεωρήσει μία ελαφριά αυξητική τάση που επανέρχεται ως στάσιμη σε και κάποιο άλλο
+άτομο να μεταφράσει το μοτίβο ως ισχνή αλλά υπαρκτή τάση. Σε αναλογία των
+ελέγχων κανονικότητας που έχουμε γραφικούς (quantile-quantile γράφημα) αλλά και
+στατιστικούς ελέγχους (έλεγχος Kolmogorov-Smirnov, έλεγχος Shapiro-Wilk), έτσι
+έχουμε ανάλογες εναλλακτικές και για τον έλεγχο στασιμότητας. Με αυτό το τρόπο
+μπορούμε να έχουμε ένα πιο αντικειμενικό κριτήριο για το αν οι σειρές μας είναι
+στάσιμες ή όχι. Κάποιοι από τους πιο γνωστούς ελέγχους στασιμότητας, οι οποίοι
+είναι γνωστοί και ως έλεγχοι μοναδιαίας ρίζας, είναι οι εξής:
 
-- Ο έλεγχος DF (Dickey - Fuller)
-- Ο έλεγχος ADF (Augmented Dickey - Fuller)
-- Ο έλεγχος PP (Phillips - Perron)
-- Ο έλεγχος KPSS (Kwiatkowski - Phillips - Schmidt - Shin) και
-- Ο έλεγχος ZA (Zivot - Andrews)
+-   Ο **έλεγχος DF** (Dickey - Fuller)
+-   Ο **έλεγχος ADF** (Augmented Dickey - Fuller)
+-   Ο **έλεγχος ADF-GLS**
+-   Ο **έλεγχος PP** (Phillips - Perron)
+-   Ο **έλεγχος KPSS** (Kwiatkowski - Phillips - Schmidt - Shin) και
+-   Ο **έλεγχος ZA** (Zivot - Andrews)
 
-Και κάπου εδώ ξεκινάει το χάος που άρχισα να συνειδητοποιώ όταν ξεκίνησα να μαθαίνω την R. Χρησιμοποιώντας μία γλώσσα προγραμματισμού δεν έχουμε ωραία μενού και κουτάκια με επιλογές για τον κάθε έλεγχο. Στην R αλλά και σε άλλες γλώσσες, οπψς στη Python, υπάρχουν πακέτα που προσθέτουν λειτουργίες και δυνατότητες κάθε γλώσσας. Για τους ελέγχους στασιμότητας έχουν κατασκευαστεί αρκετά πακέτα της R, που επιτελούν παρόμοιο σκοπό. Κάποια αρκετά διάσημα πακέτα που προσφέρουν ελέγχους σταστιμότητας είναι τα:
+Και κάπου εδώ ξεκινάει το χάος που άρχισα να συνειδητοποιώ όταν ξεκίνησα να
+μαθαίνω την R. Χρησιμοποιώντας μία γλώσσα προγραμματισμού δεν έχουμε ωραία μενού
+και κουτάκια με επιλογές για τον κάθε έλεγχο. Στην R αλλά και σε άλλες γλώσσες,
+οπψς στη Python, υπάρχουν πακέτα που προσθέτουν λειτουργίες και δυνατότητες κάθε
+γλώσσας. Για τους ελέγχους στασιμότητας έχουν κατασκευαστεί αρκετά πακέτα της R,
+που επιτελούν παρόμοιο σκοπό. Κάποια αρκετά διάσημα πακέτα που προσφέρουν
+ελέγχους σταστιμότητας είναι τα:
 
-- tseries
-- urca
+-   tseries
+-   urca
 
-Οκ. Ποιο από όλα όμως να διαλέξω; Έχουν διαφορά; Θα πρέπει να μελετήσουμε προσεκτικά τις επιλογές μας. Στα έτοιμα προγράμματα το λογισμικό λαμβάνει κάποιες λογικές αποφάσεις για εμάς ή μας δίνει τη δυνατότητα να διαλέξουμε κάποιες τιμές ή ελέγχους. Όταν κάνουμε αυτή τη μετάβαση σε μία γλώσσα προγραμματισμού έχουμε την ελευθερία να δούμε πώς προέκυψε αυτό το αποτέλεσμα (μελετώντας τον αντίστοιχο κώδικα του πακέτου). Αυτή η αυξημένη ελευθερία κινήσεων συνοδεύεται με αυξημένες ευθύνες από τη μεριά του αναλυτή αφού θα πρέπει να ελέγξει τι υπολογίζει το κάθε πακέτο, ποιες είναι οι δυνατότητές του και οι περιορισμοί του. Σε αυτή τη περίπτωση και τα τρία πακέτα και ειδικά τα δύο πρώτα, το tseries και το urca προωθούνται ως πακέτα που παρέχουν ελέγχους στασιμότητας, δηλαδή παρόμοια λειτουργικότητα . Εν συντομία, το πακέτο `tseries` με το οποίο έχω τη μεγαλύτερη εξοικείωση είναι αυτό που είναι αρκετά περιοριστικό. Παρά το γεγονός ότι πολλοί οδηγοί χρησιμοποιούν αυτό το πακέτο, συνειδητοποίησα ότι δεν μπορούσα να θέσω τα lags για τους ελέγχους ή να θέσω χαρακτηριστικά της χρονοσειράς, όπως αν έχει (αυξητική ή μειούμενη) τάση. Από την άλλη μεριά έχουμε το πακέτο `urca`, το οποίο απαντάει σε αυτούς τους περιορισμούς επιτρέποντας στους χρήστες να θέτουν τον αριθμό των lags καθώς και στοιχεία της χρονοσειράς. Το μοναδικό μειονέκτημα του `urca` πακέτου είναι η μη παροχή ενός p-value στα αποτελέσματα των ελέγχων του, το οποίο είναι και το πιο γνωστό μέτρο ερμηνείας των ελέγχων. Για τον έλεγχο της υπόθεσης υπολογίζεται η στατιστική τιμή και ελέγχεται με την αντίστοιχη κριτική τιμή και αν η στατιστική τιμή είναι μεγαλύτερη της τελευταίας τότε ο έλεγχος απορρίπτεται στο αντίστοιχο επίπεδο σημαντικότητας.
-
+Οκ. Ποιο από όλα όμως να διαλέξω; Έχουν διαφορά; Θα πρέπει να μελετήσουμε
+προσεκτικά τις επιλογές μας. Στα έτοιμα προγράμματα το λογισμικό λαμβάνει
+κάποιες λογικές αποφάσεις για εμάς ή μας δίνει τη δυνατότητα να διαλέξουμε
+κάποιες τιμές ή ελέγχους. Όταν κάνουμε αυτή τη μετάβαση σε μία γλώσσα
+προγραμματισμού έχουμε την ελευθερία να δούμε πώς προέκυψε αυτό το αποτέλεσμα
+(μελετώντας τον αντίστοιχο κώδικα του πακέτου). Αυτή η αυξημένη ελευθερία
+κινήσεων συνοδεύεται με αυξημένες ευθύνες από τη μεριά του αναλυτή αφού θα
+πρέπει να ελέγξει τι υπολογίζει το κάθε πακέτο, ποιες είναι οι δυνατότητές του
+και οι περιορισμοί του. Σε αυτή τη περίπτωση και τα τρία πακέτα και ειδικά τα
+δύο πρώτα, το tseries και το urca προωθούνται ως πακέτα που παρέχουν ελέγχους
+στασιμότητας, δηλαδή παρόμοια λειτουργικότητα . Εν συντομία, το πακέτο `tseries`
+με το οποίο έχω τη μεγαλύτερη εξοικείωση είναι αυτό που είναι αρκετά
+περιοριστικό. Παρά το γεγονός ότι πολλοί οδηγοί χρησιμοποιούν αυτό το πακέτο,
+συνειδητοποίησα ότι δεν μπορούσα να θέσω τα lags για τους ελέγχους ή να θέσω
+χαρακτηριστικά της χρονοσειράς, όπως αν έχει (αυξητική ή μειούμενη) τάση. Από
+την άλλη μεριά έχουμε το πακέτο `urca`, το οποίο απαντάει σε αυτούς τους
+περιορισμούς επιτρέποντας στους χρήστες να θέτουν τον αριθμό των lags καθώς και
+στοιχεία της χρονοσειράς. Το μοναδικό μειονέκτημα του `urca` πακέτου είναι η μη
+παροχή ενός p-value στα αποτελέσματα των ελέγχων του, το οποίο είναι και το πιο
+γνωστό μέτρο ερμηνείας των ελέγχων. Για τον έλεγχο της υπόθεσης υπολογίζεται η
+στατιστική τιμή και ελέγχεται με την αντίστοιχη κριτική τιμή και αν η στατιστική
+τιμή είναι μεγαλύτερη της τελευταίας τότε ο έλεγχος απορρίπτεται στο αντίστοιχο
+επίπεδο σημαντικότητας.
 
 #### Σύνοψη αποτελεσμάτων
-
-
-
 
 ```{r}
 summary_stationarity_results <- data.frame(
@@ -570,15 +732,19 @@ summary_stationarity_results <- data.frame(
 summary_stationarity_results  %>% kbl() %>% kable_styling() 
 ```
 
-### Έλεγχος DF
+#### Έλεγχος DF
 
-Ο έλεγχος Dickey - Fuller είναι ένας από τους πιο απλούς ελέγχους μοναδιαίας ρίζας για να διαπιστώσουμε τη στασιμότητα ή μη μίας χρονοσειράς. Αυτός ο έλεγχος βασίζεται στο αυτοπαλίνδρομο μοντέλο:
+Ο έλεγχος Dickey - Fuller είναι ένας από τους πιο απλούς ελέγχους μοναδιαίας
+ρίζας για να διαπιστώσουμε τη στασιμότητα ή μη μίας χρονοσειράς. Αυτός ο έλεγχος
+βασίζεται στο αυτοπαλίνδρομο μοντέλο πρώτης τάξης, $\text{AR}(1)$:
 
 $$
-y_t = \rho y_{t-1} + e_t
+y_t = \phi y_{t-1} + e_t
 $$
 
-Όπου $y_t$ είναι η τιμή της χρονοσειράς και το $e_t$ ο όρος του σφάλματος. Δηλαδή είναι μία χρονοσειρά που η τιμές της επηρεάζονται - εξαρτώνται από τις προηγούμενες τιμές της.
+Όπου $y_t$ είναι η τιμή της χρονοσειράς και το $e_t$ ο όρος του σφάλματος.
+Δηλαδή είναι μία χρονοσειρά που η τιμές της επηρεάζονται - εξαρτώνται από τις
+προηγούμενες τιμές της.
 
 $$
 \begin{equation}
@@ -586,29 +752,54 @@ $$
 y_t & = \rho y_{t-1} + e_t \\ \\
 y_t - y_{t-1}& = \rho y_{t-1} - y_{t-1} + e_t \\ \\
 \Delta y_t & = (\rho - 1) y_{t-1} + e_t \\ \\
-\Delta y_t & = \delta y_{t-1} + e_t
+\Delta y_t & = \gamma y_{t-1} + e_t
 \end{split}
 \end{equation}
 $$
 
-Ο έλεγχος έχει συγκεκριμένες παραλλαγές οι οποίες βασίζονται στη συμπεριφορά της εκάστοτε χρονοσειράς. Πιο συγκεκριμένα υπάρχουν τρεις παραλλαγές:
+Ο έλεγχος έχει συγκεκριμένες παραλλαγές οι οποίες βασίζονται στη συμπεριφορά της
+εκάστοτε χρονοσειράς. Πιο συγκεκριμένα υπάρχουν τρεις παραλλαγές:
 
-- Χωρίς σταθερό όρο και χωρίς τάση, όπου η χρονοσειρά κινείται γύρω από το μηδέν και έχει τη μορφή που γράψαμε παραπάνω:  $\Delta y_t & = \delta y_{t-1} + e_t$
-- Με σταθερό όρο, όταν η χρονοσειρά κινείται γύρω από μία σταθερή τιμή (διάφορη του μηδενός) : $\Delta y_t & = \alpha + \delta y_{t-1} + e_t$ και
-- Με σταθερό όρο και τάση, όταν η χρονοσειρά φαίνεται με το πέρασμα του χρόνου να έχιε πτωτική ή αυξανώμενη πορεία: $\Delta y_t & = \alpha + \beta t \delta y_{t-1} + e_t$
-
-
+-   Χωρίς σταθερό όρο και χωρίς τάση, όπου η χρονοσειρά κινείται γύρω από το
+    μηδέν και έχει τη μορφή που γράψαμε παραπάνω:
+    $$\Delta y_t = \gamma y_{t-1} + e_t$$
+-   Με σταθερό όρο, όταν η χρονοσειρά κινείται γύρω από μία σταθερή τιμή
+    (διάφορη του μηδενός) : $$\Delta y_t = \alpha + \gamma y_{t-1} + e_t$$ και
+-   Με σταθερό όρο και τάση, όταν η χρονοσειρά φαίνεται με το πέρασμα του χρόνου
+    να έχει πτωτική ή αυξανώμενη πορεία:
+    $$\Delta y_t = \alpha + \beta t + \gamma y_{t-1} + e_t$$
 
 #### Έλεγχος ADF
 
-Ένας απο τους πιο χρησιμοποιούμενους ελέγχους μοναδιαίας ρίζας - στασιμότητας είναι ο **επαυξημένος έλεγχος ADF** (Augmented Dickey - Fuller) και αποτελεί βελτίωση του ελέγχου DF (Dickey - Fuller). 
+Ένας απο τους πιο χρησιμοποιούμενους ελέγχους μοναδιαίας ρίζας - στασιμότητας
+είναι ο **επαυξημένος έλεγχος ADF** (Augmented Dickey - Fuller) και αποτελεί
+γενίκευση του απλού ελέγχου Dickey - Fuller, μιας και εξαρτάτει από ένα
+αυτοπαλίνδρομο μοντέλο μεγαλύτερης τάξης ($\rho >1$). Δηλαδή εννοούμε ότι η τιμή
+της χρονοσειράς δεν εξαρτάται μόνο από τη προηγούμενη τιμή της αλλά και από
+άλλες $\rho$ προηγούμενες. Ένα αυτοπαλίνδρομο μοντέλο $\rho$ τάξης έχει την εξής
+μορφή:
 
+$$y_t = \phi_1 y_{t-1} + \phi_2 y_{t-2} + \cdots + \phi_p y_{t-p} + \epsilon_t$$
+Αντίστοιχα με τον απλό έλεγχο Dickey-Fuller υπάρχουν ορίζονται παραλλαγές οι
+οποίες βασίζονται στη συμπεριφορά της εκάστοτε χρονοσειράς:
 
+-   Χωρίς σταθερό όρο και χωρίς τάση, όπου η χρονοσειρά κινείται γύρω από το
+    μηδέν και έχει τη μορφή που γράψαμε παραπάνω:
+    $$\Delta y_t = \gamma y_{t-1} + \sum\limits_{i=1}^{p} \delta_i \Delta y_{t-i}+ u_t$$
+-   Με σταθερό όρο, όταν η χρονοσειρά κινείται γύρω από μία σταθερή τιμή
+    (διάφορη του μηδενός) :
+    $$\Delta y_t = \alpha + \gamma y_{t-1} + \sum\limits_{i=1}^{p} \delta_i \Delta y_{t-i}+ u_t$$
+    και
+-   Με σταθερό όρο και τάση, όταν η χρονοσειρά φαίνεται με το πέρασμα του χρόνου
+    να έχει πτωτική ή αυξανώμενη πορεία:
+    $$\Delta y_t = \alpha + \beta_t + \gamma y_{t-1} + \sum\limits_{i=1}^{p} \delta_i \Delta y_{t-i}+ u_t$$
+
+Ο **έλεγχος ADF** έχει την εξής μορφή υποθέσεων:
 $$
-H_0 : \text{The time series has a unit root} \\
-H_1 : \text{The time series has not a unit root} 
+H_0 : \gamma  = 0  \textsf{, η σειρά δεν είναι στασιμη}\\
+H_1 : \gamma \neq 0 \text{, η σειρά είναι στασιμη}
 $$
-Selecting the lags
+Δηλαδή, αν τα αποτελέσματά μου απορρίψουν τη μηδενική υπόθεση τότε αυτό μας υποδεικνύει ότι η χρονοσειρά είναι στάσιμη. Ας εφαρμόσουμε τον παραπάνω έλεγχο για την ανεργία της Ελλάδας και της Ευρώπης.
 
 ```{r}
 library(vars)
@@ -619,55 +810,11 @@ G = VARselect(grc_unemployment$Value, lag.max = 20, type = "const")
 
 
 
-```{r}
-get_adf_results = function(variable){
+Συνεπώς, είναι προφανές από τα αποτελέσματα του στατιστικού ελέγχου Dickey
+Fuller ότι η χρονοσειρά μου δεν είναι στάσιμη. Θα πρέπει να εφαρμόσω τον έλεγχο
+Dickey-Fuller στις δοαφορές.
 
-    # Ensure variable is numeric (e.g., a time series or numeric vector)
-    if (!is.numeric(variable)) {
-        stop("Input variable must be numeric.")
-    }
-    
-    # Perform ADF tests
-    adf_orig = adf.test(variable)
-    adf_diff1 = adf.test(diff(variable, differences = 1))
-    adf_diff2 = adf.test(diff(variable, differences = 2))
-    
-    # Extract results
-    adf_table = data.frame(
-        "Transformation" = c("Level", "1st Difference", "2nd Difference"),
-        "Dickey-Fuller" = c(
-            adf_orig$statistic[["Dickey-Fuller"]],
-            adf_diff1$statistic[["Dickey-Fuller"]],
-            adf_diff2$statistic[["Dickey-Fuller"]]
-        ),
-        "Lag Order" = c(
-            adf_orig$parameter[["Lag order"]],
-            adf_diff1$parameter[["Lag order"]],
-            adf_diff2$parameter[["Lag order"]]
-        ),
-        "p-value" = c(
-            adf_orig$p.value,
-            adf_diff1$p.value,
-            adf_diff2$p.value
-        )
-    ) %>%
-        kbl(digits = 5) %>%
-        kable_styling(full_width = FALSE)
-    
-    return(adf_table)
-}
-```
-
-```{r, warning = FALSE}
-#| tbl-cap: "Augmented Dickey-Fuller test results"
-get_adf_results(grc_unemployment$Value)
-```
-
-Συνεπώς, είναι προφανές από τα αποτελέσματα του
-στατιστικού ελέγχου Dickey Fuller ότι η χρονοσειρά μου δεν είναι στάσιμη. Θα πρέπει να εφαρμόσω τον έλεγχο Dickey-Fuller στις δοαφορές.
-
-
-#### PP  test
+#### PP test
 
 $$
 H_0 : \text{The time series has a unit root} \\
@@ -719,14 +866,12 @@ get_pp_results = function(variable){
 get_pp_results(grc_unemployment$Value)
 ```
 
-
 #### KPSS test
 
 $$
 H_0 : \text{The time series has not a unit root} \\
 H_1 : \text{Alternatively} 
 $$
-
 
 ```{r}
 get_kpss_results = function(variable){
@@ -772,71 +917,67 @@ get_kpss_results = function(variable){
 get_kpss_results(grc_unemployment$Value)
 ```
 
-
 ## Identify Model
 
-::: {.panel-tabset}
-
-
-
+:::::::::::: panel-tabset
 ### Levels
 
-::: grid
+::::: grid
 ::: {.g-col-12 .g-col-md-6}
 ```{r, fig.height=4}
 acf_plot_function(unemployment$Value, min=-0.2, max=1)
 ```
 :::
+
 ::: {.g-col-12 .g-col-md-6}
 ```{r, fig.height=4}
 pacf_plot_function(unemployment$Value, min=-0.2, max=1)
 ```
 :::
-:::
+:::::
 
 ### First Diff.
 
-::: grid
+::::: grid
 ::: {.g-col-12 .g-col-md-6}
 ```{r, fig.height=4}
 acf_plot_function(grc_unemployment_diff1, min=-0.1, max = 0.6)
 ```
 :::
+
 ::: {.g-col-12 .g-col-md-6}
 ```{r, fig.height=4}
 pacf_plot_function(grc_unemployment_diff1, min=-0.2, max=0.5)
 ```
 :::
-:::
+:::::
 
 ### Second Diff.
 
-::: grid
+::::: grid
 ::: {.g-col-12 .g-col-md-6}
 ```{r, fig.height=4}
 acf_plot_function(grc_unemployment_diff2, min=-0.5, max = 0.5)
 ```
 :::
+
 ::: {.g-col-12 .g-col-md-6}
 ```{r, fig.height=4}
 pacf_plot_function(grc_unemployment_diff2, min=-0.5, max = 0.5)
 ```
 :::
-:::
-
-:::
+:::::
+::::::::::::
 
 ## Build Time Series Model
 
-::: {.panel-tabset}
-
+::: panel-tabset
 ### Automated model
 
 ```{r}
 auto_model <- auto.arima(grc_unemployment$Value, trace = T,seasonal = TRUE)
 auto_model 
 ```
-
 
 ### ARIMA candidate 1
 
@@ -845,7 +986,6 @@ arimaModel_1=arima(grc_unemployment$Value, order=c(0,1,2))
 arimaModel_1
 ```
 
-
 ### ARIMA candidate 2
 
 ```{r}
@@ -853,22 +993,19 @@ arimaModel_2=arima(grc_unemployment$Value, order=c(1,1,2))
 arimaModel_2
 ```
 
-
 ### ARIMA candidate 3
 
 ```{r}
 arimaModel_3=arima(grc_unemployment$Value, order=c(9,2,1))
 arimaModel_3
 ```
-
 :::
 
 ## Compare Models
 
-After building some ARIMA models, I should
-decide which is the best one to make my estimations. One metric to evaluate those models is **AIC** (Akaike Information Criterion). The lower the value of AIC, the better my model.
-
-
+After building some ARIMA models, I should decide which is the best one to make
+my estimations. One metric to evaluate those models is **AIC** (Akaike
+Information Criterion). The lower the value of AIC, the better my model.
 
 ```{r}
 accuracy_table <- data.frame(
@@ -881,17 +1018,17 @@ accuracy_table <- data.frame(
 accuracy_table %>% kbl() %>% kable_styling()
 ```
 
-So, the best model is the Auto Model (ARIMA(9,2,1)), which has the lowest AIC value. 
-
+So, the best model is the Auto Model (ARIMA(9,2,1)), which has the lowest AIC
+value.
 
 ## Checking best models
 
-
-
-
 ## Forecast Future Unemployment
 
-Previously, I identify which is the best model. Now, I will use this model in order to predict unemployment for the next 6 months. It should be recalled that the last available value was from August of 2022 (12.2\%). Therefore, I will make a prediction for unemployment in Greece until February 2023.
+Previously, I identify which is the best model. Now, I will use this model in
+order to predict unemployment for the next 6 months. It should be recalled that
+the last available value was from August of 2022 (12.2%). Therefore, I will make
+a prediction for unemployment in Greece until February 2023.
 
 ### ARIMA (0,2,1) forecasts
 
@@ -967,8 +1104,16 @@ Previously, I identify which is the best model. Now, I will use this model in or
 
 ## Results
 
-Given the diagram as well as the forecast table (of the best performing model, candidate #3), I conclude that a reduction in unemployment in Greece is expected in the next period of time (in the next six months). More specifically, **Greece's unemployment** in **February 2023** will range between **10\%** (9.4\%) and **13\%** (14\%) with an **80\%** (95\%) probability (based on **ARIMA(9,2,1)** model).
+Given the diagram as well as the forecast table (of the best performing model,
+candidate #3), I conclude that a reduction in unemployment in Greece is expected
+in the next period of time (in the next six months). More specifically,
+**Greece's unemployment** in **February 2023** will range between **10%** (9.4%)
+and **13%** (14%) with an **80%** (95%) probability (based on **ARIMA(9,2,1)**
+model).
 
 ## Ευχαριστίες {.appendix .unlisted}
 
-Φωτογραφία από <a href="https://pixabay.com/el/users/roszie-6000120/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=7386581">Rosy / Bad Homburg / Germany</a> από το <a href="https://pixabay.com/el//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=7386581">Pixabay</a>
+Φωτογραφία από
+<a href="https://pixabay.com/el/users/roszie-6000120/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=7386581">Rosy
+/ Bad Homburg / Germany</a> από το
+<a href="https://pixabay.com/el//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=7386581">Pixabay</a>
