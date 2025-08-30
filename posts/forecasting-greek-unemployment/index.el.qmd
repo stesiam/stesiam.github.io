@@ -100,9 +100,9 @@ library(tibble)
 # Graphs
 
 library(highcharter)
-
+library(glue)
 # Time Series 
-
+library(urca)
 library(lubridate)
 library(tseries)
 library(forecast)
@@ -286,8 +286,8 @@ reactable_custom(unemployment)
 ονόματα αυτών και άρα θα είναι ένα διάνυσμα χαρακτήρων.
 
 ```{r}
-#| label: fig-extract_type_of_variables-before
-#| fig-cap: "Σύνοψη τύπων μεταβλητών (χωρίς προεπεξεργασία)"
+#| label: tbl-extract_type_of_variables-before
+#| tbl-cap: "Σύνοψη τύπων μεταβλητών (χωρίς προεπεξεργασία)"
 map_chr(unemployment, class) %>% 
   enframe("Όνομα μεταβλητής", "Τύπος μεταβλητής") %>%
   reactable_custom() 
@@ -310,8 +310,8 @@ unemploymentType <- unemployment %>%
 ήταν επιτυχημένη.
 
 ```{r}
-#| label: fig-extract_type_of_variables-after
-#| fig-cap: "Σύνοψη τύπων μεταβλητών (μετά από προεπεξεργασία)"
+#| label: tbl-extract_type_of_variables-after
+#| tbl-cap: "Σύνοψη τύπων μεταβλητών (μετά από προεπεξεργασία)"
 map_chr(unemployment, class) %>% 
   enframe("Όνομα μεταβλητής", "Τύπος μεταβλητής") %>%
   reactable_custom() 
@@ -340,7 +340,6 @@ sum(is.na(unemployment))
 unemploymentType$TIMEchr <- format(unemploymentType$TIME, "%Y %b")
 ```
 
-
 ```{r}
 #| label: tbl-higher-unemployment-rates
 #| tbl-cap: "Υψηλότερα ποσοστά ανεργίας"
@@ -349,6 +348,9 @@ unemploymentType$TIMEchr <- format(unemploymentType$TIME, "%Y %b")
 #| - "Ευρώπη των 27 (εκτός Ηνωμένου Βασιλείου)"
 #| warning: false
 #| layout-ncol: 2
+#| layout-align: center
+#| layout-valign: center
+
 
 unemploymentType %>% 
   as.tibble() %>%
@@ -382,6 +384,7 @@ unemploymentType %>%
 #| warning: false
 #| layout-ncol: 2
 #| layout-align: center
+#| layout-valign: center
 
 unemploymentType %>% 
   as.tibble() %>%
@@ -582,7 +585,7 @@ highchart(type = "stock") %>%
 ### Εξέταση στασιμότητας γραφικά
 
 ::: panel-tabset
-#### Level
+#### Παρατήρηση
 
 It is apparent that there is a big variation on the values of unemployment. This
 time series is not stationary and the differencing is justified.
@@ -615,7 +618,7 @@ highchart() %>%
 )
 ```
 
-#### First Diff.
+#### Πρώτη διαφορά
 
 Here we can see a big improvement in comparison with original data. I have some
 concerns about points close to 150 (mildly upwards trend) and 250 (outlier).
@@ -635,8 +638,7 @@ highchart() %>%
     )
 ```
 
-#### Second Diff.
-
+#### Δεύτερη διαφορά
 Given the concerns of above, I made also a second difference plot. It seems to
 solve the problem on points close to 150.
 
@@ -657,7 +659,7 @@ highchart() %>%
 ```
 :::
 
-### Εξέταση στασιμότητας
+### Εξέταση στασιμότητας με στατιστικούς ελέγχους
 
 Ο γραφικός έλεγχος της στασιμότητας είναι ένας αρκετά εύκολος τρόπος για να
 διαπιστώσουμε την ύπαρξη τάσεων ή αν η σειρά μας έχει γενικότερα σταθερή
@@ -799,123 +801,164 @@ $$
 H_0 : \gamma  = 0  \textsf{, η σειρά δεν είναι στασιμη}\\
 H_1 : \gamma \neq 0 \text{, η σειρά είναι στασιμη}
 $$
-Δηλαδή, αν τα αποτελέσματά μου απορρίψουν τη μηδενική υπόθεση τότε αυτό μας υποδεικνύει ότι η χρονοσειρά είναι στάσιμη. Ας εφαρμόσουμε τον παραπάνω έλεγχο για την ανεργία της Ελλάδας και της Ευρώπης.
+Δηλαδή, αν τα αποτελέσματά μου απορρίψουν τη μηδενική υπόθεση τότε αυτό μας υποδεικνύει ότι η χρονοσειρά είναι στάσιμη. Ας εφαρμόσουμε τον παραπάνω έλεγχο για την ανεργία της Ελλάδας και της Ευρώπης. Όμως πριν το κάνω αυτό θα πρέπει να διαπιστώσω πόσες χρονικές υστερήσεις (lags) πρέπει να λάβω υπόψιν μου. 
+
+
 
 ```{r}
+#| label: tbl-adf-results
+#| tbl-cap: "Αποτελέσματα επαυξημένου ελέγχου Dickey - Fuller (ADF)"
+types <- c("none", "drift", "trend")
+
+# run ur.df for each case
+results <- lapply(types, function(t) {
+    ur.df(grc_unemployment$Value, type = t, lags = 10, selectlags = "Fixed")
+})
+
+result_table <- data.frame(
+    "Έλεγχος" = c("ADF (none)", "ADF (drift)", "ADF (trend)"),
+    "Στατιστική Τιμή" = c(round(results[[1]]@teststat[1], 3),
+                          round(results[[2]]@teststat[1], 3),
+                          round(results[[3]]@teststat[1], 3)),
+    "Υστέρηση" = c(results[[1]]@lags, 
+                   results[[2]]@lags,
+                   results[[3]]@lags),
+    "Κρίσιμη Τιμή (1%)" = c(results[[1]]@cval[1,1],
+                            results[[2]]@cval[1,1],
+                            results[[3]]@cval[1,1]),
+    "Κρίσιμη Τιμή (5%)" = c(results[[1]]@cval[1,2],
+                            results[[2]]@cval[1,2],
+                            results[[3]]@cval[1,2]),
+    check.names = FALSE
+)
+
+result_table %>% reactable_custom()
+```
+
+
+```{r}
+#| message: false
 library(vars)
 G = VARselect(grc_unemployment$Value, lag.max = 20, type = "const")
-
-
 ```
 
 
-
-Συνεπώς, είναι προφανές από τα αποτελέσματα του στατιστικού ελέγχου Dickey
-Fuller ότι η χρονοσειρά μου δεν είναι στάσιμη. Θα πρέπει να εφαρμόσω τον έλεγχο
-Dickey-Fuller στις δοαφορές.
-
-#### PP test
-
-$$
-H_0 : \text{The time series has a unit root} \\
-H_1 : \text{The time series has not a unit root} 
-$$
+Με δεδομένο ότι τα αποτελέσματα του πίνακα [@tbl-adf-results] δεν είναι στατιστικά σημαντικά μπορώ να συμπεράνω ότι η χρονοσειρά μου δεν είναι στάσιμη. Συνεπώς η χρήση των διαφορών των παρατηρήσεων έχει νόημα και ο επανέλεγχος αυτών ως προς τη στασιμότητα. Αξίζει να υπενθυμίοσουμε ότι αυτές τις διαφορές τις έχουμε στο Σχήμα [].. και σε αυτό το σχήμα παρατηρούμε ότι εξαλείφθηκε τόσο η τάση όσο και η τάση να κυμαίνεται η παρατήρησή μας σε τιμές διάφορες τιυ μηδενός. Έτσι το πιο ακριβές σε αυτή τη περίπτωση είναι να κρίνουμε τον έλεγχο ως προς το πιο απλό μοντέλο του όπου δεν έχει ούτε σταθερό όρο (drift), ούτε και κάποιου είδους τάση. Στα αποτελέσματα για λόγους πληρότητας θα συμπεριλάβουν όλες τις περιπτώσεις.
 
 ```{r}
-get_pp_results = function(variable){
+#| label: tbl-adf-results-diff1
+#| tbl-cap: "Αποτελέσματα επαυξημένου ελέγχου Dickey - Fuller (ADF) στις διαφορές των αρχικών παρατηρήσεων"
+types <- c("none", "drift", "trend")
 
-    # Ensure variable is numeric (e.g., a time series or numeric vector)
-    if (!is.numeric(variable)) {
-        stop("Input variable must be numeric.")
-    }
-    
-    # Perform ADF tests
-    pp_orig = pp.test(variable)
-    pp_diff1 = pp.test(diff(variable, differences = 1))
-    pp_diff2 = pp.test(diff(variable, differences = 2))
-    
-    # Extract results
-    pp_table = data.frame(
-        "Transformation" = c("Level", "1st Difference", "2nd Difference"),
-        "Phillips-Perron" = c(
-            pp_orig$statistic[["Dickey-Fuller Z(alpha)"]],
-            pp_diff1$statistic[["Dickey-Fuller Z(alpha)"]],
-            pp_diff2$statistic[["Dickey-Fuller Z(alpha)"]]
-        ),
-        "Lag Order" = c(
-            pp_orig[["parameter"]][["Truncation lag parameter"]],
-            pp_diff1[["parameter"]][["Truncation lag parameter"]],
-            pp_diff2[["parameter"]][["Truncation lag parameter"]]
-        ),
-        "p-value" = c(
-            pp_orig$p.value,
-            pp_diff1$p.value,
-            pp_diff2$p.value
-        )
-    ) %>%
-        kbl(digits = 5) %>%
-        kable_styling(full_width = FALSE)
-    
-    return(pp_table)
-}
+# run ur.df for each case
+results <- lapply(types, function(t) {
+    ur.df(diff(grc_unemployment$Value, 1), type = t, lags = 10, selectlags = "Fixed")
+})
+
+result_table <- data.frame(
+    "Έλεγχος" = c("ADF (none)", "ADF (drift)", "ADF (trend)"),
+    "Στατιστική Τιμή" = c(glue(round(results[[1]]@teststat[1], 3), "*"),
+                          round(results[[2]]@teststat[1], 3),
+                          round(results[[3]]@teststat[1], 3)),
+    "Υστέρηση" = c(results[[1]]@lags, 
+                   results[[2]]@lags,
+                   results[[3]]@lags),
+    "Κρίσιμη Τιμή (1%)" = c(results[[1]]@cval[1,1],
+                            results[[2]]@cval[1,1],
+                            results[[3]]@cval[1,1]),
+    "Κρίσιμη Τιμή (5%)" = c(results[[1]]@cval[1,2],
+                            results[[2]]@cval[1,2],
+                            results[[3]]@cval[1,2]),
+    check.names = FALSE
+)
+
+result_table %>% reactable_custom()
 ```
 
-```{r, warning = FALSE}
+Αφού η στατιστική τιμή (-2.119) είναι μικρότερη της αντίστοιχης κρίσιμης τιμής (-1.95), τότε μπορούμε να απορρίψουμε την μηδενική υπόθεση μη στασιμότητας για τις διαφορές των αρχικών παρατηρήσεων της ανεργίας στην Ελλάδα, σε επίπεδο σημαντικότητας 5\%.
+
+
+#### Έλεγχος PP
+
+Άλλος ένας έλεγχος στασιμότητας είναι ο έλεγχος Phillips - Perron. Η λογική είναι ίδια με τον ADF, μιας και η υπόθεση έχει την ίδια μορφή, 
+
+$$
+H_0 : \text{Η σειρά δεν είναι στάσιμη} \\
+H_1 : \text{Η σειρά είναι στάσιμη} 
+$$
+Όπου πάλι στόχος μας είναι η απόρριψη της μηδενικής υπόθεσης. 
+
+
+```{r}
+#| label: tbl-pp-results
 #| tbl-cap: "Phillips-Perron test results"
 #| warning: false
-get_pp_results(grc_unemployment$Value)
+types <- c("constant", "trend")
+
+# run ur.df for each case
+results <- lapply(types, function(t) {
+    ur.pp(grc_unemployment$Value, type = "Z-tau", model = t,
+         use.lag = 10)
+})
+
+result_table <- data.frame(
+    "Έλεγχος" = c("PP (constant)", "PP (trend)"),
+    "Στατιστική Τιμή" = c(round(results[[1]]@teststat[1], 3),
+                          round(results[[2]]@teststat[1], 3)),
+    "Υστέρηση" = c(10, 
+                   10),
+    "Κρίσιμη Τιμή (1%)" = c(round(results[[1]]@cval[1,1], 3),
+                            round(results[[2]]@cval[1,1],3)),
+    "Κρίσιμη Τιμή (5%)" = c(round(results[[1]]@cval[1,2],3),
+                            round(results[[2]]@cval[1,2],3)),
+    check.names = FALSE
+)
+
+result_table %>% reactable_custom()
 ```
 
-#### KPSS test
-
-$$
-H_0 : \text{The time series has not a unit root} \\
-H_1 : \text{Alternatively} 
-$$
+Ενώ για τα 
 
 ```{r}
-get_kpss_results = function(variable){
+#| label: tbl-pp-results-diff
+#| tbl-cap: "Phillips-Perron test results"
+#| warning: false
+types <- c("constant", "trend")
 
-    # Ensure variable is numeric (e.g., a time series or numeric vector)
-    if (!is.numeric(variable)) {
-        stop("Input variable must be numeric.")
-    }
-    
-    # Perform ADF tests
-    kpss_orig = kpss.test(variable)
-    kpss_diff1 = kpss.test(diff(variable, differences = 1))
-    kpss_diff2 = kpss.test(diff(variable, differences = 2))
-    
-    # Extract results
-    pp_table = data.frame(
-        "Transformation" = c("Level", "1st Difference", "2nd Difference"),
-        "KPSS" = c(
-            kpss_orig[["statistic"]][["KPSS Level"]],
-            kpss_diff1[["statistic"]][["KPSS Level"]],
-            kpss_diff2[["statistic"]][["KPSS Level"]]
-        ),
-        "Lag Order" = c(
-            kpss_orig[["parameter"]][["Truncation lag parameter"]],
-            kpss_diff1[["parameter"]][["Truncation lag parameter"]],
-            kpss_diff2[["parameter"]][["Truncation lag parameter"]]
-        ),
-        "p-value" = c(
-            kpss_orig$p.value,
-            kpss_diff1$p.value,
-            kpss_diff2$p.value
-        )
-    ) %>%
-        kbl(digits = 5) %>%
-        kable_styling(full_width = FALSE)
-    
-    return(pp_table)
-}
+# run ur.df for each case
+results <- lapply(types, function(t) {
+    ur.pp(diff(grc_unemployment$Value,1), type = "Z-tau", model = t,
+         use.lag = 10)
+})
+
+result_table <- data.frame(
+    "Έλεγχος" = c("PP (constant)", "PP (trend)"),
+    "Στατιστική Τιμή" = c(round(results[[1]]@teststat[1], 3),
+                          round(results[[2]]@teststat[1], 3)),
+    "Υστέρηση" = c(10, 
+                   10),
+    "Κρίσιμη Τιμή (1%)" = c(round(results[[1]]@cval[1,1], 3),
+                            round(results[[2]]@cval[1,1],3)),
+    "Κρίσιμη Τιμή (5%)" = c(round(results[[1]]@cval[1,2],3),
+                            round(results[[2]]@cval[1,2],3)),
+    check.names = FALSE
+)
+
+result_table %>% reactable_custom()
 ```
 
-```{r, warning = FALSE}
-#| tbl-cap: "KPSS test results"
-get_kpss_results(grc_unemployment$Value)
-```
+Συνεπώς, έχουμε απόρριψη της μηδενικής ($H_0$) υπόθεσης, στις διαφορές των αρχικών δεδομένων μου. Δηλαδή ο έλεγχος PP επιβεβαίωσε τα ευρήματα του ελέγχου ADF.
+
+#### Έλεγχος KPSS
+
+Ένας ακόμα έλεγχος μαναδιαίας ρίζας αλλά έχει αντίθετη λογική αφού η μηδενική του υπόθεση είναι η στασιμότητα, έναντι της μη σταιμότητας. Αυτή η υπόθεση είναι η αντίθετη από αυτή που εξετάσαμε με τους προηγούμενους δύο ελέγχους.
+
+$$
+H_0 : \text{Η σειρά είναι στάσιμη} \\
+H_1 : \text{Η σειρά δεν είναι στάσιμη} 
+$$
+
+
 
 ## Identify Model
 
@@ -969,7 +1012,7 @@ pacf_plot_function(grc_unemployment_diff2, min=-0.5, max = 0.5)
 :::::
 ::::::::::::
 
-## Build Time Series Model
+## Κατασκευή μοντέλου χρονοσειράς
 
 ::: panel-tabset
 ### Automated model
