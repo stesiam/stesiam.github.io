@@ -2,8 +2,7 @@
 title: "Προβλέποντας την Ανεργία στην Ελλάδα"
 author: "stesiam"
 lang: el
-description: |
-  Μία βραχυπρόθεσμη πρόβλεψη για την πορεία την ανεργίας τους επόμενους μήνες στην Ελλάδα, χρησιμοποιώντας μοντέλα ARIMA.
+description: "Μία βραχυπρόθεσμη πρόβλεψη για την πορεία την ανεργίας τους επόμενους μήνες στην Ελλάδα, χρησιμοποιώντας μοντέλα ARIMA."
 freeze: false
 link-external-newwindow: true
 categories: [R, Χρονοσειρες]
@@ -21,10 +20,8 @@ csl: apa-6th-edition.csl
 bibliography: [packages.bib, references.bib]
 format: 
   html:
-    freeze: false
     code-link: true
     code-fold: true
-    code-summary: "Show the code"
     code-tools: 
       source: https://github.com/stesiam/stesiam.github.io/blob/gh-pages/posts/el/forecasting-greek-unemployment/index.el.qmd
 execute:
@@ -39,7 +36,7 @@ editor_options:
 ### Υπόβαθρο
 
 Η ανεργία αποτελεί ένα χρόνιο πρόβλημα της χώρας μας, μιας και ιστορικά τα
-τελευταία 25 χρόνια είναι σε υψηλότερα επίπεδα του ευρωπαικού μέσου και τις
+τελευταία 25 χρόνια είναι σε υψηλότερα επίπεδα του ευρωπαϊκού μέσου και τις
 χώρες του ΟΟΣΑ. Το φαινόμενο επιδεινώθηκε τα χρόνια της οικονομικής κρίσης όπου
 στις χειρότερες στιγμές της το ένα τέταρτο του ενεργού πληθυσμού δεν μπορούσε να
 βρει εργασία. Ακόμα χειρότερη ήταν η κατάσταση για τους νέους της χώρας μιας και
@@ -137,7 +134,7 @@ unemployment <- read_csv("data/unemployment.csv") %>%
 
 ### Ορισμός συναρτήσεων
 
-Προκειμένου να αποφύφω την επανάληψη του κώδικά μου θα ορίσω και μερικές
+Προκειμένου να αποφύγω την επανάληψη του κώδικά μου θα ορίσω και μερικές
 συναρτήσεις. Αρχικά, θέλω να έχω πίνακες που βασίζονται στη βιβλιοθήκη
 `reactable` με ορισμένες αλλαγές στην εμφάνιση για να φαίνονται ωραία. Για αυτό
 σε πολλούς πίνακες θα δείτε χρήση της `reactable_custom` αντί απλώς της
@@ -145,6 +142,7 @@ unemployment <- read_csv("data/unemployment.csv") %>%
 
 ```{r}
 #| label: function_reactable_tables
+
 reactable_custom = function(data, head_max = 5){
   reactable(
   head(data, head_max),
@@ -1235,11 +1233,8 @@ highchart() %>%
 με τα αποτελέσματα έχω:
 
 ```{r}
-#| label: tbl-results-breakpoints-dates
-#| tbl-cap: "Αποτελέσματα τομών, ανά αριθμό τομών (0 πίνακας διαβάζεται καλύτερα οριζόντια, ανά αριθμό τομών)"
-#| tbl-subcap: 
-#| - "Αριθμός τομής (σημείου)"
-#| - "Ημερομηνία τομής"
+#| label: tbl-results-breakpoints
+#| tbl-cap: "Αποτελέσματα σημείων τομών, ανά αριθμό τομών (0 πίνακας διαβάζεται καλύτερα οριζόντια, ανά αριθμό τομών)"
 data.frame("Αριθμός τομών" = c(1,2,3,4,5), 
            "Τομή A" = breakPoints$breakpoints[,1] %>% set_names(NULL), 
            "Τομή B" = breakPoints$breakpoints[,2] %>% set_names(NULL), 
@@ -1248,7 +1243,13 @@ data.frame("Αριθμός τομών" = c(1,2,3,4,5),
            "Τομή Ε" = breakPoints$breakpoints[,5] %>% set_names(NULL), 
            check.names = FALSE) %>% 
   reactable_custom()
+```
 
+και οι ημερομηνίες των αντίστοιχων τομών:
+
+```{r}
+#| label: tbl-results-breakpoints-dates
+#| tbl-cap: "Αποτελέσματα ημερομηνιών των τομών, ανά αριθμό τομών (0 πίνακας διαβάζεται καλύτερα οριζόντια, ανά αριθμό τομών)"
 data.frame("Αριθμός τομών" = c(1,2,3,4,5), 
            "Τομή Α" = min(unemployment$TIME) %m+% months(breakPoints$breakpoints[,1]) %>% set_names(NULL), 
            "Τομή Β" = min(unemployment$TIME) %m+% months(breakPoints$breakpoints[,2]) %>% set_names(NULL), 
@@ -1258,6 +1259,7 @@ data.frame("Αριθμός τομών" = c(1,2,3,4,5),
            check.names = FALSE) %>% 
   reactable_custom()
 ```
+
 
 ## Αναγνώριση μοντέλου
 
@@ -1278,12 +1280,7 @@ ARIMA, το $d$ συμβολίζει την τάξη της διαφοράς, ό
 
 ```{r}
 #| label: fig-acf-pacf-hc-levels
-#| fig-height: 4
 #| fig-cap: "Διαγραμμα αρχικών παρατηρήσεων"
-#| fig-subcap: 
-#|   - "Αυτοσυσχέτισης"
-#|   - "Μερικής αυτοσυσχέτισης"
-#| layout-ncol: 2
 
 acf_plot_function(unemployment$Value, min=-0.2, max=1)
 pacf_plot_function(unemployment$Value, min=-0.2, max=1)
@@ -1293,11 +1290,8 @@ pacf_plot_function(unemployment$Value, min=-0.2, max=1)
 
 ```{r}
 #| label: fig-acf-pacf-hc-first-diffs
-#| fig-height: 4
 #| fig-cap: "Διαγραμμα διαφορών πρώτης τάξης"
-#| fig-subcap: 
-#|  - "Αυτοσυσχέτισης"
-#|  - "Μερικής αυτοσυσχέτισης"
+
 acf_plot_function(grc_unemployment_diff1, min=-0.1, max = 1)
 pacf_plot_function(grc_unemployment_diff1, min=-0.2, max=0.5)
 ```
@@ -1321,6 +1315,7 @@ pacf_plot_function(grc_unemployment_diff1, min=-0.2, max=0.5)
 ```{r}
 #| warning: false
 #| message: false
+#| results: hide
 
 auto_model <- auto.arima(grc_unemployment$Value, seasonal = TRUE, d = 1, trace = TRUE, stepwise = FALSE, max.p = 11, max.q = 11,max.order = 30)
 arimaModel_1=arima(grc_unemployment$Value, order=c(0,1,1))
@@ -1355,6 +1350,7 @@ accuracy_table %>% reactable_custom(head_max = 8)
 ## Πρόβλεψη μελλοντικής ανεργίας
 
 Έφτασε η στιγμή όλα αυτά να βγάζουν κάποιο νόημα. Βρήκα ποιο είναι το καλύτερο μοντέλο, χρησιμοποιωντας το θα προβλέψω το ύψος της ανεργίας στην Ελλάδα για τους επόμενους 12 μήνες. Τα δεδομένα μου σταματάνε στον Αύγουστο του 2022 (ανεργία 12.2\%), άρα η όποια εκτίμηση θα γίνει για τους μήνες Σεπτέμβριο του 2022 μέχρι και τον Αύγουστο του 2023. 
+
 
 ```{r}
 #| label: fig-forecasting
@@ -1391,20 +1387,25 @@ highchart() %>%
                 type = "arearange",
                 color = hex_to_rgba("#d62728", 0.2),
                 linkedTo = ":previous")
-
-
 ```
 
-Given the diagram as well as the forecast table (of the best performing model,
-candidate #3), I conclude that a reduction in unemployment in Greece is expected
-in the next period of time (in the next six months). More specifically,
-**Greece's unemployment** in **February 2023** will range between **10%** (9.4%)
-and **13%** (14%) with an **80%** (95%) probability (based on **ARIMA(9,2,1)**
-model).
+
+Και ο αντίστοιχος πίνακας με τις προβλέψεις: 
+
+```{r}
+s %>%
+  as.data.frame() %>%
+  dplyr::mutate(Date = seq(max(grc_unemployment$TIME) %m+% months(1),  # start at next month
+              by = "1 month",
+              length.out = 20)) %>%
+  setNames(c("Πρόβλεψη", "Κάτω διάστημα 80%", "Άνω διάστημα 80%", "Κάτω διάστημα 95%", "Άνω διάστημα 95%", "Μήνας")) %>%
+  dplyr::relocate("Μήνας", .before = "Πρόβλεψη") %>%
+  dplyr::mutate(across(where(is.numeric), ~ round(.x, 1))) %>%
+  reactable_custom(head_max = 7)
+```
+
+Με δεδομένο το διάγραμμα αλλά και το πίνακα των προβλέψεων του μοντέλου με τη καλύτερη επίδοση, συμπεραίνω ότι η μείωση της ανεργίας στην Ελλάδα θα συνεχιστεί και την επόμενη περίοδο (τους επόμενους έξι μήνες). Πιο συγκεκριμένα, η ανεργία στην Ελλάδα τον Φεβρουάριο του 2023 θα είναι 11.4\%, κυμαίνεται μεταξύ του 10.1\% (9.4\%) και 12.8\% (13.5\%) σμε πιθανότητα 80\% (95\%).
 
 ## Ευχαριστίες {.appendix .unlisted}
 
-Φωτογραφία από
-<a href="https://pixabay.com/el/users/roszie-6000120/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=7386581">Rosy
-/ Bad Homburg / Germany</a> από το
-<a href="https://pixabay.com/el//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=7386581">Pixabay</a>
+Φωτογραφία από <a href="https://pixabay.com/el/users/roszie-6000120/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=7386581">Rosy / Bad Homburg / Germany</a> από το <a href="https://pixabay.com/el//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=7386581">Pixabay</a>
