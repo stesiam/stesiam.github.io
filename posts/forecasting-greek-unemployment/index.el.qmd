@@ -85,6 +85,8 @@ pacf, acf μέσω ραβδογραμμάτων και κάποια διαγρά
 #| title: "Εισαγωγή R πακέτων"
 #| message: false
 #| warning: false
+#| output: 'asis'
+
 # General purpose R libraries
 library(dplyr)
 library(readr)
@@ -604,13 +606,12 @@ highchart(type = "stock") %>%
 
 ### Εξέταση στασιμότητας γραφικά
 
-::: panel-tabset
-#### Παρατήρηση
+Από αυτό το διάγραμμα είναι εμφανέστατο ότι η σειρά μας δεν κινείται γύρω από κάποια συγκεκριμένη τιμή, παραβιάζοντας την πρώτη προϋπόθεση για να θεωρηθεί μία χρονοσειρά στατική. Αυτό μας υποδεικνύει την ανάγκη χρήσης διαφορών πρώτης τάξης για την ανεργία της Ελλάδας.
 
-It is apparent that there is a big variation on the values of unemployment. This
-time series is not stationary and the differencing is justified.
 
 ```{r}
+#| label: fig-level-plot
+#| fig-cap: "Χρονοσειρά αρχικών παρατηρήσεων ανεργίας στην Ελλάδα, στην ΕΕ27 και στις χώρες του ΟΟΣΑ."
 highchart() %>%
     hc_chart(type = "line") %>%
     hc_title(text = "Ποσοστό ανεργίας") %>%
@@ -638,32 +639,30 @@ highchart() %>%
 )
 ```
 
-#### Πρώτη διαφορά
-
-Here we can see a big improvement in comparison with original data. I have some
-concerns about points close to 150 (mildly upwards trend) and 250 (outlier).
+Από τη πρώτη διαφορά παρατηρώ μεγάλη βελτίωση μιας και δεν έχουμε τις τεράστιες αποκλίσεις του προηγούμενου διαγράμματος. Οι τιμές ως επί το πλείστον δεν παρουσιάζουν κάποια τάση και κινούνται σε τιμές σχετικά κοντά στο μηδέν. Αυτό είναι ένα καλό στοιχείο, όμως έχω έναν ελαφρύ προβληματισμό καθώς υπάρχουν δύο σημεία στη χρονοσειρά με σχετικά μεγάλες αποκλίσεις από το μηδέν. Η πρώτη είναι στο σημείο ~150ο όπου η σειρά έχει και μία ελαφριά ανοδική τάση και η δεύτερη είναι στο 250ο σημείο.
 
 ```{r}
+#| label: fig-diff1-plot
+#| fig-cap: "Χρονοσειρά διαφορών πρώτης τάξης της ανεργίας στην Ελλάδα"
 grc_unemployment = unemployment %>% dplyr::filter(LOCATION == "GRC")
 grc_unemployment_diff1 <- diff(grc_unemployment$Value, differences = 1)
 
 highchart() %>%
     hc_chart(type = "line") %>%
-    hc_title(text = "Unemployment Rates") %>%
-    hc_xAxis(title = list(text = "Year")) %>%
-    hc_yAxis(title = list(text = "Value")) %>%
+    hc_title(text = "Πρώτες διαφορές ανεργίας") %>%
+    hc_xAxis(title = list(text = "Έτος")) %>%
+    hc_yAxis(title = list(text = "Παρατήρηση")) %>%
     hc_tooltip(shared = TRUE, valueDecimals = 2, valueSuffix = " %") %>%
     hc_add_series(
         data = grc_unemployment_diff1
     )
 ```
 
-#### Δεύτερη διαφορά
-
-Given the concerns of above, I made also a second difference plot. It seems to
-solve the problem on points close to 150.
+Λαμβάνοντας υπόψιν τους παραπάνω προβληματισμούς μου, έλαβα και τις δεύτερες διαφορές και τις οπτικοποίησα. Το διάγραμμα είναι σχεδόν το ίδιο, με τις τιμές να κυμαίνονται στο μηδέν ακόμα και στο προβληματικό σημείο κοντά στο 150ο σημείο.
 
 ```{r}
+#| label: fig-diff2-plot
+#| fig-cap: "Χρονοσειρά διαφορών δεύτερης τάξης της ανεργίας στην Ελλάδα"
 
 grc_unemployment_diff2<- diff(grc_unemployment$Value, differences = 2)
 
@@ -678,7 +677,6 @@ highchart() %>%
     )
 
 ```
-:::
 
 ### Εξέταση στασιμότητας με στατιστικούς ελέγχους
 
@@ -1326,7 +1324,7 @@ arimaModel_5=arima(grc_unemployment$Value, order=c(5,1,5))
 arimaModel_6=arima(grc_unemployment$Value, order=c(9,1,1))
 ```
 
-## Σύγρκιση μοντέλων
+## Σύγκριση μοντέλων
 
 ```{r}
 #| label: tbl-aic-arima-models
@@ -1345,7 +1343,7 @@ accuracy_table <- data.frame(
 accuracy_table %>% reactable_custom(head_max = 8)
 ```
 
-Αν και βρήκα ένα κάποια καλά μοντέλα με αρκετά καλή απόδοση μόνος μου, με βάση τον αυτόματο έλεγχο βρήκα ότι το ARIMA(5,1,6) περιγράφει καλύτερα τη χρονοσειρά μου. Αυτό τεκμαίρεται συγκρίνοντας το κριτήριο πληροφορίας των διάφορων μοντέλων ARIMA, όπου στο βέλτιστο μοντέλο έχω το μικρότερο αριθμό AIC, με 271 μονάδες. Αυτό είναι 6 μονάδες χαμηλότερα της δεύτερης επιλογής μου και προφανώς αποτελέι την κύριά μου επιλογή για τον καθορισμό προβλέψεων.
+Αν και βρήκα ένα κάποια καλά μοντέλα με αρκετά καλή απόδοση μόνος μου, με βάση τον αυτόματο έλεγχο βρήκα ότι το ARIMA(5,1,6) περιγράφει καλύτερα τη χρονοσειρά μου. Αυτό τεκμαίρεται συγκρίνοντας το κριτήριο πληροφορίας των διάφορων μοντέλων ARIMA, όπου στο βέλτιστο μοντέλο έχω το μικρότερο αριθμό AIC, με 271 μονάδες. Αυτό είναι 6 μονάδες χαμηλότερα της δεύτερης επιλογής μου και προφανώς αποτελεί την κύριά μου επιλογή για τον καθορισμό προβλέψεων.
 
 ## Πρόβλεψη μελλοντικής ανεργίας
 
@@ -1393,6 +1391,8 @@ highchart() %>%
 Και ο αντίστοιχος πίνακας με τις προβλέψεις: 
 
 ```{r}
+#| label: tbl-results-predictions
+#| tbl-cap: "Προβλέψεις ανεργίας στην Ελλάδα για τους επόμενους 6 μήνες και αντίστοιχα διαστήματα εμπιστοσύνης"
 s %>%
   as.data.frame() %>%
   dplyr::mutate(Date = seq(max(grc_unemployment$TIME) %m+% months(1),  # start at next month
