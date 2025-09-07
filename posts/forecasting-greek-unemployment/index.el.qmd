@@ -85,7 +85,6 @@ pacf, acf μέσω ραβδογραμμάτων και κάποια διαγρά
 #| title: "Εισαγωγή R πακέτων"
 #| message: false
 #| warning: false
-#| output: 'asis'
 
 # General purpose R libraries
 library(dplyr)
@@ -649,7 +648,7 @@ grc_unemployment_diff1 <- diff(grc_unemployment$Value, differences = 1)
 
 highchart() %>%
     hc_chart(type = "line") %>%
-    hc_title(text = "Πρώτες διαφορές ανεργίας") %>%
+    hc_title(text = "Πρώτες διαφορές ανεργίας στην Ελλάδα") %>%
     hc_xAxis(title = list(text = "Έτος")) %>%
     hc_yAxis(title = list(text = "Παρατήρηση")) %>%
     hc_tooltip(shared = TRUE, valueDecimals = 2, valueSuffix = " %") %>%
@@ -668,9 +667,9 @@ grc_unemployment_diff2<- diff(grc_unemployment$Value, differences = 2)
 
 highchart() %>%
     hc_chart(type = "line") %>%
-    hc_title(text = "Unemployment Rates") %>%
-    hc_xAxis(title = list(text = "Year")) %>%
-    hc_yAxis(title = list(text = "Value")) %>%
+    hc_title(text = "Δεύτερες διαφορές ανεργίας") %>%
+    hc_xAxis(title = list(text = "Έτος")) %>%
+    hc_yAxis(title = list(text = "Παρατήρηση")) %>%
     hc_tooltip(shared = TRUE, valueDecimals = 2, valueSuffix = " %") %>%
     hc_add_series(
         data = grc_unemployment_diff2
@@ -1279,6 +1278,9 @@ ARIMA, το $d$ συμβολίζει την τάξη της διαφοράς, ό
 ```{r}
 #| label: fig-acf-pacf-hc-levels
 #| fig-cap: "Διαγραμμα αρχικών παρατηρήσεων"
+#| fig-subcap: 
+#| - "Αυτοσυσχέτιση"
+#| - "Μερική αυτοσυσχέτιση"
 
 acf_plot_function(unemployment$Value, min=-0.2, max=1)
 pacf_plot_function(unemployment$Value, min=-0.2, max=1)
@@ -1289,6 +1291,10 @@ pacf_plot_function(unemployment$Value, min=-0.2, max=1)
 ```{r}
 #| label: fig-acf-pacf-hc-first-diffs
 #| fig-cap: "Διαγραμμα διαφορών πρώτης τάξης"
+#| fig-subcap: 
+#| - "Αυτοσυσχέτιση"
+#| - "Μερική αυτοσυσχέτιση"
+#| layout-ncol: 2
 
 acf_plot_function(grc_unemployment_diff1, min=-0.1, max = 1)
 pacf_plot_function(grc_unemployment_diff1, min=-0.2, max=0.5)

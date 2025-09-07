@@ -340,13 +340,13 @@ highchart() %>%
     hc_yAxis(title = list(text = "Ποσοστό (%)")) %>%
     hc_legend(enabled = FALSE) %>%
     hc_colorAxis(
-        minColor = "#e0f3f8",
-        maxColor = "#08306b",
-        stops = list(
-            list(0.0, "#e0f3f8"),
-            list(0.5, "#74a9cf"),
-            list(1.0, "#08306b")
-        )
+      minColor = "#f2e5f7",   # light lavender
+      maxColor = "#4a0072",   # deep purple
+      stops = list(
+        list(0.0, "#f2e5f7"), # very light lavender
+        list(0.5, "#9c4dcc"), # medium purple
+        list(1.0, "#4a0072")  # dark royal purple
+      )
     ) %>%
     hc_add_series(
         name = "Women %",
@@ -382,78 +382,16 @@ highchart() %>%
     ) 
 ```
 
-
-```{r}
-# install.packages(c("highcharter", "dplyr"))
-library(highcharter)
-library(dplyr)
-
-# --- Example data: 35 countries with values ---
-set.seed(123)
-df <- tibble::tibble(
-  country = paste("Country", 1:35),
-  value   = round(runif(35, 500, 5000))
-)
-
-# Sort descending
-df_sorted <- df %>% arrange(desc(value))
-
-# --- Highcharter plot ---
-highchart() %>%
-  hc_chart(type = "bar", backgroundColor = "transparent") %>%
-  hc_title(text = "Country Performance") %>%
-  hc_subtitle(text = "Descending order, color intensity reflects value") %>%
-  hc_xAxis(
-    categories = df_sorted$country,
-    title = list(text = NULL),
-    lineWidth = 0,
-    tickWidth = 0
-  ) %>%
-  hc_yAxis(
-    title = list(text = "Value"),
-    gridLineColor = "#EBEBEB",
-    labels = list(format = "{value:,.0f}")
-  ) %>%
-  hc_add_series(
-    name = "Value",
-    data = df_sorted$value,
-    colorByPoint = TRUE,
-    dataLabels = list(enabled = FALSE) # ⬅ disables labels after bars
-  ) %>%
-  hc_colorAxis(
-    minColor = "#e0f3f8",
-    maxColor = "#08306b",
-    stops = list(
-      list(0.0, "#e0f3f8"),
-      list(0.5, "#74a9cf"),
-      list(1.0, "#08306b")
-    )
-  ) %>%
-  hc_plotOptions(
-    series = list(
-      borderWidth = 0,
-      pointPadding = 0.1,
-      groupPadding = 0.04,
-      animation = list(duration = 800)
-    )
-  ) %>%
-  hc_tooltip(
-    useHTML = TRUE,
-    pointFormat = "<span style='font-weight:600'>{point.category}</span><br/>Value: <b>{point.y:,.0f}</b>"
-  ) %>%
-  hc_legend(enabled = FALSE) %>%
-  hc_exporting(enabled = TRUE) %>%
-  hc_credits(enabled = FALSE) %>%
-  hc_add_theme(hc_theme_gridlight())
-
-```
-
 Αυτή η μεγάλη ανισότητα στην συμμετοχή των γυναικών εκτός από στενάχωρη, είναι αρκετά προβληματική. Ευτυχώς, διάφορες κοινότητες έχουν αναγνωρίσει το πρόβλημα και έχουν δημιουργηθεί ομάδες που ενδυναμώνουν τη συμμετοχή των γυναικών στον κλάδο μας. Η πιο γνωστή σε εμένα ομάδα, όντας R χρήστης, είναι η κοινότητα R-ladies όπου υπάρχουν παραρτήματα αυτών των ομάδων σε διάφορες χώρες. Διοργανώνουν αρκετά συχνά πολλά σεμινάρια από τα οποία μπορείτε να τα βρείτε στο Youtube. Τέλος, από περιέργεια έψαξα και όντως υπάρχει αντίστοιχη ομάδα και για τη Python, η PyLadies.
+
+::: {.column-margin}
+Η ομάδα R-ladies είναι ένας οργανισμός που αποτελείται από άτομα που τους αρέσει η γλώσσα προγραμματισμού R και θέλουν να προωθήσουν την υποεκπροσώπηση μειονοτήτων, όχι απλώς των (σις) γυναικών, αλλά και των μειονοτικών φύλων. Αυτή τη στιγμή κοινότητες R ladies υπάρχουν σε 65 χώρες, και συνολικά 225 παραρτήματα. Υπάρχουν παραρτήματα που είναι ιδιαίτερα ενεργά και έχουν ανεξάρτητα κανάλια στο Youtube ή σελίδες στο διαδίκτυο. Στην Ελλάδα μπόρεσα να βρω πληροφορίες για δύο κοινότητες μία στην Αθήνα και μία στη Θεσαλλονίκη.
+![Λογότυπο ομάδας R-ladies](images/logo_rladies.png)
+:::
 
 ## Ηλικιακή Κατανομή
 
-Η κοινότητα των Ελλήνων χρηστών αποτελείται από μεγαλύτερης ηλικίας άτομα σε σχέση με την υπόλοιπη κοινότητα. Η πολυπληθέστερη ηλικικακή ομάδα στην Ελλάδα είναι οι 25-29 ετών, ενώ στην υπόλοιπη πλατφόρμα 
-Greece's Kaggle Community it is comprised from more elerly people comapred to the rest of Kaggle's community. More specifically, Greece's most prevalent age group is 25-29 and a sufficient proportion of users on their 40s. On the contrary, Kaggle's community is quite youthy with most prevalent the three youngest age groups. Aggrevetating, those groups consist six out of ten userbase of Kaggle's community.
+Η κοινότητα των Ελλήνων χρηστών αποτελείται από μεγαλύτερης ηλικίας άτομα σε σχέση με την υπόλοιπη κοινότητα. Η πολυπληθέστερη ηλικιακή ομάδα στην Ελλάδα είναι οι 25-29 ετών, ενώ υπάρχει ένα σημαντικό ποσοστό 40άρηδων. Από την άλλη μεριά ο πληθυσμός των υπολοίπων χρηστών είναι αρκετά νεανικός, με τη συντριπτική πλειοψηφία των χρηστών να συγκεντρώνεται στις μικρότερες ηλικιακές ομάδες. Αθρόιζοντας το συγκεκριμένο ποσοστό, οι τρεις αυτές ομάδες προσεγγίζουν το 60\% των συνολικών χρηστών, αντί του 42\% για την Ελληνική κοινότητα. Με μία πιο προσεκτική ματιά στο διάγραμμα μπορούμε να δούμε ότι η μεγαλύτερη διαφορά είναι. Αυτά τα ευρήματα ίσως είναι ένα στοιχείο ότι η πλατφόρμα καα γενικότερα ο κλάδος της επιστήμης δεδομένων δεν έχει στο σημείο που στον υπόλοιπο κόσμο και για αυτό η χρήση της να περιορίζεται στην Ελλάδα σε άτομα μετά τα 25 έτη, άτομα που πιθανότατα έχουν ήδη πτυχίο και έχουν ένα πανεπιστημιακό υπόβαθρο και κάποιου είδους εργασιακή εμπειριά (40+). Για αυτό θα ελέγξουμε και σχετικές μεταβλητές σε λίγο να δούμε αν αυτή η αρχική εξήγηση - εντύπωση θα επιβαιωθεί.
 
 ```{r}
 #| label: extract-data-gr-fo-users
@@ -509,6 +447,8 @@ highchart() |>
 
 # Εκπαιδευτικό Υπόβαθρο
 
+
+
 ```{r Εξαγωγή δεδομένων - Εκπαιδευτικό υπόβαθρο Ελλήνων - Ξένων χρηστών}
 data3 = kaggle_2021_compare %>%
   select(Q3, Q4) %>%
@@ -546,6 +486,8 @@ highchart() %>%
 ```
 
 ## Εργασιακές συνθήκες
+
+Ποια είναι η εργασιακή εμεπιρ
 
 ```{r}
 kaggle_2021_compare$Q6 <- kaggle_2021_compare$Q6 |>
