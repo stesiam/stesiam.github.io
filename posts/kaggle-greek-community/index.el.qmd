@@ -386,6 +386,7 @@ highchart() %>%
 
 ::: {.column-margin}
 Η ομάδα R-ladies είναι ένας οργανισμός που αποτελείται από άτομα που τους αρέσει η γλώσσα προγραμματισμού R και θέλουν να προωθήσουν την υποεκπροσώπηση μειονοτήτων, όχι απλώς των (σις) γυναικών, αλλά και των μειονοτικών φύλων. Αυτή τη στιγμή κοινότητες R ladies υπάρχουν σε 65 χώρες, και συνολικά 225 παραρτήματα. Υπάρχουν παραρτήματα που είναι ιδιαίτερα ενεργά και έχουν ανεξάρτητα κανάλια στο Youtube ή σελίδες στο διαδίκτυο. Στην Ελλάδα μπόρεσα να βρω πληροφορίες για δύο κοινότητες μία στην Αθήνα και μία στη Θεσαλλονίκη.
+
 ![Λογότυπο ομάδας R-ladies](images/logo_rladies.png)
 :::
 
@@ -593,6 +594,8 @@ highchart() %>%
 
 ## Δημοφιλής γλώσσα προγραμματισμού
 
+
+
 ```{r}
 y = kaggle_2021_compare |>
   group_by(Q3, Q8) |>
@@ -608,24 +611,33 @@ y = kaggle_2021_compare |>
 y$img = c(
   '<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/150px-Python-logo-notext.svg.png" height="40">',
   '<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/R_logo.svg/250px-R_logo.svg.png" height="40">',
-  '<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Julia_Programming_Language_Logo.svg/250px-Julia_Programming_Language_Logo.svg.png" height="40">'
+  '<img src="" height="2px">'
 )
 ```
 
 ```{r Διάγραμμα: Ραβδόγραμμα gd}
 highchart() %>%
-  hc_chart(type = "bar",marginLeft = 100) %>%
-  hc_title(text = "Εκπαιδευτικό υπόβαθρο χρηστών (🇬🇷 / 🌍)") %>%
-  hc_subtitle(text="Οι Έλληνες χρήστες έχουν υψηλότερους τίτλους σπουδών με 77% να έχει μεταπτυχιακό ή διδακτορικό δίπλωμα. Το αντίστοιχο ποσοστό στις υπόλοιπες χώρες είναι 50%.") %>%
-  hc_caption(text="Σημείωση: Τα ποσοστά αναφέρονται σε επίπεδο χώρας. <br> stesiam, 2023") %>%
-  hc_xAxis(categories = y$img,
-           title = list(text = NULL),
-           labels = list(useHTML = TRUE, x = -20, align = "right")) %>%
+  hc_chart(type = "bar", marginLeft = 100, spacingLeft = 5, spacingRight = 5) %>%
+  hc_colors(c("#1f78b4", "#a6a6a6")) %>%
+  hc_title(text = "Εκπαιδευτικό υπόβαθρο χρηστών (🇬🇷 / 🌍)",
+           style = list(fontSize = "20px", fontWeight = "bold")) %>%
+  hc_subtitle(text="Οι Έλληνες χρήστες έχουν υψηλότερους τίτλους σπουδών με 77% να έχει μεταπτυχιακό ή διδακτορικό δίπλωμα. 
+Το αντίστοιχο ποσοστό στις υπόλοιπες χώρες είναι 50%.",
+             style = list(fontSize = "14px", color = "#555")) %>%
+  hc_caption(text="Σημείωση: Τα ποσοστά αναφέρονται σε επίπεδο χώρας.<br>stesiam, 2023",
+             style = list(fontSize = "11px", color = "#777")) %>%
+  hc_xAxis(categories = paste0(y$Q8, " ", y$img),
+           labels = list(useHTML = TRUE, style = list(fontSize = "12px", whiteSpace = "normal"))) %>%
   hc_yAxis(min = 0,
-           title = list(text = "Ποσοστό (%) ερωτηθέντων ανά χώρα", align = "high"),
-           labels = list(overflow = "justify")) %>%
+           title = list(text = NULL),
+           labels = list(format = "{value}%")) %>%
   hc_tooltip(valueSuffix = " %") %>%
-  hc_plotOptions(bar = list(dataLabels = list(enabled = TRUE))) %>%
+  hc_plotOptions(
+    bar = list(
+      borderRadius = 5,
+      dataLabels = list(enabled = TRUE, format = "{point.y:.0f}%")
+    )
+  ) %>%
   hc_series(
     list(name = "Ελλάδα", data = y$Ελλάδα),
     list(name = "Υπόλοιπος Κόσμος", data = y$Άλλο)
@@ -633,8 +645,29 @@ highchart() %>%
   hc_legend(
     align = "center",
     verticalAlign = "top",
-    layout = "horizontal"
+    layout = "horizontal",
+    itemStyle = list(fontSize = "12px")
+  ) %>%
+  hc_responsive(
+    rules = list(
+      list(
+        condition = list(maxWidth = 500),
+        chartOptions = list(
+          title = list(style = list(fontSize = "16px")),
+          subtitle = list(style = list(fontSize = "12px")),
+          xAxis = list(labels = list(style = list(fontSize = "10px"))),
+          yAxis = list(labels = list(style = list(fontSize = "10px"))),
+          legend = list(
+            layout = "vertical",
+            align = "center",
+            verticalAlign = "bottom",
+            itemStyle = list(fontSize = "10px")
+          )
+        )
+      )
+    )
   )
+
 ```
 
 
