@@ -860,7 +860,7 @@ p_{max} & = \left[4 \cdot \left(  \frac{T}{100}\right)^{0.25} \right] \\ \\
 το οποίο μπορεί να εκφραστεί ως εξής:
 
 $$
-\rho \in \mathbb{Z}, 1 \leq \rho \leq 15
+\rho \in \mathbb{Z}, 1 \leq \rho \leq \rho_{max} = 15
 $$
 
 Αρκετά όμως με αυτά. Ώρα να βρούμε τις ιδανικές υστερήσεις. Υπάρχουν δύο τρόποι
@@ -992,13 +992,13 @@ $$
 ελέγχου ADF. Για μικρά δείγματα,
 
 $$
-q_{\text{μικρό}} 
+q_{\text{μικρό}} = \left[4\cdot \left(  \frac{T}{100}\right)^{0.25} \right] 
 $$
 
 ενώ για μεγαλύτερα δείγματα:
 
 $$
-q_{μεγάλο} = 4 \cdot 
+q_{μεγάλο} = \left[12 \cdot \left(  \frac{T}{100}\right)^{0.25} \right] 
 $$
 
 Ο έλεγχος υποθέσεων έχει την ίδια μορφή με τους προαναφερόμενους ελέγχους, με τη
@@ -1281,6 +1281,7 @@ ARIMA, το $d$ συμβολίζει την τάξη της διαφοράς, ό
 #| fig-subcap: 
 #| - "Αυτοσυσχέτιση"
 #| - "Μερική αυτοσυσχέτιση"
+#| layout-ncol: 2
 
 acf_plot_function(unemployment$Value, min=-0.2, max=1)
 pacf_plot_function(unemployment$Value, min=-0.2, max=1)
@@ -1358,6 +1359,7 @@ accuracy_table %>% reactable_custom(head_max = 8)
 
 ```{r}
 #| label: fig-forecasting
+#| warning: false
 #| fig-cap: "Χρονοσειρά ανεργίας με πρόβλεψη μελλοντικής ανεργίας"
 s = forecast(auto_model,20)
 
