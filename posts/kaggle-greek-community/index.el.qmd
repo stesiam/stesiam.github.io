@@ -415,34 +415,21 @@ data1 = kaggle_2021_compare %>%
 #| fig-cap: "Διάγραμμα περιοχής για τη μελέτη της κατανομής των ηλικιακών ομάδων μεταξύ των χρηστών από την Ελλάδα και των χρηστών άλλων χωρών."
 
 highchart() |>
-  hc_chart(type = "areaspline") |>
-  hc_title(text = "Ηλικιακή κατανομή χρηστών ανά χώρα προέλευσης (🇬🇷 / 🌍)") |>
-  hc_subtitle(text = "Το ένα τέταρτο των Ελλήνων χρηστών ανήκουν στη ηλικιακή ομάδα των 25-29 ετών. Γενικότερα τα άτομα κάτω των 29 ετών αποτελούν το 42% των Ελλήνων χρηστών και το 56% από άλλες χώρες.") |>
-  hc_xAxis(categories = unique(data1$Q1)) |>
-  hc_yAxis(title = list(text = "Κατανομή (%)")) |>
-  hc_tooltip(shared = TRUE, valueSuffix = " %") |>
-  hc_plotOptions(
-    areaspline = list(
-      fillOpacity = 0.5  # match the Highcharts demo's fill
-    )
-  ) |>
-  hc_legend(
-    layout = "vertical",
-    align = "left",
-    verticalAlign = "top",
-    x = 450,
-    y = 100,
-    floating = TRUE,
-    borderWidth = 1
-    ) |>
-  hc_add_series(
-    name = "Ελλάδα",
-    data = data1 %>% dplyr::filter(Q3 =="Ελλάδα") %>% pull(pct)
-  ) |>
-  hc_add_series(
-    name = "Υπόλοιπος Κόσμος",
-    data = data1 %>% dplyr::filter(Q3 =="Άλλο") %>% pull(pct)
-  )
+    hc_chart(type = "areaspline", backgroundColor = "#fafafa") |>
+    hc_title(text = "Ηλικιακή κατανομή χρηστών ανά χώρα προέλευσης (🇬🇷 / 🌍)",
+             style = list(fontSize = "20px", fontWeight = "bold")) |>
+    hc_subtitle(text = "Το ένα τέταρτο των Ελλήνων χρηστών ανήκουν στη ηλικιακή ομάδα των 25-29 ετών...",
+                style = list(fontSize = "14px", color = "#555")) |>
+    hc_xAxis(categories = unique(data1$Q1)) |>
+    hc_yAxis(title = list(text = "Κατανομή (%)"),
+             gridLineColor = "#e6e6e6") |>
+    hc_tooltip(shared = TRUE, valueSuffix = " %") |>
+    hc_plotOptions(areaspline = list(fillOpacity = 0.4, marker = list(enabled = FALSE))) |>
+    hc_legend(layout = "horizontal", align = "center", verticalAlign = "bottom",
+              floating = FALSE, backgroundColor = "white", borderWidth = 0) |>
+    hc_colors(c("#1f78b4", "#33a02c")) |>
+    hc_add_series(name = "Ελλάδα", data = data1 %>% dplyr::filter(Q3 =="Ελλάδα") %>% pull(pct)) |>
+    hc_add_series(name = "Υπόλοιπος Κόσμος", data = data1 %>% dplyr::filter(Q3 =="Άλλο") %>% pull(pct))
 ```
 
 # Εκπαιδευτικό Υπόβαθρο
