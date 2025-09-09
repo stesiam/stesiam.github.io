@@ -350,16 +350,13 @@ sum(is.na(unemployment))
 από τον Ιανουάριο του 2000 μέχρι και τον Αύγουστο το 2022. Τα τελευταία 20
 χρόνια έχουν γίνει σοκαριστικά μεγάλες αλλαγές όσον αφορά το ποσοστό ανεργίας
 στη χώρα μας με την πιο απότομη μεταβολή να σημειώνεται τις περιόδους τις
-οικονικής κρίσης (μετά το 2009). Ενδεικτικά μπορούμε να παρατηρήσουμε τη διαφορά
-στο ύψος της ανεργίας μεταξύ του Σεπτέμβρίου του 2010, που ήταν στο 10% και τρία
+οικονομικής κρίσης (μετά το 2009). Ενδεικτικά μπορούμε να παρατηρήσουμε τη διαφορά
+στο ύψος της ανεργίας μεταξύ του Σεπτεμβρίου του 2010, που ήταν στο 10% και τρία
 χρόνια αργότερα, τον Σεπτέμβριο του 2013, έφτασε στο 28.1%. Για λόγους
 πληρότητας παρακάτω επισυνάπτονται πίνακες που δείχνουν τους 5 μήνες με τη
 μεγαλύτερη και τη μικρότερη ανεργία στην Ελλάδα και στην Ευρώπη τα τελευταία 20
 χρόνια.
 
-```{r}
-unemploymentType$TIMEchr <- format(unemploymentType$TIME, "%Y %b")
-```
 
 ```{r}
 #| label: tbl-higher-unemployment-rates
@@ -371,7 +368,7 @@ unemploymentType$TIMEchr <- format(unemploymentType$TIME, "%Y %b")
 #| layout-ncol: 2
 #| layout-align: center
 #| layout-valign: center
-
+unemploymentType$TIMEchr <- format(unemploymentType$TIME, "%Y %b")
 
 unemploymentType %>% 
   as.tibble() %>%
@@ -395,7 +392,7 @@ unemploymentType %>%
 
 Από την άλλη μεριά έχει ενδιαφέρον να παρατηρήσουμε και τις περιόδους με τη
 χαμηλότερη παρατηρούμενη ανεργία. Στην Ελλάδα αυτή η περίοδος ήταν λίγο πριν την
-οικονομική κρίση, το 2008
+οικονομική κρίση, το 2008, ενώ η Ευρώπη των 27 διανύει μία από τις καλύτερες περιόδους όσον αφορά την ανεργία, με ιστορικό χαμηλό 20ετίας, στο 6\%.
 
 ```{r}
 #| label: tbl-lower-unemployment-rates
@@ -427,13 +424,9 @@ unemploymentType %>%
   reactable_custom()
 ```
 
-On the other hand, at the moment in Europe we are at the lowest levels of the
-last 20 years, with unemployment hovering around 6%.
-
-Finally, it is evident that in the case of Greece the changes are more intense
-than in Europe.
 
 All of the above can be summarized by the following graph:
+Όλα αυτά μπορούν να συνοψιστούν και στο παρακάτω διάγραμμα, όπου ξεχωρίζουν οι τεράστιες μεταβολές στη χώρα μας. Μπορούμε να διακρίνουμε ότι η κρίση του 2008 επηρέασε την ανεργία στην ΕΕ και γενικότερα σε όλο τον αναπτυγμένο κόσμο, μιας και υπάρχει μία ανοδική πορεία την ίδια περίοδο. Πλέον η ΕΕ επανήλθε, αλλά η Ελλάδα δεν έχει καταφέρει να φτάσει τα προ κρίσης επίπεδα, αν και η τάση είναι πτωτική.
 
 ```{r}
 #| fig-height: 5
@@ -649,12 +642,14 @@ grc_unemployment_diff1 <- diff(grc_unemployment$Value, differences = 1)
 highchart() %>%
     hc_chart(type = "line") %>%
     hc_title(text = "Πρώτες διαφορές ανεργίας στην Ελλάδα") %>%
-    hc_xAxis(title = list(text = "Έτος")) %>%
-    hc_yAxis(title = list(text = "Παρατήρηση")) %>%
+    hc_subtitle(text = "Οι διαφορές κυμάινονται στο 0, αλλά παρατηρούνται κάποιες μεγάλες μεταβολές με κύρια αυτή στο σημείο 266 (Μάρτιος Απρίλιος 2020 - Θέσπιση περιορισμού μετακινήσεων στην Ελλάδα), επίσης η κύμανση γύρω από το μηδέν έχει ξεφύγει ελαφρώς μεταξύ των σημείων 120 και 170, τα οποία αναφέρονται στη περίοδο μεταξύ 2008 και 2012 (κρίση & επιδείνωση δεικτών κλείσιμο τραπεζών).") %>%
+    hc_xAxis(title = list(text = "Χρονικό σημείο")) %>%
+    hc_yAxis(title = list(text = "Διαφορά ανεργίας")) %>%
     hc_tooltip(shared = TRUE, valueDecimals = 2, valueSuffix = " %") %>%
     hc_add_series(
         data = grc_unemployment_diff1
-    )
+    ) %>%
+  hc_legend(enabled = FALSE)
 ```
 
 Λαμβάνοντας υπόψιν τους παραπάνω προβληματισμούς μου, έλαβα και τις δεύτερες διαφορές και τις οπτικοποίησα. Το διάγραμμα είναι σχεδόν το ίδιο, με τις τιμές να κυμαίνονται στο μηδέν ακόμα και στο προβληματικό σημείο κοντά στο 150ο σημείο.
@@ -668,12 +663,14 @@ grc_unemployment_diff2<- diff(grc_unemployment$Value, differences = 2)
 highchart() %>%
     hc_chart(type = "line") %>%
     hc_title(text = "Δεύτερες διαφορές ανεργίας") %>%
-    hc_xAxis(title = list(text = "Έτος")) %>%
-    hc_yAxis(title = list(text = "Παρατήρηση")) %>%
+    hc_subtitle(text = "") %>%
+    hc_xAxis(title = list(text = "Χρονικό σημείο")) %>%
+    hc_yAxis(title = list(text = "Διαφορά (2) ανεργίας")) %>%
     hc_tooltip(shared = TRUE, valueDecimals = 2, valueSuffix = " %") %>%
     hc_add_series(
         data = grc_unemployment_diff2
-    )
+    ) %>%
+    hc_legend(enabled = FALSE)
 
 ```
 

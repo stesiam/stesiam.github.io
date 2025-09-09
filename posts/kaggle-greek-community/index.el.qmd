@@ -425,8 +425,8 @@ highchart() |>
              gridLineColor = "#e6e6e6") |>
     hc_tooltip(shared = TRUE, valueSuffix = " %") |>
     hc_plotOptions(areaspline = list(fillOpacity = 0.4, marker = list(enabled = FALSE))) |>
-    hc_legend(layout = "horizontal", align = "center", verticalAlign = "bottom",
-              floating = FALSE, backgroundColor = "white", borderWidth = 0) |>
+    hc_legend(layout = "horizontal", align = "center", verticalAlign = "top",
+              floating = FALSE, borderWidth = 0) |>
     hc_colors(c("#1f78b4", "#33a02c")) |>
     hc_add_series(name = "Ελλάδα", data = data1 %>% dplyr::filter(Q3 =="Ελλάδα") %>% pull(pct)) |>
     hc_add_series(name = "Υπόλοιπος Κόσμος", data = data1 %>% dplyr::filter(Q3 =="Άλλο") %>% pull(pct))
