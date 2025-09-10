@@ -501,6 +501,7 @@ highchart() |>
   hc_xAxis(categories = unique(data$Q6)) |>
   hc_yAxis(title = list(text = "Κατανομή (%)")) |>
   hc_tooltip(shared = TRUE, valueSuffix = " %") |>
+  hc_colors(c("#1f78b4", "#33a02c")) |>
   hc_plotOptions(
     areaspline = list(
       fillOpacity = 0.5  # match the Highcharts demo's fill
@@ -509,11 +510,7 @@ highchart() |>
   hc_legend(
     layout = "vertical",
     align = "left",
-    verticalAlign = "top",
-    x = 450,
-    y = 110,
-    floating = TRUE,
-    borderWidth = 1
+    verticalAlign = "top"
     ) |>
   hc_add_series(
     name = "Ελλάδα",

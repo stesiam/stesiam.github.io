@@ -663,7 +663,7 @@ grc_unemployment_diff2<- diff(grc_unemployment$Value, differences = 2)
 highchart() %>%
     hc_chart(type = "line") %>%
     hc_title(text = "Δεύτερες διαφορές ανεργίας") %>%
-    hc_subtitle(text = "") %>%
+    hc_subtitle(text = "Μία χρονοσειρά με πιο σταθερή κύμανση ως προς το μηδέν, αλλά αρκετά μεγάλη απόκλιση από αυτό σε ορισμένα σημεία.") %>%
     hc_xAxis(title = list(text = "Χρονικό σημείο")) %>%
     hc_yAxis(title = list(text = "Διαφορά (2) ανεργίας")) %>%
     hc_tooltip(shared = TRUE, valueDecimals = 2, valueSuffix = " %") %>%
@@ -737,14 +737,18 @@ highchart() %>%
 
 #### Σύνοψη αποτελεσμάτων
 
+Συνοψίζοντας τα αποτελέσματα των ατατιστικών ελέγχων στασιμότητας συμπεραίνω ότι οι παρατηρήσεις της ανεργίας στην Ελλάδα δεν μπορούν να χαρακτηριστούν ως στάσιμες. Επιπλέον, όλοι οι κλασσικοί έλεγχοι συμφωνούν στη ύπαρξη στασιμότητας στις διαφορές πρώτης και δεύτερης τάξης.
+
+
 ```{r}
 #| label: tbl-general-results
 #| tbl-cap: "Σύνοψη αποτελεσμάτων ελέγχων στασιμότητας"
+#| echo: false
 summary_stationarity_results <- data.frame(
                              "Τύπος" = c("Αρχ. Παρατηρήσεις", "Δ(GRC)", "Δ(GRC)"),
                              "ADF test" = c("Μη στάσιμη", "Στάσιμη", "Στάσιμη"),
                               "PP test" = c("Μη στάσιμη", "Στάσιμη", "Στάσιμη"),
-                             "KPSS test" =c("Μη στάσιμη", "Μη στάσιμη", "Στάσιμη"),
+                             "KPSS test" =c("Μη στάσιμη", "Στάσιμη", "Στάσιμη"),
                             check.names = FALSE
 )
 
@@ -970,14 +974,14 @@ $$ Όπου, t είναι η στατιστική τιμή του απλού ε�
 βραχυχρόνια διακύμανση:
 
 $$
-s = 
+s^2  = 
 $$
 
 και τέλος, η $\hat{\lambda}$ είναι η μακροχρόνια διακύμανση που ορίζεται ως
 εξής:
 
 $$
-\hat{\lambda} = 
+\hat{\lambda}^2 =  
 $$
 
 Όπως είναι εμφανές ο μοναδικός όρος´που δεν μπορεί να διευκρινιστεί εκ των
@@ -1253,7 +1257,28 @@ data.frame("Αριθμός τομών" = c(1,2,3,4,5),
            check.names = FALSE) %>% 
   reactable_custom()
 ```
+Για λόγους πληρότητας θα συμπεριλάβω τον έλεγχο Zivot-Andrews ο οποίος όμως δεν είναι ο καλύτερος μιας και υποθέτει μόνο μία διαρθωτική τομή. Παραπάνω βρέθηκαν δύο. Εδώ όμως προκύπτει ένα άλλο πρόβλημα. Παρόλο που για τους κλασσικούς ελέγχους, αλλά και ελέγχους με τομές όπως ο Zivot-Andrews υπάρχουν πακέτα και αντίστοιχες εντολές που υπολογίζουν τη στατιστική τιμή, δεν υπάρχουν ανάλογες εντολές για τον έλεγχο Lee-Strazicich. Ευτυχώς, αντί να στηριχτούμε σε κάποιο στατιστικό πακέτο (π.χ. EViews) βρήκα στο GitHub διαθέσιμο ένα [σχετικό αποθετήριο](https://github.com/hannes101/LeeStrazicichUnitRoot), όπου ο χρήστης [hannes101](https://github.com/hannes101/) έχει γράψει μία σειρά από συναρτήσεις για τον συγκεκριμένο έλεγχο που θυμίζουν σε λογική αυτές του πακέτου urca. Σε αυτό το σημείο να σημειώσω ότι ο απλός έλεγχος κρατάει αρκετά λεπτά, στη δική μου συσκευή πήρε 5 λεπτά για να εκτελεστεί. Το μοναδικό πρόβλημα που υπάρχει με αυτή τη διαδικασία είναι ότι στο αντικείμενο που επιστρέφει η συνάρτηση δεν συμπεριλαμβάνονται οι κρίσιμες τιμές. Αυτό σημαίνει ότι θα πρέπει να κοιτάξω τους πίνακες κρίσιμων τιμών για τη περίπτωσή μου από τη πρωτότυπη εργασία των Lee-Strazicich.
 
+
+```{r}
+#| label: tbl-results-struc-change-test
+#| tbl-cap: "Αποτελέσματα στασιμότητας ελέγχων με διαρθωτικές τομές"
+#| cache: true
+source("https://raw.githubusercontent.com/hannes101/LeeStrazicichUnitRoot/refs/heads/master/LeeStrazicichUnitRootTest.R")
+g = summary(ur.za(grc_unemployment$Value, model = "both"))
+g1 = summary(ur.za(diff(grc_unemployment$Value, differences = 1), model = "both"))
+h = ur.ls(grc_unemployment$Value, model = "break", breaks = 2, method = "GTOS", print.results = "silent")
+h1 = ur.ls(diff(grc_unemployment$Value,1), model = "break", breaks = 2, method = "GTOS", print.results = "silent")
+
+
+data.frame("Έλεγχος" = c("Zivot-Andrews", "Zivot-Andrews", "Lee-Strazicich", "Lee-Strazicich"), 
+           "Μεταβλητή" = c("Unempl", "Δ Unempl", "Unempl", "Δ Unempl"), 
+           "Στατιστική τιμή" = c(g@teststat, g1@teststat, h[[1]]$`t-stat`, h1[[1]]$`t-stat`), 
+           "Κρίσιμη τιμή (5%)" = c(h[[1]][["t-stat"]], h1[[1]][["t-stat"]], -5.65 , -5.65),
+           check.names = FALSE) %>% 
+  mutate(across(c(3:4), ~ round(., 2))) %>%
+  reactable_custom()
+```
 
 ## Αναγνώριση μοντέλου
 
