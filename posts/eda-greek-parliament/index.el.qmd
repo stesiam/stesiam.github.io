@@ -38,8 +38,7 @@ editor_options:
 
 Και ξεκινάμε...
 
-Αυτό είναι το πρώτο άρθρο ανάλυσης στην ιστοσελίδα μου! Προσωπικά, δεν επιθυμούσα να ξεκινήσω με μία έτοιμη βάση δεδομένων και να εφαρμόσω ένα απλό μοντέλο μηχανικής μάθησης (ενδεχομένως να το κάνω σε ένα επόμενο άρθρο). Επομένως, αποφάσισα να παιδευτώ ελαφρώς πορκειμένου να κάνω και την εξόρηξη των δεδομένων σε συνδυασμό με την ανάλυση. Σε αυτό το άρθρο θα ήθελα να αναλύσω την So, I decided to make my own
-with the help of [hellenic's parliament website](hellenicparliament.gr/).
+Αυτό είναι το πρώτο άρθρο ανάλυσης στην ιστοσελίδα μου! Προσωπικά, δεν επιθυμούσα να ξεκινήσω με μία έτοιμη βάση δεδομένων και να εφαρμόσω ένα απλό μοντέλο μηχανικής μάθησης (ενδεχομένως να το κάνω σε ένα επόμενο άρθρο). Επομένως, αποφάσισα να παιδευτώ ελαφρώς προκειμένου να εφαρμόσω όλο τον κύκλο της ανάλυσης δεδομένων ξεκινώντας από την εξόρυξη αυτών, στη τακτοποίηση αυτών και να καταλήξω στην ανάλυσή τους. Σε αυτό το άρθρο θα ήθελα να ασχοληθώ με την ιστορία των εκπροσώπων του ελληνικού κοινοβολίου και να απαντηθούν κάποια ενδιαφέροντα ερωτήματα. Για τη διεξαγωγή της έρευνας θα εξάγω τα δεδομένα που έχει δημοσιεύσει η [ιστοσελίδα του Ελληνικού Κοινοβολίου](hellenicparliament.gr/) σχετικά με τους εκλεγμένους βουλευτές.
 
 The Greek political scene has particularly preoccupied global public opinion in
 recent years, due to the Greek economic crisis. A part of it was spent on the
@@ -56,73 +55,81 @@ the local level (constituencies).
 
 ### Εισαγωγή πακέτων
 
-First and foremost, we have to load our libraries.
+Αρχικά θα εισάγουμε τις απαραίτητες βιβλιοθήκες, αναλόγως των εντολών που χρειάζομαι και της ανάλυσης που θα κάνω. Ενδεικτικά θα χρειαστώ το μετα-πακέτο tidyverse για να εισάγω, τροποποιήσω και οπτικοποιήσω τα δεδομένα. Στη συνέχεια, για τη κατασκευή πινάκων θα χρησιμοποιήσω το πακέτο reactable. Τέλος, για να έχω διαγράμματα που να φαίνονται αξιοπρεπώς σε όλους τους τύπους των οθονών προτείνεται η χρήση του πακέτου highcharter.
 
-```{r Import R Libraries, message=FALSE, results='hide', echo=TRUE, warning=FALSE}
+```{r}
+#| label: import_r_libs
+#| title: "Εισαγωγή βιβλιοθηκών"
+#| message: false
+#| results: hide
+#| warning: false
+
 # General purpose R libraries
 library(tidyverse)
 library(kableExtra)
 library(reactable)
-library(highcharter)
+library(keyring)
+library(deeplr)
 
 # Graphs
 library(ggplot2)
 library(ggpol) 
 library(ggtext)
+library(highcharter)
 
-# Other settings
+# Άλλες ρυθμίσεις
 options(digits=2) # print only 2 decimals
 ```
 
-```{r, include=FALSE}
+```{r}
+#| label: add_bib_records_from_rpackages
+#| include: false
+
 knitr::write_bib(.packages(), file = 'packages.bib')
 ```
 
 ### Εισαγωγή δεδομένων
 
-After loading R libraries, then I will load my data.
+Για να βρω ποιοι είναι οι περισσότεροι εκλεγμένοι βουλευτές σε εθνικό επίπεδο, κόμματος αλλά και εκλογικής περιφέρειας πρέπει να βρω τα  αντίστοιχα δεδομένα. Ευτυχώς, η ιστοσελίδα του Ελληνικού Κοινοβουλίου διατηρεί σχετικό ηλεκτρονικό αρχείο με τους εκλεγμένους βουλευτές από το 1974 μέχρι και το 2019. Τα δεδομένα εξορύχθηκαν με τη βοήθεια του πακέτου `RSelenium`, ωστόσο δεν θα αναλύσω τον τρόπο αυτού. Σε περίπτωση που κάποιος ενδιαφέρεται για αυτό μπορεί να δει το σχετικό κώδικα στο GitHub. Χρησιμοποιώ έτοιμο το εξορυγμένο σύνολο δεδομένων και το εισάγω με την εντολή read_csv.
 
-```{r Import dataset, cache=TRUE, message=FALSE,results='hide',echo=TRUE}
+```{r}
+#| label: import_dataset
+#| message: false
+
 parliament <- read_csv("data/greek_parliament.csv")
 ```
 
-### Προεπισκόπηση δεδομένων
+### Δομή δεδομένων
 
 ```{r Preview Data}
 #| label: tbl-preview-dataset
-#| tbl-cap: "Preview Dataset (first 6 rows)"
+#| tbl-cap: "Προεπισκόπηση συνόλου δεδομένων (πρώτες 6 σειρές)"
 
 preview_dataset = head(parliament, 10)
 kbl(preview_dataset, 
     align = 'c',
     booktabs = T,
     centering = T,
-    valign = T) %>%
-  kable_paper() %>%
-  scroll_box(width = "600px", height = "250px")
+    valign = T)
 ```
 
-### Δομή δεδομένων
 
 |    Μεταβλητή    |           Τύπος μεταβλητής           |                 Περιγραφή                  |
 |:----------------:|:----------------------:|:------------------------------------:|
-|  `Full Name`   | *qualitative* <br> (nominal) | Επώνυμο / Όνομα / Όνομα πατέρα |
-|    `Party`     | *qualitative* <br> (nominal) |    Κοινοβουλευτική όμάδα - Κόμμα που εκπροσωπεί     |
-| `Constituency` | *qualitative* <br> (nominal) |       Εκλογική περιφέρεια          |
-|     `Term`     | *qualitative* <br> (ordinal) |                 Περίοδος θητείας                 |
+|  `Full Name`   | *Ποιοτική* <br> (κατηγορική) | Επώνυμο / Όνομα / Όνομα πατέρα |
+|    `Party`     | *Ποιοτική* <br> (κατηγορική) |    Κοινοβουλευτική όμάδα - Κόμμα που εκπροσωπεί     |
+| `Constituency` | *Ποιοτική* <br> (κατηγορική) |       Εκλογική περιφέρεια          |
+|     `Term`     | *Ποιοτική* <br> (διατάξιμη) |                 Περίοδος θητείας                 |
 
-Thus, my sample has `r ncol(parliament)` variables, of which 0 are quantitative
-and 4 are quantitative properties, of which 3 are nominal and the rest one
-(`Term`) is ordinal.
+Με βάση τον παραπάνω πίνακα τα συλλεγμένα δεδομένα αποτελούνται από `r ncol(parliament)` μεταβλητές (στήλες), εκ των οποίων καμία δεν είναι ποσοτική και οι υπόλοιπες τέσσερις. Από αυτές τις τέσσερις, οι τρεις είναι κατηγορικές και άλλη μία που είναι μία διατάξιμη μεταβλητή.
 
-## Κωδικοποίηση μεταβλητών
+## Τακτοποίηση δεδομένων
 
-Party names can vary from short to lengthy ones. The last ones are a problem for
-our analysis because their names can not fit to our visualisations. The table
-below is showing all the parties that have ever participated in parliament. Is
-is apparent that some parties have really long names.
+Αφότου εισάγω τα δεδομένα καλό θα ήταν να γίνει κάποια βασική τακτοποίηση αυτών ή μία εκτεταμένη μορφή αυτής σε περίπτωση που διαπιστώσω ότι τα δεδομένα μου δεν έχουν οργανωμένη ή μία συνεπή δομή. Θα μελετήσουμε σταδιακά τη κάθε μεταβλητή, ξεκινώντας από τα ονόματα των κομμάτων (μεταβλητή `Party`). Αρχικά αν συλλέξουμε όλα τις πιθανές τιμές, δηλαδή όλες τις κοινοβουλευτικές ομάδες στην ιστορία του κοινοβουλίου που δεν διαλύθηκαν προτού γίνουν νέες εκλογές. Τα ονόματα των κομμάτων είναι στα αγγλικά και οι εκτάσεις των ονομάτων εξαιρετικά μεγάλες, ενώ αναμιγνύονται τα ονόματα με τις συντμήσεις των ονομάτων τους. 
 
 ```{r}
+#| label: tbl-preview_party_names_raw
+#| tbl-cap: "Προεπισκόπηση ονομάτων κομμάτων Ελληνικού Κοινοβουλίου"
 data.frame(
   Party = unique(parliament$Party),
   Length = str_length(unique(parliament$Party))
@@ -149,80 +156,88 @@ data.frame(
 ) 
 ```
 
-In our case the parties with the longest name is AN.EL. and Democratic Coalition
-with 81 and 70 characters, respectively. On the contrary, the shortest party
-name is POL.A. with 6 characters.
+Σαν να μην έφτανε αυτό παρατηρώ ότι υπάρχουν πολλαπλές καταχωρήσεις για το ίδιο κόμμα που ενδεχομένως κατά τη πάροδο των ετών έκανε ένα μικρό rebranding (Ανεξάρτητοι Έλληνες) ή ακόμα και πιο μεγάλες αλλαγές που κατά βάση αναφέρονται και είναι πρόγονοι ή απόγονοι ως επί το πλείστον του ίδιου κόμματος (Συνασπισμός -> ΣΥΡΙΖΑ ή ΠΑΣΟΚ -> Ελιά -> Δημοκρατική Συμπαράταξη -> Κίνημα Αλλαγής -> ΠΑΣΟΚ). Μιας και αυτές οι αλλαγές δεν μπορούν εύκολα να κρίνεται απαραίτητη η δημιουργία ενός νέου πίνακα ώστε να ομαδοποιήσω αυτή τη πληροφορία και να την συγνωνεύσω στο βασικό μου σύνολο δεδομένων. 
 
 ```{r}
-## Recoding parliament$Party
-parliament$Party[parliament$Party == "ANEXARTITOI DIMOKRATIKOI VOULEFTES"] <- "ADP"
-parliament$Party[parliament$Party == "ANEXARTITOI ELLINES (Independent Hellenes)"] <- "ANEL"
-parliament$Party[parliament$Party == "ANEXARTITOI ELLINES (Independent Hellenes) National Patriotic Democratic Alliance"]<- "ANEL"
-parliament$Party[parliament$Party == "Coalition of the Left and Progress"] <- "SYRIZA"
-parliament$Party[parliament$Party == "Communist Party of Greece (Interior)"] <- "KKE (interior)"
-parliament$Party[parliament$Party == "DEMOCRATIC COALITION (Panhellenic Socialist Movement Democratic Left )"] <- "PASOK"
-parliament$Party[parliament$Party == "DHM.AR (Democratic Left)"] <- "DHMAR"
-parliament$Party[parliament$Party == "DI.ANA."] <- "DIANA"
-parliament$Party[parliament$Party == "DI.K.KI."] <- "DIKKI"
-parliament$Party[parliament$Party == "INDEPENDENT"] <- "INDEPENDENT"
-parliament$Party[parliament$Party == "KOMMOUNISTIKO KOMMA ELLADAS"] <- "KKE"
-parliament$Party[parliament$Party == "LA.O.S."] <- "LAOS"
-parliament$Party[parliament$Party == "LAIKI ENOTITA"] <- "LAE"
-parliament$Party[parliament$Party == "LAIKOS SYNDESMOS - CHRYSI AVGI (People’s Association – Golden Dawn)"] <- "XA"
-parliament$Party[parliament$Party == "NEA DIMOKRATIA"] <- "ND"
-parliament$Party[parliament$Party == "PA.SO.K. (Panhellenic Socialist Movement)"] <- "PASOK"
-parliament$Party[parliament$Party == "POL.A."] <- "POLA"
-parliament$Party[parliament$Party == "SYNASPISMOS RIZOSPASTIKIS ARISTERAS"] <- "SYRIZA"
-parliament$Party[parliament$Party == "TO POTAMI (The River)"] <- "POTAMI"
-parliament$Party[parliament$Party == "ΟΟ.ΕΟ."] <- "EO"
-```
-
-## Χρώματα
-
-A few days after, I decided that there should be a consistency in the choice of
-colors. That's the reason of this section. Thus, I will assign a dedicated hex
-color code to each party.
-
-```{r}
+#| label: tbl-organize-party-names
+#| tbl-cap: "Οργάνωση ονομάτων κομμάτων και συντμήσεών τους"
 parties = data.frame(
-  Party = unique(parliament$Party)
-) |>
+  partyNamesEN_source = unique(parliament$Party),
+  partyFullNamesEn = c("Panhellenic Socialistic Movement", "New Democracy", "Communist Party of Greece", "Communist Party οf Greece (interior)",
+          "Independent", "Coalition of the Radical Left", "Democratic Renewal", "Alternative Ecologists", "Political Spring",
+          "Democratic Social Movement","Coalition of the Radical Left", "Popular Orthodox Rally", "Democratic Left", "Independent Greeks", "Golden Dawn", "Independent Democratic MPs", "Popular Unity", "The River", "Independent Greeks", "Panhellenic Socialistic Movement"),
+  partyAbbrNamesEn = c("PASOK", "ND", "KKE", "KKE int.", "Independent", "SYRIZA", "DIANA", "EO", "POLAN", "DHKKI", "SYRIZA",
+             "LAOS", "DHMAR", "ANEL", "XA", "ADB", "LAE", "RIVER", "ANEL", "PASOK"),
+  partyFullNamesGR = c("Πανελλήνιο Σοσιαλιστικό Κίνημα", "Νέα Δημοκρατία", "Κομμουνιστικό Κόμμα Ελλάδας", 
+                    "ΚΚΕ (εσωτερικού)","Ανεξάρτητοι", "Συνασπισμός Ριζοσπαστικής Αριστεράς", "Δημοκρατική Ανανέωση", 
+                    "Εναλλακτικοί Οικολόγοι", "Πολιτική Άνοιξη", "Δημοκρατικό Κοινωνικό Κίνημα","Συνασπισμός Ριζοσπαστικής Αριστεράς", "Λαϊκός Ορθόδοξος Συναγερμός", "Δημοκρατική Αριστερά", "Ανεξάρτητοι Έλληνες", "Χρυσή Αυγή", "Ανεξ Δημ. Βουλευτές", "Λαϊκή Ενότητα", "Το Ποτάμι", "Ανεξάρτητοι Έλληνες", "Πανελλήνιο Σοσιαλιστικό Κίνημα"),
+    partyAbbrNamesGR = c("ΠΑΣΟΚ", "ΝΔ", "ΚΚΕ", "ΚΚΕ (εσωτερικού)", "Ανεξάρτητοι", "ΣΥΡΙΖΑ", "ΔΗΑΝΑ", "ΕΟ", "ΠΟΛΑΝ", "ΔΗΚΚΙ", "ΣΥΡΙΖΑ", "ΛΑΟΣ", "ΔΗΜΑΡ", "ΑΝΕΛ", "ΧΑ", "ΑΔΒ", "ΛΑΕ", "ΠΟΤΑΜΙ", "ΑΝΕΛ", "ΠΑΣΟΚ")) |>
   mutate(Color = case_when(
-    Party == "PASOK" ~ "#95bb72",
-    Party == "ND" ~ "#0492c2",
-    Party == "KKE" ~ "#FF6666",
-    Party == "SYRIZA" ~ "#e27bb1",
-    Party == "KKE (interior)" ~ "#FF3366",
-    Party == "INDEPENDENT" ~ "#ffffff",
-    Party == "DIANA" ~ "orange",
+    partyAbbrNamesEn == "PASOK" ~ "#95bb72",
+    partyAbbrNamesEn == "ND" ~ "#0492c2",
+    partyAbbrNamesEn == "KKE" ~ "#FF6666",
+    partyAbbrNamesEn == "SYRIZA" ~ "#e27bb1",
+    partyAbbrNamesEn == "KKE (interior)" ~ "#FF3366",
+    partyAbbrNamesEn == "INDEPENDENT" ~ "#ffffff",
+    partyAbbrNamesEn == "DIANA" ~ "orange",
+    partyAbbrNamesEn == "DHMAR" ~ "#FF4466",
+    partyAbbrNamesEn == "RIVER" ~ "#5592aa",
     TRUE ~ "#808080"
   ))
-
-kke_color = "#FF6666"
-nd_color = "#0492c2"
-pasok_color = "#95bb72"
-syriza_color = "#e27bb1"
 ```
+
+Πλέον είμαι σε θέση να χρησιμοποιήσω την ελληνική ή την αγγλική έκδοση των κομμάτων, ενώ σε περίπτωση δημιουργίας ενός γραφήματος. Τέλος, ο διαχωρισμός του πλήρους ονόματος και μιας συντομογραφίας είναι αρκετά σημαντική για τη δημιουργία γραφημάτων μιας και συνήθως ο διαθέσιμος χώρος είναι περιορισμένος και δίνουμε στον αναγνώστη τη πληροφορία που χρειάζεται δίχως να κουράζουμε, βελτιώνοντας την αναγνωσιμότητα και τη κατανόηση του. Όπως είδαμε και παραπάνω υπάρχουν ονόματα - σιδηρόδρομοι, όπως των Ανεξαρτήτων Ελλήνων, όπου αριθμεί 81 χαρακτήρες και της Δημοκρατικής Συμπεράταξης (στην ουσία ΠΑΣΟΚ, σε συνεργασία με μικρά κόμματα όπως η ΔΗΜΑΡ, ΚΙΔΗΣΟ κ.α.) με 70. Σε αντιπαραβολή αυτών των ονομάτων και για λόγους πληρότητας το ΠΟΛ.Α. ήταν το όνομα με τους λιγότερους χαρακτήρες (6) και αναφέρεται στο κόμμα Πολιτική Άνοιξη. Πριν κλείσω τη συγκεκριμένη ενότητα θα ήθελα να κάνω αναφορά στη τελευταία στήλη του πίνακα. Με τόσα κόμματα είναι εμφανές ότι θα χρειαστεί να θέσω χρώματα κατάλληλα για το καθένα, αλλά το πλήθος τους ίσως προκαλέσει σύγχηση σε ποιο αναφέρομαι. Έκρινα λοιπόν απαραίτητη αυτή τη προσθήκη με βάση τα χρώματα στο έμβλημα του κάθε κόμματος να επιλέξω το πιο αντιπροσωπευτικό, τουλάχιστον για τα πιο γνωστά.
+
+
+
+Κάπου εδώ έκλεισε η ενότητα των κομμάτων και ανοίγει μία τελευταία πρόκληση. Αυτή των ονομάτων των βουλευτών. Στη προεπισκόπηση των δεδομένων τα ονόματα δίνονται με αρκετά μη συνεπή δομή. Συνπήθως αποτελούνται από `Επώνυμο` `Όνομα` `Πατρώνυμο`. Βέβαια πολλές φορές υπάρχουν βουλευτές που έχουν δύο ονόματα ή δύο επίθετα. Σε αυτές τις περιπτώσεις διαχωρίζονται τα διπλά επώνυμα ή ονόματα με μία παύλα.
+
+> Θα αναρωτηθεί κάποιος και το πρόβλημα που είναι; Αφού είναι απλά μία μεταβλητή με τα ονόματά τους.
+
+Ναι! Αλλά μπορούμε να κάνουμε καλύτερη δουλειά επειδή σε αυτή τη μεταβλητή εσωκλείεται περισσότερη πληροφορία. Με λίγη προσπάθεια από μέρους μας μπορούμε να χωρίσουμε το όνομα σε άλλες τρεις μεταβλητές, όπου θα δηλώνουν το επίθετο του βουλευτή, το όνομά του και το πατρώνυμό του ξεχωριστά. Μία ενδεδειγμένη χρησιμότητα ήταν σε τυχόν διαγράμματα όπου θα μπορούμε να αναφερόμαστε αποκλειστικά στο επίθετο και στο αρχικό του ονόματός του.
 
 ```{r}
-names = c("Panhellenic Socialistic Mpvement", "New Democracy", "Communist Party of Greece", "Communist Party οf Greece (interior)",
-          "Independent", "Coalition of the Radical Left", "Democratic Renewal", "Alternative Ecologists", "Political Spring",
-          "Democratic Social Movement", "Popular Orthodox Rally", "Democratic Left", "Independent Greeks", "Golden Dawn", "Independent Democratic MPs",
-          "Popular Unity", "The River")
+pattern <- "^([^-\\s]+)(?:\\s*-\\s*([^-\\s]+))?\\s+([^-\\s]+)(?:\\s*-\\s*([^-\\s]+))?(?:\\s+([^-\\s]+))?$"
 
-parties$names = names
 
-parties$Party_el= c("ΠΑΣΟΚ", "ΝΔ", "ΚΚΕ", "ΚΚΕ (εσωτερικού)", "Ανεξάρτητοι", "ΣΥΡΙΖΑ", "ΔΗΑΝΑ", "ΕΟ", "ΠΟΛΑΝ", "ΔΗΚΚΙ",
-             "ΛΑΟΣ", "ΔΗΜΑΡ", "ΑΝΕΛ", "ΧΑ", "ΑΔΒ", "ΛΑΕ", "ΠΟΤΑΜΙ")
+mps_clean_names = parliament %>%
+    mutate(FullName = str_trim(str_replace(FullName, "\\(.*", ""))) %>%
+    extract(FullName, into = c("surname1", "surname2", "name1", "name2", "father_name"), 
+            regex = pattern, remove = FALSE) |>
+  rename("partyNamesEN_source" = "Party")
 
-parties$names_el = c("Πανελλήνιο Σοσιαλιστικό Κίνημα", "Νέα Δημοκρατία", "Κομμουνιστικό Κόμμα Ελλάδας", 
-                    "ΚΚΕ (εσωτερικού)","Ανεξάρτητοι", "Συνασπισμός Ριζοσπαστικής Αριστεράς", "Δημοκρατική Ανανέωση", 
-                    "Εναλλακτικοί Οικολόγοι", "Πολιτική Άνοιξη",
-            "Δημοκρατικό Κοινωννικό Κίνημα", "Λαϊκός Ορθόδοξος Συναγερμός", "Δημοκρατική Αριστερά", "Ανεξάρτητοι Έλληνες",
-            "Χρυσή Αυγή", "Ανεξ Δημ. Βουλευτές", "Λαϊκή Ενότητα", "Το Ποτάμι")
+clean_dataset = mps_clean_names %>%
+    left_join(parties, by = "partyNamesEN_source") %>%
+    select(-c(partyNamesEN_source))
+
+
+clean_dataset |>
+ reactable(
+  bordered = FALSE,     # No borders (booktabs style)
+  striped = FALSE,      # No stripes for a clean look
+  highlight = FALSE,    # No hover highlighting
+  defaultColDef = colDef(align = "center"),
+  defaultPageSize = 7,
+  style = list(fontSize = "14px", border = "none"),
+  theme = reactableTheme(
+    borderColor = "transparent", # Remove border
+    cellStyle = list(
+      borderBottom = "transparent"  # Subtle line between rows
+    ),
+    headerStyle = list(
+      borderBottom = "2px solid rgb(117, 117, 117)", # Thick top rule
+      borderTop = "2px solid rgb(117, 117, 117)",
+      fontWeight = "bold"
+    )
+  )
+) 
 ```
 
+
+
 ## Σύνθέσεις βουλής
+
+Έχοντας τακτοποιήσει 
 
 Now, I will make a short sum-up of the electoral resuts over the years. It is
 important to share that I made it thanks to [this
@@ -274,6 +289,7 @@ return(p)
 ```
 
 ::: callout-note
+Έχετε υπόψη σας ότι μέχρι αυτή τη στιγμή δεν έχω καταφέρει 
 Note that till this moment I have not figure out how to change the position of
 the parties in an efficient way (in a function) that will somehow represent
 their potitical view. The next visualizations of the parliament are exclusively
@@ -285,36 +301,46 @@ about how many MPs got elected by each party.
 ### 3η Σύνθεση
 
 ```{r}
-plot_parliament_term <- function(term_num, parliament_data, parties_data, lang = "el") {
+plot_parliament_term <- function(term_num, parliament_data = clean_dataset, parties_data = parties) {
   # Filter the parliament data for the selected term and summarize by party
   term_data <- parliament_data |>
     dplyr::filter(Term == term_num) |>
-    group_by(Party) |>
+    group_by(partyAbbrNamesGR) |>
     summarise(n = n()) |>
     ungroup() 
 
   # Perform fuzzy join with parties data based on party name similarity
-  term_data_joined <- fuzzyjoin::stringdist_inner_join(term_data, parties_data, by = "Party",
+  term_data_joined <- fuzzyjoin::stringdist_inner_join(term_data, parties_data, by = "partyAbbrNamesGR",
                                                       max_dist = 2, distance_col = "distance") |>
-    group_by(Party.x) |>
+    group_by(partyAbbrNamesGR.x) |>
     slice_min(distance) |>   # Ensure only the closest match is selected
-    rename(Party = Party.x)
-
-  # Conditionally adjust the data based on language
-  if (lang == "en") {
-    term_data_joined <- select(term_data_joined, names, Party, n, Color)
-    title_text = "Distribution of seats"
-    subtitle_text = "Final formation of Hellenic Parliament"
-    caption_text = '<b>Source:</b> Hellenic Parliament | <b>Graphic:</b> <a href="https://stesiam.com/" target="_blank">stesiam.com</a>'
-    hover_text = "Representatives"
-  } else {
-    term_data_joined <- select(term_data_joined, names_el, Party_el, n, Color)
+    rename(Party = partyAbbrNamesGR.x) |>
+    distinct() %>%
+    ungroup() %>%
+    select(Party, partyFullNamesGR, n, Color) |>
+    distinct()
+  
     title_text = "Κατανομή θέσεων"
     subtitle_text = "Τελική μορφή Ελληνικού Κοινοβουλίου"
     caption_text = '<b>Πηγή:</b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:</b> <a href="https://stesiam.com/" target="_blank">stesiam.com</a> '
     hover_text = "Βουλευτές"
-  }
 
+
+  # Conditionally adjust the data based on language
+  # if (lang == "en") {
+  #   term_data_joined <- select(term_data_joined, names, Party, n, Color)
+  #   title_text = "Distribution of seats"
+  #   subtitle_text = "Final formation of Hellenic Parliament"
+  #   caption_text = '<b>Source:</b> Hellenic Parliament | <b>Graphic:</b> <a href="https://stesiam.com/" target="_blank">stesiam.com</a>'
+  #   hover_text = "Representatives"
+  # } else {
+  #   term_data_joined <- select(term_data_joined, names_el, Party_el, n, Color)
+  #   title_text = "Κατανομή θέσεων"
+  #   subtitle_text = "Τελική μορφή Ελληνικού Κοινοβουλίου"
+  #   caption_text = '<b>Πηγή:</b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:</b> <a href="https://stesiam.com/" target="_blank">stesiam.com</a> '
+  #   hover_text = "Βουλευτές"
+  # }
+    
   # Create the highcharter plot for the specific term
   highchart() %>%
     hc_chart(type = 'item') %>%
@@ -330,11 +356,7 @@ plot_parliament_term <- function(term_num, parliament_data, parties_data, lang =
     hc_add_series(
       name = hover_text,
       data = purrr::pmap(
-        if (lang == "en") {
-          list(term_data_joined$names, term_data_joined$n, term_data_joined$Color, term_data_joined$Party)
-        } else {
-          list(term_data_joined$names_el, term_data_joined$n, term_data_joined$Color, term_data_joined$Party_el)
-        },
+          list(term_data_joined$partyFullNamesGR, term_data_joined$n, term_data_joined$Color, term_data_joined$Party),
         list
       ),
       keys = c("name", "y", "color", "label"),
@@ -343,10 +365,10 @@ plot_parliament_term <- function(term_num, parliament_data, parties_data, lang =
         format = "{point.label}",
         style = list(textOutline = "5px contrast")
       ),
-      center = list("50%", "88%"),
-      size = "170%",
-      startAngle = -100,
-      endAngle = 100
+      center = list("50%", "50%"),
+      size = "100%",
+      startAngle = -150,
+      endAngle = 150
     ) %>%
     hc_responsive(
       rules = list(
@@ -364,156 +386,206 @@ plot_parliament_term <- function(term_num, parliament_data, parties_data, lang =
 ```
 
 ```{r}
-plot_parliament_term(3,parliament, parties, lang = "el")
+plot_parliament_term(3, clean_dataset, parties)
 ```
 
 ### 4η Σύνθεση
 
 ```{r}
-plot_parliament_term(4,parliament, parties, lang = "el")
+plot_parliament_term(4, clean_dataset, parties)
 ```
 
 ### 5η Σύνθεση
 
 ```{r}
-plot_parliament_term(5,parliament, parties)
+plot_parliament_term(5, clean_dataset, parties)
 ```
 
 ### 6η Σύνθεση
 
 ```{r}
-plot_parliament_term(6,parliament, parties)
+plot_parliament_term(6, clean_dataset, parties)
 ```
 
 ### 7η Σύνθεση
 
 ```{r}
-plot_parliament_term(7,parliament, parties)
+plot_parliament_term(7, clean_dataset, parties)
 ```
 
 ### 8η Σύνθεση
 
 ```{r}
-plot_parliament_term(8,parliament, parties)
+plot_parliament_term(8, clean_dataset, parties)
 ```
 
 ### 9η Σύνθεση
 
 ```{r}
-plot_parliament_term(9,parliament, parties, lang = "el")
+plot_parliament_term(9, clean_dataset, parties)
 ```
 
 ### 10η Σύνθεση
 
 ```{r}
-plot_parliament_term(10,parliament, parties)
+plot_parliament_term(10, clean_dataset, parties)
 ```
 
 ### 11η Σύνθεση
 
 ```{r}
-plot_parliament_term(11,parliament, parties)
+plot_parliament_term(11, clean_dataset, parties)
 ```
 
 ### 12η Σύνθεση
 
 ```{r}
-plot_parliament_term(12,parliament, parties)
+plot_parliament_term(12, clean_dataset, parties)
 ```
 
 ### 13η Σύνθεση
 
 ```{r}
-plot_parliament_term(13,parliament, parties)
+plot_parliament_term(13, clean_dataset, parties)
 ```
 
 ### 14η Σύνθεση
 
 ```{r}
-plot_parliament_term(14,parliament, parties)
+plot_parliament_term(14, clean_dataset, parties)
 ```
 
 ### 15η Σύνθεση
 
 ```{r}
-plot_parliament_term(15,parliament, parties)
+plot_parliament_term(15, clean_dataset, parties)
 ```
 
 ### 16η Σύνθεση
 
 ```{r}
-plot_parliament_term(16,parliament, parties)
+plot_parliament_term(16, clean_dataset, parties)
 ```
 
 ### 17η Σύνθεση
 
 ::: callout-warning
-As you can see on the next plot there are many MPs that are classified as
-independent (according to Hellenic's Parliament website). Many of them are
-members of parties "ANEL" and "Enosi Kentroon". However, a large wave of
-departures from the parties led to not fulfilling the conditions to be
-considered as parliamentary parties. For that reason members of these parties
-(that did not left) are considered independent.
+Στο παρακάτω διάγραμμα υπάρχουν αρκετοί ανεξέρτητοι βουλευτές οι οποίοι ανήκουν στις κατηγορίες των ανεξάρτητων βουλευτών, σύμφωνα με την ιστοσελίδα του Ελληνικού Κοινοβουλίου. Γενικότερα εκείνη η περίοδος χαρακτηρίζεται από έντονη κυβερνητική αστάθεια, αλλά πολλοί από αυτούς προέκυψαν από τα κόμματα των Ανεξαρτήτων Ελλήνων και της Ένωσης Κεντρωών. Ένα μεγάλο κύμα αποχωρήσεων - ανεξαρτητοποιήσεων από τα προαναφερόμενα κόμματα οδήγησε στο να μην πληρούν τα κριτήρια ώστε να αποτελούν κοινοβουλευτικές ομάδες. Αυτός είναι ο λόγος που ακόμα και βουλευτές που δεν αποχώρησαν από αυτά τα κόμματα λόγω της διάλυσης της κοινοβουλευτικής ομάδας χαρακτιρίζονται ως ανεξέρτητοι.
 :::
 
 ```{r}
-plot_parliament_term(17,parliament, parties)
+plot_parliament_term(17, clean_dataset, parties)
 ```
 :::
 
 ## Εκλεξιμότητα
 
+Το πόσοι βγήκαν και τα αποτελέσματα των εκλογών ήταν λίγο-πολύ γνωστά, απλώς έχει πάντα ενδιαφέρον να δοκιμάζεις τις γνώσεις σου και με την R. Όμως θα ήθελα να ξεκινήσω να απαντήσω σε ποιο ουσιαστικά ερωτήματα. Μία βασική κριτική στο πολιτικό σύστημα είναι ότι βγαίνουν συνεχώς οι ίδιοι. Βέβαια αυτή η κριτική δεν μπορεί να έχει ως αποδέκτες μόνο τους πολιτικούς, αλλά και μερίδα πολιτών που αποφασίζει να στηρίξει τους ίδιους. Δεν μπορείς να περιμένεις να δεις μία αλλαγή στο πολιτικό σύστημα αν αποφασίζεις την εξουσία μεταξύ δύο τριών κομμάτων, πόσο δε μάλλον όταν επιμένεις και στους ίδιους εκπροσώπους. Τελικά τι συνέβη στην Ελλάδα; Οι βουλευτές μας αλλάζουν ανά τακτά χρονικά διαστήματα ή εκλέγονται συνεχώς οι ίδιοι; Σε αυτή την ενότητα θα βρω ποιοι είναι οι βουλευτές που έχουν εκλεχτεί περισσότερες φορές.
+
+```{r}
+u = clean_dataset |>
+  select(surname1, name1, partyFullNamesGR, partyAbbrNamesGR, Color) |>
+  count(surname1, name1, partyAbbrNamesGR, partyFullNamesGR, Color) |>
+  dplyr::filter(n >=11) |>
+  arrange(-n) |>
+  mutate(
+  #surname1 = deeplr::translate2(surname1, target_lang = "EL", source_lang = "EN",auth_key = #key_get("deepl")),
+  #        name1 = deeplr::translate2(name1, target_lang = "EL", source_lang = "EN",auth_key = key_get("deepl")),
+         name1 = str_sub(name1,start = 1, end=1),
+         surnameAndInitial = paste0(surname1, " ", name1, "."))
+```
+
+```{r}
+#| label: fig-most-elected-mps
+#| fig-cap: "Βουλευτές που έχουν εκλεγεί περισσότερες φορές εκπροσωπόντας συγκεκριμένο κόμμα"
+u1 = u %>% arrange(desc(n))
+
+highchart() %>%
+    hc_chart(type = "bar") %>%
+    hc_title(text = "Βουλευτές που εκλέχτηκαν πιο πολλές φορές") %>%
+    hc_subtitle(text = "Πόσες φορές εκπροσώπησαν το συγκεκριμένο κόμμα στο Ελληνικό Κοινοβούλιο") %>%
+    hc_xAxis(categories = u1$surnameAndInitial) %>%
+    hc_yAxis(title = list(text = "Value")) %>%
+    hc_series(
+        list(
+            name = "# Αριθμός εκλέχτηκε",
+            data = lapply(1:nrow(u1), function(i) {
+                list(
+                    y = u1$n[i],
+                    affiliate = u1$partyAbbrNamesGR[i],
+                    color = u1$Color[i]
+                )
+            }),
+            dataLabels = list(
+                enabled = TRUE,
+                format = "{y}",
+                style = list(fontSize = "12px", textOutline = "none", color = "#FFFFFF")
+            )
+        )
+    ) %>%
+    hc_plotOptions(
+        bar = list(
+            borderRadius = 3,
+            pointPadding = 0.2,
+            groupPadding = 0.1
+        )
+    ) %>%
+    hc_tooltip(
+        headerFormat = "",
+        pointFormat = "<b>{point.category}</b><br/>
+                  Κόμμα: <b>{point.affiliate}</b><br/>
+                  Εκλέχτηκε: <b>{point.y}</b> φορές"
+    ) %>%
+    hc_legend(enabled = FALSE) %>%
+    hc_caption(
+        text = "Colors represent different affiliations",
+        style = list(fontSize = "12px", color = "#666666")
+    )
+
+```
+
+
+
 ```{r, warning=FALSE, fig.height= 10,fig}
 #| layout-valign: bottom
-#| fig-cap: "Most elected MPs"
 
-#total_times_elected_freqs <- function(input_constituency, min_times_elected){
-total_times_elected_freqs_df = parliament %>%  count(FullName, Party) %>% filter(n >= 9) %>% as.data.frame()
-  
-#df = table(parliament$FullName)%>% sort(decreasing = T) %>% as.data.frame() %>% filter(Freq>=11)
-
-ggplot(data = total_times_elected_freqs_df, aes(x = reorder(FullName, n), y = n, fill = Party ))+
-  geom_bar(stat = "identity",width = 0.88) +
-  geom_text(aes(label=n), hjust = 1.5, vjust=0.5, color="white", size=4)+
-  theme_minimal() +
-  scale_fill_manual(values = c("KKE" = kke_color,"ND" = nd_color, "PASOK" = pasok_color, "SYRIZA" = syriza_color)) +
-  labs(title = "Most elected MPs on Greek Parliament (1981 - 2019) <br>
-       <span style = 'font-size:10pt'> A list that shows the most elected members of parliament (elected 11 times or more). <br> The following ones are members of <span style = 'color:blue;'>ND</span>,  or <span style = 'color:darkgreen;'>PASOK</span></span>.",
-       caption = "Source: **stesiam** | stesiam.github.io, 2022",
-       x = "Times elected",
-       y = "Members of Parliament") +
-    theme(
-    plot.title.position = "plot",
-    plot.title = element_textbox_simple(
-      size = 14,
-      lineheight = 1,
-      padding = margin(5.5, 5.5, 5.5, 5.5),
-      margin = margin(0, 0, 5.5, 0),
-      fill = "cornsilk"
-    ))+
-  coord_flip()
+# #total_times_elected_freqs <- function(input_constituency, min_times_elected){
+# total_times_elected_freqs_df = parliament %>%  count(FullName, Party) %>% filter(n >= 9) %>% as.data.frame()
+#   
+# #df = table(parliament$FullName)%>% sort(decreasing = T) %>% as.data.frame() %>% filter(Freq>=11)
+# 
+# ggplot(data = total_times_elected_freqs_df, aes(x = reorder(FullName, n), y = n, fill = Party ))+
+#   geom_bar(stat = "identity",width = 0.88) +
+#   geom_text(aes(label=n), hjust = 1.5, vjust=0.5, color="white", size=4)+
+#   theme_minimal() +
+#   scale_fill_manual(values = c("KKE" = kke_color,"ND" = nd_color, "PASOK" = pasok_color, "SYRIZA" = syriza_color)) +
+#   labs(title = "Most elected MPs on Greek Parliament (1981 - 2019) <br>
+#        <span style = 'font-size:10pt'> A list that shows the most elected members of parliament (elected 11 times or more). <br> The following ones are members of <span style = 'color:blue;'>ND</span>,  or <span style = 'color:darkgreen;'>PASOK</span></span>.",
+#        caption = "Source: **stesiam** | stesiam.github.io, 2022",
+#        x = "Times elected",
+#        y = "Members of Parliament") +
+#     theme(
+#     plot.title.position = "plot",
+#     plot.title = element_textbox_simple(
+#       size = 14,
+#       lineheight = 1,
+#       padding = margin(5.5, 5.5, 5.5, 5.5),
+#       margin = margin(0, 0, 5.5, 0),
+#       fill = "cornsilk"
+#     ))+
+#   coord_flip()
   
 ```
 
 ## Εκλεξιμότητα κόμματος
 
-So far we have seen the most elected members of Greek parliament for the period
-1981-2019. Ιt would be particularly interesting to study the same feature by
-party. However, finding the most elected member per party can be challenging on
-parties with relatively low representation on Greek parliament. That is the
-reason for choosing only some of those.
+Μέχρι στιγμής είδαμε τα μέλη του κοινοβουλίου, από το 1981 μέχρι και το 2019 που έχουν εκλεχτεί περισσότρες φορές με βάση το κόμμα που εκπροσωπούν. Θα ήταν ιδιαιτέρως χρήσιμο να μελετήσουμε όχι απλώς τη δημοφιλία ως προς τη βουλή, αλλά η μέτρηση του ίδιου χαρακτηριστικού και σε κάθε κόμμα. Βέβαια αυτή η μέτρηση έχει κάποιους περιορισμούς μιας και υπάρχουν κόμματα τα οποία έχουν αρκετά μικρή εκπροσώπηση στη Βουλή είτε δεν μακροημέρευσε και δεν είχε αρκετές θητείες εντός Βουλής. Για αυτό το λόγο θα αναλυθούν μόνο τα πιο ιστορικά κόμματα του κοινοβουλίου, δηλαδή το ΚΚΕ, η ΝΔ, το ΠΑΣΟΚ και ο ΣΥΡΙΖΑ. 
 
-Concerning the implementation part, I see that I will make some visualizations
-with minimum changes (e.g., filter dataset based on party, change color, etc.)
-so, the creation of a function is justified. That way, I will not repeat same
-code, following one of the principles of programming (DRY - Don't Repeat
-Yourself). On the following function we can see that I set 3 variables :
+Επίσης, όσον αφορά το κομμάτι της υλοποίησης του σχετικού γραφήματος η χρήση συναρτήσεων είναι ενδεδειγμένη. Θα έχω ίδιο τύπο γραφήματος και απλώς θα πρέπει να φιλτράρω τα δεδομένα μου (ανά κόμμα), και στη συνέχεια να στοιχίσω τις τιμές μου σε φθίνουσα σειρά ανά φορές εκλογής για κάθε βουλευτή. Δηλαδή το μόνο που θα αλλάξει θα είναι το κόμμα. Έτσι θα αποφύγω την επανάληψη του κώδικά μου που είναι μία από τις βασικές αρχές του προγραμματισμού. Στην συγκεκριμένη συνάρτηση θα θέσω 3 μεταβλητές:
 
--   `Party` : I have to specify which data to filter
--   `color` : In order to customize color of my barplots to be similar to each
-    party's color
--   `times_elected_min` : A argument that I added up later. The problem with its
-    absence is that I have to deal with parties that elect for example 150 MPs
+-   `Party` : Τα δεδομένα ποιου κόμματος πρέπει να κρατήσω
+-   `color` : Το χρώμα, έτσι ώστε να συμπίπτει το χρώμα των ράβδων με το κόμμα το οποίο εκπροσωπούν
+-   `times_elected_min` : Μία μεταβλητή που έθεσα αργότερα. Το πρόβλημα που προέκυψε με την αρχική συνάρτηση είναι ότι υπήρχαν σημαντικές διαφορές στου ς εκλεγμένους βουλευτές μεταξύ των κομμάτων που εκλέγουν σταθερά μεγάλο αριθμό βουλευτών. Αν θέσω έναν γενικό αριθμό 
     and some others just 10. If I set a universal number of elections to
     visualize I will have diagrams with many problems. Let's suppose that I set
     a big value (e.g., 10). Then I would visualize my data for *ND* and *PASOK*,
@@ -541,66 +613,157 @@ ggplot(data = party_df, aes(x = reorder(Full_Name , Freq), y = Freq))+
 }
 ```
 
+```{r}
+party_plot <- function(party, party_color, times_elected_min, title_text = NULL, subtitle_text = NULL) {
+  
+  party_df <- clean_dataset %>%
+    dplyr::filter(partyAbbrNamesGR == party) %>%
+    count(surname1, name1) %>%
+    arrange(-n) %>%
+    drop_na() %>%
+    as.data.frame() %>%
+    dplyr::filter(n >= times_elected_min) %>%
+    mutate(fullname = paste0(surname1, " ", name1)) %>%
+#    mutate(fullname = deeplr::translate2(fullname, target_lang = "EL", source_lang = "EN", auth_key = 
+    # keyring::key_get("deepl"))) %>%
+    separate(., col = c(fullname), into = c("lastNameGR", "firstNameGR"), sep = " ") %>%
+    mutate(
+      fullNameGR = paste0(lastNameGR, " ", firstNameGR),
+      lastNameAndInitialGR = paste0(lastNameGR, " ", str_sub(firstNameGR, start = 1, end = 1), ".")
+    )
+    
+    
+  
+
+highchart() %>%
+    hc_chart(type = "bar", inverted = TRUE) %>%
+    hc_title(text = title_text) %>%
+    hc_subtitle(text = subtitle_text) %>%
+    hc_xAxis(
+      categories = party_df$lastNameAndInitialGR,
+      title = list(text = NULL),
+      labels = list(
+        style = list(fontSize = "11px", whiteSpace = "nowrap"),
+        useHTML = TRUE
+      )
+    ) %>%
+    hc_yAxis(title = list(text = "(#) Φορές εκλέχτηκε")) %>%
+    hc_add_series(
+      name = "Times elected",
+      data = party_df$n,
+      color = party_color
+    ) %>%
+    hc_plotOptions(bar = list(dataLabels = list(enabled = TRUE))) %>%
+    hc_tooltip(
+        headerFormat = "",
+        pointFormat = "<b>{point.category}</b><br/>
+                  Κόμμα: <b>{party}</b><br/>
+                  Εκλέχτηκε: <b>{point.y}</b> φορές"
+    ) %>%
+    hc_legend(enabled = FALSE)  # Hides the legend
+}
+```
+
+
 The visualizations are presented in alphabetical order.
 
 ### ΚΚΕ
 
 ```{r}
-party_plot("KKE", "#FF6666", times_elected_min = 5)
+party_plot("ΚΚΕ", "#FF6666", times_elected_min = 5, 
+           title_text = "Περισσότερο εκλεγμένοι βουλευτές του ΚΚΕ",
+           subtitle_text = "Οι κυρίες Παπαρήγα και Κανέλλη είναι οι βουλεύτριες του κόμματος με τις περισσότερες εκπροσωπήσεις του κόμματος και ακολουθεί ο κύριος Σκυλλάκος.")
 ```
 
 ### ΝΔ
 
 ```{r}
-party_plot("ND", "#0492c2", times_elected_min = 10)
+party_plot("ΝΔ", "#0492c2", times_elected_min = 10,
+           title_text = "Περισσότερο εκλεγμένοι βουλετές της ΝΔ",
+           subtitle_text = "")
 ```
 
 ### ΠΑΣΟΚ
 
 ```{r}
-party_plot("PASOK", "#95bb72", times_elected_min = 10)
+party_plot("ΠΑΣΟΚ", "#95bb72", times_elected_min = 10)
 ```
 
 ### ΣΥΡΙΖΑ
 
 ```{r}
-party_plot("SYRIZA", "#e27bb1", times_elected_min = 5)
+party_plot("ΣΥΡΙΖΑ", "#e27bb1", times_elected_min = 5)
 ```
 
 ## Εκλεξιμότητα νομού
 
-So far we have seen :
+Αυτή τη στιμγή έχω υπολογ´σει
 
--   the composition of Greek Parliament
--   the most elected MPs on national level and
--   the most elected MPs on party level
+-   τη σύνθεση των κοινοβουλίων ανά θητεία
+-   τους βουευτές με τις περισσότερες θητείες σε εθνικό επίπεδο
+-   τους βουλευτές με τις περισσότερες θητείες σε επίπεδο κόμματος
 
-The last part of my analysis will investigate the most popular MPs on local
-level (per profecture).
-
-Obviously, the same logic applies to party charts (same processes with minor
-changes), so the use of a function is almost mandatory (over fifty -50- cases
-!).
-
-On my previous workflow I used table() function in order to take frequencies.
-That's one easy way to go. Although I didn't figured out to add characteristics
-from other columns (like party of the MP). Fir that reason I took the decision
-to use count() instead of table.
+Τώρα, θα υπολογίσω τους πιο δημοφιλείς βουλευτές, ανά νομό. Προφανώς, σε αυτή τη περίπτωση εφαρμόζεται γ ίδια λογική με αυτή της προηγούμενης ενότητας (με μικρές μετατροπές). Εγώ προσωπικά θα χαρακτήριζα τη χρήση συναρτήσεων σε αυτή τη περίπτωση σχεδόν υποεχρεωτική, μιας και όλοι οι νομοί είναι 50! Για την εύρεση των συχνοτήτων θα χρησιμοποιήσω τη εντολή count.
 
 ```{r}
 constituency_freqs <- function(input_constituency, min_times_elected){
-cont_df = parliament %>% filter(Constituency == input_constituency) %>%
-  count(FullName, Party) %>% filter(n >= min_times_elected) %>% as.data.frame()
+  cont_df = clean_dataset %>% dplyr::filter(Constituency == input_constituency) %>% 
+    count(surname1, name1, partyFullNamesGR, partyAbbrNamesGR, Color) %>%
+    arrange(-n) |>
+    dplyr::filter(n >= min_times_elected) %>%
+    mutate(FullNameInitial = paste0(surname1, " ", str_sub(name1, 1, 1), "."))
   
-  ggplot(data = cont_df, aes(x = reorder(FullName, n), y = n, fill = Party ))+
-  geom_bar(stat = "identity",width = 0.88) +
-  scale_fill_manual(values = c("ANEL" = "#bcd2e8", "INDEPENDENT" = "#cccccc","KKE"=kke_color,"ND" = nd_color, "PASOK" = pasok_color, "SYRIZA" = syriza_color,"XA" = "#000000")) +
-  geom_text(aes(label=n), hjust = 1.5, vjust=0.5, color="white", size=4)+
-  theme_minimal() +
-   labs(title = "Most elected MPs",
-       subtitle = "",
-       caption = "Source: stesiam | stesiam.github.io, 2022") +
-  coord_flip()
+highchart() %>%
+    hc_chart(type = "bar") %>%
+    hc_title(text = "Βουλευτές που εκλέχτηκαν πιο πολλές φορές") %>%
+    hc_subtitle(text = "Πόσες φορές εκπροσώπησαν το συγκεκριμένο κόμμα στο Ελληνικό Κοινοβούλιο") %>%
+    hc_xAxis(categories = cont_df$FullNameInitial) %>%
+    hc_yAxis(title = list(text = "Value")) %>%
+    hc_series(
+        list(
+            name = "# Αριθμός εκλέχτηκε",
+            data = lapply(1:nrow(cont_df), function(i) {
+                list(
+                    y = cont_df$n[i],
+                    affiliate = cont_df$partyAbbrNamesGR[i],
+                    color = cont_df$Color[i]
+                )
+            }),
+            dataLabels = list(
+                enabled = TRUE,
+                format = "{y}",
+                style = list(fontSize = "12px", textOutline = "none", color = "#FFFFFF")
+            )
+        )
+    ) %>%
+    hc_plotOptions(
+        bar = list(
+            borderRadius = 3,
+            pointPadding = 0.2,
+            groupPadding = 0.1
+        )
+    ) %>%
+    hc_tooltip(
+        headerFormat = "",
+        pointFormat = "<b>{point.category}</b><br/>
+                  Κόμμα: <b>{point.affiliate}</b><br/>
+                  Εκλέχτηκε: <b>{point.y}</b> φορές"
+    ) %>%
+    hc_legend(enabled = FALSE) %>%
+    hc_caption(
+        text = "Colors represent different affiliations",
+        style = list(fontSize = "12px", color = "#666666")
+    )  
+  
+  # ggplot(data = cont_df, aes(x = reorder(FullName, n), y = n, fill = Party ))+
+  # geom_bar(stat = "identity",width = 0.88) +
+  # scale_fill_manual(values = c("ANEL" = "#bcd2e8", "INDEPENDENT" = "#cccccc","KKE"=kke_color,"ND" = nd_color, "PASOK" = pasok_color, "SYRIZA" = syriza_color,"XA" = "#000000")) +
+  # geom_text(aes(label=n), hjust = 1.5, vjust=0.5, color="white", size=4)+
+  # theme_minimal() +
+  #  labs(title = "Most elected MPs",
+  #      subtitle = "",
+  #      caption = "Source: stesiam | stesiam.github.io, 2022") +
+  # coord_flip()
 }
 ```
 

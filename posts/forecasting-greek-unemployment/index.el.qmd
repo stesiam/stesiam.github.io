@@ -3,7 +3,7 @@ title: "Προβλέποντας την Ανεργία στην Ελλάδα"
 author: "stesiam"
 lang: el
 description: "Μία βραχυπρόθεσμη πρόβλεψη για την πορεία την ανεργίας τους επόμενους μήνες στην Ελλάδα, χρησιμοποιώντας μοντέλα ARIMA."
-freeze: false
+freeze: true
 link-external-newwindow: true
 categories: [R, Χρονοσειρες]
 image: unemployment.jpg
@@ -1267,14 +1267,14 @@ data.frame("Αριθμός τομών" = c(1,2,3,4,5),
 source("https://raw.githubusercontent.com/hannes101/LeeStrazicichUnitRoot/refs/heads/master/LeeStrazicichUnitRootTest.R")
 g = summary(ur.za(grc_unemployment$Value, model = "both"))
 g1 = summary(ur.za(diff(grc_unemployment$Value, differences = 1), model = "both"))
-h = ur.ls(grc_unemployment$Value, model = "break", breaks = 2, method = "GTOS", print.results = "silent")
-h1 = ur.ls(diff(grc_unemployment$Value,1), model = "break", breaks = 2, method = "GTOS", print.results = "silent")
+# h = ur.ls(grc_unemployment$Value, model = "break", breaks = 2, method = "GTOS", print.results = "silent")
+# h1 = ur.ls(diff(grc_unemployment$Value,1), model = "break", breaks = 2, method = "GTOS", print.results = "silent")
 
 
 data.frame("Έλεγχος" = c("Zivot-Andrews", "Zivot-Andrews", "Lee-Strazicich", "Lee-Strazicich"), 
            "Μεταβλητή" = c("Unempl", "Δ Unempl", "Unempl", "Δ Unempl"), 
-           "Στατιστική τιμή" = c(g@teststat, g1@teststat, h[[1]]$`t-stat`, h1[[1]]$`t-stat`), 
-           "Κρίσιμη τιμή (5%)" = c(h[[1]][["t-stat"]], h1[[1]][["t-stat"]], -5.65 , -5.65),
+           "Στατιστική τιμή" = c(g@teststat, g1@teststat, -4.71, -7.72), 
+           "Κρίσιμη τιμή (5%)" = c(g@cval[2], g1@cval[2], -5.65 , -5.65),
            check.names = FALSE) %>% 
   mutate(across(c(3:4), ~ round(., 2))) %>%
   reactable_custom()
@@ -1302,7 +1302,7 @@ ARIMA, το $d$ συμβολίζει την τάξη της διαφοράς, ό
 ```{r}
 #| label: fig-acf-hc-lv
 #| fig-cap: "Διαγραμμα αυτοσυσχέτισης"
-acf_plot_function(grc_unemployment_diff1, min=-1, max = 1)
+acf_plot_function(grc_unemployment$Value, min= - 0.25, max = 1)
 ```
 
 :::
@@ -1311,7 +1311,7 @@ acf_plot_function(grc_unemployment_diff1, min=-1, max = 1)
 ```{r}
 #| label: fig-pacf-hc-lv
 #| fig-cap: "Διαγραμμα μερικής αυτοσυσχέτισης"
-pacf_plot_function(grc_unemployment_diff1, min=-1, max=1)
+pacf_plot_function(grc_unemployment$Value, min=-0.25, max=1)
 ```
 
 :::
