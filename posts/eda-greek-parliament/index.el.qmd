@@ -696,6 +696,43 @@ party_plot("ΠΑΣΟΚ", "#95bb72", times_elected_min = 10)
 party_plot("ΣΥΡΙΖΑ", "#e27bb1", times_elected_min = 5)
 ```
 
+## Δικομματισμός στην Ελλάδα
+
+```{r}
+f = clean_dataset %>% dplyr::group_by(Term, partyAbbrNamesGR) %>% count() %>% ungroup(partyAbbrNamesGR) %>% top_n(., n =2, wt = n) %>% tidyr::pivot_wider(., names_from = partyAbbrNamesGR, values_from = n) %>%
+    mutate(seatsTopTwoParties = rowSums(across(c(ΝΔ, ΠΑΣΟΚ, ΣΥΡΙΖΑ)), na.rm = TRUE)) %>%
+    mutate(pctSeatsTopTwoParties = round( (seatsTopTwoParties/ 300) * 100, digits = 1) )
+
+highchart() %>%
+    hc_chart(type = "spline") %>%
+    hc_title(text = "Εκπροσώπηση δικομματισμού", style = list(fontSize = "20px", fontWeight = "bold")) %>%
+    hc_subtitle(text = "Ποσοστό (%) εκπροσώπησης δικομματισμού στην Ελληνική Βουλή") %>%
+    hc_xAxis(categories = f$Term , title = list(text = "Θητείες"), gridLineWidth = 0) %>%
+    hc_yAxis(title = list(text = "Ποσοστό θέσεων δύο πρώτων κομμάτων (%)"), gridLineWidth = 0) %>%
+    hc_add_series(
+        data = f$pctSeatsTopTwoParties,
+        name = "Ποσοστό",
+        color = "#6366F1",
+        marker = list(enabled = TRUE, radius = 4, symbol = "circle")
+    ) %>%
+     hc_tooltip(
+    useHTML = TRUE,
+    headerFormat = '<span style="font-size:14px;">Θητεία<b>: {point.x}</b></span><br/>',
+    pointFormat = '<span style="color:{series.color};">●</span> <b>{series.name}</b>: {point.y}<br/>',
+    backgroundColor = "#ffffff",
+    borderColor = "#e5e7eb",
+    style = list(color = "#111827", fontSize = "14px")
+  ) %>%
+  hc_plotOptions(
+    spline = list(
+      lineWidth = 4,
+      marker = list(symbol = "circle", radius = 5)
+    )
+  ) %>%
+    hc_legend(enabled = FALSE)
+```
+
+
 ## Εκλεξιμότητα νομού
 
 Αυτή τη στιμγή έχω υπολογ´σει
