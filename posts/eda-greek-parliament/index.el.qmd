@@ -538,7 +538,9 @@ u = clean_dataset |>
 ```{r}
 #| label: fig-most-elected-mps
 #| fig-cap: "Βουλευτές που έχουν εκλεγεί περισσότερες φορές εκπροσωπόντας συγκεκριμένο κόμμα"
+#| fig-height: 12
 u1 = u %>% arrange(desc(n))
+
 
 highchart() %>%
     hc_chart(type = "bar") %>%
@@ -997,6 +999,57 @@ constituency_freqs("Serres",3)
 
 :::
 
+## Κοινοβουλευτική ανανέωση
+
+```{r}
+get_new_members = function(term){
+  
+previous_parls = clean_dataset |>
+  select(FullName, Term) |>
+  dplyr::filter(Term < term)
+
+current_parl = clean_dataset |>
+  select(FullName, Term) |>
+  dplyr::filter(Term == term)
+
+how_many_current_term = length(current_parl$FullName)
+established_members = sum(current_parl$FullName %in% previous_parls$FullName)
+new_members = how_many_current_term - established_members
+
+output = list(established_members, new_members)
+return(output)
+}
+```
+
+```{r}
+results <- lapply(3:17, get_new_members)
+
+df <- data.frame(
+  num = 3:17,
+  output1 = sapply(results, `[[`, 1),
+  output2 = sapply(results, `[[`, 2)
+)
+
+highchart() %>%
+  hc_chart(type = "areaspline") %>%  # smooth stacked lines    hc_title(text = "Stacked Line Chart Example") %>%
+    hc_xAxis(categories = df$num) %>%
+    hc_yAxis(title = list(text = "Ποσοστό νέων βουλευτών")) %>%
+  hc_title(text = "Βουλευτές που εκλέγονται πρώτη φορά") %>%
+  hc_subtitle(text = "Οι βαθμοί που κυριαρχούν είναι κάτω του 7, προσεγγίζοντας ακόμα και το 90%. Οι απόφοιτοι με βαθμό πτυχίου από 6 μέχρι και 7 είναι οι πιο συχνοί και καταλαμβάνουν το 55% με 70% των συνολικών αποφοίτων") %>%
+  hc_colors(c("#1f77b4", "#ff7f0e")) %>%
+  hc_plotOptions(
+    areaspline = list(
+      stacking = "percent",
+      marker = list(enabled = FALSE),
+      lineWidth = 2,      # thicker smooth line
+      fillOpacity = 0.6   # subtle transparency
+    )) %>%
+   hc_add_series(name = "Παλιοί βουλευτές", data = df$output1) %>%
+    hc_add_series(name = "Πρώτη θητεία", data = df$output2) %>%
+    hc_tooltip(shared = TRUE)
+```
+
+
 ## Σωρευτικός αριθμός βουλευτών
 
 Ελέγξαμε  ανά κατηγορία ή ανά περίοδο εκλογής πώς ψηφίσαμε. Αλλά κάπου εδώ κρίνω σκόπιμη την αναφορά ενός 
@@ -1045,7 +1098,13 @@ highchart() %>%
 gh = clean_dataset |>
   count(.classify) |>
   arrange(-n) |>
-  mutate(pct = round( 100* (n/sum(n)), digits = 1) )
+  mutate(pct = round( 100* (n/sum(n)), digits = 1) ) |>
+  mutate(.classify =
+   fct_recode( .classify,
+    "Άνδρες" = "man",
+    "Γυναίκες" = "woman"
+  )
+)
 
 colors <- c(
   "#90C3FF",
@@ -1053,7 +1112,7 @@ colors <- c(
 )
 
 highchart() %>%
-    hc_chart(type = "pie", backgroundColor = NULL) %>%
+    hc_chart(type = "pie") %>%
     hc_title(text = "Σύνολο εκπροσώπησης βουλευτών (1981 - 2019)", align = "center") %>%
     hc_subtitle(text = "Οι γυναίκες υποεκπροσωπούνται ιστορικά. Σε όλη την πρόσφατη ιστορία του Ελληνικού Κοινοβουλίου οι γυναίκες αποτελούν μόλις το 13% των συνολικά εκλεγμένων βουλευτών") %>%
     hc_plotOptions(pie = list(
