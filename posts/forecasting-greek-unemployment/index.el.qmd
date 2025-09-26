@@ -113,6 +113,9 @@ library(tsibble)
 library(feasts)
 library(fable)
 library(strucchange)
+
+library(FinTS)
+library(lmtest)
 ```
 
 ```{r}
@@ -180,7 +183,8 @@ reactable_custom = function(data, head_max = 5){
 
 ```{r}
 #| label: acf_pacf_plot_function
-acf_plot_function = function(data, min = -1, max = 1){
+acf_plot_function = function(data, min = -1, max = 1, title_text = NULL,
+                             subtitle_text = NULL){
   ts_data <- data
   N <- length(ts_data)
 
@@ -198,8 +202,9 @@ acf_values <- as.numeric(acf_obj$acf[-1])           # skip lag 0
 # Build the highcharter ACF plot
 acf_chart <- highchart() %>%
   hc_chart(type = "column") %>%
-  hc_title(text = "Autocorrelation Plot") %>%
-  hc_xAxis(categories = lags_acf, title = list(text = "Lag")) %>%
+  hc_title(text = title_text) %>%
+  hc_subtitle(text = subtitle_text) %>%
+  hc_xAxis(categories = lags_acf, title = list(text = "# Υστέρηση")) %>%
   hc_yAxis(min = min, max = max,
     title = list(text = "ACF"),
     plotLines = list(
@@ -215,7 +220,8 @@ acf_chart <- highchart() %>%
 acf_chart
 }
 
-pacf_plot_function <- function(data, min = -1, max = 1) {
+pacf_plot_function <- function(data, min = -1, max = 1, title_text = NULL,
+                             subtitle_text = NULL) {
   ts_data <- data
   N <- length(ts_data)
   
@@ -232,8 +238,9 @@ pacf_plot_function <- function(data, min = -1, max = 1) {
   # Build the highcharter PACF plot
   pacf_chart <- highcharter::highchart() %>%
     highcharter::hc_chart(type = "column") %>%
-    highcharter::hc_title(text = "Partial Autocorrelation Plot") %>%
-    highcharter::hc_xAxis(categories = lags_pacf, title = list(text = "Lag")) %>%
+  hc_title(text = title_text) %>%
+  hc_subtitle(text = subtitle_text) %>%
+    highcharter::hc_xAxis(categories = lags_pacf, title = list(text = "# Υστέρηση")) %>%
     highcharter::hc_yAxis(
       min = min, max = max,
       title = list(text = "PACF"),
@@ -758,10 +765,10 @@ highchart() %>%
 #| tbl-cap: "Σύνοψη αποτελεσμάτων ελέγχων στασιμότητας"
 #| echo: false
 summary_stationarity_results <- data.frame(
-                             "Τύπος" = c("Αρχ. Παρατηρήσεις", "Δ(GRC)", "Δ(GRC)"),
-                             "ADF test" = c("Μη στάσιμη", "Στάσιμη", "Στάσιμη"),
-                              "PP test" = c("Μη στάσιμη", "Στάσιμη", "Στάσιμη"),
-                             "KPSS test" =c("Μη στάσιμη", "Στάσιμη", "Στάσιμη"),
+                             "Τύπος" = c("Αρχ. Παρατηρήσεις", "Δ(GRC)", "Δ2(GRC)"),
+                             "Έλεγχος ADF" = c("Μη στάσιμη", "Στάσιμη", "Στάσιμη"),
+                              "Έλεγχος PP" = c("Μη στάσιμη", "Στάσιμη", "Στάσιμη"),
+                             "Έλεγχος KPSS" =c("Μη στάσιμη", "Στάσιμη", "Στάσιμη"),
                             check.names = FALSE
 )
 
@@ -805,12 +812,61 @@ $$
 -   Με σταθερό όρο και τάση, όταν η χρονοσειρά φαίνεται με το πέρασμα του χρόνου
     να έχει πτωτική ή αυξανώμενη πορεία:
     $$\Delta y_t = \alpha + \beta t + \gamma y_{t-1} + e_t$$
+Ο συγκεκριμένος έλεγχος έχει κάποια προβλήματα στην εφαρμογή μιας και κάνει υποθέσεις: 
+
+- η σειρά μας βασίζεται σε ένα αυτοπαλίνδρομο μοντέλος $p=1$
+- τα σφάλματα είναι ομοσκεδαστικά και
+- τα σφάλματα είναι ασυσχέτιστα
+
+Η σειρά είναι καταφανώς μη στάσιμη στις πρωτότυπες παρατηρήσεις, ενώ παρατηρείται εξάλειψη της τάσης στις διαφορές πρώτης τάξης. Για αυτό το λόγο θα ελέγξω και τις υποθέσεις που κάνει ο έλεγχος Dickey - Fuller απλώς για να διαπιστώσουμε και στην πράξη ότι αυτός ο έλεγχος έχει κάποιες σημαντικές αδυναμίες. Αρχικά θα ελέγξω την υπόθεση των αυτοσυσχέτιστων σφαλμάτων. Αρχικά θα κατασκευάσω ένα μοντέλο παλινδρόμησης με βάση τους τύπους του DF. Στη περίπτωση των πρώτων διαφορών έχω εξαλείψει την τάση, ενώ και ο σταθερός όρος είναι γύρω από το μηδέν. Συνεπώς, θα κατασκευάσω ένα μοντέλο της πρώτης περίπτωσης:
+
+$$
+\Delta y_t = \gamma y_{t-1} + e_t
+$$
+
+
+```{r}
+#| label: check_autocorrlation
+#| tbl-cap: "Έλεγχος υποθέσεων σφαλμάτων (αυτοσυσχέτισης & ομοσκεδαστικότητας)"
+
+y = grc_unemployment$Value
+dy <- diff(y)
+
+# DF regression without intercept (because Δy ~ 0)
+y_lag <- y[-length(y)]       # y_{t-1} aligned with dy
+mod <- lm(dy ~ y_lag + 0)    # 0 = no intercept
+summary(mod)
+
+Tdy <- length(dy)
+h <- floor(sqrt(Tdy))
+res_ljung = Box.test(residuals(mod), type="Ljung-Box", lag=h)
+dwtest_res = dwtest(mod)
+arch_res = ArchTest(residuals(mod), lags = 12)  
+
+result_table <- data.frame(
+    "Έλεγχος" = c("Ljung-Βοχ","Durbin-Watson", "Έλεγχος ARCH"),
+    "Στατιστική Τιμή" = c(round(res_ljung[["statistic"]][[1]], 3),
+                          round(dwtest_res[["statistic"]][[1]], 3),
+                          round(arch_res[["statistic"]][[1]], 3)),
+    "Βαθμοί ελευθερίας" = c(res_ljung$parameter, 
+                            "-",
+                            arch_res$parameter),
+    "p value" = c("<0.0001",
+                  round(dwtest_res$p.value, 4),
+                  round(arch_res$p.value, 6)),
+    check.names = FALSE
+)
+
+result_table %>% reactable_custom()
+```
+
+Από τους ελέγχους Ljung-Box και Durbin-Watson, απορρίπτω την υπόθεση ότι τα σφάλματα είναι ασυσχέτιστα. Τέλος, από τον έλεγχο ARCH προκύπτει ότι τα σφάλματα δεν είναι ομοσκεδαστικά (διαφορετική διακύμανση). Από αυτά είναι εμφανές ότι ο έλεγχος DF δεν είναι καλός και συνήθως δεν χρησιμοποιείται, καθώς οι υποθέσεις του είναι αρκετά περιοριστικές και συνήθως παραβιάζονται. Οι έλεγχοι όπως ο ADF και ο PP αντιμετωπίζουν με διάφορους τρόπους αυτή τη συμπεριφορά των σφαλμάτων, προκειμένου να λάβουμε έγκυρα αποτελέσματα κατά τη κρίση της σταισμότητας μίας σειράς.
 
 #### Έλεγχος ADF
 
 Ένας απο τους πιο χρησιμοποιούμενους ελέγχους μοναδιαίας ρίζας - στασιμότητας
 είναι ο **επαυξημένος έλεγχος ADF** (Augmented Dickey - Fuller) και αποτελεί
-γενίκευση του απλού ελέγχου Dickey - Fuller, μιας και εξαρτάτει από ένα
+γενίκευση του απλού ελέγχου Dickey - Fuller, μιας και εξαρτάται από ένα
 αυτοπαλίνδρομο μοντέλο μεγαλύτερης τάξης ($\rho >1$). Δηλαδή εννοούμε ότι η τιμή
 της χρονοσειράς δεν εξαρτάται μόνο από τη προηγούμενη τιμή της αλλά και από
 άλλες $\rho$ προηγούμενες. Ένα αυτοπαλίνδρομο μοντέλο $\rho$ τάξης έχει την εξής
@@ -921,9 +977,9 @@ result_table %>% reactable_custom()
 Με δεδομένο ότι τα αποτελέσματα του πίνακα [@tbl-adf-results] δεν είναι
 στατιστικά σημαντικά μπορώ να συμπεράνω ότι η χρονοσειρά μου δεν είναι στάσιμη.
 Συνεπώς η χρήση των διαφορών των παρατηρήσεων έχει νόημα και ο επανέλεγχος αυτών
-ως προς τη στασιμότητα. Αξίζει να υπενθυμίοσουμε ότι αυτές τις διαφορές τις
+ως προς τη στασιμότητα. Αξίζει να υπενθυμίσουμε ότι αυτές τις διαφορές τις
 έχουμε στο Σχήμα \[\].. και σε αυτό το σχήμα παρατηρούμε ότι εξαλείφθηκε τόσο η
-τάση όσο και η τάση να κυμαίνεται η παρατήρησή μας σε τιμές διάφορες τιυ
+τάση όσο και η κύμανση της σειράς σε παρατηρήσεις με τιμές διάφορες του
 μηδενός. Έτσι το πιο ακριβές σε αυτή τη περίπτωση είναι να κρίνουμε τον έλεγχο
 ως προς το πιο απλό μοντέλο του όπου δεν έχει ούτε σταθερό όρο (drift), ούτε και
 κάποιου είδους τάση. Στα αποτελέσματα για λόγους πληρότητας θα συμπεριλάβουν
@@ -972,33 +1028,10 @@ result_table %>% reactable_custom()
 αντιμετωπίζει την αυτοσυσχέτιση των σφαλμάτων. O έλεγχος δεν προσθέτει lags για
 να περιορίσει την αυτοσυσχέτιση των σφαλμάτων (όπως ο ADF), αντιθέτως προσπαθεί
 να τροποποιήσει τη στατιστική τιμή εκτιμώντας τη μακροχρόνια διακύμανση
-$\hat{\lambda}$. Η στατιστική t του ελέγχου Dickey Fuller:
+$\hat{\lambda}$. 
 
-$$
-t = \frac{\hat{\rho}}{se(\hat{\rho})}
-$$
-
-αλλάζει στο και υπολογίζει μία τροποποιημένη στατιστική τιμή του t η οποία
-βασίζεται στη μακροχρόνια () και τη βραχυχρόνια διακύμανση
-
-$$
-t_{adj} = t \frac{s}{\hat{\lambda}}
-$$ Όπου, t είναι η στατιστική τιμή του απλού ελέγχου Dickey-Fuller, $s$ είναι η
-βραχυχρόνια διακύμανση:
-
-$$
-s^2  = 
-$$
-
-και τέλος, η $\hat{\lambda}$ είναι η μακροχρόνια διακύμανση που ορίζεται ως
-εξής:
-
-$$
-\hat{\lambda}^2 =  
-$$
-
-Όπως είναι εμφανές ο μοναδικός όρος´που δεν μπορεί να διευκρινιστεί εκ των
-προτέρων είναι η μακροχρόνια διακύμανση καθώς το άθροισμά της εξαρτάται από έναν
+Ο μοναδικός όρος´που δεν μπορεί να διευκρινιστεί εκ των
+προτέρων είναι η μακροχρόνια διακύμανση, καθώς το άθροισμά της εξαρτάται από έναν
 παράγοντα $q$. Δηλαδή δεν έχουμε αποφασίσει πόσα αθροίσματα θα λάβουμε υπόψιν
 μας στον υπολογισμό - εκτίμηση της μακροχρόνιας διακύμανσης $\hat{\lambda}$. Για
 τον παράγοντα εύρους της μακροχρόνιας διακύμανσης $q$ υπάρχουν κάποιοι απλοί
