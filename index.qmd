@@ -1,67 +1,244 @@
 ---
-image: assets/images/new_logo.svg
-image-alt: "website-logo"
-comments: false
-link-external-newwindow: false
-author-meta: stesiam
-description-meta: "A Statistics undergraduate student who shares his passion for R programming, data analysis, Shiny web apps, and data visualizations."
-pagetitle: "Homepage"
-title-block-style: none
-header-includes: |
-  <link rel="alternate" hreflang="x-default" href="https://stesiam.com" />
-  <link rel="alternate" hreflang="el" href="https://stesiam.com/el" />
-format: 
+title: ""
+format:
   html:
-    css: front.css
     page-layout: full
-    anchor-sections: false
+    toc: false
+    comments: false
+    include-in-header:
+      - text: |
+          <style>
+            :root {
+              --accent: #0d6efd;
+              --accent-light: #e9f2ff;
+              --text-main: #222;
+              --text-secondary: #555;
+            }
+
+            body {
+              font-family: 'Inter', sans-serif;
+              color: var(--text-main);
+              margin: 0;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              background-image: linear-gradient( rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8) ), url('assets/images/stes_background.png');
+              background-size: cover;
+            }
+            
+
+            #quarto-document-content {
+            	margin: auto 0;
+            	text-align: center;
+            	padding: 2em 0.5em;
+            	background-color: rgba(0,0,0,0.8);
+            	border-radius: 1em;
+            }
+
+            header {
+              margin-bottom: 1rem;
+            }
+
+            h1 {
+              font-size: 2.8rem;
+              font-weight: 600;
+              letter-spacing: -0.5px;
+              color: #e1dede;
+            }
+
+            p.tagline {
+              font-size: 1.15rem;
+              color: var(--text-secondary);
+              margin-bottom: 2.5rem;
+              color: #e1dede;
+              font-style: italic;
+            }
+
+            /* Buttons */
+            .btn-modern {
+              border-radius: 40px;
+              padding: 0.75rem 1.7rem;
+              font-weight: 500;
+              margin: 0.3rem;
+              border: none;
+              position: relative;
+              transition: all 0.3s ease;
+              background: var(--accent);
+              color: #fff;
+              box-shadow: 0 3px 10px rgba(13, 110, 253, 0.25);
+              text-decoration: none;
+            }
+
+            .btn-modern:hover, .btn-modern:focus-visible {
+              background: #0b5ed7;
+              transform: translateY(-2px);
+              box-shadow: 0 6px 16px rgba(13, 110, 253, 0.3);
+              outline: none;
+            }
+
+            .btn-outline-modern {
+              background: transparent;
+              border: 2px solid var(--accent);
+              color: var(--accent);
+            }
+
+            .btn-outline-modern:hover, .btn-outline-modern:focus-visible {
+              background: var(--accent);
+              color: #fff;
+              transform: translateY(-2px);
+              box-shadow: 0 6px 16px rgba(13, 110, 253, 0.2);
+            }
+
+            /* Socials */
+            nav.socials {
+              margin-top: 2rem;
+              display: flex;
+              flex-wrap: wrap;
+              justify-content: center;
+              gap: 0.75rem;
+            }
+
+            .social-card {
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+              padding: 0.65rem 1rem;
+              border-radius: 50px;
+              background: #fff;
+              border: 1px solid #e4e6eb;
+              color: var(--text-main);
+              font-weight: 500;
+              text-decoration: none;
+              transition: all 0.25s ease;
+              box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+            }
+
+            .social-card:hover, .social-card:focus-visible {
+              background: var(--accent-light);
+              color: var(--accent);
+              border-color: var(--accent);
+              transform: translateY(-2px);
+              box-shadow: 0 4px 10px rgba(13, 110, 253, 0.15);
+              outline: none;
+            }
+
+            .social-card i {
+              font-size: 1.25rem;
+            }
+
+            footer {
+              width: 100%;
+              font-size: 0.9rem;
+              color: var(--text-secondary);
+            }
+
+            @media (max-width: 576px) {
+                #quarto-content{
+                  margin: 2em 1em;        
+                }
+            
+            #quarto-document-content{
+              padding: 2.5rem 1rem;
+              margin: auto 0;
+              text-align: center;
+            }
+              h1 { font-size: 2rem; }
+              p.tagline { font-size: 1rem; margin-bottom: 2rem; }
+              .btn-modern, .btn-outline-modern {
+                display: block;
+                width: 80%;
+                margin: 0.5rem auto;
+              }
+              nav.socials {
+                gap: 0.5rem;
+              }
+              .social-card {
+                font-size: 0.95rem;
+                padding: 0.55rem 0.9rem;
+              }
+            }
+
+            /* Focus outline for accessibility */
+            a:focus-visible, button:focus-visible {
+              outline: 3px solid var(--accent);
+              outline-offset: 2px;
+            }
+            /* Socials brand colors on hover */
+            .social-card.github:hover,
+            .social-card.github:focus-visible {
+              background: #333; /* GitHub black */
+              color: #fff;
+              border-color: #333;
+            }
+            
+            .social-card.linkedin:hover,
+            .social-card.linkedin:focus-visible {
+              background: #0077B5; /* LinkedIn blue */
+              color: #fff;
+              border-color: #0077B5;
+            }
+            
+            .social-card.mastodon:hover,
+            .social-card.mastodon:focus-visible {
+              background: #3088d4; /* Mastodon blue */
+              color: #fff;
+              border-color: #3088d4;
+            }
+            
+            .social-card.bsky:hover,
+            .social-card.bsky:focus-visible {
+              background: #1eabfc; /* Bluesky cyan */
+              color: #fff;
+              border-color: #1eabfc;
+            }
+            
+            .social-card.youtube:hover,
+            .social-card.youtube:focus-visible {
+              background: #FF0000; /* YouTube red */
+              color: #fff;
+              border-color: #FF0000;
+            }
+          </style>
 ---
 
 
+
 ```{=html}
-<div class="home_wrapper">
 
-  <div class="links_wrapper">
-
-    <div class="img_prof_wrapper">
-       <img src="assets/images/new_logo.svg" alt="website logo">
-    </div>
-    
-    <div class="name_prof_wrapper">
-       <p>Hello 👋, I'm Stelios!</p>
-    </div>
-    <div class="title_prof_wrapper">
-       <p>Statistician / Data Analyst</p>
-    </div>
-    <div class="line_sep">
-      <hr>
-    </div>
-
-
-  <div class= "button_wrapper">
-    <a href="mailto:stesiam@proton.me"><button type="button" class="btn  btn-outline-primary btn-rounded"><i class="bi bi-envelope-fill"></i> Email</button></a>
-    <a href="https://github.com/stesiam" target="_blank"><button type="button" class="btn  btn-outline-primary btn-rounded"><i class="bi bi-github"></i> GitHub</button></a>
-    <a href="https://bsky.app/profile/stesiam.bsky.social" target="_blank"><button type="button" class="btn  btn-outline-primary btn-rounded"><i class="bi bi-bluesky"></i> BlueSky</button></a>
-    <a href="https://fosstodon.org/@stesiam" target="_blank"><button type="button" class="btn  btn-outline-primary btn-rounded"><i class="bi bi-mastodon"></i> Mastodon</button></a>
-    <a href="https://www.youtube.com/channel/UC3bT3jSPiBNeD0Gw9s7O8Qg" target="_blank"><button type="button" class="btn  btn-outline-primary btn-rounded"><i class="bi bi-youtube"></i> YouTube</button></a>
+<div>
+<h1>Hello 👋, I'm Stelios!</h1>
+  <p class="tagline">Statistics • Rstats • Data Science</p>
 </div>
-</div>
+  <div>
+    <a href="/cv.pdf" class="btn-modern" target="_blank" aria-label="Download Curriculum Vitae">
+      <i class="bi bi-file-earmark-person"></i> CV
+    </a>
+    <a href="mailto:stesiam@proton.me" class="btn-modern" aria-label="Send an email to Stelios">
+      <i class="bi bi-envelope"></i> Contact
+    </a>
+  </div>
+  
+  <hr>
 
-<div class="bio_wrapper">
+ <nav class="socials" aria-label="Social media links">
+  <a href="https://github.com/stesiam" class="social-card github" target="_blank" rel="noopener">
+    <i class="bi bi-github" aria-hidden="true"></i> GitHub
+  </a>
+  <a href="https://linkedin.com/in/yourprofile" class="social-card linkedin" target="_blank" rel="noopener">
+    <i class="bi bi-linkedin" aria-hidden="true"></i> LinkedIn
+  </a>
+  <a href="https://fosstodon.org/@stesiam" class="social-card mastodon" target="_blank" rel="noopener">
+    <i class="bi bi-mastodon" aria-hidden="true"></i> Mastodon
+  </a>
+  <a href="https://bsky.app/profile/stesiam.bsky.social" class="social-card bsky" target="_blank" rel="noopener">
+    <i class="bi bi-bluesky" aria-hidden="true"></i> BlueSky
+  </a>
+  <a href="https://www.youtube.com/@stesiam" class="social-card youtube" target="_blank" rel="noopener">
+    <i class="bi bi-youtube" aria-hidden="true"></i> YouTube
+  </a>
+</nav>
 
-    <h3>Who am I ?</h3>
-    <p>I am Stelios (he/him). I study Statistics and Insurance Science in University of Piraeus and I am one course away from graduating / surviving. I am passionated about R and it's my go-to option for various projects.</p>
-    <hr>
-  <h3>In a hurry?</h3>
-  <p>My resume has some important information and handpicked projects.</p>
-  <a href="https://github.com/stesiam/cvDSen/blob/main/index.pdf"><button type="button" class="btn  btn-outline-primary btn-rounded"><i class="bi bi-journal-text"></i> &nbsp; Look at my resume</button></a>
-<hr>  
-    <h3>So, are you interested?</h3>
-  <p>I typically reply in 1-2 days.</p>
-  <a href="mailto:stesiam@proton.me"><button type="button" class="btn  btn-outline-primary btn-rounded"><i class="bi bi-send"></i> &nbsp; Contact me</button></a>
-
-</div>
-</div>
 ```
 
 
