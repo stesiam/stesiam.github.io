@@ -2,20 +2,37 @@
 <div class="post-list">
   <% for (const item of items) { %>
     <% const cleanPath = item.path.replace(/index\.html$/, '').replace(/index\.qmd$/, '').replace(/\/$/, '') + '/' %>
+
     <a href="<%= cleanPath %>" class="post-card">
       <div class="image_area">
-      <img src="<%= item.image %>" alt="<%= item.title %>" class="thumbnail" />
+        <img src="<%= item.image %>" alt="<%= item.title %>" class="thumbnail" />
       </div>
+
       <div class="post-content">
         <h2><%= item.title %></h2>
-         <div class="meta">
-          <i class="bi bi-calendar"></i><span class="date"> <%= item.date %></span> •
-          <i class="bi bi-clock"></i><span class="reading-time"> <%= item['reading-time'] %></span>  
+
+      
+
+        <div class="meta">
+          <i class="bi bi-calendar"></i>
+          <span class="date"><%= item.date %></span> •
+          <i class="bi bi-clock"></i>
+          <span class="reading-time"><%= item['reading-time'] %></span>
         </div>
+        
+        <!-- Category Badges -->
+        <div class="mb-1">
+          <% const categories = Array.isArray(item.categories) ? item.categories : [item.categories]; %>
+          <% categories.forEach(cat => { %>
+            <span class="badge bg-secondary me-1 mb-1"><%= cat %></span>
+          <% }) %>
+        </div>
+
         <p><%= item.description %></p>
       </div>
     </a>
   <% } %>
 </div>
+
 
 ```

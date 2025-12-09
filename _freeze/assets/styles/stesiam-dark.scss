@@ -1,0 +1,352 @@
+/*-- scss:defaults --*/
+$font-family-serif: "Gentium Plus";
+$font-family-sans-serif: "Gentium Plus";
+$font-family-monospace: "Gentium Plus";
+$bs-body-font-family: "Gentium Plus";
+$web-font-path: "No";
+$body-bg: #181818;
+$body-color: white;
+$link-color: #b9d4da;
+$black:    #000 !default;
+$bs-btn-color: white;
+$bs-btn-border-color: white;
+$navbar-bg: #181818;
+$navbar-dark-color: white;
+$dropdown-link-hover-bg: var(--body-bg);
+$code-block-bg-alpha: -.8;
+$bs-btn-hover-bg: red;
+$bs-btn-padding-x: 1.1rem;
+$bs-btn-padding-y: 0.7rem;
+$bs-btn-font-size: 0.75rem;
+$bs-nav-tabs-link-active-color: white;
+
+div.quarto-post .listing-categories .listing-category {
+	background-color: slategray;
+	color: white !important;
+	border: none !important;
+	font-style: italic;
+}
+
+/*-- scss:rules --*/
+
+@font-face {
+  font-family: 'Gentium Plus';
+  font-style: normal;
+  font-weight: 400;
+  src: url('assets/fonts/gentium-plus-v2-latin-regular.woff2') format('woff2'),
+       url('assets/fonts/gentium-plus-v2-latin-regular.woff') format('woff');
+}
+@font-face {
+  font-family: 'Gentium Plus';
+  font-style: italic;
+  font-weight: 400;
+  src: url('assets/fonts/gentium-plus-v2-latin-italic.woff2') format('woff2'),
+       url('assets/fonts/gentium-plus-v2-latin-italic.woff') format('woff');
+}
+@font-face {
+  font-family: 'Gentium Plus';
+  font-style: normal;
+  font-weight: 700;
+  src: url('assets/fonts/gentium-plus-v2-latin-700.woff2') format('woff2'),
+       url('assets/fonts/gentium-plus-v2-latin-700.woff') format('woff');
+}
+@font-face {
+  font-family: 'Gentium Plus';
+  font-style: italic;
+  font-weight: 700;
+  src: url('assets/fonts/gentium-plus-v2-latin-700italic.woff2') format('woff2'),
+       url('assets/fonts/gentium-plus-v2-latin-700italic.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Gentium Plus';
+  font-style: normal;
+  font-weight: 400;
+  src: url('assets/fonts/gentium-plus-v2-greek-regular.woff2') format('woff2'),
+       url('assets/fonts/gentium-plus-v2-greek-regular.woff') format('woff');
+}
+@font-face {
+  font-family: 'Gentium Plus';
+  font-style: italic;
+  font-weight: 400;
+  src: url('assets/fonts/gentium-plus-v2-greek-italic.woff2') format('woff2'),
+       url('assets/fonts/gentium-plus-v2-greek-italic.woff') format('woff');
+}
+@font-face {
+  font-family: 'Gentium Plus';
+  font-style: normal;
+  font-weight: 700;
+  src: url('assets/fonts/gentium-plus-v2-greek-700.woff2') format('woff2'),
+       url('assets/fonts/gentium-plus-v2-greek-700.woff') format('woff');
+}
+@font-face {
+  font-family: 'Gentium Plus';
+  font-style: italic;
+  font-weight: 700;
+  src: url('assets/fonts/gentium-plus-v2-greek-700italic.woff2') format('woff2'),
+       url('assets/fonts/gentium-plus-v2-greek-700italic.woff') format('woff');
+}
+
+
+
+
+
+.white_bg{
+  filter: invert(1);
+}
+
+
+#languages-button {
+	color: white;
+	background-color: transparent !important;
+	border-color: transparent !important;
+}
+
+/* Reactable */
+
+.Reactable * {
+	background-color: #181818;
+}
+
+
+/* Set Animation Line Only On Big Screens */
+
+@media (min-width: 900px){
+ nav a .menu-text {
+  position: relative;
+  text-decoration: none;
+}
+
+
+nav a .menu-text::before {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: slategray;
+  transform: scaleX(0);
+  transition: transform 0.5s ease;
+}
+
+nav a .menu-text:hover::before {
+  transform: scaleX(1);
+} 
+}
+
+
+.btn-outline-primary {
+  color: white; /* Custom text color (orange) */
+  border-color: white; /* Custom border color (orange) */
+  margin-bottom: 0em;
+  background: linear-gradient(90deg, rgb(2, 2, 10) 0%, rgba(8,31,36,0.8897758932674632) 57%, rgba(0, 24, 30, 0.89) 85%);
+    border-color: slategray;
+}
+
+.btn-outline-primary:hover {
+  color: #fff; /* White text on hover */
+  background-color: teal !important; /* Orange background on hover */
+  border-color: teal !important; /* Keep border color consistent */
+}
+
+.btn-outline-primary:active {
+  color: #fff; /* White text on hover */
+  background-color: teal !important; /* Orange background on hover */
+  border-color: teal !important; /* Keep border color consistent */
+}
+
+.btn-outline-apps {
+  color: white; /* Custom text color (orange) */
+  border-color: black; /* Custom border color (orange) */
+  background-color: black;
+}
+
+.btn-outline-apps:hover {
+  color: #fff; /* White text on hover */
+  background-color: teal !important; /* Orange background on hover */
+  border-color: teal !important; /* Keep border color consistent */
+}
+
+.btn-outline-apps:active {
+  color: #fff; /* White text on hover */
+  background-color: teal !important; /* Orange background on hover */
+  border-color: teal !important; /* Keep border color consistent */
+}
+
+
+/* Bibltex citation */
+
+.sourceCode.bibtex{
+ color: white; 
+}
+
+
+/* Material */
+.wrapper-thumbnail-info .book_thumbnail img{
+  filter: sepia(50%) hue-rotate(30deg) saturate(500%) invert(0.9);
+}
+
+  
+.highcharts-subtitle{
+    fill: white!important;
+  }
+  
+.highcharts-title{
+    fill: white!important;
+  }
+  
+/* Label text color */  
+g.highcharts-legend-item > text:nth-child(1){
+  fill: white!important;  
+}  
+ 
+/* Highcharts plot text  */
+
+g.highcharts-label text:nth-child(1){
+  fill: white!important;
+  
+  tspan:nth-child(1){
+    stroke: black!important;
+  }
+}
+
+.highcharts-point path{
+  stroke: transparent;
+}
+
+.card{
+  border-color: #666;
+}
+
+
+/* Nav footer */
+
+.nav-footer{
+  background-color: black;
+  color: white;
+  
+  a{
+  color: #FFA500;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  }
+  
+  a:hover {
+  color: #FFB733; 
+  text-decoration: underline;
+}
+
+}
+
+
+/* Material Cards */
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+/* Make all cards same height and consistent layout */
+.modern-card {
+  background: rgba(30, 30, 30, 0.95);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+  border: 1px solid #2c2c2c;
+  color: #e0e0e0;
+}
+
+    .modern-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.6);
+    }
+
+    .modern-card svg {
+      color: #ff9800;
+    }
+
+    .modern-card h3 {
+      color: #ffffff;
+    }
+
+    .modern-card p {
+      color: #bbbbbb;
+    }
+
+
+    .card-buttons a {
+      background-color: #2196f3;
+      color: #fff;
+    }
+
+    .card-buttons a:hover {
+      background-color: #1565c0;
+    }
+
+    .card-buttons .github-btn {
+      background-color: #0d1117;
+    }
+
+    .card-buttons .github-btn:hover {
+      background-color: #010409;
+    }
+    
+
+/* Posts */
+
+.post-content p{
+	color: #c1babae0;
+
+}
+
+.post-content h2{
+	color: #c1babae0;
+}
+
+.post-card {
+  background: #111722;
+}
+
+.meta, .meta i{
+  color: #c1babae0;
+}
+
+/* About - Studies */
+
+.study a{
+        color: #0d6efd;
+}
+
+.study .info {
+      color: #ccc;
+    }
+
+.study .info i {
+      color: #0d6efd;
+    }
+    
+.study h2{
+        color: #0d6efd;
+}
+
+.study .icon{
+      background: #0d6efd;
+      color: #fff;
+}
+
+.study {
+      background: #1e1e1e;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      border-left: 5px solid #0d6efd;
+    }
+    
+.inverted_color{
+  filter: invert(1);
+}
+
+.certificate-card {
+  background: #2f2f2f;
+}

@@ -1,59 +1,134 @@
 ---
-title: "About me"
+title: "<i class='bi bi-person-circle'></i> About me"
 description: "Here are a few words about me, my studies, the seminars and courses I have attended, and my certifications. I have also included a summary of my skills. It seems to be the right place to post an article when I will finally graduate 😀"
 link-external-newwindow: true
 page-layout: full
 comments: false
 title-block-banner: true
+css: [../assets/styles/custom-style.css, about.css]
 toc: true
-css: about.css
 format: html
 ---
+
+```{=html}
+<style>
+img{
+  height: 5.5em;
+  }
+  
+.meta{
+	font-size: 0.8em;
+	font-style: italic;
+}
+
+.card-footer{
+  background-color: white;
+  border: 0px;
+  display: flex;
+  justify-content: center;
+}
+
+.custom-row{
+  display: flex;
+  flex-direction: row;
+  gap: 2em;
+}
+
+@media screen and (max-width: 600px) {
+  .custom-row{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+}
+</style>
+```
 
 ## Short bio
 
 Hello! 👋
 
-My name is Stelios (or formally Stylianos). I am a recent graduate - survivor of the Department of Statistics and Insurance Science and I managed to successfully pass 47 courses.
+I am Stelios, or Stylianos, as my ID insists. I graduated - survived from the [Department of Statistics and Insurance Science](https://www.unipi.gr/en/department-of-statistics-and-insurance-science/), completing all 47 courses. Even though I didn’t receive the legendary [A38 certificate](https://en.wiktionary.org/wiki/Passierschein_A38), I did get my completion certificate, and I am moving forward!
+
+I have a strong passion for data analysis, machine learning, and more recently, deep learning. Right now, I am looking for my first job in Statistics or Data Science, either in a Junior position or through an internship. No matter when this small miracle happens, I will be here doing what I love. Until recently, I was heavily focused on R, but since I need to find a job, I have started learning Python more systematically. During my studies, I completed many assignments using LaTeX, which is a tool similar to Word but mainly used for work with heavy mathematical and statistical notation. In addition, in my free time, I enjoy creating various visualizations, writing analysis articles, and building statistical web applications like dashboards and ML apps. Many of these can be found on my website.
+
+Happy reading!
+
 
 ## Studies
 
-Some additional details about my studies.
+A short description of my studies
+
 
 ```{=html}
-<div class="study">
-      <div class="icon"><i class="bi bi-mortarboard"></i></div>
-      <img class="logo" src="../assets/images/unipi.png" alt="University of Piraeus logo (a book and ancient greek god of the sea, Poseidon">
-      <h3>B.Sc. in Statistics and Insurance Science</h3>
-      <div class="info">
-        <div><i class="bi bi-building"></i>University of Piraeus</div>
-        <div><i class="bi bi-calendar"></i>Graduated in 2025</div>
-        <div><i class="bi bi-award"></i>Grade: 8.64/10</div>
-        <div><i class="bi bi-hourglass-split"></i>4-year studies (240 ECTS)</div>
-        <div><i class="bi bi-book"></i>47 courses</div>
+<div class="container my-3">
+
+  <div class="position-relative border-start border-3 ps-4">
+
+    <!-- Timeline Dot -->
+    <span class="position-absolute start-0 translate-middle
+                 bg-primary rounded-circle"
+          style="width:18px; height:18px; top: 3em;"></span>
+
+    <!-- Content -->
+    <div class="mb-4">
+      
+      <div class="d-flex flex-row justify-content-between">
+      
+        <div>
+
+          <h4 class="fw-bold">BSc in Statistics and Insurance Science</h4>
+          <h6 class="text-muted">University of Piraeus • 2025</h6>
+        </div>
+        <div>
+          <img src="../assets/images/unipi.png" />
+        </div>
       </div>
-      <a href="https://www.unipi.gr/en/department-of-statistics-and-insurance-science/"><i class="bi bi-link-45deg"></i>Visit Department's Page</a>
-      <h4>Highlighted courses:</h4>
-      <ul class="courses">
-        <li>Calculus</li>
-        <li>Linear Algebra</li>
-        <li>Microeconomic Theory</li>
-        <li>Macroeconomic Theory</li>
+      <!-- Responsive Row -->
+      <div class="custom-row mt-3 mb-3 gy-2">
+
+        <div class="col-12 col-lg-4">
+          <i class="bi bi-award"></i>
+          Grade: <strong>8.64/10</strong>
+        </div>
+
+        <div class="col-12 col-lg-4">
+          <i class="bi bi-hourglass-split"></i>
+          4-year studies (240 ECTS)
+        </div>
+
+        <div class="col-12 col-lg-4">
+          <i class="bi bi-book"></i>
+          47 courses
+        </div>
+
+        <div class="col-12">
+          <a href="https://www.unipi.gr/en/department-of-statistics-and-insurance-science/"
+             class="text-decoration-none">
+            <i class="bi bi-link-45deg"></i> Department's website
+          </a>
+        </div>
+
+      </div>
+
+      <h6 class="fw-semibold">Ενδεικτικά μαθήματα:</h6>
+      <ul class="mb-0">
+        <li>Statististics: Estimation Theory and Hypothesis Testing</li>
         <li>Probabilities</li>
-        <li>Demography</li>
-        <li>Financial Maths</li>
-        <li>Actuarial Maths</li>
-        <li>Estimation Theory</li>
-        <li>Operations Research</li>
         <li>Regression Analysis</li>
-        <li>Stochastic Processes</li>
-        <li>Biostatistics</li>
-        <li>Simulation</li>
-        <li>Sampling</li>
+        <li>Stochastic Procedures</li>
         <li>Non Parametric Statistics</li>
-        <li>Statistical Packages (R & SPSS)</li>
+        <li>Sampling Theory</li>
+        <li>Statistical Packages (R / SPSS)</li>
       </ul>
+
     </div>
+    
+  </div>
+</div>
+
+
 ```
 
 ## Credentials
@@ -91,7 +166,21 @@ Some additional details about my studies.
 
 ### Programming
 
+Πιο μεγάλη εμπειρία έχω με την {{< fa brands r-project >}} (Rstats), μιας και έχω δουλέψει σε διάφορα prοject ή εργασίες για τη σχολή. Τη χρησιμοποιώ από το 2018 και η εξέλιξή μου και το επίπεδο άνεσης μου έχει βελτιωθεί σημαντικά. Αποτελεί μέχρι και σήμερα τη πρώτη μου επιλογή γλώσσας για προβλήματα ανάλυσης/οπτικοποιησης δεδομένων ή μηχανικής μάθησης. Επίσης, τον τελευταίο καιρό έχω αρχίσει να μαθαίνω {{< fa brands python >}} **Python**, μη μπορώντας να αγνοήσω την ουσιαστική της κυριαρχία στο πεδίο της επιστήμης δεδομένων κυρίως λόγω των εφαρμογών της στη βαθιά μάθηση. Έχω φτάσει σε ένα ικανοποιητικό επίπεδο αρκετά γρήγορα, αν και έχω πολλά να μάθω ακόμα. Ακόμα πιστεύω ότι η R είναι η ιδανικότερη γλώσσα για την ανάλυση δεδομένων και για τη μηχανική μάθηση. Πέρα από αυτά
+
+
+
 ### Tools
+
+Όντας κυρίως ένας R προγραμματιστής τα κύρια πακέτα που θα χρησιμοποι είναι τα μεταπακέτα tidyverse και tidymodels. Συνεπικουρικά μπορεί να χρησιμοποιηθεί και κάποιο άλλο πακέτο αναλόγως την πολυπλοκότητα της εργασίας που έχω αναλάβει.
+
+  - tidyverse
+  - tidymodels
+  - modeltime
+  - rvest
+
+
+
 
 ## About this website
 
