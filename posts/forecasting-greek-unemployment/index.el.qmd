@@ -30,23 +30,6 @@ editor_options:
     wrap: 80
 ---
 
-```{r}
-#| label: highcharter_el
-#| include: false
-
-options(
-  highcharter.lang = list(
-    months = c("Ιανουάριος","Φεβρουάριος","Μάρτιος","Απρίλιος",
-               "Μάιος","Ιούνιος","Ιούλιος","Αύγουστος",
-               "Σεπτέμβριος","Οκτώβριος","Νοέμβριος","Δεκέμβριος"),
-    shortMonths = c("Ιαν","Φεβ","Μαρ","Απρ","Μάι","Ιουν",
-                    "Ιουλ","Αυγ","Σεπ","Οκτ","Νοε","Δεκ"),
-    weekdays = c("Κυριακή","Δευτέρα","Τρίτη",
-                 "Τετάρτη","Πέμπτη","Παρασκευή","Σάββατο")
-  )
-)
-```
-
 
 ## Εισαγωγή
 
@@ -140,6 +123,18 @@ library(lmtest)
 #| label: write_bibliography
 #| include: false
 knitr::write_bib(.packages(), file = 'packages.bib')
+
+options(
+  highcharter.lang = list(
+    months = c("Ιανουάριος","Φεβρουάριος","Μάρτιος","Απρίλιος",
+               "Μάιος","Ιούνιος","Ιούλιος","Αύγουστος",
+               "Σεπτέμβριος","Οκτώβριος","Νοέμβριος","Δεκέμβριος"),
+    shortMonths = c("Ιαν","Φεβ","Μαρ","Απρ","Μάι","Ιουν",
+                    "Ιουλ","Αυγ","Σεπ","Οκτ","Νοε","Δεκ"),
+    weekdays = c("Κυριακή","Δευτέρα","Τρίτη",
+                 "Τετάρτη","Πέμπτη","Παρασκευή","Σάββατο")
+  )
+)
 ```
 
 ### Εισαγωγή δεδομένων
@@ -476,7 +471,8 @@ g = unemploymentType %>%
   mutate(Year = year(TIME)) %>%
   select(-TIME) %>%
   group_by(LOCATION, Year) %>%
-  summarise(mean_unemployment = mean(Value))
+  summarise(mean_unemployment = mean(Value), 
+            .groups = "drop")
 
 
 country_colors <- c("#000","#1f77b4","#2ca02c")
@@ -1387,6 +1383,7 @@ ARIMA, το $d$ συμβολίζει την τάξη της διαφοράς, ό
 ```{r}
 #| label: fig-acf-hc-lv
 #| fig-cap: "Διαγραμμα αυτοσυσχέτισης"
+#| fig-height: 3
 acf_plot_function(grc_unemployment$Value, min= - 0.25, max = 1)
 ```
 
@@ -1396,6 +1393,7 @@ acf_plot_function(grc_unemployment$Value, min= - 0.25, max = 1)
 ```{r}
 #| label: fig-pacf-hc-lv
 #| fig-cap: "Διαγραμμα μερικής αυτοσυσχέτισης"
+#| fig-height: 3
 pacf_plot_function(grc_unemployment$Value, min=-0.25, max=1)
 ```
 
@@ -1412,7 +1410,8 @@ pacf_plot_function(grc_unemployment$Value, min=-0.25, max=1)
 ```{r}
 #| label: fig-acf-hc-first-diffs
 #| fig-cap: "Διαγραμμα αυτοσυσχέτισης διαφορών πρώτης τάξης"
-acf_plot_function(grc_unemployment_diff1, min=-0.1, max = 1)
+#| fig-height: 3
+acf_plot_function(grc_unemployment_diff1, min=-0.2, max = 0.5)
 ```
 
 :::
@@ -1421,6 +1420,7 @@ acf_plot_function(grc_unemployment_diff1, min=-0.1, max = 1)
 ```{r}
 #| label: fig-pacf-hc-first-diffs
 #| fig-cap: "Διαγραμμα μερικής αυτοσυσχέτισης διαφορών πρώτης τάξης"
+#| fig-height: 3
 pacf_plot_function(grc_unemployment_diff1, min=-0.2, max=0.5)
 ```
 
