@@ -1,0 +1,49 @@
+```{=html}
+<div class="grid">
+  <% for (const item of items) { %>
+    <% 
+      // Clean the path to point to folder URL instead of index.qmd/html
+      const cleanPath = item.path.replace(/index\.html$/, '').replace(/index\.qmd$/, '').replace(/\/$/, '') + '/';
+    %>
+
+    <div class="g-col-12 g-col-sm-6 title-block d-flex" <%= metadataAttrs(item) %>>
+      <div class="card card-horizontal shadow-sm">
+
+        <!-- Image -->
+        <% if (item.image) { %>
+          <img src="<%- item.image %>" alt="<%= item["image-alt"] || item.title %>">
+        <% } %>
+
+        <div class="card-body">
+          <h3 class="card-title">
+            <a href="<%- cleanPath %>"><%= item.title %></a>
+          </h3>
+        
+          <% if (item.description) { %>
+            <p class="card-text"><%= item.description %></p>
+          <% } %>
+        
+          <% if (item.badges) { %>
+            <p>
+              <% for (const badge of item.badges) { %>
+                <span class="badge <%= badge.class %>"><%= badge.label %></span>
+              <% } %>
+            </p>
+          <% } %>
+        
+          <% if (!item.links) item.links = []; %>
+          <% item.links.unshift({ url: cleanPath, icon: "bi-journal-bookmark", text: "Read article" }); %>
+        
+          <% for (const link of item.links) { %>
+            <a href="<%= link.url %>" class="btn btn-outline-primary btn-md">
+              <i class="bi <%= link.icon %>"></i> <%= link.text %>
+            </a>
+          <% } %>
+        </div>
+
+      </div>
+    </div>
+  <% } %>
+</div>
+
+```

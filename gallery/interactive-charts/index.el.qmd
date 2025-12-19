@@ -485,10 +485,13 @@ highchart() %>%
   hc_add_series(name = "7-8 έτη", data = graduate_data$`6to8`) %>%
   hc_add_series(name = "5-6 έτη", data = graduate_data$`4to6`) %>%
   hc_add_series(name = "4 έτη", data = graduate_data$`4y`) %>%
-  hc_plotOptions(area = list(
-    stacking = "percent",
-    marker = list(enabled = FALSE)
-  )) %>%
+  hc_plotOptions(
+    areaspline = list(
+      stacking = "percent",
+      marker = list(enabled = FALSE),
+      lineWidth = 2,      # thicker smooth line
+      fillOpacity = 0.6   # subtle transparency
+    )) %>%
   hc_colors(colors)
 ```
 

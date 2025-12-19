@@ -24,7 +24,7 @@ ul.task-list li input[type="checkbox"] {
 </style>
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script><script src="../site_libs/quarto-nav/headroom.min.js"></script><script src="../site_libs/clipboard/clipboard.min.js"></script><script src="../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../site_libs/quarto-search/fuse.min.js"></script><script src="../site_libs/quarto-search/quarto-search.js"></script><meta name="quarto:offset" content="../">
 <link href="../assets/images/favicon.ico" rel="icon">
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script><script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script><script src="../site_libs/quarto-html/popper.min.js"></script><script src="../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../site_libs/quarto-html/anchor.min.js"></script><link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<script src="../site_libs/quarto-listing/list.min.js"></script><script src="../site_libs/quarto-listing/quarto-listing.js"></script><script src="../site_libs/quarto-html/quarto.js" type="module"></script><script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script><script src="../site_libs/quarto-html/popper.min.js"></script><script src="../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../site_libs/quarto-html/anchor.min.js"></script><link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-e93741867710ae4adb8159e102648e68.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-be90ebfd24e3334213e8a7a749de058a.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-e93741867710ae4adb8159e102648e68.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
@@ -57,7 +57,74 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><link rel="stylesheet" href="../assets/styles/styles.css">
+}</script><script>
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-shiny_web_apps .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-project','listing-highlight-style','listing-website','listing-format','listing-babelquarto','listing-lang','listing-language','listing-title','listing-description','listing-image','listing-image-alt','listing-badges','listing-links','listing-path','listing-outputHref','listing-author','listing-filename','listing-file-modified','listing-reading-time','listing-word-count',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
+      
+      searchColumns: ["listing-project","listing-highlight-style","listing-website","listing-format","listing-babelquarto","listing-lang","listing-language","listing-title","listing-description","listing-image","listing-image-alt","listing-badges","listing-links","listing-path","listing-outputHref","listing-author","listing-filename","listing-file-modified","listing-reading-time","listing-word-count"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-shiny_web_apps'] = new List('listing-shiny_web_apps', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script><script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script><script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script><link rel="stylesheet" href="../assets/styles/styles.css">
 <link rel="stylesheet" href="../assets/styles/custom-style.css">
 <meta property="og:title" content=" Web Projects – stesiam">
 <meta property="og:description" content="An overview of my Web Apps using Shiny. Most of them are hosted on shinyapps.io. I have also developed several APIs for some of my ML models.">
@@ -318,73 +385,237 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-page-left" id="quarto-document-content"><section id="r-shiny-apps" class="level2"><h2 class="anchored" data-anchor-id="r-shiny-apps">R Shiny Apps</h2>
+<div id="listing-shiny_web_apps" class="quarto-listing quarto-listing-container-custom">
 <div class="grid">
-<div class="g-col-12 g-col-sm-6 title-block d-flex">
-        <div class="card card-horizontal shadow-sm">
+  
+    
+
+    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="0" data-listing-file-modified-sort="1766188162306" data-listing-reading-time-sort="1" data-listing-word-count-sort="9">
+      <div class="card card-horizontal shadow-sm">
+
+        <!-- Image -->
+        
           <img src="../assets/images/ageing_hands.jpg" alt="A black-and-white image of two elderly people's hands"><div class="card-body">
-            <h3 class="card-title anchored">Ageing Dashboard</h3>
+          <h3 class="card-title anchored">
+            <a href="../web-apps/ageing-population/">Ageing Dashboard</a>
+          </h3>
+        
+          
             <p class="card-text">A dashboard for an Ageing World (1800 - 2060)</p>
-            
-
-            <p><span class="badge bg-primary">Shiny</span><span class="badge bg-success">Highcharter</span><span class="badge bg-info text-dark">Tidymodels</span></p>
-
-            <a href="https://stesiam.shinyapps.io/AgeingDashboard" class="btn btn-outline-primary btn-md"><i class="bi bi-globe"></i> App</a>
-             <a href="https://github.com/stesiam/AgeingDashboard" class="btn btn-outline-primary btn-md"><i class="bi bi-journal-bookmark"></i> Read article</a>
-          </div>
+          
+        
+          
+            <p>
+              
+                <span class="badge bg-primary">Shiny</span>
+              
+                <span class="badge bg-success">Highcharter</span>
+              
+                <span class="badge bg-info text-dark">Tidymodels</span>
+              
+            </p>
+          
+        
+          
+          
+        
+          
+            <a href="../web-apps/ageing-population/" class="btn btn-outline-primary btn-md">
+              <i class="bi bi-journal-bookmark"></i> Read article
+            </a>
+          
+            <a href="https://stesiam.shinyapps.io/AgeingDashboard" class="btn btn-outline-primary btn-md">
+              <i class="bi bi-globe"></i> App
+            </a>
+          
         </div>
-</div>
-<div class="g-col-12 g-col-sm-6 title-block d-flex">
-        <div class="card card-horizontal shadow-sm">
+
+      </div>
+    </div>
+  
+    
+
+    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="1" data-listing-file-modified-sort="1766188162306" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+      <div class="card card-horizontal shadow-sm">
+
+        <!-- Image -->
+        
           <img src="../assets/images/euro.jpg" alt="Project 2"><div class="card-body">
-            <h3 class="card-title anchored">Developers' Wages App️</h3>
+          <h3 class="card-title anchored">
+            <a href="../web-apps/dev-wages/">Developer's Wages App</a>
+          </h3>
+        
+          
             <p class="card-text">Predict your wage based on your Job Type (onsite, hybrid, remote), employer's country and your job experience</p>
-            
-            <p><span class="badge bg-warning text-dark">React</span><span class="badge bg-dark">Node.js</span><span class="badge bg-success">Express</span></p>
-
-             <a href="https://stesiam.shinyapps.io/Greek-Elections-App/" class="btn btn-outline-primary btn-md"><i class="bi bi-globe"></i> App</a>
-             <a href="https://github.com/stesiam/Greek-Elections-App" class="btn btn-outline-primary btn-md"><i class="bi bi-journal-bookmark"></i> Read article</a>
-          </div>
+          
+        
+          
+            <p>
+              
+                <span class="badge bg-primary">Shiny</span>
+              
+                <span class="badge bg-success">Highcharter</span>
+              
+                <span class="badge bg-info text-dark">Tidymodels</span>
+              
+            </p>
+          
+        
+          
+          
+        
+          
+            <a href="../web-apps/dev-wages/" class="btn btn-outline-primary btn-md">
+              <i class="bi bi-journal-bookmark"></i> Read article
+            </a>
+          
+            <a href="https://stesiam.shinyapps.io/Dev-Wages-App/" class="btn btn-outline-primary btn-md">
+              <i class="bi bi-globe"></i> App
+            </a>
+          
         </div>
-</div>
-<div class="g-col-12 g-col-sm-6 title-block d-flex">
-        <div class="card card-horizontal shadow-sm">
+
+      </div>
+    </div>
+  
+    
+
+    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="2" data-listing-file-modified-sort="1766188162306" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+      <div class="card card-horizontal shadow-sm">
+
+        <!-- Image -->
+        
           <img src="../assets/images/houses-of-parliament.jpg" alt="Project 3"><div class="card-body">
-            <h3 class="card-title anchored">Greek Elections App</h3>
-            <p class="card-text">A Shiny App to calculate parliamentary seats for each party of Greek parliament.</p>
-           
-            <p><span class="badge bg-danger">Spring Boot</span><span class="badge bg-secondary">Hibernate</span></p>
-
-             <a href="https://stesiam.shinyapps.io/Dev-Wages-App/" class="btn btn-outline-primary btn-md"><i class="bi bi-globe"></i> App</a>
-             <a href="https://github.com/stesiam/Dev-Wages-App" class="btn btn-outline-primary btn-md"><i class="bi bi-journal-bookmark"></i> Read article</a>
-          </div>
+          <h3 class="card-title anchored">
+            <a href="../web-apps/greek-elections/">Greek Elections App</a>
+          </h3>
+        
+          
+            <p class="card-text">A Shiny App to calculate parliamentary seats for each party of Greek parliament</p>
+          
+        
+          
+            <p>
+              
+                <span class="badge bg-primary">Shiny</span>
+              
+                <span class="badge bg-success">Highcharter</span>
+              
+                <span class="badge bg-info text-dark">Tidymodels</span>
+              
+            </p>
+          
+        
+          
+          
+        
+          
+            <a href="../web-apps/greek-elections/" class="btn btn-outline-primary btn-md">
+              <i class="bi bi-journal-bookmark"></i> Read article
+            </a>
+          
+            <a href="https://stesiam.shinyapps.io/Dev-Wages-App/" class="btn btn-outline-primary btn-md">
+              <i class="bi bi-globe"></i> App
+            </a>
+          
         </div>
-</div>
-<div class="g-col-12 g-col-sm-6 title-block d-flex">
-        <div class="card card-horizontal shadow-sm">
-          <img src="../assets/images/question-mark.jpg" alt="Project 3"><div class="card-body">
-            <h3 class="card-title anchored">Shiny Distributions</h3>
-            <p class="card-text">A Shiny App to showcase various distributions and their characteristics</p>
-           
-            <p><span class="badge bg-danger">Spring Boot</span><span class="badge bg-secondary">Hibernate</span></p>
 
-             <a href="#" class="btn btn-outline-primary btn-md"><i class="bi bi-globe"></i> App</a>
-             <a href="#" class="btn btn-outline-primary btn-md"><i class="bi bi-journal-bookmark"></i> Read article</a>
-          </div>
-        </div>
-</div>
-<div class="g-col-12 g-col-sm-6 title-block d-flex">
-        <div class="card card-horizontal shadow-sm">
+      </div>
+    </div>
+  
+    
+
+    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="3" data-listing-file-modified-sort="1766188162307" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+      <div class="card card-horizontal shadow-sm">
+
+        <!-- Image -->
+        
           <img src="../assets/images/s6.png" alt="Project 3"><div class="card-body">
-            <h3 class="card-title anchored">Passenger Traffic</h3>
-            <p class="card-text">A web app to make predictions about next week's passenger traffic (bus/metro/tram).</p>
-           
-            <p><span class="badge bg-danger">Spring Boot</span><span class="badge bg-secondary">Hibernate</span></p>
-
-             <a href="#" class="btn btn-outline-primary btn-md"><i class="bi bi-globe"></i> App</a>
-             <a href="#" class="btn btn-outline-primary btn-md"><i class="bi bi-journal-bookmark"></i> Read article</a>
-          </div>
+          <h3 class="card-title anchored">
+            <a href="../web-apps/passenger-traffic/">Passenger Traffic</a>
+          </h3>
+        
+          
+            <p class="card-text">A web app to make predictions about next week's passenger traffic (bus/metro/tram)</p>
+          
+        
+          
+            <p>
+              
+                <span class="badge bg-primary">Shiny</span>
+              
+                <span class="badge bg-success">Highcharter</span>
+              
+                <span class="badge bg-info text-dark">Tidymodels</span>
+              
+            </p>
+          
+        
+          
+          
+        
+          
+            <a href="../web-apps/passenger-traffic/" class="btn btn-outline-primary btn-md">
+              <i class="bi bi-journal-bookmark"></i> Read article
+            </a>
+          
+            <a href="https://stesiam.shinyapps.io/Dev-Wages-App/" class="btn btn-outline-primary btn-md">
+              <i class="bi bi-globe"></i> App
+            </a>
+          
         </div>
+
+      </div>
+    </div>
+  
+    
+
+    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="4" data-listing-file-modified-sort="1766188162307" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+      <div class="card card-horizontal shadow-sm">
+
+        <!-- Image -->
+        
+          <img src="../assets/images/question-mark.jpg" alt="Project 3"><div class="card-body">
+          <h3 class="card-title anchored">
+            <a href="../web-apps/shiny-distributions/">Shiny Distributions</a>
+          </h3>
+        
+          
+            <p class="card-text">A Shiny App to showcase various distributions and their characteristics</p>
+          
+        
+          
+            <p>
+              
+                <span class="badge bg-primary">Shiny</span>
+              
+                <span class="badge bg-success">Highcharter</span>
+              
+                <span class="badge bg-info text-dark">Tidymodels</span>
+              
+            </p>
+          
+        
+          
+          
+        
+          
+            <a href="../web-apps/shiny-distributions/" class="btn btn-outline-primary btn-md">
+              <i class="bi bi-journal-bookmark"></i> Read article
+            </a>
+          
+            <a href="https://stesiam.shinyapps.io/Dev-Wages-App/" class="btn btn-outline-primary btn-md">
+              <i class="bi bi-globe"></i> App
+            </a>
+          
+        </div>
+
+      </div>
+    </div>
+  
 </div>
+
+<div class="listing-no-matching d-none">No matching items</div>
 </div>
 </section><section id="apis-with-r" class="level2"><h2 class="anchored" data-anchor-id="apis-with-r">APIs with R</h2>
 <div class="grid">
@@ -408,6 +639,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </div>
 </div>
+
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
