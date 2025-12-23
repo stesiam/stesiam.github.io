@@ -24,7 +24,7 @@ ul.task-list li input[type="checkbox"] {
 </style>
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script><script src="../site_libs/quarto-nav/headroom.min.js"></script><script src="../site_libs/clipboard/clipboard.min.js"></script><script src="../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../site_libs/quarto-search/fuse.min.js"></script><script src="../site_libs/quarto-search/quarto-search.js"></script><meta name="quarto:offset" content="../">
 <link href="../assets/images/favicon.ico" rel="icon">
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script><script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script><script src="../site_libs/quarto-html/popper.min.js"></script><script src="../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../site_libs/quarto-html/anchor.min.js"></script><link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<script src="../site_libs/quarto-listing/list.min.js"></script><script src="../site_libs/quarto-listing/quarto-listing.js"></script><script src="../site_libs/quarto-html/quarto.js" type="module"></script><script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script><script src="../site_libs/quarto-html/popper.min.js"></script><script src="../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../site_libs/quarto-html/anchor.min.js"></script><link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-e93741867710ae4adb8159e102648e68.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-be90ebfd24e3334213e8a7a749de058a.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-e93741867710ae4adb8159e102648e68.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
@@ -57,13 +57,80 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Υποβολή",
     "search-label": "Αναζήτηση"
   }
-}</script><link rel="stylesheet" href="../assets/styles/styles.css">
+}</script><script>
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-shiny_web_apps .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-project','listing-highlight-style','listing-website','listing-format','listing-babelquarto','listing-lang','listing-language','listing-title','listing-description','listing-image','listing-image-alt','listing-badges','listing-links','listing-toc','listing-toc-title','listing-toc-location','listing-comments','listing-path','listing-outputHref','listing-author','listing-filename','listing-file-modified','listing-reading-time','listing-word-count',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
+      
+      searchColumns: ["listing-project","listing-highlight-style","listing-website","listing-format","listing-babelquarto","listing-lang","listing-language","listing-title","listing-description","listing-image","listing-image-alt","listing-badges","listing-links","listing-toc","listing-toc-title","listing-toc-location","listing-comments","listing-path","listing-outputHref","listing-author","listing-filename","listing-file-modified","listing-reading-time","listing-word-count"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-shiny_web_apps'] = new List('listing-shiny_web_apps', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script><script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script><script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script><link rel="stylesheet" href="../assets/styles/styles.css">
 <link rel="stylesheet" href="../assets/styles/custom-style.css">
 <meta property="og:title" content=" Εφαρμογές – stesiam">
 <meta property="og:description" content="Οι εφαρμογές που έχω φτιάξει χρησιμοποιώντας το πακέτο Shiny. Οι περισσότερες φιλοξενούνται στο shinyapps.io το οποίο έχει περιορισμούς επισκεψιμότητας. Τέλος, έχω πειραματιστεί λίγο και με τη δημιουργία APIs κυρίως για τη χρήση μοντέλων μηχανικής μάθησης.">
 <meta property="og:image" content="/el/assets/images/ageing_hands.jpg">
 <meta property="og:site_name" content="stesiam">
-<meta property="og:image:alt" content="A black-and-white image of two elderly people's hands">
+<meta property="og:image:alt" content="Μία ασπρόμαυρη εικόνα που δείχνει δύο χέρια δύο ηλικιωμένων ατόμων">
 </head>
 <body class="nav-fixed quarto-light">
 <script id="quarto-html-before-body" type="application/javascript">
@@ -312,101 +379,266 @@ ul.task-list li input[type="checkbox"] {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Σε αυτήν τη σελίδα</h2>
    
   <ul>
-<li><a href="#r-shiny-apps" id="toc-r-shiny-apps" class="nav-link active" data-scroll-target="#r-shiny-apps">R Shiny Apps</a></li>
-  <li><a href="#apis-%CE%BC%CE%B5-%CF%84%CE%BF-r" id="toc-apis-με-το-r" class="nav-link" data-scroll-target="#apis-με-το-r">APIs με το R</a></li>
+<li><a href="#%CE%B5%CF%86%CE%B1%CF%81%CE%BC%CE%BF%CE%B3%CE%AD%CF%82-%CE%BC%CE%B5-%CF%84%CE%B7%CE%BD-r" id="toc-εφαρμογές-με-την-r" class="nav-link active" data-scroll-target="#εφαρμογές-με-την-r">Εφαρμογές με την R</a></li>
+  <li><a href="#apis-%CE%BC%CE%B5-%CF%84%CE%B7%CE%BD-r" id="toc-apis-με-την-r" class="nav-link" data-scroll-target="#apis-με-την-r">APIs με την R</a></li>
   </ul></nav>
 </div>
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content"><section id="r-shiny-apps" class="level2"><h2 class="anchored" data-anchor-id="r-shiny-apps">R Shiny Apps</h2>
+<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content"><section id="εφαρμογές-με-την-r" class="level2"><h2 class="anchored" data-anchor-id="εφαρμογές-με-την-r">Εφαρμογές με την R</h2>
+<div id="listing-shiny_web_apps" class="quarto-listing quarto-listing-container-custom">
 <div class="grid">
-<div class="g-col-12 g-col-sm-6 title-block d-flex">
-        <div class="card card-horizontal shadow-sm">
-          <img src="../assets/images/ageing_hands.jpg" alt="A black-and-white image of two elderly people's hands"><div class="card-body">
-            <h3 class="card-title anchored">Γήρανση Πληθυσμού</h3>
-            <p class="card-text">Ένα dashboard για τις τάσεις στο προσδόκιμο ζωής (1800 - 2060).</p>
-            
+  
+    
 
-            <p><span class="badge bg-primary">Shiny</span><span class="badge bg-success">Highcharter</span><span class="badge bg-info text-dark">Tidymodels</span></p>
+    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="0" data-listing-file-modified-sort="1766504683999" data-listing-reading-time-sort="3" data-listing-word-count-sort="462">
+      <div class="card card-horizontal shadow-sm">
 
-            <a href="https://stesiam.shinyapps.io/AgeingDashboard" class="btn btn-outline-primary btn-md"><i class="bi bi-globe"></i> Εφαρμογή</a>
-             <a href="https://github.com/stesiam/AgeingDashboard" class="btn btn-outline-primary btn-md"><i class="bi bi-journal-bookmark"></i> Διάβασε το άρθρο</a>
-          </div>
+        <!-- Image -->
+        
+          <img src="../assets/images/ageing_hands.jpg" alt="Μία ασπρόμαυρη εικόνα που δείχνει δύο χέρια δύο ηλικιωμένων ατόμων"><div class="card-body">
+          <h3 class="card-title anchored">
+            <a href="../web-apps/ageing-population/">Γήρανση Πληθυσμού</a>
+          </h3>
+        
+          
+            <p class="card-text">Ένα dashboard για τις τάσεις στο προσδόκιμο ζωής (1800 - 2060)</p>
+          
+        
+          
+            <p>
+              
+                <span class="badge bg-primary">Shiny</span>
+              
+                <span class="badge bg-success">Highcharter</span>
+              
+                <span class="badge bg-info text-dark">Tidymodels</span>
+              
+            </p>
+          
+        
+          
+          
+        
+          
+            <a href="../web-apps/ageing-population/" class="btn btn-outline-primary btn-md">
+              <i class="bi bi-journal-bookmark"></i> Read article
+            </a>
+          
+            <a href="https://stesiam.shinyapps.io/AgeingDashboard" class="btn btn-outline-primary btn-md">
+              <i class="bi bi-globe"></i> App
+            </a>
+          
         </div>
-</div>
-<div class="g-col-12 g-col-sm-6 title-block d-flex">
-        <div class="card card-horizontal shadow-sm">
-          <img src="../assets/images/euro.jpg" alt="Project 2"><div class="card-body">
-            <h3 class="card-title anchored">Μισθοί προγραμματιστών</h3>
-            <p class="card-text">Πρόβλεψη του μισθού ενός προγραμματιστή στη Ελλάδα με βάση τον τύπο της εργασίας, χώρα εργοδότη-εργαζόμενου και την εργασιακή εμπειρία του.</p>
-            
-            <p><span class="badge bg-warning text-dark">React</span><span class="badge bg-dark">Node.js</span><span class="badge bg-success">Express</span></p>
 
-             <a href="https://stesiam.shinyapps.io/Greek-Elections-App/" class="btn btn-outline-primary btn-md"><i class="bi bi-globe"></i> Εφαρμογή</a>
-             <a href="https://github.com/stesiam/Greek-Elections-App" class="btn btn-outline-primary btn-md"><i class="bi bi-journal-bookmark"></i> Διάβασε το άρθρο</a>
-          </div>
-        </div>
-</div>
-<div class="g-col-12 g-col-sm-6 title-block d-flex">
-        <div class="card card-horizontal shadow-sm">
+      </div>
+    </div>
+  
+    
+
+    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="1" data-listing-file-modified-sort="1766504683999" data-listing-reading-time-sort="1" data-listing-word-count-sort="73">
+      <div class="card card-horizontal shadow-sm">
+
+        <!-- Image -->
+        
           <img src="../assets/images/houses-of-parliament.jpg" alt="Project 3"><div class="card-body">
-            <h3 class="card-title anchored">Ελληνικές εκλογές</h3>
+          <h3 class="card-title anchored">
+            <a href="../web-apps/greek-elections/">Ελληνικές Εκλογές</a>
+          </h3>
+        
+          
             <p class="card-text">Μία εφαρμογή που υπολογίζει την κατανομή των εδρών στα κόμματα του κοινοβουλίου με βάση τις 4 πρόσφατες αναθεωρήσεις του εκλογικού νόμου</p>
-           
-            <p><span class="badge bg-danger">Spring Boot</span><span class="badge bg-secondary">Hibernate</span></p>
-
-             <a href="https://stesiam.shinyapps.io/Dev-Wages-App/" class="btn btn-outline-primary btn-md"><i class="bi bi-globe"></i> Εφαρμογή</a>
-             <a href="https://github.com/stesiam/Dev-Wages-App" class="btn btn-outline-primary btn-md"><i class="bi bi-journal-bookmark"></i> Διάβασε το άρθρο</a>
-          </div>
+          
+        
+          
+            <p>
+              
+                <span class="badge bg-primary">Shiny</span>
+              
+                <span class="badge bg-success">Highcharter</span>
+              
+                <span class="badge bg-info text-dark">Tidymodels</span>
+              
+            </p>
+          
+        
+          
+          
+        
+          
+            <a href="../web-apps/greek-elections/" class="btn btn-outline-primary btn-md">
+              <i class="bi bi-journal-bookmark"></i> Read article
+            </a>
+          
+            <a href="https://stesiam.shinyapps.io/Dev-Wages-App/" class="btn btn-outline-primary btn-md">
+              <i class="bi bi-globe"></i> App
+            </a>
+          
         </div>
-</div>
-<div class="g-col-12 g-col-sm-6 title-block d-flex">
-        <div class="card card-horizontal shadow-sm">
-          <img src="../assets/images/question-mark.jpg" alt="Project 3"><div class="card-body">
-            <h3 class="card-title anchored">Κατανομές Πιθανοτήτων</h3>
-            <p class="card-text">Μία εφαρμογή που συνοψίζει τις συνήθεις κατανομές και τις ιδιότητές τους.</p>
-           
-            <p><span class="badge bg-danger">Spring Boot</span><span class="badge bg-secondary">Hibernate</span></p>
 
-             <a href="#" class="btn btn-outline-primary btn-md"><i class="bi bi-globe"></i> Εφαρμογή</a>
-             <a href="#" class="btn btn-outline-primary btn-md"><i class="bi bi-journal-bookmark"></i> Διάβασε το άρθρο</a>
-          </div>
-        </div>
-</div>
-<div class="g-col-12 g-col-sm-6 title-block d-flex">
-        <div class="card card-horizontal shadow-sm">
+      </div>
+    </div>
+  
+    
+
+    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="2" data-listing-file-modified-sort="1766504683999" data-listing-reading-time-sort="1" data-listing-word-count-sort="73">
+      <div class="card card-horizontal shadow-sm">
+
+        <!-- Image -->
+        
           <img src="../assets/images/s6.png" alt="Project 3"><div class="card-body">
-            <h3 class="card-title anchored">Επιβατική Κίνηση</h3>
-            <p class="card-text">Πρόβλεψη επιβατικής κίνησης των ΜΜΜ της Αττικής.</p>
-           
-            <p><span class="badge bg-danger">Spring Boot</span><span class="badge bg-secondary">Hibernate</span></p>
-
-             <a href="#" class="btn btn-outline-primary btn-md"><i class="bi bi-globe"></i> Εφαρμογή</a>
-             <a href="#" class="btn btn-outline-primary btn-md"><i class="bi bi-journal-bookmark"></i> Διάβασε το άρθρο</a>
-          </div>
+          <h3 class="card-title anchored">
+            <a href="../web-apps/passenger-traffic/">Επιβατική Κίνηση</a>
+          </h3>
+        
+          
+            <p class="card-text">Πρόβλεψη επιβατικής κίνησης των ΜΜΜ της Αττικής</p>
+          
+        
+          
+            <p>
+              
+                <span class="badge bg-primary">Shiny</span>
+              
+                <span class="badge bg-success">Highcharter</span>
+              
+                <span class="badge bg-info text-dark">Tidymodels</span>
+              
+            </p>
+          
+        
+          
+          
+        
+          
+            <a href="../web-apps/passenger-traffic/" class="btn btn-outline-primary btn-md">
+              <i class="bi bi-journal-bookmark"></i> Read article
+            </a>
+          
+            <a href="https://stesiam.shinyapps.io/Dev-Wages-App/" class="btn btn-outline-primary btn-md">
+              <i class="bi bi-globe"></i> App
+            </a>
+          
         </div>
+
+      </div>
+    </div>
+  
+    
+
+    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="3" data-listing-file-modified-sort="1766504683999" data-listing-reading-time-sort="1" data-listing-word-count-sort="73">
+      <div class="card card-horizontal shadow-sm">
+
+        <!-- Image -->
+        
+          <img src="../assets/images/question-mark.jpg" alt="Project 3"><div class="card-body">
+          <h3 class="card-title anchored">
+            <a href="../web-apps/shiny-distributions/">Κατανομές Πιθανοτήτων</a>
+          </h3>
+        
+          
+            <p class="card-text">Μία εφαρμογή που συνοψίζει τις συνήθεις κατανομές και τις ιδιότητές τους</p>
+          
+        
+          
+            <p>
+              
+                <span class="badge bg-primary">Shiny</span>
+              
+                <span class="badge bg-success">Highcharter</span>
+              
+                <span class="badge bg-info text-dark">Tidymodels</span>
+              
+            </p>
+          
+        
+          
+          
+        
+          
+            <a href="../web-apps/shiny-distributions/" class="btn btn-outline-primary btn-md">
+              <i class="bi bi-journal-bookmark"></i> Read article
+            </a>
+          
+            <a href="https://stesiam.shinyapps.io/Dev-Wages-App/" class="btn btn-outline-primary btn-md">
+              <i class="bi bi-globe"></i> App
+            </a>
+          
+        </div>
+
+      </div>
+    </div>
+  
+    
+
+    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="4" data-listing-file-modified-sort="1766504683999" data-listing-reading-time-sort="3" data-listing-word-count-sort="462">
+      <div class="card card-horizontal shadow-sm">
+
+        <!-- Image -->
+        
+          <img src="../assets/images/euro.jpg" alt="Project 2"><div class="card-body">
+          <h3 class="card-title anchored">
+            <a href="../web-apps/dev-wages/">Μισθοί Προγραμματιστών</a>
+          </h3>
+        
+          
+            <p class="card-text">Πρόβλεψη του μισθού ενός προγραμματιστή στη Ελλάδα με βάση τον τύπο της εργασίας, χώρα εργοδότη-εργαζόμενου και την εργασιακή εμπειρία του</p>
+          
+        
+          
+            <p>
+              
+                <span class="badge bg-primary">Shiny</span>
+              
+                <span class="badge bg-success">Highcharter</span>
+              
+                <span class="badge bg-info text-dark">Tidymodels</span>
+              
+            </p>
+          
+        
+          
+          
+        
+          
+            <a href="../web-apps/dev-wages/" class="btn btn-outline-primary btn-md">
+              <i class="bi bi-journal-bookmark"></i> Read article
+            </a>
+          
+            <a href="https://stesiam.shinyapps.io/Dev-Wages-App/" class="btn btn-outline-primary btn-md">
+              <i class="bi bi-globe"></i> App
+            </a>
+          
+        </div>
+
+      </div>
+    </div>
+  
 </div>
+
+<div class="listing-no-matching d-none">Δεν υπάρχουν αντιστοιχίες</div>
 </div>
-</section><section id="apis-με-το-r" class="level2"><h2 class="anchored" data-anchor-id="apis-με-το-r">APIs με το R</h2>
+</section><section id="apis-με-την-r" class="level2"><h2 class="anchored" data-anchor-id="apis-με-την-r">APIs με την R</h2>
 <div class="grid">
 <div class="g-col-12 g-col-sm-6 title-block d-flex">
 <div class="card">
     <img src="../assets/images/euro.jpg" alt="Project 3"><div class="card-body">
       <h5 class="card-title anchored">Μισθός Προγραμματιστών API</h5>
       <p class="card-text">Πρόβλεψη του μισθού ενός προγραμματιστή στη Ελλάδα με βάση τον τύπο της εργασίας, χώρα εργοδότη-εργαζόμενου και την εργασιακή εμπειρία του.</p>
-    <a href="https://github.com/stesiam/Dev-Wages-Api" class="btn btn-outline-primary btn-md"><i class="bi bi-github"></i> Κώδικας</a>
+      <a href="https://github.com/stesiam/Dev-Wages-Api" class="btn btn-outline-primary btn-md"><i class="bi bi-github"></i> Repo</a>
     </div>
   </div>
 </div>
 <div class="g-col-12 g-col-sm-6 title-block d-flex">
- <div class="card">
-     <img src="../assets/images/glass.jpg" alt="Project 3"><div class="card-body">
-      <h5 class="card-title anchored">Τύπος γυαλιού API</h5>
+ <div class="card flex-fill">
+    <img src="../assets/images/glass.jpg" alt="Project 3"><div class="card-body">
+      <h5 class="card-title anchored">Είδος γυαλιού API</h5>
       <p class="card-text">Ταξινόμηση είδων γυαλιού με βάση τη σύσταση των υλικών του.</p>
-      <a href="https://github.com/stesiam/GlassAPI" class="btn btn-outline-primary btn-md"><i class="bi bi-github"></i> Κώδικας</a>
+    <a href="https://github.com/stesiam/GlassAPI" class="btn btn-outline-primary btn-md"><i class="bi bi-github"></i> Repo</a>
     </div>
   </div>
 </div>
 </div>
+
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">

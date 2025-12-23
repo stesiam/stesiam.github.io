@@ -8,6 +8,9 @@ lang: el
 title-block-banner: true
 toc: true
 column: body
+execute:
+  echo: false
+  warning: false
 ---
 
 ## 30 Day Chart Challenge
@@ -47,7 +50,7 @@ data = data.frame(
 
 title_text_gr = glue("<b>Τζίρος Ελληνικών Σουπερμάρκετ (2022)</b>")
 subtitle_text_gr = glue( "Σύμφωνα με τη τελευταία έκθεση του ΙΕΛΚΑ, οι συνολικές πωλήσεις ανέρχονται στα € <b>11.2</b> δις.
-                         Ο Σκλαβενίτης αποτελεί την κυρίαρχη αλυσίδα σούπερμαρκετ κατέχοντας πάνω από το ένα τρίτο της αγοράς." )
+                         Ο <b><span style = 'color: #c6a464;'>Σκλαβενίτης</span></b> αποτελεί την κυρίαρχη αλυσίδα σούπερμαρκετ κατέχοντας πάνω από το ένα τρίτο της αγοράς." )
 caption_text_gr = glue("30 Day Chart Challenge, Day 1 (2024) <br> 
                     <b> Δεδομένα:</b> Πανόραμα ελληνικών σουπερμάρκετ, selfservice.gr | 
                     <b>Γράφημα:</b> stesiam, 2024")
@@ -152,7 +155,7 @@ df_wide = dataset %>%
 
 title_text_gr = "Οχήματα στην Ελλάδα"
 subtitle_text_gr = glue("Παρατηρούμε ότι τα πρόσφατα χρόνια
-                     υπάρχει <span style = 'font-family:uc; color:red;'>3x</span><span style = 'font-family:fs; color:red;'> &#xe098; </span> των συνολικών οχημάτων.
+                     υπάρχει <span style = 'font-family:uc; color:red;'>3x</span><span style = 'font-family:fs; color:red;'> τριπλασιασμός </span> των συνολικών οχημάτων.
                      Η πιο αξιοσημείωτη αλλαγή είναι ο
                      διπλασιασμός του ποσοστού των μηχανών")
 caption_text_gr = "30 Day Chart Challenge, Day 15 (2024) | <b> Δεδομένα:</b> Ελληνική Στατιστική Υπηρεσία<br><span style='font-family:fb;'  >&#xf09b;</span> <b>stesiam</b>, 2024"
@@ -391,6 +394,7 @@ highchart() %>%
 #| echo: false
 #| warning: false
 #| message: false
+#| results: hide
 library(dplyr)
 library(tidyr)
 library(glue)
@@ -405,14 +409,18 @@ download.file(url,
               method = "wget",
               extra = "--no-check-certificate")
 
-pdf_subset('sg22.pdf',
-           pages = 186:190,  output = "subset.pdf")
+suppressMessages(
+  pdf_subset('sg22.pdf',
+              pages = 186:190,  output = "subset.pdf"))
 
 statistics_tables <- extract_tables(
   file   = "subset.pdf", 
   method = "decide", 
   output = "tibble")
+```
 
+
+```{r}
 graduates_distr_grades = statistics_tables[[4]] %>%
   setNames(c("Year", "5to6", "6to7", "7to8p5", "over8p5", "AVG")) %>%
   drop_na() %>%
@@ -515,7 +523,8 @@ library(qpdf)
 
 download.file(
   url = "https://www.statistics.gr/en/statistics?p_p_id=documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_cacheability=cacheLevelPage&p_p_col_id=column-2&p_p_col_count=4&p_p_col_pos=3&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_javax.faces.resource=document&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_ln=downloadResources&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_documentID=115793&_documents_WAR_publicationsportlet_INSTANCE_Mr0GiQJSgPHd_locale=en",
-  destfile = "pharmacies.xlsx"
+  destfile = "pharmacies.xlsx",
+  quiet = TRUE
 )
 
 download.file(url = "https://elstat-outsourcers.statistics.gr/census_results_2022_en.pdf",
