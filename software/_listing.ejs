@@ -1,0 +1,78 @@
+```{=html}
+<div class="grid">
+  <% for (const item of items) { %>
+    <%
+      // Ensure link points to rendered Quarto article (folder URL)
+      const cleanPath =
+        item.path
+          .replace(/index\.html$/, '')
+          .replace(/index\.qmd$/, '')
+          .replace(/\/$/, '') + '/';
+    %>
+
+    <div class="g-col-12 g-col-sm-6 title-block d-flex" <%= metadataAttrs(item) %>>
+      <div class="card dataset-card p-3 d-flex flex-column flex-fill">
+
+        <!-- Header -->
+        <div class="d-flex align-items-center mb-3">
+          <div class="icon-circle <%= item.iconBgClass || '' %> me-3 fs-1">
+            <i class="bi <%= item.iconClass || 'bi-box' %>"></i>
+          </div>
+          <div>
+            <h5 class="mb-1"><%= item.title %></h5>
+
+            <% if (item.observations || item.format) { %>
+              <p class="text-muted small mb-0">
+                <%= item.observations || '' %>
+                <% if (item.observations && item.formatCustom) { %> • <% } %>
+                <%= item.formatCustom ? item.formatCustom + ' format' : '' %>
+              </p>
+            <% } %>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <% if (item.description) { %>
+          <p class="small card-text mb-2">
+            <%= item.description %>
+          </p>
+        <% } %>
+
+        <!-- Badges (optional, preserved feature) -->
+        <% if (item.badges) { %>
+          <div class="mb-2">
+            <% for (const badge of item.badges) { %>
+              <span class="badge <%= badge.class %>"><%= badge.label %></span>
+            <% } %>
+          </div>
+        <% } %>
+
+        <!-- Actions -->
+        <div class="mt-auto d-flex justify-content-center gap-2">
+
+          <% if (item.githubUrl) { %>
+            <a href="<%= item.githubUrl %>" class="btn btn-sm btn-outline-primary">
+              <i class="bi bi-github"></i> Κώδικας
+            </a>
+          <% } %>
+
+          <!-- ALWAYS links to rendered Quarto index.qmd -->
+          <a href="<%- cleanPath %>" class="btn btn-sm btn-outline-primary">
+            <i class="bi bi-info"></i> Λεπτομέρειες
+          </a>
+
+          <!-- Extra links (optional, preserved feature) -->
+          <% if (item.links) { %>
+            <% for (const link of item.links) { %>
+              <a href="<%= link.url %>" class="btn btn-sm btn-outline-primary">
+                <i class="bi <%= link.icon %>"></i> <%= link.text %>
+              </a>
+            <% } %>
+          <% } %>
+
+        </div>
+      </div>
+    </div>
+  <% } %>
+</div>
+```

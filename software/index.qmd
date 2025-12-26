@@ -6,6 +6,19 @@ page-layout: full
 comments: false
 title-block-banner: true
 css: ../assets/styles/custom-style.css
+listing:
+  - id: rpackages
+    type: custom
+    template: _listing_r.ejs
+    contents: "r-packages/**/index.qmd"
+    include:
+      lang: en
+  - id: datasets
+    type: custom
+    template: _listing.ejs
+    contents: "datasets/**/index.qmd"
+    include:
+      lang: en
 toc: true
 format: 
   html:
@@ -17,179 +30,15 @@ format:
 
 I am developing specialized software for users who work exclusively with the R programming language. I still have a lot to learn, so at first I expect to publish data packages I also have some good ideas for more complex packages, but I plan to work on those in 2026... 😀
 
-### [greekElectionsR](): Data of Greek Parliament 
 
-::: grid
-::: {.g-col-12 .g-col-md-4}
-![](../assets/images/greekElections.png){fig-alt="greekElectionsR r package"
-style="float:left;"}
+::: {#rpackages}
 :::
 
-::: {.g-col-12 .g-col-md-8}
-The R package `greekElectionsR` provides data related to the Greek parliament from 1981 to 2019. Through the package, you can find information about the elected members of parliament for each period, the election results, and the votes of the elected presidents of the parliament.
-```{=html}
-<div class ="button_wrapper_gallery">
-<a href="https://github.com/stesiam/tidytuesday"><button type="button" class="btn  btn-outline-primary btn-rounded"><i class="bi bi-github"></i> Repository</button></a>
-</div>
-```
-:::
-
-:::
 
 ## Scraping Projects
 
 Data analysis requires data. However, it is rare that everything we want is freely available and organized. So we have to extract the necessary information from various sources. These are some projects where I extract data from various websites in order to analyze it in some of my articles. If you are interested in any of the data sets below, you can download them and perform your own analysis without needing to use R. You can also read the corresponding article for more technical details.
 
-
-::: {.grid}
-
-::: {.g-col-12 .g-col-sm-6 .title-block .d-flex}
-```{=html}
-<div class="card dataset-card p-3 d-flex flex-column flex-fill">
-          <div class="d-flex align-items-center mb-3">
-            <div class="icon-circle bg-gradient-orange me-3 fs-1">
-              <i class="bi bi-people-fill"></i>
-            </div>
-            <div>
-              <h5 class="mb-1">Elected MPs</h5>
-              <p class="text-muted small mb-0">4503 responses • CSV format</p>
-            </div>
-          </div>
-          <p class="small card-text mb-2">
-            MPs elected on Greek Parliament (1981 - 2019)
-          </p>
-          <div class="mb-3">
-            <span class="badge bg-warning text-dark">CSV</span>
-            <span class="badge bg-secondary">279 KB</span>
-          </div>
-          <div class="mt-auto d-flex justify-content-center">
-            <a href="#" class="btn btn-sm btn-outline-primary">
-              <i class="bi bi-eye"></i> View
-            </a>
-            <a href="#" class="btn btn-sm btn-outline-primary">
-              <i class="bi bi-download"></i> Download
-            </a>
-          </div>
-        </div>
-
-```
-
-
+::: {#datasets}
 :::
 
-::: {.g-col-12 .g-col-sm-6 .title-block .d-flex}
-```{=html}
-<div class="card dataset-card p-3 d-flex flex-column flex-fill">
-          <div class="d-flex align-items-center mb-3">
-            <div class="icon-circle bg-gradient-orange me-3 fs-1">
-              <i class="bi bi-journal-text"></i>
-            </div>
-            <div>
-              <h5 class="mb-1">Insurance Register</h5>
-              <p class="text-muted small mb-0">973 responses • CSV format</p>
-            </div>
-          </div>
-          <p class="small card-text mb-2">
-            A list of (re)insurance companies in Greece and insurance sub-sectors
-          </p>
-          <div class="mt-auto d-flex justify-content-center">
-            <a href="#" class="btn btn-sm btn-outline-primary">
-              <i class="bi bi-eye"></i> View
-            </a>
-            <a href="#" class="btn btn-sm btn-outline-primary">
-              <i class="bi bi-download"></i> Download
-            </a>
-          </div>
-</div>
-```
-
-:::
-
-::: {.g-col-12 .g-col-sm-6 .title-block .d-flex}
-```{=html}
-<div class="card dataset-card p-3 d-flex flex-column flex-fill">
-          <div class="d-flex align-items-center mb-3">
-            <div class="icon-circle bg-gradient-orange me-3 fs-1">
-              <i class="bi bi-backpack"></i>
-            </div>
-            <div>
-              <h5 class="mb-1">Job Postings</h5>
-              <p class="text-muted small mb-0">5093 responses • CSV format</p>
-            </div>
-          </div>
-          <p class="small card-text mb-2">
-            A collection of 5000+ job postings on February, 2025 extracted from xe.gr
-          </p>
-          <div class="mt-auto d-flex justify-content-center">
-            <a href="#" class="btn btn-sm btn-outline-primary">
-              <i class="bi bi-eye"></i> View
-            </a>
-            <a href="#" class="btn btn-sm btn-outline-primary">
-              <i class="bi bi-download"></i> Download
-            </a>
-          </div>
-</div>
-```
-
-:::
-
-
-
-
-::: {.g-col-12 .g-col-sm-6 .title-block .d-flex}
-```{=html}
-<div class="card dataset-card p-3 d-flex flex-column flex-fill">
-          <div class="d-flex align-items-center mb-3">
-            <div class="icon-circle bg-gradient-orange me-3 fs-1">
-              <i class="bi bi-house"></i>
-            </div>
-            <div>
-              <h5 class="mb-1">House Prices</h5>
-              <p class="text-muted small mb-0">___ responses • CSV format</p>
-            </div>
-          </div>
-          <p class="small card-text mb-2">
-            Extract house prices to buy or rent an apartment in Greece
-          </p>
-          <div class="mt-auto d-flex justify-content-center">
-            <a href="#" class="btn btn-sm btn-outline-primary">
-              <i class="bi bi-eye"></i> View
-            </a>
-            <a href="#" class="btn btn-sm btn-outline-primary">
-              <i class="bi bi-download"></i> Download
-            </a>
-          </div>
-</div>
-```
-
-:::
-
-::: {.g-col-12 .g-col-sm-6 .title-block .d-flex}
-```{=html}
-<div class="card dataset-card p-3 d-flex flex-column flex-fill">
-          <div class="d-flex align-items-center mb-3">
-            <div class="icon-circle bg-gradient-orange me-3 fs-1">
-              <i class="bi bi-building"></i>
-            </div>
-            <div>
-              <h5 class="mb-1">Franchises in Greece</h5>
-              <p class="text-muted small mb-0">___ responses • CSV format</p>
-            </div>
-          </div>
-          <p class="small card-text mb-2">
-            A list of companies that offer franchise plans in Greece with respected required amount of investment, royalties and other fees
-          </p>
-          <div class="mt-auto d-flex justify-content-center">
-            <a href="#" class="btn btn-sm btn-outline-primary">
-              <i class="bi bi-eye"></i> View
-            </a>
-            <a href="#" class="btn btn-sm btn-outline-primary">
-              <i class="bi bi-download"></i> Download
-            </a>
-          </div>
-</div>
-```
-
-:::
-
-:::

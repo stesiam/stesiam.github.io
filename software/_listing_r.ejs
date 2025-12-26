@@ -1,0 +1,29 @@
+```{=html}
+
+<% for (const item of items) { %>
+    <%
+      // Ensure link points to rendered Quarto article (folder URL)
+      const cleanPath =
+        item.path
+          .replace(/index\.html$/, '')
+          .replace(/index\.qmd$/, '')
+          .replace(/\/$/, '') + '/';
+    %>
+    
+    <section id="greekelectionsr-data-of-greek-parliament" class="level3">
+      <h3 data-anchor-id="greekelectionsr-data-of-greek-parliament">
+      <a href="https://stesiam.com/software/" data-original-href="https://stesiam.com/software/"><%= item.title %></a>: <%= item.shortDescr %></h3>
+      <div class="grid">
+        <div class="g-col-12 g-col-md-3">
+          <p><img src= <%= item.image %> class="img-fluid" style="float:left;" alt= <%= item.imageAlt %> ></p>
+        </div>
+        <div class="g-col-12 g-col-md-9">
+          <p>The R package <code>greekElectionsR</code> provides data related to the Greek parliament from 1981 to 2019. Through the package, you can find information about the elected members of parliament for each period, the election results, and the votes of the elected presidents of the parliament.</p>
+          <div class="button_wrapper_gallery">
+            <a href="https://github.com/stesiam/tidytuesday" data-original-href="https://github.com/stesiam/tidytuesday" target="_blank" rel="noopener"><button type="button" class="btn  btn-outline-primary btn-rounded"><i class="bi bi-github"></i> Repository</button></a>
+          </div>
+        </div>
+    </div>
+</section>
+<% } %>
+```

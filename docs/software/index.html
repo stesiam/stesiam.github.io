@@ -24,13 +24,13 @@ ul.task-list li input[type="checkbox"] {
 </style>
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script><script src="../site_libs/quarto-nav/headroom.min.js"></script><script src="../site_libs/clipboard/clipboard.min.js"></script><script src="../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../site_libs/quarto-search/fuse.min.js"></script><script src="../site_libs/quarto-search/quarto-search.js"></script><meta name="quarto:offset" content="../">
 <link href="../assets/images/favicon.ico" rel="icon">
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script><script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script><script src="../site_libs/quarto-html/popper.min.js"></script><script src="../site_libs/quarto-html/tippy.umd.min.js"></script><link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<script src="../site_libs/quarto-listing/list.min.js"></script><script src="../site_libs/quarto-listing/quarto-listing.js"></script><script src="../site_libs/quarto-html/quarto.js" type="module"></script><script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script><script src="../site_libs/quarto-html/popper.min.js"></script><script src="../site_libs/quarto-html/tippy.umd.min.js"></script><link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-e93741867710ae4adb8159e102648e68.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-be90ebfd24e3334213e8a7a749de058a.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-e93741867710ae4adb8159e102648e68.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script><link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-7ff468526a6b324ac0cd12e15353b6e4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-c8886fcd0e99b06e69dc9e0b852e756e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-dark-ff484b917f0606d556c75195098eda6e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <link href="../site_libs/bootstrap/bootstrap-7ff468526a6b324ac0cd12e15353b6e4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
@@ -57,13 +57,108 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><link rel="stylesheet" href="../assets/styles/styles.css">
+}</script><script>
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-rpackages .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-project','listing-highlight-style','listing-website','listing-format','listing-babelquarto','listing-lang','listing-language','listing-id','listing-title','listing-shortDescr','listing-description','listing-image','listing-imageAlt','listing-githubUrl','listing-path','listing-outputHref','listing-author','listing-filename','listing-file-modified','listing-reading-time','listing-word-count',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
+      
+      searchColumns: ["listing-project","listing-highlight-style","listing-website","listing-format","listing-babelquarto","listing-lang","listing-language","listing-id","listing-title","listing-shortDescr","listing-description","listing-image","listing-imageAlt","listing-githubUrl","listing-path","listing-outputHref","listing-author","listing-filename","listing-file-modified","listing-reading-time","listing-word-count"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-rpackages'] = new List('listing-rpackages', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-datasets .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-project','listing-highlight-style','listing-website','listing-format','listing-babelquarto','listing-lang','listing-language','listing-title','listing-description','listing-iconClass','listing-observations','listing-formatCustom','listing-toc','listing-toc-location','listing-comments','listing-path','listing-outputHref','listing-author','listing-filename','listing-file-modified','listing-reading-time','listing-word-count','listing-toc-title',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
+      
+      searchColumns: ["listing-project","listing-highlight-style","listing-website","listing-format","listing-babelquarto","listing-lang","listing-language","listing-title","listing-description","listing-iconClass","listing-observations","listing-formatCustom","listing-toc","listing-toc-location","listing-comments","listing-path","listing-outputHref","listing-author","listing-filename","listing-file-modified","listing-reading-time","listing-word-count","listing-toc-title"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-datasets'] = new List('listing-datasets', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script><script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script><script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script><link rel="stylesheet" href="../assets/styles/styles.css">
 <link rel="stylesheet" href="../assets/styles/custom-style.css">
 <meta property="og:title" content=" Software &amp; Data – stesiam">
 <meta property="og:description" content="The place to put my R packages and my data scraping projects.">
 <meta property="og:image" content="https://stesiam.com/assets/images/greekElections.png">
 <meta property="og:site_name" content="stesiam">
-<meta property="og:image:alt" content="greekElectionsR r package">
+<meta property="og:image:alt" content="greekElectionsR">
 <meta property="og:image:height" content="1800">
 <meta property="og:image:width" content="1800">
 </head>
@@ -314,160 +409,291 @@ ul.task-list li input[type="checkbox"] {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
    
   <ul>
-<li>
-<a href="#r-packages" id="toc-r-packages" class="nav-link active" data-scroll-target="#r-packages">R packages</a>
-  <ul class="collapse">
-<li><a href="#greekelectionsr-data-of-greek-parliament" id="toc-greekelectionsr-data-of-greek-parliament" class="nav-link" data-scroll-target="#greekelectionsr-data-of-greek-parliament">greekElectionsR: Data of Greek Parliament</a></li>
-  </ul>
-</li>
+<li><a href="#r-packages" id="toc-r-packages" class="nav-link active" data-scroll-target="#r-packages">R packages</a></li>
   <li><a href="#scraping-projects" id="toc-scraping-projects" class="nav-link" data-scroll-target="#scraping-projects">Scraping Projects</a></li>
   </ul></nav>
 </div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-page-left" id="quarto-document-content"><section id="r-packages" class="level2"><h2 data-anchor-id="r-packages">R packages</h2>
 <p>I am developing specialized software for users who work exclusively with the R programming language. I still have a lot to learn, so at first I expect to publish data packages I also have some good ideas for more complex packages, but I plan to work on those in 2026… 😀</p>
-<section id="greekelectionsr-data-of-greek-parliament" class="level3"><h3 data-anchor-id="greekelectionsr-data-of-greek-parliament">
-<a href="">greekElectionsR</a>: Data of Greek Parliament</h3>
-<div class="grid">
-<div class="g-col-12 g-col-md-4">
-<p><img src="../assets/images/greekElections.png" class="img-fluid" style="float:left;" alt="greekElectionsR r package"></p>
+<div id="listing-rpackages" class="quarto-listing quarto-listing-container-custom">
+
+    
+    
+    <section id="greekelectionsr-data-of-greek-parliament" class="level3"><h3 data-anchor-id="greekelectionsr-data-of-greek-parliament">
+      <a href="https://stesiam.com/software/" data-original-href="https://stesiam.com/software/">greekElectionsR</a>: Data of Greek Parliament</h3>
+      <div class="grid">
+        <div class="g-col-12 g-col-md-3">
+          <p><img src="../assets/images/greekElections.png" class="img-fluid" style="float:left;" alt="greekElectionsR" r="" package=""></p>
+        </div>
+        <div class="g-col-12 g-col-md-9">
+          <p>The R package <code>greekElectionsR</code> provides data related to the Greek parliament from 1981 to 2019. Through the package, you can find information about the elected members of parliament for each period, the election results, and the votes of the elected presidents of the parliament.</p>
+          <div class="button_wrapper_gallery">
+            <a href="https://github.com/stesiam/tidytuesday" data-original-href="https://github.com/stesiam/tidytuesday" target="_blank" rel="noopener"><button type="button" class="btn  btn-outline-primary btn-rounded"><i class="bi bi-github"></i> Repository</button></a>
+          </div>
+        </div>
+    </div>
+</section><div class="listing-no-matching d-none">No matching items</div>
 </div>
-<div class="g-col-12 g-col-md-8">
-<p>The R package <code>greekElectionsR</code> provides data related to the Greek parliament from 1981 to 2019. Through the package, you can find information about the elected members of parliament for each period, the election results, and the votes of the elected presidents of the parliament.</p>
-<div class="button_wrapper_gallery">
-<a href="https://github.com/stesiam/tidytuesday"><button type="button" class="btn  btn-outline-primary btn-rounded"><i class="bi bi-github"></i> Repository</button></a>
-</div>
-</div>
-</div>
-</section></section><section id="scraping-projects" class="level2"><h2 data-anchor-id="scraping-projects">Scraping Projects</h2>
+</section><section id="scraping-projects" class="level2"><h2 data-anchor-id="scraping-projects">Scraping Projects</h2>
 <p>Data analysis requires data. However, it is rare that everything we want is freely available and organized. So we have to extract the necessary information from various sources. These are some projects where I extract data from various websites in order to analyze it in some of my articles. If you are interested in any of the data sets below, you can download them and perform your own analysis without needing to use R. You can also read the corresponding article for more technical details.</p>
+<div id="listing-datasets" class="quarto-listing quarto-listing-container-custom">
 <div class="grid">
-<div class="g-col-12 g-col-sm-6 title-block d-flex">
-<div class="card dataset-card p-3 d-flex flex-column flex-fill">
-          <div class="d-flex align-items-center mb-3">
-            <div class="icon-circle bg-gradient-orange me-3 fs-1">
-              <i class="bi bi-people-fill"></i>
-            </div>
-            <div>
-              <h5 class="mb-1">Elected MPs</h5>
-              <p class="text-muted small mb-0">4503 responses • CSV format</p>
-            </div>
+  
+    
+
+    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="0" data-listing-file-modified-sort="1766772156176" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+      <div class="card dataset-card p-3 d-flex flex-column flex-fill">
+
+        <!-- Header -->
+        <div class="d-flex align-items-center mb-3">
+          <div class="icon-circle  me-3 fs-1">
+            <i class="bi bi-people-fill"></i>
           </div>
-          <p class="small card-text mb-2">
-            MPs elected on Greek Parliament (1981 - 2019)
-          </p>
-          <div class="mb-3">
-            <span class="badge bg-warning text-dark">CSV</span>
-            <span class="badge bg-secondary">279 KB</span>
-          </div>
-          <div class="mt-auto d-flex justify-content-center">
-            <a href="#" class="btn btn-sm btn-outline-primary">
-              <i class="bi bi-eye"></i> View
-            </a>
-            <a href="#" class="btn btn-sm btn-outline-primary">
-              <i class="bi bi-download"></i> Download
-            </a>
+          <div>
+            <h5 class="mb-1">Elected MPs</h5>
+
+            
+              <p class="text-muted small mb-0">
+                4503 observations
+                 • 
+                CSV format
+              </p>
+            
           </div>
         </div>
 
-</div>
-<div class="g-col-12 g-col-sm-6 title-block d-flex">
-<div class="card dataset-card p-3 d-flex flex-column flex-fill">
-          <div class="d-flex align-items-center mb-3">
-            <div class="icon-circle bg-gradient-orange me-3 fs-1">
-              <i class="bi bi-journal-text"></i>
-            </div>
-            <div>
-              <h5 class="mb-1">Insurance Register</h5>
-              <p class="text-muted small mb-0">973 responses • CSV format</p>
-            </div>
-          </div>
+        <!-- Description -->
+        
           <p class="small card-text mb-2">
-            A list of (re)insurance companies in Greece and insurance sub-sectors
+            MPs elected on Greek Parliament (1981 - 2019)
           </p>
-          <div class="mt-auto d-flex justify-content-center">
-            <a href="#" class="btn btn-sm btn-outline-primary">
-              <i class="bi bi-eye"></i> View
-            </a>
-            <a href="#" class="btn btn-sm btn-outline-primary">
-              <i class="bi bi-download"></i> Download
-            </a>
+        
+
+        <!-- Badges (optional, preserved feature) -->
+        
+
+        <!-- Actions -->
+        <div class="mt-auto d-flex justify-content-center gap-2">
+
+          
+
+          <!-- ALWAYS links to rendered Quarto index.qmd -->
+          <a href="../software/datasets/elected-mps/" class="btn btn-sm btn-outline-primary">
+            <i class="bi bi-info"></i> Λεπτομέρειες
+          </a>
+
+          <!-- Extra links (optional, preserved feature) -->
+          
+
+        </div>
+      </div>
+    </div>
+  
+    
+
+    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="1" data-listing-file-modified-sort="1766772156176" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+      <div class="card dataset-card p-3 d-flex flex-column flex-fill">
+
+        <!-- Header -->
+        <div class="d-flex align-items-center mb-3">
+          <div class="icon-circle  me-3 fs-1">
+            <i class="bi bi-building"></i>
           </div>
-</div>
-</div>
-<div class="g-col-12 g-col-sm-6 title-block d-flex">
-<div class="card dataset-card p-3 d-flex flex-column flex-fill">
-          <div class="d-flex align-items-center mb-3">
-            <div class="icon-circle bg-gradient-orange me-3 fs-1">
-              <i class="bi bi-backpack"></i>
-            </div>
-            <div>
-              <h5 class="mb-1">Job Postings</h5>
-              <p class="text-muted small mb-0">5093 responses • CSV format</p>
-            </div>
+          <div>
+            <h5 class="mb-1">Franchises in Greece</h5>
+
+            
+              <p class="text-muted small mb-0">
+                ___ observations
+                 • 
+                CSV format
+              </p>
+            
           </div>
-          <p class="small card-text mb-2">
-            A collection of 5000+ job postings on February, 2025 extracted from xe.gr
-          </p>
-          <div class="mt-auto d-flex justify-content-center">
-            <a href="#" class="btn btn-sm btn-outline-primary">
-              <i class="bi bi-eye"></i> View
-            </a>
-            <a href="#" class="btn btn-sm btn-outline-primary">
-              <i class="bi bi-download"></i> Download
-            </a>
-          </div>
-</div>
-</div>
-<div class="g-col-12 g-col-sm-6 title-block d-flex">
-<div class="card dataset-card p-3 d-flex flex-column flex-fill">
-          <div class="d-flex align-items-center mb-3">
-            <div class="icon-circle bg-gradient-orange me-3 fs-1">
-              <i class="bi bi-house"></i>
-            </div>
-            <div>
-              <h5 class="mb-1">House Prices</h5>
-              <p class="text-muted small mb-0">___ responses • CSV format</p>
-            </div>
-          </div>
-          <p class="small card-text mb-2">
-            Extract house prices to buy or rent an apartment in Greece
-          </p>
-          <div class="mt-auto d-flex justify-content-center">
-            <a href="#" class="btn btn-sm btn-outline-primary">
-              <i class="bi bi-eye"></i> View
-            </a>
-            <a href="#" class="btn btn-sm btn-outline-primary">
-              <i class="bi bi-download"></i> Download
-            </a>
-          </div>
-</div>
-</div>
-<div class="g-col-12 g-col-sm-6 title-block d-flex">
-<div class="card dataset-card p-3 d-flex flex-column flex-fill">
-          <div class="d-flex align-items-center mb-3">
-            <div class="icon-circle bg-gradient-orange me-3 fs-1">
-              <i class="bi bi-building"></i>
-            </div>
-            <div>
-              <h5 class="mb-1">Franchises in Greece</h5>
-              <p class="text-muted small mb-0">___ responses • CSV format</p>
-            </div>
-          </div>
+        </div>
+
+        <!-- Description -->
+        
           <p class="small card-text mb-2">
             A list of companies that offer franchise plans in Greece with respected required amount of investment, royalties and other fees
           </p>
-          <div class="mt-auto d-flex justify-content-center">
-            <a href="#" class="btn btn-sm btn-outline-primary">
-              <i class="bi bi-eye"></i> View
-            </a>
-            <a href="#" class="btn btn-sm btn-outline-primary">
-              <i class="bi bi-download"></i> Download
-            </a>
+        
+
+        <!-- Badges (optional, preserved feature) -->
+        
+
+        <!-- Actions -->
+        <div class="mt-auto d-flex justify-content-center gap-2">
+
+          
+
+          <!-- ALWAYS links to rendered Quarto index.qmd -->
+          <a href="../software/datasets/franchises-in-greece/" class="btn btn-sm btn-outline-primary">
+            <i class="bi bi-info"></i> Λεπτομέρειες
+          </a>
+
+          <!-- Extra links (optional, preserved feature) -->
+          
+
+        </div>
+      </div>
+    </div>
+  
+    
+
+    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="2" data-listing-file-modified-sort="1766772156177" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+      <div class="card dataset-card p-3 d-flex flex-column flex-fill">
+
+        <!-- Header -->
+        <div class="d-flex align-items-center mb-3">
+          <div class="icon-circle  me-3 fs-1">
+            <i class="bi bi-house"></i>
           </div>
+          <div>
+            <h5 class="mb-1">House Prices</h5>
+
+            
+              <p class="text-muted small mb-0">
+                ___ observations
+                 • 
+                CSV format
+              </p>
+            
+          </div>
+        </div>
+
+        <!-- Description -->
+        
+          <p class="small card-text mb-2">
+            Extract house prices to buy or rent an apartment in Greece
+          </p>
+        
+
+        <!-- Badges (optional, preserved feature) -->
+        
+
+        <!-- Actions -->
+        <div class="mt-auto d-flex justify-content-center gap-2">
+
+          
+
+          <!-- ALWAYS links to rendered Quarto index.qmd -->
+          <a href="../software/datasets/house-prices/" class="btn btn-sm btn-outline-primary">
+            <i class="bi bi-info"></i> Λεπτομέρειες
+          </a>
+
+          <!-- Extra links (optional, preserved feature) -->
+          
+
+        </div>
+      </div>
+    </div>
+  
+    
+
+    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="3" data-listing-file-modified-sort="1766772156177" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+      <div class="card dataset-card p-3 d-flex flex-column flex-fill">
+
+        <!-- Header -->
+        <div class="d-flex align-items-center mb-3">
+          <div class="icon-circle  me-3 fs-1">
+            <i class="bi bi-journal-text"></i>
+          </div>
+          <div>
+            <h5 class="mb-1">Insurance Register</h5>
+
+            
+              <p class="text-muted small mb-0">
+                973 observations
+                 • 
+                CSV format
+              </p>
+            
+          </div>
+        </div>
+
+        <!-- Description -->
+        
+          <p class="small card-text mb-2">
+            A list of (re)insurance companies in Greece and insurance sub-sectors
+          </p>
+        
+
+        <!-- Badges (optional, preserved feature) -->
+        
+
+        <!-- Actions -->
+        <div class="mt-auto d-flex justify-content-center gap-2">
+
+          
+
+          <!-- ALWAYS links to rendered Quarto index.qmd -->
+          <a href="../software/datasets/insurance-register/" class="btn btn-sm btn-outline-primary">
+            <i class="bi bi-info"></i> Λεπτομέρειες
+          </a>
+
+          <!-- Extra links (optional, preserved feature) -->
+          
+
+        </div>
+      </div>
+    </div>
+  
+    
+
+    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="4" data-listing-file-modified-sort="1766772156177" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+      <div class="card dataset-card p-3 d-flex flex-column flex-fill">
+
+        <!-- Header -->
+        <div class="d-flex align-items-center mb-3">
+          <div class="icon-circle  me-3 fs-1">
+            <i class="bi bi-backpack"></i>
+          </div>
+          <div>
+            <h5 class="mb-1">Job Postings</h5>
+
+            
+              <p class="text-muted small mb-0">
+                5093 observations
+                 • 
+                CSV format
+              </p>
+            
+          </div>
+        </div>
+
+        <!-- Description -->
+        
+          <p class="small card-text mb-2">
+            A collection of 5000+ job postings on February, 2025 extracted from xe.gr 
+          </p>
+        
+
+        <!-- Badges (optional, preserved feature) -->
+        
+
+        <!-- Actions -->
+        <div class="mt-auto d-flex justify-content-center gap-2">
+
+          
+
+          <!-- ALWAYS links to rendered Quarto index.qmd -->
+          <a href="../software/datasets/job-postings/" class="btn btn-sm btn-outline-primary">
+            <i class="bi bi-info"></i> Λεπτομέρειες
+          </a>
+
+          <!-- Extra links (optional, preserved feature) -->
+          
+
+        </div>
+      </div>
+    </div>
+  
 </div>
+<div class="listing-no-matching d-none">No matching items</div>
 </div>
-</div>
+
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
