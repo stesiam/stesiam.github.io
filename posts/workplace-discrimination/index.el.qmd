@@ -9,7 +9,7 @@ categories: [R, Περιγραφικη αναλυση]
 image: discr_work.png
 image-alt: "Πρόσοψη κτιρίου Ελληνικού Κοινοβουλίου"
 fig-cap-location: bottom
-date: "2025-12-29"
+date: "2025-12-30"
 toc: true
 toc-title: Περιεχόμενα
 toc-location: left
@@ -34,4 +34,125 @@ editor_options:
 ---
 
 ## Εισαγωγή
+
+Η αναζήτηση εργασίας είναι το επόμενο βήμα στη ζωή ενός πρόσφατου απόφοιτου. Έτσι και εγώ έχω ξεκινήσει εδώ και κάμποσο καιρό να αναζητώ μία εργασία. Αυτό το διάστημα που έμπαινα σε καθημερινή βάση παρατηρούσα έναν σημαντικό αριθμό αγγελιών οι οποίες έθεταν αρκετά αμφιλεγόμενους όρους. Από τη μία μεριά μπορεί κάποιος να ισχυριστεί ότι μπορεί ο εκάστοτε εργοδότης να θέτει τις δικές του προυποθέσεις για το προσωπικό που θα απαρτίζει την επιχε´ρησή του. Αυτό είναι αποκλύτως λογικό. Το πρόβλημα ξεκινάει όταν υπάρχουν όροι το προσωπικό μας να έχει κάποιο συγκεκριμένα χαρακτηριστικά τα οποία είναι έμφυτα, γεννιόμαστε με αυτά και (ως επί το πλείστον) δεν μπροούμε να τα αλλάξουμε. Φύλο, εθνικότητα, ηλικία ή ακόμα και γονίδια «ομορφιάς» είνα μερικές σχετικές απαιτήσεις που θα διαβάσουμε σε αρκετές αγγελίες. Προφανώς τα παραπάνω αποτελούν σοβαρές μορφές διακρίσεων οι οποίες κυριαρχούν ακόμα και σήμερα.
+
+Οι διακρίσεις στον εργασιακό χώρο είναι δεδομένες και μη αμφισβητούμενες. 
+
+
+
+
+```{r}
+library(readr)
+library(dplyr)
+library(forcats)
+library(stringr)
+library(stringi)
+library(lubridate)
+library(highcharter)
+```
+
+```{r}
+data = readr::read_csv("https://github.com/stesiam/scraping-job-postings-xe/releases/download/v1.2/job-posts.csv")
+data = data %>%
+  select(spc, type, wage, loc, exp, descr, p_date)
+```
+
+
+```{r}
+months_gr <- c(
+    "Ιανουαριου" = "January",
+    "Φεβρουαριου" = "February",
+    "Μαρτιου" = "March",
+    "Απριλιου" = "April",
+    "Μαιου" = "May",
+    "Μαΐου" = "May",
+    "Ιουνιου" = "June",
+    "Ιουλιου" = "July",
+    "Αυγουστου" = "August",
+    "Σεπτεμβριου" = "September",
+    "Οκτωβριου" = "October",
+    "Νοεμβριου" = "November",
+    "Δεκεμβριου" = "December"
+)
+
+clean_data = data %>% 
+    mutate(type = tolower(type)) %>%
+    mutate(workingHours = case_when(
+      str_detect(type, "πλήρης") ~ "Πλήρης",
+      str_detect(type, "μερική")  ~ "Μερική",
+      .default = "Αδιευκρίνιστο")
+    ) %>%
+    mutate(presence = case_when(
+      str_detect(type, "φυσική") ~ "Φυσική",
+      str_detect(type, "υβριδική")  ~ "Υβριδική",
+      str_detect(type, "αποστάσεως")  ~ "Εξ' αποστάσεως",
+      .default = "Αδιευκρίνιστο")
+    ) %>%
+     mutate(contractType = case_when(
+      str_detect(type, "αορίστου") ~ "Αορίστου χρόνου",
+      str_detect(type, "ορισμένου")  ~ "Ορισμένου χρόνου",
+      .default = "Αδιευκρίνιστο")
+    ) %>%
+  select(-type) %>%
+  relocate(workingHours, presence, contractType, .after = spc) %>%
+   mutate(exp = case_when(
+      str_detect(exp, "Δεν απαιτείται") ~ "0-1",
+      str_detect(exp, "Λιγότερο από 1 έτος")  ~ "0-1",
+      str_detect(exp, "1-2 έτη") ~ "1-2",
+      str_detect(exp, "2-3 έτη")  ~ "2-3",
+      str_detect(exp, "3-5 έτη") ~ "3-5",
+      str_detect(exp, "5-10 έτη")  ~ "5-10",
+      .default = NA)
+    ) %>%
+  relocate(exp, .after = contractType) %>%
+  mutate(
+        date = p_date %>%
+            str_remove("^[^ ]+\\s+") %>%     # remove weekday
+            str_to_lower() %>%               # lowercase
+            stringi::stri_trans_general("NFD; [:Nonspacing Mark:] Remove; NFC") %>% 
+            str_replace_all(months_gr) %>%   # translate months
+            str_squish() %>%
+            dmy()
+    ) %>%
+  select(-p_date)
+
+
+clean_data = clean_data %>%
+  mutate(
+    exp = fct_relevel(
+        exp,
+        "0","<1", "1-2", "2-3", "3-5", "5-10"
+))
+```
+
+
+## Περιγραφικά στοιχεία
+
+
+
+```{r}
+t = table(clean_data$exp)
+v=t %>% as.data.frame()
+highchart() |>
+    hc_chart(type = "column") |>
+    hc_title(text = "Απαιτούμενη προϋπηρεσία") |>
+    hc_subtitle(text = "Εργασιακή εμπειρία (σε έτη)") |>
+    hc_xAxis(categories = v$Var1) |>
+    hc_yAxis(title = list(text = "Values")) |>
+    hc_add_series(
+        name = "My data",
+        data = v$Freq
+    )
+```
+
+
+## Μεθοδολογία πειράματος
+
+
+## Εφαρμογή
+
+
+## Αποτελέσματα
+
 
