@@ -59,6 +59,7 @@ data = data %>%
 ```
 
 
+
 ```{r}
 months_gr <- c(
     "Ιανουαριου" = "January",
@@ -122,7 +123,7 @@ clean_data = clean_data %>%
   mutate(
     exp = fct_relevel(
         exp,
-        "0","<1", "1-2", "2-3", "3-5", "5-10"
+        "0-1", "1-2", "2-3", "3-5", "5-10"
 ))
 ```
 
@@ -133,18 +134,124 @@ clean_data = clean_data %>%
 
 ```{r}
 t = table(clean_data$exp)
-v=t %>% as.data.frame()
+v=t %>% as.data.frame() |>
+  mutate(pct = 100* (Freq / sum(Freq)) ) |>
+  mutate( pct = round(pct, 1))
+
+data_points <- list_parse(
+  data.frame(
+    y = v$pct,            # y-axis value
+    category = v$Var1,     # optional, but explicit
+    freq = v$Freq
+  )
+)
+
 highchart() |>
-    hc_chart(type = "column") |>
-    hc_title(text = "Απαιτούμενη προϋπηρεσία") |>
-    hc_subtitle(text = "Εργασιακή εμπειρία (σε έτη)") |>
-    hc_xAxis(categories = v$Var1) |>
-    hc_yAxis(title = list(text = "Values")) |>
+    hc_chart(
+        type = "column"    ) |>
+    hc_title(
+        text = "Απαιτούμενη προϋπηρεσία",
+        style = list(fontSize = "18px", fontWeight = "bold")
+    ) |>
+    hc_subtitle(
+        text = "Εργασιακή εμπειρία (σε έτη)",
+        style = list(color = "#666666")
+    ) |>
+    hc_xAxis(
+        categories = v$Var1,
+        tickLength = 0,
+        lineWidth = 0
+    ) |>
+    hc_yAxis(
+        title = list(text = "Παρατηρήσεις"),
+        gridLineColor = "none"
+    ) |>
     hc_add_series(
-        name = "My data",
-        data = v$Freq
+        name = "Πλήθος",
+        data = data_points
+    ) |>
+    hc_plotOptions(
+        column = list(
+            borderWidth = 0
+        )
+    ) |>
+    hc_colorAxis(
+        min = min(v$pct),
+        max = max(v$pct),
+        stops = color_stops(
+            colors = c("#3182bd", "#deebf7")  # light → dark blue
+        )
+    ) |>
+    hc_tooltip(
+    useHTML = TRUE,
+    headerFormat = "",
+    pointFormat = paste0(
+      "<b>Έτη εμπειρίας:</b> {point.category}<br>",
+      "<b>Ποσοστό θέσεων:</b> {point.y} %<br>",
+      "<b>Πλήθος θέσεων:</b> {point.freq}"
     )
+  ) |>
+    hc_legend(enabled = FALSE)
 ```
+
+
+```{r}
+freqWorkingHours = table(clean_data$workingHours) %>%
+  as.data.frame()
+
+
+highchart() %>%
+    hc_chart(
+        type = "pie",
+        backgroundColor = "transparent"
+    ) %>%
+    hc_title(
+        text = "Κατανομή θέσεων ανά ωράριο εργασίας",
+        style = list(
+            fontSize = "18px",
+            fontWeight = "bold"
+        )
+    ) %>%
+    hc_subtitle(
+        text = "Αριθμός πρατηρήσεων και ποσοστό (%) επί του συνόλου των αγγελιών",
+        style = list(fontSize = "12px")
+    ) %>%
+    hc_add_series(
+        name = "Percentage",
+        data = freqWorkingHours %>%
+            mutate(y = Freq, name = Var1) %>%
+            select(name, y) %>%
+            list_parse(),
+        size = "80%",
+        innerSize = "50%",   # donut style (remove if you want classic pie)
+        dataLabels = list(
+            enabled = TRUE,
+            format = "<b>{point.name}</b>: {point.percentage:.1f} %",
+            style = list(fontSize = "11px")
+        )
+    ) %>%
+    hc_tooltip(
+        pointFormat = "<b>{point.y}</b> θέσεις εργασίας <br><b>Ποσοστό:</b> {point.percentage:.1f}%"
+    ) %>%
+    hc_plotOptions(
+        pie = list(
+            allowPointSelect = TRUE,
+            cursor = "pointer",
+            borderWidth = 0,
+            showInLegend = TRUE
+        )
+    ) %>%
+    hc_legend(
+        align = "center",
+        verticalAlign = "bottom",
+        layout = "horizontal"
+    ) %>%
+    hc_colors(c(
+        "#2E86AB", "#A23B72", "#F18F01", "#C73E1D"
+    )) %>%
+    hc_credits(enabled = FALSE)
+```
+
 
 
 ## Μεθοδολογία πειράματος
