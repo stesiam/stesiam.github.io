@@ -43,6 +43,11 @@ editor_options:
 
 
 ```{r}
+#| label: import_r_libs
+#| title: "Εισαγωγή R πακέτων"
+#| message: false
+#| warning: false
+
 library(readr)
 library(dplyr)
 library(forcats)
@@ -52,7 +57,32 @@ library(lubridate)
 library(highcharter)
 ```
 
+
 ```{r}
+#| label: write_bibliography
+#| include: false
+knitr::write_bib(.packages(), file = 'packages.bib')
+
+options(
+  highcharter.lang = list(
+    months = c("Ιανουάριος","Φεβρουάριος","Μάρτιος","Απρίλιος",
+               "Μάιος","Ιούνιος","Ιούλιος","Αύγουστος",
+               "Σεπτέμβριος","Οκτώβριος","Νοέμβριος","Δεκέμβριος"),
+    shortMonths = c("Ιαν","Φεβ","Μαρ","Απρ","Μάι","Ιουν",
+                    "Ιουλ","Αυγ","Σεπ","Οκτ","Νοε","Δεκ"),
+    weekdays = c("Κυριακή","Δευτέρα","Τρίτη",
+                 "Τετάρτη","Πέμπτη","Παρασκευή","Σάββατο")
+  )
+)
+```
+
+
+```{r}
+#| label: import_dataset
+#| title: "Εισαγωγή δεδομένων"
+#| message: false
+#| warning: false
+
 data = readr::read_csv("https://github.com/stesiam/scraping-job-postings-xe/releases/download/v1.2/job-posts.csv")
 data = data %>%
   select(spc, type, wage, loc, exp, descr, p_date)
@@ -197,6 +227,64 @@ highchart() |>
 
 ```{r}
 freqWorkingHours = table(clean_data$workingHours) %>%
+  as.data.frame()
+
+
+highchart() %>%
+    hc_chart(
+        type = "pie",
+        backgroundColor = "transparent"
+    ) %>%
+    hc_title(
+        text = "Κατανομή θέσεων ανά ωράριο εργασίας",
+        style = list(
+            fontSize = "18px",
+            fontWeight = "bold"
+        )
+    ) %>%
+    hc_subtitle(
+        text = "Αριθμός πρατηρήσεων και ποσοστό (%) επί του συνόλου των αγγελιών",
+        style = list(fontSize = "12px")
+    ) %>%
+    hc_add_series(
+        name = "Percentage",
+        data = freqWorkingHours %>%
+            mutate(y = Freq, name = Var1) %>%
+            select(name, y) %>%
+            list_parse(),
+        size = "80%",
+        innerSize = "50%",   # donut style (remove if you want classic pie)
+        dataLabels = list(
+            enabled = TRUE,
+            format = "<b>{point.name}</b>: {point.percentage:.1f} %",
+            style = list(fontSize = "11px")
+        )
+    ) %>%
+    hc_tooltip(
+        pointFormat = "<b>{point.y}</b> θέσεις εργασίας <br><b>Ποσοστό:</b> {point.percentage:.1f}%"
+    ) %>%
+    hc_plotOptions(
+        pie = list(
+            allowPointSelect = TRUE,
+            cursor = "pointer",
+            borderWidth = 0,
+            showInLegend = TRUE
+        )
+    ) %>%
+    hc_legend(
+        align = "center",
+        verticalAlign = "bottom",
+        layout = "horizontal"
+    ) %>%
+    hc_colors(c(
+        "#2E86AB", "#A23B72", "#F18F01", "#C73E1D"
+    )) %>%
+    hc_credits(enabled = FALSE)
+```
+
+
+```{r}
+freqWorkingHours = table(clean_data$contractType) %>%
   as.data.frame()
 
 
