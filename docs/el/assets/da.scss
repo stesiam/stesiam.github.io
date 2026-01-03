@@ -1,0 +1,615 @@
+/*-- scss:defaults --*/
+// Brite 5.3.7
+// Bootswatch
+
+$white:    #ffffff !default;   // pure white
+$black:    #000000 !default;   // pure black
+
+// True grayscale ramp (evenly spaced by luminance)
+$gray-100: #111111 !default;
+$gray-200: #1a1a1a !default;
+$gray-300: #262626 !default;
+$gray-400: #3a3a3a !default;
+$gray-500: #525252 !default;
+$gray-600: #737373 !default;
+$gray-700: #a3a3a3 !default;
+$gray-800: #d4d4d4 !default;
+$gray-900: #f5f5f5 !default;
+
+// Page colors — true dark mode
+$body-bg:    #000000;
+$body-color: #f5f5f5;
+
+// Modern UI accent palette (clean, accessible)
+$blue:    #3b82f6 !default;  // modern blue
+$indigo:  #6366f1 !default;
+$purple:  #8b5cf6 !default;
+$pink:    #ec4899 !default;
+$red:     #ef4444 !default;
+$orange:  #f97316 !default;
+$yellow:  #eab308 !default;
+$green:   #22c55e !default;
+$teal:    #14b8a6 !default;
+$cyan:    #06b6d4 !default;
+$lime:    #84cc16 !default;
+
+// Semantic roles use the new literal palette
+$primary:       $purple !default;
+$secondary:     $gray-400 !default;
+$success:       $green !default;
+$info:          $cyan !default;
+$warning:       $yellow !default;
+$danger:        $red !default;
+$light:         $gray-200 !default;
+$dark:          $gray-900 !default;
+
+$bs-nav-tabs-link-active-color: #ff00d7;
+$btn-border-radius: 1em;
+$btn-border-radius-sm: 1em;
+
+$spacer: 1rem !default;
+
+// Title block
+.quarto-title-banner {
+  background: $body-bg !important;
+  color: $body-color !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* -------------------------------------------------------
+   2. Typography
+------------------------------------------------------- */
+
+$headings-font-weight: 600;
+$headings-color: $white;
+
+$font-size-base: 1.05rem;
+$line-height-base: 1.6;
+
+// Links
+$link-color: #ee78ff !default;
+
+// Typography
+a {
+  font-weight: $headings-font-weight;
+  color: $link-color;
+}
+
+// Components
+$border-radius: .375rem !default;
+$border-radius-sm: .25rem !default;
+$border-radius-lg: .5rem !default;
+
+$component-active-color: $black !default;
+
+$focus-ring-width: 1px !default;
+$focus-ring-opacity: 1 !default;
+$focus-ring-color: $black !default;
+
+$font-size-sm: $font-size-base * .875 !default;
+$lead-font-weight: 400 !default;
+$headings-font-weight: 500 !default;
+$hr-border-width: 2px !default;
+$hr-opacity: 1 !default;
+
+$table-cell-padding-y: .75rem !default;
+$table-cell-padding-x: .75rem !default;
+
+$table-border-width: 1px !default;
+$table-border-color: $black !default;
+
+$table-hover-bg-factor: 0 !default;
+$table-border-factor: 1 !default;
+$table-bg-scale: 0% !default;
+
+$table-variants: (
+  "primary":    $primary,
+  "secondary":  $secondary,
+  "success":    $success,
+  "info":       $info,
+  "warning":    $warning,
+  "danger":     $danger,
+  "light":      $light,
+  "dark":       $dark,
+) !default;
+
+// Buttons + Forms
+$input-btn-padding-y: .5rem !default;
+$input-btn-padding-x: 1rem !default;
+
+$input-btn-padding-y-sm: .25rem !default;
+$input-btn-padding-x-sm: .75rem !default;
+$input-btn-font-size-sm: $font-size-sm !default;
+
+$input-btn-padding-y-lg: .75rem !default;
+$input-btn-padding-x-lg: 1.25rem !default;
+$input-btn-font-size-lg: $font-size-base !default;
+
+$input-btn-border-width: 2px !default;
+$btn-border-width: 2px !default;
+
+$form-label-font-weight: $headings-font-weight !default;
+
+$input-focus-border-color: $black !default;
+$form-check-input-checked-border-color: $black !default;
+
+$form-range-track-height: .6rem !default;
+$form-range-thumb-width: 1.2rem !default;
+$form-range-thumb-height: $form-range-thumb-width !default;
+$form-range-thumb-border: 2px solid $black !default;
+$form-range-thumb-box-shadow: none !default;
+$form-range-thumb-disabled-bg: $light !default;
+
+// Navbar
+$navbar-padding-y: $spacer * .75 !default;
+$navbar-nav-link-padding-x: 1rem !default;
+
+$navbar-light-color: $black !default;
+$navbar-light-hover-color: $black !default;
+$navbar-light-active-color: $black !default;
+$navbar-light-disabled-color: rgba($black, .3) !default;
+$navbar-light-icon-color: $black !default;
+$navbar-light-toggler-border-color: $black !default;
+
+$navbar-dark-color: $white !default;
+$navbar-dark-hover-color: $white !default;
+$navbar-dark-active-color: $white !default;
+$navbar-dark-disabled-color: rgba($white, .3) !default;
+$navbar-dark-icon-color: $white !default;
+$navbar-dark-toggler-border-color: $white !default;
+
+// Dropdowns
+$dropdown-border-color: $black !default;
+$dropdown-border-width: 2px !default;
+$dropdown-link-hover-bg: $primary !default;
+$dropdown-header-color: $black !default;
+
+// Pagination
+$pagination-color: $black !default;
+$pagination-hover-color: $black !default;
+$pagination-hover-bg: transparent !default;
+$pagination-active-border-color: $black !default;
+
+// Cards
+$card-border-color: #6a6a6a;
+
+// Accordion
+$accordion-button-active-bg: $primary !default;
+$accordion-button-active-color: $black !default;
+
+// Tooltips
+$tooltip-opacity: 1 !default;
+
+// Popovers
+$popover-border-color: $black !default;
+
+// Toasts
+$toast-border-color: $black !default;
+$toast-box-shadow: 3px 3px 0 0 $black !default;
+
+$toast-header-color: $black !default;
+
+// Badges
+$badge-color: $black !default;
+
+// Modals
+$modal-content-border-color: $black !default;
+
+// Breadcrumbs
+$breadcrumb-padding-y: .5rem !default;
+$breadcrumb-padding-x: 1rem !default;
+$breadcrumb-divider-color: $black !default;
+$breadcrumb-active-color: $black !default;
+$breadcrumb-border-radius: $border-radius-lg !default;
+
+// Close Button
+$btn-close-opacity: 1 !default;
+$btn-close-hover-opacity: 1 !default;
+
+/*-- scss:rules --*/
+
+// Variables
+:root {
+  --#{$prefix}border-width: 2px;
+  --#{$prefix}border-color: #{#a2a2a2};
+}
+
+[data-bs-theme="light"],
+[data-bs-theme="dark"] {
+  --#{$prefix}border-color: #{$black};
+}
+
+// Mixins
+@mixin btn-shadow(){
+  box-shadow: 3px 3px 0 0 var(--#{$prefix}border-color);
+}
+
+.table {
+  border: 2px solid $black;
+}
+
+// Navbar
+.navbar {
+  background-color: #1a1a1a;
+  $navbar-border-width: 2px;
+  font-size: $font-size-lg;
+  font-weight: $headings-font-weight;
+
+  border: $navbar-border-width solid $black;
+}
+
+// Buttons
+.btn {
+  margin: 3px 0 0 3px;
+  border-color: $black;
+  @include btn-shadow();
+  transition: all .3s;
+  transform: translate(-3px, -3px);
+
+  &:hover {
+    border-color: $black;
+    box-shadow: none;
+    transform: translate(0, 0);
+  }
+
+  &.disabled {
+    border-color: $black;
+  }
+
+  &-link,
+  &-link:hover {
+    color: $black;
+  }
+}
+
+@each $color, $value in $theme-colors {
+  .btn-outline-#{$color} {
+    color: $black;
+    background-color: #{$value};
+    box-shadow: none;
+    transform: translate(0, 0);
+
+    &:hover {
+      @include btn-shadow();
+      transform: translate(-3px, -3px);
+    }
+  }
+
+  .btn-check + .btn-#{$color},
+  .btn-check + .btn-outline-#{$color} {
+    &:hover {
+      background-color: #{$value};
+    }
+  }
+}
+
+.btn-outline-dark {
+  color: $white;  // $white = #121212
+}
+
+.btn-group {
+  .btn {
+    margin-left: 0;
+  }
+
+  > .btn.active {
+    z-index: 0;
+  }
+}
+
+.btn-group,
+.btn-group-vertical {
+  .btn {
+    &:hover,
+    &:active,
+    &:focus {
+      z-index: 0;
+    }
+  }
+
+  > .btn-check:focus + .btn,
+  > .btn-check:checked + .btn {
+    z-index: 0;
+  }
+}
+
+.btn-check + .btn {
+  border-color: $black;
+  @include btn-shadow();
+  transform: translate(-3px, -3px);
+}
+
+.btn-check + .btn:hover {
+  color: $black;
+  border-color: $black;
+}
+
+.btn-check:checked + .btn,
+:not(.btn-check) + .btn:active,
+.btn:first-child:active,
+.btn.active,
+.btn.show {
+  border-color: $black;
+  box-shadow: none;
+  transform: translate(0, 0);
+}
+
+[data-bs-theme="dark"] .btn-link,
+[data-bs-theme="dark"] .btn-link:hover {
+  color: $black;
+}
+
+a{
+  font-weight: bold;
+}
+
+// Forms
+.form-range {
+  &:not([disabled])::-moz-range-progress {
+    height: .6rem;
+    background-color: $primary;
+    border-radius: 6px 0 0 6px;
+  }
+
+  &:not([disabled])::-ms-fill-lower {
+    height: .6rem;
+    background-color: $primary;
+    border-radius: 6px 0 0 6px;
+  }
+
+  &::-webkit-slider-runnable-track {
+    border: 2px solid $black;
+  }
+
+  &::-moz-range-track {
+    border: 2px solid $black;
+  }
+
+  &::-webkit-slider-thumb {
+    margin-top: -.4rem;
+  }
+
+  &::-moz-range-thumb {
+    margin-top: -.4rem;
+  }
+
+  &:focus::-webkit-slider-thumb,
+  &:focus::-moz-range-thumb {
+    box-shadow: none;
+  }
+}
+
+// Navs
+.nav {
+  &:not(.nav-tabs, .nav-pills) {
+    .nav-link {
+      &.active {
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+.nav-tabs {
+  gap: 4px;
+  padding: .4rem .4rem calc(.4rem + 2px);
+  font-weight: $headings-font-weight;
+  border: 2px solid $black;
+  border-radius: $border-radius-lg;
+
+  .nav-link {
+    border-width: 2px;
+    border-radius: $border-radius;
+
+    &.active,
+    &:hover {
+      border: 2px solid $black;
+    }
+  }
+}
+
+.tab-content {
+  padding: 1rem;
+  margin-top: 1rem;
+  border: 2px solid $black;
+  border-radius: $border-radius-lg;
+}
+
+.nav-pills {
+  gap: 4px;
+  font-weight: $headings-font-weight;
+
+  .nav-link {
+    border: 2px solid $black;
+  }
+}
+
+.breadcrumb {
+  font-weight: $headings-font-weight;
+  border: 2px solid $black;
+
+  a {
+    color: $black;
+  }
+}
+
+// Dropdowns
+.dropdown-menu {
+  @include btn-shadow();
+  border-radius: $border-radius;
+  background-color: $gray-200; // dark dropdown surface
+}
+
+.dropdown-header {
+  font-weight: 700;
+  color: $black;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  color: $black;
+  background-color: $primary;
+}
+
+@each $color, $value in $theme-colors {
+  .list-group-item-#{$color} {
+    color: $black;
+    background-color: #{$value};
+    border-color: $black;
+  }
+}
+
+.list-group-item-dark {
+  color: $white; // $white = #121212
+}
+
+// Dark theme overrides
+[data-bs-theme="dark"] {
+  .nav-tabs,
+  .nav-pills {
+    .nav-link {
+      --#{$prefix}nav-link-color: #e6e6e6;
+
+      &:hover,
+      &:focus {
+        --#{$prefix}nav-link-hover-color: #e6e6e6;
+      }
+    }
+  }
+
+  .page-link {
+    --#{$prefix}pagination-color: #e6e6e6;
+
+    &:hover {
+      --#{$prefix}pagination-hover-color: #e6e6e6;
+    }
+  }
+
+  .nav {
+    .nav-link {
+      --#{$prefix}nav-link-color: #e6e6e6;
+
+      &:hover,
+      &:focus {
+        --#{$prefix}nav-link-hover-color: #e6e6e6;
+      }
+    }
+  }
+
+  .breadcrumb a {
+    color: $black;
+  }
+
+  .breadcrumb-item.active {
+    --#{$prefix}breadcrumb-item-active-color: #e6e6e6;
+  }
+}
+
+// Alerts
+.alert {
+  color: $black;
+  border: 2px solid $black;
+  @include btn-shadow();
+}
+
+.alert-link {
+  color: $black;
+}
+
+.alert-dark {
+  color: $white; // $white = #121212
+}
+
+@each $color, $value in $theme-colors {
+  .alert-#{$color} {
+    background-color: #{$value};
+  }
+}
+
+.badge {
+  border: 2px solid $black;
+
+  &.bg-dark {
+    color: $white;
+  }
+}
+
+.progress {
+  border: 2px solid $black;
+
+  &-bar {
+    border-right: 2px solid $black;
+  }
+}
+
+.modal {
+  &-content {
+    @include btn-shadow();
+  }
+}
+
+.vr {
+  width: 2px;
+  background-color: $black;
+}
+
+[data-bs-theme="dark"] .toast-header {
+  --#{$prefix}toast-header-color: #e6e6e6;
+}
+
+
+// Footer
+.nav-footer{
+  background-color: #1a1a1a;
+  color: $white;
+}
+
+// babelquarto Buttons
+
+#languages-button{
+  background-color: #1a1a1a;
+  color: white;
+}
+
+#languages-button:hover{
+  background-color: #1a1a1a;
+}
+
+#languages-links:hover{
+  background-color: #1a1a1a;
+}
+
+.post-list a .post-content p{
+  font-style: normal;
+}
+
+.bibtex{
+  color: #fff;
+}
+
+.Reactable{
+  background-color: transparent !important;
+}
+
+.nav-tabs .nav-link.active{
+  background-color: $bs-nav-tabs-link-active-color;
+}
+
+.katex{
+  font-size: 1.05em !important;
+}
+
+.berder-start{
+  border-color: #939393;
+}
+
+.highcharts-data-labels h4 {
+	font-size: 0.8em;
+}
+
+.highcharts-title{
+  color: #b3b3b3;
+  fill: #b3b3b3;
+}
+

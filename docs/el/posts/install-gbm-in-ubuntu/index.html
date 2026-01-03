@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="el" xml:lang="el">
+<head>
+<link rel="alternate" hreflang="en" href="/posts/install-gbm-in-ubuntu/index.html" />
+<link rel="alternate" hreflang="el" href="/el/posts/install-gbm-in-ubuntu/index.el.html" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.12">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="stesiam">
+<meta name="description" content="Εγκατάσταση πακέτων - λογισμικού για τη χρήση αλγόριθμούς ενίσχυσης βαθμίδας (GBMs) (LightGBM, CatBoost &amp; XGBoost) με την R, στο Ubuntu 22.04 LTS">
+<title>Εγκατάσταση αλγορίθμων ενίσχυσης βαθμίδας στο Linux – stesiam</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script><script src="../../site_libs/quarto-nav/headroom.min.js"></script><script src="../../site_libs/clipboard/clipboard.min.js"></script><script src="../../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../../site_libs/quarto-search/fuse.min.js"></script><script src="../../site_libs/quarto-search/quarto-search.js"></script><meta name="quarto:offset" content="../../">
+<link href="../../assets/images/favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script><script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script><script src="../../site_libs/quarto-html/popper.min.js"></script><script src="../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../site_libs/quarto-html/anchor.min.js"></script><link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e93741867710ae4adb8159e102648e68.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-be90ebfd24e3334213e8a7a749de058a.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e93741867710ae4adb8159e102648e68.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-9ce63658a6094d313790e95fbbd51129.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-51723c9df01af2128e8530653f83b26f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-9ce63658a6094d313790e95fbbd51129.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": true,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "Δεν βρέθηκαν αποτελέσματα",
+    "search-matching-documents-text": "ταιριάζοντα έγγραφα",
+    "search-copy-link-title": "Αντιγραφή συνδέσμου αναζήτησης",
+    "search-hide-matches-text": "Απόκρυψη επιπλέον αντιστοιχιών",
+    "search-more-match-text": "επιπλέον αντιστοιχία σε αυτό το έγγραφο",
+    "search-more-matches-text": "επιπλέον αντιστοιχίες σε αυτό το έγγραφο",
+    "search-clear-button-title": "Καθαρισμός",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Ακύρωση",
+    "search-submit-button-title": "Υποβολή",
+    "search-label": "Αναζήτηση"
+  }
+}</script><link rel="stylesheet" href="../../assets/styles/styles.css">
+<meta property="og:title" content="Εγκατάσταση αλγορίθμων ενίσχυσης βαθμίδας στο Linux – stesiam">
+<meta property="og:description" content="Εγκατάσταση πακέτων - λογισμικού για τη χρήση αλγόριθμούς ενίσχυσης βαθμίδας (GBMs) (LightGBM, CatBoost &amp; XGBoost) με την R, στο Ubuntu 22.04 LTS">
+<meta property="og:image" content="https://stesiam.com/posts/install-gbm-in-ubuntu/images/installation_ubuntu.png">
+<meta property="og:site_name" content="stesiam">
+<meta property="og:image:height" content="358">
+<meta property="og:image:width" content="640">
+<meta property="og:image:alt" content="LightGBM and CatBoost on Ubuntu 22.04">
+</head>
+<body class="floating nav-fixed quarto-light">
+<script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script><div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">stesiam</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Αναζήτηση"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Εναλλαγή πλοήγησης" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item"><div class="dropdown" id="languages-links-parent">
+<button class="btn btn-primary dropdown-toggle babelquarto-languages-button" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="languages-button"><i class="bi bi-globe2"></i> Greek</button><ul class="dropdown-menu" id="languages-links"><li><a class="dropdown-item" href="/posts/install-gbm-in-ubuntu/index.html" id="language-link-en">English</a></li></ul>
+</div></li>
+<li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Αρχική</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about-me/index.html"> 
+<span class="menu-text">Σχετικά</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts/index.html"> 
+<span class="menu-text">Άρθρα</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../web-projects/index.html"> 
+<span class="menu-text">Εφαρμογές</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../software/index.html"> 
+<span class="menu-text">Λογισμικό</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../material/index.html"> 
+<span class="menu-text">Υλικό</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../gallery/index.html"> 
+<span class="menu-text">Γραφήματα</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/stesiam/cvDSen"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+</ul>
+</div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools tools-wide">
+    <a href="https://github.com/stesiam" title="" class="quarto-navigation-tool px-1" aria-label="Σύνδεσμος για το προφίλ μου στο GitHub (stesiam)"><i class="bi bi-github"></i></a>
+    <a href="../../posts/index.xml" title="" class="quarto-navigation-tool px-1" aria-label="Το RSS για τα άρθρα της ιστοσελίδας, ώστε να ενημερώνεται ο αναγνώστης για νέα άρθρα"><i class="bi bi-rss"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Εναλλαγή σκοτεινού θέματος"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <div class="quarto-title-block"><div>
+<h1 class="title">Εγκατάσταση αλγορίθμων ενίσχυσης βαθμίδας στο Linux</h1>
+<button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Κώδικας</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu">
+<li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Εμφάνιση όλου του κώδικα</a></li>
+<li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Απόκρυψη όλου του κώδικα</a></li>
+<li><hr class="dropdown-divider"></li>
+<li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button" data-quarto-source-url="https://github.com/stesiam/stesiam.github.io/blob/gh-pages/posts/install-gbm-in-ubuntu/index.el.qmd">Προβολή πηγαίου κώδικα</a></li>
+</ul>
+</div></div>
+                  <div>
+        <div class="description">
+          Εγκατάσταση πακέτων - λογισμικού για τη χρήση αλγόριθμούς ενίσχυσης βαθμίδας (GBMs) (LightGBM, CatBoost &amp; XGBoost) με την R, στο Ubuntu 22.04 LTS
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Linux</div>
+                <div class="quarto-category">LightGBM</div>
+                <div class="quarto-category">CatBoost</div>
+                <div class="quarto-category">XGBoost</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Συγγραφέας</div>
+      <div class="quarto-title-meta-contents">
+               <p>stesiam </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Δημοσιευμένο</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">13 Νοεμβρίου 2022</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Περιεχόμενα</h2>
+   
+  <ul>
+<li><a href="#%CE%B5%CE%B9%CF%83%CE%B1%CE%B3%CF%89%CE%B3%CE%AE" id="toc-εισαγωγή" class="nav-link active" data-scroll-target="#%CE%B5%CE%B9%CF%83%CE%B1%CE%B3%CF%89%CE%B3%CE%AE">Εισαγωγή</a></li>
+  <li>
+<a href="#lightgbm" id="toc-lightgbm" class="nav-link" data-scroll-target="#lightgbm">LightGBM</a>
+  <ul class="collapse">
+<li><a href="#%CE%B5%CF%80%CE%B9%CE%BB%CE%BF%CE%B3%CE%AE-1.-%CE%B5%CE%B3%CE%BA%CE%B1%CF%84%CE%AC%CF%83%CF%84%CE%B1%CF%83%CE%B7-%CF%84%CE%BF%CF%85-%CF%80%CE%B1%CE%BA%CE%AD%CF%84%CE%BF%CF%85-r" id="toc-επιλογή-1.-εγκατάσταση-του-πακέτου-r" class="nav-link" data-scroll-target="#%CE%B5%CF%80%CE%B9%CE%BB%CE%BF%CE%B3%CE%AE-1.-%CE%B5%CE%B3%CE%BA%CE%B1%CF%84%CE%AC%CF%83%CF%84%CE%B1%CF%83%CE%B7-%CF%84%CE%BF%CF%85-%CF%80%CE%B1%CE%BA%CE%AD%CF%84%CE%BF%CF%85-r">Επιλογή 1. Εγκατάσταση του πακέτου R</a></li>
+  <li><a href="#%CE%B5%CF%80%CE%B9%CE%BB%CE%BF%CE%B3%CE%AE-2.-%CE%B5%CE%B3%CE%BA%CE%B1%CF%84%CE%AC%CF%83%CF%84%CE%B1%CF%83%CE%B7-%CE%BC%CE%AD%CF%83%CF%89-%CF%84%CE%BF%CF%85-cmake" id="toc-επιλογή-2.-εγκατάσταση-μέσω-του-cmake" class="nav-link" data-scroll-target="#%CE%B5%CF%80%CE%B9%CE%BB%CE%BF%CE%B3%CE%AE-2.-%CE%B5%CE%B3%CE%BA%CE%B1%CF%84%CE%AC%CF%83%CF%84%CE%B1%CF%83%CE%B7-%CE%BC%CE%AD%CF%83%CF%89-%CF%84%CE%BF%CF%85-cmake">Επιλογή 2. Εγκατάσταση μέσω του CMAKE</a></li>
+  </ul>
+</li>
+  <li><a href="#catboost" id="toc-catboost" class="nav-link" data-scroll-target="#catboost">CatBoost</a></li>
+  <li><a href="#xgboost" id="toc-xgboost" class="nav-link" data-scroll-target="#xgboost">XGBoost</a></li>
+  <li><a href="#%CF%83%CF%8D%CE%BD%CE%BF%CF%88%CE%B7" id="toc-σύνοψη" class="nav-link" data-scroll-target="#%CF%83%CF%8D%CE%BD%CE%BF%CF%88%CE%B7">Σύνοψη</a></li>
+  </ul></nav></nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content"><section id="εισαγωγή" class="level2"><h2 class="anchored" data-anchor-id="εισαγωγή">Εισαγωγή</h2>
+<p>Η ενασχόληση με τη μηχανική μάθηση είναι ένας αρκετά ενδιαφέρον αλλά μακρύς δρόμος. Οι περισσότεροι μαθαίνουν κάποιες βασικές έννοιες και στη συνέχεια προσπαθούν να μάθουν - εφαρμόσουν με κάποιο απλό μοντέλο. Ένα από τα πρώτα μοντέλα που βλέπεις είτε σε οδηγούς εκμάθησης, είτε στη σχολή είναι η λογιστική παλινδρόμηση, γραμμική παλινδρόμηση κ.α. Αυτά είναι κάποια απλά μοντέλα τα οποία μπορούν να γίνουν αντιληπτά πιο εύκολα για το πώς δουλεούν και προσφέρουν μία αποδεκτή ακρίβεια. Πλέον αυτά τα μοντέλα σπάνια χρησιμοποιούνται από μόνα τους για να εξάγουμε κάποια συμπεράσματα, μιας και υπάρχουν αξιόλογες εναλλακτικές που μπορούν να μας δώσουν μεγαλύτερα ποσοστά ακρίβειας. Μία από αυτές είναι οι αλγορίθμοι ενίσχυσης βαθμίδας (Gradient Boosting Machines - GBMs). Οι συγκεκριμένοι αλγόριθμοι βελτιώνουν σε μεγάλο βαθμό το μοντέλο μας και δεν είναι ιδιαίτερα δύσκολη η χρήση αυτών. Φυσικά πριν κάνουμε χρήση των μοντέλων αυτών (π.χ. με το πακέτο tidymodels), θα πρέπει να εγκαταστήσουμε τα σχετικά λογισμικά. Επομένως, σε αυτό το άρθρο θα συνοψίσω όλες τις σχετικές πληροφορίες για την εγκατάσταση αυτών.</p>
+<div id="tbl-documentation-list-gbm" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-documentation-list-gbm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Πίνακας 1: Αλγόριθμοί Boosting και ιστοσελίδες τεκμηρίωσης
+</figcaption><div aria-describedby="tbl-documentation-list-gbm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead><tr class="header">
+<th style="text-align: center;">Μοντέλο</th>
+<th style="text-align: center;">Πηγή</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">LightGBM</td>
+<td style="text-align: center;"><a href="https://lightgbm.readthedocs.io/en/v3.3.2/Installation-Guide.html">Σύνδεσμος</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">CatBoost</td>
+<td style="text-align: center;"><a href="https://catboost.ai/en/docs/concepts/installation">Σύνδεσμος</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">XGBoost</td>
+<td style="text-align: center;"><a href="https://xgboost.readthedocs.io/en/stable/install.html">Σύνδεσμος</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div class="cell fig-cap-location-bottom">
+<details class="code-fold"><summary>Show the code</summary><div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb1" data-cap-location="bottom"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://jkunst.com/highcharter/">highcharter</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/PMassicotte/gtrendsR">gtrendsR</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></span>
+<span><span class="va">googleTrendsData</span> <span class="op">=</span> <span class="fu">gtrendsR</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/gtrendsR/man/gtrends.html">gtrends</a></span><span class="op">(</span>keyword <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"LightGBM"</span>, <span class="st">"CatBoost"</span>, <span class="st">"XGBoost"</span><span class="op">)</span>, gprop <span class="op">=</span> <span class="st">"web"</span>, onlyInterest <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">interestOverTime</span> <span class="op">=</span> <span class="va">googleTrendsData</span><span class="op">[[</span><span class="st">"interest_over_time"</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>date <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html">ymd</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>Year <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/year.html">year</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Year</span>, <span class="va">keyword</span>, <span class="va">hits</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Year</span>, <span class="va">keyword</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>Average <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">hits</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span>  </span>
+<span></span>
+<span><span class="fu"><a href="https://jkunst.com/highcharter/reference/highchart.html">highchart</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_chart.html">hc_chart</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"line"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_title.html">hc_title</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Ενδιαφέρον αναζήτησης σε μηχανές αναζήτησης"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_subtitle.html">hc_subtitle</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Ποιος από τους αλγόριθμούς ενίσχυσης βαθμίδας (GBMs) έχει περισσότερες</span></span>
+<span><span class="st">                αναζητήσεις."</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_xAxis.html">hc_xAxis</a></span><span class="op">(</span>categories <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">interestOverTime</span><span class="op">$</span><span class="va">Year</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_yAxis.html">hc_yAxis</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Τάση"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span></span>
+<span>        name <span class="op">=</span> <span class="st">"XGBoost"</span>,</span>
+<span>        data <span class="op">=</span> <span class="va">interestOverTime</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">keyword</span> <span class="op">==</span> <span class="st">"XGBoost"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">Average</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span></span>
+<span>        name <span class="op">=</span> <span class="st">"CatBoost"</span>,</span>
+<span>        data <span class="op">=</span> <span class="va">interestOverTime</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">keyword</span> <span class="op">==</span> <span class="st">"CatBoost"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">Average</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span></span>
+<span>        name <span class="op">=</span> <span class="st">"LightGBM"</span>,</span>
+<span>        data <span class="op">=</span> <span class="va">interestOverTime</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">keyword</span> <span class="op">==</span> <span class="st">"LightGBM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">Average</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span></code></pre></div>
+<button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button>
+</div>
+</details>
+</div>
+</section><section id="lightgbm" class="level2"><h2 class="anchored" data-anchor-id="lightgbm">LightGBM</h2>
+<section id="επιλογή-1.-εγκατάσταση-του-πακέτου-r" class="level3"><h3 class="anchored" data-anchor-id="επιλογή-1.-εγκατάσταση-του-πακέτου-r">Επιλογή 1. Εγκατάσταση του πακέτου R</h3>
+<p>Αν διαβάζεις αυτή την ιστοσελίδα πιθανότατα γνωρίζεις ήδη ότι προγραμματίζω κυρίως με R. Είναι προφανές ότι θα ξεκινήσω με μία λύση για τους R χρήστες. Στη συγκεκριμένη περίπτωση εγκαθιστώ το αντίστοιχο πακέτο της R, lightgbm, έτσι ώστε να το χρησιμοποιήσουμε.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>R code</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb2" data-filename="R code"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">start_time_lightgbm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"lightgbm"</span>, repos <span class="op">=</span> <span class="st">"https://cran.r-project.org"</span><span class="op">)</span></span>
+<span><span class="va">end_time_lightgbm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button>
+</div>
+</div>
+</section><section id="επιλογή-2.-εγκατάσταση-μέσω-του-cmake" class="level3"><h3 class="anchored" data-anchor-id="επιλογή-2.-εγκατάσταση-μέσω-του-cmake">Επιλογή 2. Εγκατάσταση μέσω του CMAKE</h3>
+<p>Στη σελίδα <a href="https://lightgbm.readthedocs.io/en/latest/Installation-Guide.html#linux">τεκμηρίωσης</a> του LightGBM αναφέρονται περισσότερες λεπτομέρειες, ωστόσο οι βασικές εντολές για εγκατάσταση μέσω του terminal είναι οι εξής:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Terminal</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb3" data-filename="Terminal"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install cmake</span></code></pre></div>
+<button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button>
+</div>
+</div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Terminal</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb4" data-filename="Terminal"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone <span class="at">--recursive</span> https://github.com/microsoft/LightGBM</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> LightGBM</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> build</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> build</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cmake</span> ..</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-j4</span></span></code></pre></div>
+<button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button>
+</div>
+</div>
+</section></section><section id="catboost" class="level2"><h2 class="anchored" data-anchor-id="catboost">CatBoost</h2>
+<p>Για το CatBoost μπορείτε να βρείτε <a href="https://github.com/catboost/catboost/releases">εδώ τις εκδόσεις του λογισμικού</a>. Στην δικιά μου περίπτωση όταν προσπάθησα να εγκαταστήσω τη βιβλιοθήκη <code>devtools</code> προέκυψε ένα σφάλμα που δεν μου επέτρεψε την εγκατάσταση του πακέτου. Σύμφωνα με το μήνυμα σφάλματός στον υπολογιστή μου (στον οποίο τρέχω Ubuntu 22) μου έλειπαν οι βιβλιοθήκες <code>libharfbuzz-dev</code> και <code>libfribidi-dev</code>. Αφού πρόσθεσα τα παραπάνω πακέτα και επανεκκίνησα το RStudio, η εγκατάσταση του <code>devtools</code> ολοκληρώθηκε κανονικά. Αφού εγκαταστήσψ το devtools μπορώ να χρησιμοποιήσω την εντολή <code>install_url</code>, καθώς δεν υπάρχει (ή τουλάχιστον δεν γνωρίζω) πακέτο αντίστοιχο του lightgbm. Έτσι χρησιμοποιώ έναν σύνδεσμο αναλόγως της έκδοσης που χρειάζομαι από την επίσημη σελίδα του CatBoost project στο GitHub.</p>
+<p><img src="images/error_message_devtools_install.png" class="img-fluid"></p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>R code</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb5" data-filename="R code"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">start_time_catboost</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_url</span><span class="op">(</span><span class="st">"https://github.com/catboost/catboost/releases/download/v1.1.1/catboost-R-Linux-1.1.1.tgz"</span><span class="op">[</span>, INSTALL_opts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"--no-multiarch"</span>, <span class="st">"--no-test-load"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">end_time_catboost</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button>
+</div>
+</div>
+</section><section id="xgboost" class="level2"><h2 class="anchored" data-anchor-id="xgboost">XGBoost</h2>
+<p>Τέλος, μας έχει απομείνει ίσως το πιο γνωστό πακέτο μεταξύ των gradient boosting. Η συγκεκριμένη υλοποίηση είναι ίσως αυτή που βελτιώνει περισσότερο τις εκτιμήσεις μας σε μεθόδους μηχανικής μάθησης. Σταθερά σε πάρα πολλά προβλήματα ξεπερνάει σε απόδοση τις υπόλοιπες συμβατές μεθόδους (λογιστική / γραμμική παλινδρόμηση, Naive Bayes κτλ.). Βέβαια όταν προσπαθήσω να κατασκευάσω ένα μοντέλο μηχανικής μάθησης με το XGBoost, ενδεχομένως να είναι το πιο χρονοβόρο σε σχέση με τις υπόλοιπες υλοποιήσεις. Η εγκατάσταση του πακέτου είναι αντίστοιχα εύκολη με αυτή του lightgbm, μέσω του ομόνυμου πακέτου, xgboost.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>R code</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb6" data-filename="R code"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">start_time_xgboost</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span></span>
+<span><span class="va">end_time_xgboost</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button>
+</div>
+</div>
+</section><section id="σύνοψη" class="level2"><h2 class="anchored" data-anchor-id="σύνοψη">Σύνοψη</h2>
+<p>Οι αλγόριθμοι ενίσχυσης βαθμίδας μας δίνουν προβλεπτικά μοντέλα με αυξημένη απόδοση (προβλεπτική ικανότητα) σε σχέση με άλλες συμβατικές μεθόδους μηχανικής μάθησης. Σε αυτό το άρθρο διαπιστώθηκε ότι η R κατά κύριο λόγο έχει εύκολους τρόπους για να εγκαταστήσουμε και εν τέλει να χρησιμοποιήσουμε. Κλείνοντας, θα ήθελα να κλείσω με ένα μικρό πείραμα που έκανα. Παρατήρησα ότι η εγκατάσταση αυτών των πακέτων είναι ιδιαίτερα χρονοβόρα και σκέφτηκα να χρονομετρήσω τη διάρκεια για την εγκατάστασή τους. Έτσι λοιπόν, περισσότερη ώρα πήρε το πακέτο LightGBM, κάνοντας σχεδόν 8 λεπτά, ακολουθούμενο από το XGBoost, και τέλος το CatBoost για το οποίο διήρκησε μόλις 2 λεπτά!</p>
+<div class="table-responsive">
+<div id="tbl-install-times" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-install-times-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Πίνακας 2: Χρόνοι εγκατάστασης γνωστών αλγορίθμων ενίσχυσης βαθμίδας
+</figcaption><div aria-describedby="tbl-install-times-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead><tr class="header">
+<th style="text-align: center;">Μοντέλο</th>
+<th style="text-align: center;">Μέθοδος εγκατάστασης</th>
+<th style="text-align: center;">Χρόνος εγκατάστασης</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">LightGBM</td>
+<td style="text-align: center;">R πακέτο</td>
+<td style="text-align: center;">7.79 λεπτά</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">CatBoost</td>
+<td style="text-align: center;">R πακέτο (χωρίς devtools)</td>
+<td style="text-align: center;">2.1 λεπτά</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">XGBoost</td>
+<td style="text-align: center;">R πακέτο</td>
+<td style="text-align: center;">6.16 λεπτά</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+
+
+</section><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Αναφορά</h2>
+<div>
+<div class="quarto-appendix-secondary-label">Αναφορά BibTeX:</div>
+<pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{2022,
+  author = {, stesiam},
+  title = {Εγκατάσταση αλγορίθμων ενίσχυσης βαθμίδας στο Linux},
+  date = {2022-11-13},
+  url = {https://stesiam.com/posts/install-gbm-in-ubuntu/},
+  langid = {el}
+}
+</code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre>
+<div class="quarto-appendix-secondary-label">Για απόδοση ευγνωμοσύνης, παρακαλούμε αναφερθείτε σε αυτό το έργο ως:</div>
+<div id="ref-2022" class="csl-entry quarto-appendix-citeas" role="listitem">
+stesiam. (2022, November 13). Εγκατάσταση αλγορίθμων ενίσχυσης βαθμίδας
+στο Linux. Retrieved from <a href="https://stesiam.com/posts/install-gbm-in-ubuntu/">https://stesiam.com/posts/install-gbm-in-ubuntu/</a>
+</div>
+</div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Αντιγράφηκε!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Αντιγράφηκε!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/stesiam\.com\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><input type="hidden" id="giscus-base-theme" value="light"><input type="hidden" id="giscus-alt-theme" value="dark"><script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      if (authorPrefersDark) {
+          [baseTheme, altTheme] = [altTheme, baseTheme];
+      }
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "stesiam/stesiam.github.io";
+    script.dataset.repoId = "R_kgDOHuiNDg";
+    script.dataset.category = "Comments";
+    script.dataset.categoryId = "DIC_kwDOHuiNDs4CQeAf";
+    script.dataset.mapping = "title";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "top";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "gr";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Φιλοξενείται μέσω του <i class="bi bi-github"></i> GitHub Pages <br><i class="bi bi-code-slash"></i> <a href="https://github.com/stesiam/stesiam.github.io">Κώδικας ιστοσελίδας</a></p>
+</div>   
+    <div class="nav-footer-center">
+<p>© stesiam, 2022-2026</p>
+</div>
+    <div class="nav-footer-right">
+<p>Δημιουργήθηκε με το λογισμικό <a href="https://quarto.org/">Quarto</a>, το πακέτο <a href="https://github.com/ropensci-review-tools/babelquarto">babelquarto</a>,<br> αρκετή αγάπη και υπομονή</p>
+</div>
+  </div>
+</footer>
+</body>
+</html>

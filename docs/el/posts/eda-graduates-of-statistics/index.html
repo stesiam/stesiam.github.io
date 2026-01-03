@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="el" xml:lang="el">
+<head>
+<link rel="alternate" hreflang="en" href="/posts/eda-graduates-of-statistics/index.html" />
+<link rel="alternate" hreflang="el" href="/el/posts/eda-graduates-of-statistics/index.el.html" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.12">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="stesiam">
+<meta name="description" content="Εξαγωγή δεδομένων από αρχεία pdf, με σκοπό τη περιγραφική μελέτη στοιχείων των απόφοιτων του τμήματος Στατιστικής και Ασφαλιστικής Επιστήμης του Πανεπιστημίου Πειραιά">
+<title>Στατιστικά των Αποφοίτων Στατιστικής – stesiam</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script><script src="../../site_libs/quarto-nav/headroom.min.js"></script><script src="../../site_libs/clipboard/clipboard.min.js"></script><script src="../../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../../site_libs/quarto-search/fuse.min.js"></script><script src="../../site_libs/quarto-search/quarto-search.js"></script><meta name="quarto:offset" content="../../">
+<link href="../../assets/images/favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script><script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script><script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script><script src="../../site_libs/quarto-html/popper.min.js"></script><script src="../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../site_libs/quarto-html/anchor.min.js"></script><link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e93741867710ae4adb8159e102648e68.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-be90ebfd24e3334213e8a7a749de058a.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e93741867710ae4adb8159e102648e68.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-9ce63658a6094d313790e95fbbd51129.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-51723c9df01af2128e8530653f83b26f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-9ce63658a6094d313790e95fbbd51129.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": true,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "Δεν βρέθηκαν αποτελέσματα",
+    "search-matching-documents-text": "ταιριάζοντα έγγραφα",
+    "search-copy-link-title": "Αντιγραφή συνδέσμου αναζήτησης",
+    "search-hide-matches-text": "Απόκρυψη επιπλέον αντιστοιχιών",
+    "search-more-match-text": "επιπλέον αντιστοιχία σε αυτό το έγγραφο",
+    "search-more-matches-text": "επιπλέον αντιστοιχίες σε αυτό το έγγραφο",
+    "search-clear-button-title": "Καθαρισμός",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Ακύρωση",
+    "search-submit-button-title": "Υποβολή",
+    "search-label": "Αναζήτηση"
+  }
+}</script><link href="../../site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<script src="../../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script><script src="../../site_libs/jquery-3.5.1/jquery.min.js"></script><script src="../../site_libs/proj4js-2.3.15/proj4.js"></script><link href="../../site_libs/highcharts-9.3.1/css/motion.css" rel="stylesheet">
+<script src="../../site_libs/highcharts-9.3.1/highcharts.js"></script><script src="../../site_libs/highcharts-9.3.1/highcharts-3d.js"></script><script src="../../site_libs/highcharts-9.3.1/highcharts-more.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/stock.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/map.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/data.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/exporting.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/offline-exporting.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/drilldown.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/item-series.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/overlapping-datalabels.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/annotations.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/export-data.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/funnel.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/heatmap.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/treemap.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/sankey.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/dependency-wheel.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/organization.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/solid-gauge.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/streamgraph.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/sunburst.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/vector.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/wordcloud.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/xrange.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/tilemap.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/venn.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/gantt.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/timeline.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/parallel-coordinates.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/bullet.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/coloraxis.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/dumbbell.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/lollipop.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/series-label.js"></script><script src="../../site_libs/highcharts-9.3.1/plugins/motion.js"></script><script src="../../site_libs/highcharts-9.3.1/custom/reset.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/boost.js"></script><script src="../../site_libs/highchart-binding-0.9.4/highchart.js"></script><script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script><script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script><link rel="stylesheet" href="../../assets/styles/styles.css">
+<meta property="og:title" content="Στατιστικά των Αποφοίτων Στατιστικής – stesiam">
+<meta property="og:description" content="Εξαγωγή δεδομένων από αρχεία pdf, με σκοπό τη περιγραφική μελέτη στοιχείων των απόφοιτων του τμήματος Στατιστικής και Ασφαλιστικής Επιστήμης του Πανεπιστημίου Πειραιά">
+<meta property="og:image" content="https://stesiam.com/posts/eda-graduates-of-statistics/graduation-cap.jpg">
+<meta property="og:site_name" content="stesiam">
+<meta property="og:image:alt" content="graduation cap">
+</head>
+<body class="floating nav-fixed quarto-light">
+<script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script><div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">stesiam</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Αναζήτηση"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Εναλλαγή πλοήγησης" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item"><div class="dropdown" id="languages-links-parent">
+<button class="btn btn-primary dropdown-toggle babelquarto-languages-button" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="languages-button"><i class="bi bi-globe2"></i> Greek</button><ul class="dropdown-menu" id="languages-links"><li><a class="dropdown-item" href="/posts/eda-graduates-of-statistics/index.html" id="language-link-en">English</a></li></ul>
+</div></li>
+<li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Αρχική</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about-me/index.html"> 
+<span class="menu-text">Σχετικά</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts/index.html"> 
+<span class="menu-text">Άρθρα</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../web-projects/index.html"> 
+<span class="menu-text">Εφαρμογές</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../software/index.html"> 
+<span class="menu-text">Λογισμικό</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../material/index.html"> 
+<span class="menu-text">Υλικό</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../gallery/index.html"> 
+<span class="menu-text">Γραφήματα</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/stesiam/cvDSen"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+</ul>
+</div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools tools-wide">
+    <a href="https://github.com/stesiam" title="" class="quarto-navigation-tool px-1" aria-label="Σύνδεσμος για το προφίλ μου στο GitHub (stesiam)"><i class="bi bi-github"></i></a>
+    <a href="../../posts/index.xml" title="" class="quarto-navigation-tool px-1" aria-label="Το RSS για τα άρθρα της ιστοσελίδας, ώστε να ενημερώνεται ο αναγνώστης για νέα άρθρα"><i class="bi bi-rss"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Εναλλαγή σκοτεινού θέματος"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <div class="quarto-title-block"><div>
+<h1 class="title">Στατιστικά των Αποφοίτων Στατιστικής</h1>
+<button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Κώδικας</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu">
+<li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Εμφάνιση όλου του κώδικα</a></li>
+<li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Απόκρυψη όλου του κώδικα</a></li>
+<li><hr class="dropdown-divider"></li>
+<li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button" data-quarto-source-url="https://github.com/stesiam/stesiam.github.io/blob/gh-pages/posts/el/eda-graduates-of-statistics/index.el.qmd">Προβολή πηγαίου κώδικα</a></li>
+</ul>
+</div></div>
+                  <div>
+        <div class="description">
+          <p>Εξαγωγή δεδομένων από αρχεία pdf, με σκοπό τη περιγραφική μελέτη στοιχείων των απόφοιτων του τμήματος Στατιστικής και Ασφαλιστικής Επιστήμης του Πανεπιστημίου Πειραιά</p>
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">R</div>
+                <div class="quarto-category">Περιγραφικη αναλυση</div>
+                <div class="quarto-category">PDF</div>
+                <div class="quarto-category">tabulizer</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Συγγραφέας</div>
+      <div class="quarto-title-meta-contents">
+               <p>stesiam </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Δημοσιευμένο</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">23 Ιουλίου 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Περιεχόμενα</h2>
+   
+  <ul>
+<li><a href="#%CE%B5%CE%B9%CF%83%CE%B1%CE%B3%CF%89%CE%B3%CE%AE" id="toc-εισαγωγή" class="nav-link active" data-scroll-target="#%CE%B5%CE%B9%CF%83%CE%B1%CE%B3%CF%89%CE%B3%CE%AE">Εισαγωγή</a></li>
+  <li><a href="#%CE%B5%CE%B9%CF%83%CE%B1%CE%B3%CF%89%CE%B3%CE%AE-%CE%B2%CE%B9%CE%B2%CE%BB%CE%B9%CE%BF%CE%B8%CE%B7%CE%BA%CF%8E%CE%BD" id="toc-εισαγωγή-βιβλιοθηκών" class="nav-link" data-scroll-target="#%CE%B5%CE%B9%CF%83%CE%B1%CE%B3%CF%89%CE%B3%CE%AE-%CE%B2%CE%B9%CE%B2%CE%BB%CE%B9%CE%BF%CE%B8%CE%B7%CE%BA%CF%8E%CE%BD">Εισαγωγή βιβλιοθηκών</a></li>
+  <li><a href="#%CE%B5%CE%BE%CE%B1%CE%B3%CF%89%CE%B3%CE%AE-%CE%B4%CE%B5%CE%B4%CE%BF%CE%BC%CE%AD%CE%BD%CF%89%CE%BD" id="toc-εξαγωγή-δεδομένων" class="nav-link" data-scroll-target="#%CE%B5%CE%BE%CE%B1%CE%B3%CF%89%CE%B3%CE%AE-%CE%B4%CE%B5%CE%B4%CE%BF%CE%BC%CE%AD%CE%BD%CF%89%CE%BD">Εξαγωγή δεδομένων</a></li>
+  <li><a href="#%CE%B5%CE%B9%CF%83%CE%B1%CE%BA%CF%84%CE%AD%CE%BF%CE%B9-%CF%86%CE%BF%CE%B9%CF%84%CE%B7%CF%84%CE%AD%CF%82" id="toc-εισακτέοι-φοιτητές" class="nav-link" data-scroll-target="#%CE%B5%CE%B9%CF%83%CE%B1%CE%BA%CF%84%CE%AD%CE%BF%CE%B9-%CF%86%CE%BF%CE%B9%CF%84%CE%B7%CF%84%CE%AD%CF%82">Εισακτέοι φοιτητές</a></li>
+  <li><a href="#%CF%80%CE%BB%CE%B7%CE%B8%CF%85%CF%83%CE%BC%CF%8C%CF%82-%CF%86%CE%BF%CE%B9%CF%84%CE%B7%CF%84%CF%8E%CE%BD" id="toc-πληθυσμός-φοιτητών" class="nav-link" data-scroll-target="#%CF%80%CE%BB%CE%B7%CE%B8%CF%85%CF%83%CE%BC%CF%8C%CF%82-%CF%86%CE%BF%CE%B9%CF%84%CE%B7%CF%84%CF%8E%CE%BD">Πληθυσμός φοιτητών</a></li>
+  <li><a href="#%CE%BA%CE%B1%CF%84%CE%B1%CE%BD%CE%BF%CE%BC%CE%AE-%CE%B2%CE%B1%CE%B8%CE%BC%CF%8E%CE%BD-%CE%B1%CF%80%CE%BF%CF%86%CE%BF%CE%AF%CF%84%CE%B7%CF%83%CE%B7%CF%82" id="toc-κατανομή-βαθμών-αποφοίτησης" class="nav-link" data-scroll-target="#%CE%BA%CE%B1%CF%84%CE%B1%CE%BD%CE%BF%CE%BC%CE%AE-%CE%B2%CE%B1%CE%B8%CE%BC%CF%8E%CE%BD-%CE%B1%CF%80%CE%BF%CF%86%CE%BF%CE%AF%CF%84%CE%B7%CF%83%CE%B7%CF%82">Κατανομή βαθμών αποφοίτησης</a></li>
+  <li><a href="#%CE%BA%CE%B1%CF%84%CE%B1%CE%BD%CE%BF%CE%BC%CE%AE-%CE%AD%CF%84%CE%BF%CF%85%CF%82-%CE%B1%CF%80%CE%BF%CF%86%CE%BF%CE%AF%CF%84%CE%B7%CF%83%CE%B7%CF%82" id="toc-κατανομή-έτους-αποφοίτησης" class="nav-link" data-scroll-target="#%CE%BA%CE%B1%CF%84%CE%B1%CE%BD%CE%BF%CE%BC%CE%AE-%CE%AD%CF%84%CE%BF%CF%85%CF%82-%CE%B1%CF%80%CE%BF%CF%86%CE%BF%CE%AF%CF%84%CE%B7%CF%83%CE%B7%CF%82">Κατανομή έτους αποφοίτησης</a></li>
+  <li><a href="#%CF%83%CF%87%CE%AD%CF%83%CE%B7-%CE%B5%CF%84%CF%8E%CE%BD-%CE%BA%CE%B1%CE%B9-%CE%BC%CE%AD%CF%83%CE%BF%CF%85-%CF%8C%CF%81%CE%BF%CF%85" id="toc-σχέση-ετών-και-μέσου-όρου" class="nav-link" data-scroll-target="#%CF%83%CF%87%CE%AD%CF%83%CE%B7-%CE%B5%CF%84%CF%8E%CE%BD-%CE%BA%CE%B1%CE%B9-%CE%BC%CE%AD%CF%83%CE%BF%CF%85-%CF%8C%CF%81%CE%BF%CF%85">Σχέση ετών και μέσου όρου</a></li>
+  <li><a href="#%CE%B7-%CE%B3%CE%BD%CF%8E%CE%BC%CE%B7-%CE%BC%CE%BF%CF%85" id="toc-η-γνώμη-μου" class="nav-link" data-scroll-target="#%CE%B7-%CE%B3%CE%BD%CF%8E%CE%BC%CE%B7-%CE%BC%CE%BF%CF%85">Η γνώμη μου</a></li>
+  </ul></nav></nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content"><section id="εισαγωγή" class="level2"><h2 class="anchored" data-anchor-id="εισαγωγή">Εισαγωγή</h2>
+<p>Σε αυτό το άρθρο θα ήθελα να αναλύσω τα δεδομένα των φοιτητών στο τμήμα μου, Στατιστική και Ασφαλιστική στο Πειραιά. Ο πρόσφατος οδηγός σπουδών περιλαμβάνει δεδομένα σχετικά με όσους επιβιώνουν (αποφοιτούν) από τη σχολή όπως το μέσο βαθμό αποφοίτησης και τα έτη που χρειάστηκαν για αυτή. Αρχικά, παρατηρούμε ότι τα δεδομένα για τα οποία ενδιαφερόμαστε είναι σε μία σχετικά οργανωμένη μορφή, σε πίνακες (το οποίο είναι καλό 😀), βέβαια δεν τα έχουμε σε μορφή αρχείου, αλλά είναι μέρος ενός αρχείου pdf (το οποίο δεν είναι καλό 😢). Ευτυχώς, ανάμεσα σε αυτό το χάος 20,000 και πλέον πακέτων υπάρχει και το πακέτο <strong>tabulizer</strong> που δίνει τη λύση σε τέτοιου είδους προβλήματα μιας και μπορεί να διαβάσει τους πίνακες εντός αρχείων pdf.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Σημείωση
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Το άρθρο είναι λίγο παλιό. Το πακέτο όταν είχα γράψει αυτό το άρθρο λεγόταν <code>tabulizer</code>. Λίγα χρόνια αργότερα, όταν επιχείρησα να κάνω μερικές αλλαγές παρατήρησα ένα σφάλμα στο συγκεκριμένο άρθρο. Το πακέτο πλέον έχει μετονομαστεί και μπορείτε να το βρείτε ως <code>tabulapdf</code>. Επομένως, προσέξτε το καθώς διάφορες πηγές στο διαδίκτυο ακόμα αναφέρονται σε αυτό με το παλιό όνομα.</p>
+</div>
+</div>
+</section><section id="εισαγωγή-βιβλιοθηκών" class="level2"><h2 class="anchored" data-anchor-id="εισαγωγή-βιβλιοθηκών">Εισαγωγή βιβλιοθηκών</h2>
+<p>Όπως εξηγήσαμε και προηγουμένως, δεδομένου ότι θα πρέπει να εξάγω δεδομένα και δει πίνακες από αρχείο pdf, το πακέτο tabulizer (νυν <code>tabulapdf</code>) είναι <strong>απαραίτητο</strong>. Δυστυχώς, καθώς προσπαθούσα να το εγκαταστήσω λάμβανα συνεχώς ένα μήνυμα σφάλματος παρόμοιο <a href="https://github.com/ropensci/tabulizer/issues/157">με αυτό</a>. Το πρόβλημα φαίνεται να σχετιζόταν με το πακέτο <code>rJava</code> και προκειμένου να επιλύσω το πρόβλημα ακολούθησα τις επισημάνσεις <a href="https://github.com/s-u/rJava/issues/255#issuecomment-794473988">αυτού του σχολίου</a>. Έπειτα την εγκατάσταση του rJava, κατάφερα να εγκαταστήσω το πακέτο ως εξής:</p>
+<div class="cell">
+<details class="code-fold"><summary>Δείξε τον κώδικα</summary><div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org">readr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org">tidyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org">stringr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://jkunst.com/highcharter/">highcharter</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://glin.github.io/reactable/">reactable</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.rforge.net/rJava/">rJava</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/tabulapdf/">tabulapdf</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ropensci.r-universe.dev/pdftools">pdftools</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/yixuan/showtext">showtext</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://glue.tidyverse.org/">glue</a></span><span class="op">)</span></span></code></pre></div>
+<button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button>
+</div>
+</details>
+</div>
+</section><section id="εξαγωγή-δεδομένων" class="level2"><h2 class="anchored" data-anchor-id="εξαγωγή-δεδομένων">Εξαγωγή δεδομένων</h2>
+<p>Ο οδηγός σπουδών ξεκινάει δίνοντας κάποιες πληροφορίες για το πανεπιστήμιο, συνεχίζει με βασικά στοιχεία της σχολής το εκπαιδευτικό προσωπικό, τις προϋποθέσεις για τη λήψη πτυχίου και συνεχίζεται με αναλυτικότερα περιγραφή κάθε μαθήματος του τμήματος. Στο τέλος του οδηγού σπουδών του τμήματός μας έχει καθιερωθεί να δημοσιεύονται κάποια βασικά στατιστικά στοιχεία των φοιτητών. Θα ασχοληθούμε με τον πρόσφατα αναρτημένο οδηγό σπουδών του 2022, όπου περιέχει δεδομένα των εισαγωγών στο τμήμα, των αποφοίτων, της δομής των σπουδαστών και άλλα δεδομένα από το 2004. Όπως είναι εμφανές απλά μας ενδιαφέρουν οι τελευταίες σελίδες, από έναν πολυσέλιδο οδηγό σπουδών μιας και αποτελείται από 200 σελίδες. Θα ξεκινήσουμε κατεβάζοντας τον οδηγό από τον δοσμένο σύνδεσμο και στη συνέχεια θα επιλέξω με τη βοήθεια του πακέτου <code>pdftools</code> τις τελευταίες σελίδες, από την 186η μέχρι την 190η σελίδα, ώστε να εξαγάγω στη συνέχεια μόνο τους απαραίτητους πίνακες.</p>
+<div class="cell">
+<details class="code-fold"><summary>Δείξε τον κώδικα</summary><div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">url</span> <span class="op">=</span> <span class="st">"https://www.unipi.gr/faculty/mbouts/anak/OS_22_23.pdf"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span><span class="op">(</span><span class="va">url</span>,</span>
+<span>               destfile <span class="op">=</span> <span class="st">"sg22.pdf"</span>, </span>
+<span>              method <span class="op">=</span> <span class="st">"wget"</span>,</span>
+<span>              extra <span class="op">=</span> <span class="st">"--no-check-certificate"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/qpdf/reference/qpdf.html">pdf_subset</a></span><span class="op">(</span><span class="st">'sg22.pdf'</span>,</span>
+<span>  pages <span class="op">=</span> <span class="fl">186</span><span class="op">:</span><span class="fl">190</span>,  output <span class="op">=</span> <span class="st">"subset.pdf"</span><span class="op">)</span></span></code></pre></div>
+<button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button>
+</div>
+</details>
+</div>
+<p>Αυτός ο περιορισμός είναι αρκετά σημαντικός έτσι ώστε να μειώσω το διάστημα αναζήτησης για τους πίνακες, συνεπώς έχω μια πιο γρήγορη εκτέλεση της εντολής (5 σελίδες αντί για 200). Στη συνέχεια αναλαμβάνει έργο το πακέτο <code>tabulapdf</code> από το οποίο θα χρειαστούμε την εντολή extract_tables που συλλέγει όλους τους πίνακες από ένα pdf και τους συγκεντρώνει σε μία λίστα. Στη δικιά μας περίπτωση εντοπίστηκαν πέντε πίνακες συνεπώς έλαβα ως αποτέλεσμα μία λίστα που περιείχε πέντε data.frames - πίνακες δεδομένων. Είναι εκπληκτικό ότι μέσα σε λίγα δευτεόλεπτα έλαβα όλη τη πληροφορία σε μία μορφή έτοιμη για ανάλυση. Αν προσπαθούσα να εισάγω τα δεδομένα με πιο παραδοσιακούς τρόπους, όπως αντιγραφή - επικόλληση θα είχα ξοδέψει πάνω από 1 ώρα!</p>
+<div class="cell">
+<details class="code-fold"><summary>Δείξε τον κώδικα</summary><div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">statistics_tables</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/tabulapdf/reference/extract_tables.html">extract_tables</a></span><span class="op">(</span></span>
+<span>    file   <span class="op">=</span> <span class="st">"subset.pdf"</span>, </span>
+<span>    method <span class="op">=</span> <span class="st">"decide"</span>, </span>
+<span>    output <span class="op">=</span> <span class="st">"tibble"</span><span class="op">)</span></span></code></pre></div>
+<button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button>
+</div>
+</details>
+</div>
+</section><section id="εισακτέοι-φοιτητές" class="level2"><h2 class="anchored" data-anchor-id="εισακτέοι-φοιτητές">Εισακτέοι φοιτητές</h2>
+<p>Ο πρώτος πίνακας που έχω λάβει είναι σχετικά με τους εισακτέους φοιτητές, δηλαδή με όσους επιτυγχάνουν να εγγραφούν στη σχολή. Για να εγγραφείς σε μία σχολή υπάρχουν τρεις βασικού τρόποι. Ο πρώτος και ο πιο διαδεδομένος τρόπος είναι μέσω Πανελληνίων εξετάσεων, όπου διαγωνίζεσαι με όλους τους μαθητές της Γ Λυκείου για την εισαγωγή στη τριτοβάθμια εκπαίδευση. Ο δεύτερος τρόπος είναι αν είσαι ήδη πτυχιούχος, έχεις το δικαίωμα αντί να περάσεις το μαρτύριο των Πανελληνιών να δώσεις εξετάσεις στη σχολή που σε ενδιαφέρει. Συνήθως αυτές η εξετάσεις διοργανώνονται από την ίδια τη σχολή και όχι από το κράτος όπως στις πανελλήνιες και στις περισσότερες σχολές προγραμματίζονται τον Δεκέμβριο. Μία τρίτη επιλογή είναι να πάρεις μεταγραφή. Αν έχεις περάσει σε ένα τμήμα για το οποίο υπάρχει ένα ομοειδές σε άλλη πόλη μπορείς να ζητήσεις μεταγραφή σε άλλο τμήμα, ωστόσο οι θέσεις είναι περιορισμένες και τα κριτήρια πάρα πολύ αυστηρά. Αν θέλετε να διαβάσετε τη λίστα με τις αντιστοιχίες των σχολών μπορείτε να <a href="https://www.minedu.gov.gr/news/61959-26-06-25-antistoixies-tmimaton-eisagogikon-katefthynseon-kai-programmaton-spoudon-ton-a-e-i-kai-ton-anotaton-ekklisiastikon-akadimion-akad-etous-2025-2026">πατήσετε εδώ</a>. Για παράδειγμα, στο τμήμα μας (Στατιστική, Πειραιά) ερχόντουσαν να παρακολουθήσουν μαθήματα φοιτητές του Στατιστικού του Πανεπιστημίου Αιγαίου στη Σάμο, μιας και ήλπιζαν ότι θα πάρουν μεταγραφή στο δικό μας τμήμα που είναι κοντά στην Αθήνα. Συνολικά, το Υπουργείο Παιδείας έχει αντιστοιχίσει 4 τμήματα στο πεδίο της Στατιστικής, ως αντίστοιχα και από όσο ξέρω δεν υπάρχουν άλλα στην Ελλάδα (σε προπτυχιακό επίπεδο τουλάχιστον).</p>
+<div class="cell">
+<details class="code-fold"><summary>Δείξε τον κώδικα</summary><div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">nodes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"Main"</span>, name <span class="op">=</span> <span class="st">"Τρόποι εισαγωγής"</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"Sub1"</span>, name <span class="op">=</span> <span class="st">"Πανελλήνιες εξετάσεις"</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"Sub2"</span>, name <span class="op">=</span> <span class="st">"Κατατακτήριες"</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"Sub3"</span>, name <span class="op">=</span> <span class="st">"Μεταγραφή"</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"Sub1A"</span>, name <span class="op">=</span> <span class="st">"ΕΠΑΛ"</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"Sub1B"</span>, name <span class="op">=</span> <span class="st">"Λύκεια"</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"Sub3A"</span>, name <span class="op">=</span> <span class="st">"Κριτηρίων"</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"Sub3B"</span>, name <span class="op">=</span> <span class="st">"Αμοιβαία"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Links</span></span>
+<span><span class="va">links</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>from <span class="op">=</span> <span class="st">"Main"</span>, to <span class="op">=</span> <span class="st">"Sub1"</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>from <span class="op">=</span> <span class="st">"Main"</span>, to <span class="op">=</span> <span class="st">"Sub2"</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>from <span class="op">=</span> <span class="st">"Main"</span>, to <span class="op">=</span> <span class="st">"Sub3"</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>from <span class="op">=</span> <span class="st">"Sub1"</span>, to <span class="op">=</span> <span class="st">"Sub1A"</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>from <span class="op">=</span> <span class="st">"Sub1"</span>, to <span class="op">=</span> <span class="st">"Sub1B"</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>from <span class="op">=</span> <span class="st">"Sub3"</span>, to <span class="op">=</span> <span class="st">"Sub3A"</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>from <span class="op">=</span> <span class="st">"Sub3"</span>, to <span class="op">=</span> <span class="st">"Sub3B"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Modern Organization Chart</span></span>
+<span><span class="fu"><a href="https://jkunst.com/highcharter/reference/highchart.html">highchart</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_chart.html">hc_chart</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"organization"</span>, inverted <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_title.html">hc_title</a></span><span class="op">(</span></span>
+<span>        text <span class="op">=</span> <span class="st">"Τρόποι εισαγωγής στη τριτοβάθμια εκπαίδευση"</span>,</span>
+<span>        style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>fontSize <span class="op">=</span> <span class="st">"18px"</span>, fontWeight <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_series.html">hc_series</a></span><span class="op">(</span></span>
+<span>        <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>            type <span class="op">=</span> <span class="st">"organization"</span>,</span>
+<span>            keys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"from"</span>, <span class="st">"to"</span><span class="op">)</span>,</span>
+<span>            data <span class="op">=</span> <span class="va">links</span>,</span>
+<span>            nodes <span class="op">=</span> <span class="va">nodes</span>,</span>
+<span>            colorByPoint <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>            borderColor <span class="op">=</span> <span class="st">"#E0E0E0"</span>,</span>
+<span>            borderWidth <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>            nodeWidth <span class="op">=</span> <span class="fl">80</span>,</span>
+<span>            nodePadding <span class="op">=</span> <span class="fl">20</span>,</span>
+<span>            hangingIndent <span class="op">=</span> <span class="fl">30</span>,</span>
+<span>            levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>                <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>level <span class="op">=</span> <span class="fl">0</span>, color <span class="op">=</span> <span class="st">"#4e79a7"</span>, borderRadius <span class="op">=</span> <span class="fl">6</span><span class="op">)</span>,</span>
+<span>                <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>level <span class="op">=</span> <span class="fl">1</span>, color <span class="op">=</span> <span class="st">"#f28e2b"</span>, borderRadius <span class="op">=</span> <span class="fl">6</span><span class="op">)</span>,</span>
+<span>                <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>level <span class="op">=</span> <span class="fl">2</span>, color <span class="op">=</span> <span class="st">"#76b7b2"</span>, borderRadius <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
+<span>            <span class="op">)</span>,</span>
+<span>            dataLabels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>                align <span class="op">=</span> <span class="st">"center"</span>,</span>
+<span>                verticalAlign <span class="op">=</span> <span class="st">"middle"</span>,</span>
+<span>                style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>fontSize <span class="op">=</span> <span class="st">"0.85em"</span>, fontWeight <span class="op">=</span> <span class="st">"bold"</span>, textOutline <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span>,</span>
+<span>                useHTML <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                formatter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/htmlwidgets/man/JS.html">JS</a></span><span class="op">(</span><span class="st">"</span></span>
+<span><span class="st">          function() {</span></span>
+<span><span class="st">            let label = this.point.name;</span></span>
+<span><span class="st">            // shrink font if text is too long for small screens</span></span>
+<span><span class="st">            if (window.innerWidth &lt; 500 &amp;&amp; label.length &gt; 8) {</span></span>
+<span><span class="st">              return '&lt;span style=\"font-size:11px\"&gt;' + label + '&lt;/span&gt;';</span></span>
+<span><span class="st">            }</span></span>
+<span><span class="st">            return label;</span></span>
+<span><span class="st">          }</span></span>
+<span><span class="st">        "</span><span class="op">)</span></span>
+<span>            <span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_responsive.html">hc_responsive</a></span><span class="op">(</span></span>
+<span>        rules <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>            <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>                condition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>maxWidth <span class="op">=</span> <span class="fl">500</span><span class="op">)</span>,</span>
+<span>                chartOptions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>                    series <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>                        nodeWidth <span class="op">=</span> <span class="fl">70</span>,</span>
+<span>                        dataLabels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>                            style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>fontSize <span class="op">=</span> <span class="st">"0.75em"</span>, fontWeight <span class="op">=</span> <span class="st">"normal"</span><span class="op">)</span></span>
+<span>                        <span class="op">)</span></span>
+<span>                    <span class="op">)</span></span>
+<span>                <span class="op">)</span></span>
+<span>            <span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
+<span>    <span class="op">)</span></span></code></pre></div>
+<button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button>
+</div>
+</details><div id="fig-admit-to-uni-grc" class="cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-admit-to-uni-grc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="highchart html-widget html-fill-item" id="htmlwidget-484fbb523041251c7f14" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-484fbb523041251c7f14">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"organization","inverted":false},"title":{"text":"Τρόποι εισαγωγής στη τριτοβάθμια εκπαίδευση","style":{"fontSize":"18px","fontWeight":"bold"}},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"series":[{"type":"organization","keys":["from","to"],"data":[{"from":"Main","to":"Sub1"},{"from":"Main","to":"Sub2"},{"from":"Main","to":"Sub3"},{"from":"Sub1","to":"Sub1A"},{"from":"Sub1","to":"Sub1B"},{"from":"Sub3","to":"Sub3A"},{"from":"Sub3","to":"Sub3B"}],"nodes":[{"id":"Main","name":"Τρόποι εισαγωγής"},{"id":"Sub1","name":"Πανελλήνιες εξετάσεις"},{"id":"Sub2","name":"Κατατακτήριες"},{"id":"Sub3","name":"Μεταγραφή"},{"id":"Sub1A","name":"ΕΠΑΛ"},{"id":"Sub1B","name":"Λύκεια"},{"id":"Sub3A","name":"Κριτηρίων"},{"id":"Sub3B","name":"Αμοιβαία"}],"colorByPoint":false,"borderColor":"#E0E0E0","borderWidth":1,"nodeWidth":80,"nodePadding":20,"hangingIndent":30,"levels":[{"level":0,"color":"#4e79a7","borderRadius":6},{"level":1,"color":"#f28e2b","borderRadius":6},{"level":2,"color":"#76b7b2","borderRadius":6}],"dataLabels":{"align":"center","verticalAlign":"middle","style":{"fontSize":"0.85em","fontWeight":"bold","textOutline":"none"},"useHTML":true,"formatter":"\n          function() {\n            let label = this.point.name;\n            // shrink font if text is too long for small screens\n            if (window.innerWidth < 500 && label.length > 8) {\n              return '<span style=\"font-size:11px\">' + label + '<\/span>';\n            }\n            return label;\n          }\n        "}}],"responsive":{"rules":[{"condition":{"maxWidth":500},"chartOptions":{"series":{"nodeWidth":70,"dataLabels":{"style":{"fontSize":"0.75em","fontWeight":"normal"}}}}}]}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":["hc_opts.series.0.dataLabels.formatter"],"jsHooks":[]}</script>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-admit-to-uni-grc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Σχήμα 1: Σχεδιάγραμμα τρόπων εισαγωγής στην τριτοβάθμια εκπαίδευση στην Ελλάδα
+</figcaption></figure>
+</div>
+</div>
+<p>Αφού κάναμε μία σύνοψη των τρόπων εισαγωγής στα τμήματα τριτοβάθμιας εκπαίδευσης ας δούμε τι ισχύει στο δικό μας τμήμα με βάση τα δημοσιευμένα στοιχεία.</p>
+<div class="cell">
+<details class="code-fold"><summary>Δείξε τον κώδικα</summary><div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">admitted_students</span> <span class="op">=</span> <span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="va">.</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span>,<span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"Main_exams"</span>, <span class="st">"Transfer"</span>, <span class="st">"Entry_exams"</span>, <span class="st">"Other"</span>, <span class="st">"Total"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/drop_na.html">drop_na</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Transfer</span> <span class="op">&gt;=</span> <span class="fl">0</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>, <span class="va">as.numeric</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button>
+</div>
+</details>
+</div>
+<p>Στη σχολή μας οι συνολικοί εισακτέοι από όλες τις κατηγορίες κυμαίνονταν στους 200 μέχρι 250 μέχρι το ακαδημαϊκό έτος 2012-2013. Τα επόμενα δύο έτη έσπασε το φράγμα των 250 εισακτέων. Στη συνέχεια η κατάσταση επανήλθε στα προαναφερόμενα όρια μέχρι το 2019, όπου είχαμε ιστορικό ρεκόρ εισαγωγών στο τμήμα με 292 εισακτέους. Μία σημαντική παρατήρηση που έκανα είναι πόσο όμοιο είναι το σχήμα της γραμμής μεταξύ και πόσο ταυτίζονται οι καμπύλες των συνολικών φοιτητών με αυτή των μεταγραφών, στην ουσία είναι ο απρόβλεπτος παράγοντας για την όποια ισχυρή διακύμανση των εισακτέων.</p>
+<div class="cell">
+<details class="code-fold"><summary>Δείξε τον κώδικα</summary><div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"rgba(52, 152, 219, 0.6)"</span>,  <span class="co"># blue</span></span>
+<span>            <span class="st">"rgba(231, 76, 60, 0.6)"</span>,   <span class="co"># red</span></span>
+<span>            <span class="st">"rgba(46, 204, 113, 0.6)"</span>,  <span class="co"># green</span></span>
+<span>            <span class="st">"rgba(155, 89, 182, 0.6)"</span><span class="op">)</span>  <span class="co"># purple</span></span>
+<span></span>
+<span><span class="fu"><a href="https://jkunst.com/highcharter/reference/highchart.html">highchart</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_chart.html">hc_chart</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"areaspline"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>  <span class="co"># smooth stacked lines    hc_title(text = "Stacked Line Chart Example") %&gt;%</span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_xAxis.html">hc_xAxis</a></span><span class="op">(</span>categories <span class="op">=</span> <span class="va">admitted_students</span><span class="op">$</span><span class="va">Year</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_yAxis.html">hc_yAxis</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Αριθμός φοιτητών"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_title.html">hc_title</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Συνολικές εγγραφές φοιτητών ανά ακαδημαϊκό έτος"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_subtitle.html">hc_subtitle</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Απόλυτος αριθμός εγγραφών με βάση την κατηγορία εισαγωγής"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_colors.html">hc_colors</a></span><span class="op">(</span><span class="va">colors</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>  <span class="co"># apply custom colors</span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_plotOptions.html">hc_plotOptions</a></span><span class="op">(</span></span>
+<span>    areaspline <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>      stacking <span class="op">=</span> <span class="st">"normal"</span>,</span>
+<span>      marker <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>enabled <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
+<span>      lineWidth <span class="op">=</span> <span class="fl">2</span>,      <span class="co"># thicker smooth line</span></span>
+<span>      fillOpacity <span class="op">=</span> <span class="fl">0.6</span>   <span class="co"># subtle transparency</span></span>
+<span>    <span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>   <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Πανελλήνιες"</span>, data <span class="op">=</span> <span class="va">admitted_students</span><span class="op">$</span><span class="va">Main_exams</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Μεταγραφή"</span>, data <span class="op">=</span> <span class="va">admitted_students</span><span class="op">$</span><span class="va">Transfer</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Κατατακτήριες"</span>, data <span class="op">=</span> <span class="va">admitted_students</span><span class="op">$</span><span class="va">Entry_exams</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Άλλο"</span>, data <span class="op">=</span> <span class="va">admitted_students</span><span class="op">$</span><span class="va">Other</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_tooltip.html">hc_tooltip</a></span><span class="op">(</span>shared <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button>
+</div>
+</details><div id="fig-adm-students-normal" class="cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-adm-students-normal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="highchart html-widget html-fill-item" id="htmlwidget-4ea1b9d1cb7c1b051284" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-4ea1b9d1cb7c1b051284">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"areaspline"},"title":{"text":"Συνολικές εγγραφές φοιτητών ανά ακαδημαϊκό έτος"},"yAxis":{"title":{"text":"Αριθμός φοιτητών"}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"},"areaspline":{"stacking":"normal","marker":{"enabled":false},"lineWidth":2,"fillOpacity":0.6}},"xAxis":{"categories":["2003-2004","2004-2005","2005-2006","2006-2007","2007-2008","2008-2009","2009-2010","2010-2011","2011-2012","2012-2013","2013-2014","2014-2015","2015-2016","2016-2017","2017-2018","2018-2019","2019-2020"]},"subtitle":{"text":"Απόλυτος αριθμός εγγραφών με βάση την κατηγορία εισαγωγής"},"colors":["rgba(52, 152, 219, 0.6)","rgba(231, 76, 60, 0.6)","rgba(46, 204, 113, 0.6)","rgba(155, 89, 182, 0.6)"],"series":[{"data":[183,181,186,186,185,170,170,175,198,206,205,219,212,212,209,189,228],"name":"Πανελλήνιες"},{"data":[15,21,11,27,38,44,60,47,0,14,20,48,29,30,41,11,55],"name":"Μεταγραφή"},{"data":[1,1,1,1,2,1,0,4,0,2,2,1,1,4,1,1,2],"name":"Κατατακτήριες"},{"data":[17,16,16,9,18,12,14,24,3,15,48,4,4,0,1,5,7],"name":"Άλλο"}],"tooltip":{"shared":true}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-adm-students-normal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Σχήμα 2: Χρονοσειρά συνολικών εγγραφών ανά τρόπο εισαγωγής
+</figcaption></figure>
+</div>
+</div>
+<p>Αφού μελετήσαμε στο <a href="#fig-adm-students-normal" class="quarto-xref">Σχήμα 2</a> τις απόλυτες τιμές των επιτυχόντων. Ωστόσο, ο αριθμός των φοιτητών αυτή τη τελευταία 20ετία κυμαίνεται μεταξύ του 200 και του 300 που κάνει την σύγκριση μεταξύ των ετών δύσκολη. Έτσι θα υπολογίσω και τη ποσοστιαία συμμετοχή κάθε κατηγορίας ανά έτος. Ένα πολύ ενδιαφέρον στοιχείο είναι ότι κάποια ακαδημαϊκά έτη ο αριθμός των φοιτητών που εισήλθαν στο τμήμα εκτός Πανελληνίων Εξετάσεων προσέγγιζε το ένα τρίτο των συνολικών εγγραφών. Αυτό φαίνεται να έχει συμβεί σε δύο ακαδημαϊκά έτη, το 2010-2011 και το 2013-2014.</p>
+<div class="cell">
+<details class="code-fold"><summary>Δείξε τον κώδικα</summary><div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"rgba(52, 152, 219, 0.6)"</span>,  <span class="co"># blue</span></span>
+<span>            <span class="st">"rgba(231, 76, 60, 0.6)"</span>,   <span class="co"># red</span></span>
+<span>            <span class="st">"rgba(46, 204, 113, 0.6)"</span>,  <span class="co"># green</span></span>
+<span>            <span class="st">"rgba(155, 89, 182, 0.6)"</span><span class="op">)</span>  <span class="co"># purple</span></span>
+<span></span>
+<span><span class="fu"><a href="https://jkunst.com/highcharter/reference/highchart.html">highchart</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_chart.html">hc_chart</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"areaspline"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>  <span class="co"># smooth stacked lines    hc_title(text = "Stacked Line Chart Example") %&gt;%</span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_xAxis.html">hc_xAxis</a></span><span class="op">(</span>categories <span class="op">=</span> <span class="va">admitted_students</span><span class="op">$</span><span class="va">Year</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_yAxis.html">hc_yAxis</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Ποσοστό (%) φοιτητών"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_title.html">hc_title</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Συνολικές εγγραφές φοιτητών ανά ακαδημαϊκό έτος"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_subtitle.html">hc_subtitle</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">""</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_subtitle.html">hc_subtitle</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">""</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_colors.html">hc_colors</a></span><span class="op">(</span><span class="va">colors</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>  <span class="co"># apply custom colors</span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_plotOptions.html">hc_plotOptions</a></span><span class="op">(</span></span>
+<span>    areaspline <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>      stacking <span class="op">=</span> <span class="st">"percent"</span>,</span>
+<span>      marker <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>enabled <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
+<span>      lineWidth <span class="op">=</span> <span class="fl">2</span>,      <span class="co"># thicker smooth line</span></span>
+<span>      fillOpacity <span class="op">=</span> <span class="fl">0.6</span>   <span class="co"># subtle transparency</span></span>
+<span>    <span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>   <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Πανελλήνιες"</span>, data <span class="op">=</span> <span class="va">admitted_students</span><span class="op">$</span><span class="va">Main_exams</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Μεταγραφή"</span>, data <span class="op">=</span> <span class="va">admitted_students</span><span class="op">$</span><span class="va">Transfer</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Κατατακτήριες"</span>, data <span class="op">=</span> <span class="va">admitted_students</span><span class="op">$</span><span class="va">Entry_exams</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Άλλο"</span>, data <span class="op">=</span> <span class="va">admitted_students</span><span class="op">$</span><span class="va">Other</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_tooltip.html">hc_tooltip</a></span><span class="op">(</span>shared <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button>
+</div>
+</details><div id="fig-adm-students-percent" class="cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-adm-students-percent-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="highchart html-widget html-fill-item" id="htmlwidget-8da69660a9eae8497d5f" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-8da69660a9eae8497d5f">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"areaspline"},"title":{"text":"Συνολικές εγγραφές φοιτητών ανά ακαδημαϊκό έτος"},"yAxis":{"title":{"text":"Ποσοστό (%) φοιτητών"}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"},"areaspline":{"stacking":"percent","marker":{"enabled":false},"lineWidth":2,"fillOpacity":0.6}},"xAxis":{"categories":["2003-2004","2004-2005","2005-2006","2006-2007","2007-2008","2008-2009","2009-2010","2010-2011","2011-2012","2012-2013","2013-2014","2014-2015","2015-2016","2016-2017","2017-2018","2018-2019","2019-2020"]},"subtitle":{"text":""},"colors":["rgba(52, 152, 219, 0.6)","rgba(231, 76, 60, 0.6)","rgba(46, 204, 113, 0.6)","rgba(155, 89, 182, 0.6)"],"series":[{"data":[183,181,186,186,185,170,170,175,198,206,205,219,212,212,209,189,228],"name":"Πανελλήνιες"},{"data":[15,21,11,27,38,44,60,47,0,14,20,48,29,30,41,11,55],"name":"Μεταγραφή"},{"data":[1,1,1,1,2,1,0,4,0,2,2,1,1,4,1,1,2],"name":"Κατατακτήριες"},{"data":[17,16,16,9,18,12,14,24,3,15,48,4,4,0,1,5,7],"name":"Άλλο"}],"tooltip":{"shared":true}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-adm-students-percent-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Σχήμα 3: Χρονοσειρά
+</figcaption></figure>
+</div>
+</div>
+</section><section id="πληθυσμός-φοιτητών" class="level2"><h2 class="anchored" data-anchor-id="πληθυσμός-φοιτητών">Πληθυσμός φοιτητών</h2>
+<p>Ένας δημογραφικός δείκτης που μπορεί να μας δώσει μία αδρή ένδειξη για τη κατάσταση στο τμήμα είναι σίγουρα ο αριθμός των σπουδαστών του. Αυτό είναι πολύ απλό αν αναλογιστούμε τις επιπτώσεις από έναν αρκετά μεγάλο αριθμό ατόμων προς φοίτηση με δεδομένους πόρους. Ο συντριπτικός όγκος φοιτητών είναι προπτυχιακοί με ποσοστό 95%. Το ποσοστό θα μπορούσαμε να πούμε είναι λογικό και αναμέναμε να υπερισχύουν οι προπτυχιακοί μιας και ο κύκλος σπουδών τους είναι μεγαλύτερος των μεταπτυχιακών. Επιπλέον, στο τμήμα προσφέρονται μόνο δύο (επι πληρωμή) μεταπτυχιακά προγράμματα που καθιστά δυσκολότερη την ομαλότερη ροή σε σπουδές υψηλότερων σπουδών ως προς την αναλογία των σπουδαστών.</p>
+<p>Το στοιχείο που αξίζει ιδιαίτερης αναφοράς δεν είναι η αναλογία, αλλά ο απόλυτος αριθμός των σπουδαστών προπτυχιακού επιπέδου. Δυστυχώς, τα τελευταία χρόνια ο δείκτης συνεχίζει και αυξάνεται ανεξέλεγκτα έχοντας ξεπεράσει του 3000 φοιτητές! Η μόνη χρονιά που μειώθηκε ο αριθμός τους είναι την εξεταστική του κορονοιού η οποία έγινε ηλεκτρονικά.</p>
+<div class="cell">
+<details class="code-fold"><summary>Δείξε τον κώδικα</summary><div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">f</span> <span class="op">=</span> <span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"BSc"</span>, <span class="st">"MSc_A"</span>,<span class="st">"MSc_B"</span>, <span class="st">"PhD"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/drop_na.html">drop_na</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>MSc_B <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace</a></span><span class="op">(</span><span class="va">MSc_B</span>, <span class="st">"-"</span>, <span class="st">"0"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="op">-</span><span class="va">Year</span>, <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>MSc <span class="op">=</span> <span class="va">MSc_A</span> <span class="op">+</span> <span class="va">MSc_B</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>PhDperBSc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">PhD</span><span class="op">/</span><span class="va">BSc</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span>, digits <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>PhDperMSc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">PhD</span><span class="op">/</span><span class="va">MSc</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span>, digits <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button>
+</div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Δείξε τον κώδικα</summary><div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"rgba(52, 152, 219, 0.6)"</span>,  <span class="co"># blue</span></span>
+<span>            <span class="st">"rgba(231, 76, 60, 0.6)"</span>,   <span class="co"># red</span></span>
+<span>            <span class="st">"rgba(46, 204, 113, 0.6)"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://jkunst.com/highcharter/reference/highchart.html">highchart</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_chart.html">hc_chart</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"areaspline"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>  <span class="co"># smooth stacked lines    hc_title(text = "Stacked Line Chart Example") %&gt;%</span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_xAxis.html">hc_xAxis</a></span><span class="op">(</span>categories <span class="op">=</span> <span class="va">admitted_students</span><span class="op">$</span><span class="va">Year</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_yAxis.html">hc_yAxis</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Αριθμός φοιτητών"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_title.html">hc_title</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Συνολικός πληθυσμός φοιτητών του τμήματος"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_subtitle.html">hc_subtitle</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Απόλυτος αριθμός φοιτητών ανά κατηγορία σπουδών"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_colors.html">hc_colors</a></span><span class="op">(</span><span class="va">colors</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>  <span class="co"># apply custom colors</span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_plotOptions.html">hc_plotOptions</a></span><span class="op">(</span></span>
+<span>    areaspline <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>      stacking <span class="op">=</span> <span class="st">"normal"</span>,</span>
+<span>      marker <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>enabled <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
+<span>      lineWidth <span class="op">=</span> <span class="fl">2</span>,      <span class="co"># thicker smooth line</span></span>
+<span>      fillOpacity <span class="op">=</span> <span class="fl">0.6</span>   <span class="co"># subtle transparency</span></span>
+<span>    <span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>   <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Προπτυχιακοί"</span>, data <span class="op">=</span> <span class="va">f</span><span class="op">$</span><span class="va">BSc</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Μεταπτυχιακοί"</span>, data <span class="op">=</span> <span class="va">f</span><span class="op">$</span><span class="va">MSc</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Διδακτορικοί"</span>, data <span class="op">=</span> <span class="va">f</span><span class="op">$</span><span class="va">PhD</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_tooltip.html">hc_tooltip</a></span><span class="op">(</span>shared <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button>
+</div>
+</details><div class="cell-output-display">
+<div class="highchart html-widget html-fill-item" id="htmlwidget-510789f988083f54e212" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-510789f988083f54e212">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"areaspline"},"title":{"text":"Συνολικός πληθυσμός φοιτητών του τμήματος"},"yAxis":{"title":{"text":"Αριθμός φοιτητών"}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"},"areaspline":{"stacking":"normal","marker":{"enabled":false},"lineWidth":2,"fillOpacity":0.6}},"xAxis":{"categories":["2003-2004","2004-2005","2005-2006","2006-2007","2007-2008","2008-2009","2009-2010","2010-2011","2011-2012","2012-2013","2013-2014","2014-2015","2015-2016","2016-2017","2017-2018","2018-2019","2019-2020"]},"subtitle":{"text":"Απόλυτος αριθμός φοιτητών ανά κατηγορία σπουδών"},"colors":["rgba(52, 152, 219, 0.6)","rgba(231, 76, 60, 0.6)","rgba(46, 204, 113, 0.6)"],"series":[{"data":[2135,2128,2225,2255,2360,2411,2429,2629,2528,2631,2707,2656,2742,2842,2953,3021,3091,3200,3159,3177],"name":"Προπτυχιακοί"},{"data":[68,67,89,57,103,116,135,141,144,139,145,162,132,116,132,112,121,132,195,196],"name":"Μεταπτυχιακοί"},{"data":[11,16,20,24,24,20,13,13,16,15,16,14,14,18,21,21,19,19,18,15],"name":"Διδακτορικοί"}],"tooltip":{"shared":true}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>Βέβαια το γράφημα δεν είναι αρκετά σαφές για τους φοιτητές εκτός των προυπτυχιακών μιας και το ποσοστό τους είναι συγκριτικά πολύ μικρότερο. Έτσι λοιπόν θα απομονώσω του μεταπτυχιακούς και τους διδακτορικούς φοιτητές.</p>
+<div class="cell">
+<details class="code-fold"><summary>Δείξε τον κώδικα</summary><div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"rgba(52, 152, 219, 0.6)"</span>,  <span class="co"># blue</span></span>
+<span>            <span class="st">"rgba(231, 76, 60, 0.6)"</span>,   <span class="co"># red</span></span>
+<span>            <span class="st">"rgba(46, 204, 113, 0.6)"</span>,  <span class="co"># green</span></span>
+<span>            <span class="st">"rgba(155, 89, 182, 0.6)"</span><span class="op">)</span>  <span class="co"># purple</span></span>
+<span></span>
+<span><span class="fu"><a href="https://jkunst.com/highcharter/reference/highchart.html">highchart</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_chart.html">hc_chart</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"areaspline"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>  <span class="co"># smooth stacked lines    hc_title(text = "Stacked Line Chart Example") %&gt;%</span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_xAxis.html">hc_xAxis</a></span><span class="op">(</span>categories <span class="op">=</span> <span class="va">admitted_students</span><span class="op">$</span><span class="va">Year</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_yAxis.html">hc_yAxis</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Αριθμός φοιτητών"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_title.html">hc_title</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Αριθμός φοιτητών μεταπτυχιακών &amp; διδακτορικών"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_subtitle.html">hc_subtitle</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Απόλυτος αριθμός εγγραφών με βάση την κατηγορία εισαγωγής"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_colors.html">hc_colors</a></span><span class="op">(</span><span class="va">colors</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>  <span class="co"># apply custom colors</span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_plotOptions.html">hc_plotOptions</a></span><span class="op">(</span></span>
+<span>    areaspline <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>      stacking <span class="op">=</span> <span class="st">"normal"</span>,</span>
+<span>      marker <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>enabled <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
+<span>      lineWidth <span class="op">=</span> <span class="fl">2</span>,      <span class="co"># thicker smooth line</span></span>
+<span>      fillOpacity <span class="op">=</span> <span class="fl">0.6</span>   <span class="co"># subtle transparency</span></span>
+<span>    <span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>   <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Μεταπτυχιακό Εφαρμοσμένη Στατιστική"</span>, data <span class="op">=</span> <span class="va">f</span><span class="op">$</span><span class="va">MSc_A</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Μεταπτυχιακό Αναλογιστικά"</span>, data <span class="op">=</span> <span class="va">f</span><span class="op">$</span><span class="va">MSc_B</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Διδακτορικοί"</span>, data <span class="op">=</span> <span class="va">f</span><span class="op">$</span><span class="va">PhD</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_tooltip.html">hc_tooltip</a></span><span class="op">(</span>shared <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button>
+</div>
+</details><div class="cell-output-display">
+<div class="highchart html-widget html-fill-item" id="htmlwidget-fdedf08a50294e151620" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-fdedf08a50294e151620">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"areaspline"},"title":{"text":"Αριθμός φοιτητών μεταπτυχιακών & διδακτορικών"},"yAxis":{"title":{"text":"Αριθμός φοιτητών"}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"},"areaspline":{"stacking":"normal","marker":{"enabled":false},"lineWidth":2,"fillOpacity":0.6}},"xAxis":{"categories":["2003-2004","2004-2005","2005-2006","2006-2007","2007-2008","2008-2009","2009-2010","2010-2011","2011-2012","2012-2013","2013-2014","2014-2015","2015-2016","2016-2017","2017-2018","2018-2019","2019-2020"]},"subtitle":{"text":"Απόλυτος αριθμός εγγραφών με βάση την κατηγορία εισαγωγής"},"colors":["rgba(52, 152, 219, 0.6)","rgba(231, 76, 60, 0.6)","rgba(46, 204, 113, 0.6)","rgba(155, 89, 182, 0.6)"],"series":[{"data":[68,67,89,57,65,50,54,55,56,52,56,52,85,42,47,43,53,66,102,111],"name":"Μεταπτυχιακό Εφαρμοσμένη Στατιστική"},{"data":[0,0,0,0,38,66,81,86,88,87,89,110,47,74,85,69,68,66,93,85],"name":"Μεταπτυχιακό Αναλογιστικά"},{"data":[11,16,20,24,24,20,13,13,16,15,16,14,14,18,21,21,19,19,18,15],"name":"Διδακτορικοί"}],"tooltip":{"shared":true}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section><section id="κατανομή-βαθμών-αποφοίτησης" class="level2"><h2 class="anchored" data-anchor-id="κατανομή-βαθμών-αποφοίτησης">Κατανομή βαθμών αποφοίτησης</h2>
+<p>Όλα τα παραπάνω στοιχεία ήταν κατά κάποιο τρόπο δημογραφικά και δεν είχαν και κάποια ιδιαίτερη αξία. Πάμε λοιπόν να εξετάσουμε το πρώτο ενδιαφέρον στοιχείο που που είναι η κατανομή των βαθμών αποφοίτησης. Στα στοιχεία που δημοσιεύει το τμήμα οι βαθμοί έχουν χωριστεί σε τέσσερις κατηγορίες ανάλογα του βαθμού αποφοίτησης:</p>
+<ul>
+<li>Από τη βάση (5) μέχρι 6</li>
+<li>Από 6 εώς 7</li>
+<li>Από 7 μέχρι 8.5 και</li>
+<li>αυτοί που πήραν πάνω από 8.5</li>
+</ul>
+<p>Από τα στοιχεία προκύπτει μία ιδιαίτερα ανισόρροπη κατανομή των βαθμών. Αρχικά παρατηρούμε ότι το ποσοστό των ατόμων που αποφοιτούν με &lt;&lt;Άριστα&gt;&gt; είναι ιδιαίτερα μικρό που μετά βίας είναι ορατό στο διάγραμμα. Το ποσοστό των αποφοίτων με άριστα κυμαίνεται μεταξύ του 4.8% των συνολικών αποφοίτων του αντίστοιχου ακαδημαϊκού έτους έως και 0%, μιας και υπήρχαν έτη χωρίς αριστεύσαντες πτυχιούχους. Άλλο ένα προβληματικό στοιχείο είναι η αποφοίτηση με τους χαμηλότερους δυνατούς βαθμούς (κατηγορία βαθμών από 5 μέχρι 6), μιας και ιστορικά είχαμε τέτοια αποφοίτηση ακόμα για άνω του ένα τρίτου των συνολικών αποφοίτων. Βέβαια όλα τα παραπάνω είναι κατά κάποιο τρόπο λίγο αναμενόμενα σε συνάρτηση με τη δυσκολία της σχολής και του αντικειμένου. Αυτό που ενδεχομένως δηλώνει προβλήματα της ίδιας της σχολής είναι όταν χωρίσουμε τους βαθμούς σε δύο μεγάλες κατηγορίες, η μία οι φοιτητές που αποφοίτησαν με βαθμό άνω του 7 και η άλλη ομάδα όσοι αποφοίτησαν με βαθμό κάτω από 7. Εκεί παρατηρούμε επί σειρά ετών ότι οι απόφοιτοι της δεύτερης ομάδας αποτελούν το 80% και υπήρχαν πρόσφατα έτη που αποτελούσαν το 90% αυτών. Ενδεικτικά αναφέρονται τα ακαδημαϊκά έτη 2009-2010, 2012-2013, 2016-2017 &amp; 2017-2018, ως κάποια με τις χειρότερες επιδόσεις.</p>
+<div class="cell">
+<details class="code-fold"><summary>Δείξε τον κώδικα</summary><div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graduates_distr_grades</span> <span class="op">=</span> <span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"5to6"</span>, <span class="st">"6to7"</span>, <span class="st">"7to8p5"</span>, <span class="st">"over8p5"</span>, <span class="st">"AVG"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/drop_na.html">drop_na</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span>, <span class="op">~</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove</a></span><span class="op">(</span><span class="va">.</span>, <span class="st">"\\(.*\\)"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>         <span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span>, <span class="op">~</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_trim.html">str_trim</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>         <span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span>, <span class="op">~</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all</a></span><span class="op">(</span><span class="va">.</span>,pattern <span class="op">=</span> <span class="st">","</span>,replacement <span class="op">=</span> <span class="st">"."</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>         <span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="op">-</span><span class="va">Year</span>, <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"#E24A4A"</span>,</span>
+<span>  <span class="st">"#FF9090"</span>,</span>
+<span>  <span class="st">"#90C3FF"</span>,</span>
+<span>  <span class="st">"#4A90E2"</span>  </span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://jkunst.com/highcharter/reference/highchart.html">highchart</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_chart.html">hc_chart</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"areaspline"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>  <span class="co"># smooth stacked lines    hc_title(text = "Stacked Line Chart Example") %&gt;%</span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_xAxis.html">hc_xAxis</a></span><span class="op">(</span>categories <span class="op">=</span> <span class="va">graduates_distr_grades</span><span class="op">$</span><span class="va">Year</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_yAxis.html">hc_yAxis</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Ποσοστό (%) φοιτητών"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_title.html">hc_title</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Κατηγορίες βαθμών αποφοίτησης φοιτητών Στατιστικής"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_subtitle.html">hc_subtitle</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Οι βαθμοί που κυριαρχούν είναι κάτω του 7, προσεγγίζοντας ακόμα και το 90%. Οι απόφοιτοι με βαθμό πτυχίου από 6 μέχρι και 7 είναι οι πιο συχνοί και καταλαμβάνουν το 55% με 70% των συνολικών αποφοίτων"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_colors.html">hc_colors</a></span><span class="op">(</span><span class="va">colors</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>  <span class="co"># apply custom colors</span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_plotOptions.html">hc_plotOptions</a></span><span class="op">(</span></span>
+<span>    areaspline <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>      stacking <span class="op">=</span> <span class="st">"percent"</span>,</span>
+<span>      marker <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>enabled <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
+<span>      lineWidth <span class="op">=</span> <span class="fl">2</span>,      <span class="co"># thicker smooth line</span></span>
+<span>      fillOpacity <span class="op">=</span> <span class="fl">0.6</span>   <span class="co"># subtle transparency</span></span>
+<span>    <span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>   <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Βαθμός 5-6"</span>, data <span class="op">=</span> <span class="va">graduates_distr_grades</span><span class="op">$</span><span class="va">`5to6`</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Βαθμός 6-7"</span>, data <span class="op">=</span> <span class="va">graduates_distr_grades</span><span class="op">$</span><span class="va">`6to7`</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Βαθμός 7-8.5"</span>, data <span class="op">=</span> <span class="va">graduates_distr_grades</span><span class="op">$</span><span class="va">`7to8p5`</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Βαθμός 8.5+"</span>, data <span class="op">=</span> <span class="va">graduates_distr_grades</span><span class="op">$</span><span class="va">over8p5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_tooltip.html">hc_tooltip</a></span><span class="op">(</span>shared <span class="op">=</span> <span class="cn">TRUE</span>,   </span>
+<span>               valueSuffix <span class="op">=</span> <span class="st">"%"</span><span class="op">)</span></span></code></pre></div>
+<button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button>
+</div>
+</details><div id="fig-graduates__grades_distr_stacked" class="cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-graduates__grades_distr_stacked-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="highchart html-widget html-fill-item" id="htmlwidget-97087b9d6e2a3a030792" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-97087b9d6e2a3a030792">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"areaspline"},"title":{"text":"Κατηγορίες βαθμών αποφοίτησης φοιτητών Στατιστικής"},"yAxis":{"title":{"text":"Ποσοστό (%) φοιτητών"}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"},"areaspline":{"stacking":"percent","marker":{"enabled":false},"lineWidth":2,"fillOpacity":0.6}},"xAxis":{"categories":["2003-2004","2004-2005","2005-2006","2006-2007","2007-2008","2008-2009","2009-2010","2010-2011","2011-2012","2012-2013","2013-2014","2014-2015","2015-2016","2016-2017","2017-2018","2018-2019","2019-2020","2020-2021","2021-2022"]},"subtitle":{"text":"Οι βαθμοί που κυριαρχούν είναι κάτω του 7, προσεγγίζοντας ακόμα και το 90%. Οι απόφοιτοι με βαθμό πτυχίου από 6 μέχρι και 7 είναι οι πιο συχνοί και καταλαμβάνουν το 55% με 70% των συνολικών αποφοίτων"},"colors":["#E24A4A","#FF9090","#90C3FF","#4A90E2"],"series":[{"data":[20.7,16.9,24.2,6.1,23.4,24.7,34.6,25.2,24.1,25.1,32.3,31.6,30.9,29.9,28.6,27.4,28.2,13.4,10.5],"name":"Βαθμός 5-6"},{"data":[60,62.1,55.8,72.40000000000001,59.1,61.7,54.5,57.9,59,63.3,56.2,52.4,51.2,57.3,60.3,60.4,57.7,67.59999999999999,65.8],"name":"Βαθμός 6-7"},{"data":[19.3,21,19.2,19.6,16.9,13,10.9,16.4,14.5,10.1,9.699999999999999,13.2,17.1,12,6.3,10.8,14.1,18.2,21.6],"name":"Βαθμός 7-8.5"},{"data":[0,0,0.8,1.8,0.7,0.6,0,0.6,2.4,1.5,1.8,2.8,0.8,0.8,4.8,1.4,0,0.8,2.2],"name":"Βαθμός 8.5+"}],"tooltip":{"shared":true,"valueSuffix":"%"}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-graduates__grades_distr_stacked-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Σχήμα 4: Χρονοσειρά κατηγοριάς βαθμών αποφοίτησης στο τμήμα Στατιστικής και Ασφαλιστικής, Πανεπιστήμιο Πειραιά
+</figcaption></figure>
+</div>
+</div>
+</section><section id="κατανομή-έτους-αποφοίτησης" class="level2"><h2 class="anchored" data-anchor-id="κατανομή-έτους-αποφοίτησης">Κατανομή έτους αποφοίτησης</h2>
+<p>Ένας από τους πιο απογοητευτικούς δείκτες για το τμήμα μας είναι πόσα έτη χρειάζονται σε κάποιον για να αποφοιτήσει. Αυτός ο δείκτης είναι πλέον σημαντικός για πολλούς λόγους. Αρχικά η Ελλάδα έχει ψηφίσει πρόσφατα τη διαραφή των φοιτητών και πλέον υπάρχει όριο στη φοίτηση, το οποίο υπολογίζεται ως εξής:</p>
+<p><span class="math display">
+n + \frac{n}{2}
+</span></p>
+<p>όπου n είναι τα έτη που διαρκεί η φοίτηση. Στις περισσότερες σχολές η φοίτηση είναι τετραετής, με εξαίρεση τις πολυτεχνικές και τις ιατρικές όπου εκεί η φοίτηση έχει διάρκεια 5 ετών. Συνεπώς, με βάση τον παραπάνω κανόνα, το όριο φοίτησης για το τμήμα μας είναι 6 έτη. Όμως η πραγματικότητα είναι αρκετά πιο σκληρή. Το συγκεκριμένο τμήμα αποτελεί ένα από τα τμήματα με ιστορικά υψηλό ποσοστό φοιτητών που έχουν ξεπεράσει το ν+2 ως προς το ποσοστό του συνόλου των προτυχιακών του, με τα πρόσφατα στοιχεία της ΕΛΣΤΑΤ να κατατάσσουν το τμήμα Στατιστικής και Ασφαλιστικής του Πειραιά στην 35η θέση σε αυτό το δείκτη. Με βάση το παρακάτω γράφημα,</p>
+<div class="cell">
+<details class="code-fold"><summary>Δείξε τον κώδικα</summary><div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">graduate_data</span> <span class="op">=</span> <span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">5</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"4Y"</span>, <span class="st">"5Y"</span>, <span class="st">"6Y"</span>, <span class="st">"7Y"</span>, <span class="st">"8Y"</span>, <span class="st">"9Y"</span>, <span class="st">"10Y"</span>, <span class="st">"11Y+"</span>,<span class="st">"AVGY"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="va">.</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span>,<span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/drop_na.html">drop_na</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Year</span> <span class="op">!=</span> <span class="st">"2009-2022"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">contains</a></span><span class="op">(</span><span class="st">"Y"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">matches</a></span><span class="op">(</span><span class="st">"^Year$"</span><span class="op">)</span>, <span class="va">as.numeric</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="st">"4y"</span> <span class="op">=</span> <span class="va">`4Y`</span>,</span>
+<span>         <span class="st">"4to6"</span> <span class="op">=</span> <span class="va">`5Y`</span> <span class="op">+</span> <span class="va">`6Y`</span>,</span>
+<span>         <span class="st">"6to8"</span> <span class="op">=</span> <span class="va">`7Y`</span> <span class="op">+</span> <span class="va">`8Y`</span>,</span>
+<span>         <span class="st">"9plus"</span> <span class="op">=</span> <span class="va">`9Y`</span> <span class="op">+</span> <span class="va">`10Y`</span> <span class="op">+</span> <span class="va">`11Y+`</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Year</span>, <span class="va">`4y`</span>, <span class="va">`4to6`</span>, <span class="va">`6to8`</span>, <span class="va">`9plus`</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    Year <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace</a></span><span class="op">(</span><span class="va">Year</span>, <span class="st">".*-"</span>, <span class="st">""</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+<button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button>
+</div>
+</details><div class="cell-output cell-output-stderr">
+<pre><code>Warning: There was 1 warning in `mutate()`.
+ℹ In argument: `across(contains("Y") &amp; !matches("^Year$"), as.numeric)`.
+Caused by warning:
+! NAs introduced by coercion</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Δείξε τον κώδικα</summary><div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"#E24A4A"</span>,</span>
+<span>  <span class="st">"#FF9090"</span>,</span>
+<span>  <span class="st">"#90C3FF"</span>,</span>
+<span>  <span class="st">"#4A90E2"</span>  </span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://jkunst.com/highcharter/reference/highchart.html">highchart</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_chart.html">hc_chart</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"areaspline"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_title.html">hc_title</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Κατανομή διάρκειας σπουδών μέχρι την αποφοίτηση"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_subtitle.html">hc_subtitle</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Οι περισσότεροι φοιτητές ξεπερνάνε τα ν+2 έτη για να λάβουν πτυχίο!"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_caption.html">hc_caption</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"stesiam, 2023"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_xAxis.html">hc_xAxis</a></span><span class="op">(</span>categories <span class="op">=</span> <span class="va">graduate_data</span><span class="op">$</span><span class="va">Year</span>,</span>
+<span>           title <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_yAxis.html">hc_yAxis</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Percentage (%)"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_tooltip.html">hc_tooltip</a></span><span class="op">(</span>shared <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"9 έτη και πάνω"</span>, data <span class="op">=</span> <span class="va">graduate_data</span><span class="op">$</span><span class="va">`9plus`</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"7-8 έτη"</span>, data <span class="op">=</span> <span class="va">graduate_data</span><span class="op">$</span><span class="va">`6to8`</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"5-6 έτη"</span>, data <span class="op">=</span> <span class="va">graduate_data</span><span class="op">$</span><span class="va">`4to6`</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"4 έτη"</span>, data <span class="op">=</span> <span class="va">graduate_data</span><span class="op">$</span><span class="va">`4y`</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_plotOptions.html">hc_plotOptions</a></span><span class="op">(</span></span>
+<span>    areaspline <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>      stacking <span class="op">=</span> <span class="st">"percent"</span>,</span>
+<span>      marker <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>enabled <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
+<span>      lineWidth <span class="op">=</span> <span class="fl">2</span>,      <span class="co"># thicker smooth line</span></span>
+<span>      fillOpacity <span class="op">=</span> <span class="fl">0.6</span>   <span class="co"># subtle transparency</span></span>
+<span>    <span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_colors.html">hc_colors</a></span><span class="op">(</span><span class="va">colors</span><span class="op">)</span></span></code></pre></div>
+<button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button>
+</div>
+</details><div class="cell-output-display">
+<div class="highchart html-widget html-fill-item" id="htmlwidget-af1d71a6ede7c17872df" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-af1d71a6ede7c17872df">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"areaspline"},"title":{"text":"Κατανομή διάρκειας σπουδών μέχρι την αποφοίτηση"},"yAxis":{"title":{"text":"Percentage (%)"}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"},"areaspline":{"stacking":"percent","marker":{"enabled":false},"lineWidth":2,"fillOpacity":0.6}},"subtitle":{"text":"Οι περισσότεροι φοιτητές ξεπερνάνε τα ν+2 έτη για να λάβουν πτυχίο!"},"caption":{"text":"stesiam, 2023"},"xAxis":{"categories":["2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020","2021","2022"],"title":null},"tooltip":{"shared":true},"series":[{"data":[22,20,19,30,24,16,17,17,25,32,34,79,103],"name":"9 έτη και πάνω"},{"data":[35,39,51,56,57,26,40,62,42,51,63,104,111],"name":"7-8 έτη"},{"data":[66,65,74,97,81,64,52,33,43,29,41,71,138],"name":"5-6 έτη"},{"data":[22,13,14,13,19,22,9,4,4,0,0,0,5],"name":"4 έτη"}],"colors":["#E24A4A","#FF9090","#90C3FF","#4A90E2"]},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section><section id="σχέση-ετών-και-μέσου-όρου" class="level2"><h2 class="anchored" data-anchor-id="σχέση-ετών-και-μέσου-όρου">Σχέση ετών και μέσου όρου</h2>
+<p>Οι κατανομές των βαθμών καθώς και των ετών αποφοίτησης είναι αρκετά κατατοπιστικές για να γίνει αντιληπτή η άσχημη κατάσταση στο τμήμα. Για το τέλος θα ήθελα να παρουσιάσω ένα διπλό διάγραμμα που παρουσιάζει τη μέση διάρκεια σπουδών και το μέσο βαθμό αποφοίτησης. Έτσι θα έχουμε και μία εικόνα του που κυμαίνεται ιστορικά ο μέσος απόφοιτος του τμήματος. Ισοτρικά, παρατηρείται μια ιδιαίτερη σταθερότητα ως προς το βαθμό απποφοίτησης ο οποίος έχει ιδιαίτερα μικρή απόκλιση από το 2009 μέχρι και το 2020, αφού κυμαίνεται μεταξύ 6.3 και 6.43 για μία ολόκληρη δεκαετία. Από την άλλη έχουμε για άλλη μία φορά τον πιο καταθλιπτικό δείκτη, αυτόν της μέσης διάρκειας σπουδών. Από το 2014 έχουμε συνεχή αύξηση του δείκτη και μέσα σε 4 ακαδημαικά έτη είχαμε αύξηση 1.6 έτη και διατήρηση του σε αυτά τα επίπεδα. Πλέον, η μέση διάρκεια όχι απλώς αποκλίνει του ν+2, αλλά συγκλίνει στο 2ν, δηλαδή οι φοιτητές του τμήματος χρειάζονταν τα διπλάσια χρόνια από τη προκαθορισμένη διάρκεια σπουδών (4 έτη) για να λάβουν το πτυχίο τους. Αξίζει να σημειωθεί ότι όλο τον χρονικό ορίζοντα που καταγράφεται ο δείκτης δεν έπεσε ποτέ κάτω του ορίου <span class="math inline">ν + 2</span>.</p>
+<div class="cell">
+<details class="code-fold"><summary>Δείξε τον κώδικα</summary><div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">table1</span> <span class="op">=</span> <span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">5</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="va">.</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">10</span><span class="op">)</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/drop_na.html">drop_na</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="va">.</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>,<span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"AvgGradDuration"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>AvgGradDuration <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove_all</a></span><span class="op">(</span><span class="va">AvgGradDuration</span>, pattern <span class="op">=</span> <span class="st">" έτη"</span><span class="op">)</span>,</span>
+<span>         AvgGradDuration <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace</a></span><span class="op">(</span><span class="va">AvgGradDuration</span>, pattern <span class="op">=</span> <span class="st">","</span>, replacement <span class="op">=</span> <span class="st">"."</span><span class="op">)</span>,</span>
+<span>         AvgGradDuration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">AvgGradDuration</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">table2</span> <span class="op">=</span> <span class="va">statistics_tables</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="va">.</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">6</span><span class="op">)</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/drop_na.html">drop_na</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="va">.</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span>,<span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"AvgGrade"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate.html">separate</a></span><span class="op">(</span><span class="va">AvgGrade</span>, into <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Grade"</span>, <span class="st">"Number"</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">" "</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>Number <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_number.html">parse_number</a></span><span class="op">(</span><span class="va">Number</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>Grade <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all</a></span><span class="op">(</span><span class="va">Grade</span>, <span class="st">","</span>, <span class="st">"."</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">joined_tables</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">table2</span>, <span class="va">table1</span>, by <span class="op">=</span> <span class="st">"Year"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/drop_na.html">drop_na</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>Grade <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">Grade</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button>
+</div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Δείξε τον κώδικα</summary><div class="code-copy-outer-scaffold">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://jkunst.com/highcharter/reference/highchart.html">highchart</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_title.html">hc_title</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Βαθμός αποφοίτησης και μέση διάρκεια φοίτησης"</span>, style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>fontSize <span class="op">=</span> <span class="st">"18px"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_subtitle.html">hc_subtitle</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Ιστορικά η μέση διάρκεια σπουδών είναι μεγαλύτερη των ν+2 ετών για το τμήμα Στατιστικής και τα τελευταία χρόνια έχει ανέλθει σε επίπεδα που προσεγγίζουν το διπλάσιο της καθορισμένης φοίτησης (2ν). Η δυσκολία της σχολής εδράζεται και στον χαμηλό βαθμό αποφοίτησης ο οποίος τα τελευταία χρόνια που παραμένει σταθερά μεταξύ του 6.2 και 6.4, με εξαίρεση την εξεταστική του κορονοϊού."</span>, </span>
+<span>              style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#666"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_xAxis.html">hc_xAxis</a></span><span class="op">(</span>categories <span class="op">=</span> <span class="va">joined_tables</span><span class="op">$</span><span class="va">Year</span>, title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Year"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  </span>
+<span>  <span class="co"># Three y-axes</span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_yAxis.html">hc_yAxis_multiples</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Βαθμός Αποφοίτησης"</span><span class="op">)</span>, opposite <span class="op">=</span> <span class="cn">FALSE</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#1f77b4"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Διάρκεια σπουδών"</span><span class="op">)</span>, opposite <span class="op">=</span> <span class="cn">TRUE</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#ff7f0e"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  </span>
+<span>  <span class="co"># Sales series</span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span></span>
+<span>    name <span class="op">=</span> <span class="st">"Βαθμός αποφοίτησης"</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">joined_tables</span><span class="op">$</span><span class="va">Grade</span>,</span>
+<span>    type <span class="op">=</span> <span class="st">"line"</span>,</span>
+<span>    yAxis <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>    color <span class="op">=</span> <span class="st">"#1f77b4"</span>,</span>
+<span>    lineWidth <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>    marker <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>symbol <span class="op">=</span> <span class="st">"circle"</span>, radius <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  </span>
+<span>  <span class="co"># Profit series</span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span></span>
+<span>    name <span class="op">=</span> <span class="st">"Διάρκεια σπουδών"</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">joined_tables</span><span class="op">$</span><span class="va">AvgGradDuration</span>,</span>
+<span>    type <span class="op">=</span> <span class="st">"line"</span>,</span>
+<span>    yAxis <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>    color <span class="op">=</span> <span class="st">"#ff7f0e"</span>,</span>
+<span>    lineWidth <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>    marker <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>symbol <span class="op">=</span> <span class="st">"diamond"</span>, radius <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  </span>
+<span>  </span>
+<span>  <span class="co"># Tooltip</span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_tooltip.html">hc_tooltip</a></span><span class="op">(</span>shared <span class="op">=</span> <span class="cn">TRUE</span>, crosshairs <span class="op">=</span> <span class="cn">TRUE</span>, useHTML <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>             backgroundColor <span class="op">=</span> <span class="st">"#f7f7f7"</span>, borderColor <span class="op">=</span> <span class="st">"#333"</span>,</span>
+<span>             style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>fontSize <span class="op">=</span> <span class="st">"13px"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  </span>
+<span>  <span class="co"># Legend</span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_legend.html">hc_legend</a></span><span class="op">(</span>enabled <span class="op">=</span> <span class="cn">TRUE</span>, layout <span class="op">=</span> <span class="st">"horizontal"</span>, align <span class="op">=</span> <span class="st">"center"</span>, verticalAlign <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span></span></code></pre></div>
+<button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button>
+</div>
+</details><div class="cell-output-display">
+<div class="highchart html-widget html-fill-item" id="htmlwidget-f561c863c5a155fd9532" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-f561c863c5a155fd9532">{"x":{"hc_opts":{"chart":{"reflow":true},"title":{"text":"Βαθμός αποφοίτησης και μέση διάρκεια φοίτησης","style":{"fontSize":"18px"}},"yAxis":[{"title":{"text":"Βαθμός Αποφοίτησης"},"opposite":false,"labels":{"style":{"color":"#1f77b4"}}},{"title":{"text":"Διάρκεια σπουδών"},"opposite":true,"labels":{"style":{"color":"#ff7f0e"}}}],"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Ιστορικά η μέση διάρκεια σπουδών είναι μεγαλύτερη των ν+2 ετών για το τμήμα Στατιστικής και τα τελευταία χρόνια έχει ανέλθει σε επίπεδα που προσεγγίζουν το διπλάσιο της καθορισμένης φοίτησης (2ν). Η δυσκολία της σχολής εδράζεται και στον χαμηλό βαθμό αποφοίτησης ο οποίος τα τελευταία χρόνια που παραμένει σταθερά μεταξύ του 6.2 και 6.4, με εξαίρεση την εξεταστική του κορονοϊού.","style":{"color":"#666"}},"xAxis":{"categories":["2009-2010","2010-2011","2011-2012","2012-2013","2013-2014","2014-2015","2015-2016","2016-2017","2017-2018","2018-2019","2019-2020","2020-2021","2021-2022"],"title":{"text":"Year"}},"series":[{"data":[6.3,6.4,6.43,6.36,6.33,6.38,6.36,6.35,6.39,6.38,6.39,6.41,6.65],"name":"Βαθμός αποφοίτησης","type":"line","yAxis":0,"color":"#1f77b4","lineWidth":3,"marker":{"symbol":"circle","radius":5}},{"data":[6.5,6.4,6.4,6.7,6.5,6.2,6.7,7.1,7.4,7.8,7.7,7.9,7.6],"name":"Διάρκεια σπουδών","type":"line","yAxis":1,"color":"#ff7f0e","lineWidth":3,"marker":{"symbol":"diamond","radius":5}}],"tooltip":{"shared":true,"crosshairs":true,"useHTML":true,"backgroundColor":"#f7f7f7","borderColor":"#333","style":{"fontSize":"13px"}},"legend":{"enabled":true,"layout":"horizontal","align":"center","verticalAlign":"bottom"}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section><section id="η-γνώμη-μου" class="level2"><h2 class="anchored" data-anchor-id="η-γνώμη-μου">Η γνώμη μου</h2>
+<p>Για δεκαετίες αγνοούσε ακόμα και τις υποδέιξεις τις ΕΘΑΕΕ. Δεν υπήρχαν πρόοδοι, δεν υπήρχαν εργασίες. Ενώ σε πολλά μαθήματα ζητάγαμε να αναρτούνται σημειώσεις, γεγονός που αρνιόντουσαν συνεχώς</p>
+
+
+</section><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Αναφορά</h2>
+<div>
+<div class="quarto-appendix-secondary-label">Αναφορά BibTeX:</div>
+<pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{2023,
+  author = {, stesiam},
+  title = {Στατιστικά των Αποφοίτων Στατιστικής},
+  date = {2023-07-23},
+  url = {https://stesiam.com/posts/eda-graduates-of-statistics/},
+  langid = {el}
+}
+</code><button title="Αντιγραφή στο πρόχειρο" class="code-copy-button"><i class="bi"></i></button></pre>
+<div class="quarto-appendix-secondary-label">Για απόδοση ευγνωμοσύνης, παρακαλούμε αναφερθείτε σε αυτό το έργο ως:</div>
+<div id="ref-2023" class="csl-entry quarto-appendix-citeas" role="listitem">
+stesiam. (2023, July 23). Στατιστικά των Αποφοίτων Στατιστικής.
+Retrieved from <a href="https://stesiam.com/posts/eda-graduates-of-statistics/">https://stesiam.com/posts/eda-graduates-of-statistics/</a>
+</div>
+</div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Αντιγράφηκε!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Αντιγράφηκε!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/stesiam\.com\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><input type="hidden" id="giscus-base-theme" value="light"><input type="hidden" id="giscus-alt-theme" value="dark"><script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      if (authorPrefersDark) {
+          [baseTheme, altTheme] = [altTheme, baseTheme];
+      }
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "stesiam/stesiam.github.io";
+    script.dataset.repoId = "R_kgDOHuiNDg";
+    script.dataset.category = "Comments";
+    script.dataset.categoryId = "DIC_kwDOHuiNDs4CQeAf";
+    script.dataset.mapping = "title";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "top";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "gr";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Φιλοξενείται μέσω του <i class="bi bi-github"></i> GitHub Pages <br><i class="bi bi-code-slash"></i> <a href="https://github.com/stesiam/stesiam.github.io">Κώδικας ιστοσελίδας</a></p>
+</div>   
+    <div class="nav-footer-center">
+<p>© stesiam, 2022-2026</p>
+</div>
+    <div class="nav-footer-right">
+<p>Δημιουργήθηκε με το λογισμικό <a href="https://quarto.org/">Quarto</a>, το πακέτο <a href="https://github.com/ropensci-review-tools/babelquarto">babelquarto</a>,<br> αρκετή αγάπη και υπομονή</p>
+</div>
+  </div>
+</footer>
+</body>
+</html>
