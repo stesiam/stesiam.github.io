@@ -34,13 +34,16 @@ jobs:
       # --- System libraries (including GLPK for igraph)
       - name: Install system dependencies
         run: |
-          sudo apt update
-          sudo apt install -y \
+          sudo apt-get update
+          sudo apt-get install -y \
             libcurl4-openssl-dev libfribidi-dev libharfbuzz-dev libxslt1-dev \
             libblas-dev liblapack-dev libpoppler-cpp-dev libfontconfig1-dev \
             libcairo2-dev libfreetype6-dev libpng-dev libtiff5-dev \
             libjpeg-dev pkg-config \
-            libglpk40
+            libglpk-dev \
+            libsecret-1-dev \
+            libxml2-dev \
+            libssl-dev
 
       # --- R setup
       - name: Set up R
