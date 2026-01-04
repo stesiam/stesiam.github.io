@@ -25,13 +25,13 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      # --- Quarto (cached automatically by action)
+      # --- Quarto Setup
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
         with:
           version: pre-release
 
-      # --- System libraries (including GLPK for igraph)
+      # --- System libraries
       - name: Install system dependencies
         run: |
           sudo apt-get update
@@ -39,11 +39,7 @@ jobs:
             libcurl4-openssl-dev libfribidi-dev libharfbuzz-dev libxslt1-dev \
             libblas-dev liblapack-dev libpoppler-cpp-dev libfontconfig1-dev \
             libcairo2-dev libfreetype6-dev libpng-dev libtiff5-dev \
-            libjpeg-dev pkg-config \
-            libglpk-dev \
-            libsecret-1-dev \
-            libxml2-dev \
-            libssl-dev
+            libjpeg-dev pkg-config libglpk-dev libsecret-1-dev libxml2-dev libssl-dev
 
       # --- R setup
       - name: Set up R
@@ -62,7 +58,7 @@ jobs:
       - name: Configure Java for rJava
         run: sudo R CMD javareconf
 
-      # --- renv cache (critical, must come after system libraries)
+      # --- renv cache
       - name: Restore renv packages
         uses: r-lib/actions/setup-renv@v2
         with:
@@ -74,13 +70,31 @@ jobs:
         env:
           BABELQUARTO_CI_URL: https://stesiam.com
 
-      # --- Sanity check (prevents silent deploy failures)
+      # --- Sanity check
       - name: Verify site output
         run: |
           test -f docs/index.html || {
             echo "❌ docs/index.html not found"
             exit 1
           }
+
+      # --- NEW: PURGECSS OPTIMIZATION ---
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run PurgeCSS
+        run: |
+          npm install -g purgecss
+          # Scan HTML and JS (to protect search/menus) and overwrite Bootstrap
+          purgecss --css docs/site_libs/bootstrap/bootstrap.min.css \
+                   --content "docs/**/*.html" "docs/site_libs/**/*.js" \
+                   --safelist "show" "collapsing" "collapse" "navbar-toggler" "quarto-search" "quarto-search-results" "quarto-secondary-nav" \
+                   --output docs/site_libs/bootstrap/bootstrap.min.css
+
+      - name: Check CSS Size Reduction
+        run: ls -lh docs/site_libs/bootstrap/bootstrap.min.css
 
       # --- Upload Pages artifact
       - name: Upload Pages artifact
@@ -91,11 +105,9 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
       - name: Deploy to GitHub Pages 🚀
         id: deployment
