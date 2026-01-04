@@ -11,10 +11,10 @@ Deployed using [GitHub Pages](https://pages.github.com/).
 ## Features
 
 - 🌖 Light / Dark mode
-- 🖌️️ Use Bootstrap to make cards
+- 🖌️️ Use Bootstrap library for styling
 - 🔍 Add 404 page
 - 📎 Remove .html endings on several links using folders containing quarto files named as index.qmd
-- 🖊 Use Google fonts locally instead of using Google Fonts API (Alegreya)
+- 🖊 Use Google fonts (Gentium Book) locally instead of using Google Fonts API (Alegreya)
 - 🌐 Multilinguality (🇬🇧 / 🇬🇷)
 - 🪄 Custom highlight style ([a11y-light](https://github.com/quarto-dev/quarto-cli/blob/main/src/resources/pandoc/highlight-styles/a11y-light.theme) / [a11y-dark](https://github.com/quarto-dev/quarto-cli/blob/main/src/resources/pandoc/highlight-styles/a11y-dark.theme))
 
