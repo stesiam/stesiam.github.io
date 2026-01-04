@@ -1,67 +1,98 @@
 name: Render babelquarto (quarto) website
+
 on:
   workflow_dispatch:
   push:
     branches: [main]
 
 permissions:
-  contents: read       # needed to check out repo
-  id-token: write      # required for deploy-pages
+  contents: read
   pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
-  build-deploy:
+  build:
     runs-on: ubuntu-latest
+
+    env:
+      RENV_PATHS_ROOT: ~/.cache/R/renv
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      # --- Quarto (cached automatically by action)
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
         with:
           version: pre-release
 
-      # install libcurl, needed for curl R package
-      # libfribidi-dev libharfbuzz-dev for textshaping
-      # libxslt1-dev for xslt
-      - name: Install R package deps
+      # --- System libraries (no upgrade!)
+      - name: Install system dependencies
         run: |
           sudo apt update
-          sudo apt upgrade -y
-          sudo apt install -y libcurl4-openssl-dev libfribidi-dev libharfbuzz-dev libxslt1-dev libblas-dev liblapack-dev libpoppler-cpp-dev libfontconfig1-dev \
-          libcairo2-dev libfreetype6-dev libpng-dev libtiff5-dev \
-          libjpeg-dev pkg-config
+          sudo apt install -y \
+            libcurl4-openssl-dev libfribidi-dev libharfbuzz-dev libxslt1-dev \
+            libblas-dev liblapack-dev libpoppler-cpp-dev libfontconfig1-dev \
+            libcairo2-dev libfreetype6-dev libpng-dev libtiff5-dev \
+            libjpeg-dev pkg-config
 
-      - name: Install R
+      # --- R (cached)
+      - name: Set up R
         uses: r-lib/actions/setup-r@v2
         with:
           r-version: "4.5.2"
-          
+          use-public-rspm: true
+
+      # --- Java for rJava
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '21'
+          distribution: temurin
+          java-version: "21"
 
       - name: Configure Java for rJava
-        run: |
-          echo "$JAVA_HOME/bin" >> $GITHUB_PATH
-          sudo R CMD javareconf
+        run: sudo R CMD javareconf
 
-      - name: Install R Dependencies
+      # --- renv cache (critical)
+      - name: Restore renv packages
         uses: r-lib/actions/setup-renv@v2
+        with:
+          cache-version: 1
 
-      - name: Render book
+      # --- Render site
+      - name: Render website
         run: Rscript -e 'babelquarto::render_website()'
-        env: # Set the secret as an input
+        env:
           BABELQUARTO_CI_URL: https://stesiam.com
 
-      - name: Deploy to GitHub Pages
+      # --- Sanity check (prevents silent deploy failures)
+      - name: Verify site output
+        run: |
+          test -f docs/index.html || {
+            echo "❌ docs/index.html not found"
+            exit 1
+          }
+
+      # --- Upload Pages artifact
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: ./docs  # Quarto output directory
+          path: ./docs
 
-      - name: Deploy 🚀
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages 🚀
+        id: deployment
         uses: actions/deploy-pages@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
