@@ -87,14 +87,19 @@ jobs:
       - name: Run PurgeCSS
         run: |
           npm install -g purgecss
-          # Scan HTML and JS (to protect search/menus) and overwrite Bootstrap
-          purgecss --css docs/site_libs/bootstrap/bootstrap.min.css \
-                   --content "docs/**/*.html" "docs/site_libs/**/*.js" \
+          # Use find to locate the bootstrap file regardless of language subfolders
+          BOOTSTRAP_PATH=$(find docs -name "bootstrap.min.css" | head -n 1)
+          echo "Found bootstrap at: $BOOTSTRAP_PATH"
+          
+          purgecss --css "$BOOTSTRAP_PATH" \
+                   --content "docs/**/*.html" "docs/**/*.js" \
                    --safelist "show" "collapsing" "collapse" "navbar-toggler" "quarto-search" "quarto-search-results" "quarto-secondary-nav" \
-                   --output docs/site_libs/bootstrap/bootstrap.min.css
+                   --output "$BOOTSTRAP_PATH"
 
       - name: Check CSS Size Reduction
-        run: ls -lh docs/site_libs/bootstrap/bootstrap.min.css
+        run: |
+          BOOTSTRAP_PATH=$(find docs -name "bootstrap.min.css" | head -n 1)
+          ls -lh "$BOOTSTRAP_PATH"
 
       # --- Upload Pages artifact
       - name: Upload Pages artifact
