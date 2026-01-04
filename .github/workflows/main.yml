@@ -5,12 +5,14 @@ on:
   push:
     branches: gh-pages
 
+permissions:
+  contents: read       # needed to check out repo
+  id-token: write      # required for deploy-pages
+  pages: write
+
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      deployments: write
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -63,4 +65,4 @@ jobs:
       - name: Deploy 🚀
         uses: actions/deploy-pages@v2
         with:
-          cache-version: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
