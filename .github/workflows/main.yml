@@ -87,19 +87,27 @@ jobs:
       - name: Run PurgeCSS
         run: |
           npm install -g purgecss
-          # Use find to locate the bootstrap file regardless of language subfolders
-          BOOTSTRAP_PATH=$(find docs -name "bootstrap.min.css" | head -n 1)
-          echo "Found bootstrap at: $BOOTSTRAP_PATH"
           
-          purgecss --css "$BOOTSTRAP_PATH" \
-                   --content "docs/**/*.html" "docs/**/*.js" \
-                   --safelist "show" "collapsing" "collapse" "navbar-toggler" "quarto-search" "quarto-search-results" "quarto-secondary-nav" \
-                   --output "$BOOTSTRAP_PATH"
+          BOOTSTRAP_FILES=$(find docs -name "bootstrap.min.css")
 
-      - name: Check CSS Size Reduction
+          if [ -z "$BOOTSTRAP_FILES" ]; then
+            echo "⚠️ No bootstrap.min.css files found in docs/. Skipping."
+            exit 0
+          fi
+
+          for CSS_FILE in $BOOTSTRAP_FILES; do
+            echo "Processing: $CSS_FILE"
+            
+            purgecss --css "$CSS_FILE" \
+                     --content "docs/**/*.html" "docs/**/*.js" \
+                     --safelist "show" "collapsing" "collapse" "navbar-toggler" "quarto-search" "quarto-search-results" "quarto-secondary-nav" \
+                     --output "$CSS_FILE"
+          done
+
+      - name: Verify Results
         run: |
-          BOOTSTRAP_PATH=$(find docs -name "bootstrap.min.css" | head -n 1)
-          ls -lh "$BOOTSTRAP_PATH"
+          echo "Final CSS sizes:"
+          find docs -name "bootstrap.min.css" -exec ls -lh {} +
 
       # --- Upload Pages artifact
       - name: Upload Pages artifact

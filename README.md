@@ -1,7 +1,7 @@
 # My personal Quarto website <img src="assets/images/black_icon.svg" align="right" width="120" />
 
 [![pages-build-deployment](https://github.com/stesiam/stesiam.github.io/actions/workflows/pages/pages-build-deployment/badge.svg?branch=gh-pages)](https://github.com/stesiam/stesiam.github.io/actions/workflows/pages/pages-build-deployment)
-
+[![Render babelquarto (quarto) website](https://github.com/stesiam/stesiam.github.io/actions/workflows/main.yml/badge.svg)](https://github.com/stesiam/stesiam.github.io/actions/workflows/main.yml)
 
 A multilingual website (English / Greek) built with [Quarto](https://quarto.org/) and [babelquarto](https://docs.ropensci.org/babelquarto/).
 Deployed using [GitHub Pages](https://pages.github.com/).
