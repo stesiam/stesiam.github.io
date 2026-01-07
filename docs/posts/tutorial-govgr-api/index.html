@@ -94,15 +94,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><script>
-  // Immediately apply the saved theme class to <html> to prevent FOUC
-  (function() {
-    const savedTheme = localStorage.getItem("quarto-color-scheme");
-    const theme = savedTheme ? savedTheme : "light"; // Default to light
-    document.documentElement.classList.remove("quarto-light", "quarto-dark");
-    document.documentElement.classList.add("quarto-" + theme);
-  })();
-</script><link rel="stylesheet" href="../../assets/styles/styles.css">
+}</script><style>
+  html, body {
+    background-color: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    html, body {
+      background-color: #121212;
+  }
+</style>
+<link rel="stylesheet" href="../../assets/styles/styles.css">
 <meta property="og:title" content="Accessing API of data.gov.gr – stesiam">
 <meta property="og:description" content="A simple guide to using the data.gov.gr API to get the data stream using R.">
 <meta property="og:image" content="https://stesiam.com/posts/tutorial-govgr-api/images/source_code.jpg">

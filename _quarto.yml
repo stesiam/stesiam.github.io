@@ -27,21 +27,10 @@ format:
       light: [assets/li.scss]
       dark: [assets/da.scss]
     css: assets/styles/styles.css
-    theme-mode: light
+    theme-mode: auto
     theme-toggle: true
     toc: true
     html-math-method: katex
-    include-in-header: 
-      - text: |
-          <script>
-            // Immediately apply the saved theme class to <html> to prevent FOUC
-            (function() {
-              const savedTheme = localStorage.getItem("quarto-color-scheme");
-              const theme = savedTheme ? savedTheme : "light"; // Default to light
-              document.documentElement.classList.remove("quarto-light", "quarto-dark");
-              document.documentElement.classList.add("quarto-" + theme);
-            })();
-          </script>
     comments:
       giscus:
         repo: stesiam/stesiam.github.io

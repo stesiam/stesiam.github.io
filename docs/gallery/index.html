@@ -62,15 +62,16 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script><style>html{ scroll-behavior: smooth; }</style>
-<script>
-  // Immediately apply the saved theme class to <html> to prevent FOUC
-  (function() {
-    const savedTheme = localStorage.getItem("quarto-color-scheme");
-    const theme = savedTheme ? savedTheme : "light"; // Default to light
-    document.documentElement.classList.remove("quarto-light", "quarto-dark");
-    document.documentElement.classList.add("quarto-" + theme);
-  })();
-</script><link rel="stylesheet" href="../assets/styles/styles.css">
+<style>
+  html, body {
+    background-color: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    html, body {
+      background-color: #121212;
+  }
+</style>
+<link rel="stylesheet" href="../assets/styles/styles.css">
 <link rel="stylesheet" href="../assets/styles/custom-style.css">
 <meta property="og:title" content=" Gallery – stesiam">
 <meta property="og:description" content="A collection of my visualizations. Some of them are based on popular challenges such as #TidyTuesday and #30DayMapChallenge. The collection is not restricted to those, as I find from time to time interesting datasets to work with.">

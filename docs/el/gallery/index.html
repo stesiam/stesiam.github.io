@@ -62,15 +62,16 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Αναζήτηση"
   }
 }</script><style>html{ scroll-behavior: smooth; }</style>
-<script>
-  // Immediately apply the saved theme class to <html> to prevent FOUC
-  (function() {
-    const savedTheme = localStorage.getItem("quarto-color-scheme");
-    const theme = savedTheme ? savedTheme : "light"; // Default to light
-    document.documentElement.classList.remove("quarto-light", "quarto-dark");
-    document.documentElement.classList.add("quarto-" + theme);
-  })();
-</script><link rel="stylesheet" href="../assets/styles/styles.css">
+<style>
+  html, body {
+    background-color: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    html, body {
+      background-color: #121212;
+  }
+</style>
+<link rel="stylesheet" href="../assets/styles/styles.css">
 <link rel="stylesheet" href="../assets/styles/custom-style.css">
 <meta property="og:title" content=" Γραφήματα – stesiam">
 <meta property="og:description" content="Μία συλλογή διαγραμμάτων. Ορισμένα από αυτά γίνονται με βάση τα δεδομένα γνωστών προκλήσεων όπως τα #TidyTuesday και το #30DayMapChallenge. Παρόλα αυτά, η συλλογή μου από διαγράμματα δεν σταματάει εκεί, καθώς συνεχώς βρίσκω ενδιαφέροντα δεδομένα που θα ήθελα να τους δώσω μία πιο εύληπτη μορφή.">
