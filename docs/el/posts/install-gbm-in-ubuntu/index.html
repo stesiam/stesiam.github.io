@@ -93,16 +93,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Υποβολή",
     "search-label": "Αναζήτηση"
   }
-}</script><style>
-  html, body {
-    background-color: #ffffff;
-  }
-  @media (prefers-color-scheme: dark) {
-    html, body {
-      background-color: #121212;
-  }
-</style>
-<link rel="stylesheet" href="../../assets/styles/styles.css">
+}</script><link rel="stylesheet" href="../../assets/styles/styles.css">
 <meta property="og:title" content="Εγκατάσταση αλγορίθμων ενίσχυσης βαθμίδας στο Linux – stesiam">
 <meta property="og:description" content="Εγκατάσταση πακέτων - λογισμικού για τη χρήση αλγόριθμούς ενίσχυσης βαθμίδας (GBMs) (LightGBM, CatBoost &amp; XGBoost) με την R, στο Ubuntu 22.04 LTS">
 <meta property="og:image" content="/el/posts/install-gbm-in-ubuntu/images/installation_ubuntu.png">
@@ -255,7 +246,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       }
     };
     const authorPrefersDark = false;
-    const darkModeDefault = authorPrefersDark;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
       document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
       document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
     let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
@@ -268,6 +260,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
     };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
     // Switch to dark mode if need be
     if (hasAlternateSentinel()) {
       toggleColorMode(true);

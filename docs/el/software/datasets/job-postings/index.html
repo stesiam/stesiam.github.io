@@ -57,16 +57,7 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Υποβολή",
     "search-label": "Αναζήτηση"
   }
-}</script><style>
-  html, body {
-    background-color: #ffffff;
-  }
-  @media (prefers-color-scheme: dark) {
-    html, body {
-      background-color: #121212;
-  }
-</style>
-<link rel="stylesheet" href="../../../assets/styles/styles.css">
+}</script><link rel="stylesheet" href="../../../assets/styles/styles.css">
 <meta property="og:title" content="Αγγελίες εργασίας – stesiam">
 <meta property="og:description" content="Συλλογή 5000+ αγγελιών εργασίας κατά το μήνα Φεβρουάριο του 2025 από τη Χρυσή Ευκαιρία">
 <meta property="og:site_name" content="stesiam">
@@ -215,7 +206,8 @@ ul.task-list li input[type="checkbox"] {
       }
     };
     const authorPrefersDark = false;
-    const darkModeDefault = authorPrefersDark;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
       document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
       document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
     let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
@@ -228,6 +220,14 @@ ul.task-list li input[type="checkbox"] {
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
     };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
     // Switch to dark mode if need be
     if (hasAlternateSentinel()) {
       toggleColorMode(true);

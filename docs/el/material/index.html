@@ -95,9 +95,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: [{ data: ['index'] },{ data: ['categories'] }],
+      valueNames: ['listing-project','listing-highlight-style','listing-website','listing-format','listing-babelquarto','listing-lang','listing-language','listing-title','listing-description','listing-notes','listing-img','listing-imgAlt','listing-previewText','listing-codeText','listing-links','listing-path','listing-outputHref','listing-author','listing-filename','listing-file-modified','listing-reading-time','listing-word-count',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
       
-      searchColumns: [],
+      searchColumns: ["listing-project","listing-highlight-style","listing-website","listing-format","listing-babelquarto","listing-lang","listing-language","listing-title","listing-description","listing-notes","listing-img","listing-imgAlt","listing-previewText","listing-codeText","listing-links","listing-path","listing-outputHref","listing-author","listing-filename","listing-file-modified","listing-reading-time","listing-word-count"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -113,16 +113,7 @@ ul.task-list li input[type="checkbox"] {
       window['quarto-listing-loaded']();
     }
   })
-  </script><style>
-  html, body {
-    background-color: #ffffff;
-  }
-  @media (prefers-color-scheme: dark) {
-    html, body {
-      background-color: #121212;
-  }
-</style>
-<script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script><script>document.addEventListener("DOMContentLoaded", function () {
+  </script><script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script><script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
  var macros = [];
  for (var i = 0; i < mathElements.length; i++) {
@@ -167,7 +158,7 @@ window.Quarto = {
 <meta property="og:description" content="Στο πλαίσιο των σπουδών μου, ως προπτυχιακός φοιτητής, έχει χρειαστεί να κάνω αρκετές εργασίες. Με βάση αυτό αποφάσισα να αναρτήσω ορισμένες από αυτές. Επιπλέον, αναρτώ και υλικό που θα βοηθήσει τους υπόλοιπους συμφοιτητές μου που για διάφορους λόγους (π.χ. υγείας, οικονομικούς κτλ.) δεν μπορούν να ολοκληρώσουν τις σπουδές τους.">
 <meta property="og:image" content="/el/assets/images/sampling_asgn.jpg">
 <meta property="og:site_name" content="stesiam">
-<meta property="og:image:alt" content="Εξώφυλλο της εργασίας μου για το μάθημα Μέθοδοι και Τεχνικές Δειγματοληψίας - περιέχεται ένα κολάζ διάφορων σκίτσων-εικόνων σχετικές με τη στατιστική και τις πιθανότητες (ζάρι, αριθμομηχανή, σύμβολο ποσοστού (τοις εκατό), συμβολισμός μαθηματικής συνάρτησης, λογότυπο της γλώσσας προγραμματισμού R κτλ.)">
+<meta property="og:image:alt" content="Εξώφυλλο">
 </head>
 <body class="nav-fixed quarto-light">
 <script id="quarto-html-before-body" type="application/javascript">
@@ -313,7 +304,8 @@ window.Quarto = {
       }
     };
     const authorPrefersDark = false;
-    const darkModeDefault = authorPrefersDark;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
       document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
       document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
     let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
@@ -326,6 +318,14 @@ window.Quarto = {
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
     };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
     // Switch to dark mode if need be
     if (hasAlternateSentinel()) {
       toggleColorMode(true);
@@ -474,6 +474,11 @@ window.Quarto = {
 h3 a{
   display: none;
 }
+
+
+.card img {
+    filter: invert(1) hue-rotate(180deg);
+}
 </style>
 <section id="σχεδιαγράμματα-σημειώσεων" class="level2"><h2 class="anchored" data-anchor-id="σχεδιαγράμματα-σημειώσεων">✨Σχεδιαγράμματα σημειώσεων</h2>
 <div id="listing-posters" class="quarto-listing quarto-listing-container-custom">
@@ -481,7 +486,7 @@ h3 a{
   
     
 
-    <div class="g-col-12 g-col-sm-6 title-block" data-index="0" data-listing-file-modified-sort="1767806886660" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+    <div class="g-col-12 g-col-sm-6 title-block" data-index="0" data-listing-file-modified-sort="1767903494914" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
       <div class="card shadow-sm h-100">
 
           <div class="card-body text-center">
@@ -514,7 +519,7 @@ h3 a{
   
     
 
-    <div class="g-col-12 g-col-sm-6 title-block" data-index="1" data-listing-file-modified-sort="1767806886660" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+    <div class="g-col-12 g-col-sm-6 title-block" data-index="1" data-listing-file-modified-sort="1767903494914" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
       <div class="card shadow-sm h-100">
 
           <div class="card-body text-center">
@@ -548,7 +553,7 @@ h3 a{
   
     
 
-    <div class="g-col-12 g-col-sm-6 title-block" data-index="2" data-listing-file-modified-sort="1767806886659" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+    <div class="g-col-12 g-col-sm-6 title-block" data-index="2" data-listing-file-modified-sort="1767903494914" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
       <div class="card shadow-sm h-100">
 
           <div class="card-body text-center">
@@ -581,7 +586,7 @@ h3 a{
   
     
 
-    <div class="g-col-12 g-col-sm-6 title-block" data-index="3" data-listing-file-modified-sort="1767806886660" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+    <div class="g-col-12 g-col-sm-6 title-block" data-index="3" data-listing-file-modified-sort="1767903494914" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
       <div class="card shadow-sm h-100">
 
           <div class="card-body text-center">
@@ -614,7 +619,7 @@ h3 a{
   
     
 
-    <div class="g-col-12 g-col-sm-6 title-block" data-index="4" data-listing-file-modified-sort="1767806886660" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+    <div class="g-col-12 g-col-sm-6 title-block" data-index="4" data-listing-file-modified-sort="1767903494914" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
       <div class="card shadow-sm h-100">
 
           <div class="card-body text-center">
@@ -652,6 +657,56 @@ h3 a{
 </section><section id="εργασίες" class="level2"><h2 class="anchored" data-anchor-id="εργασίες">Εργασίες</h2>
 <div id="listing-asgns" class="quarto-listing quarto-listing-container-custom">
 <div class="grid">
+  
+    
+
+    <div class="g-col-12 g-col-md-6 title-block" data-index="0" data-listing-file-modified-sort="1767903494914" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+        <div class="card h-100 border-0 shadow-sm rounded-4 card-hover" style="max-width: 25rem;">
+        
+            <div class="img-container rounded-top-4 position-relative d-flex justify-content-center">
+              <img src="../assets/images/sampling_asgn.jpg" alt="Εξώφυλλο" r=""><span class="position-absolute top-0 start-0 m-3 badge bg-dark bg-opacity-75 backdrop-blur rounded-pill px-3 py-2 small">
+                University Project
+              </span>
+            </div>
+          
+            <div class="card-body p-2 d-flex flex-column">
+              <div class="mb-1">
+                <h4 class="card-title fw-bold text-dark mb-0 anchored">Μέθοδοι και Τεχνικές Δειγματοληψίας</h4>
+                <small class="text-primary fw-medium">Εργασία εξαμήνου</small>
+              </div>
+          
+              
+              <div class="row g-3 mb-4 small text-muted">
+                <div class="col-6 d-flex align-items-center">
+                  <i class="bi bi-book-half me-2 text-primary"></i> 141 Σελίδες
+                </div>
+                <div class="col-6 d-flex align-items-center">
+                  <i class="bi bi-filetype-pdf me-2 text-danger"></i> PDF Format
+                </div>
+                <div class="col-6 d-flex align-items-center">
+                  <i class="bi bi-translate me-2 text-info"></i> Ελληνικά
+                </div>
+                <div class="col-6 d-flex align-items-center">
+                  <i class="bi bi-calendar-event me-2 text-warning"></i> 2023 - 2024
+                </div>
+              </div>
+          
+              <p class="card-text mb-4 small flex-grow-1 lh-base">
+                Εργασία εξαμήνου στην οποία λύνω ασκήσεις σχετικές με απλή τυχαία, συστηματική, στρωματοποιημένη και δειγματοληψία συστάδων
+              </p>
+          
+          
+              <div class="d-flex gap-2 pt-2 border-top">
+                <a href="https://drive.google.com/file/d/1It24SASMaSL-vJxdryUUL_js1TLPiSYC/view?usp=drive_link" class="btn btn-primary w-100 rounded-3 fw-semibold py-2" target="_blank">
+                  <i class="bi bi-file-earmark-arrow-down me-1"></i> Προεπισκόπηση
+                </a>
+                <a href="https://drive.google.com/file/d/1It24SASMaSL-vJxdryUUL_js1TLPiSYC/view?usp=drive_link" class="btn btn-primary w-100 rounded-3 fw-semibold py-2" target="_blank">
+                  <i class="bi bi-file-github me-1"></i> Κώδικας
+                </a>
+              </div>
+            </div>
+      </div>
+    </div>
   
 </div>
 

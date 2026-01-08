@@ -113,16 +113,7 @@ ul.task-list li input[type="checkbox"] {
       window['quarto-listing-loaded']();
     }
   })
-  </script><style>
-  html, body {
-    background-color: #ffffff;
-  }
-  @media (prefers-color-scheme: dark) {
-    html, body {
-      background-color: #121212;
-  }
-</style>
-<script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script><script>document.addEventListener("DOMContentLoaded", function () {
+  </script><script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script><script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
  var macros = [];
  for (var i = 0; i < mathElements.length; i++) {
@@ -313,7 +304,8 @@ window.Quarto = {
       }
     };
     const authorPrefersDark = false;
-    const darkModeDefault = authorPrefersDark;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
       document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
       document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
     let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
@@ -326,6 +318,14 @@ window.Quarto = {
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
     };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
     // Switch to dark mode if need be
     if (hasAlternateSentinel()) {
       toggleColorMode(true);
@@ -432,7 +432,7 @@ h3 a{
   
     
 
-    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="0" data-listing-file-modified-sort="1767806661391" data-listing-reading-time-sort="3" data-listing-word-count-sort="462">
+    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="0" data-listing-file-modified-sort="1767903251005" data-listing-reading-time-sort="3" data-listing-word-count-sort="462">
       <div class="card card-horizontal shadow-sm">
 
         <!-- Image -->
@@ -477,7 +477,7 @@ h3 a{
   
     
 
-    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="1" data-listing-file-modified-sort="1767806661391" data-listing-reading-time-sort="3" data-listing-word-count-sort="462">
+    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="1" data-listing-file-modified-sort="1767903251005" data-listing-reading-time-sort="3" data-listing-word-count-sort="462">
       <div class="card card-horizontal shadow-sm">
 
         <!-- Image -->
@@ -522,7 +522,7 @@ h3 a{
   
     
 
-    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="2" data-listing-file-modified-sort="1767806661391" data-listing-reading-time-sort="1" data-listing-word-count-sort="73">
+    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="2" data-listing-file-modified-sort="1767903251005" data-listing-reading-time-sort="1" data-listing-word-count-sort="73">
       <div class="card card-horizontal shadow-sm">
 
         <!-- Image -->
@@ -567,7 +567,7 @@ h3 a{
   
     
 
-    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="3" data-listing-file-modified-sort="1767806661391" data-listing-reading-time-sort="1" data-listing-word-count-sort="73">
+    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="3" data-listing-file-modified-sort="1767903251005" data-listing-reading-time-sort="1" data-listing-word-count-sort="73">
       <div class="card card-horizontal shadow-sm">
 
         <!-- Image -->
@@ -612,7 +612,7 @@ h3 a{
   
     
 
-    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="4" data-listing-file-modified-sort="1767806661391" data-listing-reading-time-sort="1" data-listing-word-count-sort="73">
+    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="4" data-listing-file-modified-sort="1767903251006" data-listing-reading-time-sort="1" data-listing-word-count-sort="73">
       <div class="card card-horizontal shadow-sm">
 
         <!-- Image -->
@@ -665,7 +665,7 @@ h3 a{
   
     
 
-    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="0" data-listing-file-modified-sort="1767806661390" data-listing-reading-time-sort="3" data-listing-word-count-sort="462">
+    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="0" data-listing-file-modified-sort="1767903251005" data-listing-reading-time-sort="3" data-listing-word-count-sort="462">
       <div class="card card-horizontal shadow-sm">
 
         <!-- Image -->
@@ -710,7 +710,7 @@ h3 a{
   
     
 
-    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="1" data-listing-file-modified-sort="1767806661390" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+    <div class="g-col-12 g-col-sm-6 title-block d-flex" data-index="1" data-listing-file-modified-sort="1767903251005" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
       <div class="card card-horizontal shadow-sm">
 
         <!-- Image -->
