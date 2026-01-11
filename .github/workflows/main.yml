@@ -29,7 +29,7 @@ jobs:
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
         with:
-          version: pre-release
+          version: latest
 
       # --- System libraries
       - name: Install system dependencies
@@ -74,7 +74,7 @@ jobs:
       - name: Verify site output
         run: |
           test -f docs/index.html || {
-            echo "❌ docs/index.html not found"
+            echo "docs/index.html not found"
             exit 1
           }
 
@@ -93,7 +93,7 @@ jobs:
           BOOTSTRAP_FILES=$(find docs -name "bootstrap*.min.css")
 
           if [ -z "$BOOTSTRAP_FILES" ]; then
-            echo "⚠️ No bootstrap CSS files found. Check if the directory structure changed."
+            echo "No bootstrap CSS files found. Check if the directory structure changed."
             exit 0
           fi
 
@@ -126,6 +126,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages 🚀
+      - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
