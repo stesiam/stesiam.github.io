@@ -78,18 +78,18 @@ jobs:
             exit 1
           }
 
-      # --- NEW: PURGECSS OPTIMIZATION ---
+      # --- Node Setup
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
+      # --- PurgeCSS Optimization
       - name: Run PurgeCSS (Bootstrap & Icons)
         run: |
           npm install -g purgecss
           
-          # 1. Find all relevant CSS files 
-          # This now includes bootstrap-icons.css and hashed variants
+          # Find all CSS files starting with bootstrap (including icons)
           CSS_FILES=$(find docs -name "bootstrap*.css")
       
           if [ -z "$CSS_FILES" ]; then
@@ -109,16 +109,16 @@ jobs:
                      --output "$CSS_FILE"
           done
 
-    - name: Verify Results
-      run: |
+      - name: Verify Results
+        run: |
           echo "Final optimized CSS files:"
-          find docs -name "bootstrap*.min.css" -exec ls -lh {} +
+          find docs -name "bootstrap*.css" -ls
 
       # --- Upload Pages artifact
-    - name: Upload Pages artifact
-      uses: actions/upload-pages-artifact@v4
-      with:
-        path: ./docs
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./docs
 
   deploy:
     needs: build
