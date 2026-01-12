@@ -84,40 +84,41 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Run PurgeCSS
+      - name: Run PurgeCSS (Bootstrap & Icons)
         run: |
           npm install -g purgecss
           
-          # Find all hashed bootstrap minified files
-          # This pattern matches bootstrap-xxxx.min.css and bootstrap-dark-xxxx.min.css
-          BOOTSTRAP_FILES=$(find docs -name "bootstrap*.min.css")
-
-          if [ -z "$BOOTSTRAP_FILES" ]; then
-            echo "No bootstrap CSS files found. Check if the directory structure changed."
+          # 1. Find all relevant CSS files 
+          # This now includes bootstrap-icons.css and hashed variants
+          CSS_FILES=$(find docs -name "bootstrap*.css")
+      
+          if [ -z "$CSS_FILES" ]; then
+            echo "No Bootstrap or Icon CSS files found."
             exit 0
           fi
-
-          for CSS_FILE in $BOOTSTRAP_FILES; do
-            echo "Processing optimized CSS for: $CSS_FILE"
+      
+          for CSS_FILE in $CSS_FILES; do
+            echo "Purging: $CSS_FILE"
             
             purgecss --css "$CSS_FILE" \
                      --content "docs/**/*.html" "docs/**/*.js" \
                      --safelist "show" "collapsing" "collapse" "navbar-toggler" \
                                 "quarto-search" "quarto-search-results" "quarto-secondary-nav" \
                                 "nav-link" "nav-item" "dropdown-toggle" \
+                                "/^bi-/" "/^bi$/" \
                      --output "$CSS_FILE"
           done
 
-      - name: Verify Results
-        run: |
+    - name: Verify Results
+      run: |
           echo "Final optimized CSS files:"
           find docs -name "bootstrap*.min.css" -exec ls -lh {} +
 
       # --- Upload Pages artifact
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: ./docs
+    - name: Upload Pages artifact
+      uses: actions/upload-pages-artifact@v4
+      with:
+        path: ./docs
 
   deploy:
     needs: build
