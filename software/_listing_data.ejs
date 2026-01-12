@@ -1,0 +1,67 @@
+```{=html}
+<div class="grid">
+  <% for (const item of items) { %>
+    <%
+      // Ensure link points to rendered Quarto article (folder URL)
+      const cleanPath =
+        item.path
+          .replace(/index\.html$/, '')
+          .replace(/index\.qmd$/, '')
+          .replace(/\/$/, '') + '/';
+    %>
+
+    <div class="g-col-12 g-col-sm-6 title-block d-flex" <%= metadataAttrs(item) %>>
+      <div class="card h-100 border-0 shadow-sm custom-card-hover" style="border-radius: 20px; transition: all 0.3s ease;">
+      <div class="card-body p-4">
+        
+  
+        <h5 class="card-title fw-bold mb-2"><%= item.title %></h5>
+        <p class="card-text small mb-4">
+          <%= item.description %>
+        </p>
+  
+        <div class="row g-2 mb-4">
+          <div class="col-6">
+            <div class="d-flex align-items-center text-dark">
+              <i class="bi bi-calendar3 text-primary me-2"></i>
+              <div class="lh-1">
+                <small class="text-muted d-block" style="font-size: 0.65rem;"><%= item.periodText %></small>
+                <span class="small fw-bold"><%= item.period %></span>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="d-flex align-items-center text-dark">
+              <i class="bi bi-layers text-primary me-2"></i>
+              <div class="lh-1">
+                <small class="text-muted d-block" style="font-size: 0.65rem;"><%= item.recordsText %></small>
+                <span class="small fw-bold"><%= item.records %></span>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="d-flex align-items-center text-dark">
+              <i class="bi bi-translate text-primary me-2"></i>
+              <div class="lh-1">
+                <small class="text-muted d-block" style="font-size: 0.65rem;"><%= item.languageText %></small>
+                <span class="small fw-bold"><%= item.language %></span>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="d-flex align-items-center text-dark">
+              <i class="bi bi-shield-check text-primary me-2"></i>
+              <div class="lh-1">
+                <small class="text-muted d-block" style="font-size: 0.65rem;">LICENSE</small>
+                <span class="small fw-bold">Open Data</span>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <a href="#" class="btn btn-primary w-100 rounded-pill fw-bold shadow-sm">
+          <%= item.exploreDatasetText %> <i class="bi bi-arrow-right ms-2"></i>
+        </a>
+      </div>
+    </div>
+</div>
