@@ -30,6 +30,17 @@ format:
     respect-user-color-scheme: true
     toc: true
     html-math-method: katex
+    include-in-header:
+      text: |
+        <meta name="color-scheme" content="light dark">
+        <style>
+          /* This forces Firefox to use the system/stored dark color 
+             for the 'canvas' before the page content even loads */
+          :root {
+            background-color: canvas;
+            color: canvastext;
+          }
+        </style>
     comments:
       giscus:
         repo: stesiam/stesiam.github.io
