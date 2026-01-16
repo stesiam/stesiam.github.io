@@ -62,6 +62,7 @@ library(kableExtra)
 library(reactable)
 library(keyring)
 library(deeplr)
+library(gt)
 
 # Graphs
 library(ggplot2)
@@ -112,7 +113,61 @@ parliament =  parliament |> mutate(.classify = case_when(
 
 ```{r}
 #| label: function_reactable_tables
-
+gt_custom <- function(data, head_max = 5) {
+  data_subset <- as.data.frame(data) %>% head(head_max)
+  
+  data_subset %>%
+    gt() %>%
+    # 1. Internal GT Alignment
+    cols_align(align = "center", columns = everything()) %>%
+    
+    # 2. Typography
+    tab_style(
+      style = cell_text(v_align = "middle", weight = "bold", whitespace = "normal"),
+      locations = cells_column_labels()
+    ) %>%
+    # 3. THEME & COLORS
+    tab_options(
+      row.striping.include_table_body = FALSE,
+      table.background.color = "transparent",
+      column_labels.background.color = "transparent",
+      table.width = pct(100), 
+      table.font.size = px(13),           
+      data_row.padding = px(15), 
+      column_labels.padding = px(15),
+      
+      # Borders
+      table.border.top.style = "none",
+      table.border.bottom.style = "none",
+      table_body.hlines.style = "none", 
+      column_labels.border.top.width = px(2),
+      column_labels.border.top.color = "#757575",
+      column_labels.border.bottom.width = px(2),
+      column_labels.border.bottom.color = "#757575",
+      table_body.border.bottom.width = px(2),
+      table_body.border.bottom.color = "#757575"
+    ) %>%
+    
+    # 4. CSS FOR SUB-PLOT CENTERING
+    opt_css(css = "
+      /* Force every cell (header and body) to center text */
+      .gt_table th, .gt_table td { 
+        text-align: center !important; 
+        vertical-align: middle !important;
+      }
+      
+      /* Force the table to center within the Quarto column */
+      .gt_table { 
+        margin-left: auto !important; 
+        margin-right: auto !important; 
+        width: 100% !important;
+      }
+      
+      /* Strip row backgrounds */
+      .gt_table tr { background-color: transparent !important; }
+      .gt_row { background-color: transparent !important; }
+    ")
+}
 reactable_custom = function(data, head_max = 5){
   reactable(
   head(data, head_max),
@@ -264,25 +319,7 @@ data.frame(
    "Σύνολο χαρακτήρων" = str_length(unique(parliament$Party)),check.names = FALSE
 ) %>%
   arrange(-`Σύνολο χαρακτήρων`) %>%
- reactable(.,
-  bordered = FALSE,     # No borders (booktabs style)
-  striped = FALSE,      # No stripes for a clean look
-  highlight = FALSE,    # No hover highlighting
-  defaultColDef = colDef(align = "center"),
-  defaultPageSize = 7,
-  style = list(fontSize = "14px", border = "none"),
-  theme = reactableTheme(
-    borderColor = "transparent", # Remove border
-    cellStyle = list(
-      borderBottom = "transparent"  # Subtle line between rows
-    ),
-    headerStyle = list(
-      borderBottom = "2px solid rgb(117, 117, 117)", # Thick top rule
-      borderTop = "2px solid rgb(117, 117, 117)",
-      fontWeight = "bold"
-    )
-  )
-) 
+  gt_custom(., 7)
 ```
 
 Σαν να μην έφτανε αυτό παρατηρώ ότι υπάρχουν πολλαπλές καταχωρήσεις για το ίδιο κόμμα που ενδεχομένως κατά τη πάροδο των ετών έκανε ένα μικρό rebranding (Ανεξάρτητοι Έλληνες) ή ακόμα και πιο μεγάλες αλλαγές που κατά βάση αναφέρονται και είναι πρόγονοι ή απόγονοι ως επί το πλείστον του ίδιου κόμματος (Συνασπισμός -> ΣΥΡΙΖΑ ή ΠΑΣΟΚ -> Ελιά -> Δημοκρατική Συμπαράταξη -> Κίνημα Αλλαγής -> ΠΑΣΟΚ). Μιας και αυτές οι αλλαγές δεν μπορούν να κατανοηθούν εύκολα,  κρίνεται απαραίτητη η δημιουργία ενός νέου πίνακα ώστε να ομαδοποιήσω αυτή τη πληροφορία και να την συγχωνεύσω στο βασικό μου σύνολο δεδομένων. 
@@ -314,7 +351,7 @@ parties = data.frame(
     TRUE ~ "#808080"
   ))
 
-parties %>% reactable_custom()
+parties %>% gt_custom()
 ```
 
 Πλέον είμαι σε θέση να χρησιμοποιήσω την ελληνική ή την αγγλική έκδοση των ονομάτων των κομμάτων, ενώ σε περίπτωση δημιουργίας ενός γραφήματος έχω αντιστοιχίσει την πιο κοινά αποδεκτή συντομογραφία τους. Τέλος, ο διαχωρισμός του πλήρους ονόματος και μιας συντομογραφίας είναι αρκετά σημαντική για τη δημιουργία γραφημάτων μιας και συνήθως ο διαθέσιμος χώρος είναι περιορισμένος και δίνουμε στον αναγνώστη τη πληροφορία που χρειάζεται δίχως να κουράζουμε, βελτιώνοντας την αναγνωσιμότητα και τη κατανόηση του. Όπως είδαμε και παραπάνω υπάρχουν ονόματα - σιδηρόδρομοι, όπως των Ανεξαρτήτων Ελλήνων, όπου αριθμεί 81 χαρακτήρες και της Δημοκρατικής Συμπαράταξης (στην ουσία ΠΑΣΟΚ, σε συνεργασία με μικρά κόμματα όπως η ΔΗΜΑΡ, ΚΙΔΗΣΟ κ.α.) με 70. Σε αντιπαραβολή αυτών των ονομάτων και για λόγους πληρότητας το ΠΟΛ.Α. ήταν το όνομα με τους λιγότερους χαρακτήρες (6) και αναφέρεται στο κόμμα Πολιτική Άνοιξη. Πριν κλείσω τη συγκεκριμένη ενότητα θα ήθελα να κάνω αναφορά στη τελευταία στήλη του πίνακα. Με τόσα κόμματα είναι εμφανές ότι θα χρειαστεί να θέσω χρώματα κατάλληλα για το καθένα, αλλά το πλήθος τους ίσως προκαλέσει σύγχυση σε ποιο αναφέρομαι. Έκρινα λοιπόν απαραίτητη αυτή τη προσθήκη με βάση τα χρώματα στο έμβλημα του κάθε κόμματος να επιλέξω το πιο αντιπροσωπευτικό, τουλάχιστον για τα πιο γνωστά.
@@ -346,24 +383,7 @@ clean_dataset_preview = head(clean_dataset)
 
 
 clean_dataset_preview |>
- reactable(
-  bordered = FALSE,     # No borders (booktabs style)
-  striped = FALSE,      # No stripes for a clean look
-  highlight = FALSE,    # No hover highlighting
-  defaultColDef = colDef(align = "center"),
-  style = list(fontSize = "14px", border = "none"),
-  theme = reactableTheme(
-    borderColor = "transparent", # Remove border
-    cellStyle = list(
-      borderBottom = "transparent"  # Subtle line between rows
-    ),
-    headerStyle = list(
-      borderBottom = "2px solid rgb(117, 117, 117)", # Thick top rule
-      borderTop = "2px solid rgb(117, 117, 117)",
-      fontWeight = "bold"
-    )
-  )
-) 
+  gt_custom() 
 ```
 
 

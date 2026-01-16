@@ -100,6 +100,7 @@ library(reactable)
 library(purrr)
 library(tibble)
 library(htmlwidgets)
+library(gt)
 
 # Graphs
 
@@ -164,7 +165,61 @@ unemployment <- read_csv("data/unemployment.csv") %>%
 
 ```{r}
 #| label: function_reactable_tables
-
+gt_custom <- function(data, head_max = 5) {
+  data_subset <- as.data.frame(data) %>% head(head_max)
+  
+  data_subset %>%
+    gt() %>%
+    # 1. Internal GT Alignment
+    cols_align(align = "center", columns = everything()) %>%
+    
+    # 2. Typography
+    tab_style(
+      style = cell_text(v_align = "middle", weight = "bold", whitespace = "normal"),
+      locations = cells_column_labels()
+    ) %>%
+    # 3. THEME & COLORS
+    tab_options(
+      row.striping.include_table_body = FALSE,
+      table.background.color = "transparent",
+      column_labels.background.color = "transparent",
+      table.width = pct(100), 
+      table.font.size = px(13),           
+      data_row.padding = px(15), 
+      column_labels.padding = px(15),
+      
+      # Borders
+      table.border.top.style = "none",
+      table.border.bottom.style = "none",
+      table_body.hlines.style = "none", 
+      column_labels.border.top.width = px(2),
+      column_labels.border.top.color = "#757575",
+      column_labels.border.bottom.width = px(2),
+      column_labels.border.bottom.color = "#757575",
+      table_body.border.bottom.width = px(2),
+      table_body.border.bottom.color = "#757575"
+    ) %>%
+    
+    # 4. CSS FOR SUB-PLOT CENTERING
+    opt_css(css = "
+      /* Force every cell (header and body) to center text */
+      .gt_table th, .gt_table td { 
+        text-align: center !important; 
+        vertical-align: middle !important;
+      }
+      
+      /* Force the table to center within the Quarto column */
+      .gt_table { 
+        margin-left: auto !important; 
+        margin-right: auto !important; 
+        width: 100% !important;
+      }
+      
+      /* Strip row backgrounds */
+      .gt_table tr { background-color: transparent !important; }
+      .gt_row { background-color: transparent !important; }
+    ")
+}
 reactable_custom = function(data, head_max = 5){
   reactable(
   head(data, head_max),
@@ -292,7 +347,7 @@ O ΟΟΣΑ (Οργανισμός Οικονομικής Συνεργασίας �
 #| label: tbl-preview-dataset
 #| title: "Προεπισκόπηση δεδομένων"
 #| tbl-cap: "Προεπισκόπηση δεδομένων (πρώτες 6 σειρές)"
-reactable_custom(unemployment)
+gt_custom(unemployment)
 ```
 
 Τα δεδομένα μου αποτελούνται από `r ncol(unemployment)` μεταβλητές (στήλες). Πιο
@@ -334,7 +389,7 @@ reactable_custom(unemployment)
 #| tbl-cap: "Σύνοψη τύπων μεταβλητών (χωρίς προεπεξεργασία)"
 map_chr(unemployment, class) %>% 
   enframe("Όνομα μεταβλητής", "Τύπος μεταβλητής") %>%
-  reactable_custom() 
+  gt_custom() 
 ```
 
 Παραπάνω επισημάνθηκε ότι οι ημερομηνίες έχουν την μορφή "ΕΕΕΕ-ΜΜ" (Έτος-Μήνας)
@@ -358,7 +413,7 @@ unemploymentType <- unemployment %>%
 #| tbl-cap: "Σύνοψη τύπων μεταβλητών (μετά από προεπεξεργασία)"
 map_chr(unemployment, class) %>% 
   enframe("Όνομα μεταβλητής", "Τύπος μεταβλητής") %>%
-  reactable_custom() 
+  gt_custom() 
 ```
 
 Και τώρα που μετέτρεψα τη κύρια μεταβλητή μου σε τύπου Date είμαι έτοιμος να
@@ -413,7 +468,7 @@ unemploymentType %>%
   arrange(Value) %>%
   tail(5) %>%
   setNames(c("Μήνας", "Ποσοστό ανεργίας (%)")) %>%
-  reactable_custom()
+  gt_custom()
 
 unemploymentType %>% 
   as.tibble() %>%
@@ -422,7 +477,7 @@ unemploymentType %>%
   arrange(Value) %>%
   tail(5) %>%
   setNames(c("Μήνας", "Ποσοστό ανεργίας (%)")) %>%
-  reactable_custom()
+  gt_custom()
 
 ```
 
@@ -448,7 +503,7 @@ unemploymentType %>%
   arrange(Value) %>%
   head(5) %>%
   setNames(c("Μήνας", "Ποσοστό ανεργίας (%)")) %>%
-  reactable_custom()
+  gt_custom()
 
 unemploymentType %>% 
   as.tibble() %>%
@@ -457,7 +512,7 @@ unemploymentType %>%
   arrange(Value) %>%
   head(5) %>%
   setNames(c("Μήνας", "Ποσοστό ανεργίας (%)")) %>%
-  reactable_custom()
+  gt_custom()
 ```
 
 
@@ -790,7 +845,7 @@ summary_stationarity_results <- data.frame(
 )
 
 
-summary_stationarity_results  %>% reactable_custom()
+summary_stationarity_results  %>% gt_custom()
 ```
 
 #### Έλεγχος DF
@@ -874,7 +929,7 @@ result_table <- data.frame(
     check.names = FALSE
 )
 
-result_table %>% reactable_custom()
+result_table %>% gt_custom()
 ```
 
 Από τους ελέγχους Ljung-Box και Durbin-Watson, απορρίπτω την υπόθεση ότι τα σφάλματα είναι ασυσχέτιστα. Τέλος, από τον έλεγχο ARCH προκύπτει ότι τα σφάλματα δεν είναι ομοσκεδαστικά (διαφορετική διακύμανση). Από αυτά είναι εμφανές ότι ο έλεγχος DF δεν είναι καλός και συνήθως δεν χρησιμοποιείται, καθώς οι υποθέσεις του είναι αρκετά περιοριστικές και συνήθως παραβιάζονται. Οι έλεγχοι όπως ο ADF και ο PP αντιμετωπίζουν με διάφορους τρόπους αυτή τη συμπεριφορά των σφαλμάτων, προκειμένου να λάβουμε έγκυρα αποτελέσματα κατά τη κρίση της σταισμότητας μίας σειράς.
@@ -999,7 +1054,7 @@ result_table <- data.frame(
     check.names = FALSE
 )
 
-result_table %>% reactable_custom()
+result_table %>% gt_custom()
 ```
 
 Με δεδομένο ότι τα αποτελέσματα του πίνακα [@tbl-adf-results] δεν είναι
@@ -1040,7 +1095,7 @@ result_table <- data.frame(
     check.names = FALSE
 )
 
-result_table %>% reactable_custom()
+result_table %>% gt_custom()
 ```
 
 Αφού η στατιστική τιμή (-2.119) είναι μικρότερη της αντίστοιχης κρίσιμης τιμής
@@ -1122,7 +1177,7 @@ result_table <- data.frame(
     check.names = FALSE
 )
 
-result_table %>% reactable_custom()
+result_table %>% gt_custom()
 ```
 
 ```{r}
@@ -1150,7 +1205,7 @@ result_table <- data.frame(
     check.names = FALSE
 )
 
-result_table %>% reactable_custom()
+result_table %>% gt_custom()
 ```
 
 Συνεπώς, έχουμε απόρριψη της μηδενικής ($H_0$) υπόθεσης, στις διαφορές των
@@ -1198,7 +1253,7 @@ result_table <- data.frame(
     check.names = FALSE
 )
 
-result_table %>% reactable_custom()
+result_table %>% gt_custom()
 ```
 
 Η μηδενική μου υπόθεση υπέθεσε στασιμότητα η οποία απορρίπτεται με βάση τον
@@ -1314,7 +1369,7 @@ data.frame("Αριθμός τομών" = c(1,2,3,4,5),
            "Τομή Δ" = breakPoints$breakpoints[,4] %>% set_names(NULL), 
            "Τομή Ε" = breakPoints$breakpoints[,5] %>% set_names(NULL), 
            check.names = FALSE) %>% 
-  reactable_custom()
+  gt_custom()
 ```
 
 και οι ημερομηνίες των αντίστοιχων τομών:
@@ -1329,7 +1384,7 @@ data.frame("Αριθμός τομών" = c(1,2,3,4,5),
            "Τομή Δ" = min(unemployment$TIME) %m+% months(breakPoints$breakpoints[,4]) %>% set_names(NULL), 
            "Τομή Ε" = min(unemployment$TIME) %m+% months(breakPoints$breakpoints[,5]) %>% set_names(NULL), 
            check.names = FALSE) %>% 
-  reactable_custom()
+  gt_custom()
 ```
 Για λόγους πληρότητας θα συμπεριλάβω τον έλεγχο Zivot-Andrews ο οποίος όμως δεν είναι ο καλύτερος μιας και υποθέτει μόνο μία διαρθωτική τομή. Παραπάνω βρέθηκαν δύο. Εδώ όμως προκύπτει ένα άλλο πρόβλημα. Παρόλο που για τους κλασσικούς ελέγχους, αλλά και ελέγχους με τομές όπως ο Zivot-Andrews υπάρχουν πακέτα και αντίστοιχες εντολές που υπολογίζουν τη στατιστική τιμή, δεν υπάρχουν ανάλογες εντολές για τον έλεγχο Lee-Strazicich. Ευτυχώς, αντί να στηριχτούμε σε κάποιο στατιστικό πακέτο (π.χ. EViews) βρήκα στο GitHub διαθέσιμο ένα [σχετικό αποθετήριο](https://github.com/hannes101/LeeStrazicichUnitRoot), όπου ο χρήστης [hannes101](https://github.com/hannes101/) έχει γράψει μία σειρά από συναρτήσεις για τον συγκεκριμένο έλεγχο που θυμίζουν σε λογική αυτές του πακέτου urca. Σε αυτό το σημείο να σημειώσω ότι ο απλός έλεγχος κρατάει αρκετά λεπτά, στη δική μου συσκευή πήρε 5 λεπτά για να εκτελεστεί. Το μοναδικό πρόβλημα που υπάρχει με αυτή τη διαδικασία είναι ότι στο αντικείμενο που επιστρέφει η συνάρτηση δεν συμπεριλαμβάνονται οι κρίσιμες τιμές. Αυτό σημαίνει ότι θα πρέπει να κοιτάξω τους πίνακες κρίσιμων τιμών για τη περίπτωσή μου από τη πρωτότυπη εργασία των Lee-Strazicich.
 
@@ -1351,7 +1406,7 @@ data.frame("Έλεγχος" = c("Zivot-Andrews", "Zivot-Andrews", "Lee-Strazicic
            "Κρίσιμη τιμή (5%)" = c(g@cval[2], g1@cval[2], -5.65 , -5.65),
            check.names = FALSE) %>% 
   mutate(across(c(3:4), ~ round(., 2))) %>%
-  reactable_custom()
+  gt_custom()
 ```
 
 ## Αναγνώριση μοντέλου
@@ -1475,7 +1530,7 @@ accuracy_table <- data.frame(
   mutate(AIC = round(AIC, 2))
 
 
-accuracy_table %>% reactable_custom(head_max = 8)
+accuracy_table %>% gt_custom(head_max = 8)
 ```
 
 Αν και βρήκα ένα κάποια καλά μοντέλα με αρκετά καλή απόδοση μόνος μου, με βάση τον αυτόματο έλεγχο βρήκα ότι το ARIMA(5,1,6) περιγράφει καλύτερα τη χρονοσειρά μου. Αυτό τεκμαίρεται συγκρίνοντας το κριτήριο πληροφορίας των διάφορων μοντέλων ARIMA, όπου στο βέλτιστο μοντέλο έχω το μικρότερο αριθμό AIC, με 271 μονάδες. Αυτό είναι 6 μονάδες χαμηλότερα της δεύτερης επιλογής μου και προφανώς αποτελεί την κύριά μου επιλογή για τον καθορισμό προβλέψεων.
@@ -1537,7 +1592,7 @@ s %>%
   setNames(c("Πρόβλεψη", "Κάτω διάστημα 80%", "Άνω διάστημα 80%", "Κάτω διάστημα 95%", "Άνω διάστημα 95%", "Μήνας")) %>%
   dplyr::relocate("Μήνας", .before = "Πρόβλεψη") %>%
   dplyr::mutate(across(where(is.numeric), ~ round(.x, 1))) %>%
-  reactable_custom(head_max = 7)
+  gt_custom(head_max = 7)
 ```
 
 Με δεδομένο το διάγραμμα αλλά και το πίνακα των προβλέψεων του μοντέλου με τη καλύτερη επίδοση, συμπεραίνω ότι η μείωση της ανεργίας στην Ελλάδα θα συνεχιστεί και την επόμενη περίοδο (τους επόμενους έξι μήνες). Πιο συγκεκριμένα, η ανεργία στην Ελλάδα τον Φεβρουάριο του 2023 θα είναι 11.4\%, κυμαίνεται μεταξύ του 10.1\% (9.4\%) και 12.8\% (13.5\%) σμε πιθανότητα 80\% (95\%).

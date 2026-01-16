@@ -71,6 +71,7 @@ library(tidyr)
 library(purrr)
 library(glue)
 library(forcats)
+library(gt)
 
 # Δημιουργία πινάκων
 library(kableExtra)
@@ -111,7 +112,65 @@ showtext::showtext_opts(dpi = 300)
 #| include: false
 
 knitr::write_bib(.packages(), file = 'packages.bib')
+gt_custom <- function(data, head_max = 5) {
+  data_subset <- as.data.frame(data) %>% head(head_max)
+  
+  data_subset %>%
+    gt() %>%
+    # 1. Internal GT Alignment
+    cols_align(align = "center", columns = everything()) %>%
+    
+    # 2. Typography
+    tab_style(
+      style = cell_text(v_align = "middle", weight = "bold", whitespace = "normal"),
+      locations = cells_column_labels()
+    ) %>%
+    # 3. THEME & COLORS
+    tab_options(
+      row.striping.include_table_body = FALSE,
+      table.background.color = "transparent",
+      column_labels.background.color = "transparent",
+      table.width = pct(100), 
+      table.font.size = px(13),           
+      data_row.padding = px(15), 
+      column_labels.padding = px(15),
+      
+      # Borders
+      table.border.top.style = "none",
+      table.border.bottom.style = "none",
+      table_body.hlines.style = "none", 
+      column_labels.border.top.width = px(2),
+      column_labels.border.top.color = "#757575",
+      column_labels.border.bottom.width = px(2),
+      column_labels.border.bottom.color = "#757575",
+      table_body.border.bottom.width = px(2),
+      table_body.border.bottom.color = "#757575"
+    ) %>%
+    
+    # 4. CSS FOR SUB-PLOT CENTERING
+    opt_css(css = "
+      /* Force every cell (header and body) to center text */
+      .gt_table th, .gt_table td { 
+        text-align: center !important; 
+        vertical-align: middle !important;
+      }
+      
+      /* Force the table to center within the Quarto column */
+      .gt_table { 
+        margin-left: auto !important; 
+        margin-right: auto !important; 
+        width: 100% !important;
+      }
+      
+      /* Strip row backgrounds */
+      .gt_table tr { background-color: transparent !important; }
+      .gt_row { background-color: transparent !important; }
+    ")
+}
 ```
+
+
+
 
 ### Εισαγωγή δεδομένων
 
@@ -254,7 +313,9 @@ kaggle_2021_compare = kaggle_2021 %>%
 #| tbl-cap: "Προεπισκόπηση πρώτων 5 σειρών του συνόλου δεδομένων"
 #| tbl-cap-location: top
 
-reactable(head(kaggle_2021_compare))
+kaggle_2021_compare %>%
+  select(Q1, Q2, Q3, Q4, Q5, Q6, Q8, Q11, Q13, Q21) %>%
+  gt_custom()
 ```
 
 ## Η κοινότητα του Kaggle
