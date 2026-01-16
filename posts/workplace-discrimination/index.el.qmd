@@ -24,6 +24,9 @@ format:
     code-link: true
     code-fold: true
     code-summary: "Show the code"
+    embed-resources: false
+    lib-dir: site_libs
+    include-in-header: ../../assets/js/lazy-highcharts.js
     code-tools: 
       source: https://github.com/stesiam/stesiam.github.io/blob/gh-pages/posts/workplace-discrimination/index.el.qmd
 execute:
@@ -162,6 +165,10 @@ clean_data = clean_data %>%
 
 
 ```{r}
+#| fig-cap: 'SSW'
+#| label: fig-r
+
+library(htmltools)
 t = table(clean_data$exp)
 v=t %>% as.data.frame() |>
   mutate(pct = 100* (Freq / sum(Freq)) ) |>
@@ -175,7 +182,7 @@ data_points <- list_parse(
   )
 )
 
-highchart() |>
+chart = highchart() |>
     hc_chart(
         type = "column"    ) |>
     hc_title(
@@ -214,6 +221,11 @@ highchart() |>
     )
   ) |>
     hc_legend(enabled = FALSE)
+
+div(
+  class = "lazy-highchart",
+  `data-widget` = as.character(chart)
+)
 ```
 
 
@@ -222,7 +234,7 @@ freqWorkingHours = table(clean_data$workingHours) %>%
   as.data.frame()
 
 
-highchart() %>%
+chart2 = highchart() %>%
     hc_chart(
         type = "pie",
         backgroundColor = "transparent"
@@ -272,6 +284,10 @@ highchart() %>%
         "#2E86AB", "#A23B72", "#F18F01", "#C73E1D"
     )) %>%
     hc_credits(enabled = FALSE)
+
+div(
+  class = "lazy-highchart",
+  `data-widget` = as.character(chart2))
 ```
 
 
