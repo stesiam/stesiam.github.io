@@ -301,12 +301,7 @@ plot_parliament_term <- function(term_num, parliament_data = clean_dataset, part
 #| label: tbl-preview-dataset
 #| tbl-cap: "Προεπισκόπηση συνόλου δεδομένων (πρώτες 10 σειρές)"
 
-preview_dataset = head(parliament, 10)
-kbl(preview_dataset, 
-    align = 'c',
-    booktabs = T,
-    centering = T,
-    valign = T)
+preview_dataset = gt_custom(parliament, 10)
 ```
 
 ## Τακτοποίηση δεδομένων
