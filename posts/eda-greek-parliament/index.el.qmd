@@ -300,8 +300,10 @@ plot_parliament_term <- function(term_num, parliament_data = clean_dataset, part
 ```{r Preview Data}
 #| label: tbl-preview-dataset
 #| tbl-cap: "Προεπισκόπηση συνόλου δεδομένων (πρώτες 10 σειρές)"
+#| echo: false
 
 preview_dataset = gt_custom(parliament, 10)
+preview_dataset
 ```
 
 ## Τακτοποίηση δεδομένων
@@ -962,24 +964,8 @@ highchart() %>%
         style = list(fontSize = "12px", color = "#666666")
     )  
   
-  # ggplot(data = cont_df, aes(x = reorder(FullName, n), y = n, fill = Party ))+
-  # geom_bar(stat = "identity",width = 0.88) +
-  # scale_fill_manual(values = c("ANEL" = "#bcd2e8", "INDEPENDENT" = "#cccccc","KKE"=kke_color,"ND" = nd_color, "PASOK" = pasok_color, "SYRIZA" = syriza_color,"XA" = "#000000")) +
-  # geom_text(aes(label=n), hjust = 1.5, vjust=0.5, color="white", size=4)+
-  # theme_minimal() +
-  #  labs(title = "Most elected MPs",
-  #      subtitle = "",
-  #      caption = "Source: stesiam | stesiam.github.io, 2022") +
-  # coord_flip()
-}
 ```
 
-Now I have frequencies and the party for every MP. That will be useful on my
-diagrams.
-
-```{r}
-#unique(parliament$Constituency) %>% sort()
-```
 
 ### Επικρατείας {.unlisted}
 
@@ -1253,25 +1239,3 @@ Niederwimmer</a> από την ιστοσελίδα
 <br>
 
 Τα εξορυγμένα δεδομένα που χρησιμοποιώ στο άρθρο παρέχονται και είναι ελεύθερα προσβάσιμα από το σχετικό αποθετήριο μου <a href="https://github.com/stesiam/Greek-MPs-Dataset">στο GitHub</a>. Τα περισσότερα δεδομένα προέρχονται από την ιστοσελίδα του <a href="https://www.hellenicparliament.gr">ελληνικού κοινοβουλίου</a>
-
-
-```{r}
-get_new_members = function(term, party){
-  
-previous_parls = clean_dataset |>
-  select(FullName, Term, partyAbbrNamesGR) |>
-  dplyr::filter(Term < term)
-
-current_parl = clean_dataset |>
-  select(FullName, Term, partyAbbrNamesGR) |>
-  dplyr::filter(Term == term)
-
-how_many_current_term = length(current_parl$FullName)
-established_members = sum(current_parl$FullName %in% previous_parls$FullName)
-new_members = how_many_current_term - established_members
-
-output = list(established_members, new_members)
-return(output)
-}
-```
-
