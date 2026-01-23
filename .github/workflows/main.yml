@@ -57,8 +57,12 @@ jobs:
 
       - name: Configure Java for rJava
         run: sudo R CMD javareconf
+        
+      - name: Set GITHUB_PAT
+        run: echo "GITHUB_PAT=${{ secrets.GH_PAT }}" >> $GITHUB_ENV
 
       # --- renv cache
+      
       - name: Restore renv packages
         uses: r-lib/actions/setup-renv@v2
         with:
