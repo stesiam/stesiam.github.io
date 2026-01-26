@@ -8,6 +8,16 @@ $body-color: #ffffff;
 $navbar-bg: #222222;
 $card-bg: rgba(38, 38, 38, 0.22);
 
+/*-- scss:defaults --*/
+$body-bg: #09090b;          // Deep Zinc/Black background
+$body-color: #d1d5db;       // Soft gray for description text
+$card-bg: #18181b;          // Slightly lighter for card elevation
+$primary: #a855f7;          // Vibrant Purple (Data-centric accent)
+$border-color: #27272a;     // Subtle border
+
+/*-- scss:rules --*/
+
+
 $white:    #ffffff !default;   // pure white
 $black:    #000000 !default;   // pure black
 
@@ -37,7 +47,7 @@ $cyan:    #06b6d4 !default;
 $lime:    #84cc16 !default;
 
 // Semantic roles use the new literal palette
-$primary:       $purple !default;
+// $primary:       $purple !default;
 $secondary:     $gray-400 !default;
 $success:       $green !default;
 $info:          $cyan !default;
@@ -629,3 +639,97 @@ a{
   color: white !important;
 }
 
+/*-- scss:rules --*/
+
+#mockup-clean-room {
+  // 1. NEUTRALIZE QUARTO
+  // We explicitly disable Quarto's flex-column on the posts
+  .quarto-post {
+    display: block !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  // 2. YOUR MOCKUP CSS (The Awesome Part)
+  .mockup-card-wrapper {
+    background: #111113;
+    border: 1px solid #27272a;
+    border-radius: 20px;
+    margin-bottom: 2.5rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+
+    &:hover {
+      border-color: #a855f7;
+      transform: translateY(-5px);
+    }
+  }
+
+  .mockup-row {
+    display: flex !important;
+    flex-direction: column; // Mobile first
+
+    @media (min-width: 768px) {
+      flex-direction: row !important;
+      height: fit-content;
+      }
+  }
+
+  // 3. THE FLEX-BASIS LOCK
+  .mockup-image-col {
+    flex: 0 0 100%;
+    
+    @media (min-width: 768px) {
+      flex: 0 0 35% !important; // Force 35% width
+      min-width: 35% !important;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover !important; // Match mockup crop
+      filter: brightness(0.8);
+    }
+  }
+
+  .mockup-text-col {
+    flex: 1;
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    // Reset Link Styles (Kill Quarto Blue/Underline)
+    .mockup-title a {
+      all: unset; // Strips Quarto link defaults
+      display: block;
+      color: #ffffff !important;
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1.1;
+      cursor: pointer;
+      
+      &:hover { color: #a855f7 !important; }
+    }
+
+    .mockup-desc {
+      color: #a1a1aa !important;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-top: 1rem;
+    }
+  }
+
+  .mockup-pill {
+    display: inline-block;
+    background: rgba(168, 85, 247, 0.15);
+    color: #a855f7 !important;
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    padding: 2px 12px;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+}

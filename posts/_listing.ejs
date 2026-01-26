@@ -1,39 +1,35 @@
 ```{=html}
-<div class="post-list">
+<div id="mockup-clean-room" class="quarto-listing-container">
   <% for (const item of items) { %>
-    <% const cleanPath = item.path.replace(/index\.html$/, '').replace(/index\.qmd$/, '').replace(/\/$/, '') + '/' %>
-
-    <a href="<%= cleanPath %>" class="post-card">
-      <div class="image_area">
-        <img src="<%= item.image %>" alt="<%= item.title %>" class="thumbnail" />
-      </div>
-
-      <div class="post-content">
-        <h2><%= item.title %></h2>
-
+  <% const cleanPath = item.path.replace(/index\.html$/, '').replace(/index\.qmd$/, '').replace(/\/$/, '') + '/' %>
+  <div class="mockup-card-wrapper" <%= metadataAttrs(item) %>>
+    <div class="mockup-row">
       
-
-        <div class="meta">
-          <i class="bi bi-calendar"></i>
-          <span class="date"><%= item.date %></span> •
-          <i class="bi bi-clock"></i>
-          <span class="reading-time"><%= item['reading-time'] %></span>
-        </div>
-        
-        <!-- Category Badges -->
-        <div class="mb-1">
-        <i class="bi bi-tags pe-2"></i>
-          <% const categories = Array.isArray(item.categories) ? item.categories : [item.categories]; %>
-          <% categories.forEach(cat => { %>
-            <span class="badge bg-secondary me-1 mb-1"><%= cat %></span>
-          <% }) %>
-        </div>
-
-        <p><%= item.description %></p>
+      <div class="mockup-image-col">
+        <img src="<%= item.image %>" alt="">
       </div>
-    </a>
+
+      <div class="mockup-text-col">
+        <div class="mockup-pills d-flex flex-wrap gap-2">
+          <% for (const category of item.categories) { %>
+            <span class="mockup-pill"><%= category %></span>
+          <% } %>
+        </div>
+
+        <h2 class="mockup-title">
+          <a href="<%= cleanPath %>"><%= item.title %></a>
+        </h2>
+
+        <p class="mockup-desc"><%= item.description %></p>
+
+        <div class="mockup-meta d-flex flex-column flex-md-row gap-md-4 gap-2">
+          <div><i class="bi bi-calendar3"></i> <p class="d-inline"><%= item.date %></p></div>
+          <div><i class="bi bi-clock"></i> <p class="d-inline"><%= item['reading-time'] %></p></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
   <% } %>
 </div>
-
-
 ```
