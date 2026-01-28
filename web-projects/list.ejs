@@ -29,13 +29,15 @@
                 
                 
                 <% if (!item.links) item.links = []; %>
-          <% item.links.unshift({ url: cleanPath, icon: "bi-journal-bookmark", text: "Read article" }); %>
-        
-          <% for (const link of item.links) { %>
-            <a href="<%= link.url %>" class="btn btn-outline-primary btn-md btn-stylish mt-auto w-100">
-              <i class="bi <%= link.icon %>"></i> <%= link.text %>
-            </a>
-          <% } %>
+                  <% item.links.unshift({ url: cleanPath, icon: "bi-journal-bookmark", text: "Read article" }); %>
+                  
+                  <div class="d-flex flex-lg-row flex-column gap-2">
+                  <% for (const link of item.links) { %>
+                    <a href="<%= link.url %>" class="btn btn-outline-primary btn-md btn-stylish mt-auto w-100">
+                      <i class="bi <%= link.icon %>"></i> <%= link.text %>
+                    </a>
+                  <% } %>
+                  </div>
             </div>
         </div>
 
