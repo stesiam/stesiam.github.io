@@ -2,37 +2,51 @@
 <div class="grid">
   <% for (const item of items) { %>
     <% 
-      // Clean the path to point to folder URL instead of index.qmd/html
       const cleanPath = item.path.replace(/index\.html$/, '').replace(/index\.qmd$/, '').replace(/\/$/, '') + '/';
+      if (!item.links) item.links = [];
+      if (item.links.length === 0 || item.links[0].url !== cleanPath) {
+        item.links.unshift({ url: cleanPath, icon: "bi-journal-bookmark", text: "Διάβασε το άρθρο" });
+      }
     %>
 
-    <div class="g-col-12 g-col-sm-6 title-block" <%= metadataAttrs(item) %>>
-      <div class="card shadow-sm h-100">
+    <div class="g-col-12 g-col-md-6 mb-3" <%= metadataAttrs(item) %>>
+      <div class="card h-100 shadow hover-lift border-secondary border-opacity-25 d-flex flex-column" data-bs-theme="dark">
+        
+        <div class="card-body text-center p-4 d-flex flex-column">
+          
+          <div class="d-inline-flex align-items-center justify-content-center bg-info bg-opacity-10 text-info rounded-circle mb-4 shadow-sm mx-auto" 
+               style="width: 5rem; height: 5rem; flex-shrink: 0;">
+            <%= item.svgIcon %>
+          </div>
 
-          <div class="card-body text-center">
-            <div class="mb-3">
-              <%= item.svgIcon %>
-            </div>
-            <h3 class="card-title fw-bold"><%= item.title %></h3>
-            <p class="card-text text-muted">
+          <div style="min-height: 3.5rem;" class="d-flex align-items-center justify-content-center mb-3">
+            <h3 class="card-title fw-bold h4 m-0"><%= item.title %></h3>
+          </div>
+          
+          <div class="flex-grow-1 mb-4">
+            <p class="card-text text-secondary">
               <%= item.description %>
             </p>
-            
-            
-            
-          <% if (!item.links) item.links = []; %>
-          <% item.links.unshift({ url: cleanPath, icon: "bi-journal-bookmark", text: "Read article" }); %>
-        
-          <% for (const link of item.links) { %>
-            <a href="<%= link.url %>" class="btn btn-outline-primary btn-md">
-              <i class="bi <%= link.icon %>"></i> <%= link.text %>
-            </a>
-          <% } %>
-        </div>
+          </div>
 
+          <div class="d-grid gap-2 mt-auto">
+            <% for (let i = 0; i < item.links.length; i++) { %>
+              <% const link = item.links[i]; %>
+              <% if (i === 0) { %>
+                <a href="<%= link.url %>" class="btn btn-info rounded-pill fw-bold">
+                  <i class="bi <%= link.icon %> me-2"></i> <%= link.text %>
+                </a>
+              <% } else { %>
+                <a href="<%= link.url %>" class="btn btn-link text-white-50 text-decoration-none rounded-pill small">
+                  <i class="bi <%= link.icon %> me-2"></i> <%= link.text %>
+                </a>
+              <% } %>
+            <% } %>
+          </div>
+
+        </div>
       </div>
     </div>
   <% } %>
 </div>
-
 ```

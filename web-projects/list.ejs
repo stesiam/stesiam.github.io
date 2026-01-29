@@ -29,11 +29,11 @@
                 
                 
                 <% if (!item.links) item.links = []; %>
-                  <% item.links.unshift({ url: cleanPath, icon: "bi-journal-bookmark", text: "Read article" }); %>
+                  <% item.links.unshift({ url: cleanPath, icon: "bi-journal-bookmark", text: item.appText }); %>
                   
-                  <div class="d-flex flex-lg-row flex-column gap-2">
+                  <div class="d-flex flex-lg-row flex-column justify-content-center gap-2">
                   <% for (const link of item.links) { %>
-                    <a href="<%= link.url %>" class="btn btn-outline-primary btn-md btn-stylish mt-auto w-100">
+                    <a href="<%= link.url %>" class="btn btn-outline-primary btn-md btn-stylish mt-auto">
                       <i class="bi <%= link.icon %>"></i> <%= link.text %>
                     </a>
                   <% } %>
