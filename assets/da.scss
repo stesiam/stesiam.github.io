@@ -2,26 +2,21 @@
 // Brite 5.3.7
 // Bootswatch
 
-/*-- scss:defaults --*/
-$body-bg: #121212;   // Your preferred dark color
-$body-color: #ffffff;
-$navbar-bg: #222222;
-$card-bg: rgba(38, 38, 38, 0.22);
+// -------------------------------------------------------
+// 1. Variables & Config (Must be first!)
+// -------------------------------------------------------
 
-/*-- scss:defaults --*/
+// Colors
 $body-bg: #09090b;          // Deep Zinc/Black background
 $body-color: #d1d5db;       // Soft gray for description text
 $card-bg: #18181b;          // Slightly lighter for card elevation
-$primary: #a855f7;          // Vibrant Purple (Data-centric accent)
+$primary: #a855f7;          // Vibrant Purple
 $border-color: #27272a;     // Subtle border
 
-/*-- scss:rules --*/
+$white:    #ffffff !default;
+$black:    #000000 !default;
 
-
-$white:    #ffffff !default;   // pure white
-$black:    #000000 !default;   // pure black
-
-// True grayscale ramp (evenly spaced by luminance)
+// Grays
 $gray-100: #111111 !default;
 $gray-200: #1a1a1a !default;
 $gray-300: #262626 !default;
@@ -32,9 +27,8 @@ $gray-700: #a3a3a3 !default;
 $gray-800: #d4d4d4 !default;
 $gray-900: #f5f5f5 !default;
 
-
-// Modern UI accent palette (clean, accessible)
-$blue:    #3b82f6 !default;  // modern blue
+// Palette
+$blue:    #3b82f6 !default;
 $indigo:  #6366f1 !default;
 $purple:  #8b5cf6 !default;
 $pink:    #ec4899 !default;
@@ -46,8 +40,7 @@ $teal:    #14b8a6 !default;
 $cyan:    #06b6d4 !default;
 $lime:    #84cc16 !default;
 
-// Semantic roles use the new literal palette
-// $primary:       $purple !default;
+// Semantic
 $secondary:     $gray-400 !default;
 $success:       $green !default;
 $info:          $cyan !default;
@@ -57,61 +50,30 @@ $light:         $gray-200 !default;
 $dark:          $gray-900 !default;
 
 $bs-nav-tabs-link-active-color: #ff00d7;
-$btn-border-radius: 1em;
-$btn-border-radius-sm: 1em;
-
 $spacer: 1rem !default;
 
-// Title block
-.quarto-title-banner {
-  background: $body-bg !important;
-  color: $body-color !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-/* -------------------------------------------------------
-   2. Typography
-------------------------------------------------------- */
-
+// Typography
 $headings-font-weight: 600;
 $headings-color: $white;
-
 $font-size-base: 1.05rem;
 $line-height-base: 1.6;
-
-// Links
 $link-color: #ee78ff !default;
 
-// Typography
-a {
-  font-weight: $headings-font-weight;
-  color: $link-color;
-}
+$font-size-sm: $font-size-base * .875 !default;
+$lead-font-weight: 400 !default;
+// $headings-font-weight: 500 !default; // Commented out to match Light Mode's boldness
 
 // Components
 $border-radius: .375rem !default;
 $border-radius-sm: .25rem !default;
 $border-radius-lg: .5rem !default;
-
 $component-active-color: $black !default;
 
-$focus-ring-width: 1px !default;
-$focus-ring-opacity: 1 !default;
-$focus-ring-color: $black !default;
-
-$font-size-sm: $font-size-base * .875 !default;
-$lead-font-weight: 400 !default;
-$headings-font-weight: 500 !default;
-$hr-border-width: 2px !default;
-$hr-opacity: 1 !default;
-
+// Tables
 $table-cell-padding-y: .75rem !default;
 $table-cell-padding-x: .75rem !default;
-
 $table-border-width: 1px !default;
 $table-border-color: $black !default;
-
 $table-hover-bg-factor: 0 !default;
 $table-border-factor: 1 !default;
 $table-bg-scale: 0% !default;
@@ -127,7 +89,7 @@ $table-variants: (
   "dark":       $dark,
 ) !default;
 
-// Buttons + Forms
+// --- BUTTONS & FORMS (The fix: These must be in Defaults!) ---
 $input-btn-padding-y: .5rem !default;
 $input-btn-padding-x: 1rem !default;
 
@@ -141,9 +103,11 @@ $input-btn-font-size-lg: $font-size-base !default;
 
 $input-btn-border-width: 2px !default;
 $btn-border-width: 2px !default;
+$btn-border-radius: 1em;
+$btn-border-radius-sm: 1em;
+// -----------------------------------------------------------
 
 $form-label-font-weight: $headings-font-weight !default;
-
 $input-focus-border-color: $black !default;
 $form-check-input-checked-border-color: $black !default;
 
@@ -157,14 +121,12 @@ $form-range-thumb-disabled-bg: $light !default;
 // Navbar
 $navbar-padding-y: $spacer * .75 !default;
 $navbar-nav-link-padding-x: 1rem !default;
-
 $navbar-light-color: $black !default;
 $navbar-light-hover-color: $black !default;
 $navbar-light-active-color: $black !default;
 $navbar-light-disabled-color: rgba($black, .3) !default;
 $navbar-light-icon-color: $black !default;
 $navbar-light-toggler-border-color: $black !default;
-
 $navbar-dark-color: $white !default;
 $navbar-dark-hover-color: $white !default;
 $navbar-dark-active-color: $white !default;
@@ -191,22 +153,17 @@ $card-border-color: #6a6a6a;
 $accordion-button-active-bg: $primary !default;
 $accordion-button-active-color: $black !default;
 
-// Tooltips
+// Tooltips & Popovers
 $tooltip-opacity: 1 !default;
-
-// Popovers
 $popover-border-color: $black !default;
 
 // Toasts
 $toast-border-color: $black !default;
 $toast-box-shadow: 3px 3px 0 0 $black !default;
-
 $toast-header-color: $black !default;
 
-// Badges
+// Badges & Modals
 $badge-color: $black !default;
-
-// Modals
 $modal-content-border-color: $black !default;
 
 // Breadcrumbs
@@ -220,7 +177,19 @@ $breadcrumb-border-radius: $border-radius-lg !default;
 $btn-close-opacity: 1 !default;
 $btn-close-hover-opacity: 1 !default;
 
+
 /*-- scss:rules --*/
+// -------------------------------------------------------
+// 2. Custom CSS Rules (Applied AFTER Bootstrap compiles)
+// -------------------------------------------------------
+
+// Title block
+.quarto-title-banner {
+  background: $body-bg !important;
+  color: $body-color !important;
+  border: none !important;
+  box-shadow: none !important;
+}
 
 // Variables
 :root {
@@ -241,11 +210,10 @@ $btn-close-hover-opacity: 1 !default;
 // Navbar
 .navbar {
   background-color: #1a1a1a;
-  $navbar-border-width: 2px;
+  // $navbar-border-width: 2px; // REMOVED: Cannot define vars in rules like this
   font-size: $font-size-lg;
   font-weight: $headings-font-weight;
-
-  border: $navbar-border-width solid $black;
+  border: 2px solid $black; // Hardcoded the 2px here
 }
 
 // Buttons
@@ -349,7 +317,7 @@ $btn-close-hover-opacity: 1 !default;
   color: $black;
 }
 
-a{
+a {
   font-weight: bold;
 }
 
@@ -567,19 +535,17 @@ a{
   --#{$prefix}toast-header-color: #e6e6e6;
 }
 
-
 // Footer
 .nav-footer{
   background-color: #1a1a1a;
   color: $white;
-  
+   
   a{
     color: hsl(0, 57.9%, 73.9%);
   }
 }
 
 // babelquarto Buttons
-
 #languages-button{
   background-color: #1a1a1a;
   color: white;
@@ -618,7 +584,7 @@ a{
 }
 
 .highcharts-data-labels h4 {
-	font-size: 0.8em;
+    font-size: 0.8em;
 }
 
 .highcharts-title{
@@ -627,9 +593,8 @@ a{
 }
 
 .invert-color {
-	filter: invert(1) hue-rotate(180deg);
+    filter: invert(1) hue-rotate(180deg);
 }
-
 
 .gt_table_body{
   color: white;
@@ -638,8 +603,6 @@ a{
 .gt_table tr th{
   color: white !important;
 }
-
-/*-- scss:rules --*/
 
 #mockup-clean-room {
   // 1. NEUTRALIZE QUARTO
@@ -679,7 +642,7 @@ a{
   // 3. THE FLEX-BASIS LOCK
   .mockup-image-col {
     flex: 0 0 100%;
-    
+     
     @media (min-width: 768px) {
       flex: 0 0 35% !important; // Force 35% width
       min-width: 35% !important;
@@ -709,7 +672,7 @@ a{
       font-weight: 800;
       line-height: 1.1;
       cursor: pointer;
-      
+       
       &:hover { color: #a855f7 !important; }
     }
 
