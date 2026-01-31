@@ -22,24 +22,24 @@
 
           <div class="grid g-2 mb-4 mt-auto" style="--bs-columns: 12;">
             <% if (item.period) { %>
-            <div class="g-col-6">
-              <div class="d-flex align-items-center p-2 bg-light rounded-3">
+            <div class="g-col-12 g-col-md-6">
+              <div class="d-flex align-items-center p-2 rounded-3">
                 <i class="bi bi-calendar3 me-2"></i>
                 <div class="lh-1">
                   <div class="label-caps"><%= item.periodText %></div>
-                  <span class="small fw-bold text-dark"><%= item.period %></span>
+                  <span class="small fw-bold"><%= item.period %></span>
                 </div>
               </div>
             </div>
             <% } %>
             
             <% if (item.records) { %>
-            <div class="g-col-6">
-              <div class="d-flex align-items-center p-2 bg-light rounded-3">
+            <div class="g-col-12 g-col-md-6">
+              <div class="d-flex align-items-center p-2 rounded-3">
                 <i class="bi bi-layers me-2"></i>
                 <div class="lh-1">
                   <div class="label-caps"><%= item.recordsText %></div>
-                  <span class="small fw-bold text-dark"><%= item.records %></span>
+                  <span class="small fw-bold"><%= item.records %></span>
                 </div>
               </div>
             </div>
@@ -48,7 +48,7 @@
 
           <div class="mt-auto">
             <a href="<%= cleanPath %>" class="btn btn-primary w-100 rounded-pill fw-bold py-2 stretched-link">
-              <%= item.button_text || 'Explore' %> <i class="bi bi-arrow-right-short ms-1"></i>
+              <%= item.exploreDatasetText %> <i class="bi bi-arrow-right-short ms-1"></i>
             </a>
           </div>
         </div>
