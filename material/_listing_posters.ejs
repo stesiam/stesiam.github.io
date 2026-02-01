@@ -2,10 +2,14 @@
 <div class="grid">
   <% for (const item of items) { %>
     <% 
+      // 1. WE KEEP THIS LOGIC HERE (It prepares the data)
       const cleanPath = item.path.replace(/index\.html$/, '').replace(/index\.qmd$/, '').replace(/\/$/, '') + '/';
+      
       if (!item.links) item.links = [];
+      
+      // Only add the link if it's not already the first one (prevents duplicates on re-renders)
       if (item.links.length === 0 || item.links[0].url !== cleanPath) {
-        item.links.unshift({ url: cleanPath, icon: "bi-journal-bookmark", text: "Διάβασε το άρθρο" });
+        item.links.unshift({ url: cleanPath, icon: "bi-journal-bookmark", text: item.posterText });
       }
     %>
 
@@ -31,9 +35,6 @@
 
           <div class="d-grid gap-2 mt-auto">
             
-            <% if (!item.links) item.links = []; %>
-              <% item.links.unshift({ url: cleanPath, icon: "bi-journal-bookmark", text: "Διάβασε το άρθρο" }); %>
-        
               <% for (const link of item.links) { %>
                 <a href="<%= link.url %>" class="btn btn-primary rounded-pill">
                   <i class="bi <%= link.icon %>"></i> <%= link.text %>
