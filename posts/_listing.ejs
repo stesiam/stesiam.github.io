@@ -1,34 +1,44 @@
 ```{=html}
-<div id="mockup-clean-room" class="quarto-listing-container">
+<div class="list quarto-listing-container">
   <% for (const item of items) { %>
   <% const cleanPath = item.path.replace(/index\.html$/, '').replace(/index\.qmd$/, '').replace(/\/$/, '') + '/' %>
-  <div class="mockup-card-wrapper" <%= metadataAttrs(item) %>>
-    <div class="mockup-row">
+  
+  <div class="card listing-card mb-5 overflow-hidden border-0" <%= metadataAttrs(item) %>>
+    
+    <div class="d-flex flex-md-row flex-column g-0 h-100">
       
-      <div class="mockup-image-col">
-        <img src="<%= item.image %>" alt="">
+      <div class="col-md-4 listing-card-img-col">
+        <a href="<%= cleanPath %>" class="h-100 w-100 d-block">
+          <img src="<%= item.image %>" class="img-fluid h-100 w-100 object-fit-cover" alt="<%= item.title %>">
+        </a>
       </div>
 
-      <div class="mockup-text-col">
-        <div class="mockup-pills d-flex flex-wrap gap-2">
-          <% for (const category of item.categories) { %>
-            <span class="mockup-pill"><%= category %></span>
-          <% } %>
+      <div class="col-md-8">
+        <div class="card-body p-4 p-lg-5 d-flex flex-column justify-content-center h-100">
+          
+          <div class="d-flex flex-wrap gap-2 mb-3">
+            <% for (const category of item.categories) { %>
+              <span class="badge rounded-pill listing-pill"><%= category %></span>
+            <% } %>
+          </div>
+
+          <h2 class="card-title fw-bold mb-3 lh-1">
+            <a href="<%= cleanPath %>" class="text-decoration-none text-white stretched-link-hover"><%= item.title %></a>
+          </h2>
+          
+          <div class="d-flex flex-wrap gap-3 gap-md-4 mb-3 text-secondary small fw-medium">
+            <div class="d-flex align-items-center gap-1">
+              <i class="bi bi-calendar3"></i> <%= item.date %>
+            </div>
+            <div class="d-flex align-items-center gap-1">
+              <i class="bi bi-clock"></i> <%= item['reading-time'] %>
+            </div>
+          </div>
+
+          <p class="card-text text-secondary mb-0"><%= item.description %></p>
+
         </div>
-
-        <h2 class="mockup-title">
-          <a href="<%= cleanPath %>"><%= item.title %></a>
-        </h2>
-        
-        <div class="mockup-meta d-flex flex-column flex-md-row gap-md-4 gap-2">
-          <div><i class="bi bi-calendar3"></i> <p class="d-inline"><%= item.date %></p></div>
-          <div><i class="bi bi-clock"></i> <p class="d-inline"><%= item['reading-time'] %></p></div>
-        </div>
-
-        <p class="mockup-desc"><%= item.description %></p>
-
       </div>
-
     </div>
   </div>
   <% } %>

@@ -690,3 +690,63 @@ a {
 .katex{
   font-size: 1.05em !important;
 }
+
+//
+
+.quarto-listing-container .card {
+  background: none; /* prevent inherited backgrounds */
+}
+
+/* 2. THEME COMPONENT: .listing-card */
+.listing-card {
+  background-color: #ffffff !important; /* Pure white background */
+  border: 1px solid #e4e4e7 !important; /* Soft light-gray border */
+  border-radius: 20px !important;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  
+  /* Light mode looks better with a soft shadow for depth */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+
+  /* Hover Effects */
+  &:hover {
+    border-color: #a855f7 !important; /* Keep your signature purple */
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Image Filter Effect */
+  img {
+    filter: brightness(1.0); /* No dimming needed for light mode */
+    transition: filter 0.3s ease;
+  }
+}
+
+/* 3. TYPOGRAPHY & COLORS */
+.listing-pill {
+  background-color: #f3e8ff; /* Solid light purple (better contrast on white) */
+  color: #7e22ce !important; /* Darker purple text for readability */
+  border: 1px solid #d8b4fe;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-title a {
+  color: #18181b !important; /* Dark zinc/black text */
+  transition: color 0.2s ease;
+  
+  &:hover {
+    color: #a855f7 !important; /* Purple hover */
+  }
+}
+
+.card-text {
+  color: #52525b !important; /* Medium gray description */
+}
+
+/* 4. OPTIONAL: Fix Image Height on Mobile */
+@media (max-width: 767.98px) {
+  .listing-card-img-col {
+    height: 250px;
+  }
+}
