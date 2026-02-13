@@ -48,6 +48,8 @@ editor_options:
 #| warning: false
 library(readr)
 library(dplyr)
+library(lubridate)
+library(highcharter)
 unempl_gender_eu_grc <- read_csv("unempl_gender_eu_grc.csv") %>% 
   select(sex, geo, TIME_PERIOD, OBS_VALUE) %>%
   dplyr::filter(geo == "EL") %>%
