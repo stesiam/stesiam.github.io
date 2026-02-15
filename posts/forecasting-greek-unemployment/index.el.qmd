@@ -618,8 +618,9 @@ $$
 όπου τα στοιχεία που συνθέτουν τη χρονοσειρά πολλαπλασιάζονται, αντί να προστίθενται.
 
 ```{r}
-library(forecast)
-library(highcharter)
+#| label: fig-decomp
+#| fig-height: 7
+#| fig-cap: "Αποσύνθεση χρονοσειράς με τη μέθοδο STL "
 decomp <- unemploymentType %>%
   model(stl = STL(Value)) %>%
   components() %>%
@@ -704,8 +705,8 @@ nsdiffs(y, test = "ch")
 3.  $Cov(X_t, X_s): \text{σταθερή}$
 
 ### Εξέταση στασιμότητας γραφικά
-0
-Από αυτό το διάγραμμα -@fig-level-plot είναι εμφανέστατο ότι η σειρά μας δεν κινείται γύρω από κάποια συγκεκριμένη τιμή, παραβιάζοντας την πρώτη προϋπόθεση για να θεωρηθεί μία χρονοσειρά στατική. Αυτό μας υποδεικνύει την ανάγκη χρήσης διαφορών πρώτης τάξης για την ανεργία της Ελλάδας. Από τη πρώτη διαφορά παρατηρώ μεγάλη βελτίωση μιας και δεν έχουμε τις τεράστιες αποκλίσεις του προηγούμενου διαγράμματος. Οι τιμές ως επί το πλείστον δεν παρουσιάζουν κάποια τάση και κινούνται σε τιμές σχετικά κοντά στο μηδέν. Αυτό είναι ένα καλό στοιχείο, όμως έχω έναν ελαφρύ προβληματισμό καθώς υπάρχουν δύο σημεία στη χρονοσειρά με σχετικά μεγάλες αποκλίσεις από το μηδέν. Η πρώτη είναι στο σημείο ~150ο όπου η σειρά έχει και μία ελαφριά ανοδική τάση και η δεύτερη είναι στο 250ο σημείο.
+
+Από αυτό το [Σχήμα @fig-level-plot] είναι εμφανέστατο ότι η σειρά μας δεν κινείται γύρω από κάποια συγκεκριμένη τιμή, παραβιάζοντας την πρώτη προϋπόθεση για να θεωρηθεί μία χρονοσειρά στατική. Αυτό μας υποδεικνύει την ανάγκη χρήσης διαφορών πρώτης τάξης για την ανεργία της Ελλάδας. Από τη πρώτη διαφορά ($\Delta y =  y_t - y_{t-1}$) παρατηρώ μεγάλη βελτίωση μιας και δεν έχουμε τις τεράστιες αποκλίσεις του προηγούμενου διαγράμματος. Οι τιμές ως επί το πλείστον δεν παρουσιάζουν κάποια τάση και κινούνται σε τιμές σχετικά κοντά στο μηδέν. Αυτό είναι ένα καλό στοιχείο, όμως έχω έναν ελαφρύ προβληματισμό καθώς υπάρχουν δύο σημεία στη χρονοσειρά με σχετικά μεγάλες αποκλίσεις από το μηδέν. Η πρώτη είναι μεταξύ των σημείων 120 και 170 καθώς η κύμανση γύρω από το μηδέν έχει ξεφύγει ελαφρώς, τα οποία αναφέρονται στη περίοδο μεταξύ 2008 και 2012 (κρίση & επιδείνωση οικονομικών δεικτών). Ένα άλλο ελαφρώς προβληματικό σημείο είναι το 266ο που αναφέρεται στο Μάρτιο - Απρίλιο του 2020 και στην θέσπιση περιορισμού μετακινήσεων για να περιοριστεί η μετάδοση του κορονοϊού μιας και είχαν βρεθεί τα π´ρωτα κρούσματα στη χώρα μας.
 
 ```{r}
 #| label: fig-diff1-plot
@@ -716,7 +717,7 @@ grc_unemployment_diff1 <- diff(grc_unemployment$Value, differences = 1)
 highchart() %>%
     hc_chart(type = "line") %>%
     hc_title(text = "Πρώτες διαφορές ανεργίας στην Ελλάδα") %>%
-    hc_subtitle(text = "Οι διαφορές κυμάινονται στο 0, αλλά παρατηρούνται κάποιες μεγάλες μεταβολές με κύρια αυτή στο σημείο 266 (Μάρτιος Απρίλιος 2020 - Θέσπιση περιορισμού μετακινήσεων στην Ελλάδα), επίσης η κύμανση γύρω από το μηδέν έχει ξεφύγει ελαφρώς μεταξύ των σημείων 120 και 170, τα οποία αναφέρονται στη περίοδο μεταξύ 2008 και 2012 (κρίση & επιδείνωση δεικτών κλείσιμο τραπεζών).") %>%
+    hc_subtitle(text = "Οι διαφορές κυμάινονται στο 0, με εξάιρεση τα πρώτα χρόνια της ελληνικής κρίσης χρέους και με τον περιορισμό μετακινήσεων λόγω κορονοϊού.") %>%
     hc_xAxis(title = list(text = "Χρονικό σημείο")) %>%
     hc_yAxis(title = list(text = "Διαφορά ανεργίας")) %>%
     hc_tooltip(shared = TRUE, valueDecimals = 2, valueSuffix = " %") %>%
@@ -726,7 +727,8 @@ highchart() %>%
   hc_legend(enabled = FALSE)
 ```
 
-Λαμβάνοντας υπόψιν τους παραπάνω προβληματισμούς μου, έλαβα και τις δεύτερες διαφορές και τις οπτικοποίησα. Το διάγραμμα είναι σχεδόν το ίδιο, με τις τιμές να κυμαίνονται στο μηδέν ακόμα και στο προβληματικό σημείο κοντά στο 150ο σημείο.
+
+Λαμβάνοντας υπόψιν τους παραπάνω προβληματισμούς μου, έλαβα και τις δεύτερες διαφορές ($\Delta^2y = \Delta y - \Delta_{y-1}$) και τις οπτικοποίησα. Το διάγραμμα είναι σχεδόν το ίδιο, με τις τιμές να κυμαίνονται στο μηδέν ακόμα και στο προβληματικό σημείο κοντά στο 150ο σημείο. Στις δεύτερες παρατηρήσεις παρατηρώ μία πιο συνεπή κύμανση γύρω από το μηδέν, αλλά ταυτόχρονα υπάρχει ακόμα μεγαλύτερη διαφορά απόκλιση στην έναρξη λήψης μέτρων κατά του κορονοϊού στη χώρα μας (3.6\% έναντι 2.6\% των πρώτων διαφορών).
 
 ```{r}
 #| label: fig-diff2-plot
@@ -880,7 +882,7 @@ $$
 
 
 ```{r}
-#| label: check_autocorrlation
+#| label: tbl-check_autocorrlation
 #| tbl-cap: "Έλεγχος υποθέσεων σφαλμάτων (αυτοσυσχέτισης & ομοσκεδαστικότητας)"
 
 y = grc_unemployment$Value
@@ -1085,6 +1087,81 @@ result_table %>% gt_custom()
 τις διαφορές των αρχικών παρατηρήσεων της ανεργίας στην Ελλάδα, σε επίπεδο
 σημαντικότητας 5%.
 
+```{r}
+#| label: tbl-adf-final
+#| tbl-cap: "Αποτελέσματα επαυξημένου ελέγχου Dickey - Fuller (ADF) στις διαφορές των αρχικών παρατηρήσεων"
+types <- c("none", "drift", "trend")
+
+results_diff <- lapply(types, function(t) {
+  ur.df(diff(grc_unemployment$Value,1), type = t, lags = 10, selectlags = "Fixed")
+})
+
+
+results_level <- lapply(types, function(t) {
+  ur.df(grc_unemployment$Value, type = t, lags = 15, selectlags = "AIC")
+})
+
+
+result_table <- data.frame(
+  
+  "Μορφή της σειράς" = c(
+    rep("Σε επίπεδα", length(types)),
+    rep("Πρώτες διαφορές", length(types))
+  ),
+  
+  "Υπόδειγμα" = c(
+    "None", "Drift", "Trend",
+    "None", "Drift", "Trend"
+  ),
+  
+  "Στατιστική ADF" = c(
+    round(results_level[[1]]@teststat[1], 3),
+    round(results_level[[2]]@teststat[1], 3),
+    round(results_level[[3]]@teststat[1], 3),
+    round(results_diff[[1]]@teststat[1], 3),
+    round(results_diff[[2]]@teststat[1], 3),
+    round(results_diff[[3]]@teststat[1], 3)
+  ),
+  
+  "Υστέρηση (lag στο regression)" = c(
+    length(results_level[[1]]@testreg$coefficients)-1,
+    length(results_level[[2]]@testreg$coefficients)-2,
+    length(results_level[[3]]@testreg$coefficients)-3,
+    length(results_diff[[1]]@testreg$coefficients)-1,
+    length(results_diff[[2]]@testreg$coefficients)-2,
+    length(results_diff[[3]]@testreg$coefficients)-3
+  ),
+  
+  "Κρίσιμη Τιμή (1%)" = c(
+    results_level[[1]]@cval[1,1],
+    results_level[[2]]@cval[1,1],
+    results_level[[3]]@cval[1,1],
+    results_diff[[1]]@cval[1,1],
+    results_diff[[2]]@cval[1,1],
+    results_diff[[3]]@cval[1,1]
+  ),
+  
+  "Κρίσιμη Τιμή (5%)" = c(
+    results_level[[1]]@cval[1,2],
+    results_level[[2]]@cval[1,2],
+    results_level[[3]]@cval[1,2],
+    results_diff[[1]]@cval[1,2],
+    results_diff[[2]]@cval[1,2],
+    results_diff[[3]]@cval[1,2]
+  ),
+  
+  check.names = FALSE
+)
+
+# render με gt_custom και υποσημείωση
+result_table %>%
+  gt_custom() %>%
+  tab_source_note(
+    source_note = "Σημείωση: Η μηδενική υπόθεση του ADF είναι η ύπαρξη μοναδιαίας ρίζας. Η υστέρηση αναφέρεται στον αριθμό lag που χρησιμοποιήθηκε στο regression."
+  )
+```
+
+
 #### Έλεγχος PP
 
 Άλλος ένας έλεγχος στασιμότητας είναι ο έλεγχος Phillips - Perron, ο οποίος
@@ -1137,58 +1214,66 @@ $q_{\text{μικρό}}$ και $q_{\text{μεγάλο}}$.
 
 ```{r}
 #| label: tbl-pp-results
-#| tbl-cap: "Αποτελέσματα ελέγχου Phillips-Perron στις παρατηρήσεις"
+#| tbl-cap: "Αποτελέσματα ελέγχου Phillips-Perron στις αρχικές παρατηρήσεις και στις πρώτες διαφορές"
 #| warning: false
-types <- c("constant", "trend")
 
-# run ur.df for each case
-results <- lapply(types, function(t) {
-    ur.pp(grc_unemployment$Value, type = "Z-tau", model = t, lags = "long")
+types <- c("constant", "trend")
+results_level <- lapply(types, function(t) {
+  ur.pp(grc_unemployment$Value,
+        type = "Z-tau",
+        model = t,
+        lags = "long")
+})
+
+results_diff <- lapply(types, function(t) {
+  ur.pp(diff(grc_unemployment$Value,1),
+        type = "Z-tau",
+        model = t,
+        lags = "long")
 })
 
 result_table <- data.frame(
-    "Έλεγχος" = c("PP (constant)", "PP (trend)"),
-    "Στατιστική Τιμή" = c(round(results[[1]]@teststat[1], 3),
-                          round(results[[2]]@teststat[1], 3)),
-    "Όρος αθροίσματος μακροχρ. διακύμανσης" = c(results[[1]]@lag,
-                                                results[[2]]@lag),
-    "Κρίσιμη Τιμή (1%)" = c(round(results[[1]]@cval[1,1], 3),
-                            round(results[[2]]@cval[1,1],3)),
-    "Κρίσιμη Τιμή (5%)" = c(round(results[[1]]@cval[1,2],3),
-                            round(results[[2]]@cval[1,2],3)),
-    check.names = FALSE
+  "Μεταβλητή" = c("Επίπεδα", "Επίπεδα",
+                  "Πρώτες Διαφορές", "Πρώτες Διαφορές"),
+  
+  "Υπόδειγμα" = c("Constant", "Trend",
+                  "Constant", "Trend"),
+  
+  "Στατιστική Τιμή" = c(
+    round(results_level[[1]]@teststat[1], 3),
+    round(results_level[[2]]@teststat[1], 3),
+    round(results_diff[[1]]@teststat[1], 3),
+    round(results_diff[[2]]@teststat[1], 3)
+  ),
+  
+  "Υστέρηση (Newey-West)" = c(
+    results_level[[1]]@lag,
+    results_level[[2]]@lag,
+    results_diff[[1]]@lag,
+    results_diff[[2]]@lag
+  ),
+  
+  "Κρίσιμη Τιμή (1%)" = c(
+    round(results_level[[1]]@cval[1,1], 3),
+    round(results_level[[2]]@cval[1,1], 3),
+    round(results_diff[[1]]@cval[1,1], 3),
+    round(results_diff[[2]]@cval[1,1], 3)
+  ),
+  
+  "Κρίσιμη Τιμή (5%)" = c(
+    round(results_level[[1]]@cval[1,2], 3),
+    round(results_level[[2]]@cval[1,2], 3),
+    round(results_diff[[1]]@cval[1,2], 3),
+    round(results_diff[[2]]@cval[1,2], 3)
+  ),
+  
+  check.names = FALSE
 )
 
 result_table %>% gt_custom()
+
 ```
 
-```{r}
-#| label: tbl-pp-results-diff
-#| tbl-cap: "Αποτελέσματα ελέγχου Phillips-Perron στις πρώτες διαφορές"
-#| warning: false
-types <- c("constant", "trend")
-
-# run ur.df for each case
-results <- lapply(types, function(t) {
-    ur.pp(diff(grc_unemployment$Value,1), type = "Z-tau", model = t,
-          lags = "long")
-})
-
-result_table <- data.frame(
-    "Έλεγχος" = c("PP (constant)", "PP (trend)"),
-    "Στατιστική Τιμή" = c(glue(round(results[[1]]@teststat[1], 3), "**"),
-                          glue(round(results[[2]]@teststat[1], 3), "**")),
-    "Υστέρηση" = c(results[[1]]@lag, 
-                   results[[2]]@lag),
-    "Κρίσιμη Τιμή (1%)" = c(round(results[[1]]@cval[1,1], 3),
-                            round(results[[2]]@cval[1,1],3)),
-    "Κρίσιμη Τιμή (5%)" = c(round(results[[1]]@cval[1,2],3),
-                            round(results[[2]]@cval[1,2],3)),
-    check.names = FALSE
-)
-
-result_table %>% gt_custom()
-```
 
 Συνεπώς, έχουμε απόρριψη της μηδενικής ($H_0$) υπόθεσης, στις διαφορές των
 αρχικών δεδομένων μου, αλλά μη απόρριψη στις πρώτες διαφορές των παραρτηρήσεων.
@@ -1214,28 +1299,48 @@ $$
 #| warning: false
 
 
-results = ur.kpss(grc_unemployment$Value, type = "mu", lags = "long")
-results_diff = ur.kpss(diff(grc_unemployment$Value,1), type = "mu", lags = "long")
-results_diff2 = ur.kpss(diff(grc_unemployment$Value,2), type = "mu", lags = "long")
+kpss_level  <- ur.kpss(grc_unemployment$Value, type = "mu", lags = "long")
+kpss_diff1  <- ur.kpss(diff(grc_unemployment$Value,1), type = "mu", lags = "long")
+kpss_diff2  <- ur.kpss(diff(grc_unemployment$Value,2), type = "mu", lags = "long")
 
 result_table <- data.frame(
-    "Μεταβλητή" = c("GR_Unemp", "Δ Gr_Unemp", "Δ2 Gr_Unemp"),
-    "Στατιστική Τιμή" = c(glue(round(results@teststat[1], 3), "**"), 
-                          round(results_diff@teststat[1],3),
-                          round(results_diff2@teststat[1],3)),
-    "Όρος αθροίσματος μακροχρ. διακύμανσης" = c(results@lag, 
-                                                results_diff@lag,
-                                                results_diff2@lag),
-    "Κρίσιμη Τιμή (1%)" = c(round(results@cval[,4], 3), 
-                            round(results_diff@cval[,4], 3),
-                            round(results_diff2@cval[,4], 3)),
-    "Κρίσιμη Τιμή (5%)" = c(round(results@cval[,2],3), 
-                            round(results_diff@cval[,2], 3),
-                            round(results_diff2@cval[,2], 3)),
-    check.names = FALSE
+  
+  "Μορφή της σειράς" = c("Σε επίπεδα",
+                        "Πρώτες διαφορές",
+                        "Δεύτερες διαφορές"),
+  
+  "Στατιστική KPSS" = c(
+    round(kpss_level@teststat[1], 3),
+    round(kpss_diff1@teststat[1], 3),
+    round(kpss_diff2@teststat[1], 3)
+  ),
+  
+  "Υστέρηση" = c(
+    kpss_level@lag,
+    kpss_diff1@lag,
+    kpss_diff2@lag
+  ),
+  
+  "Κρίσιμη Τιμή (1%)" = c(
+    round(kpss_level@cval[1,4], 3),
+    round(kpss_diff1@cval[1,4], 3),
+    round(kpss_diff2@cval[1,4], 3)
+  ),
+  
+  "Κρίσιμη Τιμή (5%)" = c(
+    round(kpss_level@cval[1,2], 3),
+    round(kpss_diff1@cval[1,2], 3),
+    round(kpss_diff2@cval[1,2], 3)
+  ),
+  
+  check.names = FALSE
 )
 
-result_table %>% gt_custom()
+result_table %>%
+  gt_custom() %>%
+  tab_source_note(
+    source_note = "Σημείωση: Η μηδενική υπόθεση του KPSS είναι η στασιμότητα. Η υστέρηση χρησιμοποιείται για την εκτίμηση της μακροχρόνιας διακύμανσης."
+  )
 ```
 
 Η μηδενική μου υπόθεση υπέθεσε στασιμότητα η οποία απορρίπτεται με βάση τον
