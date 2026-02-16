@@ -806,13 +806,27 @@ cool_table %>%
 ```{r}
 #| label: tbl-results-breakpoints-dates
 #| tbl-cap: "Αποτελέσματα ημερομηνιών των τομών, ανά αριθμό τομών (0 πίνακας διαβάζεται καλύτερα οριζόντια, ανά αριθμό τομών)"
-data.frame("Αριθμός τομών" = c(1,2,3,4,5), 
-           "Τομή Α" = min(unemployment$TIME) %m+% months(breakPoints$breakpoints[,1]) %>% set_names(NULL), 
-           "Τομή Β" = min(unemployment$TIME) %m+% months(breakPoints$breakpoints[,2]) %>% set_names(NULL), 
-           "Τομή Γ" = min(unemployment$TIME) %m+% months(breakPoints$breakpoints[,3]) %>% set_names(NULL), 
-           "Τομή Δ" = min(unemployment$TIME) %m+% months(breakPoints$breakpoints[,4]) %>% set_names(NULL), 
-           "Τομή Ε" = min(unemployment$TIME) %m+% months(breakPoints$breakpoints[,5]) %>% set_names(NULL), 
-           check.names = FALSE) %>% 
+
+start_date <- min(unemployment$TIME)
+
+date_table <- cool_table %>%
+    mutate(across(
+        starts_with("Τομή"),
+        function(x) {
+            
+            # create empty Date vector
+            out <- as.Date(rep(NA, length(x)))
+            
+            # convert only non-NA entries
+            idx <- which(!is.na(x))
+            
+            out[idx] <- start_date %m+% months(x[idx])
+            
+            return(out)
+        }
+    ))
+
+date_table %>%
   gt_custom() %>%
   sub_missing(everything(), missing_text = "-")
 ```
