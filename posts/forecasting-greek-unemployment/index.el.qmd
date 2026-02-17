@@ -760,11 +760,12 @@ highchart() %>%
     hc_exporting(enabled = TRUE)
 ```
 
+
+::: {.column-margin}
 ```{r}
 #| label: tbl-number-of-struc-changes
-#| fig-cap: "Πίνακας ένδειξης αριθμού τομών"
+#| tbl-cap: "Πίνακας ένδειξης αριθμού τομών"
 #| warning: false
-#| column: margin
 
 summaryBreakPoints %>%
   mutate("Τομές" = c(0, 1, 2, 3, 4, 5)) %>%
@@ -772,6 +773,7 @@ summaryBreakPoints %>%
   as.data.frame() %>%
   gt_custom(head_max = 6)
 ```
+:::
 
 Υπάρχει αρκετά μεγάλη μείωση του Μπεϋζιανού κριτηρίου πληροφορίας (BIC) όταν
 μεταβαίνω από ένα μοντέλο με καμία διαρθρωτική τομή, σε ένα άλλο με δύο
@@ -810,7 +812,8 @@ cool_table <- cool_table %>%
   select("Αριθμός τομών", everything())
 
 cool_table %>%
-    gt_custom()
+    gt_custom() %>%
+    sub_missing(everything(), missing_text = "-")
 ```
 
 και οι ημερομηνίες των αντίστοιχων τομών:
@@ -1681,7 +1684,7 @@ cv <- unemployment_ts %>%
 #| message: false
 #| results: hide
 
-auto_model <- auto.arima(grc_unemployment$Value, seasonal = TRUE, d = 1, trace = TRUE, stepwise = FALSE, max.p = 11, max.q = 11,max.order = 30)
+auto_model <- auto.arima(grc_unemployment$Value, seasonal = TRUE, d = 1, trace = TRUE, stepwise = FALSE, max.p = 11, max.q = 11,max.order = 30, ic = "bic")
 
 auto_model <- auto.arima(grc_unemployment$Value, seasonal = TRUE, d = 1, trace = TRUE, stepwise = FALSE, max.p = 11, max.q = 11,max.order = 30)
 arimaModel_1=arima(grc_unemployment$Value, order=c(0,1,1))
@@ -1778,17 +1781,33 @@ prophet_res = prophet::prophet(df = prophet_df)
 
 Προηγουμένως ανέφερα κάποιες κλασσικές μεθόδους πρόβλεψης των χρονοσειρών. Επιπλέον, χρησιμοποίησα το κριτήριο AIC για να λάβω το πιο κατάλληλο μοντέλο από 
 
+$$
+MAE = \frac{1}{n} \sum_{i=1}^{n} |y_i - \hat{y_i}|
+$$
+
+$$
+MSE = \frac{1}{n} \sum_{i=1}^n (y_i - \hat{y}_i) ^2 
+$$
+
+::: {.column-margin}
+
+$$
+RMSE = \sqrt{MSE} = \sqrt{\frac{1}{n} \sum_{i=1}^n (y_i - \hat{y}_i) ^2 }
+$$
+:::
+
+
 ```{r}
 #| label: tbl-rmse-models
 #| tbl-cap: "Σύγκριση σφαλμάτων διαφορετικών μοντέλων"
 fit <- cv %>%
   model(
-    arima_auto   = fable::ARIMA(Value),  # ← Force d=1!
-    arimad1 = fable::ARIMA(Value ~ pdq(d = 1)),
-    arimax = fable::ARIMA(Value ~ pdq(d = 1) + break1 + break2),
-    arima516 = fable::ARIMA(Value ~ pdq(p = 5, d = 1, q = 6), order_constraint = 12),
-    ets     = fable::ETS(Value),
-    prophet = prophet(Value)
+    "Auto ARIMA"   = fable::ARIMA(Value),  # ← Force d=1!
+    "ARIMA D1" = fable::ARIMA(Value ~ pdq(d = 1)),
+    ARIMAX = fable::ARIMA(Value ~ pdq(d = 1) + break1 + break2),
+    ARIMA516 = fable::ARIMA(Value ~ pdq(p = 5, d = 1, q = 6), order_constraint = 12),
+    ETS     = fable::ETS(Value),
+    Prophet = prophet(Value)
   )
 
 # Forecast h months ahead
@@ -1800,7 +1819,7 @@ acc <- accuracy(fc, unemployment_ts)
 
 acc %>%
   select(.model, RMSE, MAE) %>%
-  gt_custom() 
+  gt_custom(head_max = 10) 
 ```
 
 ## Πρόβλεψη μελλοντικής ανεργίας

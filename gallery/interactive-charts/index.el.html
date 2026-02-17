@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="el" xml:lang="el"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="A collection of my visualizations. Some of them are based on popular challenges such as #TidyTuesday and #30DayMapChallenge. The collection is not restricted to those, as I find from time to time interesting datasets to work with.">
+
+<title>Διαδραστικά διαγράμματα – stesiam</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../assets/images/favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-d640c705e8c17715bca3574aa719063f.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-d6a2ae2cb249da1580f0a11f71b8f854.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-d640c705e8c17715bca3574aa719063f.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-3f0dc162616da54be4763efbdc08f91d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-7ea5dfde505b7a3e3e9267eeaf17c966.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-3f0dc162616da54be4763efbdc08f91d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": true,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "Δεν βρέθηκαν αποτελέσματα",
+    "search-matching-documents-text": "ταιριάζοντα έγγραφα",
+    "search-copy-link-title": "Αντιγραφή συνδέσμου αναζήτησης",
+    "search-hide-matches-text": "Απόκρυψη επιπλέον αντιστοιχιών",
+    "search-more-match-text": "επιπλέον αντιστοιχία σε αυτό το έγγραφο",
+    "search-more-matches-text": "επιπλέον αντιστοιχίες σε αυτό το έγγραφο",
+    "search-clear-button-title": "Καθαρισμός",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Ακύρωση",
+    "search-submit-button-title": "Υποβολή",
+    "search-label": "Αναζήτηση"
+  }
+}</script>
+<link href="../../site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<script src="../../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="../../site_libs/jquery-3.5.1/jquery.min.js"></script>
+<script src="../../site_libs/proj4js-2.3.15/proj4.js"></script>
+<link href="../../site_libs/highcharts-9.3.1/css/motion.css" rel="stylesheet">
+<script src="../../site_libs/highcharts-9.3.1/highcharts.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/highcharts-3d.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/highcharts-more.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/stock.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/map.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/data.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/exporting.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/offline-exporting.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/drilldown.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/item-series.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/overlapping-datalabels.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/annotations.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/export-data.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/funnel.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/heatmap.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/treemap.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/sankey.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/dependency-wheel.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/organization.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/solid-gauge.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/streamgraph.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/sunburst.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/vector.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/wordcloud.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/xrange.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/tilemap.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/venn.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/gantt.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/timeline.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/parallel-coordinates.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/bullet.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/coloraxis.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/dumbbell.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/lollipop.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/series-label.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/plugins/motion.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/custom/reset.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/boost.js"></script>
+<script src="../../site_libs/highchart-binding-0.9.4/highchart.js"></script>
+<script src="../../site_libs/accessibility-9.3.1/accessibility"></script>
+<meta name="color-scheme" content="light dark">
+<style>
+  /* This forces Firefox to use the system/stored dark color 
+     for the 'canvas' before the page content even loads */
+  :root {
+    background-color: canvas;
+    color: canvastext;
+  }
+</style>
+
+
+<link rel="stylesheet" href="../../assets/styles/styles.css">
+<meta property="og:title" content="Διαδραστικά διαγράμματα – stesiam">
+<meta property="og:description" content="A collection of my visualizations. Some of them are based on popular challenges such as #TidyTuesday and #30DayMapChallenge. The collection is not restricted to those, as I find from time to time interesting datasets to work with.">
+<meta property="og:site_name" content="stesiam">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">stesiam</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Εναλλαγή σκοτεινού θέματος"><i class="bi"></i></a>
+</div>
+          <div id="quarto-search" class="" title="Αναζήτηση"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-page-left">
+      <h1 class="title">Διαδραστικά διαγράμματα</h1>
+                  <div>
+        <div class="description">
+          A collection of my visualizations. Some of them are based on popular challenges such as #TidyTuesday and #30DayMapChallenge. The collection is not restricted to those, as I find from time to time interesting datasets to work with.
+        </div>
+      </div>
+                </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta column-page-left">
+
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Σε αυτήν τη σελίδα</h2>
+   
+  <ul>
+  <li><a href="#day-chart-challenge" id="toc-day-chart-challenge" class="nav-link active" data-scroll-target="#day-chart-challenge">30 Day Chart Challenge</a>
+  <ul class="collapse">
+  <li><a href="#πωλήσεις-αλυσίδων-σουπερμάρκετ" id="toc-πωλήσεις-αλυσίδων-σουπερμάρκετ" class="nav-link" data-scroll-target="#πωλήσεις-αλυσίδων-σουπερμάρκετ">Πωλήσεις αλυσίδων σουπερμάρκετ</a></li>
+  <li><a href="#στόλος-οχημάτων" id="toc-στόλος-οχημάτων" class="nav-link" data-scroll-target="#στόλος-οχημάτων">Στόλος οχημάτων</a></li>
+  <li><a href="#κύπελλο-ποδοσφαίρου-ελλάδας" id="toc-κύπελλο-ποδοσφαίρου-ελλάδας" class="nav-link" data-scroll-target="#κύπελλο-ποδοσφαίρου-ελλάδας">Κύπελλο Ποδοσφαίρου Ελλάδας</a></li>
+  <li><a href="#εργαλεία-ανάλυσης-δεδομένων" id="toc-εργαλεία-ανάλυσης-δεδομένων" class="nav-link" data-scroll-target="#εργαλεία-ανάλυσης-δεδομένων">Εργαλεία Ανάλυσης Δεδομένων</a></li>
+  <li><a href="#καθυστερημένη-αποφοίτηση-και-κατανομή-βαθμών" id="toc-καθυστερημένη-αποφοίτηση-και-κατανομή-βαθμών" class="nav-link" data-scroll-target="#καθυστερημένη-αποφοίτηση-και-κατανομή-βαθμών">Καθυστερημένη Αποφοίτηση και Κατανομή Βαθμών</a></li>
+  </ul></li>
+  <li><a href="#greece-in-figures" id="toc-greece-in-figures" class="nav-link" data-scroll-target="#greece-in-figures">Greece in Figures</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block page-columns page-full column-page-left" id="quarto-document-content">
+
+
+
+
+
+
+<section id="day-chart-challenge" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="day-chart-challenge">30 Day Chart Challenge</h2>
+<section id="πωλήσεις-αλυσίδων-σουπερμάρκετ" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="πωλήσεις-αλυσίδων-σουπερμάρκετ">Πωλήσεις αλυσίδων σουπερμάρκετ</h3>
+<div class="column-body page-columns page-full">
+<div class="cell page-columns page-full">
+<div class="cell-output-display column-body">
+<div class="highchart html-widget html-fill-item" id="htmlwidget-2b467f1b7f3ae6e57578" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-2b467f1b7f3ae6e57578">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"pie"},"title":{"text":"<b>Τζίρος Ελληνικών Σουπερμάρκετ (2022)<\/b>"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"subtitle":{"text":"Σύμφωνα με τη τελευταία έκθεση του ΙΕΛΚΑ, οι συνολικές πωλήσεις ανέρχονται στα € <b>11.2<\/b> δις.\nΟ <b><span style = 'color: #c6a464;'>Σκλαβενίτης<\/span><\/b> αποτελεί την κυρίαρχη αλυσίδα σούπερμαρκετ κατέχοντας πάνω από το ένα τρίτο της αγοράς."},"caption":{"text":"30 Day Chart Challenge, Day 1 (2024) <br> \n<b> Δεδομένα:<\/b> Πανόραμα ελληνικών σουπερμάρκετ, selfservice.gr | \n<b>Γράφημα:<\/b> stesiam, 2024","useHTML":true},"series":[{"name":"Sales","colorByPoint":true,"data":[{"name":"Σκλαβενίτης","y":5.35,"img":"https://www.sklavenitis.gr/favicon.ico","perc":36.15},{"name":"LIDL","y":2,"img":"https://www.lidl-hellas.gr/static/assets/lidl-onlineshop-hellas-271731.svg","perc":13.51},{"name":"AB Βασιλόπουλος","y":1.94,"img":"https://static.ab.gr/static/next/icons/favicon.png","perc":13.11},{"name":"Μέτρο ΑΕΒΕ","y":1.65,"img":"https://www.metrocashandcarry.gr/assets/img/logo_metro.svg","perc":11.15},{"name":"Μασούτης","y":1.15,"img":"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/%CE%9C%CE%B1%CF%83%CE%BF%CF%8D%CF%84%CE%B7%CF%82_%28logo%29.svg/250px-%CE%9C%CE%B1%CF%83%CE%BF%CF%8D%CF%84%CE%B7%CF%82_%28logo%29.svg.png","perc":7.77},{"name":"Κρητικός","y":0.78,"img":"https://kritikos-sm.gr/assets/kritikos/logo.svg","perc":5.27},{"name":"Άλλο","y":1.93,"img":null,"perc":13.04}]}],"tooltip":{"valueDecimals":2,"useHTML":true,"style":{"width":"150px"},"formatter":"\n      function() {\n        return '<div style=\"text-align:center; max-width:140px; \">' +\n                 '<img src=\"' + this.point.img + '\" ' +\n                 'style=\"max-width:100%; height:50px; border-radius:8px; display:block; margin:auto;\" /><br>' +\n                 '<b>' + this.point.name + '<\/b><br>' +\n                 'Πωλήσεις: ' + this.point.y + ' δις €<br>' +\n                  'Μερίδιο αγοράς: ' + this.point.perc + ' %<br>' +\n               '<\/div>';\n      }\n    "}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":["hc_opts.tooltip.formatter"],"jsHooks":[]}</script>
+</div>
+</div>
+</div>
+</section>
+<section id="στόλος-οχημάτων" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="στόλος-οχημάτων">Στόλος οχημάτων</h3>
+<div class="cell page-columns page-full">
+<div class="cell-output-display column-body">
+<div class="highchart html-widget html-fill-item" id="htmlwidget-58f8a725bfa93002e810" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-58f8a725bfa93002e810">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"area"},"title":{"text":"Οχήματα στην Ελλάδα"},"yAxis":{"title":{"text":"Ποαοστό (%)"}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"},"area":{"stacking":"percent","lineColor":"#666666","lineWidth":1,"marker":{"lineWidth":1,"lineColor":"#666666","enabled":false}}},"subtitle":{"text":"Παρατηρούμε ότι τα πρόσφατα χρόνια\nυπάρχει <span style = 'font-family:uc; color:red;'>3x<\/span><span style = 'font-family:fs; color:red;'> τριπλασιασμός <\/span> των συνολικών οχημάτων.\nΗ πιο αξιοσημείωτη αλλαγή είναι ο\nδιπλασιασμός του ποσοστού των μηχανών"},"caption":{"text":"30 Day Chart Challenge, Day 15 (2024) | <b> Δεδομένα:<\/b> Ελληνική Στατιστική Υπηρεσία<br><span style='font-family:fb;'  >&#xf09b;<\/span> <b>stesiam<\/b>, 2024"},"xAxis":{"categories":[1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],"title":{"text":"Year"}},"tooltip":{"shared":true},"series":[{"data":[1874330,1996661,2099241,2207695,2350037,2523382,2592334,2649562,2807447,2946654,3113184,3279344,3477506,3689353,3979637,4279524,4536630,4782453,4997715,5259428,5516441,5789843,6081577,6340655,6461714,6562952,6552008,6513437,6466827,6455509,6456810,6519420,6606239,6653146,6792371,6892442,7022617,7158543,7325474,7491809],"name":"Αυτοκίνητο","color":"#2f4b7c"},{"data":[19234,19482,19745,20074,20653,21430,22080,22674,23206,23540,24600,25096,25622,26320,26769,27037,27115,27247,27139,26780,26829,26938,27102,27186,27324,27311,27121,26962,26783,26691,26586,26541,26481,26389,26479,26539,26584,26560,26636,26566],"name":"Λεωφορείο","color":"#ffa600"},{"data":[595761,622037,650950,683700,724203,766429,792770,797788,825697,849033,883823,914827,951785,987357,1023987,1057422,1085811,1109137,1131027,1159137,1186483,1219889,1255945,1289525,1302430,1318768,1321296,1318918,1315836,1317945,1322604,1332823,1343830,1344062,1359341,1373727,1391841,1405971,1421079,1437297],"name":"Φορτηγό","color":"#a05195"},{"data":[162295,173694,183253,197995,219547,256594,295675,339774,387877,428953,475668,517890,570965,633765,710775,781361,853366,910555,969895,1042605,1124172,1205816,1298688,1388607,1448851,1499133,1534902,1556435,1568596,1592929,1619621,1653528,1656657,1583491,1609923,1637608,1675804,1724438,1782022,1851620],"name":"Μηχανή","color":"#f95d6a"}]},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"numericSymbols":["χιλ.","εκ.","δισ.","τρις.","τετρ.","πεντ."]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div class="cell page-columns page-full">
+<div class="cell-output-display column-body">
+<div class="highchart html-widget html-fill-item" id="htmlwidget-21c2b0d7b3f749963e94" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-21c2b0d7b3f749963e94">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"area"},"title":{"text":"Οχήματα στην Ελλάδα"},"yAxis":{"title":{"text":"Πλήθος οχημάτων"}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"},"area":{"stacking":"normal","lineColor":"#666666","lineWidth":1,"marker":{"lineWidth":1,"lineColor":"#666666","enabled":false}}},"subtitle":{"text":"Παρατηρούμε ότι τα πρόσφατα χρόνια\nυπάρχει <span style = 'font-family:uc; color:red;'>3x<\/span><span style = 'font-family:fs; color:red;'> τριπλασιασμός <\/span> των συνολικών οχημάτων.\nΗ πιο αξιοσημείωτη αλλαγή είναι ο\nδιπλασιασμός του ποσοστού των μηχανών"},"caption":{"text":"30 Day Chart Challenge, Day 15 (2024) | <b> Δεδομένα:<\/b> Ελληνική Στατιστική Υπηρεσία<br><span style='font-family:fb;'  >&#xf09b;<\/span> <b>stesiam<\/b>, 2024"},"xAxis":{"categories":[1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],"title":{"text":"Year"}},"tooltip":{"shared":true},"series":[{"data":[1874330,1996661,2099241,2207695,2350037,2523382,2592334,2649562,2807447,2946654,3113184,3279344,3477506,3689353,3979637,4279524,4536630,4782453,4997715,5259428,5516441,5789843,6081577,6340655,6461714,6562952,6552008,6513437,6466827,6455509,6456810,6519420,6606239,6653146,6792371,6892442,7022617,7158543,7325474,7491809],"name":"Αυτοκίνητο","color":"#2f4b7c"},{"data":[19234,19482,19745,20074,20653,21430,22080,22674,23206,23540,24600,25096,25622,26320,26769,27037,27115,27247,27139,26780,26829,26938,27102,27186,27324,27311,27121,26962,26783,26691,26586,26541,26481,26389,26479,26539,26584,26560,26636,26566],"name":"Λεωφορείο","color":"#ffa600"},{"data":[595761,622037,650950,683700,724203,766429,792770,797788,825697,849033,883823,914827,951785,987357,1023987,1057422,1085811,1109137,1131027,1159137,1186483,1219889,1255945,1289525,1302430,1318768,1321296,1318918,1315836,1317945,1322604,1332823,1343830,1344062,1359341,1373727,1391841,1405971,1421079,1437297],"name":"Φορτηγό","color":"#a05195"},{"data":[162295,173694,183253,197995,219547,256594,295675,339774,387877,428953,475668,517890,570965,633765,710775,781361,853366,910555,969895,1042605,1124172,1205816,1298688,1388607,1448851,1499133,1534902,1556435,1568596,1592929,1619621,1653528,1656657,1583491,1609923,1637608,1675804,1724438,1782022,1851620],"name":"Μηχανή","color":"#f95d6a"}]},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"numericSymbols":["χιλ.","εκ.","δισ.","τρις.","τετρ.","πεντ."]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="κύπελλο-ποδοσφαίρου-ελλάδας" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="κύπελλο-ποδοσφαίρου-ελλάδας">Κύπελλο Ποδοσφαίρου Ελλάδας</h3>
+<div class="cell page-columns page-full">
+<div class="cell-output-display column-body-outset-left">
+<div class="highchart html-widget html-fill-item" id="htmlwidget-79b8ee74c2d8fb80d474" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-79b8ee74c2d8fb80d474">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"bar"},"title":{"text":"Νικητές 🏆 κυπέλλου Ελλάδας στο ποδόσφαιρο ⚽"},"yAxis":{"title":{"text":"Κατακτήσεις κυπέλλου"}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"},"bar":{"pointPadding":0.05,"groupPadding":0.1,"borderWidth":0}},"subtitle":{"text":"Ο Ολυμπιακός είναι η ομάδα με τις περισσότερες κατακτήσεις (29) στο κύπελλο Ελλάδας"},"caption":{"text":"30 Day Chart Challenge, Day 4 | <b>Data:<\/b> Wikipedia | <b>Graph:<\/b> stesiam, 2024"},"xAxis":{"title":{"text":null},"categories":["Ολυμπιακός","Παναθηναϊκός","ΑΕΚ","ΠΑΟΚ","Πανιώνιος","ΑΕΛ","Άρης","Ηρακλής","ΟΦΗ","Εθνικός","Καστοριά"]},"tooltip":{"useHTML":true,"style":{"fontSize":"12px","whiteSpace":"normal","padding":"10px","overflow":"visible","color":"#000"},"formatter":"\n    function() {\n      const images = [\"https://upload.wikimedia.org/wikipedia/en/thumb/a/a2/Olympiacos_FC_crest.svg/250px-Olympiacos_FC_crest.svg.png\",\"https://upload.wikimedia.org/wikipedia/en/thumb/8/84/Panathinaikos_F.C._logo.svg/250px-Panathinaikos_F.C._logo.svg.png\",\"https://upload.wikimedia.org/wikipedia/en/thumb/0/04/AEK_Athens_FC_logo.svg/155px-AEK_Athens_FC_logo.svg.png\",\"https://upload.wikimedia.org/wikipedia/en/thumb/e/e6/PAOK_FC_EMBLEM.png/250px-PAOK_FC_EMBLEM.png\",\"https://upload.wikimedia.org/wikipedia/en/thumb/7/70/Panionios_FC.png/250px-Panionios_FC.png\",\"https://upload.wikimedia.org/wikipedia/en/thumb/8/8e/AEL1964-Crest.svg/120px-AEL1964-Crest.svg.png\",\"https://upload.wikimedia.org/wikipedia/en/thumb/e/e4/Aris_Thessaloniki_F.C._logo.svg/130px-Aris_Thessaloniki_F.C._logo.svg.png\",\"https://upload.wikimedia.org/wikipedia/en/thumb/a/a9/IraklisSportNewLogo.png/250px-IraklisSportNewLogo.png\",\"https://upload.wikimedia.org/wikipedia/en/thumb/7/7f/OFI_emblem.png/250px-OFI_emblem.png\",\"https://upload.wikimedia.org/wikipedia/en/thumb/4/4f/Ethnikos_Piraeus_FC_logo.png/250px-Ethnikos_Piraeus_FC_logo.png\",\"https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Kastoria_1980.png/250px-Kastoria_1980.png\"];\n      return '<div style=\"display:flex; align-items:center; width:115px;\">' +\n             '<img src=\"' + images[this.point.index] + '\" style=\"height:25px; margin-right:10px;\" />' +\n             '<div><b>' + this.key + \n             '<\/b><br/>Κατακτήσεις: ' + this.y + \n             '<\/div>' +\n             \n             '<\/div>';\n    }\n  "},"series":[{"name":"Κατακτήσεις","data":[29,20,16,8,2,2,1,1,1,1,1]}],"legend":{"enabled":false}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"numericSymbols":["χιλ.","εκ.","δισ.","τρις.","τετρ.","πεντ."]}},"type":"chart","fonts":[],"debug":false},"evals":["hc_opts.tooltip.formatter"],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="εργαλεία-ανάλυσης-δεδομένων" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="εργαλεία-ανάλυσης-δεδομένων">Εργαλεία Ανάλυσης Δεδομένων</h3>
+<div class="cell page-columns page-full">
+<div class="cell-output-display column-body-outset-left">
+<div class="highchart html-widget html-fill-item" id="htmlwidget-fc058fcb2b1b2086ec04" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-fc058fcb2b1b2086ec04">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"line"},"title":{"text":"Τάσεις Aναζήτησης Εργαλείων Ανάλυσης"},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"},"line":{"marker":{"enabled":false}}},"subtitle":{"text":"Ερευνώντας το ενδιαφέρον αναζήτησης για λογισμικά ή γλώσσες προγραμματισμού <br>επικεντρωμένα στην ανάλυση δεδομένων,\nσυμπεραίνω ότι η <b><span style='color:#019b98;'>R<\/span><\/b> έχει καθιερωθεί στο πεδίο της ανάλυσης τη τελευταία δεκαετία\nέναντι του  <b><span style='color:#F18F01;'>MATLAB<\/span><\/b> και του <b><span style='color:#dd0025;'>SPSS<\/span><\/b>"},"caption":{"text":"30 Day Chart Challenge, Day 28 (2024) | <b>Δεδομένα:<\/b> Google Trends | <b>Γράφημα:<\/b> stesiam, 2024"},"xAxis":{"categories":[2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024]},"series":[{"data":[38.1,48.2,52,48.4,42.7,44.3,55.5,63.2,64.59999999999999,65.3,65.8,67.8,86.40000000000001,77,73.2,66.90000000000001,59.8,69.8,62.8,64.40000000000001],"name":"R"},{"data":[86.7,75.09999999999999,69.09999999999999,65.2,68.09999999999999,69,66.8,64.8,64.2,64.2,63.1,65.5,66.2,56.8,56.8,51.7,37.6,49.3,44.4,52.6],"name":"MATLAB","color":"orange"},{"data":[30.2,25.1,24.8,23.8,24.2,23.5,22.2,21.1,19.6,19.2,18.6,17.8,16.8,15.2,13.7,12.1,10.2,13.7,13.2,14.2],"name":"SPSS","color":"#db9f92"}],"tooltip":{"shared":true}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"numericSymbols":["χιλ.","εκ.","δισ.","τρις.","τετρ.","πεντ."]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="καθυστερημένη-αποφοίτηση-και-κατανομή-βαθμών" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="καθυστερημένη-αποφοίτηση-και-κατανομή-βαθμών">Καθυστερημένη Αποφοίτηση και Κατανομή Βαθμών</h3>
+<div class="cell page-columns page-full">
+<div class="cell-output-display column-body">
+<div class="highchart html-widget html-fill-item" id="htmlwidget-faefa28228b329365f56" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-faefa28228b329365f56">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"areaspline"},"title":{"text":"Κατηγορίες βαθμών αποφοίτησης φοιτητών Στατιστικής"},"yAxis":{"title":{"text":"Ποσοστό (%) φοιτητών"}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"},"areaspline":{"stacking":"percent","marker":{"enabled":false},"lineWidth":2,"fillOpacity":0.6}},"xAxis":{"categories":["2003-2004","2004-2005","2005-2006","2006-2007","2007-2008","2008-2009","2009-2010","2010-2011","2011-2012","2012-2013","2013-2014","2014-2015","2015-2016","2016-2017","2017-2018","2018-2019","2019-2020","2020-2021","2021-2022"]},"subtitle":{"text":"Οι βαθμοί που κυριαρχούν είναι κάτω του 7, προσεγγίζοντας ακόμα και το 90%. Οι απόφοιτοι με βαθμό πτυχίου από 6 μέχρι και 7 είναι οι πιο συχνοί και καταλαμβάνουν το 55% με 70% των συνολικών αποφοίτων"},"colors":["#E24A4A","#FF9090","#90C3FF","#4A90E2"],"series":[{"data":[20.7,16.9,24.2,6.1,23.4,24.7,34.6,25.2,24.1,25.1,32.3,31.6,30.9,29.9,28.6,27.4,28.2,13.4,10.5],"name":"Βαθμός 5-6"},{"data":[60,62.1,55.8,72.40000000000001,59.1,61.7,54.5,57.9,59,63.3,56.2,52.4,51.2,57.3,60.3,60.4,57.7,67.59999999999999,65.8],"name":"Βαθμός 6-7"},{"data":[19.3,21,19.2,19.6,16.9,13,10.9,16.4,14.5,10.1,9.699999999999999,13.2,17.1,12,6.3,10.8,14.1,18.2,21.6],"name":"Βαθμός 7-8.5"},{"data":[0,0,0.8,1.8,0.7,0.6,0,0.6,2.4,1.5,1.8,2.8,0.8,0.8,4.8,1.4,0,0.8,2.2],"name":"Βαθμός 8.5+"}],"tooltip":{"shared":true}},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"numericSymbols":["χιλ.","εκ.","δισ.","τρις.","τετρ.","πεντ."]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div class="cell page-columns page-full">
+<div class="cell-output-display column-body">
+<div class="highchart html-widget html-fill-item" id="htmlwidget-fade7db24547e2eb9ea8" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-fade7db24547e2eb9ea8">{"x":{"hc_opts":{"chart":{"reflow":true,"type":"areaspline"},"title":{"text":"Κατανομή διάρκειας σπουδών μέχρι την αποφοίτηση"},"yAxis":{"title":{"text":"Percentage (%)"}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"},"areaspline":{"stacking":"percent","marker":{"enabled":false},"lineWidth":2,"fillOpacity":0.6}},"subtitle":{"text":"Οι περισσότεροι φοιτητές ξεπερνάνε τα ν+2 έτη για να λάβουν πτυχίο!"},"caption":{"text":"stesiam, 2023"},"xAxis":{"categories":["2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020","2021","2022"],"title":null},"tooltip":{"shared":true},"series":[{"data":[22,20,19,30,24,16,17,17,25,32,34,79,103],"name":"9 έτη και πάνω"},{"data":[35,39,51,56,57,26,40,62,42,51,63,104,111],"name":"7-8 έτη"},{"data":[66,65,74,97,81,64,52,33,43,29,41,71,138],"name":"5-6 έτη"},{"data":[22,13,14,13,19,22,9,4,4,0,0,0,5],"name":"4 έτη"}],"colors":["#E24A4A","#FF9090","#90C3FF","#4A90E2"]},"theme":{"chart":{"backgroundColor":"transparent"},"colors":["#7cb5ec","#434348","#90ed7d","#f7a35c","#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"]},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"numericSymbols":["χιλ.","εκ.","δισ.","τρις.","τετρ.","πεντ."]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+</section>
+<section id="greece-in-figures" class="level2">
+<h2 class="anchored" data-anchor-id="greece-in-figures">Greece in Figures</h2>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Αντιγράφηκε!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Αντιγράφηκε!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/stesiam\.com\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
