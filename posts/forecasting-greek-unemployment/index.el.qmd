@@ -116,13 +116,12 @@ library(forecast)
 library(tsibble)
 library(feasts)
 library(fable)
+library(fable.prophet)
 library(strucchange)
 library(uroot)
 
 library(FinTS)
 library(lmtest)
-
-library(prophet)
 ```
 
 ```{r}
@@ -759,6 +758,19 @@ highchart() %>%
     
     # export button
     hc_exporting(enabled = TRUE)
+```
+
+```{r}
+#| label: tbl-number-of-struc-changes
+#| fig-cap: "Πίνακας ένδειξης αριθμού τομών"
+#| warning: false
+#| column: margin
+
+summaryBreakPoints %>%
+  mutate("Τομές" = c(0, 1, 2, 3, 4, 5)) %>%
+  relocate(`Τομές`, .before = "RSS") %>%
+  as.data.frame() %>%
+  gt_custom(head_max = 6)
 ```
 
 Υπάρχει αρκετά μεγάλη μείωση του Μπεϋζιανού κριτηρίου πληροφορίας (BIC) όταν
@@ -1617,6 +1629,39 @@ pacf_plot_function(grc_unemployment_diff1, min=-0.2, max=0.5)
 
 ## Κατασκευή μοντέλων
 
+### Διαχωρισμός χρονοσειράς
+
+
+
+```{r}
+unemployment_ts = read_csv("data/unemployment.csv") |>
+  select(LOCATION, TIME, Value) |>
+  mutate(TIME = yearmonth(TIME)) |>
+  dplyr::filter(LOCATION == "GRC") |>
+  as_tsibble(index = TIME)
+
+
+break1 = breakPoints$breakdates[2,][3]
+break2 = breakPoints$breakdates[2,][5]
+
+n_obs <- nrow(unemployment_ts)
+break_position_1 <- round(n_obs * break1)
+break_position_2 <- round(n_obs * break2)
+
+break_date_1 <- unemployment_ts$TIME[break_position_1]
+break_date_2 <- unemployment_ts$TIME[break_position_2]
+
+unemployment_ts <- unemployment_ts %>%
+  mutate(
+    break1 = if_else(TIME >= break_date_1 & TIME < break_date_2, 1, 0),
+    break2 = if_else(TIME >= break_date_2, 1, 0)
+  )
+
+cv <- unemployment_ts %>%
+  stretch_tsibble(.init = 200, .step = 1)
+```
+
+
 ### Καθορισμός μοντέλων ARIMA
 
 Για το απλό ARIMA μοντέλο θα πρέπει να καθορίσω τις τρεις παραμέτρους μου.
@@ -1635,6 +1680,8 @@ pacf_plot_function(grc_unemployment_diff1, min=-0.2, max=0.5)
 #| warning: false
 #| message: false
 #| results: hide
+
+auto_model <- auto.arima(grc_unemployment$Value, seasonal = TRUE, d = 1, trace = TRUE, stepwise = FALSE, max.p = 11, max.q = 11,max.order = 30)
 
 auto_model <- auto.arima(grc_unemployment$Value, seasonal = TRUE, d = 1, trace = TRUE, stepwise = FALSE, max.p = 11, max.q = 11,max.order = 30)
 arimaModel_1=arima(grc_unemployment$Value, order=c(0,1,1))
@@ -1709,8 +1756,6 @@ data.frame(
   check.names = FALSE
 ) %>%
   gt_custom()
-
-
 ```
 
 ### Μοντέλο Prophet
@@ -1728,6 +1773,35 @@ prophet_df = grc_unemployment %>%
 prophet_res = prophet::prophet(df = prophet_df)
 ```
 
+
+## Σύγκριση μοντέλων
+
+Προηγουμένως ανέφερα κάποιες κλασσικές μεθόδους πρόβλεψης των χρονοσειρών. Επιπλέον, χρησιμοποίησα το κριτήριο AIC για να λάβω το πιο κατάλληλο μοντέλο από 
+
+```{r}
+#| label: tbl-rmse-models
+#| tbl-cap: "Σύγκριση σφαλμάτων διαφορετικών μοντέλων"
+fit <- cv %>%
+  model(
+    arima_auto   = fable::ARIMA(Value),  # ← Force d=1!
+    arimad1 = fable::ARIMA(Value ~ pdq(d = 1)),
+    arimax = fable::ARIMA(Value ~ pdq(d = 1) + break1 + break2),
+    arima516 = fable::ARIMA(Value ~ pdq(p = 5, d = 1, q = 6), order_constraint = 12),
+    ets     = fable::ETS(Value),
+    prophet = prophet(Value)
+  )
+
+# Forecast h months ahead
+fc <- fit %>%
+  forecast(h = 6)
+
+# Compute accuracy
+acc <- accuracy(fc, unemployment_ts)
+
+acc %>%
+  select(.model, RMSE, MAE) %>%
+  gt_custom() 
+```
 
 ## Πρόβλεψη μελλοντικής ανεργίας
 
