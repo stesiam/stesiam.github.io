@@ -592,7 +592,7 @@ highchart() %>%
 ```
 
 
-## Εξέταση τάσης και περιοδικότητας
+## Εξέταση τάσης και εποχικότητας
 
 Στην ανάλυση χρονοσειρών είναι σημαντικό να ξεχωρίσουμε τις πηγές της διασποράς
 μιας χρονοσειράς και να διαπιστώσουμε από που προέρχεται αυτή. Οι χρονοσειρές
@@ -683,10 +683,25 @@ highchart(type = "stock") %>%
 Έλαβα μία αμφιλεγόμενη εικόνα με ιστορικά μία αδύναμη εποχικότητα, η οποία υπάρχει σε μεγάλο βαθμό τα τελευταία χρόνια. Μία απλή μέθοδος για να πάρουμε μία σύντομη απάντηση είναι μέσω της εντολης nsdiffs του πακέτου {forecast}. Σε αυτή τη περίπτωση λάβαμε ως απόκριση μηδέν που με κάνει να υποθέτω πώς μάλλον η όποια εποχικότητα ήταν γενικά αδύναμη.
 
 ```{r}
-#| label: seasonality-check
+#| label: tbl-seasonality-check
+#| tbl-cap: "Αποτελέσματα διάφορων ελέγχων για αξιολόγηση εποχικότητας"
 grc_unemployment = unemployment %>% dplyr::filter(LOCATION == "GRC")
 y = ts(grc_unemployment$Value, start = c(1998, 4), frequency = 12)
 nsdiffs(y, test = "ch")
+
+data.frame(
+  "Έλεγχος" = c("Canova-Hansen (CH)", 
+                "OCSB", 
+                "Εποχική Επιρροή (STL)"),
+  "Τιμή" = c(NA, NA, 0.153),
+  "Αποτέλεσμα" = c("Δεν απαιτείται εποχική διαφορά",
+                   "Δεν απαιτείται εποχική διαφορά",
+                   "Ασθενής εποχικότητα"),
+  check.names = FALSE
+) %>%
+  gt_custom() %>%
+  sub_missing(everything(), missing_text = "-")
+
 ```
 
 
@@ -1636,7 +1651,33 @@ pacf_plot_function(grc_unemployment_diff1, min=-0.2, max=0.5)
 
 ### Διαχωρισμός χρονοσειράς
 
+```{mermaid}
+//| label: fig-simple
+//| fig-cap: "Απλός διαχωρισμός δεδομένων"
+flowchart LR
+    A[Σύνολο δεδομένων <br> (1998-2022) <br> 293 παρατηρήσεις]
 
+
+    A --> B[Train <br> (1998-2015)]
+    A --> C[Test <br> (2015-2022)]
+```
+
+```{mermaid}
+//| label: fig-rolling
+//| fig-cap: "Διακεκομμένη"
+//| fig-height: 8
+flowchart LR
+   C[Σύνολο χρονοσειράς <br> <small>293 παρατηρήσεις</small>]
+
+
+    C --> F[1ο πλαίσιο <br> <small>Εκπαίδευση: 1998-2010 <br> Πρόβλεψη: 2011</small>]
+    C --> G[2ο πλαίσιο <br> <small>Εκπαίδευση: 1998-2011 <br> Πρόβλεψη: 2012</small>]
+    C --> H[3ο πλαίσιο <br> <small>Εκπαίδευση: 1998-2012 <br> Πρόβλεψη: 2013</small>]
+    C --> I[...]
+    C --> J[Ν-πλαίσιο <br> <small>Εκπαίδευση: 1998-2021 <br> Πρόβλεψη: 2022/small>]
+
+
+```
 
 ```{r}
 unemployment_ts = read_csv("data/unemployment.csv") |>
@@ -1658,8 +1699,8 @@ break_date_2 <- unemployment_ts$TIME[break_position_2]
 
 unemployment_ts <- unemployment_ts %>%
   mutate(
-    break1 = if_else(TIME == break_date_1, 1L, 0L),
-    break2 = if_else(TIME == break_date_2, 1L, 0L)
+    break1 = if_else(TIME >= break_date_1, 1L, 0L),
+    break2 = if_else(TIME >= break_date_2, 1L, 0L)
   )
 
 cv <- unemployment_ts %>%
@@ -1800,18 +1841,38 @@ $$
 
 
 ```{r}
-#| label: tbl-rmse-models
-#| tbl-cap: "Σύγκριση σφαλμάτων διαφορετικών μοντέλων"
+#| label: tbl-rmse-models-2mths
+#| tbl-cap: "Σύγκριση σφαλμάτων διαφορετικών μοντέλων για 2μηνη πρόβλεψη"
+#| cache: true
 fit <- cv %>%
   model(
     "Auto ARIMA"   = fable::ARIMA(Value),  # ← Force d=1!
     "ARIMA D1" = fable::ARIMA(Value ~ pdq(d = 1)),
-    ARIMAX = fable::ARIMA(Value ~ pdq(d = 1) + break1 + break2),
+    ARIMAX = fable::ARIMA(Value ~ pdq(d = 1) + break1 ),
     ETS     = fable::ETS(Value),
     Prophet = prophet(Value),
     Naive = fable::NAIVE(Value),
-    NNetar = fable::NNETAR(Value)
+    SNaive = fable::SNAIVE(Value)
   )
+
+# Forecast h months ahead
+fc <- fit %>%
+  forecast(h = 2)
+
+# Compute accuracy
+acc <- accuracy(fc, unemployment_ts)
+
+acc %>%
+  select(.model, RMSE, MAE) %>%
+  rename("Μοντέλο" = ".model") %>%
+  arrange(RMSE) %>%
+  gt_custom(head_max = 10) 
+```
+
+```{r}
+#| label: tbl-rmse-models-6mths
+#| tbl-cap: "Σύγκριση σφαλμάτων διαφορετικών μοντέλων για 6μηνη πρόβλεψη"
+#| cache: true
 
 # Forecast h months ahead
 fc <- fit %>%
@@ -1826,6 +1887,7 @@ acc %>%
   arrange(RMSE) %>%
   gt_custom(head_max = 10) 
 ```
+
 
 ## Πρόβλεψη μελλοντικής ανεργίας
 
