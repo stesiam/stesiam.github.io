@@ -1011,6 +1011,14 @@ summary_stationarity_results  %>% gt_custom(head_max = 7)
 ρίζας για να διαπιστώσουμε τη στασιμότητα ή μη μίας χρονοσειράς. Αυτός ο έλεγχος
 βασίζεται στο αυτοπαλίνδρομο μοντέλο πρώτης τάξης, $\text{AR}(1)$:
 
+::: {.column-margin}
+![Φωτογραφία του φυσικού - στατιστικού (Sir) Gilbert Walker](walker.webp)
+
+Ο (Sir) Gilbert Thomas Walker (Ηνωμένο Βασίλειο, 1868 - 1958) είναι φυσικός και στατιστικός, με σπουδές στο Trinity College του Πανεπιστημίου του Cambridge όπου αναδείχτηκε κορυφαίος προπτυχιακός φοιτητής το 1889. Κατά τη θητεία του στην Ινδική Μετεωρολογική Υπηρεσία ανέπτυξε τις εξισώσεις Yule-Walker (μαζί με τον George Udny Yule) που σήμερα αποτελούν βασικό εργαλείο για τα αυτοπαλίνδρομα (AR) μοντέλα. Με αυτές τις μεθόδους κατάφερε να προβλέψει σωστά τα μοτίβα των μουσώνων.<br>
+
+**Πηγή φωτογραφίας: **Wikimedia Commons, 2021 - Άδεια χρήσης: Public Domain (δημοσιεύτηκε το 1925). Για τη πρωτότυπη φωτογραφία μπορείτε να πατήσετε τον [σύνδεσμο](https://commons.wikimedia.org/wiki/File:Gilbert_Walker.jpg)
+:::
+
 $$
 y_t = \phi y_{t-1} + e_t
 $$
@@ -1581,6 +1589,23 @@ ARIMA, το $d$ συμβολίζει την τάξη της διαφοράς, ό
 
 ### Αρχικές παρατηρήσεις
 
+::: {.column-margin}
+```{r}
+#| echo: false
+#| label: tbl-results-acf-pacf-values-lv
+#| tbl-cap: "Αποτελέσματα αυτοσυσχετίσεων στις αρχικές παρατηρήσεις για τις πρώτες 12 υστερήσεις"
+acf_lv = acf(grc_unemployment$Value, plot = FALSE)
+pacf_lv = pacf(grc_unemployment$Value, plot = FALSE)
+
+data.frame(
+  "Υστέρηση" = c(0:24),
+  "ACF" = acf_lv$acf,
+  "pACF" = c(1, pacf_lv$acf)) %>%
+  gt_custom(head_max = 12)  %>%
+  fmt_number(decimals = 3, drop_trailing_zeros = TRUE)
+```
+:::
+
 Για τυπικούς λόγους θα ξεκινήσουμε από τις δοσμένες παρατηρήσεις τις ανεργίας.
 Τυπικά ήδη γνωρίζουμε ότι δεν είναι στάσιμες, αλλά υπάρχουν συγκεκριμένα μοτίβα
 που πρέπει να παρατηρήσουμε στα διαγράμματα αυτοσυσχέτισης προκειμένου να το
@@ -1609,25 +1634,26 @@ pacf_plot_function(grc_unemployment$Value, min=-0.25, max=1)
 :::
 :::
 
+
+
+### Πρώτη διαφορά
+
 ::: {.column-margin}
 ```{r}
 #| echo: false
-#| label: tbl-results-acf-pacf-values-lv
-#| tbl-cap: "Αποτελέσματα αυτοσυσχετίσεων στις αρχικές παρατηρήσεις για τις πρώτες 12 υστερήσεις"
-acf_lv = acf(grc_unemployment$Value)
-pacf_lv = pacf(grc_unemployment$Value)
+#| label: tbl-results-acf-pacf-values-d1
+#| tbl-cap: "Αποτελέσματα αυτοσυσχετίσεων στις πρώτες διαφορές για τις πρώτες 12 υστερήσεις"
+acf_diff1 = acf(grc_unemployment_diff1, plot = FALSE)
+pacf_diff1 = pacf(grc_unemployment_diff1, plot = FALSE)
 
 data.frame(
   "Υστέρηση" = c(0:24),
-  "ACF" = acf_lv$acf,
-  "pACF" = c(1, pacf_lv$acf)) %>%
+  "ACF" = acf_diff1$acf,
+  "pACF" = c(1, pacf_diff1$acf)) %>%
   gt_custom(head_max = 12)  %>%
   fmt_number(decimals = 3, drop_trailing_zeros = TRUE)
 ```
 :::
-
-
-### Πρώτη διαφορά
 
 Η μη στασιμότητα των δεδομένων μου που έχει χιλιοεπιβεβαιωθεί μας υποχρεώνει να λάβουμε τις πρώτες διαφορές και να λάβουμε τα αντίστοιχα διαγράμματα αυτοσυσχέτισης. Παρατηρώ μία αρκετά δυσνόητη θα έλεγα κατάσταση από τα διαγράμματα καθώς υπάρχουν σημαντικές αυξομειώσεις και στα δύο διαγράμματα που κάνουν δύσκολη την απόφαση για το κατάλληλο μοντέλο ARIMA. Συνήθως για να λάβω τα κατάλληλα μέτρα βλέπω που έχω απότομη μείωση εντός της κόκκινης περιοχής, αλλά έχω αρκετές στατιστικά σημαντικές υπερβάσεις. Μετά τη 10η υστέρηση αυτή η τάση μειώνεται ή εξαλείφεται σημαντικά, επομένως το μοντέλο μου έχει μάλλον παραμέτρους $p$ και $q$ κάπου ανάμεσα στο 1 και στο 10. 
 
@@ -1653,22 +1679,6 @@ pacf_plot_function(grc_unemployment_diff1, min=-0.2, max=0.5)
 :::
 :::
 
-::: {.column-margin}
-```{r}
-#| echo: false
-#| label: tbl-results-acf-pacf-values-d1
-#| tbl-cap: "Αποτελέσματα αυτοσυσχετίσεων στις πρώτες διαφορές για τις πρώτες 12 υστερήσεις"
-acf_diff1 = acf(grc_unemployment_diff1)
-pacf_diff1 = pacf(grc_unemployment_diff1)
-
-data.frame(
-  "Υστέρηση" = c(0:24),
-  "ACF" = acf_diff1$acf,
-  "pACF" = c(1, pacf_diff1$acf)) %>%
-  gt_custom(head_max = 12)  %>%
-  fmt_number(decimals = 3, drop_trailing_zeros = TRUE)
-```
-:::
 
 
 ## Κατασκευή μοντέλων
@@ -1746,6 +1756,7 @@ cv <- unemployment_ts %>%
 τιμές των παραμέτρων του μοντέλου, θα αξιοποιήσω την εντολή auto.arima, ώστε
 αυτόμαστα να εξεταστεί όλο το εύρος τιμών που υποψιάζομαι βρίσκεται το καλύτερο
 μοντέλο.
+
 ::: {.column-margin}
 ![Φωτογραφία του στατιστικού George Box](box.png)
 
