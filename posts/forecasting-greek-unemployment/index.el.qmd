@@ -1611,8 +1611,8 @@ pacf_plot_function(grc_unemployment$Value, min=-0.25, max=1)
 
 ::: {.column-margin}
 ```{r}
-acf_lv = acf(grc_unemployment)
-pacf_lv = pacf(grc_unemployment)
+acf_lv = acf(grc_unemployment$Value)
+pacf_lv = pacf(grc_unemployment$Value)
 
 data.frame(
   "Υστέρηση" = c(0:24),
@@ -1671,10 +1671,10 @@ data.frame(
 
 ```{mermaid}
 flowchart LR
-    A[Σύνολο δεδομένων <br> 1998-2022 <br> 293 παρατηρήσεις]
+    A[Σύνολο δεδομένων <br> <small>1998-2022 <br> 293 παρατηρήσεις</small>]
 
-    A --> B[Train <br> 1998-2015]
-    A --> C[Test <br> 2015-2022]
+    A --> B[Εκπαίδευση <br> 1998-2015]
+    A --> C[Αξιολόγηση <br> 2015-2022]
 ```
 
 ```{mermaid}
@@ -1684,7 +1684,7 @@ flowchart LR
     C --> F[1ο πλαίσιο <br> <small>Εκπαίδευση: 1998-2010 <br> Πρόβλεψη: 2011</small>]
     C --> G[2ο πλαίσιο <br> <small>Εκπαίδευση: 1998-2011 <br> Πρόβλεψη: 2012</small>]
     C --> H[3ο πλαίσιο <br> <small>Εκπαίδευση: 1998-2012 <br> Πρόβλεψη: 2013</small>]
-    C --> I[...]
+    C --> I[k-οστό πλαίσιο]
     C --> J[Ν-πλαίσιο <br> <small>Εκπαίδευση: 1998-2021 <br> Πρόβλεψη: 2022</small>]
 ```
 
