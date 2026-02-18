@@ -769,10 +769,7 @@ highchart() %>%
         verticalAlign = "bottom",
         layout = "horizontal",
         itemStyle = list(fontSize = "13px", color = "#333333")
-    ) %>%
-    
-    # export button
-    hc_exporting(enabled = TRUE)
+    )
 ```
 
 
@@ -1581,13 +1578,6 @@ data.frame("Έλεγχος" = c("Zivot-Andrews", "Zivot-Andrews", "Lee-Strazicic
 για να αναγνωρίσω τις ιδανικές τιμές $p$, $q$. Τέλος, υπενθυμίζω ότι σε μοντέλο
 ARIMA, το $d$ συμβολίζει την τάξη της διαφοράς, όπου στη περίπτωσή μας είναι 1.
 
-::: {.column-margin}
-![Φωτογραφία του στατιστικού George Box](box.png)
-
-Ο George E.P. Box (Ηνωμένο Βασίλειο, 1919 - 2013) είναι στατιστικός με πολύ σημαντική συνεισφορά στο πεδίο των χρονοσειρών. Ο George Box σε συνεργασία με τον Gwylim Jenkins (Ηνωμένο Βασίλειο, 1932 - 1982) δημιούργησαν τη μεθοδολογία για τις χρονοσειρές ARIMA. Σε πολλά βιβλία αυτή η μεθοδολογία αναφέρεται ως Box-Jenkins.<br>
-
-**Πηγή φωτογραφίας: **Wikimedia Commons, 2011 - Άδεια χρήσης: [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/). Για τη πρωτότυπη φωτογραφία μπορείτε να πατήσετε τον [σύνδεσμο](https://commons.wikimedia.org/wiki/File:GeorgeEPBox_(cropped).jpg)
-:::
 
 ### Αρχικές παρατηρήσεις
 
@@ -1619,6 +1609,20 @@ pacf_plot_function(grc_unemployment$Value, min=-0.25, max=1)
 :::
 :::
 
+::: {.column-margin}
+```{r}
+acf_lv = acf(grc_unemployment)
+pacf_lv = pacf(grc_unemployment)
+
+data.frame(
+  "Υστέρηση" = c(0:24),
+  "ACF" = acf_lv$acf,
+  "pACF" = c(1, pacf_lv$acf)) %>%
+  gt_custom(head_max = 12)  %>%
+  fmt_number(decimals = 3, drop_trailing_zeros = TRUE)
+```
+:::
+
 
 ### Πρώτη διαφορά
 
@@ -1632,8 +1636,8 @@ pacf_plot_function(grc_unemployment$Value, min=-0.25, max=1)
 #| fig-height: 3
 acf_plot_function(grc_unemployment_diff1, min=-0.2, max = 0.5)
 ```
-
 :::
+
 
 ::: {.g-col-12 .g-col-md-6}
 ```{r}
@@ -1644,6 +1648,20 @@ pacf_plot_function(grc_unemployment_diff1, min=-0.2, max=0.5)
 ```
 
 :::
+:::
+
+::: {.column-margin}
+```{r}
+acf_diff1 = acf(grc_unemployment_diff1)
+pacf_diff1 = pacf(grc_unemployment_diff1)
+
+data.frame(
+  "Υστέρηση" = c(0:24),
+  "ACF" = acf_diff1$acf,
+  "pACF" = c(1, pacf_diff2$acf)) %>%
+  gt_custom(head_max = 12)  %>%
+  fmt_number(decimals = 3, drop_trailing_zeros = TRUE)
+```
 :::
 
 
@@ -1712,6 +1730,13 @@ cv <- unemployment_ts %>%
 τιμές των παραμέτρων του μοντέλου, θα αξιοποιήσω την εντολή auto.arima, ώστε
 αυτόμαστα να εξεταστεί όλο το εύρος τιμών που υποψιάζομαι βρίσκεται το καλύτερο
 μοντέλο.
+::: {.column-margin}
+![Φωτογραφία του στατιστικού George Box](box.png)
+
+Ο George E.P. Box (Ηνωμένο Βασίλειο, 1919 - 2013) είναι στατιστικός με πολύ σημαντική συνεισφορά στο πεδίο των χρονοσειρών. Ο George Box σε συνεργασία με τον Gwylim Jenkins (Ηνωμένο Βασίλειο, 1932 - 1982) δημιούργησαν τη μεθοδολογία για τις χρονοσειρές ARIMA. Σε πολλά βιβλία αυτή η μεθοδολογία αναφέρεται ως Box-Jenkins.<br>
+
+**Πηγή φωτογραφίας: **Wikimedia Commons, 2011 - Άδεια χρήσης: [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/). Για τη πρωτότυπη φωτογραφία μπορείτε να πατήσετε τον [σύνδεσμο](https://commons.wikimedia.org/wiki/File:GeorgeEPBox_(cropped).jpg)
+:::
 
 ```{r}
 #| warning: false
