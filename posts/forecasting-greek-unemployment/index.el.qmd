@@ -1611,6 +1611,9 @@ pacf_plot_function(grc_unemployment$Value, min=-0.25, max=1)
 
 ::: {.column-margin}
 ```{r}
+#| echo: false
+#| label: tbl-results-acf-pacf-values-lv
+#| tbl-cap: "Αποτελέσματα αυτοσυσχετίσεων στις αρχικές παρατηρήσεις για τις πρώτες 12 υστερήσεις"
 acf_lv = acf(grc_unemployment$Value)
 pacf_lv = pacf(grc_unemployment$Value)
 
@@ -1652,13 +1655,16 @@ pacf_plot_function(grc_unemployment_diff1, min=-0.2, max=0.5)
 
 ::: {.column-margin}
 ```{r}
+#| echo: false
+#| label: tbl-results-acf-pacf-values-d1
+#| tbl-cap: "Αποτελέσματα αυτοσυσχετίσεων στις πρώτες διαφορές για τις πρώτες 12 υστερήσεις"
 acf_diff1 = acf(grc_unemployment_diff1)
 pacf_diff1 = pacf(grc_unemployment_diff1)
 
 data.frame(
   "Υστέρηση" = c(0:24),
   "ACF" = acf_diff1$acf,
-  "pACF" = c(1, pacf_diff2$acf)) %>%
+  "pACF" = c(1, pacf_diff1$acf)) %>%
   gt_custom(head_max = 12)  %>%
   fmt_number(decimals = 3, drop_trailing_zeros = TRUE)
 ```
@@ -1670,6 +1676,9 @@ data.frame(
 ### Διαχωρισμός χρονοσειράς
 
 ```{mermaid}
+%%| echo: false
+%%| label: fig-diagram-split-data-simple
+%%| fig-cap: "Διάγραμμα διαχωρισμού δεδομένων σε δεδομένα εκπαίδευσης και αξιολόγησης (train / test split)"
 flowchart LR
     A[Σύνολο δεδομένων <br> <small>1998-2022 <br> 293 παρατηρήσεις</small>]
 
@@ -1677,7 +1686,12 @@ flowchart LR
     A --> C[Αξιολόγηση <br> 2015-2022]
 ```
 
+
+
 ```{mermaid}
+%%| echo: false
+%%| label: fig-diagram-split-data-rolling-ts
+%%| fig-cap: "Διάγραμμα διαχωρισμού δεδομένων για χρονοσειρές"
 flowchart LR
    C[Σύνολο χρονοσειράς <br> <small>293 παρατηρήσεις</small>]
 
