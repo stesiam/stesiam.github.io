@@ -1700,6 +1700,8 @@ flowchart LR
 ```
 
 
+Όμως αν έχουμε προβλήματα χρονοσειρών τα πράγματα δεν είναι τόσο απλά. Αρχικά ας υποθέσουμε ότι θέλουμε να εφαρμόσουμε την ίδια λογική και σε αυτές. Τότε θα έρθουμε αντιμέτωποι με ένα μοντέλο το οποίο θα αγνοεί το 1/5 των παρατηρήσεων και μάλιστα των πιο πρόσφατων που ενδεχομένως να επηρεάζουν τη μεατβλητότητα της χρονοσειράς. Για αυτό το λόγο έχουν προταθεί άλλες μέθοδοι για τις χρονοσειρές. 
+
 
 ```{mermaid}
 %%| echo: false
@@ -1717,6 +1719,9 @@ flowchart LR
 ```
 
 ```{r}
+#| warning: false
+#| message: false
+
 unemployment_ts = read_csv("data/unemployment.csv") |>
   select(LOCATION, TIME, Value) |>
   mutate(TIME = yearmonth(TIME)) |>
@@ -1742,6 +1747,429 @@ unemployment_ts <- unemployment_ts %>%
 
 cv <- unemployment_ts %>%
   stretch_tsibble(.init = 200, .step = 5)
+```
+
+
+ΌΛο αυτό ίσως να ακούγεται κάποως περίπλοκο. Δεν είμαι εντελώς σίγουρος αν το παραπάνω διάγραμμα μπορεί να αποδόσει τη πλήρη έννοια της επικύρωσης στις χρονοσειρές. ΕΠομένως έχω συμπεριλάβει και μία διαδραστική εφαρμογή για να τη δοκιμάσετε και μόνοι σας, ώστε να γίνει κατανοητή η διαφορά και πώς επηρρεάζουν οι διάφορες επιλογές.
+
+
+```{=html}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Sora:wght@300;500;700&display=swap');
+
+  /* ─── Light theme ───────────────────────────────────────── */
+  :root,
+  [data-bs-theme="light"] {
+    --dropped:         #dde1e7;
+    --training:        #2d3a4a;
+    --forecast:        #f59e0b;
+    --cv-bg:           transparent;
+    --cv-text:         #1a1f2e;
+    --cv-subtext:      #6b7280;
+    --cv-border:       #e0ddd8;
+    --avail-bg:        #e8e5e0;
+    --avail-text:      #9ca3af;
+    --btn-active-bg:   #1a1f2e;
+    --btn-active-fg:   #ffffff;
+    --tooltip-bg:      #1a1f2e;
+    --tooltip-fg:      #ffffff;
+    --shadow-fc:       rgba(245,158,11,.35);
+  }
+
+  /* ─── Dark theme ─────────────────────────────────────────── */
+  [data-bs-theme="dark"] {
+    --dropped:         #2e3a4e;
+    --training:        #7fa8cc;
+    --forecast:        #f59e0b;
+    --cv-bg:           transparent;
+    --cv-text:         #e2e8f0;
+    --cv-subtext:      #94a3b8;
+    --cv-border:       #334155;
+    --avail-bg:        #1e2a3a;
+    --avail-text:      #475569;
+    --btn-active-bg:   #e2e8f0;
+    --btn-active-fg:   #1a1f2e;
+    --tooltip-bg:      #e2e8f0;
+    --tooltip-fg:      #1a1f2e;
+    --shadow-fc:       rgba(245,158,11,.45);
+  }
+
+  .cv-widget {
+    font-family: 'Sora', sans-serif;
+    color: var(--cv-text);
+    background: var(--cv-bg);
+    max-width: 100%;
+    padding: 1.4rem 0 1rem;
+    transition: color .3s, background .3s;
+  }
+
+  .cv-widget .mode-toggle { display: flex; gap: .5rem; margin-bottom: 1.3rem; }
+
+  .cv-widget .mode-btn {
+    padding: .32rem .8rem;
+    border-radius: 20px;
+    border: 1.5px solid var(--cv-border);
+    background: transparent;
+    font-family: 'Sora', sans-serif;
+    font-size: .71rem;
+    font-weight: 500;
+    color: var(--cv-subtext);
+    cursor: pointer;
+    transition: all .2s;
+  }
+
+  .cv-widget .mode-btn.active {
+    background: var(--btn-active-bg);
+    border-color: var(--btn-active-bg);
+    color: var(--btn-active-fg);
+  }
+
+  .cv-widget .controls {
+    display: flex;
+    gap: 1.2rem;
+    margin-bottom: 1.6rem;
+    flex-wrap: wrap;
+    align-items: flex-end;
+  }
+
+  .cv-widget .ctrl-group { display: flex; flex-direction: column; gap: .28rem; }
+
+  .cv-widget .ctrl-group label {
+    font-size: .65rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    color: var(--cv-subtext);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+
+  .cv-widget .ctrl-group input[type=range] {
+    -webkit-appearance: none;
+    width: 130px; height: 4px;
+    border-radius: 2px;
+    background: var(--cv-border);
+    outline: none; cursor: pointer;
+    transition: background .3s;
+  }
+
+  .cv-widget .ctrl-group input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--forecast);
+    cursor: pointer;
+    transition: transform .15s;
+  }
+
+  .cv-widget .ctrl-group input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.25); }
+
+  .cv-widget .ctrl-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .72rem;
+    color: var(--forecast);
+    font-weight: 600;
+  }
+
+  .cv-widget .axis-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: .45rem;
+    padding-left: 62px;
+  }
+
+  .cv-widget .axis-label {
+    font-size: .63rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--cv-subtext);
+    text-transform: uppercase;
+    letter-spacing: .07em;
+  }
+
+  .cv-widget .axis-arrow {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--cv-border), var(--cv-text));
+    position: relative;
+    margin: 0 .5rem;
+  }
+
+  .cv-widget .axis-arrow::after {
+    content: '';
+    position: absolute;
+    right: 0; top: -3px;
+    border: 4px solid transparent;
+    border-left: 7px solid var(--cv-text);
+    transition: border-color .3s;
+  }
+
+  .cv-widget .axis-end {
+    font-size: .63rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    color: var(--cv-text);
+    text-transform: uppercase;
+    letter-spacing: .07em;
+  }
+
+  .cv-widget .folds { display: flex; flex-direction: column; gap: 8px; }
+
+  .cv-widget .fold-row {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    opacity: 0;
+    transform: translateY(6px);
+    animation: cvFadeUp .38s ease forwards;
+  }
+
+  @keyframes cvFadeUp { to { opacity: 1; transform: none; } }
+
+  .cv-widget .fold-label {
+    width: 54px;
+    text-align: right;
+    font-size: .67rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    color: var(--cv-subtext);
+    flex-shrink: 0;
+  }
+
+  .cv-widget .fold-bar {
+    flex: 1;
+    height: 38px;
+    position: relative;
+  }
+
+  .cv-widget .seg {
+    position: absolute;
+    top: 0; height: 100%;
+    border-radius: 3px;
+    min-width: 3px;
+    transition: left .42s cubic-bezier(.4,0,.2,1),
+                width .42s cubic-bezier(.4,0,.2,1),
+                background .3s;
+  }
+
+  .cv-widget .seg-dropped  { background: var(--dropped); }
+  .cv-widget .seg-training { background: var(--training); }
+  .cv-widget .seg-forecast {
+    background: var(--forecast);
+    box-shadow: 2px 0 10px var(--shadow-fc);
+  }
+
+  .cv-widget .fold-bar:hover .fold-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-2px);
+  }
+
+  .cv-widget .fold-tooltip {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%) translateY(5px);
+    background: var(--tooltip-bg);
+    color: var(--tooltip-fg);
+    padding: .28rem .55rem;
+    border-radius: 4px;
+    font-size: .62rem;
+    font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .18s, transform .18s, background .3s, color .3s;
+    z-index: 20;
+  }
+
+  .cv-widget .avail-row {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    margin-top: .7rem;
+  }
+
+  .cv-widget .avail-spacer { width: 54px; flex-shrink: 0; }
+
+  .cv-widget .avail-bar {
+    flex: 1; height: 20px;
+    background: var(--avail-bg);
+    border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .3s;
+  }
+
+  .cv-widget .avail-bar span {
+    font-size: .61rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    color: var(--avail-text);
+    text-transform: uppercase;
+    letter-spacing: .07em;
+  }
+
+  .cv-widget .legend {
+    display: flex;
+    gap: 1.4rem;
+    margin-top: 1.2rem;
+    flex-wrap: wrap;
+  }
+
+  .cv-widget .legend-item {
+    display: flex; align-items: center; gap: .38rem;
+    font-size: .68rem;
+    color: var(--cv-subtext);
+    font-weight: 300;
+  }
+
+  .cv-widget .legend-swatch {
+    width: 13px; height: 13px;
+    border-radius: 2px;
+    transition: background .3s;
+  }
+</style>
+
+<div class="cv-widget" id="cvWidget">
+
+  <div class="mode-toggle">
+    <button class="mode-btn active" onclick="cvSetMode('expanding',this)">Expanding Window</button>
+    <button class="mode-btn"        onclick="cvSetMode('sliding',this)">Sliding Window</button>
+  </div>
+
+  <div class="controls">
+    <div class="ctrl-group">
+      <label>Πτυχές</label>
+      <input type="range" id="cvFolds" min="3" max="8" value="5" oninput="cvUpdate()">
+      <span class="ctrl-val" id="cvFoldsVal">5</span>
+    </div>
+    <div class="ctrl-group">
+      <label>Ορίζοντας πρόβλεψης</label>
+      <input type="range" id="cvHorizon" min="1" max="5" value="2" oninput="cvUpdate()">
+      <span class="ctrl-val" id="cvHorizonVal">2</span>
+    </div>
+    <div class="ctrl-group" id="cvWindowWrap" style="display:none">
+      <label>Μέγεθος παραθύρου</label>
+      <input type="range" id="cvWinSize" min="3" max="10" value="6" oninput="cvUpdate()">
+      <span class="ctrl-val" id="cvWinSizeVal">6</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="axis-row">
+      <span class="axis-label">Time</span>
+      <div class="axis-arrow"></div>
+      <span class="axis-end">Present</span>
+    </div>
+    <div class="folds" id="cvFoldsContainer"></div>
+    <div class="avail-row">
+      <div class="avail-spacer"></div>
+      <div class="avail-bar"><span>Διαθέσιμα ιστορικά δεδομένα</span></div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item" id="cvLegendDropped" style="display:none">
+      <div class="legend-swatch" style="background:var(--dropped)"></div>
+      <span>Dropped</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:var(--training)"></div>
+      <span>Εκπαίδευση μοντέλου</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:var(--forecast)"></div>
+      <span>Πρόβλεψη</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  // Namespace everything with "cv" prefix to avoid collisions with
+  // other scripts on the Quarto page.
+  let cvMode = 'expanding';
+
+  function syncTheme() {
+    const root = document.documentElement;
+    const isDark =
+      root.getAttribute('data-bs-theme') === 'dark' ||
+      root.classList.contains('quarto-dark');
+    document.getElementById('cvWidget')
+      .setAttribute('data-bs-theme', isDark ? 'dark' : 'light');
+  }
+
+  syncTheme();
+  new MutationObserver(syncTheme).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-bs-theme', 'class']
+  });
+
+  window.cvSetMode = function(m, btn) {
+    cvMode = m;
+    document.querySelectorAll('.cv-widget .mode-btn')
+      .forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('cvWindowWrap').style.display =
+      m === 'sliding' ? '' : 'none';
+    document.getElementById('cvLegendDropped').style.display =
+      m === 'sliding' ? '' : 'none';
+    cvUpdate();
+  };
+
+  window.cvUpdate = function() {
+    const nFolds  = +document.getElementById('cvFolds').value;
+    const horizon = +document.getElementById('cvHorizon').value;
+    const winSize = +document.getElementById('cvWinSize').value;
+
+    document.getElementById('cvFoldsVal').textContent   = nFolds;
+    document.getElementById('cvHorizonVal').textContent = horizon;
+    document.getElementById('cvWinSizeVal').textContent = winSize;
+
+    const MIN_TRAIN = 3;
+    let total = 0;
+    for (let i = 0; i < nFolds; i++) {
+      const dropped  = cvMode === 'expanding' ? 0 : i;
+      const trainLen = cvMode === 'expanding' ? MIN_TRAIN + i : winSize;
+      const end      = dropped + trainLen + horizon;
+      if (end > total) total = end;
+    }
+
+    const container = document.getElementById('cvFoldsContainer');
+    container.innerHTML = '';
+
+    for (let i = 0; i < nFolds; i++) {
+      const dropped  = cvMode === 'expanding' ? 0 : i;
+      const trainLen = cvMode === 'expanding' ? MIN_TRAIN + i : winSize;
+
+      const pDrop     = (dropped  / total) * 100;
+      const pTrain    = (trainLen / total) * 100;
+      const pForecast = (horizon  / total) * 100;
+
+      const tip = cvMode === 'expanding'
+        ? `Train&nbsp;${trainLen}&nbsp;·&nbsp;Forecast&nbsp;${horizon}`
+        : `Drop&nbsp;${dropped}&nbsp;·&nbsp;Train&nbsp;${trainLen}&nbsp;·&nbsp;Forecast&nbsp;${horizon}`;
+
+      const row = document.createElement('div');
+      row.className = 'fold-row';
+      row.style.animationDelay = (i * 72) + 'ms';
+      row.innerHTML = `
+        <div class="fold-label">Πτυχή ${i + 1}</div>
+        <div class="fold-bar">
+          ${dropped > 0
+            ? `<div class="seg seg-dropped" style="left:0;width:${pDrop.toFixed(3)}%"></div>`
+            : ''}
+          <div class="seg seg-training"
+               style="left:${pDrop.toFixed(3)}%;width:${pTrain.toFixed(3)}%"></div>
+          <div class="seg seg-forecast"
+               style="left:${(pDrop+pTrain).toFixed(3)}%;width:${pForecast.toFixed(3)}%"></div>
+          <div class="fold-tooltip">${tip}</div>
+        </div>`;
+      container.appendChild(row);
+    }
+  };
+
+  cvUpdate();
+})();
+</script>
 ```
 
 
