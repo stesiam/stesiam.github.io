@@ -2376,38 +2376,38 @@ acc %>%
 #| label: fig-forecasting
 #| warning: false
 #| fig-cap: "Χρονοσειρά ανεργίας με πρόβλεψη μελλοντικής ανεργίας"
-s = forecast(auto_model,20)
-
-
-month = seq(max(grc_unemployment$TIME) %m+% months(1),  # start at next month
-              by = "1 month",
-              length.out = 20)
-
-highchart() %>%
-    hc_title(text = "Πρόβλεψη ανεργίας για το επόμενο έτος") %>%
-    hc_subtitle(text = "Η ανεργία θα βαίνει μειούμενη για το επόμενο διάστημα με βάση το μοντέλο μου.") %>%
-    hc_xAxis(type = "datetime")  %>%
-    hc_yAxis(title = list(text="Ανεργία (%)")) %>%
-  hc_add_series(name="Ιστορικά δεδομένα",
-    data = list_parse2(data.frame(x = datetime_to_timestamp(grc_unemployment$TIME), y = grc_unemployment$Value)),
-    type = "line"
-  )  %>%
-  hc_add_series(name = "Πρόβλεψη",
-                  data = list_parse2(data.frame(
-                      x = datetime_to_timestamp(month),
-                      y = round(s$mean, digits=2)
-                  )),
-                  type = "line",
-                  color = "#d62728") %>%
-    hc_add_series(name = "Confidence Interval",
-                data = list_parse2(data.frame(
-                  x = datetime_to_timestamp(month),
-                  low = round(s$lower[, "80%"], digits=2),
-                  high = round(s$upper[, "80%"], digits=2)
-                )),
-                type = "arearange",
-                color = hex_to_rgba("#d62728", 0.2),
-                linkedTo = ":previous")
+# s = forecast(auto_model,20)
+# 
+# 
+# month = seq(max(grc_unemployment$TIME) %m+% months(1),  # start at next month
+#               by = "1 month",
+#               length.out = 20)
+# 
+# highchart() %>%
+#     hc_title(text = "Πρόβλεψη ανεργίας για το επόμενο έτος") %>%
+#     hc_subtitle(text = "Η ανεργία θα βαίνει μειούμενη για το επόμενο διάστημα με βάση το μοντέλο μου.") %>%
+#     hc_xAxis(type = "datetime")  %>%
+#     hc_yAxis(title = list(text="Ανεργία (%)")) %>%
+#   hc_add_series(name="Ιστορικά δεδομένα",
+#     data = list_parse2(data.frame(x = datetime_to_timestamp(grc_unemployment$TIME), y = grc_unemployment$Value)),
+#     type = "line"
+#   )  %>%
+#   hc_add_series(name = "Πρόβλεψη",
+#                   data = list_parse2(data.frame(
+#                       x = datetime_to_timestamp(month),
+#                       y = round(s$mean, digits=2)
+#                   )),
+#                   type = "line",
+#                   color = "#d62728") %>%
+#     hc_add_series(name = "Confidence Interval",
+#                 data = list_parse2(data.frame(
+#                   x = datetime_to_timestamp(month),
+#                   low = round(s$lower[, "80%"], digits=2),
+#                   high = round(s$upper[, "80%"], digits=2)
+#                 )),
+#                 type = "arearange",
+#                 color = hex_to_rgba("#d62728", 0.2),
+#                 linkedTo = ":previous")
 ```
 
 
@@ -2416,15 +2416,15 @@ highchart() %>%
 ```{r}
 #| label: tbl-results-predictions
 #| tbl-cap: "Προβλέψεις ανεργίας στην Ελλάδα για τους επόμενους 6 μήνες και αντίστοιχα διαστήματα εμπιστοσύνης"
-s %>%
-  as.data.frame() %>%
-  dplyr::mutate(Date = seq(max(grc_unemployment$TIME) %m+% months(1),  # start at next month
-              by = "1 month",
-              length.out = 20)) %>%
-  setNames(c("Πρόβλεψη", "Κάτω διάστημα 80%", "Άνω διάστημα 80%", "Κάτω διάστημα 95%", "Άνω διάστημα 95%", "Μήνας")) %>%
-  dplyr::relocate("Μήνας", .before = "Πρόβλεψη") %>%
-  dplyr::mutate(across(where(is.numeric), ~ round(.x, 1))) %>%
-  gt_custom(head_max = 7)
+# s %>%
+#   as.data.frame() %>%
+#   dplyr::mutate(Date = seq(max(grc_unemployment$TIME) %m+% months(1),  # start at next month
+#               by = "1 month",
+#               length.out = 20)) %>%
+#   setNames(c("Πρόβλεψη", "Κάτω διάστημα 80%", "Άνω διάστημα 80%", "Κάτω διάστημα 95%", "Άνω διάστημα 95%", "Μήνας")) %>%
+#   dplyr::relocate("Μήνας", .before = "Πρόβλεψη") %>%
+#   dplyr::mutate(across(where(is.numeric), ~ round(.x, 1))) %>%
+#   gt_custom(head_max = 7)
 ```
 
 Με δεδομένο το διάγραμμα αλλά και το πίνακα των προβλέψεων του μοντέλου με τη καλύτερη επίδοση, συμπεραίνω ότι η μείωση της ανεργίας στην Ελλάδα θα συνεχιστεί και την επόμενη περίοδο (τους επόμενους έξι μήνες). Πιο συγκεκριμένα, η ανεργία στην Ελλάδα τον Φεβρουάριο του 2023 θα είναι 11.4\%, κυμαίνεται μεταξύ του 10.1\% (9.4\%) και 12.8\% (13.5\%) σμε πιθανότητα 80\% (95\%).
