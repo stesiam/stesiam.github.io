@@ -2054,9 +2054,9 @@ cv <- unemployment_ts %>%
 
   <div>
     <div class="axis-row">
-      <span class="axis-label">Time</span>
+      <span class="axis-label">Χρόνος</span>
       <div class="axis-arrow"></div>
-      <span class="axis-end">Present</span>
+      <span class="axis-end">Σήμερα</span>
     </div>
     <div class="folds" id="cvFoldsContainer"></div>
     <div class="avail-row">
@@ -2322,9 +2322,13 @@ $$
 fit <- cv %>%
   model(
     "Auto ARIMA"   = fable::ARIMA(Value),  # ← Force d=1!
-    "ARIMA D1" = fable::ARIMA(Value ~ pdq(d = 1)),
-    ARIMAX = fable::ARIMA(Value ~ pdq(d = 1) + break1 ),
-    ETS     = fable::ETS(Value),
+    "ARIMAX (1,1,1) - 2 breaks" = fable::ARIMA(Value ~ pdq(1,1,1) + break1 + break2),
+    "ARIMAX (1,1,1) - 1 break" = fable::ARIMA(Value ~ pdq(1,1,1) + break1),
+    "ARIMA (1,1,1)" = fable::ARIMA(Value ~ pdq(1,1,1)),
+    "ARIMA (2,1,1)" = fable::ARIMA(Value ~ pdq(2,1,1)),
+    "ARIMA (1,1,2)" = fable::ARIMA(Value ~ pdq(1,1,2)),
+    "ETS (M-Ad-N)" = fable::ETS(Value ~ error("M") + trend("Ad") + season("N")),
+    "ETS (M-A-N)" = fable::ETS(Value ~ error("M") + trend("A") + season("N")),
     Prophet = prophet(Value),
     Naive = fable::NAIVE(Value),
     SNaive = fable::SNAIVE(Value)
@@ -2345,6 +2349,8 @@ acc %>%
   fmt_number(decimals = 4)
 ```
 
+
+
 ```{r}
 #| label: tbl-rmse-models-6mths
 #| tbl-cap: "Σύγκριση σφαλμάτων διαφορετικών μοντέλων για 6μηνη πρόβλεψη"
@@ -2362,10 +2368,72 @@ acc %>%
   rename("Μοντέλο" = ".model") %>%
   arrange(RMSE) %>%
   gt_custom(head_max = 10) %>%
-  fmt_number(decimals = 2)
-
+  fmt_number(decimals = 4)
 ```
 
+
+Από τους παραπάνω πίνακες προκύπτει ότι για μικρά βραχυπρόθεσμες προβλέψεις ($h <=6$) μήνες το μοντέλο ARIMAX όπου ως εξωγενείς μεταβλητές έχω συμπεριλάβει δύο μεταβλητές που αναπαριστούν τις δομικές αλλαγές (breaks). Επιπλέον, καλή απόδοση έχει και το μοντέλο ARIMA(1,1,1) και για 2μηνη και για 6μηνη πρόβλεψη. Αυτό που ξεχωρίζει στα αποτελέσματα μας είναι η σημαντική διαφορά στα σφάλματα μεταξύ των μοντέλων ARIMA και του μοντέλου NAIVE. Αυτό ενδεχομένως να δηλώνει ότι τα μοντέλα μου εντπίζουν τα διάφορα μοτίβα της χρονοσειράς καλύτερα και άρα έχουν λόγο ύπαρξης. Ένα σημείο που απαιτεί ιδιαίτερη προσοχή είναι οι διαφορές στα σφάλματα, καθώς είναι εμφανές ότι παρόλο που υπάρχουν διαφορές θα πρέπει να διερευνηθεί αν αυτές είναι στατιστικά σημαντικές. Για να μελετηθεί αυτό θα χρησιμοποιηθεί ο έλεγχος Diebold-Mariano, ο οποίος ελέγχει αν τα σφάλματα των συγκρινόμενων μοντέλων είναι στατιστικά σημαντικά:
+
+```{r}
+#| label: tbl-db-test
+#| tbl-cap: "Έλεγχοι Diebold-Mariano στα μοντέλα με τη καλύτερη απόδοση για 2μηνη πρόβλεψη"
+fit <- unemployment_ts %>%
+    model(
+        "ARIMAX (1,1,1) - 2 breaks" = fable::ARIMA(Value ~ pdq(1,1,1) + break1 + break2),
+        "ARIMAX (1,1,1) - 1 break" = fable::ARIMA(Value ~ pdq(1,1,1) + break1),
+        "ARIMA (1,1,1)" = fable::ARIMA(Value ~ pdq(1,1,1)),
+        Naive = fable::NAIVE(Value),
+    )
+
+aug = fit %>%
+  augment()
+
+e1 <- aug %>% filter(.model == "ARIMAX (1,1,1) - 2 breaks") %>% arrange(TIME) %>% pull(.resid)
+e2 <- aug %>% filter(.model == "ARIMAX (1,1,1) - 1 break") %>% arrange(TIME) %>% pull(.resid)
+e3 <- aug %>% filter(.model == "ARIMA (1,1,1)") %>% arrange(TIME) %>% pull(.resid)
+e4 <- aug %>% filter(.model == "Naive") %>% arrange(TIME) %>% pull(.resid)
+
+
+t12 <- dm.test(e1, e2, alternative = "two.sided", h = 2, power = 2)
+t13 <- dm.test(e1, e3, alternative = "two.sided", h = 2, power = 2)
+t14 <- dm.test(e1, e4, alternative = "two.sided", h = 2, power = 2)
+t23 <- dm.test(e2, e3, alternative = "two.sided", h = 2, power = 2)
+t24 <- dm.test(e2, e4, alternative = "two.sided", h = 2, power = 2)
+t34 <- dm.test(e3, e4, alternative = "two.sided", h = 2, power = 2)
+
+dm_results <- tribble(
+  ~"Μοντέλο 1",       ~"Μοντέλο 2",       ~"Τιμή DM",      ~"p-value",
+  "ARIMAΧ(1,1,1) 2br.",  "ARIMAΧ(1,1,1) 1br.",         t12$statistic,        t12$p.value,
+  "ARIMAΧ(1,1,1) 2br.",  "ARIMA (1,1,1)",  t13$statistic,        t13$p.value,
+  "ARIMAΧ(1,1,1) 2br.",  "Naive",     t14$statistic,        t14$p.value,
+  "ARIMAΧ(1,1,1) 1br.",  "ARIMA (1,1,1)",  t23$statistic,        t23$p.value,
+  "ARIMAΧ(1,1,1) 1br.",  "Naive",     t24$statistic,        t24$p.value,
+  "ARIMA (1,1,1)",  "Naive",     t34$statistic,        t34$p.value
+) %>%
+  mutate(
+    "Τιμή DM" = round(`Τιμή DM`, 4),
+    "p-value"      = round(`p-value`, 4),
+    "Συμπέρασμα"     = ifelse(`p-value` < 0.05, "✓ Στατ. Σημαντικό", "✗ Καμία διαφορά")
+  )
+
+dm_results %>%
+  gt() %>%
+  tab_header(
+    title    = "Έλεγχος Diebold - Mariano",
+    subtitle = "Σύγκριση προβλεπτικής ακρίβειας μοντέλων"
+  ) %>%
+  tab_style(
+    style     = cell_fill(color = "#e8f5e9"),
+    locations = cells_body(rows = `p-value` >= 0.05, columns = "Συμπέρασμα")
+  ) %>%
+  tab_style(
+    style     = cell_fill(color = "#fde8e8"),
+    locations = cells_body(rows = `p-value` < 0.05,  columns = "Συμπέρασμα")
+  ) %>%
+  fmt_number(columns = c("Τιμή DM", "p-value"), decimals = 4)
+```
+
+Σύμφωνα με τον έλεγχο βρήκα ότι τα επιλεγμένα μοντέλα ARIMA έχουν στατιστικά σημαντικές διαφορές από το μοντέλο NAIVE που καταδεικνύουν τη σημαντικότητά τους για τη πρόβλεψη της μελλοντικής ανεργίας, τουλάχιστον σε βραχυπρόθεσμο επίπεδο. Ένα ακόμα στοιχείο μέσω των συνδυασμών ελέγχων είναι ότι τα επιλεγμένα μοντέλα ARIMA δεν έχουν στατιστικά σημαντικές διαφορές μεταξύ τους. Δηλαδή το μοντέλο ARIMAX που χρησιμοποιεί ένα ή δύο breaks δεν έχουν σημαντικές διαφορές σε ε.σ. 5\% με ένα απλό μοντέλο ARIMA(1,1,1).
 
 ## Πρόβλεψη μελλοντικής ανεργίας
 
@@ -2376,39 +2444,99 @@ acc %>%
 #| label: fig-forecasting
 #| warning: false
 #| fig-cap: "Χρονοσειρά ανεργίας με πρόβλεψη μελλοντικής ανεργίας"
-# s = forecast(auto_model,20)
-# 
-# 
-# month = seq(max(grc_unemployment$TIME) %m+% months(1),  # start at next month
-#               by = "1 month",
-#               length.out = 20)
-# 
-# highchart() %>%
-#     hc_title(text = "Πρόβλεψη ανεργίας για το επόμενο έτος") %>%
-#     hc_subtitle(text = "Η ανεργία θα βαίνει μειούμενη για το επόμενο διάστημα με βάση το μοντέλο μου.") %>%
-#     hc_xAxis(type = "datetime")  %>%
-#     hc_yAxis(title = list(text="Ανεργία (%)")) %>%
-#   hc_add_series(name="Ιστορικά δεδομένα",
-#     data = list_parse2(data.frame(x = datetime_to_timestamp(grc_unemployment$TIME), y = grc_unemployment$Value)),
-#     type = "line"
-#   )  %>%
-#   hc_add_series(name = "Πρόβλεψη",
-#                   data = list_parse2(data.frame(
-#                       x = datetime_to_timestamp(month),
-#                       y = round(s$mean, digits=2)
-#                   )),
-#                   type = "line",
-#                   color = "#d62728") %>%
-#     hc_add_series(name = "Confidence Interval",
-#                 data = list_parse2(data.frame(
-#                   x = datetime_to_timestamp(month),
-#                   low = round(s$lower[, "80%"], digits=2),
-#                   high = round(s$upper[, "80%"], digits=2)
-#                 )),
-#                 type = "arearange",
-#                 color = hex_to_rgba("#d62728", 0.2),
-#                 linkedTo = ":previous")
+
+best_fit <- unemployment_ts %>%
+  model(
+    "Best Model" = fable::ARIMA(Value ~ pdq(1,1,1))
+  )
+
+fc_final <- best_fit %>%
+  forecast(h = 6)
+
+# Prepare historical data
+historical <- unemployment_ts %>%
+    as_tibble() %>%
+    mutate(TIME = as.Date(TIME))
+
+# Prepare forecast data
+forecast_tbl <- fc_final %>%
+    hilo(level = c(80, 95)) %>%
+    unpack_hilo(c("80%", "95%")) %>%
+    as_tibble() %>%
+    mutate(TIME = as.Date(TIME)) %>%
+    select(TIME, .mean, `80%_lower`, `80%_upper`, `95%_lower`, `95%_upper`)
+
+highchart(type = "stock") %>%
+    hc_title(text = "Πρόεβλεψη ανεργίας στην Ελλάδα - 6 μήνες") %>%
+    hc_xAxis(type = "datetime") %>%
+    hc_yAxis(title = list(text = "Ποσοστό ανεργίας (%)")) %>%
+    
+    # Historical line
+    hc_add_series(
+        data = historical,
+        type = "line",
+        hcaes(x = datetime_to_timestamp(TIME), y = Value),
+        name = "Ιστορικά δεδομένα",
+        color = "#2c3e50",
+        lineWidth = 2,
+        marker = list(enabled = FALSE)
+    ) %>%
+    
+    # Point forecast line
+    hc_add_series(
+        data = forecast_tbl,
+        type = "line",
+        hcaes(x = datetime_to_timestamp(TIME), y = round(.mean, 2)),
+        name = "Πρόβλεψη",
+        color = "#e74c3c",
+        lineWidth = 2,
+        dashStyle = "Dash",
+        marker = list(enabled = FALSE)
+    ) %>%
+    
+    # 95% interval (arearange)
+    hc_add_series(
+        data = forecast_tbl,
+        type = "arearange",
+        hcaes(x = datetime_to_timestamp(TIME),
+              low = round(`95%_lower`, 2),
+              high = round(`95%_upper`, 2)),
+        name = "95% δε",
+        color = "#e74c3c",
+        fillOpacity = 0.15,
+        lineWidth = 0,
+        linkedTo = ":previous"
+    ) %>%
+    
+    # 80% interval (arearange)
+    hc_add_series(
+        data = forecast_tbl,
+        type = "arearange",
+        hcaes(x = datetime_to_timestamp(TIME),
+              low = round(`80%_lower`, 2),
+              high = round(`80%_upper`, 2)),
+        name = "80% δε",
+        color = "#e74c3c",
+        fillOpacity = 0.25,
+        lineWidth = 0,
+        linkedTo = ":previous"
+    ) %>%
+    
+    hc_tooltip(shared = TRUE, valueDecimals = 2) %>%hc_navigator(enabled = FALSE) %>%
+    hc_scrollbar(enabled = FALSE) %>% hc_rangeSelector(
+  enabled = TRUE,
+  selected = 2,  # highlight the "1y" button visually
+  buttons = list(
+    list(type = "month", count = 3,  text = "3m"),
+    list(type = "month", count = 6,  text = "6m"),
+    list(type = "year",  count = 1,  text = "1y"),
+    list(type = "year",  count = 2,  text = "2y"),
+    list(type = "all",               text = "All")
+  )
+)
+
 ```
+
 
 
 Και ο αντίστοιχος πίνακας με τις προβλέψεις: 
@@ -2416,15 +2544,17 @@ acc %>%
 ```{r}
 #| label: tbl-results-predictions
 #| tbl-cap: "Προβλέψεις ανεργίας στην Ελλάδα για τους επόμενους 6 μήνες και αντίστοιχα διαστήματα εμπιστοσύνης"
-# s %>%
-#   as.data.frame() %>%
-#   dplyr::mutate(Date = seq(max(grc_unemployment$TIME) %m+% months(1),  # start at next month
-#               by = "1 month",
-#               length.out = 20)) %>%
-#   setNames(c("Πρόβλεψη", "Κάτω διάστημα 80%", "Άνω διάστημα 80%", "Κάτω διάστημα 95%", "Άνω διάστημα 95%", "Μήνας")) %>%
-#   dplyr::relocate("Μήνας", .before = "Πρόβλεψη") %>%
-#   dplyr::mutate(across(where(is.numeric), ~ round(.x, 1))) %>%
-#   gt_custom(head_max = 7)
+fc_final %>%
+  hilo(level = c(80, 95)) %>%
+  unpack_hilo(c("80%", "95%")) %>%
+  select(TIME, .mean, `80%_lower`, `80%_upper`, `95%_lower`, `95%_upper`) %>%
+  mutate(across(where(is.numeric), ~ round(., 2))) %>%
+  mutate("80% ΔΕ" = glue("[{`80%_lower`}, {`80%_upper`}]")) %>%
+  mutate("95% ΔΕ" = glue("[{`95%_lower`}, {`95%_upper`}]")) %>%
+  rename("Μήνας" = TIME,
+         "Πρόβλεψη" = .mean) %>%
+  select("Μήνας", "Πρόβλεψη","80% ΔΕ", "95% ΔΕ") %>%
+  gt_custom()
 ```
 
 Με δεδομένο το διάγραμμα αλλά και το πίνακα των προβλέψεων του μοντέλου με τη καλύτερη επίδοση, συμπεραίνω ότι η μείωση της ανεργίας στην Ελλάδα θα συνεχιστεί και την επόμενη περίοδο (τους επόμενους έξι μήνες). Πιο συγκεκριμένα, η ανεργία στην Ελλάδα τον Φεβρουάριο του 2023 θα είναι 11.4\%, κυμαίνεται μεταξύ του 10.1\% (9.4\%) και 12.8\% (13.5\%) σμε πιθανότητα 80\% (95\%).
