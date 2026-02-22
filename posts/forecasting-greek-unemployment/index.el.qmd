@@ -1743,7 +1743,13 @@ unemployment_ts <- unemployment_ts %>%
   mutate(
     break1 = if_else(TIME >= break_date_1, 1L, 0L),
     break2 = if_else(TIME >= break_date_2, 1L, 0L)
-  )
+  ) |>
+   mutate(lockdown = if_else(
+    (TIME >= yearmonth("2020 Mar") & TIME <= yearmonth("2020 May")) |
+    (TIME >= yearmonth("2020 Nov") & TIME <= yearmonth("2021 Feb")),
+    1L, 0L)
+  ) 
+
 
 cv <- unemployment_ts %>%
   stretch_tsibble(.init = 200, .step = 5)
@@ -2417,7 +2423,7 @@ dm_results <- tribble(
   )
 
 dm_results %>%
-  gt() %>%
+  gt_custom(head_max = 10) %>%
   tab_header(
     title    = "Έλεγχος Diebold - Mariano",
     subtitle = "Σύγκριση προβλεπτικής ακρίβειας μοντέλων"
@@ -2433,7 +2439,63 @@ dm_results %>%
   fmt_number(columns = c("Τιμή DM", "p-value"), decimals = 4)
 ```
 
+```{r}
+dm_results %>%
+  gt_custom(head_max = 10) %>%
+  tab_style(
+    style     = cell_fill(color = "#e8f5e9"),
+    locations = cells_body(rows = `p-value` >= 0.05, columns = "Συμπέρασμα")
+  ) %>%
+  tab_style(
+    style     = cell_fill(color = "#fde8e8"),
+    locations = cells_body(rows = `p-value` < 0.05,  columns = "Συμπέρασμα")
+  ) %>%
+  fmt_number(columns = c("Τιμή DM", "p-value"), decimals = 4)
+```
+
+
 Σύμφωνα με τον έλεγχο βρήκα ότι τα επιλεγμένα μοντέλα ARIMA έχουν στατιστικά σημαντικές διαφορές από το μοντέλο NAIVE που καταδεικνύουν τη σημαντικότητά τους για τη πρόβλεψη της μελλοντικής ανεργίας, τουλάχιστον σε βραχυπρόθεσμο επίπεδο. Ένα ακόμα στοιχείο μέσω των συνδυασμών ελέγχων είναι ότι τα επιλεγμένα μοντέλα ARIMA δεν έχουν στατιστικά σημαντικές διαφορές μεταξύ τους. Δηλαδή το μοντέλο ARIMAX που χρησιμοποιεί ένα ή δύο breaks δεν έχουν σημαντικές διαφορές σε ε.σ. 5\% με ένα απλό μοντέλο ARIMA(1,1,1).
+
+## Καλέ, που είναι οι υποθέσεις;
+
+> Ρε απατεώνα που είναι οι έλεγχοι των υποθέσεων. Τα λεφτά μας πίσω.
+
+Λοιπόν, έχω κάποια καλά νέα και κάποια κακά νέα. Τα κακά νέα είναι ότι όχι μόνο δεν τελείωσε το άρθρο, αλλά θα πρέπει να ελέγξω τα καλύτερα μοντέλα κατά πόσο πληρούν τις υποθέσεις που αναλύσαμε, δηλαδή τα σφάλματα να είναι ασυσχέτιστα, να είμαι ομοσκεδασικά και να ακολουθούν τη κανονική κατανομή. 
+
+```{r}
+augment(fit) %>%
+    features(.innov, ljung_box, lag = 24, dof = 2) %>%
+    filter(!is.na(lb_stat)) %>%  # αφαίρεση M_212 που απέτυχε
+    mutate(
+        lb_stat   = round(lb_stat, 3),
+        lb_pvalue = round(lb_pvalue, 3),
+        Αποτέλεσμα = if_else(lb_pvalue > 0.05, "✓ Λευκός θόρυβος", "✗ Αυτοσυσχέτιση")
+    ) %>%
+    rename(
+        "Μοντέλο"        = .model,
+        "Στατιστική LB"  = lb_stat,
+        "p-value"        = lb_pvalue
+    ) %>%
+    gt_custom() %>%
+    cols_align(align = "center", columns = everything()) %>%
+    tab_style(
+        style    = cell_fill(color = "#d4edda"),  # πράσινο για καλά
+        locations = cells_body(
+            rows = `p-value` > 0.05
+        )
+    ) %>%
+    tab_style(
+        style    = cell_fill(color = "#f8d7da"),  # κόκκινο για κακά
+        locations = cells_body(
+            rows = `p-value` <= 0.05
+        )
+    ) %>%
+    tab_style(
+        style = cell_text(weight = "bold"),
+        locations = cells_column_labels()
+    )
+```
+
 
 ## Πρόβλεψη μελλοντικής ανεργίας
 
@@ -2554,7 +2616,7 @@ fc_final %>%
   rename("Μήνας" = TIME,
          "Πρόβλεψη" = .mean) %>%
   select("Μήνας", "Πρόβλεψη","80% ΔΕ", "95% ΔΕ") %>%
-  gt_custom()
+  gt_custom(head_max = 8)
 ```
 
 Με δεδομένο το διάγραμμα αλλά και το πίνακα των προβλέψεων του μοντέλου με τη καλύτερη επίδοση, συμπεραίνω ότι η μείωση της ανεργίας στην Ελλάδα θα συνεχιστεί και την επόμενη περίοδο (τους επόμενους έξι μήνες). Πιο συγκεκριμένα, η ανεργία στην Ελλάδα τον Φεβρουάριο του 2023 θα είναι 11.4\%, κυμαίνεται μεταξύ του 10.1\% (9.4\%) και 12.8\% (13.5\%) σμε πιθανότητα 80\% (95\%).
