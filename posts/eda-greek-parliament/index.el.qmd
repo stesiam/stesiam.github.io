@@ -195,91 +195,6 @@ reactable_custom = function(data, head_max = 5){
 
 Αυτό το άρθρο είναι ένα άρθρο ανάλυσης του κοινοβουλίου. Θα ήταν εξαιρετικά ενδιαφέρον μιας και υπάρχουν δεδομένα των βουλευτών και των κοινοβουλευτικών ομάδων που ανήκουν να κατασκευάσω διαγράμματα Βουλής. Με δεδομένο ότι κάνω ιστορική αναδρομή είναι πολύ πιθανό να χρειαστώ παραπάνω από τρία στο συγκεκριμένο άρθρο, γεγονός που δικαιολογεί τη δημιουργία μίας συνάρτησης. Η συνάρτηση μου θα καλείται `plot_parliament_term` και θα δέχεται ουσιαστικά ως τιμή έναν αριθμό που θα δηλώνει ποιας περιόδου της βουλή θα θέλαμε να διαγραμμαστίσουμε. Τα δεδομένα μου έχουν διαθέσιμα δεδομένα από τη Γ - 3η περίοδο (1981 - 1985) μέχρι και την ΙΗ' (17) περίοδο (2019Β- ), συνεπώς το όρισμα της συνάρτησης δέχεται τιμές από το 3 μέχρι το 17. 
 
-```{r}
-plot_parliament_term <- function(term_num, parliament_data = clean_dataset, parties_data = parties) {
-  # Filter the parliament data for the selected term and summarize by party
-  term_data <- parliament_data |>
-    dplyr::filter(Term == term_num) |>
-    group_by(partyAbbrNamesGR) |>
-    summarise(n = n()) |>
-    ungroup() 
-
-  # Perform fuzzy join with parties data based on party name similarity
-  term_data_joined <- fuzzyjoin::stringdist_inner_join(term_data, parties_data, by = "partyAbbrNamesGR",
-                                                      max_dist = 2, distance_col = "distance") |>
-    group_by(partyAbbrNamesGR.x) |>
-    slice_min(distance) |>   # Ensure only the closest match is selected
-    rename(Party = partyAbbrNamesGR.x) |>
-    distinct() %>%
-    ungroup() %>%
-    select(Party, partyFullNamesGR, n, Color) |>
-    distinct()
-  
-    title_text = "Κατανομή θέσεων"
-    subtitle_text = "Τελική μορφή Ελληνικού Κοινοβουλίου"
-    caption_text = '<b>Πηγή:</b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:</b> <a href="https://stesiam.com/" target="_blank">stesiam.com</a> '
-    hover_text = "Βουλευτές"
-
-
-  # Conditionally adjust the data based on language
-  # if (lang == "en") {
-  #   term_data_joined <- select(term_data_joined, names, Party, n, Color)
-  #   title_text = "Distribution of seats"
-  #   subtitle_text = "Final formation of Hellenic Parliament"
-  #   caption_text = '<b>Source:</b> Hellenic Parliament | <b>Graphic:</b> <a href="https://stesiam.com/" target="_blank">stesiam.com</a>'
-  #   hover_text = "Representatives"
-  # } else {
-  #   term_data_joined <- select(term_data_joined, names_el, Party_el, n, Color)
-  #   title_text = "Κατανομή θέσεων"
-  #   subtitle_text = "Τελική μορφή Ελληνικού Κοινοβουλίου"
-  #   caption_text = '<b>Πηγή:</b> Ελληνικό Κοινοβούλιο | <b>Γράφημα:</b> <a href="https://stesiam.com/" target="_blank">stesiam.com</a> '
-  #   hover_text = "Βουλευτές"
-  # }
-    
-  # Create the highcharter plot for the specific term
-  highchart() %>%
-    hc_chart(type = 'item') %>%
-    hc_title(text = title_text) %>%
-    hc_subtitle(text = subtitle_text) %>%
-    hc_caption(
-      text = caption_text,
-      align = 'center',
-      verticalAlign = 'bottom',
-      y = 10
-    ) %>%
-    hc_legend(labelFormat = '{name} <span style="opacity: 0.4">{y}</span>') %>%
-    hc_add_series(
-      name = hover_text,
-      data = purrr::pmap(
-          list(term_data_joined$partyFullNamesGR, term_data_joined$n, term_data_joined$Color, term_data_joined$Party),
-        list
-      ),
-      keys = c("name", "y", "color", "label"),
-      dataLabels = list(
-        enabled = TRUE,
-        format = "{point.label}",
-        style = list(textOutline = "5px contrast")
-      ),
-      center = list("50%", "50%"),
-      size = "100%",
-      startAngle = -150,
-      endAngle = 150
-    ) %>%
-    hc_responsive(
-      rules = list(
-        list(
-          condition = list(maxWidth = 600),
-          chartOptions = list(
-            series = list(
-              list(dataLabels = list(distance = -30))
-            )
-          )
-        )
-      )
-    )
-}
-```
-
 
 ```{r}
 ##new function plot
@@ -376,7 +291,7 @@ plot_parliament <- function(data, period_number) {
 
 ### Δομή δεδομένων
 
-Με βάση τον παραπάνω πίνακα τα συλλεγμένα δεδομένα αποτελούνται από `r ncol(parliament)` μεταβλητές (στήλες), εκ των οποίων καμία δεν είναι ποσοτική και οι υπόλοιπες τέσσερις. Από αυτές τις τέσσερις, οι τρεις είναι κατηγορικές και άλλη μία που είναι μία διατάξιμη μεταβλητή.
+Με βάση τον παραπάνω πίνακα τα συλλεγμένα δεδομένα αποτελούνται από `r ncol(parliamentGR)` μεταβλητές (στήλες), εκ των οποίων καμία δεν είναι ποσοτική και οι υπόλοιπες τέσσερις. Από αυτές τις τέσσερις, οι τρεις είναι κατηγορικές και άλλη μία που είναι μία διατάξιμη μεταβλητή.
 
 ::: {.table-responsive}
 |    Μεταβλητή    |           Τύπος μεταβλητής           |                 Περιγραφή                  |
@@ -888,21 +803,21 @@ highchart() %>%
     `times_elected_min` can adapt the specific characteristics of each party.
 
 ```{r}
-party_plot <- function(party, party_color, times_elected_min){
-  party_df = parliament %>% filter(Party == party) %>%
-  select(FullName) %>% table() %>% sort(decreasing = TRUE) %>% as.data.frame() %>% filter(Freq >= times_elected_min) %>% `colnames<-`(c("Full_Name", "Freq"))
-  
-ggplot(data = party_df, aes(x = reorder(Full_Name , Freq), y = Freq))+
-  geom_bar(stat = "identity",width = 0.88, fill = party_color) +
-  geom_text(aes(label=Freq), hjust = 1.5, vjust=0.5, color="white", size=4)+
-  theme_minimal() +
-   labs(title = "Most elected MPs",
-       subtitle = "",
-       caption = "Source: stesiam | stesiam.github.io, 2022",
-       x = "Times elected",
-       y = "Members of Parliament") +
-  coord_flip()
-}
+# party_plot <- function(party, party_color, times_elected_min){
+#   party_df = parliament %>% filter(Party == party) %>%
+#   select(FullName) %>% table() %>% sort(decreasing = TRUE) %>% as.data.frame() %>% filter(Freq >= times_elected_min) %>% `colnames<-`(c("Full_Name", "Freq"))
+#   
+# ggplot(data = party_df, aes(x = reorder(Full_Name , Freq), y = Freq))+
+#   geom_bar(stat = "identity",width = 0.88, fill = party_color) +
+#   geom_text(aes(label=Freq), hjust = 1.5, vjust=0.5, color="white", size=4)+
+#   theme_minimal() +
+#    labs(title = "Most elected MPs",
+#        subtitle = "",
+#        caption = "Source: stesiam | stesiam.github.io, 2022",
+#        x = "Times elected",
+#        y = "Members of Parliament") +
+#   coord_flip()
+# }
 ```
 
 ```{r}

@@ -222,8 +222,19 @@ gt_custom <- function(data, head_max = 5) {
       /* Strip row backgrounds */
       .gt_table tr { background-color: transparent !important; }
       .gt_row { background-color: transparent !important; }
-    ")
+    ") %>%
+    cols_label_with(
+      fn = function(x) {
+        html(paste0(
+          "<b>", greek_labels[x], "</b>",
+          "<br><span style='font-size:10px; color:#777; font-style:italic;'>",
+          x,
+          "</span>"
+        ))
+      }
+  )
 }
+
 reactable_custom = function(data, head_max = 5){
   reactable(
   head(data, head_max),
@@ -346,6 +357,16 @@ O ΟΟΣΑ (Οργανισμός Οικονομικής Συνεργασίας �
 
 :::
 
+
+```{r}
+#| echo: false
+greek_labels <- c(
+    LOCATION = "Οντότητα",
+    TIME = "Μήνας",
+    region = "Περιφέρεια",
+    Value = "Παρατήρηση"
+)
+```
 
 ```{r}
 #| label: tbl-preview-dataset

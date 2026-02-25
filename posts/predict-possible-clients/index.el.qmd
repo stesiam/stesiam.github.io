@@ -421,7 +421,17 @@ gt_custom <- function(data, head_max = 5) {
       /* Strip row backgrounds */
       .gt_table tr { background-color: transparent !important; }
       .gt_row { background-color: transparent !important; }
-    ")
+    ") %>%
+    cols_label_with(
+      fn = function(x) {
+        html(paste0(
+          "<b>", greek_labels[x], "</b>",
+          "<br><span style='font-size:10px; color:#777; font-style:italic;'>",
+          x,
+          "</span>"
+        ))
+      }
+  )
 }
 ```
 
@@ -959,6 +969,30 @@ graph TD;
 για την αξιολόγησή του αποτελείται από 1131.
 
 #### Δεδομένα εκπαίδευσης
+
+```{r}
+#| echo: false
+greek_labels <- c(
+    ID = "Α/Α",
+    age = "Ηλικία",
+    job = "Επάγγελμα",
+    marital = "Οικογενειακή Κατάσταση",
+    education = "Εκπαίδευση",
+    default = "Αθέτηση πληρωμών",
+    balance = "Υπόλοιπο",
+    housing = "Στεγαστικό δάνειο",
+    loan = "Προσωπικό δάνειο",
+    contact = "Τρόπος επικοινωνίας",
+    day = "",
+    month = "Μήνας",
+    duration = "Διάρκεια κλήσης",
+    campaign = "Αριθμός κλήσεων πελάτη",
+    pdays = "Ημέρες από προηγ. κλήση",
+    campaign = "Προηγούμενο αποτέλεσμα",
+    Deposit = "Άνοιξε προθεσμιακό;"
+    
+)
+```
 
 ```{r}
 #| label: tbl-preview-train-dataset
