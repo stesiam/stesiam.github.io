@@ -105,71 +105,71 @@ parliamentEN = read.csv("https://github.com/stesiam/scrape-greek-parl-members-26
 
 ```{r}
 #| label: function_reactable_tables
-gt_custom <- function(data, head_max = 5) {
-  data_subset <- as.data.frame(data) %>% head(head_max)
-  
-  data_subset %>%
-    gt() %>%
-    # 1. Internal GT Alignment
-    cols_align(align = "center", columns = everything()) %>%
+gt_custom <- function(data, head_max = 5, use_labels = TRUE) {
     
-    # 2. Typography
-    tab_style(
-      style = cell_text(v_align = "middle", weight = "bold", whitespace = "normal"),
-      locations = cells_column_labels()
-    ) %>%
-    # 3. THEME & COLORS
-    tab_options(
-      row.striping.include_table_body = FALSE,
-      table.background.color = "transparent",
-      column_labels.background.color = "transparent",
-      table.width = pct(100), 
-      table.font.size = px(13),           
-      data_row.padding = px(15), 
-      column_labels.padding = px(15),
-      
-      # Borders
-      table.border.top.style = "none",
-      table.border.bottom.style = "none",
-      table_body.hlines.style = "none", 
-      column_labels.border.top.width = px(2),
-      column_labels.border.top.color = "#757575",
-      column_labels.border.bottom.width = px(2),
-      column_labels.border.bottom.color = "#757575",
-      table_body.border.bottom.width = px(2),
-      table_body.border.bottom.color = "#757575"
-    ) %>%
+    data_subset <- as.data.frame(data) %>% head(head_max)
     
-    # 4. CSS FOR SUB-PLOT CENTERING
-    opt_css(css = "
-      /* Force every cell (header and body) to center text */
+    gt_tbl <- data_subset %>%
+        gt() %>%
+        cols_align(align = "center", columns = everything()) %>%
+        tab_style(
+            style = cell_text(
+                v_align = "middle",
+                weight = "bold",
+                whitespace = "normal"
+            ),
+            locations = cells_column_labels()
+        ) %>%
+        tab_options(
+            row.striping.include_table_body = FALSE,
+            table.background.color = "transparent",
+            column_labels.background.color = "transparent",
+            table.width = pct(100), 
+            table.font.size = px(13),           
+            data_row.padding = px(15), 
+            column_labels.padding = px(15),
+            table.border.top.style = "none",
+            table.border.bottom.style = "none",
+            table_body.hlines.style = "none", 
+            column_labels.border.top.width = px(2),
+            column_labels.border.top.color = "#757575",
+            column_labels.border.bottom.width = px(2),
+            column_labels.border.bottom.color = "#757575",
+            table_body.border.bottom.width = px(2),
+            table_body.border.bottom.color = "#757575"
+        ) %>%
+        opt_css(css = "
       .gt_table th, .gt_table td { 
         text-align: center !important; 
         vertical-align: middle !important;
       }
-      
-      /* Force the table to center within the Quarto column */
       .gt_table { 
         margin-left: auto !important; 
         margin-right: auto !important; 
         width: 100% !important;
       }
-      
-      /* Strip row backgrounds */
       .gt_table tr { background-color: transparent !important; }
       .gt_row { background-color: transparent !important; }
-    ") %>%
-    cols_label_with(
-      fn = function(x) {
-        html(paste0(
-          "<b>", greek_labels[x], "</b>",
-          "<br><span style='font-size:10px; color:#777; font-style:italic;'>",
-          x,
-          "</span>"
-        ))
-      }
-  )
+    ")
+    
+    # Apply labels only if requested
+    if (use_labels) {
+        gt_tbl <- gt_tbl %>%
+            cols_label_with(
+                fn = function(x) {
+                    html(paste0(
+                        "<b>", greek_labels[x], "</b>",
+                        "<br><span style='font-size:10px; color:#777; font-style:italic;'>",
+                        x,
+                        "</span>"
+                    ))
+                }
+            )
+    }
+    
+    return(gt_tbl)
 }
+
 reactable_custom = function(data, head_max = 5){
   reactable(
   head(data, head_max),
@@ -347,7 +347,7 @@ data.frame(
    "Σύνολο χαρακτήρων" = str_length(unique(parliamentGR$party)),check.names = FALSE
 ) %>%
   arrange(-`Σύνολο χαρακτήρων`) %>%
-  gt_custom(., 7)
+  gt_custom(., 7, use_labels = FALSE)
 ```
 
 Σαν να μην έφτανε αυτό παρατηρώ ότι υπάρχουν πολλαπλές καταχωρήσεις για το ίδιο κόμμα που ενδεχομένως κατά τη πάροδο των ετών έκανε ένα μικρό rebranding (Ανεξάρτητοι Έλληνες) ή ακόμα και πιο μεγάλες αλλαγές που κατά βάση αναφέρονται και είναι πρόγονοι ή απόγονοι ως επί το πλείστον του ίδιου κόμματος (Συνασπισμός -> ΣΥΡΙΖΑ ή ΠΑΣΟΚ -> Ελιά -> Δημοκρατική Συμπαράταξη -> Κίνημα Αλλαγής -> ΠΑΣΟΚ). Μιας και αυτές οι αλλαγές δεν μπορούν να κατανοηθούν εύκολα,  κρίνεται απαραίτητη η δημιουργία ενός νέου πίνακα ώστε να ομαδοποιήσω αυτή τη πληροφορία και να την συγχωνεύσω στο βασικό μου σύνολο δεδομένων. 

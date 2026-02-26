@@ -169,70 +169,69 @@ unemployment <- read_csv("data/unemployment.csv") %>%
 
 ```{r}
 #| label: function_reactable_tables
-gt_custom <- function(data, head_max = 5) {
-  data_subset <- as.data.frame(data) %>% head(head_max)
-  
-  data_subset %>%
-    gt() %>%
-    # 1. Internal GT Alignment
-    cols_align(align = "center", columns = everything()) %>%
+gt_custom <- function(data, head_max = 5, use_labels = TRUE) {
     
-    # 2. Typography
-    tab_style(
-      style = cell_text(v_align = "middle", weight = "bold", whitespace = "normal"),
-      locations = cells_column_labels()
-    ) %>%
-    # 3. THEME & COLORS
-    tab_options(
-      row.striping.include_table_body = FALSE,
-      table.background.color = "transparent",
-      column_labels.background.color = "transparent",
-      table.width = pct(100), 
-      table.font.size = px(13),           
-      data_row.padding = px(15), 
-      column_labels.padding = px(15),
-      
-      # Borders
-      table.border.top.style = "none",
-      table.border.bottom.style = "none",
-      table_body.hlines.style = "none", 
-      column_labels.border.top.width = px(2),
-      column_labels.border.top.color = "#757575",
-      column_labels.border.bottom.width = px(2),
-      column_labels.border.bottom.color = "#757575",
-      table_body.border.bottom.width = px(2),
-      table_body.border.bottom.color = "#757575"
-    ) %>%
+    data_subset <- as.data.frame(data) %>% head(head_max)
     
-    # 4. CSS FOR SUB-PLOT CENTERING
-    opt_css(css = "
-      /* Force every cell (header and body) to center text */
+    gt_tbl <- data_subset %>%
+        gt() %>%
+        cols_align(align = "center", columns = everything()) %>%
+        tab_style(
+            style = cell_text(
+                v_align = "middle",
+                weight = "bold",
+                whitespace = "normal"
+            ),
+            locations = cells_column_labels()
+        ) %>%
+        tab_options(
+            row.striping.include_table_body = FALSE,
+            table.background.color = "transparent",
+            column_labels.background.color = "transparent",
+            table.width = pct(100), 
+            table.font.size = px(13),           
+            data_row.padding = px(15), 
+            column_labels.padding = px(15),
+            table.border.top.style = "none",
+            table.border.bottom.style = "none",
+            table_body.hlines.style = "none", 
+            column_labels.border.top.width = px(2),
+            column_labels.border.top.color = "#757575",
+            column_labels.border.bottom.width = px(2),
+            column_labels.border.bottom.color = "#757575",
+            table_body.border.bottom.width = px(2),
+            table_body.border.bottom.color = "#757575"
+        ) %>%
+        opt_css(css = "
       .gt_table th, .gt_table td { 
         text-align: center !important; 
         vertical-align: middle !important;
       }
-      
-      /* Force the table to center within the Quarto column */
       .gt_table { 
         margin-left: auto !important; 
         margin-right: auto !important; 
         width: 100% !important;
       }
-      
-      /* Strip row backgrounds */
       .gt_table tr { background-color: transparent !important; }
       .gt_row { background-color: transparent !important; }
-    ") %>%
-    cols_label_with(
-      fn = function(x) {
-        html(paste0(
-          "<b>", greek_labels[x], "</b>",
-          "<br><span style='font-size:10px; color:#777; font-style:italic;'>",
-          x,
-          "</span>"
-        ))
-      }
-  )
+    ")
+    
+    # Apply labels only if requested
+    if (use_labels) {
+        gt_tbl <- gt_tbl %>%
+            cols_label_with(
+                fn = function(x) {
+                    html(paste0(
+                        "<b>", greek_labels[x], "</b>",
+                        "<br><span style='font-size:10px; color:#777; font-style:italic;'>",
+                        x,
+                        "</span>"
+                    ))
+                }
+            )
+    }
+    
+    return(gt_tbl)
 }
 
 reactable_custom = function(data, head_max = 5){
@@ -415,7 +414,7 @@ gt_custom(unemployment)
 #| tbl-cap: "Σύνοψη τύπων μεταβλητών (χωρίς προεπεξεργασία)"
 map_chr(unemployment, class) %>% 
   enframe("Όνομα μεταβλητής", "Τύπος μεταβλητής") %>%
-  gt_custom() 
+  gt_custom(use_labels = FALSE) 
 ```
 
 Παραπάνω επισημάνθηκε ότι οι ημερομηνίες έχουν την μορφή "ΕΕΕΕ-ΜΜ" (Έτος-Μήνας)
@@ -434,7 +433,7 @@ unemploymentType <- unemployment %>%
 
 map_chr(unemployment, class) %>% 
   enframe("Όνομα μεταβλητής", "Τύπος μεταβλητής") %>%
-  gt_custom() 
+  gt_custom(use_labels = FALSE) 
 ```
 
 
@@ -487,7 +486,7 @@ unemploymentType %>%
   arrange(Value) %>%
   tail(5) %>%
   setNames(c("Μήνας", "Ποσοστό ανεργίας (%)")) %>%
-  gt_custom()
+  gt_custom(use_labels = FALSE)
 
 unemploymentType %>% 
   as.tibble() %>%
@@ -496,7 +495,7 @@ unemploymentType %>%
   arrange(Value) %>%
   tail(5) %>%
   setNames(c("Μήνας", "Ποσοστό ανεργίας (%)")) %>%
-  gt_custom()
+  gt_custom(use_labels = FALSE)
 
 ```
 
@@ -522,7 +521,7 @@ unemploymentType %>%
   arrange(Value) %>%
   head(5) %>%
   setNames(c("Μήνας", "Ποσοστό ανεργίας (%)")) %>%
-  gt_custom()
+  gt_custom(use_labels = FALSE)
 
 unemploymentType %>% 
   as.tibble() %>%
@@ -531,7 +530,7 @@ unemploymentType %>%
   arrange(Value) %>%
   head(5) %>%
   setNames(c("Μήνας", "Ποσοστό ανεργίας (%)")) %>%
-  gt_custom()
+  gt_custom(use_labels = FALSE)
 ```
 
 
@@ -720,7 +719,7 @@ data.frame(
                    "Ασθενής εποχικότητα"),
   check.names = FALSE
 ) %>%
-  gt_custom() %>%
+  gt_custom(use_labels = FALSE) %>%
   sub_missing(everything(), missing_text = "-")
 
 ```
@@ -806,7 +805,7 @@ summaryBreakPoints %>%
   mutate("Τομές" = c(0, 1, 2, 3, 4, 5)) %>%
   relocate(`Τομές`, .before = "RSS") %>%
   as.data.frame() %>%
-  gt_custom(head_max = 6)
+  gt_custom(head_max = 6, use_labels = FALSE)
 ```
 :::
 
@@ -847,7 +846,7 @@ cool_table <- cool_table %>%
   select("Αριθμός τομών", everything())
 
 cool_table %>%
-    gt_custom() %>%
+    gt_custom(use_labels = FALSE) %>%
     sub_missing(everything(), missing_text = "-")
 ```
 
@@ -877,7 +876,7 @@ date_table <- cool_table %>%
     ))
 
 date_table %>%
-  gt_custom() %>%
+  gt_custom(use_labels = FALSE) %>%
   sub_missing(everything(), missing_text = "-")
 ```
 
@@ -1023,7 +1022,7 @@ summary_stationarity_results <- data.frame(
 )
 
 
-summary_stationarity_results  %>% gt_custom(head_max = 7)
+summary_stationarity_results  %>% gt_custom(head_max = 7, use_labels = FALSE)
 ```
 
 #### Έλεγχος DF
@@ -1115,7 +1114,7 @@ result_table <- data.frame(
     check.names = FALSE
 )
 
-result_table %>% gt_custom()
+result_table %>% gt_custom(use_labels = FALSE)
 ```
 
 Από τους ελέγχους Ljung-Box και Durbin-Watson, απορρίπτω την υπόθεση ότι τα σφάλματα είναι ασυσχέτιστα. Τέλος, από τον έλεγχο ARCH προκύπτει ότι τα σφάλματα δεν είναι ομοσκεδαστικά (διαφορετική διακύμανση). Από αυτά είναι εμφανές ότι ο έλεγχος DF δεν είναι καλός και συνήθως δεν χρησιμοποιείται, καθώς οι υποθέσεις του είναι αρκετά περιοριστικές και συνήθως παραβιάζονται. Οι έλεγχοι όπως ο ADF και ο PP αντιμετωπίζουν με διάφορους τρόπους αυτή τη συμπεριφορά των σφαλμάτων, προκειμένου να λάβουμε έγκυρα αποτελέσματα κατά τη κρίση της σταισμότητας μίας σειράς.
@@ -1240,7 +1239,7 @@ result_table <- data.frame(
     check.names = FALSE
 )
 
-result_table %>% gt_custom()
+result_table %>% gt_custom(use_labels = FALSE)
 ```
 
 Με δεδομένο ότι τα αποτελέσματα του πίνακα [@tbl-adf-results] δεν είναι
@@ -1281,7 +1280,7 @@ result_table <- data.frame(
     check.names = FALSE
 )
 
-result_table %>% gt_custom()
+result_table %>% gt_custom(use_labels = FALSE)
 ```
 
 Αφού η στατιστική τιμή (-2.119) είναι μικρότερη της αντίστοιχης κρίσιμης τιμής
@@ -1357,7 +1356,7 @@ result_table <- data.frame(
 
 # render με gt_custom και υποσημείωση
 result_table %>%
-  gt_custom() %>%
+  gt_custom(use_labels = FALSE) %>%
   tab_source_note(
     source_note = "Σημείωση: Η μηδενική υπόθεση του ADF είναι η ύπαρξη μοναδιαίας ρίζας. Η υστέρηση αναφέρεται στον αριθμό lag που χρησιμοποιήθηκε στο regression."
   )
@@ -1472,7 +1471,7 @@ result_table <- data.frame(
   check.names = FALSE
 )
 
-result_table %>% gt_custom()
+result_table %>% gt_custom(use_labels = FALSE)
 
 ```
 
@@ -1539,7 +1538,7 @@ result_table <- data.frame(
 )
 
 result_table %>%
-  gt_custom() %>%
+  gt_custom(use_labels = FALSE) %>%
   tab_source_note(
     source_note = "Σημείωση: Η μηδενική υπόθεση του KPSS είναι η στασιμότητα. Η υστέρηση χρησιμοποιείται για την εκτίμηση της μακροχρόνιας διακύμανσης."
   )
@@ -1594,7 +1593,7 @@ data.frame("Έλεγχος" = c("Zivot-Andrews", "Zivot-Andrews", "Lee-Strazicic
            "Κρίσιμη τιμή (5%)" = c(g@cval[2], g1@cval[2], -5.65 , -5.65),
            check.names = FALSE) %>% 
   mutate(across(c(3:4), ~ round(., 2))) %>%
-  gt_custom()
+  gt_custom(use_labels = FALSE)
 ```
 
 
@@ -1622,7 +1621,7 @@ data.frame(
   "Υστέρηση" = c(0:24),
   "ACF" = acf_lv$acf,
   "pACF" = c(1, pacf_lv$acf)) %>%
-  gt_custom(head_max = 12)  %>%
+  gt_custom(head_max = 12, use_labels = FALSE)  %>%
   fmt_number(decimals = 3, drop_trailing_zeros = TRUE)
 ```
 :::
@@ -1671,7 +1670,7 @@ data.frame(
   "Υστέρηση" = c(0:24),
   "ACF" = acf_diff1$acf,
   "pACF" = c(1, pacf_diff1$acf)) %>%
-  gt_custom(head_max = 12)  %>%
+  gt_custom(head_max = 12, use_labels = FALSE)  %>%
   fmt_number(decimals = 3, drop_trailing_zeros = TRUE)
 ```
 :::
@@ -2250,7 +2249,7 @@ glance(models) %>%
   dplyr::arrange(BIC) %>%
   dplyr::rename("Μοντέλο" = .model) %>%
   dplyr::relocate(BIC, .before = "AIC") %>%
-  gt_custom(head_max = 20) %>%
+  gt_custom(head_max = 20, use_labels = FALSE) %>%
   fmt_number(decimals = 1)
 ```
 
@@ -2298,7 +2297,7 @@ glance(models) %>%
   dplyr::arrange(BIC) %>%
   dplyr::rename("Μοντέλο" = .model) %>%
   dplyr::relocate(BIC, .before = "AIC") %>%
-  gt_custom(head_max = 20) %>%
+  gt_custom(head_max = 20, use_labels = FALSE) %>%
   fmt_number(decimals = 1)
 ```
 
@@ -2372,7 +2371,7 @@ acc %>%
   select(.model, RMSE, MAE) %>%
   rename("Μοντέλο" = ".model") %>%
   arrange(RMSE) %>%
-  gt_custom(head_max = 10) %>%
+  gt_custom(head_max = 10, use_labels = FALSE) %>%
   fmt_number(decimals = 4)
 ```
 
@@ -2394,7 +2393,7 @@ acc %>%
   select(.model, RMSE, MAE) %>%
   rename("Μοντέλο" = ".model") %>%
   arrange(RMSE) %>%
-  gt_custom(head_max = 10) %>%
+  gt_custom(head_max = 10, use_labels = FALSE) %>%
   fmt_number(decimals = 4)
 ```
 
@@ -2444,7 +2443,7 @@ dm_results <- tribble(
   )
 
 dm_results %>%
-  gt_custom(head_max = 10) %>%
+  gt_custom(head_max = 10, use_labels = FALSE) %>%
   tab_header(
     title    = "Έλεγχος Diebold - Mariano",
     subtitle = "Σύγκριση προβλεπτικής ακρίβειας μοντέλων"
@@ -2462,7 +2461,7 @@ dm_results %>%
 
 ```{r}
 dm_results %>%
-  gt_custom(head_max = 10) %>%
+  gt_custom(head_max = 10, use_labels = FALSE) %>%
   tab_style(
     style     = cell_fill(color = "#e8f5e9"),
     locations = cells_body(rows = `p-value` >= 0.05, columns = "Συμπέρασμα")
@@ -2497,7 +2496,7 @@ augment(fit) %>%
         "Στατιστική LB"  = lb_stat,
         "p-value"        = lb_pvalue
     ) %>%
-    gt_custom() %>%
+    gt_custom(use_labels = FALSE) %>%
     cols_align(align = "center", columns = everything()) %>%
     tab_style(
         style    = cell_fill(color = "#d4edda"),  # πράσινο για καλά
@@ -2637,7 +2636,7 @@ fc_final %>%
   rename("Μήνας" = TIME,
          "Πρόβλεψη" = .mean) %>%
   select("Μήνας", "Πρόβλεψη","80% ΔΕ", "95% ΔΕ") %>%
-  gt_custom(head_max = 8)
+  gt_custom(head_max = 8, use_labels = FALSE)
 ```
 
 Με δεδομένο το διάγραμμα αλλά και το πίνακα των προβλέψεων του μοντέλου με τη καλύτερη επίδοση, συμπεραίνω ότι η μείωση της ανεργίας στην Ελλάδα θα συνεχιστεί και την επόμενη περίοδο (τους επόμενους έξι μήνες). Πιο συγκεκριμένα, η ανεργία στην Ελλάδα τον Φεβρουάριο του 2023 θα είναι 11.4\%, κυμαίνεται μεταξύ του 10.1\% (9.4\%) και 12.8\% (13.5\%) σμε πιθανότητα 80\% (95\%).
