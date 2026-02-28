@@ -24,6 +24,11 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        
+      - name: Install locales
+        run: |
+          sudo locale-gen el_GR.UTF-8
+          sudo update-locale
 
       # --- Quarto Setup
       - name: Set up Quarto

@@ -198,89 +198,90 @@ reactable_custom = function(data, head_max = 5){
 
 ```{r}
 ##new function plot
-plot_parliament <- function(data, period_number) {
+plot_parliament <- function(data, period_number, lang = "el") {
     
     df_period <- data %>%
         filter(period_num == period_number)
     
     seats_party <- df_period %>%
         group_by(abbrNamesEl, fullNamesEl, Color) %>%
-        summarise(seats = n(), .groups = "drop") %>%
-        arrange(desc(seats))
+        summarise(n = n(), .groups = "drop") %>%
+        arrange(desc(n))
+    
+    total_seats <- sum(seats_party$n)
+    
+    title_text    <- if (lang == "el") paste0("Σύνθεση Βουλής – Περίοδος ", period_number) else paste0("Parliament Composition – Period ", period_number)
+    subtitle_text <- if (lang == "el") paste0("Σύνολο εδρών: ", total_seats) else paste0("Total seats: ", total_seats)
+    caption_text  <- if (lang == "el") "Πηγή: Βουλή των Ελλήνων" else "Source: Hellenic Parliament"
+    hover_text    <- if (lang == "el") "Έδρες" else "Seats"
     
     highchart() %>%
-        
         hc_chart(type = "item") %>%
-        
-        hc_title(text = paste0("Σύνθεση Βουλής – Περίοδος ", period_number)) %>%
-        
+        hc_title(text = title_text) %>%
+        hc_subtitle(text = subtitle_text) %>%
+        hc_caption(
+            text = caption_text,
+            align = "center",
+            verticalAlign = "bottom",
+            y = 10
+        ) %>%
+        hc_legend(labelFormat = "{name} <span style='opacity: 0.4'>{y}</span>") %>%
         hc_add_series(
-            type = "item",
-            name = "Έδρες",
-            layout = "parliament",
-            startAngle = -110,
-            endAngle = 110,
-            keys = c("name", "y", "color", "full_name"),
-            data = seats_party %>%
-                transmute(
-                    name = abbrNamesEl,
-                    y = seats,
-                    color = Color,
-                    full_name = fullNamesEl
-                ) %>%
-                list_parse(),
-            
+            name = hover_text,
+            data = purrr::pmap(
+                list(seats_party$abbrNamesEl, seats_party$n, seats_party$Color, seats_party$fullNamesEl),
+                list
+            ),
+            keys = c("name", "y", "color", "label"),
             dataLabels = list(
                 enabled = TRUE,
-                format = "{point.name}",
-                distance = 35,
-                crop = FALSE,
-                overflow = "none",
-                backgroundColor = "rgba(255,255,255,0.95)",
-                borderColor = "#dddddd",
-                borderWidth = 1,
-                borderRadius = 6,
-                padding = 3,
-                style = list(
-                    fontWeight = "bold",
-                    fontSize = "12px",
-                    textOutline = "none"
-                )
-            )
+                format = "{point.label}",
+                style = list(textOutline = "5px contrast")
+            ),
+            center = list("50%", "88%"),
+            size = "170%",
+            startAngle = -100,
+            endAngle = 100
         ) %>%
-        
-        hc_tooltip(
-            useHTML = TRUE,
-            formatter = JS("
-        function () {
-          return '<b>' + this.point.full_name + '</b><br>' +
-                 'Έδρες: ' + this.point.y;
-        }
-      ")
-        ) %>%
-        
-        hc_legend(enabled = FALSE) %>%
-        hc_credits(enabled = FALSE) %>%
-        
         hc_responsive(
             rules = list(
                 list(
+                    condition = list(maxWidth = 768),
+                    chartOptions = list(
+                        series = list(
+                            dataLabels = list(
+                                distance = -30,
+                                style = list(
+                                    fontSize = "12px",
+                                    textOutline = "1px contrast"
+                                )
+                            ),
+                            center = list("50%", "75%"),
+                            size = "130%"
+                        )
+                    )
+                ),
+                list(
                     condition = list(maxWidth = 600),
                     chartOptions = list(
-                        legend = list(
-                            enabled = TRUE,
-                            align = "center",
-                            verticalAlign = "bottom",
-                            layout = "horizontal"
-                        ),
-                        plotOptions = list(
-                            item = list(
-                                startAngle = -100,
-                                endAngle = 100,
-                                dataLabels = list(
-                                    enabled = FALSE  # hide labels on mobile
-                                )
-                            )
+                        series = list(
+                            dataLabels = list(
+                                enabled = FALSE
+                            ),
+                            center = list("50%", "75%"),
+                            size = "130%"
+                        )
+                    )
+                ),
+                list(
+                    condition = list(maxWidth = 400),
+                    chartOptions = list(
+                        series = list(
+                            dataLabels = list(
+                                enabled = FALSE
+                            ),
+                            center = list("50%", "80%"),
+                            size = "110%"
                         )
                     )
                 )
@@ -616,17 +617,16 @@ series_data <- lapply(1:nrow(r), function(i) {
 })
 
 hc <- highchart() %>%
-  hc_chart(type = "spline", backgroundColor = "white") %>%
+  hc_chart(type = "spline") %>%
   
   hc_title(
     text = "Αριθμός Κοινοβουλευτικών Ομάδων ανά Κοινοβουλευτική Περίοδο",
-    style = list(fontWeight = "bold", fontSize = "16px")
+    style = list(fontWeight = "bold")
   ) %>%
   
   hc_subtitle(
-    text = "Ελληνικό Κοινοβούλιο – Μεταπολιτευτική περίοδος",
-    style = list(color = "#555555", fontSize = "12px")
-  ) %>%
+    text = "Ελληνικό Κοινοβούλιο – Μεταπολιτευτική περίοδος"
+    ) %>%
   
   hc_add_series(
     name = "Κοινοβουλευτικές Ομάδες",
@@ -639,16 +639,14 @@ hc <- highchart() %>%
   hc_xAxis(
     type = "category",
     title = list(
-      text = "Κοινοβουλευτική Περίοδος",
-      style = list(fontWeight = "bold")
+      text = "Κοινοβουλευτική Περίοδος"
     ),
     labels = list(rotation = 0)
   ) %>%
   
   hc_yAxis(
     title = list(
-      text = "Αριθμός Ομάδων",
-      style = list(fontWeight = "bold")
+      text = "Αριθμός Ομάδων"
     ),
     allowDecimals = FALSE,
     gridLineColor = "#E6E6E6",
@@ -725,7 +723,7 @@ greek_labels <- c(
 ```{r}
 #| label: fig-most-elected-mps
 #| fig-cap: "Βουλευτές που έχουν εκλεγεί περισσότερες φορές εκπροσωπόντας συγκεκριμένο κόμμα"
-#| fig-height: 12
+#| fig-height: 14
 
 u = clean_dataset |>
   select(name, surname1, name1, fullNamesEl, abbrNamesEl, Color) |>
@@ -841,7 +839,7 @@ party_plot <- function(dataset, party, times_elected_min = 2,
     
     # Create highcharter plot
     hc <- highchart() %>%
-        hc_chart(type = "bar", inverted = TRUE, backgroundColor = "white") %>%
+        hc_chart(type = "bar", inverted = TRUE) %>%
         
         hc_title(
             text = title_text,
@@ -913,6 +911,9 @@ party_plot <- function(dataset, party, times_elected_min = 2,
 :::
 
 ```{r}
+#| label: fig-most-elected-mps-kke
+#| fig-cap: "Βουλευτές που έχουν εκλεγεί περισσότερες φορές με το Κομμουνιστικό Κόμμα Ελλάδος (ΚΚΕ)"
+#| fig-height: 8
 party_plot(
   dataset = clean_dataset,
   party = "ΚΚΕ",  # Example party abbreviation from abbrNamesEl
@@ -934,6 +935,9 @@ party_plot(
 :::
 
 ```{r}
+#| label: fig-most-elected-mps-nd
+#| fig-cap: "Βουλευτές που έχουν εκλεγεί περισσότερες φορές με τη Νέα Δημοκρατία (ΝΔ)"
+#| fig-height: 10
 party_plot(
   dataset = clean_dataset,
   party = "ΝΔ",  # Example party abbreviation from abbrNamesEl
@@ -958,11 +962,14 @@ party_plot(
 :::
 
 ```{r}
+#| label: fig-most-elected-mps-pasok
+#| fig-cap: "Βουλευτές που έχουν εκλεγεί περισσότερες φορές με το Πανελλήνιο Σοσιαλιστικό Κίνημα (ΠΑΣΟΚ)"
+#| fig-height: 10
 party_plot(
   dataset = clean_dataset,
   party = "ΠΑΣΟΚ",  # Example party abbreviation from abbrNamesEl
   times_elected_min = 10,
-  title_text = "Βουλευτές του Κόμματος ΝΔ με πάνω από 10 θητείες",
+  title_text = "Βουλευτές του Κόμματος ΠΑΣΟΚ με πάνω από 10 θητείες",
   subtitle_text = "Αριθμός εκλογών ανά βουλευτή",
   party_color = "#95bb72"
 )
@@ -971,6 +978,9 @@ party_plot(
 ### ΣΥΡΙΖΑ
 
 ```{r}
+#| label: fig-most-elected-mps-syriza
+#| fig-cap: "Βουλευτές που έχουν εκλεγεί περισσότερες φορές με το Συνασπισμό Ριζοσπαστικής Αριστεράς (ΣΥΡΙΖΑ)"
+#| fig-height: 8
 party_plot(
   dataset = clean_dataset,
   party = "ΣΥΡΙΖΑ",  # Example party abbreviation from abbrNamesEl
