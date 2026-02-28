@@ -437,21 +437,30 @@ uni_coord$symbol <- c(
   "url(https://upload.wikimedia.org/wikipedia/commons/e/e4/Map_marker_icon_%E2%80%93_Nicolas_Mollet_%E2%80%93_Pin.svg)",
   "url(https://upload.wikimedia.org/wikipedia/commons/e/e4/Map_marker_icon_%E2%80%93_Nicolas_Mollet_%E2%80%93_Pin.svg)"
 )
+raw <- paste(readLines("../../assets/js/gr-all.js", warn = FALSE), collapse = "")
 
-# Load Greece Map
-hcmap("countries/gr/gr-all", name = "SA") %>%
-hc_add_series(
-  data = uni_coord,
-  type = "mappoint",
-  hcaes(lon = long, lat = lat, name = uni),
-  name = "Departments",
-  color = "brown4",
-  marker = list(
-    symbol = "url(https://cdn-icons-png.flaticon.com/512/5081/5081368.png)",  # example map pin SVG
-    width = 20,
-    height = 20
-  )
-) %>%
+# Extract everything between the first { and last }
+json_str <- stringr::str_extract(raw, "(?<=\\= )\\{.*\\}")
+
+gr_map <- jsonlite::fromJSON(json_str, simplifyVector = FALSE)# Load Greece Map
+highchart(type = "map") %>%
+  hc_add_series(
+    mapData = gr_map,   # <-- your local map object
+    name = "SA",
+    showInLegend = FALSE
+  ) %>%
+  hc_add_series(
+    data = uni_coord,
+    type = "mappoint",
+    hcaes(lon = long, lat = lat, name = uni),
+    name = "Departments",
+    color = "brown4",
+    marker = list(
+      symbol = "url(https://cdn-icons-png.flaticon.com/512/5081/5081368.png)",
+      width = 20,
+      height = 20
+    )
+  ) %>%
   hc_title(text = "<b>Σχολές Στατιστικής</b>") %>%
   hc_subtitle(text = "Στην Ελλάδα υπάρχουν συνολικά τέσσερις δημόσιες σχολές στατιστικής προπτυχιακού επιπέδου. Η φοίτηση σε αυτές είναι 4ετούς φοίτησης. Αυτές έχουν έδρα στην Αθήνα, στον Πειραιά, στη Σάμο και στα Γρεβενά") %>%
   hc_caption(text = "stesiam, 2025") |>
