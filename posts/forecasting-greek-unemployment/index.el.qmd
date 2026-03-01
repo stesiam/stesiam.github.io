@@ -2348,6 +2348,7 @@ $$
 #| label: tbl-rmse-models-2mths
 #| tbl-cap: "Σύγκριση σφαλμάτων διαφορετικών μοντέλων για 2μηνη πρόβλεψη"
 #| cache: true
+#| warning: false
 fit <- cv %>%
   model(
     "Auto ARIMA"   = fable::ARIMA(Value),  # ← Force d=1!
@@ -2384,6 +2385,7 @@ acc %>%
 #| label: tbl-rmse-models-6mths
 #| tbl-cap: "Σύγκριση σφαλμάτων διαφορετικών μοντέλων για 6μηνη πρόβλεψη"
 #| cache: true
+#| warning: false
 
 # Forecast h months ahead
 fc <- fit %>%
@@ -2442,7 +2444,7 @@ dm_results <- tribble(
   mutate(
     "Τιμή DM" = round(`Τιμή DM`, 4),
     "p-value"      = round(`p-value`, 4),
-    "Συμπέρασμα"     = ifelse(`p-value` < 0.05, "✓ Στατ. Σημαντικό", "✗ Καμία διαφορά")
+    "Συμπέρασμα"     = ifelse(`p-value` < 0.05, "Στατ. Σημαντικό", "Καμία διαφορά")
   )
 
 dm_results %>%
@@ -2462,62 +2464,70 @@ dm_results %>%
   fmt_number(columns = c("Τιμή DM", "p-value"), decimals = 4)
 ```
 
-```{r}
-dm_results %>%
-  gt_custom(head_max = 10, use_labels = FALSE) %>%
-  tab_style(
-    style     = cell_fill(color = "#e8f5e9"),
-    locations = cells_body(rows = `p-value` >= 0.05, columns = "Συμπέρασμα")
-  ) %>%
-  tab_style(
-    style     = cell_fill(color = "#fde8e8"),
-    locations = cells_body(rows = `p-value` < 0.05,  columns = "Συμπέρασμα")
-  ) %>%
-  fmt_number(columns = c("Τιμή DM", "p-value"), decimals = 4)
-```
-
-
 Σύμφωνα με τον έλεγχο βρήκα ότι τα επιλεγμένα μοντέλα ARIMA έχουν στατιστικά σημαντικές διαφορές από το μοντέλο NAIVE που καταδεικνύουν τη σημαντικότητά τους για τη πρόβλεψη της μελλοντικής ανεργίας, τουλάχιστον σε βραχυπρόθεσμο επίπεδο. Ένα ακόμα στοιχείο μέσω των συνδυασμών ελέγχων είναι ότι τα επιλεγμένα μοντέλα ARIMA δεν έχουν στατιστικά σημαντικές διαφορές μεταξύ τους. Δηλαδή το μοντέλο ARIMAX που χρησιμοποιεί ένα ή δύο breaks δεν έχουν σημαντικές διαφορές σε ε.σ. 5\% με ένα απλό μοντέλο ARIMA(1,1,1).
 
 ## Καλέ, που είναι οι υποθέσεις;
 
 > Ρε απατεώνα που είναι οι έλεγχοι των υποθέσεων. Τα λεφτά μας πίσω.
 
-Λοιπόν, έχω κάποια καλά νέα και κάποια κακά νέα. Τα κακά νέα είναι ότι όχι μόνο δεν τελείωσε το άρθρο, αλλά θα πρέπει να ελέγξω τα καλύτερα μοντέλα κατά πόσο πληρούν τις υποθέσεις που αναλύσαμε, δηλαδή τα σφάλματα να είναι ασυσχέτιστα, να είμαι ομοσκεδασικά και να ακολουθούν τη κανονική κατανομή. 
+Λοιπόν, έχω κάποια καλά νέα και κάποια κακά νέα. Τα καλά νέα είναι ότι όχι μόνο δεν τελείωσε το άρθρο, αλλά θα πρέπει να ελέγξω τα καλύτερα μοντέλα κατά πόσο πληρούν τις υποθέσεις που αναλύσαμε, δηλαδή τα σφάλματα να είναι:
+
+- ασυσχέτιστα ($Cov(\epsilon_t, \epsilon_{t-1}) = 0$), 
+- ομοσκεδασικά ($Var(\epsilon_t)$) και
+- να ακολουθούν τη κανονική κατανομή
 
 ```{r}
+#| echo: false
+greek_labels <- c(
+    .model = "Μοντέλο",
+    lb_stat = "Στατιστική Ljung-Box",
+    lb_pvalue = "p-value Ljung-Box",
+    arch_stat = "Στατιστική ARCH",
+    arch_pvalue = "p-value ARCH",
+    jb_stat = "Στατιστική Jarque-Bera",
+    jb_pvalue = "p-value Jarque-Bera",
+    AIC = "AIC",
+    BIC = "BIC"
+)
+```
+
+
+```{r}
+jb_test <- function(x) {
+  test <- tseries::jarque.bera.test(x)
+  tibble(
+    jb_stat   = as.numeric(test$statistic),
+    jb_pvalue = test$p.value
+  )
+}
+
 augment(fit) %>%
-    features(.innov, ljung_box, lag = 24, dof = 2) %>%
-    filter(!is.na(lb_stat)) %>%  # αφαίρεση M_212 που απέτυχε
-    mutate(
-        lb_stat   = round(lb_stat, 3),
-        lb_pvalue = round(lb_pvalue, 3),
-        Αποτέλεσμα = if_else(lb_pvalue > 0.05, "✓ Λευκός θόρυβος", "✗ Αυτοσυσχέτιση")
+    features(.innov, ljung_box, lag = 20, dof = 2) %>%
+    left_join(
+        res %>%
+            features(.innov^2, ljung_box, lag = 20) %>%
+            rename(arch_stat = lb_stat, arch_pvalue = lb_pvalue),
+        by = ".model"
     ) %>%
-    rename(
-        "Μοντέλο"        = .model,
-        "Στατιστική LB"  = lb_stat,
-        "p-value"        = lb_pvalue
+    left_join(
+        res %>%
+            features(.innov, jb_test),
+        by = ".model"
     ) %>%
-    gt_custom(use_labels = FALSE) %>%
+    left_join(
+        glance(fit) %>%
+            select(.model, AIC, BIC),
+        by = ".model"
+    ) %>%
+  gt_custom(use_labels = TRUE) %>%
     cols_align(align = "center", columns = everything()) %>%
-    tab_style(
-        style    = cell_fill(color = "#d4edda"),  # πράσινο για καλά
-        locations = cells_body(
-            rows = `p-value` > 0.05
-        )
-    ) %>%
-    tab_style(
-        style    = cell_fill(color = "#f8d7da"),  # κόκκινο για κακά
-        locations = cells_body(
-            rows = `p-value` <= 0.05
-        )
-    ) %>%
     tab_style(
         style = cell_text(weight = "bold"),
         locations = cells_column_labels()
-    )
+    ) %>%
+  fmt_number()
 ```
+
 
 
 ## Πρόβλεψη μελλοντικής ανεργίας
@@ -2612,7 +2622,6 @@ highchart(type = "stock") %>%
   enabled = TRUE,
   selected = 2,  # highlight the "1y" button visually
   buttons = list(
-    list(type = "month", count = 3,  text = "3 μήνες"),
     list(type = "month", count = 6,  text = "6 μήνες"),
     list(type = "year",  count = 1,  text = "1 έτος"),
     list(type = "year",  count = 2,  text = "2 έτη"),
