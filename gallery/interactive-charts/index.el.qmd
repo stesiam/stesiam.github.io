@@ -575,7 +575,8 @@ data_join <- stringdist_left_join(
 mapdata <- get_data_from_map(gr_map) |>
     rename(Region = "name")
 
-matches <- stringdist_inner_join(
+# ---------- 5. Match against LOCAL map features ----------
+best_matches <- stringdist_inner_join(   # ← άλλαξε "matches" σε "best_matches"
     mapdata, data_join,
     by           = "Region",
     max_dist     = 20,
@@ -590,7 +591,6 @@ matches <- stringdist_inner_join(
         code = `hc-key`,
         PER  = `alt-name`
     )
-
 # ---------- 6. Render chart with LOCAL map ----------
 highchart(type = "map") |>
     hc_add_series(
@@ -605,7 +605,7 @@ highchart(type = "map") |>
         dataLabels = list(enabled = FALSE)
     ) |>
     hc_title(text = "Αριθμός φαρμακείων") |>
-    hc_subtitle(text = "Πλήθος φαρμακείων ανά 10,000 κατοίκους ανά περιφέρεια")
+    hc_subtitle(text = "Πλήθος φαρμακείων ανά 10,000 κατοίκους ανά περιφέρεια") |>
     hc_legend(enabled = FALSE) |>
     hc_colorAxis(
         stops = color_stops(n = 4, colors = brewer.pal(4, "YlGn")),
