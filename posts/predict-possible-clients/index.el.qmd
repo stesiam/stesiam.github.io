@@ -122,6 +122,10 @@ library(gt)
 library(tidymodels)
 library(bonsai)
 library(themis)
+library(stacks)
+
+library(kknn)
+library(ranger)
 ```
 
 ```{r}
@@ -372,7 +376,7 @@ gt_custom <- function(data, head_max = 5, use_labels = TRUE) {
     data_subset <- as.data.frame(data) %>% head(head_max)
     
     gt_tbl <- data_subset %>%
-        gt() %>%
+        gt::gt() %>%
         cols_align(align = "center", columns = everything()) %>%
         tab_style(
             style = cell_text(
@@ -1033,11 +1037,19 @@ bank_test %>%
 ```{r}
 #| label: building_recipe
 #| title: "Επεξεργασία δεδομένων"
-bank_recipe <- recipes::recipe(y~., 
-                               data = bank_train) %>%
+# Recipe για tree-based μοντέλα (RF, XGBoost, LightGBM)
+tree_recipe <- recipe(y ~., data = bank_train) %>%
   step_rm(poutcome, ID) %>%
   step_corr(all_numeric(), threshold = 0.75) %>%
   step_dummy(all_nominal(), -all_outcomes()) %>%
+  step_smote(y)
+
+# Recipe για distance/linear μοντέλα (Logistic Regression, KNN)
+linear_recipe <- recipe(y ~., data = bank_train) %>%
+  step_rm(poutcome, ID) %>%
+  step_corr(all_numeric(), threshold = 0.75) %>%
+  step_dummy(all_nominal(), -all_outcomes()) %>%
+  step_normalize(all_numeric_predictors()) %>%  # <-- επιπλέον βήμα
   step_smote(y)
 ```
 
@@ -1049,7 +1061,20 @@ bank_recipe <- recipes::recipe(y~.,
 #| tbl-cap: "Σύνολο δεδομένων με εφαρμογή των `recipes`"
 #| tbl-cap-location: top
 
-bank_recipe %>%
+linear_recipe %>%
+  prep() %>%
+  juice() %>%
+  head() %>%
+  gt_custom()
+```
+
+
+```{r Προεπισκόπηση δεδομένων με εφαρμογή οδηγιών επεξεργασίας}
+#| label: tbl-recipes-df-after-recipes-tree
+#| tbl-cap: "Σύνολο δεδομένων με εφαρμογή των `recipes`"
+#| tbl-cap-location: top
+
+tree_recipe %>%
   prep() %>%
   juice() %>%
   head() %>%
@@ -1069,8 +1094,12 @@ bank_recipe %>%
 σε καλύτερη ακρίβεια.
 
 ```{r}
-#cv_folds <- vfold_cv(v = 5, strata = y)
+set.seed(123)
+cv_folds <- vfold_cv(bank_train, v = 5, strata = y)
+
+ctrl <- control_stack_grid()  # αντί για control_grid(), για stacking
 ```
+
 
 ### Κατασκευάζοντας το μοντέλο μου
 
@@ -1083,18 +1112,176 @@ bank_recipe %>%
 -   Ταξινόμηση Naive Bayes
 -   Τυχαίου δάσους (Random Forest)
 -   LightGBM
+-   XGBoost
 
 Next, parsnip helps us to specify our models. Initially, I will define a
 LightGBM model,
 
 ```{r}
-#| label: define_lightgbm_model
+#| label: define_models
 #| title: "Ορισμός μοντέλου LightGBM"
-lightgbm_model<- parsnip::boost_tree(
- mode = "classification",
- trees = 50,
- min_n = tune(),
- learn_rate = tune(),
- tree_depth = tune()) %>%
-set_engine("lightgbm")
+# --- Logistic Regression ---
+log_reg_model <- parsnip::logistic_reg(
+  penalty = tune(),
+  mixture = tune()
+) %>%
+  set_engine("glmnet") %>%
+  set_mode("classification")
+
+# --- K-Nearest Neighbors ---
+knn_model <- parsnip::nearest_neighbor(
+  neighbors = tune(),
+  weight_func = tune()
+) %>%
+  set_engine("kknn") %>%
+  set_mode("classification")
+
+# --- Random Forest ---
+rf_model <- parsnip::rand_forest(
+  trees = 200,
+  mtry  = tune(),
+  min_n = tune()
+) %>%
+  set_engine("ranger") %>%
+  set_mode("classification")
+
+# --- XGBoost ---
+xgb_model <- parsnip::boost_tree(
+  trees      = 200,
+  min_n      = tune(),
+  learn_rate = tune(),
+  tree_depth = tune()
+) %>%
+  set_engine("xgboost") %>%
+  set_mode("classification")
+
+# --- LightGBM ---
+lgbm_model <- parsnip::boost_tree(
+  trees      = 200,
+  min_n      = tune(),
+  learn_rate = tune(),
+  tree_depth = tune()
+) %>%
+  set_engine("lightgbm") %>%
+  set_mode("classification")
 ```
+
+```{r}
+log_wf  <- workflow() %>% add_recipe(linear_recipe) %>% add_model(log_reg_model)
+knn_wf  <- workflow() %>% add_recipe(linear_recipe) %>% add_model(knn_model)
+rf_wf   <- workflow() %>% add_recipe(tree_recipe)   %>% add_model(rf_model)
+xgb_wf  <- workflow() %>% add_recipe(tree_recipe)   %>% add_model(xgb_model)
+lgbm_wf <- workflow() %>% add_recipe(tree_recipe)   %>% add_model(lgbm_model)
+```
+
+###
+
+```{r}
+#| cache: true
+set.seed(123)
+
+log_results <- tune_grid(
+  log_wf, resamples = cv_folds, grid = 10,
+  metrics = metric_set(roc_auc, accuracy, f_meas),
+  control = ctrl
+)
+
+knn_results <- tune_grid(
+  knn_wf, resamples = cv_folds, grid = 10,
+  metrics = metric_set(roc_auc, accuracy, f_meas),
+  control = ctrl
+)
+
+rf_results <- tune_grid(
+  rf_wf, resamples = cv_folds, grid = 10,
+  metrics = metric_set(roc_auc, accuracy, f_meas),
+  control = ctrl
+)
+
+xgb_results <- tune_grid(
+  xgb_wf, resamples = cv_folds, grid = 10,
+  metrics = metric_set(roc_auc, accuracy, f_meas),
+  control = ctrl
+)
+
+lgbm_results <- tune_grid(
+  lgbm_wf, resamples = cv_folds, grid = 10,
+  metrics = metric_set(roc_auc, accuracy, f_meas),
+  control = ctrl
+)
+```
+
+
+
+### ensemble
+
+```{r}
+#| cache: true
+bank_stack <- stacks() %>%
+  add_candidates(log_results) %>%
+  add_candidates(knn_results) %>%
+  add_candidates(rf_results) %>%
+  add_candidates(xgb_results) %>%
+  add_candidates(lgbm_results)
+
+# Υπολογισμός βαρών για κάθε μοντέλο
+set.seed(123)
+bank_stack_model <- bank_stack %>%
+  blend_predictions(
+    penalty = 10^(-2:0),       # L1 regularization για επιλογή μοντέλων
+    metric  = metric_set(roc_auc)
+  )
+
+# Εκπαίδευση των επιλεγμένων μοντέλων
+bank_stack_fit <- bank_stack_model %>%
+  fit_members()
+```
+
+## Αξιολόγηση
+
+```{r}
+# Finalize και last_fit για τα επί μέρους μοντέλα
+final_results <- list(
+  "Λογιστική Παλινδρόμηση" = log_results,
+  "kNN"                 = knn_results,
+  "Random Forest"       = rf_results,
+  "XGBoost"             = xgb_results,
+  "LightGBM"            = lgbm_results
+) %>%
+  purrr::imap_dfr(function(res, name) {
+    best <- select_best(res, metric = "roc_auc")
+    wf   <- switch(name,
+      "Λογιστική Παλινδρόμηση" = log_wf,
+      "kNN"                 = knn_wf,
+      "Random Forest"       = rf_wf,
+      "XGBoost"             = xgb_wf,
+      "LightGBM"            = lgbm_wf
+    )
+    last_fit(finalize_workflow(wf, best), split = bank_dataset_split,
+             metrics = metric_set(roc_auc, accuracy, f_meas)) %>%
+      collect_metrics() %>%
+      mutate(model = name)
+  })
+
+# Stack predictions στο test set
+stack_preds <- bank_test %>%
+  bind_cols(predict(bank_stack_fit, bank_test, type = "prob")) %>%
+  bind_cols(predict(bank_stack_fit, bank_test))
+
+stack_metrics <- stack_preds %>%
+  metrics(truth = y, estimate = .pred_class, .pred_ναι) %>%
+  mutate(model = "Stack Ensemble")
+
+# Σύγκριση όλων σε έναν πίνακα
+bind_rows(final_results, stack_metrics) %>%
+  select(model, .metric, .estimate) %>%
+  pivot_wider(names_from = .metric, values_from = .estimate) %>%
+  arrange(desc(roc_auc)) %>%
+  select(model, accuracy, roc_auc) %>%
+  rename(.,
+         "Μοντέλο" = model,
+         "Ακρίβεια" = accuracy,
+         "ROC AUC" = roc_auc) %>%
+  gt_custom(head_max = 8, use_labels = FALSE)
+```
+

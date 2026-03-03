@@ -1,8 +1,7 @@
 ---
 title: "Εγκατάσταση αλγορίθμων ενίσχυσης βαθμίδας στο Linux"
 author: "stesiam"
-description: "Εγκατάσταση πακέτων - λογισμικού για τη χρήση αλγόριθμούς ενίσχυσης βαθμίδας (GBMs) (LightGBM, CatBoost & XGBoost) με την R, στο Ubuntu 22.04 LTS"
-freeze: false
+description: "Εγκατάσταση πακέτων - λογισμικού για τη χρήση αλγορίθμων ενίσχυσης βαθμίδας (GBMs) (LightGBM, CatBoost & XGBoost) με την R, στο Ubuntu 22.04 LTS"
 link-external-newwindow: true
 categories: [Linux, LightGBM, CatBoost, XGBoost]
 image: images/installation_ubuntu.png
@@ -19,7 +18,6 @@ csl: apa-6th-edition.csl
 bibliography: references.bib
 format: 
   html:
-    freeze: true
     code-link: true
     code-fold: true
     code-summary: "Show the code"
@@ -118,7 +116,7 @@ make -j4
 
 ## CatBoost
 
-Για το CatBoost μπορείτε να βρείτε [εδώ τις εκδόσεις του λογισμικού](https://github.com/catboost/catboost/releases). Στην δικιά μου περίπτωση όταν προσπάθησα να εγκαταστήσω τη βιβλιοθήκη `devtools` προέκυψε ένα σφάλμα που δεν μου επέτρεψε την εγκατάσταση του πακέτου. Σύμφωνα με το μήνυμα σφάλματός στον υπολογιστή μου (στον οποίο τρέχω Ubuntu 22) μου έλειπαν οι βιβλιοθήκες `libharfbuzz-dev` και `libfribidi-dev`. Αφού πρόσθεσα τα παραπάνω πακέτα και επανεκκίνησα το RStudio, η εγκατάσταση του `devtools` ολοκληρώθηκε κανονικά. Αφού εγκαταστήσω το `{devtools}` μπορώ να χρησιμοποιήσω την εντολή `install_url`, καθώς δεν υπάρχει (ή τουλάχιστον δεν γνωρίζω) πακέτο αντίστοιχο του lightgbm. Έτσι χρησιμοποιώ έναν σύνδεσμο αναλόγως της έκδοσης που χρειάζομαι από την επίσημη σελίδα του CatBoost project στο GitHub.
+Για το CatBoost μπορείτε να βρείτε [εδώ τις εκδόσεις του λογισμικού](https://github.com/catboost/catboost/releases). Στην δική μου περίπτωση όταν προσπάθησα να εγκαταστήσω τη βιβλιοθήκη `devtools` προέκυψε ένα σφάλμα που δεν μου επέτρεψε την εγκατάσταση του πακέτου. Σύμφωνα με το μήνυμα σφάλματός στον υπολογιστή μου (στον οποίο τρέχω Ubuntu 22) μου έλειπαν οι βιβλιοθήκες `libharfbuzz-dev` και `libfribidi-dev`. Αφού πρόσθεσα τα παραπάνω πακέτα και επανεκκίνησα το RStudio, η εγκατάσταση του `devtools` ολοκληρώθηκε κανονικά. Αφού εγκαταστήσω το `{devtools}` μπορώ να χρησιμοποιήσω την εντολή `install_url`, καθώς δεν υπάρχει (ή τουλάχιστον δεν γνωρίζω) πακέτο αντίστοιχο του lightgbm. Έτσι χρησιμοποιώ έναν σύνδεσμο αναλόγως της έκδοσης που χρειάζομαι από την επίσημη σελίδα του CatBoost project στο GitHub.
 
 ![](images/error_message_devtools_install.png) 
 
