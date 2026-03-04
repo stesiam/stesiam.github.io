@@ -556,6 +556,34 @@ highchart() %>%
   hc_legend(enabled = TRUE, layout = "horizontal", align = "center", verticalAlign = "bottom")
 ```
 
+## Στατιστικό vs Στατιστικό
+
+```{r}
+library(readxl)
+library(tidyverse)
+library(stringr)
+library(gt)
+gj <- read_excel("gj.xls")
+
+data = gj |>
+  tidyr::drop_na(ΤΜΗΜΑ) |>
+  setNames(c("uni", "school", "dept", "year1", "year2", "year3",
+             "year4", "year5", "year6", "overNormalDuration")) |>
+    mutate(across(everything(), ~replace_na(., 0))) |>
+  mutate(
+    total_students = year1 + year2 + year3 + year4 +
+      year5 + year6 + overNormalDuration,
+    pct = round((overNormalDuration / total_students)*100, digits = 2)
+  ) |>
+  drop_na(pct) |>
+  arrange(-pct) |>
+  mutate(rank  = 1:425) %>%
+  dplyr::filter(str_detect(dept, "ΣΤΑΤΙΣΤΙΚΗ")) |>
+  select(uni, dept, pct, rank) |>
+  gt_custom(use_labels = FALSE)
+```
+
+
 ## Η γνώμη μου
 
 Για δεκαετίες αγνοούσε ακόμα και τις υποδέιξεις τις ΕΘΑΕΕ. Δεν υπήρχαν πρόοδοι, δεν υπήρχαν εργασίες. Ενώ σε πολλά μαθήματα ζητάγαμε να αναρτούνται σημειώσεις, γεγονός που αρνιόντουσαν συνεχώς
