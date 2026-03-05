@@ -94,7 +94,7 @@ showtext::showtext_opts(dpi = 300)
 #| label: add_r_libs_to_bib
 #| echo: false
 knitr::write_bib(.packages(), file = 'packages.bib')
-source("utils.R")
+source("../utils.R")
 ```
 
 ## Εξαγωγή δεδομένων
@@ -566,7 +566,8 @@ library(stringr)
 library(gt)
 gj <- read_excel("gj.xls")
 
-data = gj |>
+
+gj |>
   tidyr::drop_na(ΤΜΗΜΑ) |>
   setNames(c("uni", "school", "dept", "year1", "year2", "year3",
              "year4", "year5", "year6", "overNormalDuration")) |>
@@ -584,6 +585,10 @@ data = gj |>
   gt_custom(use_labels = FALSE)
 ```
 
+
+## Στατιστική vs Υπόλοιπες Ειδικότητες
+
+Στη χώρα μας λειτουργούν 430 τμήματα από τα οποία υπάρχουν δεδομένα για 
 
 ## Η γνώμη μου
 
