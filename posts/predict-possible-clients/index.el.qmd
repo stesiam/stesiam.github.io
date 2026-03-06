@@ -266,7 +266,8 @@ bank_dataset$y <- bank_dataset$y |>
   fct_recode(
     "όχι" = "no",
     "ναι" = "yes"
-  )
+  ) |>
+  fct_relevel("ναι", "όχι") 
 ```
 
 ```{r}
@@ -1039,14 +1040,14 @@ bank_test %>%
 #| title: "Επεξεργασία δεδομένων"
 # Recipe για tree-based μοντέλα (RF, XGBoost, LightGBM)
 tree_recipe <- recipe(y ~., data = bank_train) %>%
-  step_rm(poutcome, ID) %>%
+  step_rm(poutcome, ID, duration) %>%
   step_corr(all_numeric(), threshold = 0.75) %>%
   step_dummy(all_nominal(), -all_outcomes()) %>%
   step_smote(y)
 
 # Recipe για distance/linear μοντέλα (Logistic Regression, KNN)
 linear_recipe <- recipe(y ~., data = bank_train) %>%
-  step_rm(poutcome, ID) %>%
+  step_rm(poutcome, ID, duration) %>%
   step_corr(all_numeric(), threshold = 0.75) %>%
   step_dummy(all_nominal(), -all_outcomes()) %>%
   step_normalize(all_numeric_predictors()) %>%  # <-- επιπλέον βήμα
@@ -1098,7 +1099,9 @@ tree_recipe %>%
 set.seed(123)
 cv_folds <- vfold_cv(bank_train, v = 5, strata = y)
 
-ctrl <- control_stack_grid()  # αντί για control_grid(), για stacking
+# Control objects
+ctrl_grid  <- control_stack_grid()
+ctrl_bayes <- control_stack_bayes() # αντί για control_grid(), για stacking
 ```
 
 
@@ -1172,40 +1175,56 @@ xgb_wf  <- workflow() %>% add_recipe(tree_recipe)   %>% add_model(xgb_model)
 lgbm_wf <- workflow() %>% add_recipe(tree_recipe)   %>% add_model(lgbm_model)
 ```
 
-###
+### Εφαρμόζωντας 
 
 ```{r}
 #| cache: true
 set.seed(123)
 
 log_results <- tune_grid(
-  log_wf, resamples = cv_folds, grid = 10,
-  metrics = metric_set(roc_auc, accuracy, f_meas),
-  control = ctrl
+  log_wf,
+  resamples = cv_folds,
+  grid = 10,
+  metrics = metric_set(roc_auc, accuracy),
+  control = ctrl_grid
 )
 
+# KNN — tune_grid
 knn_results <- tune_grid(
-  knn_wf, resamples = cv_folds, grid = 10,
-  metrics = metric_set(roc_auc, accuracy, f_meas),
-  control = ctrl
+  knn_wf,
+  resamples = cv_folds,
+  grid = 10,
+  metrics = metric_set(roc_auc, accuracy),
+  control = ctrl_grid
 )
 
+# Random Forest — tune_grid (μέτριο κόστος)
 rf_results <- tune_grid(
-  rf_wf, resamples = cv_folds, grid = 10,
-  metrics = metric_set(roc_auc, accuracy, f_meas),
-  control = ctrl
+  rf_wf,
+  resamples = cv_folds,
+  grid = 15,
+  metrics = metric_set(roc_auc, accuracy),
+  control = ctrl_grid
 )
 
-xgb_results <- tune_grid(
-  xgb_wf, resamples = cv_folds, grid = 10,
-  metrics = metric_set(roc_auc, accuracy, f_meas),
-  control = ctrl
+# XGBoost — tune_bayes
+xgb_results <- tune_bayes(
+  xgb_wf,
+  resamples = cv_folds,
+  initial = 5,
+  iter = 25,
+  metrics = metric_set(roc_auc, accuracy),
+  control = ctrl_bayes
 )
 
-lgbm_results <- tune_grid(
-  lgbm_wf, resamples = cv_folds, grid = 10,
-  metrics = metric_set(roc_auc, accuracy, f_meas),
-  control = ctrl
+# LightGBM — tune_bayes
+lgbm_results <- tune_bayes(
+  lgbm_wf,
+  resamples = cv_folds,
+  initial = 5,
+  iter = 25,
+  metrics = metric_set(roc_auc, accuracy),
+  control = ctrl_bayes
 )
 
 bank_stack <- stacks() %>%
