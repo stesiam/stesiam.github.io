@@ -377,7 +377,7 @@ gt_custom <- function(data, head_max = 5, use_labels = TRUE) {
     data_subset <- as.data.frame(data) %>% head(head_max)
     
     gt_tbl <- data_subset %>%
-        gt::gt() %>%
+        gt::gt(groupname_col = "model") %>%
         cols_align(align = "center", columns = everything()) %>%
         tab_style(
             style = cell_text(
@@ -1178,7 +1178,7 @@ lgbm_wf <- workflow() %>% add_recipe(tree_recipe)   %>% add_model(lgbm_model)
 ### Εφαρμόζωντας 
 
 ```{r}
-#| cache: true
+#| eval: false
 set.seed(123)
 
 log_results <- tune_grid(
@@ -1248,6 +1248,22 @@ bank_stack_fit <- bank_stack_model %>%
 ```
 
 
+```{r}
+#| echo: false
+saveRDS(log_results, "models/log_model.rds")
+saveRDS(knn_results, "models/knn_model.rds")
+saveRDS(rf_results, "models/rf_model.rds")
+saveRDS(xgb_results, "models/xgb_model.rds")
+saveRDS(lgbm_results, "models/lgbm_model.rds")
+
+
+log_results = readRDS("models/log_model.rds")
+knn_results = readRDS("models/knn_model.rds")
+rf_results = readRDS("models/rf_model.rds")
+xgb_results = readRDS("models/xgb_model.rds")
+lgbm_results = readRDS("models/lgbm_model.rds")
+```
+
 
 ### Αξιολόγηση μοντέλων
 
@@ -1312,6 +1328,7 @@ best_lgbm <- select_best(lgbm_results, metric = "roc_auc")
 
 Από την ανάλυση σπουδαιότητας μεταβλητών του μοντέλου LightGBM προκύπτει ότι οι πιο καθοριστικοί παράγοντες για την πρόβλεψη ενδιαφέροντος σε προθεσμιακό λογαριασμό είναι η ύπαρξη στεγαστικού δανείου (`housing_ναι`, 15.3%) και ο άγνωστος τρόπος επικοινωνίας (`contact_άγνωστο`, 14.0%), με την οικογενειακή κατάσταση "παντρεμένος" να ακολουθεί (`marital_παντρεμένο`, 11.7%). Αξιοσημείωτη είναι και η συμβολή του μήνα επικοινωνίας, με τον Μάιο να εμφανίζεται ως ο πιο σημαντικός μήνας (8.2%), ενώ το επίπεδο εκπαίδευσης συμμετέχει επίσης με αξιόλογο βάρος. Τα αποτελέσματα αυτά συνάδουν σε μεγάλο βαθμό με τα ευρήματα της περιγραφικής ανάλυσης, επιβεβαιώνοντας ότι δημογραφικά χαρακτηριστικά όπως η οικογενειακή κατάσταση και το εκπαιδευτικό υπόβαθρο, αλλά και επιχειρησιακές παράμετροι όπως ο τρόπος και η χρονική στιγμή επικοινωνίας, διαδραματίζουν καθοριστικό ρόλο στην απόφαση ενός πελάτη.
 
+
 ```{r}
 #| echo: false
 final_lgbm_wf <- finalize_workflow(lgbm_wf, best_lgbm) %>%
@@ -1360,6 +1377,7 @@ y %>%
 ```{r}
 #| label: tbl-vip
 #| tbl-cap: "Σπουδαίότητα μεταβλητών κατά φθίνουσα σειρά"
+#| echo: false
 y %>%
     arrange(desc(Importance)) %>%
     mutate(Importance = round(Importance, 4)) %>%
@@ -1431,7 +1449,7 @@ all_preds %>%
            display = glue("{value} ({pct}%)")) %>%
     select(model, Πραγματικό, Προβλεφθέν, display) %>%
     pivot_wider(names_from = Προβλεφθέν, values_from = display) %>%
-    gt(groupname_col = "model") %>%
+    gt_custom(head_max = 10, use_labels = FALSE) %>%
     tab_header(title = "Confusion Matrices") %>%
     tab_spanner(label = "Προβλεφθέν", columns = c("Όχι", "Ναι")) %>%
     cols_align(align = "center") %>%
