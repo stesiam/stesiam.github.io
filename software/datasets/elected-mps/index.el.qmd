@@ -47,18 +47,16 @@ source("../../../posts/utils.R")
 
 url = "https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.csv"
 
-greek_labels = 
-  c(
-   name = "Ονοματεπώνυμο",
-   party = "Κόμμα",
-   region = "Περιφέρεια",
-   period_name = "Περιόδος",
-   dates = "Διάρκεια περιόδου",
-   gender = "Εκτιμώμενο φύλο"
-   )
 
 readr::read_csv(url) %>%
-  gt_custom(use_labels = TRUE, head_max = Inf) %>%
-  opt_interactive()
+  mutate(across(where(is.character), ~ifelse(nchar(.) > 80, paste0(substr(., 1, 80), "…"), .))) %>%
+  gt_custom(use_labels = FALSE, head_max = Inf) %>%
+  opt_interactive(
+    use_search = TRUE,
+    use_filters = TRUE,
+    use_resizers = TRUE,      # lets users drag column width manually
+    use_compact_mode = TRUE,  # tighter rows
+    page_size_default = 10
+  )
 ```
 

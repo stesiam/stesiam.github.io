@@ -36,3 +36,27 @@ lang: en
 
 ## Εισαγωγή
 
+```{r}
+#| echo: false
+#| message: false
+library(dplyr)
+library(readr)
+library(gt)
+
+source("../../../posts/utils.R")
+
+url = "https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-eng.csv"
+
+
+readr::read_csv(url) %>%
+  mutate(across(where(is.character), ~ifelse(nchar(.) > 80, paste0(substr(., 1, 80), "…"), .))) %>%
+  gt_custom(use_labels = FALSE, head_max = Inf) %>%
+  opt_interactive(
+    use_search = TRUE,
+    use_filters = TRUE,
+    use_resizers = TRUE,      # lets users drag column width manually
+    use_compact_mode = TRUE,  # tighter rows
+    page_size_default = 10
+  )
+```
+

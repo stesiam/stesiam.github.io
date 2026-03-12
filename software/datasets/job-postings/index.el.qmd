@@ -4,7 +4,7 @@ imgSrc: "../../assets/images/jobposts.webp"
 imgAlt: "Facade of Greek Parliament"
 description: "Συλλογή 5000+ αγγελιών εργασίας κατά το μήνα Φεβρουάριο του 2025 από τη Χρυσή Ευκαιρία"
 periodText: "ΠΕΡΙΟΔΟΣ"
-period: "1981-2020"
+period: "Ιαν - Φεβρ 2025"
 recordsText: "ΠΑΡΑΤΗΡΗΣΕΙΣ"
 records: "5 093"
 languageText: "ΓΛΩΣΣΑ"
@@ -48,6 +48,13 @@ url = "https://github.com/stesiam/scraping-job-postings-xe/releases/download/v1.
 
 
 readr::read_csv(url) %>%
+  mutate(across(where(is.character), ~ifelse(nchar(.) > 80, paste0(substr(., 1, 80), "…"), .))) %>%
   gt_custom(use_labels = FALSE, head_max = Inf) %>%
-  opt_interactive()
+  opt_interactive(
+    use_search = TRUE,
+    use_filters = TRUE,
+    use_resizers = TRUE,      # lets users drag column width manually
+    use_compact_mode = TRUE,  # tighter rows
+    page_size_default = 10
+  )
 ```

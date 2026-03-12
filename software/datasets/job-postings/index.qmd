@@ -4,7 +4,7 @@ imgSrc: "../../assets/images/jobposts.webp"
 imgAlt: "Facade of Greek Parliament"
 description: "A collection of 5000+ job postings on February, 2025 extracted from xe.gr "
 periodText: "PERIOD"
-period: "1981-2020"
+period: "Jan - Feb 2025"
 recordsText: "RECORDS"
 records: "5 093"
 languageText: "LANGUAGE"
@@ -20,7 +20,7 @@ lang: en
 ::: {.text-center .lh-lg}
 <i class="bi bi-code-slash"></i> `Programming Language`: R <br>
 <i class="bi bi-code-slash"></i> `Software`: rvest <br>
-<i class="bi bi-database"></i> `Data Source`: [xe.gr - Greek job postings site](https://www.xe.gr/) <br>
+<i class="bi bi-database"></i> `Data Source`: [xe.gr](https://www.xe.gr/) <br>
 <i class="bi bi-list-ol"></i> `# of observations - rows`: 5093 <br>
 <i class="bi bi-list-ol"></i> `# of variables - columns`: 9 <br>
 <i class="bi bi-translate"></i> `Languages`:  🇬🇧  / 🇬🇷 <br>
@@ -36,3 +36,27 @@ lang: en
 :::
 
 ## Εισαγωγή
+
+```{r}
+#| echo: false
+#| message: false
+library(dplyr)
+library(readr)
+library(gt)
+
+source("../../../posts/utils.R")
+
+url = "https://github.com/stesiam/scraping-job-postings-xe/releases/download/v1.2/job-posts.csv"
+
+
+readr::read_csv(url) %>%
+  mutate(across(where(is.character), ~ifelse(nchar(.) > 80, paste0(substr(., 1, 80), "…"), .))) %>%
+  gt_custom(use_labels = FALSE, head_max = Inf) %>%
+  opt_interactive(
+    use_search = TRUE,
+    use_filters = TRUE,
+    use_resizers = TRUE,      # lets users drag column width manually
+    use_compact_mode = TRUE,  # tighter rows
+    page_size_default = 10
+  )
+```
