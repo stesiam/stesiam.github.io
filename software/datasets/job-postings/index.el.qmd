@@ -6,7 +6,7 @@ description: "Συλλογή 5000+ αγγελιών εργασίας κατά τ
 periodText: "ΠΕΡΙΟΔΟΣ"
 period: "1981-2020"
 recordsText: "ΠΑΡΑΤΗΡΗΣΕΙΣ"
-records: "4 503"
+records: "5 093"
 languageText: "ΓΛΩΣΣΑ"
 languageAns: "Ελληνικά / Αγγλικά"
 exploreDatasetText: "Εξερεύνησε τα δεδομένα"
@@ -16,3 +16,38 @@ toc-location: left
 comments: false
 lang: el
 ---
+
+::: {.text-center .lh-lg}
+<i class="bi bi-code-slash"></i> `Γλώσσα Προγραμματισμού`: R <br>
+<i class="bi bi-code-slash"></i> `Βασικό λογισμικό`: rvest <br>
+<i class="bi bi-database"></i> `Πηγή δεδομένων`: [Χρυσή Ευκαιρία - xe.gr](https://www.bankofgreece.gr/) <br>
+<i class="bi bi-list-ol"></i> `Αριθμός παρατηρήσεων`: 5093 <br>
+<i class="bi bi-list-ol"></i> `Αριθμός μεταβλητών`: 9 <br>
+<i class="bi bi-translate"></i> `Γλώσσες`:  🇬🇧  / 🇬🇷 <br>
+<i class="bi bi-activity"></i> `Συχνότητα`: Μη επαναλαμβανόμενο
+:::
+
+
+:::{.d-flex .flex-column .flex-sm-row .justify-content-center .gap-3 .align-items-center .justify-content-center .p-2}
+```{=html}
+<div><a href="https://github.com/stesiam/scraping-job-postings-xe/releases/tag/v1.2" class="btn btn-primary btn-md"><i class="bi bi-database"></i> Δεδομένα</a></div>
+<div><a href="https://github.com/stesiam/scraping-job-postings-xe" class="btn btn-primary btn-md"><i class="bi bi-github"></i> Αποθετήριο</a></div>
+```
+:::
+
+```{r}
+#| echo: false
+#| message: false
+library(dplyr)
+library(readr)
+library(gt)
+
+source("../../../posts/utils.R")
+
+url = "https://github.com/stesiam/scraping-job-postings-xe/releases/download/v1.2/job-posts.csv"
+
+
+readr::read_csv(url) %>%
+  gt_custom(use_labels = FALSE, head_max = Inf) %>%
+  opt_interactive()
+```

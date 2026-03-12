@@ -2,11 +2,11 @@
 title: "Εκλεγμένοι βουλευτές"
 imgSrc: "../../assets/images/houses-of-parliament.jpg"
 imgAlt: "Facade of Greek Parliament"
-description: "Κατάλογος εκλεγμένων και αναπληρωτών βουλευτών κατά τις περιόδους 1981-2019"
+description: "Κατάλογος εκλεγμένων και αναπληρωτών βουλευτών κατά τις περιόδους 1974-2023"
 periodText: "ΠΕΡΙΟΔΟΣ"
 period: "1981-2020"
 recordsText: "ΠΑΡΑΤΗΡΗΣΕΙΣ"
-records: "4 503"
+records: "5 704"
 languageText: "ΓΛΩΣΣΑ"
 languageAns: "Ελληνικά / Αγγλικά"
 exploreDatasetText: "Εξερεύνησε τα δεδομένα"
@@ -29,10 +29,36 @@ lang: el
 
 :::{.d-flex .flex-column .flex-sm-row .justify-content-center .gap-3 .align-items-center .justify-content-center .p-2}
 ```{=html}
-<div><a href="https://stesiam.shinyapps.io/AgeingDashboard" class="btn btn-primary btn-md"><i class="bi bi-globe"></i> Εφαρμογή</a></div>
-<div><a href="https://github.com/stesiam/AgeingDashboard" class="btn btn-primary btn-md"><i class="bi bi-github"></i> Αποθετήριο</a></div>
-<div><a href="https://hub.docker.com/r/stesiam/ageing-dashboard" class="btn btn-primary btn-md"><i class="bi bi-box"></i> Dockerhub</a></div>
+<div><a href="https://github.com/stesiam/scrape-greek-parl-members-26/releases/tag/v1.1.0" class="btn btn-primary btn-md"><i class="bi bi-globe"></i> Δεδομένα</a></div>
+<div><a href="https://github.com/stesiam/scrape-greek-parl-members-26" class="btn btn-primary btn-md"><i class="bi bi-github"></i> Αποθετήριο</a></div>
 ```
 :::
 
 ## Εισαγωγή
+
+```{r}
+#| echo: false
+#| message: false
+library(dplyr)
+library(readr)
+library(gt)
+
+source("../../../posts/utils.R")
+
+url = "https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.csv"
+
+greek_labels = 
+  c(
+   name = "Ονοματεπώνυμο",
+   party = "Κόμμα",
+   region = "Περιφέρεια",
+   period_name = "Περιόδος",
+   dates = "Διάρκεια περιόδου",
+   gender = "Εκτιμώμενο φύλο"
+   )
+
+readr::read_csv(url) %>%
+  gt_custom(use_labels = TRUE, head_max = Inf) %>%
+  opt_interactive()
+```
+
