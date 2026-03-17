@@ -4,7 +4,7 @@ imgSrc: "../../assets/images/houses-of-parliament.jpg"
 imgAlt: "Facade of Greek Parliament"
 description: "Κατάλογος εκλεγμένων και αναπληρωτών βουλευτών κατά τις περιόδους 1974-2023"
 periodText: "ΠΕΡΙΟΔΟΣ"
-period: "1981-2020"
+period: "1974-2023"
 recordsText: "ΠΑΡΑΤΗΡΗΣΕΙΣ"
 records: "5 704"
 languageText: "ΓΛΩΣΣΑ"
@@ -52,11 +52,9 @@ readr::read_csv(url) %>%
   mutate(across(where(is.character), ~ifelse(nchar(.) > 80, paste0(substr(., 1, 80), "…"), .))) %>%
   gt_custom(use_labels = FALSE, head_max = Inf) %>%
   opt_interactive(
-    use_search = TRUE,
-    use_filters = TRUE,
-    use_resizers = TRUE,      # lets users drag column width manually
     use_compact_mode = TRUE,  # tighter rows
     page_size_default = 10
   )
 ```
+
 

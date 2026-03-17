@@ -4,7 +4,7 @@ imgSrc: "../../assets/images/archive.webp"
 imgAlt: "Facade of Greek Parliament"
 description: "Μία λίστα με τις (αντασ)ασφαλιστικές επιχειρήσεις στην Ελλάδα και υπο-κλάδους ασφάλισης"
 periodText: "ΠΕΡΙΟΔΟΣ"
-period: "1981-2020"
+period: "2022"
 recordsText: "ΠΑΡΑΤΗΡΗΣΕΙΣ"
 records: "973"
 languageText: "ΓΛΩΣΣΑ"
@@ -52,9 +52,6 @@ readr::read_csv(url) %>%
   mutate(across(where(is.character), ~ifelse(nchar(.) > 80, paste0(substr(., 1, 80), "…"), .))) %>%
   gt_custom(use_labels = FALSE, head_max = Inf) %>%
   opt_interactive(
-    use_search = TRUE,
-    use_filters = TRUE,
-    use_resizers = TRUE,      # lets users drag column width manually
     use_compact_mode = TRUE,  # tighter rows
     page_size_default = 10
   )
