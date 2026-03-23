@@ -35,7 +35,8 @@ order: 2
 ```
 :::
 
-## Εισαγωγή
+## Μεταβλητές συνόλου
+
 
 ```{r}
 #| echo: false
@@ -45,17 +46,42 @@ library(readr)
 library(gt)
 
 source("../../../posts/utils.R")
-
-url = "https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.csv"
-
-
-readr::read_csv(url) %>%
-  mutate(across(where(is.character), ~ifelse(nchar(.) > 80, paste0(substr(., 1, 80), "…"), .))) %>%
-  gt_custom(use_labels = FALSE, head_max = Inf) %>%
-  opt_interactive(
-    use_compact_mode = TRUE,  # tighter rows
-    page_size_default = 10
-  )
+url = "https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-eng.csv"
 ```
 
+| Μεταβλητή | Τύπος | Περιγραφή |
+|:---------|:-----|:------------|
+| `name` | qualitative | Full name of the parliament member |
+| `party` | qualitative | Political party affiliation |
+| `region` | qualitative | Electoral region they represent |
+| `period_names` | qualitative (ordinal) | Period name (number of plenum)  |
+| `dates` | qualitative (ordinal) | Link to their official parliament profile |
+| `gender` | qualitative | Εκτιμώμενο φύλο του αντίστοιχου βουλευτή με βάση το όνομά του |
+
+: {.table .table-sm .table-borderless}
+
+
+## Προεπισκόπηση συνόλου δεδομένων
+
+```{r}
+#| echo: false
+#| message: false
+readr::read_csv(url) %>%
+  mutate(across(where(is.character), ~ifelse(nchar(.) > 80, paste0(substr(., 1, 80), "…"), .))) %>%
+  gt_custom(use_labels = FALSE, head_max = 20)
+```
+
+
+## Γρήγορη λήψη δεδομένων
+
+Σε περίπτωση που δεν ξέρετε ποιο από όλα να διαλέξετε, συνήθως το `csv` αρχείο είναι η πιο συνηθισμένη μορφή και πιο εύκολη να αναλυθεί από διάφορα προγράμματα.
+
+| Τύπος αρχείου | Σύνδεσμος λήψης αρχείου |
+|:---------|:-----|
+| `.csv` | [Λήψη csv](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-eng.csv) |
+| `.rds` |  [Λήψη rds](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-eng.csv) |
+| `.parquet` |  [Λήψη parquet](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-eng.csv) | 
+| `.feather` |  [Λήψη feather](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-eng.csv) | 
+| `json` |  [Λήψη json](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-eng.csv) | 
+| `.sqlite` |  [Λήψη sqlite](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-eng.csv) | 
 
