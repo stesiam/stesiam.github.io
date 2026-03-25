@@ -30,12 +30,13 @@ order: 3
 
 :::{.d-flex .flex-column .flex-sm-row .justify-content-center .gap-3 .align-items-center .justify-content-center .p-2}
 ```{=html}
-<div><a href="https://github.com/stesiam/scrape-greek-parl-members-26/releases/tag/v1.1.0" class="btn btn-primary btn-md"><i class="bi bi-globe"></i> Δεδομένα</a></div>
-<div><a href="https://github.com/stesiam/scrape-greek-parl-members-26" class="btn btn-primary btn-md"><i class="bi bi-github"></i> Αποθετήριο</a></div>
+<div><a href="https://github.com/stesiam/insuranceRegister/releases/tag/v1.0.0" class="btn btn-primary btn-md"><i class="bi bi-globe"></i> Δεδομένα</a></div>
+<div><a href="https://github.com/stesiam/insuranceRegister" class="btn btn-primary btn-md"><i class="bi bi-github"></i> Αποθετήριο</a></div>
 ```
 :::
 
-## Εισαγωγή
+## Μεταβλητές συνόλου
+
 
 ```{r}
 #| echo: false
@@ -45,16 +46,39 @@ library(readr)
 library(gt)
 
 source("../../../posts/utils.R")
-
 url = "https://github.com/stesiam/insuranceRegister/releases/download/v1.0.0/GRins.csv"
-
-
-readr::read_csv(url) %>%
-  mutate(across(where(is.character), ~ifelse(nchar(.) > 80, paste0(substr(., 1, 80), "…"), .))) %>%
-  gt_custom(use_labels = FALSE, head_max = Inf) %>%
-  opt_interactive(
-    use_compact_mode = TRUE,  # tighter rows
-    page_size_default = 10
-  )
 ```
 
+| Μεταβλητή | Τύπος μεταβλητής | Περιγραφή |
+|:---------|:-----|:------------|
+| `name` | ποιοτική | Επωνυμία ασφαλιστικής εταιρείας |
+| `type` | ποιοτική | Μορφή υπό την οποία απασχολείται ο αντίστοιχος ασφαλιστικός φορέας |
+| `category` | ποιοτική | Κατηγορία κάλυψης ασφαλιστικών κινδύνων (Ζωής, Γενικές ασφάλειες, Μικτές) |
+| `status` | ποιοτική | Κατάσταση ασφαλιστικής επιχείρησης (Ενεργή / Παύση εργασιών / Εκκαθάριση / Ανάκληση αδείας) |
+| `auth_country` | ποιοτική | Χώρα δραστηριοποίησης |
+| `country_of_auth` | ποιοτική | Χώρα αδειοδότησης |
+| `website_url` | ποιοτική | Ιστότοπος ασφαλιστικής επιχείρησης |
+| `link` | ποιοτική | Σελίδα ασφαλιστικής στην Τράπεζα της Ελλάδος  |
+| `address` | ποιοτική | Διεύθυνση ασφαλιστικής εταιρείας |
+
+: {.table .table-sm .table-borderless}
+
+
+## Προεπισκόπηση συνόλου δεδομένων
+
+```{r}
+#| echo: false
+#| message: false
+readr::read_csv(url) %>%
+  mutate(across(where(is.character), ~ifelse(nchar(.) > 80, paste0(substr(., 1, 80), "…"), .))) %>%
+  gt_custom(use_labels = FALSE, head_max = 20)
+```
+
+
+## Γρήγορη λήψη δεδομένων
+
+Σε περίπτωση που δεν ξέρετε ποιο από όλα να διαλέξετε, συνήθως το `csv` αρχείο είναι η πιο συνηθισμένη μορφή και πιο εύκολη να αναλυθεί από διάφορα προγράμματα.
+
+| Τύπος αρχείου | Σύνδεσμος λήψης αρχείου |
+|:---------|:-----|
+| `.csv` | [Λήψη csv](https://github.com/stesiam/insuranceRegister/releases/download/v1.0.0/GRins.csv) |

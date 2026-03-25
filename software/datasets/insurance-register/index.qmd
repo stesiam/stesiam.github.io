@@ -30,10 +30,13 @@ order: 3
 
 :::{.d-flex .flex-column .flex-sm-row .justify-content-center .gap-3 .align-items-center .justify-content-center .p-2}
 ```{=html}
-<div><a href="https://github.com/stesiam/scrape-greek-parl-members-26/releases/tag/v1.1.0" class="btn btn-primary btn-md"><i class="bi bi-database"></i> Data</a></div>
-<div><a href="https://github.com/stesiam/scrape-greek-parl-members-26" class="btn btn-primary btn-md"><i class="bi bi-github"></i> Repository</a></div>
+<div><a href="https://github.com/stesiam/insuranceRegister/releases/tag/v1.0.0" class="btn btn-primary btn-md"><i class="bi bi-globe"></i> Data</a></div>
+<div><a href="https://github.com/stesiam/insuranceRegister" class="btn btn-primary btn-md"><i class="bi bi-github"></i> Repository</a></div>
 ```
 :::
+
+## Dataset variables
+
 
 ```{r}
 #| echo: false
@@ -43,15 +46,39 @@ library(readr)
 library(gt)
 
 source("../../../posts/utils.R")
-
 url = "https://github.com/stesiam/insuranceRegister/releases/download/v1.0.0/GRins.csv"
+```
+
+| Variable | Variable Type | Description |
+|:---------|:-----|:------------|
+| `name` | qualitative | Name of insurance company |
+| `type` | qualitative | Type of Insurance Company |
+| `category` | qualitative | Insurance coverage category (life, non-life, mixed) |
+| `status` | qualitative | Insurance company status (Active / Ceased / Licence revoked / Under liquidation) |
+| `auth_country` | qualitative | Authorization Country |
+| `country_of_auth` | qualitative | Country of autharisation |
+| `website_url` | qualitative | Website of insurance company |
+| `link` | qualitative | Company profile on Bank of Greece register  |
+| `address` | qualitative | Address of company |
+
+: {.table .table-sm .table-borderless}
 
 
+## Preview dataset
+
+```{r}
+#| echo: false
+#| message: false
 readr::read_csv(url) %>%
   mutate(across(where(is.character), ~ifelse(nchar(.) > 80, paste0(substr(., 1, 80), "…"), .))) %>%
-  gt_custom(use_labels = FALSE, head_max = Inf) %>%
-  opt_interactive(
-    use_compact_mode = TRUE,  # tighter rows
-    page_size_default = 10
-  )
+  gt_custom(use_labels = FALSE, head_max = 20)
 ```
+
+
+## Download data files
+
+If you are unsure which format to choose, `CSV` is the most common format and is easier to analyze with a wide range of software tools.
+
+| File format | Download link |
+|:---------|:-----|
+| `.csv` | [Download csv](https://github.com/stesiam/insuranceRegister/releases/download/v1.0.0/GRins.csv) |

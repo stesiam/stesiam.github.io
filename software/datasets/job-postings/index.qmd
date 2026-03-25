@@ -36,7 +36,8 @@ order: 1
 ```
 :::
 
-## Εισαγωγή
+## Dataset variables
+
 
 ```{r}
 #| echo: false
@@ -46,15 +47,43 @@ library(readr)
 library(gt)
 
 source("../../../posts/utils.R")
-
 url = "https://github.com/stesiam/scraping-job-postings-xe/releases/download/v1.2/job-posts.csv"
+```
+
+| Variable | Type | Description |
+|:---------|:-----|:------------|
+| `spc` | ποιοτική | Ονοματεπώνυμο βουλευτή |
+| `type` | ποιοτική | Κόμμα εκπροσώπησης βουλευτή (τέλος θητείας) |
+| `wage` | ποιοτική | Εκλογική περιφέρεια βουλευτή |
+| `loc` | ποιοτική (διατάξιμη) | Περίοδος εκλογής  |
+| `exp` | ποιοτική (διατάξιμη) | Ημερολογιακό διάστημα θητείας (όχι μεμονομένου βουλευτή)  |
+| `descr` | ποιοτική | Εκτιμώμενο φύλο του αντίστοιχου βουλευτή με βάση το όνομά του |
+| `link` | ποιοτική | Εκτιμώμενο φύλο του αντίστοιχου βουλευτή με βάση το όνομά του |
+
+: {.table .table-sm .table-borderless}
 
 
+## Preview dataset
+
+```{r}
+#| echo: false
+#| message: false
 readr::read_csv(url) %>%
   mutate(across(where(is.character), ~ifelse(nchar(.) > 80, paste0(substr(., 1, 80), "…"), .))) %>%
-  gt_custom(use_labels = FALSE, head_max = Inf) %>%
-  opt_interactive(
-    use_compact_mode = TRUE,  # tighter rows
-    page_size_default = 10
-  )
+  gt_custom(use_labels = FALSE, head_max = 20)
 ```
+
+
+## Γρήγορη λήψη δεδομένων
+
+Σε περίπτωση που δεν ξέρετε ποιο από όλα να διαλέξετε, συνήθως το `.csv` αρχείο είναι η πιο συνηθισμένη μορφή και πιο εύκολη να αναλυθεί από διάφορα προγράμματα.
+
+| Τύπος αρχείου | Σύνδεσμος λήψης αρχείου |
+|:---------|:-----|
+| `.csv` | [Download csv](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.csv) |
+| `.rds` |  [Download rds](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.rds) |
+| `.json` |  [Download json](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.json) | 
+| `.parquet` |  [Download parquet](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.parquet) | 
+| `.feather` |  [Download feather](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.feather) | 
+| `.sqlite` |  [Download sqlite](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.sqlite) | 
+

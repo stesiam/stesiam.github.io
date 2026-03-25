@@ -2,7 +2,7 @@
 title: "Εκλεγμένοι βουλευτές"
 imgSrc: "../../assets/images/houses-of-parliament.jpg"
 imgAlt: "Facade of Greek Parliament"
-description: "Κατάλογος εκλεγμένων και αναπληρωτών βουλευτών κατά τις περιόδους 1974-2023"
+description: "Κατάλογος εκλεγμένων και αναπληρωτών βουλευτών κατά τις περιόδους 1974-2023Α"
 periodText: "ΠΕΡΙΟΔΟΣ"
 period: "1974-2023"
 recordsText: "ΠΑΡΑΤΗΡΗΣΕΙΣ"
@@ -22,8 +22,8 @@ order: 2
 <i class="bi bi-code-slash"></i> `Γλώσσα Προγραμματισμού`: R <br>
 <i class="bi bi-code-slash"></i> `Βασικό λογισμικό`: rvest <br>
 <i class="bi bi-database"></i> `Πηγή δεδομένων`: [Ελληνικό Κοινοβούλιο](https://www.hellenicparliament.gr/el/) <br>
-<i class="bi bi-list-ol"></i> `Αριθμός παρατηρήσεων`: 4503 <br>
-<i class="bi bi-list-ol"></i> `Αριθμός μεταβλητών`: 4 <br>
+<i class="bi bi-list-ol"></i> `Αριθμός παρατηρήσεων`: 5704 <br>
+<i class="bi bi-list-ol"></i> `Αριθμός μεταβλητών`: 5 <br>
 <i class="bi bi-translate"></i> `Γλώσσες`:  🇬🇧  / 🇬🇷 <br>
 <i class="bi bi-activity"></i> `Συχνότητα`: Μη επαναλαμβανόμενο
 :::
@@ -46,17 +46,17 @@ library(readr)
 library(gt)
 
 source("../../../posts/utils.R")
-url = "https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-eng.csv"
+url = "https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.csv"
 ```
 
 | Μεταβλητή | Τύπος | Περιγραφή |
 |:---------|:-----|:------------|
-| `name` | qualitative | Full name of the parliament member |
-| `party` | qualitative | Political party affiliation |
-| `region` | qualitative | Electoral region they represent |
-| `period_names` | qualitative (ordinal) | Period name (number of plenum)  |
-| `dates` | qualitative (ordinal) | Link to their official parliament profile |
-| `gender` | qualitative | Εκτιμώμενο φύλο του αντίστοιχου βουλευτή με βάση το όνομά του |
+| `name` | ποιοτική | Ονοματεπώνυμο βουλευτή |
+| `party` | ποιοτική | Κόμμα εκπροσώπησης βουλευτή (τέλος θητείας) |
+| `region` | ποιοτική | Εκλογική περιφέρεια βουλευτή |
+| `period_names` | ποιοτική (διατάξιμη) | Περίοδος εκλογής  |
+| `dates` | ποιοτική (διατάξιμη) | Ημερολογιακό διάστημα θητείας (όχι μεμονομένου βουλευτή)  |
+| `gender` | ποιοτική | Εκτιμώμενο φύλο του αντίστοιχου βουλευτή με βάση το όνομά του |
 
 : {.table .table-sm .table-borderless}
 
@@ -74,14 +74,14 @@ readr::read_csv(url) %>%
 
 ## Γρήγορη λήψη δεδομένων
 
-Σε περίπτωση που δεν ξέρετε ποιο από όλα να διαλέξετε, συνήθως το `csv` αρχείο είναι η πιο συνηθισμένη μορφή και πιο εύκολη να αναλυθεί από διάφορα προγράμματα.
+Σε περίπτωση που δεν ξέρετε ποιο από όλα να διαλέξετε, συνήθως το `.csv` αρχείο είναι η πιο συνηθισμένη μορφή και πιο εύκολη να αναλυθεί από διάφορα προγράμματα.
 
 | Τύπος αρχείου | Σύνδεσμος λήψης αρχείου |
 |:---------|:-----|
-| `.csv` | [Λήψη csv](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-eng.csv) |
-| `.rds` |  [Λήψη rds](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-eng.csv) |
-| `.parquet` |  [Λήψη parquet](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-eng.csv) | 
-| `.feather` |  [Λήψη feather](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-eng.csv) | 
-| `json` |  [Λήψη json](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-eng.csv) | 
-| `.sqlite` |  [Λήψη sqlite](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-eng.csv) | 
+| `.csv` | [Λήψη csv](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.csv) |
+| `.rds` |  [Λήψη rds](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.rds) |
+| `.json` |  [Λήψη json](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.json) | 
+| `.parquet` |  [Λήψη parquet](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.parquet) | 
+| `.feather` |  [Λήψη feather](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.feather) | 
+| `.sqlite` |  [Λήψη sqlite](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.sqlite) | 
 
