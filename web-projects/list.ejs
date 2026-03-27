@@ -9,35 +9,37 @@
     
     
     <div class="g-col-12 g-col-md-6">
-        
+
         <div class="custom-card h-100 d-flex flex-column">
             <div class="img-wrapper">
               <% if (item.image) { %>
-                        <img src="<%- item.image %>" alt="<%= item["image-alt"] || item.title %>">
-                      <% } %> 
+                <img src="<%- item.image %>" alt="<%= item["image-alt"] || item.title %>" class="card-img-top">
+              <% } %>
             </div>
 
-            <div class="card-body p-4 d-flex flex-column h-90">
-                <div class="mb-2">
-                    <span class="badge-custom bg-tech">Python</span>
-                    <span class="badge-custom bg-data">Analysis</span>
+            <div class="card-body p-4 d-flex flex-column flex-grow-1">
+                <div class="d-flex flex-wrap gap-1 mb-2">
+                  <% if (item.badges && item.badges.length > 0) { %>
+                    <% for (const badge of item.badges) { %>
+                      <span class="badge badge-custom <%= badge.class %>"><%= badge.label %></span>
+                    <% } %>
+                  <% } %>
                 </div>
 
-                <h3 class="card-title card-title-fixed mt-3""><%= item.title %></h3>
+                <h3 class="card-title mt-1"><%= item.title %></h3>
 
                 <p class="card-text flex-grow-1"><%= item.description %></p>
-                
-                
+
                 <% if (!item.links) item.links = []; %>
-                  <% item.links.unshift({ url: cleanPath, icon: "bi-journal-bookmark", text: item.appText }); %>
-                  
-                  <div class="d-flex flex-lg-row flex-column justify-content-center gap-2">
+                <% item.links.unshift({ url: cleanPath, icon: "bi-journal-bookmark", text: item.appText }); %>
+
+                <div class="d-flex flex-wrap gap-2 mt-auto pt-2">
                   <% for (const link of item.links) { %>
-                    <a href="<%= link.url %>" class="btn btn-primary mt-auto">
+                    <a href="<%= link.url %>" class="btn btn-primary rounded-pill">
                       <i class="bi <%= link.icon %>"></i> <%= link.text %>
                     </a>
                   <% } %>
-                  </div>
+                </div>
             </div>
         </div>
 
