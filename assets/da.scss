@@ -1,23 +1,22 @@
 /*-- scss:defaults --*/
-// Brite 5.3.7
-// Bootswatch
+// Dark theme — Modern glassmorphism style
 
 // -------------------------------------------------------
 // 1. Variables & Config (Must be first!)
 // -------------------------------------------------------
 
 // Colors
-$body-bg: #09090b;          // Deep Zinc/Black background
-$body-color: #d1d5db;       // Soft gray for description text
-$card-bg: #18181b;          // Slightly lighter for card elevation
-$primary: #a855f7;          // Vibrant Purple
-$border-color: #27272a;     // Subtle border
-$nav-link-font-size: 0.9em;
+$body-bg: #09090b;
+$body-color: #d1d5db;
+$card-bg: #18181b;
+$primary: #06b6d4;          // Cyan
+$border-color: #27272a;
+$nav-link-font-size: 0.85em;
 
 $white:    #ffffff !default;
 $black:    #000000 !default;
 
-// Grays
+// Grays (inverted for dark mode)
 $gray-100: #111111 !default;
 $gray-200: #1a1a1a !default;
 $gray-300: #262626 !default;
@@ -50,32 +49,31 @@ $danger:        $red !default;
 $light:         $gray-200 !default;
 $dark:          $gray-900 !default;
 
-$bs-nav-tabs-link-active-color: #ff00d7;
 $spacer: 1rem !default;
 
 // Typography
+$headings-font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", Ubuntu, sans-serif;
 $headings-font-weight: 600;
 $headings-color: $white;
 $font-size-base: 1.05rem;
 $line-height-base: 1.6;
-$link-color: #ee78ff !default;
+$link-color: #67e8f9 !default;
 
 $font-size-sm: $font-size-base * .875 !default;
 $lead-font-weight: 400 !default;
-// $headings-font-weight: 500 !default; // Commented out to match Light Mode's boldness
 
 // Components
-$border-radius: .375rem !default;
-$border-radius-sm: .25rem !default;
-$border-radius-lg: .5rem !default;
+$border-radius: .5rem !default;
+$border-radius-sm: .375rem !default;
+$border-radius-lg: .75rem !default;
 $component-active-color: $black !default;
 
 // Tables
 $table-cell-padding-y: .75rem !default;
 $table-cell-padding-x: .75rem !default;
 $table-border-width: 1px !default;
-$table-border-color: $black !default;
-$table-hover-bg-factor: 0 !default;
+$table-border-color: $gray-300 !default;
+$table-hover-bg-factor: .04 !default;
 $table-border-factor: 1 !default;
 $table-bg-scale: 0% !default;
 
@@ -90,92 +88,101 @@ $table-variants: (
   "dark":       $dark,
 ) !default;
 
-// --- BUTTONS & FORMS (The fix: These must be in Defaults!) ---
+// Buttons & Forms
 $input-btn-padding-y: .5rem !default;
 $input-btn-padding-x: 1rem !default;
-
 $input-btn-padding-y-sm: .25rem !default;
 $input-btn-padding-x-sm: .75rem !default;
 $input-btn-font-size-sm: $font-size-sm !default;
-
 $input-btn-padding-y-lg: .75rem !default;
 $input-btn-padding-x-lg: 1.25rem !default;
 $input-btn-font-size-lg: $font-size-base !default;
-
-$input-btn-border-width: 2px !default;
-$btn-border-width: 2px !default;
-$btn-border-radius: 1em;
-$btn-border-radius-sm: 1em;
-// -----------------------------------------------------------
+$input-btn-border-width: 1px !default;
+$btn-border-width: 1px !default;
+$btn-border-radius: 0.5em;
+$btn-border-radius-sm: 0.5em;
 
 $form-label-font-weight: $headings-font-weight !default;
-$input-focus-border-color: $black !default;
-$form-check-input-checked-border-color: $black !default;
+$input-border-color: $gray-400 !default;
+$input-focus-border-color: $primary !default;
+$input-focus-box-shadow: 0 0 0 3px rgba($primary, 0.2) !default;
+$form-check-input-checked-border-color: $primary !default;
 
-$form-range-track-height: .6rem !default;
-$form-range-thumb-width: 1.2rem !default;
+$form-range-track-height: .4rem !default;
+$form-range-thumb-width: 1.1rem !default;
 $form-range-thumb-height: $form-range-thumb-width !default;
-$form-range-thumb-border: 2px solid $black !default;
-$form-range-thumb-box-shadow: none !default;
+$form-range-thumb-border: 2px solid $gray-200 !default;
+$form-range-thumb-box-shadow: 0 1px 4px rgba($black, 0.4) !default;
 $form-range-thumb-disabled-bg: $light !default;
 
 // Navbar
 $navbar-padding-y: $spacer * .75 !default;
-$navbar-nav-link-padding-x: 1rem !default;
-$navbar-light-color: $black !default;
-$navbar-light-hover-color: $black !default;
-$navbar-light-active-color: $black !default;
-$navbar-light-disabled-color: rgba($black, .3) !default;
-$navbar-light-icon-color: $black !default;
-$navbar-light-toggler-border-color: $black !default;
+$navbar-nav-link-padding-x: .8rem !default;
 $navbar-dark-color: $white !default;
 $navbar-dark-hover-color: $white !default;
 $navbar-dark-active-color: $white !default;
 $navbar-dark-disabled-color: rgba($white, .3) !default;
 $navbar-dark-icon-color: $white !default;
-$navbar-dark-toggler-border-color: $white !default;
+$navbar-dark-toggler-border-color: rgba($white, .15) !default;
 
 // Dropdowns
-$dropdown-border-color: $black !default;
-$dropdown-border-width: 2px !default;
+$dropdown-bg: $gray-200 !default;
+$dropdown-border-color: $gray-400 !default;
+$dropdown-border-width: 1px !default;
+$dropdown-box-shadow: 0 8px 24px rgba($black, 0.3) !default;
 $dropdown-link-hover-bg: $primary !default;
-$dropdown-header-color: $black !default;
+$dropdown-link-hover-color: $black !default;
+$dropdown-header-color: $gray-600 !default;
 
 // Pagination
-$pagination-color: $black !default;
-$pagination-hover-color: $black !default;
-$pagination-hover-bg: transparent !default;
-$pagination-active-border-color: $black !default;
+$pagination-color: $gray-800 !default;
+$pagination-bg: transparent !default;
+$pagination-hover-color: $white !default;
+$pagination-hover-bg: rgba($white, .08) !default;
+$pagination-active-border-color: $primary !default;
 
 // Cards
-$card-border-color: #6a6a6a;
+$card-border-color: $gray-400 !default;
+$card-border-radius: .75rem !default;
+$card-box-shadow: 0 1px 4px rgba($black, 0.3) !default;
 
 // Accordion
-$accordion-button-active-bg: $primary !default;
-$accordion-button-active-color: $black !default;
+$accordion-button-active-bg: rgba($primary, 0.1) !default;
+$accordion-button-active-color: $primary !default;
 
 // Tooltips & Popovers
 $tooltip-opacity: 1 !default;
-$popover-border-color: $black !default;
+$tooltip-border-radius: $border-radius !default;
+$popover-border-color: $gray-400 !default;
+$popover-box-shadow: 0 8px 24px rgba($black, 0.3) !default;
 
 // Toasts
-$toast-border-color: $black !default;
-$toast-box-shadow: 3px 3px 0 0 $black !default;
-$toast-header-color: $black !default;
+$toast-border-color: $gray-400 !default;
+$toast-box-shadow: 0 4px 12px rgba($black, 0.3) !default;
+$toast-header-color: $gray-700 !default;
 
 // Badges & Modals
 $badge-color: $black !default;
-$modal-content-border-color: $black !default;
+$badge-border-radius: $border-radius-sm !default;
+$modal-content-border-color: $gray-400 !default;
+$modal-content-box-shadow-xs: 0 16px 48px rgba($black, 0.5) !default;
+$modal-content-box-shadow-sm-up: 0 20px 60px rgba($black, 0.6) !default;
+
+// Alerts
+$alert-border-width: 0 !default;
+
+// List group
+$list-group-active-border-color: $primary !default;
 
 // Breadcrumbs
 $breadcrumb-padding-y: .5rem !default;
 $breadcrumb-padding-x: 1rem !default;
-$breadcrumb-divider-color: $black !default;
-$breadcrumb-active-color: $black !default;
-$breadcrumb-border-radius: $border-radius-lg !default;
+$breadcrumb-divider-color: $gray-600 !default;
+$breadcrumb-active-color: $gray-700 !default;
+$breadcrumb-border-radius: $border-radius !default;
 
 // Close Button
-$btn-close-opacity: 1 !default;
+$btn-close-opacity: .6 !default;
 $btn-close-hover-opacity: 1 !default;
 
 
@@ -190,88 +197,125 @@ $btn-close-hover-opacity: 1 !default;
   color: $body-color !important;
   border: none !important;
   box-shadow: none !important;
+
+  // Force white headings — overrides any gradient from li.scss leaking in
+  h1, h2, h3, .title {
+    color: $white !important;
+    -webkit-text-fill-color: $white !important;
+    background: none !important;
+  }
 }
 
-// Variables
-:root {
-  --#{$prefix}border-width: 2px;
-  --#{$prefix}border-color: #{#a2a2a2};
-}
-
-[data-bs-theme="light"],
+// Dark theme component variables — override light defaults from li.scss
+body.quarto-dark,
 [data-bs-theme="dark"] {
-  --#{$prefix}border-color: #{$black};
-}
-
-// Mixins
-@mixin btn-shadow(){
-  box-shadow: 3px 3px 0 0 var(--#{$prefix}border-color);
+  --site-accent: #{$primary};
+  --card-bg: #{$card-bg};
+  --card-border: #27272a;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.3);
+  --card-shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.3), 0 12px 28px rgba(6, 182, 212, 0.2);
+  --card-text: #{$body-color};
+  --study-bg: #1c1c1e;
+  --badge-tech-bg: rgba(6, 182, 212, 0.12);
+  --badge-tech-text: #67e8f9;
+  --badge-tech-border: rgba(6, 182, 212, 0.3);
+  --badge-data-bg: rgba(34, 197, 94, 0.1);
+  --badge-data-text: #86efac;
+  --badge-data-border: rgba(34, 197, 94, 0.25);
 }
 
 // Navbar
 .navbar {
-  background-color: #1a1a1a;
-  // $navbar-border-width: 2px; // REMOVED: Cannot define vars in rules like this
-  font-size: $font-size-lg;
+  background-color: rgba(9, 9, 11, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  font-size: $font-size-base;
   font-weight: $headings-font-weight;
-  border: 2px solid $black; // Hardcoded the 2px here
-}
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 1px 16px rgba(0, 0, 0, 0.4);
 
-// Buttons
-.btn {
-  margin: 3px 0 0 3px;
-  border-color: $black;
-  @include btn-shadow();
-  transition: all .3s;
-  transform: translate(-3px, -3px);
-
-  &:hover {
-    border-color: $black;
-    box-shadow: none;
-    transform: translate(0, 0);
+  .dropdown-toggle::after {
+    margin-left: .15em;
+    vertical-align: .15em;
   }
 
-  &.disabled {
-    border-color: $black;
+  &-toggler {
+    --bs-border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+// Navbar link hover & active indicator
+.navbar-nav .nav-link {
+  border-radius: 6px;
+  padding: 0.28rem 0.6rem !important;
+  transition: background-color 0.2s ease, color 0.2s ease;
+
+  &:hover:not(.active) {
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+
+  &.active {
+    font-weight: 700;
+    color: $primary !important;
+    background-color: rgba($primary, 0.12);
+  }
+}
+
+// Buttons — Brite press effect (raised at rest, presses down on hover)
+.btn {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+
+  &:hover {
+    transform: translateY(0);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.18);
+  }
+
+  &:active,
+  &:first-child:active {
+    transform: translateY(2px);
+    box-shadow: none;
+  }
+
+  &.disabled,
+  &:disabled {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.12);
+    opacity: .55;
   }
 
   &-link,
   &-link:hover {
-    color: $black;
+    color: $primary;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    box-shadow: none !important;
+    transform: none !important;
   }
 }
 
-@each $color, $value in $theme-colors {
-  .btn-outline-#{$color} {
-    color: $black;
-    background-color: #{$value};
-    box-shadow: none;
-    transform: translate(0, 0);
-
-    &:hover {
-      @include btn-shadow();
-      transform: translate(-3px, -3px);
-    }
-  }
-
-  .btn-check + .btn-#{$color},
-  .btn-check + .btn-outline-#{$color} {
-    &:hover {
-      background-color: #{$value};
-    }
-  }
-}
-
-.btn-outline-dark {
-  color: $white;  // $white = #121212
+.btn-check:checked + .btn,
+.btn.active,
+.btn.show {
+  transform: translateY(0);
+  box-shadow: none;
 }
 
 .btn-group {
-  .btn {
-    margin-left: 0;
+  > .btn.active,
+  .btn:hover,
+  .btn:active,
+  .btn:focus {
+    z-index: 0;
   }
 
-  > .btn.active {
+  > .btn-check:focus + .btn,
+  > .btn-check:checked + .btn {
     z-index: 0;
   }
 }
@@ -292,66 +336,40 @@ $btn-close-hover-opacity: 1 !default;
   }
 }
 
-.btn-check + .btn {
-  border-color: $black;
-  @include btn-shadow();
-  transform: translate(-3px, -3px);
-}
-
-.btn-check + .btn:hover {
-  color: $black;
-  border-color: $black;
-}
-
-.btn-check:checked + .btn,
-:not(.btn-check) + .btn:active,
-.btn:first-child:active,
-.btn.active,
-.btn.show {
-  border-color: $black;
-  box-shadow: none;
-  transform: translate(0, 0);
-}
-
 [data-bs-theme="dark"] .btn-link,
 [data-bs-theme="dark"] .btn-link:hover {
-  color: $black;
+  color: $primary;
 }
 
 
 // Forms
 .form-range {
   &:not([disabled])::-moz-range-progress {
-    height: .6rem;
+    height: .4rem;
     background-color: $primary;
-    border-radius: 6px 0 0 6px;
+    border-radius: 4px 0 0 4px;
   }
 
   &:not([disabled])::-ms-fill-lower {
-    height: .6rem;
+    height: .4rem;
     background-color: $primary;
-    border-radius: 6px 0 0 6px;
-  }
-
-  &::-webkit-slider-runnable-track {
-    border: 2px solid $black;
-  }
-
-  &::-moz-range-track {
-    border: 2px solid $black;
+    border-radius: 4px 0 0 4px;
   }
 
   &::-webkit-slider-thumb {
-    margin-top: -.4rem;
+    margin-top: -.35rem;
   }
 
   &::-moz-range-thumb {
-    margin-top: -.4rem;
+    margin-top: -.35rem;
   }
 
-  &:focus::-webkit-slider-thumb,
+  &:focus::-webkit-slider-thumb {
+    box-shadow: 0 0 0 3px rgba($primary, 0.2);
+  }
+
   &:focus::-moz-range-thumb {
-    box-shadow: none;
+    box-shadow: 0 0 0 3px rgba($primary, 0.2);
   }
 }
 
@@ -368,27 +386,32 @@ $btn-close-hover-opacity: 1 !default;
 
 .nav-tabs {
   gap: 4px;
-  padding: .4rem .4rem calc(.4rem + 2px);
   font-weight: $headings-font-weight;
-  border: 2px solid $black;
-  border-radius: $border-radius-lg;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.08);
 
   .nav-link {
-    border-width: 2px;
-    border-radius: $border-radius;
+    border: none;
+    border-radius: $border-radius $border-radius 0 0;
+    color: $gray-700;
 
-    &.active,
     &:hover {
-      border: 2px solid $black;
+      color: $white;
+      background-color: rgba(255, 255, 255, 0.06);
+      border: none;
+    }
+
+    &.active {
+      font-weight: 700;
+      color: $primary;
+      border-bottom: 2px solid $primary;
+      background-color: transparent;
     }
   }
 }
 
 .tab-content {
-  padding: 1rem;
-  margin-top: 1rem;
-  border: 2px solid $black;
-  border-radius: $border-radius-lg;
+  padding: 1.25rem;
+  margin-top: .5rem;
 }
 
 .nav-pills {
@@ -396,47 +419,63 @@ $btn-close-hover-opacity: 1 !default;
   font-weight: $headings-font-weight;
 
   .nav-link {
-    border: 2px solid $black;
+    color: $gray-700;
+    transition: background-color 0.2s ease, color 0.2s ease;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.08);
+      color: $white;
+    }
+
+    &.active {
+      background-color: $primary;
+      color: $black;
+    }
   }
 }
 
 .breadcrumb {
-  font-weight: $headings-font-weight;
-  border: 2px solid $black;
+  font-weight: 500;
 
   a {
-    color: $black;
+    color: $primary;
   }
 }
 
-// Dropdowns
 .dropdown-menu {
-  @include btn-shadow();
-  border-radius: $border-radius;
-  background-color: $gray-200; // dark dropdown surface
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  border-radius: $border-radius-lg;
+  border-color: $gray-400;
+  background-color: $gray-200;
 }
 
 .dropdown-header {
   font-weight: 700;
-  color: $black;
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: $gray-600;
 }
 
-.dropdown-item:hover,
-.dropdown-item:focus {
-  color: $black;
-  background-color: $primary;
+.dropdown-item {
+  border-radius: $border-radius-sm;
+
+  &:hover,
+  &:focus {
+    color: $black;
+    background-color: $primary;
+  }
 }
 
 @each $color, $value in $theme-colors {
   .list-group-item-#{$color} {
     color: $black;
     background-color: #{$value};
-    border-color: $black;
   }
 }
 
 .list-group-item-dark {
-  color: $white; // $white = #121212
+  color: $white;
 }
 
 // Dark theme overrides
@@ -473,27 +512,22 @@ $btn-close-hover-opacity: 1 !default;
   }
 
   .breadcrumb a {
-    color: $black;
+    color: $primary;
   }
 
   .breadcrumb-item.active {
-    --#{$prefix}breadcrumb-item-active-color: #e6e6e6;
+    --#{$prefix}breadcrumb-item-active-color: #a3a3a3;
   }
 }
 
 // Alerts
 .alert {
-  color: $black;
-  border: 2px solid $black;
-  @include btn-shadow();
+  border-radius: $border-radius-lg;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .alert-link {
-  color: $black;
-}
-
-.alert-dark {
-  color: $white; // $white = #121212
+  font-weight: 700;
 }
 
 @each $color, $value in $theme-colors {
@@ -503,30 +537,24 @@ $btn-close-hover-opacity: 1 !default;
 }
 
 .badge {
-  border: 2px solid $black;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 
   &.bg-dark {
     color: $white;
   }
 }
 
-.progress {
-  border: 2px solid $black;
-
-  &-bar {
-    border-right: 2px solid $black;
-  }
-}
-
 .modal {
   &-content {
-    @include btn-shadow();
+    border-radius: $border-radius-lg;
+    border-color: $gray-400;
   }
 }
 
 .vr {
-  width: 2px;
-  background-color: $black;
+  width: 1px;
+  background-color: rgba(255, 255, 255, 0.12);
 }
 
 [data-bs-theme="dark"] .toast-header {
@@ -534,128 +562,150 @@ $btn-close-hover-opacity: 1 !default;
 }
 
 // Footer
-.nav-footer{
-  background-color: #1a1a1a;
+.nav-footer {
+  background-color: #0d0d0f;
   color: $white;
-   
-  a{
-    color: hsl(0, 57.9%, 73.9%);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+  a {
+    color: $primary;
   }
 }
 
-// babelquarto Buttons
-#languages-button{
-  background-color: #1a1a1a;
-  color: white;
+// babelquarto language button — match navbar link style
+
+#languages-button {
+  padding: 0.2rem 1rem;
+  margin-right: 0.5em;
+  color: var(--bs-nav-link-color);
+  background-color: transparent;
+  border: none;
 }
 
-#languages-button:hover{
-  background-color: #1a1a1a;
+#languages-button:hover {
+  background-color: rgba(255, 255, 255, 0.08);
 }
 
-#languages-links:hover{
-  background-color: #1a1a1a;
+#languages-links:hover {
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
-.post-list a .post-content p{
+.post-list a .post-content p {
   font-style: normal;
 }
 
-.bibtex{
+.bibtex {
   color: #fff;
 }
 
-.Reactable{
+.Reactable {
   background-color: transparent !important;
 }
 
-.nav-tabs .nav-link.active{
-  background-color: $bs-nav-tabs-link-active-color;
+.nav-tabs .nav-link.active {
+  background-color: rgba($primary, 0.1);
+  color: $primary;
 }
 
-.katex{
+.katex {
   font-size: 1.05em !important;
 }
 
-.berder-start{
+.berder-start {
   border-color: #939393;
 }
 
 .highcharts-data-labels h4 {
-    font-size: 0.8em;
+  font-size: 0.8em;
 }
 
-.highcharts-title{
+.highcharts-title {
   color: #b3b3b3 !important;
   fill: #b3b3b3 !important;
 }
 
 .invert-color {
-    filter: invert(1) hue-rotate(180deg);
+  filter: invert(1) hue-rotate(180deg);
 }
 
-.gt_table_body{
+.gt_table_body {
   color: white;
 }
 
-.gt_table tr th{
+.gt_table tr th {
   color: white !important;
 }
 
-//
+/* Card hover effect — Bootstrap .card */
+.card {
+  overflow: hidden;
+  transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
 
-/* 1. RESET QUARTO DEFAULTS */
-.quarto-listing-container .card {
-  background: none; /* prevent inherited white backgrounds */
+  &:hover {
+    transform: translateY(-4px);
+    border-color: $primary;
+    box-shadow: 0 8px 32px rgba(6, 182, 212, 0.15);
+  }
+
+  .card-img-top,
+  .img-wrapper img {
+    transition: transform 0.42s ease !important;
+  }
+
+  &:hover .card-img-top,
+  &:hover .img-wrapper img {
+    transform: scale(1.05);
+  }
 }
 
-/* 2. THEME COMPONENT: .listing-card */
+/* Reset Quarto listing defaults */
+.quarto-listing-container .card {
+  background: none;
+}
+
+/* Listing card — dark theme */
 .listing-card {
-  background-color: #111113 !important; /* Your dark bg */
+  background-color: #111113 !important;
   border: 1px solid #27272a !important;
   border-radius: 20px !important;
-  transition: transform 0.3s ease, border-color 0.3s ease;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 
-  /* Hover Effects */
   &:hover {
-    border-color: #a855f7 !important; /* Purple accent */
+    border-color: #{$primary} !important;
     transform: translateY(-5px);
+    box-shadow: 0 8px 32px rgba(6, 182, 212, 0.18) !important;
   }
 
-  /* Image Filter Effect */
   img {
-    filter: brightness(0.8);
+    filter: brightness(0.75);
     transition: filter 0.3s ease;
   }
+
   &:hover img {
-    filter: brightness(1); /* Brighten image on hover */
+    filter: brightness(1);
   }
 }
 
-/* 3. TYPOGRAPHY & COLORS */
-/* Bootstrap doesn't have your specific purple, so we keep this custom */
+/* Listing pills */
 .listing-pill {
-  background-color: rgba(168, 85, 247, 0.15);
-  color: #a855f7;
-  border: 1px solid rgba(168, 85, 247, 0.3);
+  background-color: rgba(6, 182, 212, 0.12);
+  color: #67e8f9;
+  border: 1px solid rgba(6, 182, 212, 0.3);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-
-/* 4. OPTIONAL: Fix Image Height on Mobile */
-/* On desktop, BS Grid handles height. On mobile, we limit it so it's not huge */
 @media (max-width: 767.98px) {
   .listing-card-img-col {
-    height: 250px; /* Force a consistent height on mobile */
+    height: 250px;
   }
 }
 
-.card img{
-  filter:brightness(0.6);
+.card img {
+  filter: brightness(0.6);
 }
 
-.custom-card img{
-    filter:brightness(0.6);
+.custom-card img {
+  filter: brightness(0.6);
 }

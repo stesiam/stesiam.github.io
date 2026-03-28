@@ -1,16 +1,13 @@
 ```{=html}
 <div class="grid gap-4">
     <% for (const item of items) { %>
-    
-    <% 
-      // Clean the path to point to folder URL instead of index.qmd/html
+
+    <%
       const cleanPath = item.path.replace(/index\.html$/, '').replace(/index\.qmd$/, '').replace(/\/$/, '') + '/';
     %>
-    
-    
-    <div class="g-col-12 g-col-md-6">
 
-        <div class="custom-card h-100 d-flex flex-column">
+    <div class="g-col-12 g-col-md-6">
+        <div class="card h-100 d-flex flex-column">
             <div class="img-wrapper">
               <% if (item.image) { %>
                 <img src="<%- item.image %>" alt="<%= item["image-alt"] || item.title %>" class="card-img-top">
@@ -42,7 +39,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     <% } %>
 </div>

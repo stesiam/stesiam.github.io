@@ -2,21 +2,21 @@
 <div class="grid pb-4">
   <% for (const item of items) { %>
     <%
-      // Ensure link points to rendered Quarto article (folder URL)
       const cleanPath = item.path
         .replace(/index\.html$/, '')
         .replace(/index\.qmd$/, '')
         .replace(/\/$/, '') + '/';
     %>
-    
-    
+
     <div class="g-col-12 g-col-md-6">
-      <div class="card h-100 border-0 custom-card-hover shadow overflow-hidden" style="border-radius: 24px;">
-        <img src="<%= item.imgSrc %>" class="h-250 object-fit-cover" alt="<%= item.imgAlt %>">
+      <div class="card h-100 d-flex flex-column">
+        <div class="img-wrapper">
+          <img src="<%= item.imgSrc %>" class="card-img-top" alt="<%= item.imgAlt %>">
+        </div>
         <div class="card-body d-flex flex-column p-4">
-          
-          <h3 class="card-text mt-1"><%= item.title %></h3>
-          
+
+          <h3 class="card-title mt-1"><%= item.title %></h3>
+
           <p class="card-text mb-4">
             <%= item.description %>
           </p>
@@ -33,7 +33,7 @@
               </div>
             </div>
             <% } %>
-            
+
             <% if (item.records) { %>
             <div class="g-col-12 g-col-md-6">
               <div class="d-flex align-items-center p-2 rounded-3">
@@ -48,13 +48,13 @@
           </div>
 
           <div class="mt-auto">
-            <a href="<%= cleanPath %>" class="btn btn-primary w-100 rounded-pill py-2 stretched-link">
+            <a href="<%= cleanPath %>" class="btn btn-primary w-100 rounded-pill py-2">
               <%= item.exploreDatasetText %> <i class="bi bi-arrow-right-short ms-1"></i>
             </a>
           </div>
         </div>
       </div>
     </div>
-  <% } %> 
+  <% } %>
 </div>
 ```

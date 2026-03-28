@@ -6,45 +6,45 @@
           .replace(/index\.qmd$/, '')
           .replace(/\/$/, '') + '/';
     %>
-    
-    <div class="g-col-12 card shadow border-0 rounded-4 overflow-hidden mb-3">
-        
-        <div class="d-flex flex-column flex-md-row g-0">
-            
-            <div class="p-md-4 p-3 d-flex align-items-center justify-content-center" 
-                 style="flex: 0 0 25%; min-width: 200px;">
-                <img src="<%= item.image %>"
-                     class="img-fluid rounded-3" 
-                     alt="<%= item.title %> logo" 
-                     style="max-height: 250px; object-fit: contain;">
-            </div>
-            
-            <div class="card-body p-4 d-flex flex-column justify-content-center">
-                
-                <div class="mb-2">
-                    <h3 class="card-title h4 fw-bold mb-1">
-                        <a href="<%- cleanPath %>" class="text-decoration-none stretched-link fw-bold">
-                            <%= item.title %>
-                        </a>
-                    </h3>
-                    <div class="d-flex align-items-center flex-wrap gap-2">
-                        <span class="text-muted small"><%= item.shortDescr %></span>
-                    </div>
-                </div>
-                
-                <p class="card-text mb-4">
-                    <%= item.description %>
-                </p>
-                
-                <div class="d-flex gap-2 position-relative flex-sm-row flex-column" style="z-index: 2;">
-                    <a href="<%- cleanPath %>" class="btn btn-primary rounded-pill px-4">
-                       <i class="bi bi-journal me-1"></i> <%= item.btnText1 %>
-                    </a>
-                    <a href="https://github.com/stesiam/tidytuesday" class="btn btn-secondary rounded-pill px-4">
-                       <i class="bi bi-github me-1"></i> <%= item.btnText %>
-                    </a>
+
+    <div class="g-col-12 mb-3">
+        <div class="card">
+            <div class="d-flex flex-column flex-md-row g-0">
+
+                <div class="p-md-4 p-3 d-flex align-items-center justify-content-center"
+                     style="flex: 0 0 25%; min-width: 180px;">
+                    <img src="<%= item.image %>"
+                         class="img-fluid rounded-3"
+                         alt="<%= item.title %> logo"
+                         style="max-height: 200px; object-fit: contain;">
                 </div>
 
+                <div class="card-body p-4 d-flex flex-column justify-content-center">
+
+                    <div class="mb-2">
+                        <h3 class="card-title h4 fw-bold mb-1">
+                            <a href="<%- cleanPath %>" class="text-decoration-none stretched-link fw-bold">
+                                <%= item.title %>
+                            </a>
+                        </h3>
+                        <div class="d-flex align-items-center flex-wrap gap-2">
+                            <span class="text-muted small"><%= item.shortDescr %></span>
+                        </div>
+                    </div>
+
+                    <p class="card-text mb-4">
+                        <%= item.description %>
+                    </p>
+
+                    <div class="d-flex gap-2 position-relative flex-sm-row flex-column" style="z-index: 2;">
+                        <a href="<%- cleanPath %>" class="btn btn-primary rounded-pill px-4">
+                           <i class="bi bi-journal me-1"></i> <%= item.btnText1 %>
+                        </a>
+                        <a href="https://github.com/stesiam/tidytuesday" class="btn btn-secondary rounded-pill px-4">
+                           <i class="bi bi-github me-1"></i> <%= item.btnText %>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

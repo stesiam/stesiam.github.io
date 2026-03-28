@@ -1,55 +1,52 @@
 ```{=html}
 <div class="grid">
   <% for (const item of items) { %>
-    <% 
-      // Clean the path to point to folder URL instead of index.qmd/html
+    <%
       const cleanPath = item.path.replace(/index\.html$/, '').replace(/index\.qmd$/, '').replace(/\/$/, '') + '/';
     %>
 
     <div class="g-col-12 g-col-md-6 title-block" <%= metadataAttrs(item) %>>
-        <div class="card h-100 border-0 shadow-sm rounded-4 card-hover" style="max-width: 25rem;">
-        
-            <div class="img-container rounded-top-4 position-relative d-flex justify-content-center">
-              <img class= "invert-color" src= <%= item.img %> alt=<%= item.imgAlt %> >
+        <div class="card h-100">
+
+            <div class="d-flex justify-content-center align-items-center" style="height: 180px; overflow: hidden; background: var(--study-bg);">
+              <img class="invert-color" src="<%= item.img %>" alt="<%= item.imgAlt %>" style="max-height: 140px; object-fit: contain;">
             </div>
-          
-            <div class="card-body p-2 d-flex flex-column">
-              <div class="mb-1">
-                <h4 class="card-title fw-bold text-dark mb-0"><%= item.title %></h4>
+
+            <div class="card-body p-3 d-flex flex-column">
+              <div class="mb-2">
+                <h4 class="card-title fw-bold mb-0"><%= item.title %></h4>
                 <small class="text-primary fw-medium"><%= item.notes %></small>
               </div>
-          
-              
-              <div class="row g-3 mb-4 small text-muted">
-                <div class="col-6 d-flex align-items-center">
+
+              <div class="row g-2 mb-3 small">
+                <div class="col-6 d-flex align-items-center text-muted">
                   <i class="bi bi-book-half me-2 text-primary"></i> <%= item.docPages %>
                 </div>
-                <div class="col-6 d-flex align-items-center">
-                  <i class="bi bi-filetype-pdf me-2 text-danger"></i> PDF Format
+                <div class="col-6 d-flex align-items-center text-muted">
+                  <i class="bi bi-filetype-pdf me-2 text-danger"></i> PDF
                 </div>
-                <div class="col-6 d-flex align-items-center">
+                <div class="col-6 d-flex align-items-center text-muted">
                   <i class="bi bi-translate me-2 text-info"></i> Ελληνικά
                 </div>
-                <div class="col-6 d-flex align-items-center">
+                <div class="col-6 d-flex align-items-center text-muted">
                   <i class="bi bi-calendar-event me-2 text-warning"></i> <%= item.year %>
                 </div>
               </div>
-          
+
               <p class="card-text small flex-grow-1 lh-base">
                 <%= item.description %>
               </p>
-          
-          
-              <div class="d-grid gap-2 mt-auto p-2">
+
+              <div class="d-grid gap-2 mt-auto pt-2">
                 <% for (const link of item.links) { %>
-                <a href="<%= link.url %>" 
+                <a href="<%= link.url %>"
                    class="btn btn-primary rounded-pill" target="_blank">
                   <i class="bi <%= link.icon %>"></i> <%= link.text %>
                 </a>
                 <% } %>
               </div>
             </div>
-      </div>
+        </div>
     </div>
   <% } %>
 </div>

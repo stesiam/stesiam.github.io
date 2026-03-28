@@ -8,13 +8,10 @@ $theme: "brite" !default;
 // Color system
 //
 
-/*-- scss:defaults --*/
 $body-bg: #f8f9fa;
 $body-color: #000000;
-$navbar-bg: #ececec; // Create a variable for this!
-$nav-link-font-size: 0.9em;
-
-
+$navbar-bg: #ececec;
+$nav-link-font-size: 1em;
 
 $white:    #fff !default;
 $gray-100: #f8f9fa !default;
@@ -40,20 +37,16 @@ $teal:    #2ed3be !default;
 $cyan:    #22d2ed !default;
 $lime:    #a2e436 !default;
 
-$primary:       $red !default;
-$secondary:     $white !default;
+$primary:       #dc2626 !default;
+$secondary:     $gray-200 !default;
 $success:       $green !default;
 $info:          $cyan !default;
 $warning:       $yellow !default;
 $danger:        $red !default;
 $light:         $gray-200 !default;
-$dark:          $black !default;
-
-// $min-contrast-ratio:   1.75 !default;
+$dark:          $gray-800 !default;
 
 $spacer: 1rem !default;
-
-// Body
 
 // Title block
 
@@ -64,64 +57,57 @@ $spacer: 1rem !default;
   box-shadow: none !important;
 }
 
-$btn-border-radius: 1em;
-$btn-border-radius-sm: 1em;
+$btn-border-radius: 0.5em;
+$btn-border-radius-sm: 0.5em;
 $mermaid-edge-color: #000000;
 
 /* -------------------------------------------------------
    2. Typography
    ------------------------------------------------------- */
 
-
-$headings-font-weight: 600;
-$headings-color: #000;
+$headings-font-weight: 700;
+$headings-color: #111;
+$headings-font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", Ubuntu, sans-serif;
 
 /* Body text size and leading */
 $font-size-base: 1.05rem;
 $line-height-base: 1.6;
 
-
 // Links
 
-$link-color:                              $black !default;
+$link-color: $primary !default;
 
 // Components
 
-$border-radius:               .375rem !default;
-$border-radius-sm:            .25rem !default;
-$border-radius-lg:            .5rem !default;
+$border-radius:               .5rem !default;
+$border-radius-sm:            .375rem !default;
+$border-radius-lg:            .75rem !default;
 
-$component-active-color:      $black !default;
-// $component-active-bg:         $black !default;
+$component-active-color:      $white !default;
+$component-active-bg:         $primary !default;
 
-$focus-ring-width:      1px !default;
-$focus-ring-opacity:    1 !default;
-$focus-ring-color:      $black !default;
+$focus-ring-width:      2px !default;
+$focus-ring-opacity:    0.25 !default;
+$focus-ring-color:      rgba($primary, 0.25) !default;
 
 // Fonts
 
-$font-size-base:              1rem !default;
 $font-size-sm:                $font-size-base * .875 !default;
 
 $lead-font-weight:            400 !default;
 
-$headings-font-weight:        500 !default;
+$hr-border-width:             1px !default;
+$hr-opacity:                  0.15 !default;
 
-$hr-border-width:             2px !default;
-$hr-opacity:                  1 !default;
-
-$headings-font-weight: 600;
-
-$line-height-base: 1.6;
 // Tables
 
 $table-cell-padding-y:        .75rem !default;
 $table-cell-padding-x:        .75rem !default;
 
 $table-border-width:          1px !default;
-$table-border-color:          $black !default;
+$table-border-color:          $gray-300 !default;
 
-$table-hover-bg-factor:       0 !default;
+$table-hover-bg-factor:       .04 !default;
 
 $table-border-factor:         1 !default;
 
@@ -151,126 +137,135 @@ $input-btn-padding-y-lg:      .75rem !default;
 $input-btn-padding-x-lg:      1.25rem !default;
 $input-btn-font-size-lg:      $font-size-base !default;
 
-$input-btn-border-width:      2px !default;
+$input-btn-border-width:      1px !default;
 
 // Buttons
 
-$btn-border-width:            2px !default;
+$btn-border-width:            1px !default;
+$btn-font-weight:             600 !default;
 
 // Forms
 
 $form-label-font-weight:                $headings-font-weight !default;
 
-$input-focus-border-color:              $black !default;
+$input-border-color:                    $gray-300 !default;
+$input-focus-border-color:              $primary !default;
+$input-focus-box-shadow:                0 0 0 3px rgba($primary, 0.15) !default;
 
-$form-check-input-checked-border-color:   $black !default;
+$form-check-input-checked-border-color: $primary !default;
 
-$form-range-track-height:         .6rem !default;
+$form-range-track-height:         .4rem !default;
 
-$form-range-thumb-width:                   1.2rem !default;
+$form-range-thumb-width:                   1.1rem !default;
 $form-range-thumb-height:                  $form-range-thumb-width !default;
-$form-range-thumb-border:                  2px solid $black !default;
-$form-range-thumb-box-shadow:              none !default;
+$form-range-thumb-border:                  2px solid $white !default;
+$form-range-thumb-box-shadow:              0 1px 4px rgba($black, 0.2) !default;
 $form-range-thumb-disabled-bg:             $light !default;
 
 // Dropdowns
 
-// $dropdown-link-hover-color:     $white !default;
-// $dropdown-link-hover-bg:        $primary !default;
+$dropdown-border-color:             rgba($black, 0.1) !default;
+$dropdown-border-width:             1px !default;
+$dropdown-box-shadow:               0 8px 24px rgba($black, 0.12) !default;
+
+$dropdown-link-hover-color:         $white !default;
+$dropdown-link-hover-bg:            $primary !default;
+
+$dropdown-header-color:             $gray-600 !default;
 
 // Navs
 
-$nav-link-color:                    $black !default;
+$nav-link-color:                    $gray-700 !default;
 $nav-link-hover-color:              $black !default;
 
-$nav-tabs-link-hover-border-color:  transparent !default;
+$nav-tabs-link-hover-border-color:  $gray-300 !default;
 
 // Navbar
 
 $navbar-padding-y:                  $spacer * .75 !default;
 $navbar-padding-x:                  null !default;
 
-$navbar-nav-link-padding-x:         1rem !default;
+$navbar-nav-link-padding-x:         .8rem !default;
 
-$navbar-light-color:                $black !default;
+$navbar-light-color:                $gray-700 !default;
 $navbar-light-hover-color:          $black !default;
-$navbar-light-active-color:         $black !default;
+$navbar-light-active-color:         $primary !default;
 $navbar-light-disabled-color:       rgba($black, .3) !default;
-$navbar-light-icon-color:           $black !default;
-$navbar-light-toggler-border-color: $black !default;
+$navbar-light-icon-color:           $gray-600 !default;
+$navbar-light-toggler-border-color: rgba($black, .15) !default;
 
 $navbar-dark-color:                $white !default;
 $navbar-dark-hover-color:          $white !default;
 $navbar-dark-active-color:         $white !default;
 $navbar-dark-disabled-color:       rgba($white, .3) !default;
 $navbar-dark-icon-color:           $white !default;
-$navbar-dark-toggler-border-color: $white !default;
-
-// Dropdowns
-
-$dropdown-border-color:             $black !default;
-$dropdown-border-width:             2px !default;
-
-$dropdown-link-hover-bg:            $primary !default;
-
-$dropdown-header-color:             $black !default;
+$navbar-dark-toggler-border-color: rgba($white, .2) !default;
 
 // Pagination
 
-$pagination-color:                  $black !default;
+$pagination-color:                  $gray-700 !default;
 $pagination-hover-color:            $black !default;
-$pagination-hover-bg:               transparent !default;
-$pagination-active-border-color:    $black !default;
+$pagination-hover-bg:               $gray-100 !default;
+$pagination-active-border-color:    $primary !default;
 
 // Cards
 
-$card-border-color:                 $black !default;
+$card-border-color:                 rgba($black, 0.08) !default;
+$card-border-radius:                .75rem !default;
+$card-box-shadow:                   0 1px 4px rgba($black, 0.06) !default;
 
 // Accordion
 
-$accordion-button-active-bg:              $primary !default;
-$accordion-button-active-color:           $black !default;
+$accordion-button-active-bg:              rgba($primary, 0.08) !default;
+$accordion-button-active-color:           $primary !default;
 
 // Tooltips
 
 $tooltip-opacity:                   1 !default;
+$tooltip-border-radius:             $border-radius !default;
 
 // Popovers
 
-$popover-border-color:              $black !default;
+$popover-border-color:              rgba($black, 0.1) !default;
+$popover-box-shadow:                0 8px 24px rgba($black, 0.12) !default;
 
 // Toasts
 
-$toast-border-color:                $black !default;
-$toast-box-shadow:                  3px 3px 0 0 $black !default;
+$toast-border-color:                rgba($black, 0.1) !default;
+$toast-box-shadow:                  0 4px 12px rgba($black, 0.1) !default;
 
-$toast-header-color:                $black !default;
+$toast-header-color:                $gray-700 !default;
 
 // Badges
 
-$badge-color:                       $black !default;
+$badge-color:                       $white !default;
+$badge-border-radius:               $border-radius-sm !default;
 
 // Modals
 
-$modal-content-border-color:        $black !default;
+$modal-content-border-color:        rgba($black, 0.08) !default;
+$modal-content-box-shadow-xs:       0 16px 48px rgba($black, 0.18) !default;
+$modal-content-box-shadow-sm-up:    0 20px 60px rgba($black, 0.2) !default;
 
 // Alerts
 
+$alert-border-width:                0 !default;
+
 // List group
 
-$list-group-active-border-color:    $black !default;
+$list-group-active-border-color:    $primary !default;
 
 // Breadcrumbs
 
 $breadcrumb-padding-y:              .5rem !default;
 $breadcrumb-padding-x:              1rem !default;
-$breadcrumb-divider-color:          $black !default;
-$breadcrumb-active-color:           $black !default;
-$breadcrumb-border-radius:          $border-radius-lg !default;
+$breadcrumb-divider-color:          $gray-500 !default;
+$breadcrumb-active-color:           $gray-600 !default;
+$breadcrumb-border-radius:          $border-radius !default;
 
 // Close
 
-$btn-close-opacity:          1 !default;
+$btn-close-opacity:          .6 !default;
 $btn-close-hover-opacity:    1 !default;
 
 
@@ -280,39 +275,33 @@ $btn-close-hover-opacity:    1 !default;
 // Variables
 
 :root {
-  --#{$prefix}border-width: 2px;
-  --#{$prefix}border-color: #000;
+  // Site component variables – light theme
+  --site-accent: #{$primary};
+  --card-bg: #ffffff;
+  --card-border: #e4e4e7;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 8px rgba(0, 0, 0, 0.06);
+  --card-shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.08), 0 20px 40px rgba(0, 0, 0, 0.1);
+  --card-text: #18181b;
+  --study-bg: #f4f4f5;
+  --badge-tech-bg: #ede9fe;
+  --badge-tech-text: #5b21b6;
+  --badge-tech-border: #c4b5fd;
+  --badge-data-bg: #ecfdf5;
+  --badge-data-text: #065f46;
+  --badge-data-border: #6ee7b7;
 }
-
-[data-bs-theme="light"],
-[data-bs-theme="dark"] {
-  --#{$prefix}border-color: #000;
-}
-
-// Mixins
-
-@mixin btn-shadow(){
-  box-shadow: 3px 3px 0 0 var(--#{$prefix}border-color);
-}
-
 
 // Navbar
 
 .navbar {
-  background-color: $navbar-bg;
-  $navbar-border-width: 2px;
-  font-size: $font-size-lg;
-  font-weight: $headings-font-weight;
-
-  border: $navbar-border-width solid $black;
-
-  &.fixed-top {
-    border-width: 0 0 $navbar-border-width 0;
-  }
-
-  &.fixed-bottom {
-    border-width: $navbar-border-width 0 0 0;
-  }
+  background-color: rgba(248, 249, 250, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  font-size: $font-size-base;
+  font-weight: 600;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 12px rgba(0, 0, 0, 0.06);
 
   .dropdown-toggle::after {
     margin-left: .15em;
@@ -320,66 +309,82 @@ $btn-close-hover-opacity:    1 !default;
   }
 
   &-toggler {
-    --bs-border-width: 2px;
+    --bs-border-width: 1px;
+    border-color: rgba(0, 0, 0, 0.2);
   }
 }
 
-// Buttons
+// Navbar link hover & active indicator
+.navbar-nav .nav-link {
+  border-radius: 6px;
+  padding: 0.28rem 0.6rem !important;
+  transition: background-color 0.2s ease, color 0.2s ease;
 
-.btn {
-  margin: 3px 0 0 3px;
-  border-color: $black;
-  @include btn-shadow();
-  transition: all .3s;
-  transform: translate(-3px, -3px);
-
-  &:hover {
-    border-color: $black;
-    box-shadow: none;
-    transform: translate(0, 0);
+  &:hover:not(.active) {
+    background-color: rgba(0, 0, 0, 0.06);
   }
 
-  &.disabled {
-    border-color: $black;
+  &.active {
+    font-weight: 700;
+    color: $primary !important;
+    background-color: rgba($primary, 0.08);
+  }
+}
+
+// Buttons — Brite press effect (raised at rest, presses down on hover)
+
+.btn {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.13);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+
+  &:hover {
+    transform: translateY(0);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+  }
+
+  &:active,
+  &:first-child:active {
+    transform: translateY(2px);
+    box-shadow: none;
+  }
+
+  &.disabled,
+  &:disabled {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.06);
+    opacity: .55;
   }
 
   &-link,
   &-link:hover {
-    color: $black;
+    color: $primary;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    box-shadow: none !important;
+    transform: none !important;
   }
 }
 
-@each $color, $value in $theme-colors {
-  .btn-outline-#{$color} {
-    color: $black;
-    background-color: #{$value};
-    box-shadow: none;
-    transform: translate(0, 0);
-
-    &:hover {
-      @include btn-shadow();
-      transform: translate(-3px, -3px);
-    }
-  }
-
-  .btn-check + .btn-#{$color},
-  .btn-check + .btn-outline-#{$color} {
-    &:hover {
-      background-color: #{$value};
-    }
-  }
-}
-
-.btn-outline-dark {
-  color: $white;
+.btn-check:checked + .btn,
+.btn.active,
+.btn.show {
+  transform: translateY(0);
+  box-shadow: none;
 }
 
 .btn-group {
-  .btn {
-    margin-left: 0;
+  > .btn.active,
+  .btn:hover,
+  .btn:active,
+  .btn:focus {
+    z-index: 0;
   }
 
-  > .btn.active {
+  > .btn-check:focus + .btn,
+  > .btn-check:checked + .btn {
     z-index: 0;
   }
 }
@@ -392,34 +397,7 @@ $btn-close-hover-opacity:    1 !default;
     &:focus {
       z-index: 0;
     }
-
   }
-
-  > .btn-check:focus + .btn,
-  > .btn-check:checked + .btn {
-    z-index: 0;
-  }
-}
-
-.btn-check + .btn {
-  border-color: $black;
-  @include btn-shadow();
-  transform: translate(-3px, -3px);
-}
-
-.btn-check + .btn:hover {
-  color: $black;
-  border-color: $black;
-}
-
-.btn-check:checked + .btn,
-:not(.btn-check) + .btn:active,
-.btn:first-child:active,
-.btn.active,
-.btn.show {
-  border-color: $black;
-  box-shadow: none;
-  transform: translate(0, 0);
 }
 
 [data-bs-theme="dark"] .btn-link,
@@ -428,45 +406,36 @@ $btn-close-hover-opacity:    1 !default;
 }
 
 
-
 // Forms
 
 .form-range {
 
   &:not([disabled])::-moz-range-progress {
-    height: .6rem;
+    height: .4rem;
     background-color: $primary;
-    border-radius: 6px 0 0 6px;
+    border-radius: 4px 0 0 4px;
   }
 
   &:not([disabled])::-ms-fill-lower {
-    height: .6rem;
+    height: .4rem;
     background-color: $primary;
-    border-radius: 6px 0 0 6px;
-  }
-
-  &::-webkit-slider-runnable-track {
-    border: 2px solid $black;
-  }
-
-  &::-moz-range-track {
-    border: 2px solid $black;
+    border-radius: 4px 0 0 4px;
   }
 
   &::-webkit-slider-thumb {
-    margin-top: -.4rem;
+    margin-top: -.35rem;
   }
 
   &::-moz-range-thumb {
-    margin-top: -.4rem;
+    margin-top: -.35rem;
   }
 
   &:focus::-webkit-slider-thumb {
-    box-shadow: none;
+    box-shadow: 0 0 0 3px rgba($primary, 0.2);
   }
 
   &:focus::-moz-range-thumb {
-    box-shadow: none;
+    box-shadow: 0 0 0 3px rgba($primary, 0.2);
   }
 }
 
@@ -484,66 +453,94 @@ $btn-close-hover-opacity:    1 !default;
 
 .nav-tabs {
   gap: 4px;
-  padding: .4rem .4rem calc(.4rem + 2px);
-  font-weight: $headings-font-weight;
-  border: 2px solid $black;
-  border-radius: $border-radius-lg;
+  font-weight: 600;
+  border-bottom: 2px solid $gray-200;
 
   .nav-link {
-    border-width: 2px;
-    border-radius: $border-radius;
+    border-radius: $border-radius $border-radius 0 0;
+    color: $gray-600;
+    border: none;
 
-    &.active,
     &:hover {
-      border: 2px solid $black;
+      color: $black;
+      background-color: $gray-100;
+      border: none;
+    }
+
+    &.active {
+      font-weight: 700;
+      color: $primary;
+      border-bottom: 2px solid $primary;
+      background-color: transparent;
     }
   }
 }
 
 .tab-content {
-  padding: 1rem;
-  margin-top: 1rem;
-  border: 2px solid $black;
-  border-radius: $border-radius-lg;
+  padding: 1.25rem;
+  margin-top: .5rem;
 }
 
 .nav-pills {
   gap: 4px;
-  font-weight: $headings-font-weight;
+  font-weight: 600;
 
   .nav-link {
-    border: 2px solid $black;
+    color: $gray-700;
+    transition: background-color 0.2s ease, color 0.2s ease;
+
+    &:hover {
+      background-color: $gray-100;
+      color: $black;
+    }
+
+    &.active {
+      background-color: $primary;
+      color: $white;
+    }
   }
 }
 
 .breadcrumb {
-  font-weight: $headings-font-weight;
-  border: 2px solid $black;
+  font-weight: 500;
 
   a {
-    color: $black;
+    color: $primary;
+
+    &:hover {
+      color: darken($primary, 10%);
+    }
   }
 }
 
 .dropdown-menu {
-  @include btn-shadow();
-  border-radius: $border-radius;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  border-radius: $border-radius-lg;
+  border-color: rgba($black, 0.08);
 }
 
 .dropdown-header {
   font-weight: 700;
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: $gray-500;
 }
 
-.dropdown-item:hover,
-.dropdown-item:focus {
-  color: #000;
+.dropdown-item {
+  border-radius: $border-radius-sm;
+
+  &:hover,
+  &:focus {
+    color: $white;
+    background-color: $primary;
+  }
 }
 
 @each $color, $value in $theme-colors {
   .list-group-item-#{$color} {
     color: $black;
     background-color: #{$value};
-    border-color: $black;
   }
 }
 
@@ -599,17 +596,12 @@ $btn-close-hover-opacity:    1 !default;
 // Indicators
 
 .alert {
-  color: $black;
-  border: 2px solid $black;
-  @include btn-shadow();
+  border-radius: $border-radius-lg;
+  border: 1px solid rgba($black, 0.1);
 }
 
 .alert-link {
-  color: $black;
-}
-
-.alert-dark {
-  color: $white;
+  font-weight: 700;
 }
 
 @each $color, $value in $theme-colors {
@@ -619,30 +611,23 @@ $btn-close-hover-opacity:    1 !default;
 }
 
 .badge {
-  border: 2px solid $black;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 
   &.bg-dark {
     color: $white;
   }
 }
 
-.progress {
-  border: 2px solid $black;
-
-  &-bar {
-    border-right: 2px solid $black;
-  }
-}
-
 .modal {
   &-content {
-    @include btn-shadow();
+    border-radius: $border-radius-lg;
   }
 }
 
 .vr {
-  width: 2px;
-  background-color: $black;
+  width: 1px;
+  background-color: rgba($black, 0.12);
 }
 
 [data-bs-theme="dark"] .toast-header {
@@ -653,24 +638,28 @@ $btn-close-hover-opacity:    1 !default;
 .nav-footer{
   background-color: #ececec;
   color: $black;
-  
+
   a{
-    color: rgb(31, 49, 49);
+    color: $primary;
   }
 }
 
-// babelquarto Buttons
+// babelquarto language button — match navbar link style
 
-#languages-button{
-  background-color: #ececec;
+#languages-button {
+  padding: 0.2rem 1rem;
+  margin-right: 0.5em;
+  color: var(--bs-nav-link-color);
+  background-color: transparent;
+  border: none;
 }
 
-#languages-button:hover{
-  background-color: #ececec;
+#languages-button:hover {
+  background-color: rgba(0, 0, 0, 0.06);
 }
 
-#languages-links:hover{
-  background-color: #ececec;
+#languages-links:hover {
+  background-color: rgba(0, 0, 0, 0.04);
 }
 
 .post-list a .post-content p{
@@ -693,56 +682,94 @@ $btn-close-hover-opacity:    1 !default;
 //
 
 .quarto-listing-container .card {
-  background: none; /* prevent inherited backgrounds */
+  background: none;
 }
 
-/* 2. THEME COMPONENT: .listing-card */
+/* THEME COMPONENT: .listing-card */
 .listing-card {
-  background-color: #ffffff !important; /* Pure white background */
-  border: 1px solid #e4e4e7 !important; /* Soft light-gray border */
+  background-color: #ffffff !important;
+  border: 1px solid #e4e4e7 !important;
   border-radius: 20px !important;
   transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-  
-  /* Light mode looks better with a soft shadow for depth */
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 
-  /* Hover Effects */
   &:hover {
-    border-color: #a855f7 !important; /* Keep your signature purple */
+    border-color: #{$primary} !important;
     transform: translateY(-5px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 12px 32px rgba(220, 38, 38, 0.14);
   }
 
-  /* Image Filter Effect */
   img {
-    filter: brightness(1.0); /* No dimming needed for light mode */
-    transition: filter 0.3s ease;
+    transition: filter 0.3s ease, transform 0.4s ease;
+  }
+
+  &:hover img {
+    filter: brightness(1.04);
   }
 }
 
-/* 3. TYPOGRAPHY & COLORS */
 .listing-pill {
-  background-color: #f3e8ff; /* Solid light purple (better contrast on white) */
-  color: #7e22ce !important; /* Darker purple text for readability */
-  border: 1px solid #d8b4fe;
+  background-color: #fee2e2;
+  color: #991b1b !important;
+  border: 1px solid #fca5a5;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-
-
-/* 4. OPTIONAL: Fix Image Height on Mobile */
 @media (max-width: 767.98px) {
   .listing-card-img-col {
     height: 250px;
   }
 }
 
-.card img{
-  filter:brightness(1);
+.card img {
+  filter: brightness(1);
 }
 
-.custom-card img{
-    filter:brightness(1);
+.custom-card img {
+  filter: brightness(1);
+}
+
+/* Page section headings */
+.page-section-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #111;
+  position: relative;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 2.5rem;
+    height: 3px;
+    background-color: $primary;
+    border-radius: 2px;
+  }
+}
+
+/* Card hover effect — Bootstrap .card */
+.card {
+  overflow: hidden;
+  transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: $primary;
+    box-shadow: 0 12px 32px rgba(220, 38, 38, 0.12);
+  }
+
+  .card-img-top,
+  .img-wrapper img {
+    transition: transform 0.42s ease !important;
+  }
+
+  &:hover .card-img-top,
+  &:hover .img-wrapper img {
+    transform: scale(1.05);
+  }
 }

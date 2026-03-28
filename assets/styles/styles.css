@@ -85,8 +85,137 @@
 
 
 
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background-color: #a855f7;
+  color: #ffffff;
+}
+
+body:not(.quarto-dark) ::selection {
+  background-color: #dc2626;
+  color: #ffffff;
+}
+
 body:not(#TOC) {
     font-family: "Gentium Plus",  'Gentium-Fallback', serif;
+}
+
+/* -------------------------------------------------------
+   Shared Card Components
+   Used by: about-me, material, software, web-projects
+   ------------------------------------------------------- */
+
+/* Base card — used by all listing templates.
+   Bootstrap .card variables (bg, border, radius, shadow) are set per-theme in SCSS.
+   .custom-card is kept as an alias for any legacy usage. */
+.custom-card {
+  overflow: hidden;
+  transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+}
+
+.custom-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--site-accent);
+  box-shadow: var(--card-shadow-hover);
+}
+
+/* Badge variants (used in web-projects, can be extended) */
+.badge-custom {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 8px;
+  margin-right: 4px;
+}
+
+.bg-tech {
+  background-color: var(--badge-tech-bg);
+  color: var(--badge-tech-text);
+  border: 1px solid var(--badge-tech-border);
+}
+
+.bg-data {
+  background-color: var(--badge-data-bg);
+  color: var(--badge-data-text);
+  border: 1px solid var(--badge-data-border);
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.modern-card {
+  border-radius: 16px;
+  padding: 1.5rem;
+  background-color: var(--card-bg);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--card-border);
+  color: var(--card-text);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  flex: 1 1 100%;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 360px;
+}
+
+.modern-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--card-shadow-hover);
+  border-color: var(--site-accent);
+}
+
+.modern-card h3 {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.modern-card p {
+  flex-grow: 1;
+  margin-bottom: 1.2rem;
+}
+
+.card-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.wrapper-thumbnail-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.book_thumbnail img {
+  width: 8rem;
+}
+
+.book_info,
+.book_emoji {
+  text-align: center;
+}
+
+@media (min-width: 576px) {
+  .modern-card {
+    flex: 1 1 calc(50% - 1.5rem);
+  }
+}
+
+@media (min-width: 1180px) {
+  .modern-card {
+    flex: 1 1 calc(33.333% - 1.5rem);
+  }
 }
 
 
@@ -108,6 +237,16 @@ body:not(#TOC) {
     width: 20%;
 }
 
+
+/* Navbar — small screen collapsed menu spacing */
+
+@media (max-width: 991.98px) {
+  .navbar-collapse .navbar-nav {
+    gap: 0.2rem;
+    padding-top: 0.6rem;
+    padding-bottom: 0.4rem;
+  }
+}
 
 /* Footer */
 
@@ -220,4 +359,34 @@ body.quarto-dark .quarto-color-scheme-toggle > .bi::before {
 
 .mord.text{
   font-size: 0.9em;
+}
+
+/* -------------------------------------------------------
+   Page title banner
+   ------------------------------------------------------- */
+
+.quarto-title-banner {
+  position: relative;
+}
+
+/* -------------------------------------------------------
+   Label utility (small caps metadata label)
+   ------------------------------------------------------- */
+
+.label-caps {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--bs-secondary-color, #6c757d);
+  margin-bottom: 2px;
+}
+
+/* -------------------------------------------------------
+   Card image — smooth zoom on hover (both .card and .custom-card)
+   ------------------------------------------------------- */
+
+.custom-card .img-wrapper,
+.card .img-wrapper {
+  overflow: hidden;
 }
