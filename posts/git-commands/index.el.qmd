@@ -36,11 +36,11 @@ editor_options:
 
 ### Τι είναι το Version Control System
 
-Ένα σύστημα ελέγχου εκδόσεων (Version Control System - VCS) είναι ένας τρόπος διαχείρισης και παρακολούθησης αλλαγών στον κώδικα που γράφουμε. Καθώς αναπτύσσουμε μία εφαρμογή, προσθέτουμε λειτουργίες, διορθώνουμε σφάλματα με αποτέλεσμα να διορθώνουμε το κώδικά μας συνεχώς. Το VCS μας επιτρέπει να καταγράφουμε τις αλλαγές μας σε διάφορες στάδια κατά τη διάρκεια υλοποίσης του κώδικά μας.
+Ένα σύστημα ελέγχου εκδόσεων (Version Control System - VCS) είναι ένας εργαλείο διαχείρισης και παρακολούθησης αλλαγών στον κώδικα μας Καθώς αναπτύσσουμε μία εφαρμογή, προσθέτουμε λειτουργίες, διορθώνουμε σφάλματα με αποτέλεσμα να διορθώνουμε το κώδικά μας συνεχώς. Το VCS μας επιτρέπει να αποθηκεύουμε «στιγμιότυπα» (snapshots) σε διάφορες στάδια υλοποίσης του κώδικά μας, ώστε ανά πάσα στιγμή να δούμε τι άλλαξε, πότε και από ποιον.
 
 ![Workflow without Version Control](images/workflow_without_vcs.png)
 
-Από τα πιο γνωστά προγράμματα ελέγχου εκδόσεων πηγαίου κώδικα είναι τα εξής :
+Τα πιο γνωστά συστήματα ελέγχου εκδόσεων πηγαίου κώδικα είναι τα εξής :
 
 * Git
 * Apache Subversion (SVN)
@@ -50,7 +50,7 @@ editor_options:
 
 ### Δημοφιλία VCS
 
-Έχοντας περιγράψει τι είναι το VCS, θα ήταν χρήσιμο να μελετήσουμε ποιο ήταν το πιο γνωστό ή πιο χρησιμοποιούμενο διαχρονικά. Για να το μελετήσω θα χρησιμοποιήσω ιστορικά δεδομένα αναζητήσεων στη μηχανή αναζήτησης της Google και πιο συγκεκριμένα από τη πλατφόρμα  [Google Trends](https://trends.google.com/trends/) που διατηρεί δεδομένα τάσεων αναζητήσεων ορισμένων όρων.
+Έχοντας περιγράψει τι είναι το VCS, θα ήταν χρήσιμο να μελετήσουμε ποιο ήταν το πιο γνωστό ή πιο χρησιμοποιούμενο διαχρονικά. Για να απαντήσουμε, θα ανατρέξουμε στα ιστορικά δεδομένα αναζητήσεων στη μηχανή αναζήτησης της Google και πιο συγκεκριμένα από τη πλατφόρμα  [Google Trends](https://trends.google.com/trends/) που διατηρεί δεδομένα τάσεων αναζητήσεων δημοφιλών όρων.
 
 ```{r}
 #| label: import_r_libs
@@ -147,35 +147,39 @@ highchart() %>%
   hc_tooltip(shared = TRUE)
 ```
 
-Το διάγραμμα [@fig-vcs-trends] ξεκαθαρίζει ως κυρίαρχο εργαλείο για την διαχείριση των εκδόσεων (VCS) του κώδικά μας, το Git. Το Subversion (SVN) ήταν δημοιλέστερο του Git μέχρι και το 2010, ενώ από εκείνη τη χρονιά και έπειτα άρχισε και είχε πτωτική πορεία η οποία δεν έχει ανακάμψει για το προαναφερόμενο λογισμικό μέχρι και σήμερα. Σήμερα το de facto λογισμικό για τη διαχείριση του κώδικα είναι το Git και κυριαρχούν πλατφόρμες που υποστηρίζουν τη φιλοξενεία στο διαδίκτυο όπως το GitHub και το GitLab.
+Το διάγραμμα [@fig-vcs-trends] ξεκαθαρίζει ως κυρίαρχο εργαλείο για την διαχείριση των εκδόσεων (VCS) του κώδικά μας, το Git. Το Subversion (SVN) ήταν δημοφιλέστερο του Git μέχρι και το 2010, αλλά από τότε ακολούθησε πτωτική πορεία από την οποία δεν ανέκαμψε ποτέ. Σήμερα, το Git αποτελεί το de facto λογισμικό για τη διαχείριση του κώδικα και μαζί του κυριαρχούν πλατφόρμες που υποστηρίζουν τη φιλοξενεία κώδικα στο διαδίκτυο όπως το GitHub και το GitLab.
 
 
 ### Πλεονεκτήματα
 
 > Για ποιο λόγο να χρησιμοποιήσω ένα τέτοιο λογισμικό; 
 
-- Εύκολη μετάβαση σε προηγούμενες εκδόσεις του κώδικα
-- Εξοικονόμηση χρόνου, όταν μία νέα έκδοση παράγει σφάλματα
-- Διευκολύνει τη συνεργασία με άλλους προγραμματιστές, ειδικά μέσω πλατφορμών συνεργασίας όπως το GitHub
+- **Εύκολη επαναφορά:** Αν μια αλλαγή δημιουργήσει πρόβλημα, μπορούμε να επιστρέψουμε σε προηγούμενη (λειτουργική) έκδοση του κώδικα με μια εντολή
+- **Εξοικονόμηση χρόνου:** Αντί να ψάχνουμε χειροκίνητα για να διαπιστώσω τι δεν λειτουργεί, το Git μας υποδεικνύει ακριβώς τι άλλαξε και πότε
+- **Συνεργασία:** Διευκολύνει τη συνεργασία με άλλους προγραμματιστές, ειδικά μέσω πλατφορμών όπως το GitHub
 
 
 ### Αδυναμίες
 
 > Εντάξει, τα πλεονεκτήματα είναι σαφή. Υπάρχει όμως και άλλη μεριά;
 
-- Προσθέτουμε ένα νέο εργαλείο στη ροή της εργασίας μας
-- Απαιτεί κάποιο χρόνο για τη σωστή χρήση του
+- **Νέο εργαλείο:** Προσθέτει ένα ακόμα βήμα στη ροή της εργασίας μας και συνεπακόλουθα τη κάνει ελαφρώς πιο πολύπλοκλη
+- **Καμπύλη εκμάθησης:** Χρειάζεται να αφιερωθεί σημαντικός χρόνος για τη ν εξοικείωση μας με το Git, ιδίως για προχωρημένες λειτουργίες (branching, merging, rebasing). Ωστόσο, τα βασικά μαθαίνονται γρήγορα.
 
 
 ### Φιλοξενία κώδικα
 
-Αναφέραμε ήδη μερικά από τα πιο σημαντικά διαχείρισης κώδικα. Αυτά όμως τα προγράμματα έχουν ως σκοπό τη διαχείριση του κώδικα στην ίδια τη συσκευή. Αν θέλουμε να μοιραστούμε τον κώδικα θα πρέπει να τον αποθηκεύσουμε και να τον έχουμε διαθέσιμο κάπου διαδικτυακά. Οι πιο γνωστές υπηρεσίες φιλοξενίας κώδικα είναι το **GitHub**, το **GitLab** και το **Bitbucket**. Αν καμία από αυτές τις επιλογές , in case none of the options outlined earlier satisfy us, there is also the self-host solution. For example, if I had concerns about the terms of the above services, I could host [Gitea](https://gitea.io/en-us/) on my own server or even to rent a cloud server. That way I would have my own "GitHub", without depending on a third party service. 
+Αναφέραμε ήδη μερικά από τα πιο σημαντικά εργαλεία ελέγχου εκδόσεων κώδικα. Αυτά, όμως, διαχειρίζονται τον κώδικα τοπικά, στην δική μας συσκευή (του χρήστη - προγραμματιστή). Αν θέλουμε να μοιραστούμε τον κώδικα μας ή να συνεργαστούμε με άλλους, είναι απαραίτητη μία υπηρεσία φιλοξενίας του κώδικα στο διαδίκτυο. Οι πιο γνωστές υπηρεσίες φιλοξενίας κώδικα είναι το **GitHub**, το **GitLab** και το **Bitbucket**. 
+
+Αν καμία από αυτές τις επιλογές δεν μας ικανοποιεί (π.χ. ανησυχία σχετικά με τους όρους χρήσης τους), υπάρχει και η επιλογή να φιλοξενήσουμε τον κώδικα εμείς οι ίδιοι. Εργαλεία όπως το [Gitea](https://gitea.io/en-us/) μας δίνουν τη δυνατότητα να στήσουμε τη δική μας «πλατφόρμα» σε έναν δικό μας server. Με απλά λόγια ένα δικό μας GitHub, χωρίς εξάρτηση από τις προαναφερόμενες πλατφόρμες. Αυτή η επιλογή αν και ακούγεται καλή, στην πράξη είναι αρκετά σύνθετη και αποκόπτεσαι από τη μεγάλη πλειοψηφία των devs.
 
 ## Ρυθμίσεις του Git
 
+Αποφάσισες να χρησιμοποιήσεις το Git, ώστε να το δοκιμάσεις σε κάποια απλά project ή απλά να κρατάς αρχείο εκδόσεων για τις εργασίες σου; Είσαι σε καλό δρόμο. 
+
 ### Ορισμός ονόματος και email
 
-Αποφάσισες να χρησιμοποιήσεις το Git, ώστε να το δοκιμάσεις σε κάποια απλά project ή απλά να κρατάς αρχείο εκδόσεων για τις εργασίες σου; Είσαι σε καλό δρόμο. Όταν χρησιμοποιήσεις το Git για πρώτη φορά θα σου ζητήσει να θέσεις ένα όνομα και ένα email. Το Git δεν θα σου επιτρέψει να καταγράψεις τη σύνθεση - έκδοση του project σου προτού τα καθορίσεις. 
+Όταν χρησιμοποιήσεις το Git για πρώτη φορά θα σου ζητήσει να θέσεις ένα όνομα και ένα email. Χωρίς αυτά, δεν μας επιτρέπει να καταγράψουμε καμία αλλάγή. Αυτό συμβαίνει διότι κάθε «στιγμιότυπο» του κώδικά μας συνοδεύεται από τα στοιχεία αυτού που το δημιούργησε.
 
 ::: {.column-margin}
 ![Φωτογραφία του Linus Torvalds το 2018](images/linus.webp)
@@ -189,40 +193,40 @@ git config --global user.email your_email
 ```
 
 :::{.callout-note}
-Αν σχεδιάζεις να φιλοξενήσεις τον κώδικά σου στο GitHub, ίσως να έχει νόημα να κρύψεις τη προσωπική σου διεύθυνση email. Σε μία τέτοια περίπτωση το GitHub προσφέρει ένα `noreply` email προκειμένου να μην την εκθέτεις στο διαδίκτυο. Αν επιθυμείτε, μπορείτε να διαβάσετε περισσότερα για αυτό το θέμα [στον ακόλουθο σύνδεσμο](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address).
+Αν σχεδιάζεις να φιλοξενήσεις τον κώδικά σου στο GitHub, ίσως να έχει νόημα να κρύψεις τη προσωπική σου διεύθυνση email. Σε αυτήν την περίπτωση, το GitHub προσφέρει ένα *noreply* email προκειμένου να μην την εκτίθεται η πραγματική σου διεύθυνση στο διαδίκτυο. Αν επιθυμείτε, μπορείτε να διαβάσετε περισσότερα για αυτό το θέμα [στον ακόλουθο σύνδεσμο](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address).
 :::
 
-### Προτιμόμενο πρόγραμμα επεξεργασίας
+### Πρόγραμμα επεξεργασίας
 
-Γενικότερα το GIt
-A part that I considered a little bit hard is editing Git commits. By default, Ubuntu has installed Vim, so this was my first editor for my commits. I think this choice is good if you are writing short commit messages or you are acquainted with Vim options/shortcuts. In case you are in a hurry, the use of an alterantive (most familiar) IDE is justified. 
+Όταν γράφουμε μηνύματα commit (μήνυμα που εξηγεί τι είδους αλλαγές κάναμε), το Git ανοίγει ένα πρόγραμμα επεξεργασίας κειμένου. Σε πολλά συστήματα (π.χ. Ubuntu) η προεπιλογή είναι το Vim. Ο τελευταίος είναι αρκετά αξιόλογος editor, αλλά με απότομη καμπύλη εκμάθησης. Αν δεν είμαστε εξοικειωμένοι με τον προεπιλγμένο editor μπορούμε να τον αλλάξουμε σε κάποιον που μας είναι πιο γνώριμος.
 
 ```{.bash filename="Terminal"}
 git config --global core.editor "editor_name"
 ```
 
-Most notable is Visual Studio Code, which is the most popular IDE, according to [recent Stackoveflow's survey](https://insights.stackoverflow.com/survey/2021#section-most-popular-technologies-integrated-development-environment).
-
 | Editor     | Command | 
 | :---        |    :----:   |
-| Atom     | git config --global core.editor "atom --wait" |
-| Visual Studio Code   | git config --global core.editor "code --wait" |
+| Visual Studio Code   | `git config --global core.editor "code --wait"` |
+| Atom     | `git config --global core.editor "atom --wait"` |
+| Nano   | `git config --global core.editor "nano"` |
 
-### Προεπιλεγμένο όνομα 
+Το Visual Studio Code είναι σήμερα ο πιο δημοφιλής editor σύμφωνα με την [έρευνα προγραμματιστών του Stack Overflow](https://insights.stackoverflow.com/survey/2021#section-most-popular-technologies-integrated-development-environment), οπότε αποτελεί μία ασφαλή επιλογή αν δεν έχεις ιδιαίτερη προτίμηση.
 
-In October of 2020, GitHub [announced](https://github.blog/changelog/2020-10-01-the-default-branch-for-newly-created-repositories-is-now-main/) that will change the default name of initial branch from `master` to `main`. <br>
+### Προεπιλεγμένο όνομα κλαδου (branch)
+
+Τον Οκτώβριο του 2020, το GitHub [ανακοίνωσε](https://github.blog/changelog/2020-10-01-the-default-branch-for-newly-created-repositories-is-now-main/) ότι αλλάζει το προεπιλεγμένο όνομα του αρχικού κλάδου (branch) από `master` σε `main`.
 
 > The default branch name for new repositories is now main. <br>
       [GitHub.blog - October 1,2020]{style="float:right"}
 
-Therefore, it would be good to make this change in our local environment as well, as follows :
+Καλό είναι να κάνουμε την ίδια αλλαγή και τοπικά, ώστε να υπάρχει συνέπεια:
 
 ```{.bash filename="Terminal"}
 git config --global init.defaultBranch main
 ```
 
 
-### Merge method
+### Μέθοδος συγχώνευσης (merge)
 
 One change that is not exactly necessary but helps me is to change the defaults regarding merge. Let's say that I want to add a new feature in my application. Most of the times I will make a branch on which I will start developing my new feature. When I implement this function and I'm ready to merge my changes into the main code there are two situations.
 

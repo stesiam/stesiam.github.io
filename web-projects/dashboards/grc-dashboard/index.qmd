@@ -1,0 +1,99 @@
+---
+title: "Greece Dashboard"
+description: "A dashboard for vital characteristics of Greece"
+
+image: ../../../assets/images/grc_map.webp
+image-alt: "A black-and-white image of two elderly people's hands"
+
+badges:
+  - label: R
+    class: bg-primary
+  - label: Shiny
+    class: bg-success
+
+appText: "Read article"
+
+links:
+  - url: https://stesiam.shinyapps.io/AgeingDashboard
+    icon: bi-globe
+    text: App
+
+toc: true
+toc-location: left
+comments: false
+lang: en
+order: 1
+---
+
+:::{.d-flex .flex-column .flex-sm-row .justify-content-center .gap-3 .align-items-center .justify-content-center .p-2}
+```{=html}
+<div><a href="https://stesiam.shinyapps.io/AgeingDashboard" class="btn btn-primary btn-md"><i class="bi bi-globe"></i> App</a></div>
+<div><a href="https://github.com/stesiam/AgeingDashboard" class="btn btn-primary btn-md"><i class="bi bi-github"></i> Repository</a></div>
+<div><a href="https://hub.docker.com/r/stesiam/ageing-dashboard" class="btn btn-primary btn-md"><i class="bi bi-box"></i> Dockerhub</a></div>
+```
+:::
+
+::: {.text-center .lh-lg}
+<i class="bi bi-code-slash"></i> `Programming Language`: R <br>
+<i class="bi bi-code-slash"></i> `Tech Stack`: R + Shiny <br>
+<i class="bi bi-braces"></i> `Software`: dplyr, tidyr, rvest <br>
+<i class="bi bi-database"></i> `Dataset`: World Bank <br>
+<i class="bi bi-translate"></i> `Language`:  🇬🇧  / 🇬🇷 <br>
+<i class="bi bi-activity"></i> `Status`: Online - Running
+:::
+
+## Εισαγωγή
+
+Η εφαρμογή `Ageing Dashboard` είναι στη ουσία μία εφαρμογή - ταμπλό (dashboard) που προσπαθεί να απαντήσει στο ερώτημα της γήρανσης του πληθυσμού. Η γήρανση είναι δεδομένη και μία πρόκληση που όλα τα κράτη ήδη αντιμετωπίζουν ή θα κληθούν να δώσουν απαντήσεις στις επόμενες δεκαετίες. Αυτή η εφαρμογή έχει ως στόχο να αναδείξει τον ρυθμό της γήρανσης ιστορικά, αλλά να μελετήσουμε και τις προβλέψεις.
+
+
+## Χαρακτηριστικά
+
+Στην εφαρμογή μπορεί κάποιον να μελετήσει ανά χώρα:
+
+- Προσδόκιμο ζωής
+- Συνολικός δείκτης γονιμότητας (TFR)
+- Πληθυσμός
+- Μεταβολή προαναφερόμενων τιμών (10ετία, 20ετία, 50ετία)
+- Καθορισμό έτους για να μελετήσω προαναφερόμενες τιμές (από το 1810 εώς και το έτος 2060)
+- Παγκόσμιος χάρτης που δείχνει την διαχρονική και ανά κράτος μεταβολή
+
+Εκτός από αυτά υπάρχει και μία πειραματική - όχι λειτουργικά σωστή εξαγωγή δεδομένων σε pdf. Δηλαδή ανάλογα τις τιμές της χώρας που θέτεις και του έτους μπορείς να εξάγεις ένα αρχείο pdf το οποίο θα σου αναφέρει τους βασικούς δείκτες γήρανσης μιας χώρας και με τη μορφή διαγραμμάτων την ιστορική εξέλιξη αυτών.
+
+Τέλος, η εφαρμογή υποστηρίζει σκοτεινή ή φωτεινή λειτουργία, ώστε να επιλέγει ο χρήστης της εφαρμογής τη μορφή που του είναι πιο βολική
+
+
+## Εργαλεία
+
+Όλη η εφαρμογή έχει βασιστεί στη γλώσσα προγραμματισμού R. Πιο συγκεκριμένα, δουλεύω με το Shiny που είναι ο πιο διαδεδομένος τρόπος να δημιουργήσεις εφαρμογή (web-app) στην R. Το Shiny αναλαμβάνει τόσο το frontend, όσο και το backend. Η εμφάνιση της εφαρμογής (frontend) βασίζεται σε απλές εντολές που απλοποιούν την μορφοποίηση της εφαρμογής, αντί να. 
+
+Η R από μόνη της δεν είναι αρκετή και για αυτό έχουν χρησιμοποιηθεί αρκετά πακέτα για να συμπεριλάβουμε βασικές λειτουργίες στην εφαρμογή, όπως:
+
+- 
+
+
+
+
+## Φιλοξενία Ιστοσελίδας
+
+Για να γίνει διαθέσιμη η εφαρμογή σε όλους θα έπρεπε να φιλοξενηθεί σε κάποιον διακομιστή (server). Δεδομένης της ερασιτεχνικής χρήσης της δεν κρίνεται απαραίτητη η φιλοξενία της σε κάποιον εξειδικευμένο σέρβερ. Για να μειωθούν τα κόστη διατήρησης της εφαρμογής έχει επιλεγεί το shinyapps.io, 
+
+```{mermaid}
+flowchart LR
+    User["User <br> <span style='font-size:1em'>(Browser)</span>"]
+    Site["Ageing Dashboard  <br> <span style='font-size:1em'>(Web App)</span>"]
+    Host["shinyapps.io <br>  <span style='font-size:1em'>(Hosting Platform)</span>"]
+
+    User --> Site --> Host
+```
+
+
+
+## Μελλοντικά πλάνα
+
+Η εφαρμογή ως επί το πλείστον είναι λειτουργική, αλλά έχουν παρατηρηθεί κάποια βασικά λάθη που πρέπει να διορθωθούν στο επόμενο διάστημα.
+
+- Οι χώρες δεν εμφανίζονται με αλφαβητική σειρά
+- Τα γραφήματα δείχνουν τα labels ενώ δεν χρειάζεται (γιατί αναφέρεται στον τίτλο της κάρτας)
+- Η εφαρμογή να είναι δίγλωσση (Υποστήριξη ελληνικής γλώσσας)
+
