@@ -179,10 +179,8 @@ unempl_raw <- eurostat::get_eurostat("une_rt_a", time_format = "num") %>%
   drop_na(values)
 ```
 
-::: {layout-ncol=2}
 ```{r}
-#| label: fig-unempl-gender-el
-#| fig-cap: "Ελλάδα"
+#| label: unempl-gender-mixed
 #| message: false
 #| warning: false
 #| echo: false
@@ -196,8 +194,42 @@ unempl_el <- unempl_raw %>%
     rate = round(rate, 1)
   )
 
+unempl_eu_avg <- unempl_raw %>%
+  filter(geo == "EU27_2020") %>%
+  select(sex, TIME_PERIOD, values) %>%
+  rename(year = TIME_PERIOD, rate = values) %>%
+  mutate(
+    sex = recode(sex, "M" = "Άνδρες", "F" = "Γυναίκες"),
+    rate = round(rate, 1)
+  )
+```
+
+
+
+```{r}
+#| label: fig-unempl-gender
+#| fig-cap: "Ποσοστό ανεργίας ανά φύλο"
+#| fig-subcap:
+#|   - "Ελλάδα"
+#|   - "Μ.Ο. ΕΕ-27 (Προσοχή: διαφορετική κλίμακα)"
+#| fig-alt:
+#|   - "Γράφημα γραμμής. Η γυναικεία ανεργία στην Ελλάδα ξεκινά κοντά στο 17% το 1998 και φτάνει στο 31% το 2013, πριν υποχωρήσει κοντά στο 14%. Η ανδρική ανεργία ακολουθεί παρόμοια πορεία αλλά σε χαμηλότερα επίπεδα."
+#|   - "Γράφημα γραμμής. Στον μέσο όρο της ΕΕ, η ανεργία ανδρών και γυναικών κυμαίνεται μεταξύ 6% και 11%, με πολύ μικρή διαφορά μεταξύ τους."
+#| layout-ncol: 2
+#| message: false
+#| warning: false
+#| echo: false
+
+# Chart 1: Ελλάδα
 highchart() %>%
-  hc_chart(type = "line") %>%
+  hc_chart(
+    type = "line",
+    accessibility = list(
+      enabled = TRUE,
+      description = "Ανεργία ανδρών και γυναικών στην Ελλάδα. Η γυναικεία ανεργία είναι σταθερά υψηλότερη.",
+      landmarkVerbosity = "one"
+    )
+  ) %>%
   hc_colors(c("#1f77b4", "#e15759")) %>%
   hc_add_series(
     data = unempl_el, type = "line",
@@ -210,26 +242,17 @@ highchart() %>%
   hc_yAxis(title = list(text = "Ανεργία (%)"), max = 35) %>%
   hc_tooltip(shared = TRUE, valueSuffix = " %", valueDecimals = 1) %>%
   hc_legend(align = "center", verticalAlign = "bottom", layout = "horizontal")
-```
 
-```{r}
-#| label: fig-unempl-gender-eu
-#| fig-cap: "Μ.Ο. ΕΕ-27 (Προσοχή: διαφορετική κλίμακα y-άξονα)"
-#| message: false
-#| warning: false
-#| echo: false
-
-unempl_eu_avg <- unempl_raw %>%
-  filter(geo == "EU27_2020") %>%
-  select(sex, TIME_PERIOD, values) %>%
-  rename(year = TIME_PERIOD, rate = values) %>%
-  mutate(
-    sex = recode(sex, "M" = "Άνδρες", "F" = "Γυναίκες"),
-    rate = round(rate, 1)
-  )
-
+# Chart 2: ΕΕ
 highchart() %>%
-  hc_chart(type = "line") %>%
+  hc_chart(
+    type = "line",
+    accessibility = list(
+      enabled = TRUE,
+      description = "Ανεργία ανδρών και γυναικών στον μέσο όρο της ΕΕ. Η διαφορά είναι ελάχιστη.",
+      landmarkVerbosity = "one"
+    )
+  ) %>%
   hc_colors(c("#1f77b4", "#e15759")) %>%
   hc_add_series(
     data = unempl_eu_avg, type = "line",
@@ -243,8 +266,6 @@ highchart() %>%
   hc_tooltip(shared = TRUE, valueSuffix = " %", valueDecimals = 1) %>%
   hc_legend(align = "center", verticalAlign = "bottom", layout = "horizontal")
 ```
-
-:::
 
 ::: {.callout-note collapse="true"}
 #### Πίνακας δεδομένων: Ανεργία ανά φύλο (Ελλάδα & Μ.Ο. ΕΕ)
