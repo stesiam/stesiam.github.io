@@ -38,113 +38,6 @@ editor_options:
 
 ## Εισαγωγή
 
-Η αναζήτηση εργασίας είναι το επόμενο βήμα στη ζωή ενός πρόσφατου απόφοιτου. Έτσι και εγώ έχω ξεκινήσει εδώ και κάμποσο καιρό να αναζητώ μία εργασία. Αυτό το διάστημα που έμπαινα σε σχετικές πλατφόρμες σε καθημερινή βάση παρατηρούσα έναν σημαντικό αριθμό αγγελιών οι οποίες έθεταν αρκετά αμφιλεγόμενους όρους. Από τη μία μεριά μπορεί κάποιος να ισχυριστεί ότι μπορεί ο εκάστοτε εργοδότης να θέτει τις δικές του προϋποθέσεις για το προσωπικό που θα απαρτίζει την επιχείρησή του. Αυτό είναι απολύτως λογικό. Το πρόβλημα ξεκινάει όταν υπάρχουν όροι το προσωπικό μας να έχει κάποιο συγκεκριμένα χαρακτηριστικά τα οποία είναι έμφυτα, γεννιόμαστε με αυτά και (ως επί το πλείστον) δεν μπροούμε να τα αλλάξουμε. Φύλο, εθνικότητα, ηλικία ή ακόμα και γονίδια «ομορφιάς» είνα μερικές σχετικές απαιτήσεις που θα διαβάσουμε σε αρκετές αγγελίες. Προφανώς τα παραπάνω αποτελούν σοβαρές μορφές διακρίσεων οι οποίες κυριαρχούν ακόμα και σήμερα.
-
-Αυτή η αρχική εντύπωση υποστηρίζεται και από τα στατιστικά στοιχεία. Ας ερευνήσουμε το φαινόμενο διακρίσεων φύλου το οποίο είναι και ιδιαίτερα εκτεταμένο. Για αυτό το σκοπό θα αναζητήσουμε τα ποσοστά ανεργίας μεταξύ των φύλων και θα διαπιστώσουμε μία διαχρονική και συνεχιζόμενη μέχρι και σήμερα υψηλότερη ανεργία των γυναικών έναντι των ανδρών. Από το 1998 ποτέ ο δείκτης ανεργίας του εργατικού δυναμικού των γυναικών δεν ήταν σε ίδια επίπεδα. Παρά την αρνητική εικόνα του δείκτη παρατηρείται ότι από το 1998, όπου η διαφορά στην ανεργία μεταξύ των φύλων ήταν στο 10% σταδιακά αυτό το χάσμα αρχίζει να μειώνεται. Πλέον, το 2025 αυτή η διαφορά έχει πέσει στο 4\% όπου είναι ενα αισιόδοξο σημάδι αλλά συνάμα μία υπενθύμιση για την ύπαρξη ενός δυσάρεστου φαινομένου προκαταλήψεων και μη ισότιμης ευκαιρίας και στα δύο φύλα.
-
-
-```{r}
-#| message: false
-#| warning: false
-library(readr)
-library(dplyr)
-library(lubridate)
-library(highcharter)
-unempl_gender_eu_grc <- read_csv("unempl_gender_eu_grc.csv") %>% 
-  select(sex, geo, TIME_PERIOD, OBS_VALUE) %>%
-  dplyr::filter(geo == "EL") %>%
-  dplyr::mutate(TIME_PERIOD = lubridate::ym(TIME_PERIOD)) %>%
-  dplyr::mutate(year = year(TIME_PERIOD)) %>%
-  group_by(sex, year) %>%
-  summarise(mean = mean(OBS_VALUE)) %>%
-  mutate(mean = round(mean, 1)) %>%
-  mutate(
-    sex = recode(sex,
-                 "M" = "Άνδρες",
-                 "F" = "Γυναίκες")
-  )
-
-
-
-highchart() %>%
-  hc_chart(
-    type = "line"
-  ) %>%
-  
-  # Custom colors (professional palette)
-  hc_colors(c("#1f77b4","#e15759")) %>%
-  
-  # Data
-  hc_add_series(
-    data = unempl_gender_eu_grc,
-    type = "line",
-    hcaes(x = year, y = mean, group = sex),
-    marker = list(
-      enabled = TRUE,
-      radius = 4
-    ),
-    lineWidth = 3
-  ) %>%
-  
-  # Titles
-  hc_title(
-    text = "Ποσοστό ανεργίας ανά φύλο",
-    style = list(fontSize = "18px", fontWeight = "bold")
-  ) %>%
-  
-  hc_subtitle(
-    text = "Διαχρονική σύγκριση ανεργίας στην Ελλάδα (1998 - 2025)"
-  ) %>%
-  
-  # Axes
-  hc_xAxis(
-    title = list(text = "Year"),
-    tickLength = 0,
-    gridLineWidth = 0
-  ) %>%
-  
-  hc_yAxis(
-    title = list(text = "Ανεργία (%)"),
-    gridLineDashStyle = "Dash",
-    gridLineColor = "#e6e6e6"
-  ) %>%
-  
-  # Tooltip styling
-  hc_tooltip(
-    shared = TRUE,
-    crosshairs = TRUE,
-    valueDecimals = 2,
-    backgroundColor = "rgba(255,255,255,0.95)",
-    borderRadius = 8,
-    valueSuffix = " %"
-  ) %>%
-  
-  # Legend styling
-  hc_legend(
-    align = "center",
-    verticalAlign = "bottom",
-    layout = "horizontal",
-    itemStyle = list(fontWeight = "bold")
-  ) %>%
-  
-  # Smooth animation
-  hc_plotOptions(
-    series = list(
-      animation = list(duration = 800),
-      states = list(
-        hover = list(
-          lineWidthPlus = 1
-        )
-      )
-    )
-  )
-
-```
-
-
-
-
-
 ```{r}
 #| label: import_r_libs
 #| title: "Εισαγωγή R πακέτων"
@@ -153,13 +46,18 @@ highchart() %>%
 
 library(readr)
 library(dplyr)
-library(forcats)
 library(stringr)
 library(stringi)
+library(tidyr)
+library(forcats)
 library(lubridate)
 library(highcharter)
-```
+library(eurostat)
 
+data = readr::read_csv("https://github.com/stesiam/scraping-job-postings-xe/releases/download/v1.2/job-posts.csv")
+data = data %>%
+  select(spc, type, wage, loc, exp, descr, p_date)
+```
 
 ```{r}
 #| label: write_bibliography
@@ -179,20 +77,10 @@ options(
 )
 ```
 
-
 ```{r}
-#| label: import_dataset
-#| title: "Εισαγωγή δεδομένων"
-#| message: false
-#| warning: false
+#| label: clean_data
+#| include: false
 
-data = readr::read_csv("https://github.com/stesiam/scraping-job-postings-xe/releases/download/v1.2/job-posts.csv")
-data = data %>%
-  select(spc, type, wage, loc, exp, descr, p_date)
-```
-
-
-```{r}
 months_gr <- c(
     "Ιανουαριου" = "January",
     "Φεβρουαριου" = "February",
@@ -241,15 +129,14 @@ clean_data = data %>%
   relocate(exp, .after = contractType) %>%
   mutate(
         date = p_date %>%
-            str_remove("^[^ ]+\\s+") %>%     # remove weekday
-            str_to_lower() %>%               # lowercase
+            str_remove("^[^ ]+\\s+") %>%
+            str_to_lower() %>%
             stringi::stri_trans_general("NFD; [:Nonspacing Mark:] Remove; NFC") %>% 
-            str_replace_all(months_gr) %>%   # translate months
+            str_replace_all(months_gr) %>%
             str_squish() %>%
             dmy()
     ) %>%
   select(-p_date)
-
 
 clean_data = clean_data %>%
   mutate(
@@ -259,74 +146,468 @@ clean_data = clean_data %>%
 ))
 ```
 
+Η αναζήτηση εργασίας είναι το επόμενο βήμα στη ζωή ενός πρόσφατου απόφοιτου. Έτσι και εγώ έχω ξεκινήσει εδώ και κάμποσο καιρό να αναζητώ μία εργασία. Αυτό το διάστημα που έμπαινα σε σχετικές πλατφόρμες σε καθημερινή βάση παρατηρούσα έναν σημαντικό αριθμό αγγελιών οι οποίες έθεταν αρκετά αμφιλεγόμενους όρους. Από τη μία μεριά μπορεί κάποιος να ισχυριστεί ότι μπορεί ο εκάστοτε εργοδότης να θέτει τις δικές του προϋποθέσεις για το προσωπικό που θα απαρτίζει την επιχείρησή του. Αυτό είναι απολύτως λογικό. Το πρόβλημα ξεκινάει όταν υπάρχουν όροι το προσωπικό μας να έχει κάποιο συγκεκριμένα χαρακτηριστικά τα οποία είναι έμφυτα, γεννιόμαστε με αυτά και (ως επί το πλείστον) δεν μπορούμε να τα αλλάξουμε. Φύλο, εθνικότητα, ηλικία ή ακόμα και γονίδια «ομορφιάς» είναι μερικές σχετικές απαιτήσεις που θα διαβάσουμε σε αρκετές αγγελίες. Προφανώς τα παραπάνω αποτελούν σοβαρές μορφές διακρίσεων οι οποίες κυριαρχούν ακόμα και σήμερα.
 
-## Περιγραφικά στοιχεία
+Αυτή η αρχική εντύπωση υποστηρίζεται και από τα στατιστικά στοιχεία. Οι διακρίσεις στην αγορά εργασίας δεν αφορούν μόνο μεμονωμένες αγγελίες, αλλά αντικατοπτρίζονται σε δομικές ανισότητες που καταγράφονται συστηματικά σε ευρωπαϊκό επίπεδο. Σύμφωνα με τη Eurostat, στην Ελλάδα τρεις κατηγορίες πληθυσμού αντιμετωπίζουν σταθερά δυσμενέστερους όρους στην αγορά εργασίας: οι γυναίκες, τα άτομα με αναπηρία και οι αλλοδαποί. Ας εξετάσουμε καθεμία ξεχωριστά.
 
+### Χάσμα φύλου στην απασχόληση
+
+Ας ξεκινήσουμε με τις διαφορές μεταξύ φύλων, οι οποίες αποτελούν ίσως τη πιο διαδεδομένη μορφή εργασιακής ανισότητας. Θα αναζητήσουμε τα ποσοστά ανεργίας ανά φύλο και θα διαπιστώσουμε μία διαχρονική και συνεχιζόμενη μέχρι και σήμερα υψηλότερη ανεργία των γυναικών έναντι των ανδρών. Από το 1998, η ανεργία μεταξύ γυναικών δεν κατέβηκε ποτέ στα ίδια επίπεδα με αυτή των ανδρών. Ωστόσο, υπάρχει μια θετική τάση: η διαφορά μεταξύ των δύο φύλων έχει μειωθεί σταδιακά, από περίπου 10 ποσοστιαίες μονάδες το 1998 σε περίπου 4 ποσοστιαίες μονάδες σήμερα.
+
+Αξίζει να σταθούμε στο τι συνέβη κατά τη διάρκεια της κρίσης. Μεταξύ 2010 και 2013, η ανεργία εκτοξεύτηκε και για τα δύο φύλα, αλλά το ενδιαφέρον είναι ότι η ψαλίδα μεταξύ ανδρών και γυναικών *στένεψε*. Αυτό δεν συνέβη επειδή βελτιώθηκε η θέση των γυναικών, αλλά επειδή η ανδρική ανεργία αυξήθηκε ραγδαία, ιδίως σε κλάδους όπως η οικοδομή και η μεταποίηση που πλήττονται πρώτοι σε περιόδους ύφεσης. Μετά το 2013, καθώς η οικονομία ανέκαμψε, η ψαλίδα άρχισε πάλι να ανοίγει ελαφρά, υπενθυμίζοντας ότι η σύγκλιση στα χρόνια της κρίσης ήταν εν μέρει πλασματική.
+
+Πέρα από τα ποσοστά ανεργίας, η Ελλάδα εμφανίζει ένα από τα μεγαλύτερα χάσματα φύλου στην απασχόληση σε ολόκληρη την ΕΕ. Το 2024, η διαφορά στο ποσοστό απασχόλησης μεταξύ ανδρών και γυναικών ήταν 18,8 ποσοστιαίες μονάδες, η δεύτερη μεγαλύτερη στην Ένωση, αμέσως μετά την Ιταλία. Αντίθετα, σε χώρες όπως η Φινλανδία, η Λιθουανία και η Εσθονία, η διαφορά κυμαίνεται κάτω από 3 ποσοστιαίες μονάδες.
+
+```{r}
+#| label: fetch-unemployment-data
+#| include: false
+#| message: false
+#| warning: false
+
+# Κατεβάζουμε ολόκληρο το dataset μία φορά (bulk download)
+# ώστε να έχουμε πλήρη σειρά από 1998 και να αποφύγουμε διπλά downloads
+unempl_raw <- eurostat::get_eurostat("une_rt_a", time_format = "num") %>%
+  filter(age == "Y15-74", sex %in% c("M", "F"), unit == "PC_ACT") %>%
+  drop_na(values)
+```
+
+::: {layout-ncol=2}
+```{r}
+#| label: fig-unempl-gender-el
+#| fig-cap: "Ελλάδα"
+#| message: false
+#| warning: false
+#| echo: false
+
+unempl_el <- unempl_raw %>%
+  filter(geo == "EL") %>%
+  select(sex, TIME_PERIOD, values) %>%
+  rename(year = TIME_PERIOD, rate = values) %>%
+  mutate(
+    sex = recode(sex, "M" = "Άνδρες", "F" = "Γυναίκες"),
+    rate = round(rate, 1)
+  )
+
+highchart() %>%
+  hc_chart(type = "line") %>%
+  hc_colors(c("#1f77b4", "#e15759")) %>%
+  hc_add_series(
+    data = unempl_el, type = "line",
+    hcaes(x = year, y = rate, group = sex),
+    marker = list(enabled = TRUE, radius = 3), lineWidth = 2
+  ) %>%
+  hc_title(text = "Ανεργία ανά φύλο - Ελλάδα",
+           style = list(fontSize = "15px", fontWeight = "bold")) %>%
+  hc_xAxis(title = list(text = "")) %>%
+  hc_yAxis(title = list(text = "Ανεργία (%)"), max = 35) %>%
+  hc_tooltip(shared = TRUE, valueSuffix = " %", valueDecimals = 1) %>%
+  hc_legend(align = "center", verticalAlign = "bottom", layout = "horizontal")
+```
+
+```{r}
+#| label: fig-unempl-gender-eu
+#| fig-cap: "Μ.Ο. ΕΕ-27 (Προσοχή: διαφορετική κλίμακα y-άξονα)"
+#| message: false
+#| warning: false
+#| echo: false
+
+unempl_eu_avg <- unempl_raw %>%
+  filter(geo == "EU27_2020") %>%
+  select(sex, TIME_PERIOD, values) %>%
+  rename(year = TIME_PERIOD, rate = values) %>%
+  mutate(
+    sex = recode(sex, "M" = "Άνδρες", "F" = "Γυναίκες"),
+    rate = round(rate, 1)
+  )
+
+highchart() %>%
+  hc_chart(type = "line") %>%
+  hc_colors(c("#1f77b4", "#e15759")) %>%
+  hc_add_series(
+    data = unempl_eu_avg, type = "line",
+    hcaes(x = year, y = rate, group = sex),
+    marker = list(enabled = TRUE, radius = 3), lineWidth = 2
+  ) %>%
+  hc_title(text = "Ανεργία ανά φύλο - Μ.Ο. ΕΕ",
+           style = list(fontSize = "15px", fontWeight = "bold")) %>%
+  hc_xAxis(title = list(text = "")) %>%
+  hc_yAxis(title = list(text = "Ανεργία (%)")) %>%
+  hc_tooltip(shared = TRUE, valueSuffix = " %", valueDecimals = 1) %>%
+  hc_legend(align = "center", verticalAlign = "bottom", layout = "horizontal")
+```
+
+:::
+
+::: {.callout-note collapse="true"}
+#### Πίνακας δεδομένων: Ανεργία ανά φύλο (Ελλάδα & Μ.Ο. ΕΕ)
+
+```{r}
+#| label: tbl-unempl-gender-accessible
+#| echo: false
+#| message: false
+
+# Πίνακας προσβασιμότητας για τα δύο γραφήματα
+unempl_accessible <- unempl_raw %>%
+  filter(geo %in% c("EL", "EU27_2020")) %>%
+  select(geo, sex, TIME_PERIOD, values) %>%
+  mutate(
+    geo = recode(geo, "EL" = "Ελλάδα", "EU27_2020" = "Μ.Ο. ΕΕ"),
+    sex = recode(sex, "M" = "Άνδρες", "F" = "Γυναίκες"),
+    values = round(values, 1)
+  ) %>%
+  pivot_wider(names_from = c(geo, sex), values_from = values,
+              names_sep = " - ") %>%
+  rename(Έτος = TIME_PERIOD) %>%
+  arrange(Έτος)
+
+gt_custom(unempl_accessible, head_max = Inf, use_labels = FALSE)
+```
+:::
+
+Το κλείσιμο της ψαλίδας που βλέπουμε στο αριστερό γράφημα αποτελεί θετική εξέλιξη, αλλά αν το συγκρίνουμε με τον μέσο όρο της ΕΕ (δεξιά), γίνεται φανερό ότι η Ελλάδα ξεκίνησε από πολύ χειρότερη αφετηρία. Στην ΕΕ, η διαφορά μεταξύ ανδρικής και γυναικείας ανεργίας κυμαίνεται σταθερά κάτω από 1 ποσοστιαία μονάδα τα τελευταία χρόνια, ενώ στην Ελλάδα παραμένει κοντά στις 4. Με άλλα λόγια, ακόμα κι αν η τάση είναι σωστή, ο ρυθμός σύγκλισης είναι αργός.
+
+Πώς όμως τοποθετείται η Ελλάδα σε σχέση με τις υπόλοιπες χώρες της ΕΕ; Το παρακάτω γράφημα δείχνει τη διαφορά ανεργίας μεταξύ γυναικών και ανδρών (σε ποσοστιαίες μονάδες) για κάθε κράτος μέλος. Θετικές τιμές σημαίνουν ότι η ανεργία των γυναικών υπερβαίνει αυτή των ανδρών, ενώ αρνητικές τιμές υποδηλώνουν το αντίστροφο.
+
+```{r}
+#| label: fig-gender-gap-eu
+#| fig-cap: "Χάσμα ανεργίας φύλου σε χώρες ΕΕ (γυναίκες - άνδρες, π.μ.)"
+#| message: false
+#| warning: false
+#| echo: false
+
+eu27 <- c("AT","BE","BG","CY","CZ","DE","DK","EE","EL","ES",
+          "FI","FR","HR","HU","IE","IT","LT","LU","LV","MT",
+          "NL","PL","PT","RO","SE","SI","SK")
+
+country_names_gr <- c(
+  AT = "Αυστρία", BE = "Βέλγιο", BG = "Βουλγαρία", CY = "Κύπρος",
+  CZ = "Τσεχία", DE = "Γερμανία", DK = "Δανία", EE = "Εσθονία",
+  EL = "Ελλάδα", ES = "Ισπανία", FI = "Φινλανδία", FR = "Γαλλία",
+  HR = "Κροατία", HU = "Ουγγαρία", IE = "Ιρλανδία", IT = "Ιταλία",
+  LT = "Λιθουανία", LU = "Λουξεμβούργο", LV = "Λετονία", MT = "Μάλτα",
+  NL = "Ολλανδία", PL = "Πολωνία", PT = "Πορτογαλία", RO = "Ρουμανία",
+  SE = "Σουηδία", SI = "Σλοβενία", SK = "Σλοβακία"
+)
+
+unempl_eu_gap <- unempl_raw %>%
+  filter(geo %in% eu27) %>%
+  group_by(geo) %>%
+  filter(TIME_PERIOD == max(TIME_PERIOD)) %>%
+  ungroup() %>%
+  select(geo, sex, values) %>%
+  pivot_wider(names_from = sex, values_from = values) %>%
+  mutate(
+    gap = round(F - M, 1),
+    country = recode(geo, !!!country_names_gr),
+    color = if_else(geo == "EL", "#e15759", "#1f77b4")
+  ) %>%
+  arrange(gap)
+
+highchart() %>%
+  hc_chart(type = "bar") %>%
+  hc_add_series(
+    data = unempl_eu_gap,
+    type = "bar",
+    hcaes(x = country, y = gap, color = color),
+    name = "Διαφορά (π.μ.)",
+    showInLegend = FALSE
+  ) %>%
+  hc_xAxis(
+    categories = unempl_eu_gap$country,
+    title = list(text = "")
+  ) %>%
+  hc_yAxis(
+    title = list(text = "Διαφορά ανεργίας φύλου (π.μ.)"),
+    plotLines = list(
+      list(value = 0, color = "#333", width = 1.5, dashStyle = "Dash")
+    )
+  ) %>%
+  hc_title(
+    text = "Διαφορά ανεργίας μεταξύ γυναικών και ανδρών",
+    style = list(fontSize = "18px", fontWeight = "bold")
+  ) %>%
+  hc_subtitle(
+    text = "Πηγή: Eurostat (une_rt_a). Θετικές τιμές = υψηλότερη γυναικεία ανεργία"
+  ) %>%
+  hc_tooltip(
+    valueSuffix = " π.μ.", valueDecimals = 1,
+    pointFormat = "<b>{point.country}</b>: {point.y} π.μ.<br/>Γυν: {point.F}% | Ανδ: {point.M}%"
+  ) %>%
+  hc_plotOptions(
+    series = list(animation = list(duration = 800))
+  )
+```
+
+::: {.callout-note collapse="true"}
+#### Πίνακας δεδομένων: Διαφορά ανεργίας φύλου ανά χώρα
+
+```{r}
+#| label: tbl-gender-gap-eu-accessible
+#| echo: false
+#| message: false
+
+unempl_eu_gap %>%
+  select(country, M, F, gap) %>%
+  rename(
+    Χώρα = country,
+    `Άνδρες (%)` = M,
+    `Γυναίκες (%)` = F,
+    `Διαφορά (π.μ.)` = gap
+  ) %>%
+  arrange(desc(`Διαφορά (π.μ.)`)) %>%
+  gt_custom(head_max = Inf, use_labels = FALSE)
+```
+:::
+
+Στο γράφημα παρατηρούμε ότι η Ελλάδα (με κόκκινο) βρίσκεται σταθερά στις πρώτες θέσεις, μαζί με την Ισπανία και την Ιταλία. Δεν είναι τυχαίο ότι πρόκειται για μεσογειακές χώρες με παρόμοια πολιτισμικά χαρακτηριστικά: ισχυρός ρόλος της οικογένειας, περιορισμένη δημόσια παιδική μέριμνα, και παραδοσιακά πρότυπα καταμερισμού εργασίας στο νοικοκυριό. Από την άλλη πλευρά, χώρες της Βαλτικής και της Σκανδιναβίας εμφανίζουν μηδενική ή ακόμα και αρνητική διαφορά (δηλαδή χαμηλότερη γυναικεία ανεργία), κάτι που συνδέεται με εκτεταμένα δίκτυα παιδικής φροντίδας, γονική άδεια και για τους δύο γονείς, καθώς και πολιτικές ισότητας που εφαρμόζονται εδώ και δεκαετίες.
+
+Ένα ακόμα σημείο που αξίζει σχολιασμού: σε αρκετές ανατολικοευρωπαϊκές χώρες (Λετονία, Εσθονία, Λιθουανία), η γυναικεία ανεργία είναι *χαμηλότερη* από την ανδρική. Αυτό εξηγείται εν μέρει από τη δομή της οικονομίας τους, όπου κλάδοι με υψηλή ανδρική απασχόληση (βιομηχανία, κατασκευές) είναι πιο ευάλωτοι σε κυκλικές διακυμάνσεις.
+
+
+### Άτομα με αναπηρία: εκτός αγοράς εργασίας
+
+Μία ακόμα κατηγορία πληθυσμού που βρίσκεται σε ιδιαίτερα μειονεκτική θέση στην αγορά εργασίας είναι τα άτομα με αναπηρία. Τα στοιχεία της Eurostat για το 2024 αποκαλύπτουν μια δυσοίωνη εικόνα: στην Ελλάδα, περίπου τα τρία τέταρτα (75,7%) των ατόμων με αναπηρία ηλικίας 15 ως 64 ετών βρίσκονται εκτός εργατικού δυναμικού. Το ποσοστό αυτό είναι σχεδόν 1,7 φορές μεγαλύτερο από τον μέσο όρο της ΕΕ (44,5%), τοποθετώντας τη χώρα στις τρεις χειρότερες θέσεις πανευρωπαϊκά, μαζί με τη Βουλγαρία και τη Ρουμανία.
+
+Το πρόβλημα δεν σταματά εκεί. Ακόμα και για όσα άτομα με αναπηρία αναζητούν ενεργά εργασία, η πιθανότητα να παγιδευτούν σε μακροχρόνια ανεργία είναι δυσανάλογα υψηλή. Στην Ελλάδα, το 66,2% των ανέργων ατόμων με αναπηρία αναζητά εργασία για πάνω από ένα έτος. Ο αντίστοιχος ευρωπαϊκός μέσος όρος είναι 40,6%. Σε ευρωπαϊκό επίπεδο, το χάσμα απασχόλησης μεταξύ ατόμων με και χωρίς αναπηρία ανέρχεται σε 24 ποσοστιαίες μονάδες.
+
+Πίσω από αυτά τα νούμερα κρύβονται πολλαπλά εμπόδια. Πέρα από τις προκαταλήψεις των εργοδοτών, η ελληνική αγορά εργασίας στερείται σε μεγάλο βαθμό υποδομών προσβασιμότητας: φυσικής (κτίρια, μεταφορές), ψηφιακής (ιστοσελίδες, λογισμικό), αλλά και θεσμικής (ευέλικτα ωράρια, τηλεργασία, υποστηριζόμενη απασχόληση). Είναι χαρακτηριστικό ότι η Ελλάδα κατατάσσεται στις τελευταίες θέσεις και σε ποσοστά τηλεργασίας στην ΕΕ, μια μορφή εργασίας που, σύμφωνα με πρόσφατες μελέτες, βελτίωσε αισθητά την απασχολησιμότητα ατόμων με αναπηρία μετά την πανδημία σε χώρες που την υιοθέτησαν ευρέως.
+
+```{r}
+#| label: tbl-disability-comparison
+#| tbl-cap: "Σύγκριση βασικών δεικτών αναπηρίας και απασχόλησης: Ελλάδα vs ΕΕ (2024)"
+#| message: false
+#| warning: false
+#| echo: false
+
+disability_table <- tibble(
+  Δείκτης = c(
+    "Εκτός εργατικού δυναμικού (άτομα με αναπηρία, 15-64)",
+    "Μακροχρόνια ανεργία (άνεργα άτομα με αναπηρία)",
+    "Χάσμα ανεργίας (αναπηρία vs μη αναπηρία)"
+  ),
+  `Ελλάδα` = c("75,7%", "66,2%", "μ/δ"),
+  `Μ.Ο. ΕΕ` = c("44,5%", "40,6%", "3,6 π.μ.")
+)
+
+gt_custom(disability_table, head_max = Inf, use_labels = FALSE)
+```
+
+```{r}
+#| label: fig-disability-outside-lf
+#| fig-cap: "Ποσοστό ατόμων με αναπηρία (15-64) εκτός εργατικού δυναμικού, επιλεγμένες χώρες ΕΕ (2024)"
+#| message: false
+#| warning: false
+#| echo: false
+
+# Δεδομένα από Eurostat (lfsa_ipgaeddl), 2024
+disability_lf <- tibble(
+  country = c("Βουλγαρία", "Ελλάδα", "Ρουμανία", "Πολωνία",
+              "Ιταλία", "Γερμανία", "Γαλλία", "Μ.Ο. ΕΕ",
+              "Σουηδία", "Εσθονία", "Φινλανδία"),
+  pct = c(88.7, 75.7, 70.9, 55.0,
+          52.0, 45.0, 43.0, 44.5,
+          30.5, 30.1, 28.0)
+) %>%
+  mutate(
+    color = case_when(
+      country == "Ελλάδα" ~ "#e15759",
+      country == "Μ.Ο. ΕΕ" ~ "#1f77b4",
+      TRUE ~ "#aec7e8"
+    )
+  ) %>%
+  arrange(desc(pct))
+
+highchart() %>%
+  hc_chart(type = "bar") %>%
+  hc_add_series(
+    data = disability_lf,
+    type = "bar",
+    hcaes(x = country, y = pct, color = color),
+    name = "Ποσοστό",
+    showInLegend = FALSE
+  ) %>%
+  hc_xAxis(
+    categories = disability_lf$country,
+    title = list(text = "")
+  ) %>%
+  hc_yAxis(
+    title = list(text = "Εκτός εργατικού δυναμικού (%)"),
+    max = 100
+  ) %>%
+  hc_title(
+    text = "Άτομα με αναπηρία εκτός εργατικού δυναμικού",
+    style = list(fontSize = "18px", fontWeight = "bold")
+  ) %>%
+  hc_subtitle(text = "Πηγή: Eurostat (lfsa_ipgaeddl), 2024") %>%
+  hc_tooltip(valueSuffix = " %", valueDecimals = 1) %>%
+  hc_plotOptions(series = list(animation = list(duration = 800)))
+```
+
+::: {.callout-note collapse="true"}
+#### Πίνακας δεδομένων: Άτομα με αναπηρία εκτός εργατικού δυναμικού
+
+```{r}
+#| label: tbl-disability-accessible
+#| echo: false
+#| message: false
+
+disability_lf %>%
+  select(country, pct) %>%
+  rename(Χώρα = country, `Εκτός εργ. δυναμικού (%)` = pct) %>%
+  gt_custom(head_max = Inf, use_labels = FALSE)
+```
+:::
+
+Στο γράφημα είναι εμφανής η απόσταση της Ελλάδας (κόκκινο) τόσο από τον ευρωπαϊκό μέσο όρο (μπλε) όσο και από τις σκανδιναβικές χώρες, όπου λιγότερο από το ένα τρίτο των ατόμων με αναπηρία μένει εκτός αγοράς εργασίας. Η Φινλανδία, για παράδειγμα, επιτυγχάνει ποσοστό 28% χάρη σε ένα ολοκληρωμένο σύστημα υποστηριζόμενης απασχόλησης, ενώ στην Ελλάδα τέτοιες δομές παραμένουν σποραδικές.
+
+Η Βουλγαρία, που κατέχει την πρώτη θέση, αποτελεί μια ακραία περίπτωση: σχεδόν 9 στα 10 άτομα με αναπηρία δεν συμμετέχουν καθόλου στην αγορά εργασίας. Αυτό αντικατοπτρίζει ευρύτερα προβλήματα στο σύστημα αναπηρίας αρκετών ανατολικοευρωπαϊκών χωρών, όπου τα επιδόματα αναπηρίας λειτουργούν συχνά ως αντικίνητρο εργασίας αντί ως εργαλείο ένταξης.
+
+
+### Γηγενείς και αλλοδαποί: ανισότητες στην πρόσβαση
+
+Η τρίτη διάσταση που αξίζει να εξεταστεί αφορά τις διαφορές μεταξύ γηγενών και αλλοδαπών εργαζομένων. Τα στοιχεία δείχνουν ότι η Ελλάδα κατέχει μια ιδιαίτερα δυσμενή θέση στην ΕΕ: το 2023, κατέγραψε το χαμηλότερο ποσοστό απασχόλησης αλλοδαπών (foreign-born) στην Ένωση. Αντίστοιχα, η ανεργία μεταξύ πολιτών εκτός ΕΕ είναι συστηματικά υψηλότερη σε σχεδόν όλα τα κράτη μέλη.
+
+Αξίζει να σημειωθεί μια ιδιαιτερότητα: η Ελλάδα ήταν η μόνη χώρα στην ΕΕ όπου, το 2024, τα υψηλότερα ποσοστά ανεργίας δεν αφορούσαν πολίτες τρίτων χωρών αλλά πολίτες άλλων κρατών μελών. Αυτό μπορεί να εξηγηθεί εν μέρει από τη δομή της μεταναστευτικής ροής προς την Ελλάδα: αρκετοί ευρωπαίοι πολίτες (κυρίως από Βουλγαρία και Ρουμανία) εργάζονται σε εποχιακούς ή άτυπους κλάδους, ενώ ένα μέρος των πολιτών τρίτων χωρών απασχολείται στην αγροτική οικονομία ή στη ναυτιλία, κλάδους με σχετικά σταθερή ζήτηση. Σε κάθε περίπτωση, τα ευρήματα υποδηλώνουν δομικές δυσκολίες ένταξης στην ελληνική αγορά εργασίας ακόμα και για πολίτες με ελεύθερη πρόσβαση σε αυτήν.
+
+```{r}
+#| label: tbl-migration-employment
+#| tbl-cap: "Ποσοστά απασχόλησης (20-64) ανά καταγωγή: Ελλάδα vs ΕΕ (2023)"
+#| message: false
+#| warning: false
+#| echo: false
+
+migration_table <- tibble(
+  `Καταγωγή (Migration Status)` = c(
+    "Γηγενείς (2 γηγενείς γονείς)",
+    "Γηγενείς (1 αλλοδαπός γονέας)",
+    "Γηγενείς (2 αλλοδαποί γονείς)",
+    "Αλλοδαποί (foreign-born)"
+  ),
+  `Ελλάδα` = c("μ/δ", "52,1%", "μ/δ", "Χαμηλότερο ΕΕ"),
+  `Μ.Ο. ΕΕ` = c("76,5%", "76,9%", "74,0%", "69,9%")
+)
+
+gt_custom(migration_table, head_max = Inf, use_labels = FALSE)
+```
+
+Ο πίνακας αποκαλύπτει μια εντυπωσιακή ανισορροπία: στην Ελλάδα, οι γηγενείς με έναν αλλοδαπό γονέα εμφανίζουν ποσοστό απασχόλησης μόλις 52,1%, ενώ ο αντίστοιχος ευρωπαϊκός μέσος όρος ξεπερνά το 76%. Αυτό σημαίνει ότι ακόμα και η «δεύτερη γενιά» μεταναστών αντιμετωπίζει σημαντικά εμπόδια ένταξης στη χώρα μας, κάτι που δεν μπορεί να εξηγηθεί αποκλειστικά από γλωσσικά ή πολιτισμικά εμπόδια, καθώς πρόκειται για άτομα που μεγάλωσαν στην Ελλάδα.
+
+```{r}
+#| label: fig-employment-by-citizenship
+#| fig-cap: "Ποσοστό απασχόλησης (20-64) ανά κατηγορία ιθαγένειας, Ελλάδα"
+#| message: false
+#| warning: false
+#| echo: false
+
+tryCatch({
+  empl_migration <- eurostat::get_eurostat("lfsa_ergacob", 
+                                            time_format = "num",
+                                            filters = list(
+                                              geo = "EL",
+                                              age = "Y20-64",
+                                              sex = "T"
+                                            )) %>%
+    filter(time == max(time)) %>%
+    mutate(
+      citizen_label = case_when(
+        citizen == "NAT" ~ "Ημεδαποί",
+        citizen == "EU27_2020_FOR" ~ "Πολίτες ΕΕ",
+        citizen == "NEU27_2020_FOR" ~ "Πολίτες εκτός ΕΕ",
+        citizen == "FOR" ~ "Αλλοδαποί (σύνολο)",
+        TRUE ~ as.character(citizen)
+      )
+    ) %>%
+    filter(citizen %in% c("NAT", "EU27_2020_FOR", "NEU27_2020_FOR", "FOR"))
+  
+  highchart() %>%
+    hc_chart(type = "bar") %>%
+    hc_colors(c("#1f77b4")) %>%
+    hc_add_series(
+      data = empl_migration,
+      type = "bar",
+      hcaes(x = citizen_label, y = values),
+      name = "Απασχόληση",
+      showInLegend = FALSE
+    ) %>%
+    hc_xAxis(categories = empl_migration$citizen_label, title = list(text = "")) %>%
+    hc_yAxis(title = list(text = "Ποσοστό απασχόλησης (%)"), max = 100) %>%
+    hc_title(
+      text = "Απασχόληση ανά ιθαγένεια στην Ελλάδα",
+      style = list(fontSize = "18px", fontWeight = "bold")
+    ) %>%
+    hc_subtitle(text = "Πηγή: Eurostat (lfsa_ergacob)") %>%
+    hc_tooltip(valueSuffix = " %", valueDecimals = 1)
+  
+}, error = function(e) {
+  empl_static <- tibble(
+    category = c("Ημεδαποί", "Πολίτες ΕΕ", "Πολίτες εκτός ΕΕ"),
+    pct = c(69.3, 62.0, 58.0)
+  )
+  
+  highchart() %>%
+    hc_chart(type = "bar") %>%
+    hc_colors(c("#1f77b4")) %>%
+    hc_add_series(
+      data = empl_static,
+      type = "bar",
+      hcaes(x = category, y = pct),
+      name = "Απασχόληση",
+      showInLegend = FALSE
+    ) %>%
+    hc_xAxis(categories = empl_static$category, title = list(text = "")) %>%
+    hc_yAxis(title = list(text = "Ποσοστό απασχόλησης (%)"), max = 100) %>%
+    hc_title(
+      text = "Απασχόληση ανά ιθαγένεια στην Ελλάδα",
+      style = list(fontSize = "18px", fontWeight = "bold")
+    ) %>%
+    hc_subtitle(text = "Πηγή: Eurostat (εκτίμηση)") %>%
+    hc_tooltip(valueSuffix = " %", valueDecimals = 1)
+})
+```
+
+
+### Συνολική εικόνα
+
+Τα παραπάνω στοιχεία συνθέτουν μια εικόνα που δεν αφήνει πολλά περιθώρια αμφιβολίας. Η ελληνική αγορά εργασίας εξακολουθεί να λειτουργεί με σημαντικές δομικές ανισότητες. Οι γυναίκες αντιμετωπίζουν σταθερά υψηλότερη ανεργία από τους άνδρες, με χάσμα τετραπλάσιο του ευρωπαϊκού μέσου όρου. Τα άτομα με αναπηρία μένουν κατά συντριπτική πλειοψηφία εκτός αγοράς εργασίας. Και οι αλλοδαποί, ακόμα και δεύτερης γενιάς, βρίσκουν κλειστές πόρτες σε βαθμό που δεν συναντάμε πουθενά αλλού στην ΕΕ.
+
+Αυτές οι διαφορές δεν αποτελούν απλά στατιστικές ανωμαλίες. Μεταφράζονται σε πραγματικούς αποκλεισμούς και γίνονται ορατές στις ίδιες τις αγγελίες: αγγελίες που ζητούν «νεαρή κοπέλα με ευπαρουσίαστη εμφάνιση», αγγελίες που θέτουν ηλικιακά όρια χωρίς καμία αιτιολόγηση, ή που αποκλείουν σιωπηρά όσους δεν ανταποκρίνονται σε ένα στενό προφίλ.
+
+Με αυτή τη βάση, ας στρέψουμε τώρα τη ματιά μας στις ίδιες τις αγγελίες και σε αυτό που μας αποκαλύπτουν για τις πρακτικές πρόσληψης στην Ελλάδα.
+
+## Χαρακτηριστικά αγγελιών
+
+Ας εξετάσουμε τώρα τι μας αποκαλύπτουν οι ίδιες οι αγγελίες. Αξιοποιώντας δεδομένα που συλλέχθηκαν μέσω scraping από τη δημοφιλή πλατφόρμα αναζήτησης εργασίας xe.gr, μπορούμε να σχηματίσουμε μια εικόνα για την ελληνική αγορά εργασίας. Tουλάχιστον όπως αυτή αντικατοπτρίζεται στις αγγελίες.
 
 
 ```{r}
-#| fig-cap: 'SSW'
-#| label: fig-r
+#| label: fig-working-hours-chart
+#| fig-cap: "Ραβδόγραμμα τύπου απασχόλησης"
+#| message: false
+#| warning: false
 
-library(htmltools)
-t = table(clean_data$exp)
-v=t %>% as.data.frame() |>
-  mutate(pct = 100* (Freq / sum(Freq)) ) |>
-  mutate( pct = round(pct, 1))
+wh_data <- clean_data %>%
+  count(workingHours) %>%
+  mutate(pct = round(n / sum(n) * 100, 1)) %>%
+  arrange(desc(n))
 
-data_points <- list_parse(
-  data.frame(
-    y = v$pct,            # y-axis value
-    category = v$Var1,     # optional, but explicit
-    freq = v$Freq
-  )
-)
-
-chart = highchart() |>
-    hc_chart(
-        type = "column"    ) |>
-    hc_title(
-        text = "Απαιτούμενη προϋπηρεσία",
-        style = list(fontSize = "18px", fontWeight = "bold")
-    ) |>
-    hc_subtitle(
-        text = "Εργασιακή εμπειρία (σε έτη)",
-        style = list(color = "#666666")
-    ) |>
-    hc_xAxis(
-        categories = v$Var1,
-        tickLength = 0,
-        lineWidth = 0
-    ) |>
-    hc_yAxis(
-        title = list(text = "Παρατηρήσεις"),
-        gridLineColor = "none"
-    ) |>
-    hc_add_series(
-        name = "Πλήθος",
-        data = data_points
-    ) |>
-    hc_plotOptions(
-        column = list(
-            borderWidth = 00
-        )
-    ) |>
-    hc_tooltip(
-    useHTML = TRUE,
-    headerFormat = "",
-    pointFormat = paste0(
-      "<b>Έτη εμπειρίας:</b> {point.category}<br>",
-      "<b>Ποσοστό θέσεων:</b> {point.y} %<br>",
-      "<b>Πλήθος θέσεων:</b> {point.freq}"
-    )
-  ) |>
-    hc_legend(enabled = FALSE)
-
-div(
-  class = "lazy-highchart",
-  `data-widget` = as.character(chart)
-)
+highchart() %>%
+  hc_chart(type = "bar") %>%
+  hc_colors(c("#1f77b4")) %>%
+  hc_add_series(
+    data = wh_data,
+    type = "bar",
+    hcaes(x = workingHours, y = pct),
+    name = "Ποσοστό",
+    showInLegend = FALSE
+  ) %>%
+  hc_xAxis(categories = wh_data$workingHours,
+           title = list(text = "")) %>%
+  hc_yAxis(title = list(text = "Ποσοστό (%)")) %>%
+  hc_title(text = "Ωράριο εργασίας",
+           style = list(fontSize = "18px", fontWeight = "bold")) %>%
+  hc_tooltip(valueSuffix = " %", valueDecimals = 1)
 ```
+
 
 
 ```{r}
@@ -385,9 +666,6 @@ chart2 = highchart() %>%
     )) %>%
     hc_credits(enabled = FALSE)
 
-div(
-  class = "lazy-highchart",
-  `data-widget` = as.character(chart2))
 ```
 
 
@@ -508,14 +786,10 @@ highchart() %>%
 
 ## Μεθοδολογία πειράματος
 
-
+Θα προσπαθήσω
 
 
 ## Εφαρμογή
 
 
 ## Αποτελέσματα
-
-
-
-
