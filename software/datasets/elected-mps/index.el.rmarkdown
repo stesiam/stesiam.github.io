@@ -1,0 +1,88 @@
+---
+title: "Εκλεγμένοι βουλευτές"
+imgSrc: "../../assets/images/houses-of-parliament.jpg"
+imgAlt: "Facade of Greek Parliament"
+description: "Κατάλογος εκλεγμένων και αναπληρωτών βουλευτών κατά τις περιόδους 1974-2023Α"
+periodText: "ΠΕΡΙΟΔΟΣ"
+period: "1974-2023"
+recordsText: "ΠΑΡΑΤΗΡΗΣΕΙΣ"
+records: "5 704"
+languageText: "ΓΛΩΣΣΑ"
+languageAns: "Ελληνικά / Αγγλικά"
+exploreDatasetText: "Εξερεύνησε τα δεδομένα"
+toc: true
+toc-title: Περιεχόμενα
+toc-location: left
+comments: false
+lang: el
+order: 2
+---
+
+::: {.text-center .lh-lg}
+<i class="bi bi-code-slash"></i> `Γλώσσα Προγραμματισμού`: R <br>
+<i class="bi bi-code-slash"></i> `Βασικό λογισμικό`: rvest <br>
+<i class="bi bi-database"></i> `Πηγή δεδομένων`: [Ελληνικό Κοινοβούλιο](https://www.hellenicparliament.gr/el/) <br>
+<i class="bi bi-list-ol"></i> `Αριθμός παρατηρήσεων`: 5704 <br>
+<i class="bi bi-list-ol"></i> `Αριθμός μεταβλητών`: 5 <br>
+<i class="bi bi-translate"></i> `Γλώσσες`:  🇬🇧  / 🇬🇷 <br>
+<i class="bi bi-activity"></i> `Συχνότητα`: Μη επαναλαμβανόμενο
+:::
+
+:::{.d-flex .flex-column .flex-sm-row .justify-content-center .gap-3 .align-items-center .justify-content-center .p-2}
+```{=html}
+<div><a href="https://github.com/stesiam/scrape-greek-parl-members-26/releases/tag/v1.1.0" class="btn btn-primary btn-md"><i class="bi bi-globe"></i> Δεδομένα</a></div>
+<div><a href="https://github.com/stesiam/scrape-greek-parl-members-26" class="btn btn-primary btn-md"><i class="bi bi-github"></i> Αποθετήριο</a></div>
+```
+:::
+
+## Μεταβλητές συνόλου
+
+
+```{r}
+#| echo: false
+#| message: false
+library(dplyr)
+library(readr)
+library(gt)
+
+source("../../../posts/utils.R")
+url = "https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.csv"
+```
+
+| Μεταβλητή | Τύπος | Περιγραφή |
+|:---------|:-----|:------------|
+| `name` | ποιοτική | Ονοματεπώνυμο βουλευτή |
+| `party` | ποιοτική | Κόμμα εκπροσώπησης βουλευτή (τέλος θητείας) |
+| `region` | ποιοτική | Εκλογική περιφέρεια βουλευτή |
+| `period_names` | ποιοτική (διατάξιμη) | Περίοδος εκλογής  |
+| `dates` | ποιοτική (διατάξιμη) | Ημερολογιακό διάστημα θητείας (όχι μεμονομένου βουλευτή)  |
+| `gender` | ποιοτική | Εκτιμώμενο φύλο του αντίστοιχου βουλευτή με βάση το όνομά του |
+
+: {.table .table-sm .table-borderless}
+
+
+## Προεπισκόπηση συνόλου δεδομένων
+
+```{r}
+#| echo: false
+#| message: false
+readr::read_csv(url) %>%
+  mutate(across(where(is.character), ~ifelse(nchar(.) > 80, paste0(substr(., 1, 80), "…"), .))) %>%
+  gt_custom(use_labels = FALSE, head_max = 20)
+```
+
+
+## Γρήγορη λήψη δεδομένων
+
+Σε περίπτωση που δεν ξέρετε ποιο από όλα να διαλέξετε, συνήθως το `.csv` αρχείο είναι η πιο συνηθισμένη μορφή και πιο εύκολη να αναλυθεί από διάφορα προγράμματα.
+
+| Τύπος αρχείου | Σύνδεσμος λήψης αρχείου |
+|:---------|:-----|
+| `.csv` | [Λήψη csv](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.csv) |
+| `.rds` |  [Λήψη rds](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.rds) |
+| `.json` |  [Λήψη json](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.json) | 
+| `.parquet` |  [Λήψη parquet](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.parquet) | 
+| `.feather` |  [Λήψη feather](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.feather) | 
+| `.sqlite` |  [Λήψη sqlite](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.sqlite) | 
+
+
