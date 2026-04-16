@@ -1,0 +1,1218 @@
+---
+title: "Νέος αντιπειρατικός νόμος και χρήση VPN"
+author: "stesiam"
+lang: el
+description: "Ο αντιπειρατικός νόμος που επιβάλει πρόστιμα για χρήση πειρατικού περιεχομένου - υπηρεσιών έκανε τους Έλληνες να ψάξουν για VPN; Μία Μπεϋζιανή προσέγγιση ανάλυσης χρονοσειρών"
+freeze: false
+link-external-newwindow: true
+categories: [R, Χρονοσειρές, Αιτιότητα]
+image: vpn-thumb.webp
+image-alt: "Πρόσοψη κτιρίου Ελληνικού Κοινοβουλίου"
+fig-cap-location: bottom
+date: "2026-04-19"
+toc: true
+toc-title: Περιεχόμενα
+toc-location: left
+citation: true
+title-block-banner: true
+nocite: '@*'
+csl: apa-6th-edition.csl
+bibliography: [packages.bib, references.bib]
+format: 
+  html:
+    freeze: false
+    code-link: true
+    code-fold: true
+    code-summary: "Show the code"
+    embed-resources: false
+    lib-dir: site_libs
+    include-in-header: ../../assets/js/lazy-highcharts.js
+    code-tools: 
+      source: https://github.com/stesiam/stesiam.github.io/blob/gh-pages/posts/workplace-discrimination/index.el.qmd
+execute:
+  echo: true
+editor_options: 
+  markdown: 
+    wrap: 80
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+# Φόρτωση πακέτων
+library(highcharter)
+library(dplyr)
+library(tidyr)
+library(purrr)
+library(readr)
+library(tibble)
+library(ggplot2)
+library(lubridate)
+library(httr)
+library(jsonlite)
+library(CausalImpact)
+library(tidysynth)
+library(zoo)
+library(scales)
+
+set.seed(2025)
+
+# Αρχείο cache για τα δεδομένα Wikipedia
+WIKI_CACHE <- "wiki_pageviews_donors.csv"
+
+# Ημερομηνία παρέμβασης: Δευτέρα της εβδομάδας δημοσίευσης Ν. 5179/2025
+intervention_date <- as.Date("2025-02-17")
+
+# Γενικό theme για highcharter
+hc_theme_custom <- hc_theme(
+  chart = list(
+    style = list(fontFamily = "system-ui, -apple-system, sans-serif"),
+    backgroundColor = "transparent"
+  ),
+  title = list(
+    style = list(fontSize = "16px", fontWeight = "700", color = "#1a1a2e")
+  ),
+  subtitle = list(
+    style = list(fontSize = "12px", color = "#888")
+  )
+)
+
+options(highcharter.theme = hc_theme_custom)
+
+# Χρώματα
+col_greece  <- "#E63946"
+col_synth   <- "#1D3557"
+col_neutral <- "#999"
+```
+
+```{r}
+#| label: write_bibliography
+#| include: false
+knitr::write_bib(.packages(), file = 'packages.bib')
+```
+
+
+## Εισαγωγή
+
+Η ψηφιακή πειρατεία αποτελεί διαχρονικό φαινόμενο στην Ελλάδα, βαθιά ριζωμένο τόσο στις καταναλωτικές συνήθειες όσο και στις δομικές ιδιαιτερότητες της ελληνικής αγοράς ψηφιακού περιεχομένου. Ήδη από τα τέλη της δεκαετίας του 2000, η ραγδαία εξάπλωση των ευρυζωνικών συνδέσεων μετέτρεψε την Ελλάδα σε μία από τις ευρωπαϊκές χώρες με τα υψηλότερα ποσοστά παράνομης κατανάλωσης οπτικοακουστικού περιεχομένου. Η εποχή του Napster και του Kazaa άνοιξε τον δρόμο στα torrents. Ελληνικά sites όπως το tainiesonline, τους Χρυσούς (xrysoi.net) και τους «Πειρατές» (oipeirates.tv) να γίνονται σημεία αναφοράς μιας ολόκληρης γενιάς — και στη συνέχεια στο πειρατικό streaming μέσω IPTV πλατφορμών, που αντικατέστησε σταδιακά τα torrents ως ο κυρίαρχος τρόπος πρόσβασης σε παράνομο περιεχόμενο. Σύμφωνα με έρευνα του Ευρωπαϊκού Γραφείου για τη Διανοητική Ιδιοκτησία (EUIPO), η Ελλάδα κατατάσσεται σταθερά μεταξύ των χωρών με τα υψηλότερα ποσοστά παράνομης θέασης οπτικοακουστικού περιεχομένου στην Ευρωπαϊκή Ένωση, ενώ στην ηλικιακή ομάδα 16–24 ετών, το ποσοστό χρήσης παράνομων πηγών αγγίζει το 60%, υπερδιπλάσιο του ευρωπαϊκού μέσου όρου. Οι χρήστες πειρατικών IPTV υπηρεσιών στη χώρα υπολογίζονται μεταξύ 650.000 και 900.000, σε μια αγορά όπου οι νόμιμοι συνδρομητές δεν ξεπερνούν τους 1.200.000 — αναλογία που καθιστά σαφές ότι η πειρατεία δεν αποτελεί περιθωριακή πρακτική αλλά ευρέως διαδεδομένη κοινωνική συμπεριφορά.
+
+```{r}
+#| label: fig-eu27-piracy
+#| fig-cap: "Εξέλιξη ψηφιακής πειρατείας στην ΕΕ-27 (2017–2023). Πηγή: EUIPO / MUSO."
+#| fig-height: 8
+ 
+# --- Helper: convert NA to JS null ---
+to_hc <- function(x) {
+  lapply(x, function(v) if (is.na(v)) NULL else v)
+}
+ 
+# --- Data ---
+years <- as.character(2017:2023)
+ 
+tv       <- c(7.0, 6.0, 5.0, 4.5, 5.0, 5.1, 5.1)
+films    <- c(2.2, 1.8, 1.5, 1.1, 1.2, 1.19, 0.9)
+music    <- c(2.5, 1.8, 1.2, 0.8, 0.6, 0.55, 0.6)
+pubs     <- c(NA, NA, NA, NA, 2.6, 2.7, 2.7)
+software <- c(NA, NA, NA, NA, 0.75, 0.85, 0.9)
+sports   <- c(NA, NA, NA, NA, 0.41, 0.75, 0.53)
+total    <- c(12.5, 10.5, 8.5, 7.0, 6.8, 6.8, 6.5)
+ 
+# --- Build chart ---
+highchart() |>
+  hc_chart(
+    type = "areaspline",
+    style = list(fontFamily = "system-ui, -apple-system, sans-serif"),
+    backgroundColor = "transparent"
+  ) |>
+  hc_title(
+    text = "Εξέλιξη Ψηφιακής Πειρατείας ΕΕ-27",
+    style = list(fontSize = "16px", fontWeight = "700", color = "#1a1a2e")
+  ) |>
+  hc_subtitle(
+    text = paste0(
+      "Μηνιαίες προσβάσεις ανά χρήστη ίντερνετ"
+    ),
+    style = list(fontSize = "12px", color = "#888")
+  ) |>
+  hc_xAxis(
+    categories = years,
+    labels = list(style = list(fontSize = "12px", color = "#666")),
+    plotBands = list(
+      list(
+        from = 2.7, to = 3.3,
+        color = "rgba(230,57,70,0.07)",
+        label = list(
+          text = "COVID-19",
+          style = list(fontSize = "10px", color = "#E63946",
+                       fontWeight = "600"),
+          y = 18
+        )
+      )
+    ),
+    plotLines = list(
+      list(
+        value = 3.5, color = "#457B9D", dashStyle = "Dash",
+        width = 1, zIndex = 3,
+        label = list(
+          text = "+3 κατηγορίες απο το 2021",
+          style = list(fontSize = "9px", color = "#457B9D",
+                       fontWeight = "500"),
+          rotation = 0, y = -5, x = 5
+        )
+      )
+    )
+  ) |>
+  hc_yAxis(
+    title = list(
+      text = "Προσβάσεις ανά χρήστη ανά μήνα",
+      style = list(fontSize = "11px", color = "#888")
+    ),
+    min = 0,
+    gridLineColor = "#f0f0f0"
+  ) |>
+  hc_tooltip(
+    shared = TRUE,
+    headerFormat = '<span style="font-size:13px;font-weight:600">{point.key}</span><br/>',
+    pointFormat = '<span style="color:{series.color}">\u25CF</span> {series.name}: <b>{point.y}</b><br/>',
+    backgroundColor = "rgba(255,255,255,0.97)",
+    borderColor = "#ddd",
+    borderRadius = 8
+  ) |>
+  hc_plotOptions(
+    areaspline = list(
+      fillOpacity = 0.07,
+      lineWidth = 2.5,
+      marker = list(enabled = TRUE, radius = 4, symbol = "circle",
+                    lineWidth = 2, lineColor = "#fff"),
+      connectNulls = FALSE
+    )
+  ) |>
+  hc_legend(
+    layout = "horizontal", align = "center", verticalAlign = "bottom",
+    itemStyle = list(fontSize = "11px", fontWeight = "500", color = "#555")
+  ) |>
+  # --- Solid series (full 2017-2023) ---
+  hc_add_series(name = "TV", data = tv,
+                color = "#457B9D", type = "areaspline") |>
+  hc_add_series(name = "Ταινίες", data = films,
+                color = "#E63946", type = "areaspline") |>
+  hc_add_series(name = "Μουσική", data = music,
+                color = "#2A9D8F", type = "areaspline") |>
+  # --- Dashed series (2021+ only, NAs → JS null) ---
+  hc_add_series(name = "Εκδόσεις", data = to_hc(pubs),
+                color = "#E9C46A", type = "areaspline",
+                dashStyle = "ShortDash") |>
+  hc_add_series(name = "Λογισμικό", data = to_hc(software),
+                color = "#264653", type = "areaspline",
+                dashStyle = "ShortDash") |>
+  hc_add_series(name = "Αθλητικά Live", data = to_hc(sports),
+                color = "#E76F51", type = "areaspline",
+                dashStyle = "ShortDot") |>
+  # --- Total line (bold, no fill) ---
+  hc_add_series(name = "Σύνολο (TV + Ταινίες + Μουσική)", data = total,
+                color = "#1a1a2e", type = "spline",
+                lineWidth = 3, zIndex = 10,
+                marker = list(radius = 5, fillColor = "#1a1a2e",
+                              lineColor = "#fff", lineWidth = 2))
+```
+
+Η ελληνική πολιτεία επιχείρησε να αντιμετωπίσει το φαινόμενο σταδιακά, ακολουθώντας μια πορεία κλιμακούμενων παρεμβάσεων. Οι πρώτοι μηχανισμοί αποκλεισμού ιστοσελίδων εφαρμόστηκαν γύρω στο 2012 με βάση το άρθρο 64Α του Ν. 2121/1993, αν και η εφαρμογή τους παρέμεινε σποραδική για σχεδόν μια δεκαετία. Το κρίσιμο θεσμικό βήμα ήρθε τον Σεπτέμβριο του 2018 με τη σύσταση της Επιτροπής για τη Γνωστοποίηση Διαδικτυακής Προσβολής Δικαιωμάτων Πνευματικής Ιδιοκτησίας και Συγγενικών Δικαιωμάτων (ΕΔΠΠΙ) υπό τον Οργανισμό Πνευματικής Ιδιοκτησίας (ΟΠΙ). Ωστόσο, η δράση της ΕΔΠΠΙ κατά τα πρώτα χρόνια ήταν μάλλον αδρανής: από το 2018 έως το 2022 εξέδωσε μόλις 38 αποφάσεις αποκλεισμού. Η εικόνα άλλαξε δραματικά στη συνέχεια: η ΕΔΠΠΙ επιτάχυνε τη δράση της με 62 αποφάσεις το 2022, 89 το 2023 και 124 αποφάσεις-ρεκόρ το 2024, στοχεύοντας 810 διευθύνσεις IP και 49 ονόματα τομέα. Σε αυτό το πλαίσιο κλιμάκωσης εντάσσεται και η νομοθετική τροποποίηση του 2020–2021 (Ν. 4761/2020 και Ν. 4821/2021) που εισήγαγε τη δυνατότητα δυναμικού αποκλεισμού ιστοσελίδων σε πραγματικό χρόνο, με ιδιαίτερη εστίαση στις ζωντανές αθλητικές μεταδόσεις — ένα πεδίο όπου η πειρατεία IPTV πλήττει άμεσα τους Έλληνες παρόχους συνδρομητικής τηλεόρασης (Cosmote TV, Nova, Vodafone TV).
+
+Παρά την κλιμάκωση αυτή, μέχρι τον Φεβρουάριο του 2025 η ελληνική νομοθεσία διατηρούσε ένα θεμελιώδες χαρακτηριστικό: οι κυρώσεις απευθύνονταν αποκλειστικά σε όσους παρείχαν ή διένειμαν πειρατικό υλικό, ποτέ στους τελικούς χρήστες. Μέχρι τότε, ο πολίτης που επισκεπτόταν ένα πειρατικό site αντιμετώπιζε στη χειρότερη περίπτωση ένα μήνυμα μπλοκαρίσματος, χωρίς καμία ουσιαστική κύρωση. Η αλλαγή αυτού του παραδείγματος ήρθε στις 20 Φεβρουαρίου 2025 με τη θέση σε ισχύ του Ν. 5179/2025 (ΦΕΚ Α΄/26/20-2-2025), ο οποίος τροποποίησε ριζικά το άρθρο 65Α του Ν. 2121/1993. Η σημαντικότερη μεταρρύθμιση του νόμου σχετίζεται με τη θέσπιση διοικητικού προστίμου εις βάρος τελικών χρηστών που αποκτούν πρόσβαση σε οπτικοακουστικά έργα ή ραδιοτηλεοπτικές εκπομπές μέσω παράνομου εξοπλισμού ή λογισμικού. Τα πρόστιμα είναι κλιμακωτά: 750 ευρώ για τους οικιακούς χρήστες, 1.500 ευρώ σε περίπτωση υποτροπής, 1.500 έως 3.000 ευρώ για δημόσια προβολή, και 5.000 έως 10.000 ευρώ για εκμετάλλευση πειρατείας με οικονομικό όφελος. Παράλληλα, ο νόμος εισάγει τη δυνατότητα σύνδεσης IP διεύθυνσης με ΑΦΜ κατόχου γραμμής, καθιστώντας τον υπεύθυνο για κάθε δραστηριότητα μέσω της σύνδεσής του — μια πρόβλεψη που δημιουργεί ιδιαίτερη ανησυχία για ιδιοκτήτες Airbnb, καφετεριών και λοιπών επαγγελματικών χώρων. Παρ' ότι η νομοθεσία στοχεύει στην προστασία πνευματικών δικαιωμάτων, εγείρονται ανησυχίες για τις οικονομικές επιπτώσεις στον μέσο χρήστη, δεδομένου ότι το μηνιαίο κόστος νόμιμων συνδρομών ξεπερνά συχνά τα 50 ευρώ.
+ 
+```{r}
+#| label: fig-eu27-piracy-pct
+#| fig-cap: "Αναλογική σύνθεση πειρατείας ανά τύπο περιεχομένου, ΕΕ-27 (2017–2023). Πηγή: EUIPO / MUSO."
+#| fig-height: 8
+
+ 
+to_hc <- function(x) lapply(x, function(v) if (is.na(v)) NULL else v)
+ 
+highchart() |>
+  hc_chart(
+    type = "areaspline",
+    style = list(fontFamily = "system-ui, -apple-system, sans-serif"),
+    backgroundColor = "transparent"
+  ) |>
+  hc_title(
+    text = "Μερίδια πειρατείας ανά τύπο περιεχομένου",
+    style = list(fontSize = "16px", fontWeight = "700", color = "#1a1a2e")
+  ) |>
+  hc_subtitle(
+    text = "100% ποσοστά | Πηγή: EUIPO / MUSO (2024)",
+    style = list(fontSize = "12px", color = "#888")
+  ) |>
+  hc_xAxis(
+    categories = as.character(2017:2023),
+    labels = list(style = list(fontSize = "12px", color = "#666")),
+    plotLines = list(
+      list(
+        value = 3.5, color = "#999", dashStyle = "Dash",
+        width = 1.5, zIndex = 5,
+        label = list(
+          text = "\u2190 Ταινίες/ Μουσική / Τηλεόραση   |   +3 κατηγορίες μετά το 2021",
+          style = list(fontSize = "9px", color = "#999",
+                       fontWeight = "500"),
+          rotation = 0, y = -8, x = -100
+        )
+      )
+    )
+  ) |>
+  hc_yAxis(
+    title = list(text = NULL),
+    labels = list(
+      style = list(fontSize = "11px", color = "#888"),
+      format = "{value}%"
+    ),
+    gridLineColor = "#f0f0f0",
+    min = 0, max = 100
+  ) |>
+  hc_tooltip(
+    shared = TRUE,
+    headerFormat = '<span style="font-size:13px;font-weight:700">{point.key}</span><br/>',
+    pointFormat = paste0(
+      '<span style="color:{series.color}">\u25CF</span> {series.name}: ',
+      '<b>{point.percentage:.1f}%</b> ({point.y})<br/>'
+    ),
+    backgroundColor = "rgba(255,255,255,0.97)",
+    borderColor = "#ddd", borderRadius = 8
+  ) |>
+  hc_plotOptions(
+    areaspline = list(
+      stacking = "percent",
+      fillOpacity = 0.7,
+      lineWidth = 1,
+      lineColor = "#fff",
+      marker = list(enabled = TRUE, radius = 3, symbol = "circle",
+                    lineWidth = 1.5, lineColor = "#fff")
+    )
+  ) |>
+  hc_legend(
+    layout = "horizontal", align = "center", verticalAlign = "bottom",
+    reversed = TRUE,
+    itemStyle = list(fontSize = "11px", fontWeight = "500", color = "#555")
+  ) |>
+  hc_add_series(name = "TV", data = tv,
+                color = "#457B9D", type = "areaspline") |>
+  hc_add_series(name = "Ταινίες", data = films,
+                color = "#E63946", type = "areaspline") |>
+  hc_add_series(name = "Μουσική", data = music,
+                color = "#2A9D8F", type = "areaspline") |>
+  # --- Dashed series (2021+ only, NAs → JS null) ---
+  hc_add_series(name = "Εκδόσεις", data = to_hc(pubs),
+                color = "#E9C46A", type = "areaspline",
+                dashStyle = "ShortDash") |>
+  hc_add_series(name = "Λογισμικό", data = to_hc(software),
+                color = "#264653", type = "areaspline",
+                dashStyle = "ShortDash") |>
+  hc_add_series(name = "Αθλητικά Live", data = to_hc(sports),
+                color = "#E76F51", type = "areaspline",
+                dashStyle = "ShortDot")
+```
+
+Η δημόσια αντίδραση ήταν ταχεία και ευρεία. Τα κοινωνικά δίκτυα, ιδίως το TikTok, γέμισαν με βίντεο Ελλήνων που σχολίαζαν τον νέο νόμο, ενώ η νέα νομοθεσία οδήγησε πολλούς να αναζητήσουν ή να επενδύσουν σε VPN υπηρεσίες — εικονικά ιδιωτικά δίκτυα που κρυπτογραφούν τη σύνδεση του χρήστη και «μεταφέρουν» την IP του σε άλλη χώρα, καθιστώντας θεωρητικά αδύνατη τη σύνδεσή του με πειρατική δραστηριότητα. Η ειρωνεία δεν πέρασε απαρατήρητη: ένας νόμος σχεδιασμένος να αποτρέψει την πειρατεία φαίνεται να πυροδότησε μαζική αναζήτηση του πιο αποτελεσματικού εργαλείου παράκαμψής του. Πρόκειται για μια κλασική εκδήλωση του λεγόμενου *Streisand Effect* — του φαινομένου κατά το οποίο η προσπάθεια να περιοριστεί η πρόσβαση σε πληροφορία ή υπηρεσία καταλήγει στο αντίθετο αποτέλεσμα, ενισχύοντας τη ζήτηση και τη δημοσιότητά της.
+
+Το ερώτημα που τίθεται, ωστόσο, δεν είναι αν η αντίδραση ήταν πραγματική — αυτό είναι ορατό ήδη από τα ανεκδοτικά στοιχεία και τα social media — αλλά αν μπορεί να τεκμηριωθεί **ποσοτικά με αιτιακή ακρίβεια**. Αύξησε πράγματι ο αντιπειρατικός νόμος το ενδιαφέρον για VPN στην Ελλάδα; Πόσο μεγάλη ήταν αυτή η αύξηση σε σχέση με ό,τι θα αναμενόταν χωρίς τον νόμο; Και ήταν παροδική ή διατηρήθηκε στον χρόνο; Μια απλή σύγκριση «πριν και μετά» δεν αρκεί για να απαντηθούν αυτά τα ερωτήματα, καθώς αγνοεί πλήρως τους συγχυτικούς παράγοντες: ενδεχόμενη προϋπάρχουσα ανοδική τάση, εποχικά πρότυπα, ή ταυτόχρονα εξωτερικά γεγονότα (γεωπολιτικά, data breaches, τεχνολογικές εξελίξεις) που θα μπορούσαν ανεξάρτητα να αυξήσουν το ενδιαφέρον για VPN. Αυτή η ανάλυση αντιμετωπίζει το πρόβλημα ως πρόβλημα αιτιακής εκτίμησης (causal inference) και χρησιμοποιεί **δύο συμπληρωματικές μεθόδους** — **Synthetic Control** και **Bayesian CausalImpact** — σε δεδομένα Wikipedia pageviews, κατασκευάζοντας ένα αντιπαραγοντικό (counterfactual) σενάριο που αποτυπώνει τι θα είχε συμβεί αν ο νόμος δεν είχε ψηφιστεί.
+
+
+## Βιβλιογραφική Επισκόπηση
+
+### Ψηφιακή πειρατεία: αίτια, κίνητρα και κοινωνικές διαστάσεις
+
+Η ακαδημαϊκή βιβλιογραφία αναγνωρίζει σταθερά ότι η ψηφιακή πειρατεία δεν αποτελεί απλώς ζήτημα νομικής παρέκκλισης αλλά σύνθετο κοινωνικοοικονομικό φαινόμενο. Οι πρώιμες μελέτες εστίασαν στην οικονομική διάσταση: η τιμή, η διαθεσιμότητα και η ποιότητα των νόμιμων εναλλακτικών αποτελούν βασικούς προβλεπτικούς παράγοντες της πειρατικής συμπεριφοράς (Oberholzer-Gee & Strumpf, 2007; Smith & Telang, 2012). Η θεωρία της λογικής δράσης (Theory of Reasoned Action) και η θεωρία σχεδιαζόμενης συμπεριφοράς (Theory of Planned Behavior) αξιοποιήθηκαν εκτενώς για την ερμηνεία της πρόθεσης του χρήστη να πειρατεύσει περιεχόμενο, αναδεικνύοντας τον ρόλο των κοινωνικών κανόνων, της αντιλαμβανόμενης ηθικής του πράξης και του αντιλαμβανόμενου κινδύνου (Al-Rafee & Cronan, 2006; Yoon, 2011). Στο ελληνικό πλαίσιο, οι Kanellopoulos και Kolokotronis (2019) τεκμηρίωσαν ότι η υψηλή ανοχή στην πειρατεία συσχετίζεται με μια ευρύτερη πολιτισμική στάση απέναντι στο ψηφιακό περιεχόμενο ως «δημόσιο αγαθό», ενώ η οικονομική κρίση της δεκαετίας 2010–2020 ενίσχυσε δραστικά τα κίνητρα εξοικονόμησης κόστους.
+
+Η μετάβαση από τα torrents στο πειρατικό IPTV σηματοδοτεί μια ποιοτική αλλαγή στη φύση της πειρατείας. Ο Poort et al. (2014) περιέγραψε αυτή τη μετατόπιση ως μετάβαση από την «ενεργή» στην «παθητική» πειρατεία: ο χρήστης δεν κατεβάζει πλέον αρχεία αλλά «βλέπει» — μια εμπειρία σχεδόν πανομοιότυπη με τη νόμιμη τηλεόραση, γεγονός που μειώνει τον αντιλαμβανόμενο κίνδυνο και ενισχύει τη διάχυση. Η EUIPO (2023) εκτιμά ότι η πειρατεία IPTV στην Ευρώπη αντιπροσωπεύει πλέον πάνω από 1 δισ. ευρώ σε ετήσιες απώλειες εσόδων, με τα αθλητικά γεγονότα (ποδόσφαιρο, μπάσκετ, τένις) να συνιστούν τον ταχύτερα αναπτυσσόμενο τομέα πειρατικής κατανάλωσης.
+
+
+### Αποτελεσματικότητα αντιπειρατικής νομοθεσίας
+
+Η βιβλιογραφία σχετικά με την αποτελεσματικότητα των νομοθετικών μέσων κατά της πειρατείας παρουσιάζει αμφίσημα αποτελέσματα. Η πρώτη γενιά μελετών εξέτασε τις επιδράσεις πρωτοβουλιών τύπου «graduated response» (σταδιακή αντίδραση) — του λεγόμενου μοντέλου HADOPI στη Γαλλία — και βρήκε αρχικά αποτελέσματα αποτροπής που εξασθένησαν ταχύτατα, μέσα σε λίγους μήνες (Danaher et al., 2014). Αντιστοίχως, η μελέτη των Adermon & Liang (2014) για τη σουηδική νομοθεσία IPRED (2009) κατέδειξε βραχυπρόθεσμη μείωση 16–28% στη χρήση BitTorrent, η οποία ωστόσο εξαφανίστηκε εντός ενός έτους καθώς οι χρήστες μετανάστευσαν σε εναλλακτικά κανάλια πειρατείας. Ο Peukert et al. (2017) κατέδειξε ένα αντιφατικό αποτέλεσμα: το κλείσιμο του Megaupload τον Ιανουάριο 2012 δεν αύξησε τις νόμιμες πωλήσεις ταινιών, ενώ ταυτόχρονα αύξησε τα downloads σε εναλλακτικά πειρατικά δίκτυα. Αυτό το εύρημα ευθυγραμμίζεται με τη θεωρητική πρόβλεψη ότι η πειρατεία λειτουργεί ως υποκατάστατο μόνο εν μέρει: ένα σημαντικό μερίδιο πειρατικής κατανάλωσης αντιπροσωπεύει ζήτηση που δεν θα είχε μετατραπεί σε νόμιμη αγορά (Waldfogel, 2012).
+
+Η αποτελεσματικότητα των μηχανισμών αποκλεισμού ιστοσελίδων (site blocking) αποτέλεσε αντικείμενο εντατικής μελέτης. Οι Danaher et al. (2016) εξέτασαν τον αποκλεισμό 53 ιστοσελίδων στο Ηνωμένο Βασίλειο και διαπίστωσαν σημαντική μείωση στις επισκέψεις πειρατικών ιστοσελίδων, αλλά με ταυτόχρονη αύξηση στις αναζητήσεις VPN και proxy, υποδηλώνοντας μερική μετατόπιση μάλλον παρά εξάλειψη της ζήτησης. Παρομοίως, ο Aguiar et al. (2018) σε πολυεθνική ανάλυση αποκλεισμών ISP κατέδειξε ότι ο μέσος αποκλεισμός μειώνει τις επισκέψεις κατά 20–30%, αλλά η χρήση εργαλείων παράκαμψης αυξάνεται αντιστρόφως ανάλογα.
+
+
+### Το Streisand Effect και η αντιδραστική υιοθέτηση VPN
+
+Η έννοια του *Streisand Effect* (Gross, 2003) — κατά την οποία η προσπάθεια κατάργησης ή περιορισμού πληροφορίας οδηγεί σε αντίθετο αποτέλεσμα — αποτελεί χρήσιμο θεωρητικό πλαίσιο για την ερμηνεία αντιδράσεων σε αντιπειρατικούς νόμους. Στην ψηφιακή πολιτική, τεκμηριωμένα παραδείγματα περιλαμβάνουν τη ρωσική απαγόρευση του Telegram το 2018, η οποία οδήγησε σε πενταπλασιασμό των downloads VPN σε λιγότερο από ένα μήνα (Trevisan et al., 2019), και τους περιοδικούς αποκλεισμούς ιστοσελίδων στην Τουρκία, που κάθε φορά συνοδεύονταν από αιχμές αναζητήσεων για εργαλεία παράκαμψης λογοκρισίας (Dainotti et al., 2014). Η υιοθέτηση VPN σε απάντηση σε ρυθμιστικές παρεμβάσεις δεν αποτελεί ιδιοσυγκρασία ορισμένων αγορών: τα δεδομένα δείχνουν σταθερά ότι η θεσμοθέτηση απειλών κατά των τελικών χρηστών αυξάνει αντί να μειώνει τη χρήση τεχνολογιών προστασίας ιδιωτικότητας — και μάλιστα μεταξύ χρηστών που ως εκείνο το σημείο δεν χρησιμοποιούσαν τέτοια εργαλεία (Dutton et al., 2011).
+
+Η μοναδικότητα της ελληνικής περίπτωσης έγκειται στο ότι ο Ν. 5179/2025 αποτελεί μία από τις ελάχιστες νομοθετικές πρωτοβουλίες στην ΕΕ που εισάγει ρητώς διοικητικά πρόστιμα εις βάρος τελικών χρηστών για πρόσβαση σε πειρατικό οπτικοακουστικό περιεχόμενο — σε αντίθεση με τα κυρίαρχα ευρωπαϊκά μοντέλα που εστιάζουν στην πλευρά της προσφοράς (notice-and-takedown, graduated response, site blocking). Αυτή η στοχοποίηση της ζήτησης δημιούργησε ιδιαίτερα πρόσφορο έδαφος για αντιδραστική υιοθέτηση VPN, δεδομένης και της χαμηλής αρχικής διείσδυσης VPN στην Ελλάδα σε σύγκριση με βόρειες ευρωπαϊκές χώρες (Surfshark, 2024).
+
+
+### Μεθοδολογικό πλαίσιο: CausalImpact και αιτιακή εκτίμηση σε χρονοσειρές
+
+Η αιτιακή εκτίμηση με βάση χρονοσειρές αποτελεί κεντρική μεθοδολογική πρόκληση στην αξιολόγηση δημόσιων πολιτικών. Δύο από τις πλέον διαδεδομένες μεθόδους είναι η **Synthetic Control** (Abadie et al., 2010) και η **CausalImpact** (Brodersen et al., 2015). Η Synthetic Control κατασκευάζει ένα αντιπαραγοντικό σενάριο ως **σταθμισμένο μέσο όρο** μονάδων ελέγχου (donor pool), επιλέγοντας βάρη που ελαχιστοποιούν την απόκλιση από τη μονάδα-στόχο κατά την pre-intervention περίοδο. Η μέθοδος είναι ιδιαίτερα κατάλληλη όταν υπάρχει σαφώς ορισμένη «treated» μονάδα και πλούσιο panel ελέγχων.
+
+Η CausalImpact αξιοποιεί **Μπεϋζιανά Δομικά Μοντέλα Χρονοσειρών (BSTS)** για την κατασκευή του counterfactual. Η μέθοδος υπερτερεί σε τρεις διαστάσεις: (α) ενσωματώνει αβεβαιότητα μέσω Μπεϋζιανών πιστοτικών διαστημάτων, (β) μοντελοποιεί ρητά τάση, εποχικότητα και τυχαίες διακυμάνσεις ως ξεχωριστά στοιχεία, και (γ) ενσωματώνει εξωγενείς μεταβλητές ελέγχου μέσω spike-and-slab regression. Οι δύο μέθοδοι είναι **συμπληρωματικές**: η σύγκλισή τους σε παρόμοιες εκτιμήσεις αποτελεί ισχυρή ένδειξη εγκυρότητας. Η παρούσα ανάλυση εφαρμόζει και τις δύο στα ίδια δεδομένα.
+
+## Δεδομένα
+
+### Γιατί Wikipedia pageviews και όχι Google Trends
+
+Η πρώτη επιλογή για τη μέτρηση «πόσο ενδιαφέρθηκαν οι Έλληνες για VPN» είναι συνήθως το Google Trends. Σε αυτή την ανάλυση, όμως, προτιμήθηκαν τα **Wikipedia pageviews** — οι ημερήσιες αναγνώσεις του άρθρου «Εικονικό ιδιωτικό δίκτυο» στην ελληνική Wikipedia — για τέσσερις βασικούς λόγους:
+
+Πρώτον, τα Wikipedia views μετρούνται σε **απόλυτα νούμερα** (πραγματικές επισκέψεις), όχι σε σχετική κλίμακα 0–100 όπως τα Google Trends. Αυτό επιτρέπει αξιόπιστη σύγκριση μεταξύ γλωσσών/χωρών χωρίς το πρόβλημα της κανονικοποίησης σε διαφορετικές κλίμακες. Δεύτερον, η ανάγνωση ενός ολόκληρου άρθρου Wikipedia αντιπροσωπεύει **βαθύτερη ενασχόληση** από μια απλή αναζήτηση — είναι ένδειξη πρόθεσης ενημέρωσης, όχι απλής περιέργειας. Τρίτον, το Wikipedia API είναι **δημόσιο, δωρεάν και ντετερμινιστικό**: κάθε κλήση επιστρέφει τα ίδια νούμερα, εξασφαλίζοντας πλήρη αναπαραγωγιμότητα — σε αντίθεση με τα Google Trends, τα οποία εμφανίζουν δειγματοληπτική μεταβλητότητα μεταξύ κλήσεων. Τέταρτον, κάθε γλωσσική Wikipedia έχει το δικό της άρθρο για VPN, προσφέροντας **φυσικό donor pool**: οι γλώσσες χωρών που δεν πέρασαν αντίστοιχο νόμο αποτελούν ιδανικές μονάδες ελέγχου.
+
+### Συλλογή δεδομένων
+
+```{r}
+#| label: data-collection
+#| cache: true
+#| message: false
+
+# === Wikipedia Pageviews API ===
+fetch_wiki_pageviews <- function(lang, article,
+                                  start = "20220101",
+                                  end = "20260415") {
+  article_enc <- URLencode(article, reserved = TRUE)
+  url <- sprintf(
+    "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/%s.wikipedia/all-access/all-agents/%s/daily/%s/%s",
+    lang, article_enc, start, end
+  )
+  
+  tryCatch({
+    response <- GET(url, user_agent("streisand-effect-blog/1.0"))
+    if (status_code(response) != 200) return(NULL)
+    data <- content(response, as = "parsed")
+    if (is.null(data$items) || length(data$items) == 0) return(NULL)
+    
+    map_df(data$items, ~tibble(
+      date = as.Date(.x$timestamp, format = "%Y%m%d%H"),
+      views = .x$views,
+      lang = lang
+    ))
+  }, error = function(e) NULL)
+}
+
+# Αυτόματη εύρεση translations μέσω Wikipedia API
+get_translations <- function(en_title) {
+  url <- sprintf(
+    "https://en.wikipedia.org/w/api.php?action=query&format=json&titles=%s&prop=langlinks&lllimit=500",
+    URLencode(en_title)
+  )
+  response <- GET(url, user_agent("streisand-effect-blog/1.0"))
+  data <- content(response, as = "parsed")
+  pages <- data$query$pages
+  page_id <- names(pages)[1]
+  langlinks <- pages[[page_id]]$langlinks
+  if (is.null(langlinks)) return(NULL)
+  map_df(langlinks, ~tibble(lang = .x$lang, article = .x$`*`))
+}
+
+# Επιλεγμένες γλώσσες
+target_langs <- c("el", "en", "pt", "es", "it", "bg", "ro",
+                   "hr", "sl", "cs", "pl", "hu", "sk",
+                   "de", "fr", "nl", "fi", "sv", "da", "tr")
+
+# Download
+if (file.exists(WIKI_CACHE)) {
+  wiki_data <- read_csv(WIKI_CACHE, show_col_types = FALSE)
+} else {
+  translations <- get_translations("Virtual_private_network")
+  
+  selected <- translations |>
+    filter(lang %in% target_langs) |>
+    bind_rows(tibble(lang = "en", article = "Virtual_private_network")) |>
+    mutate(article = gsub(" ", "_", article))
+  
+  wiki_data <- pmap_df(selected, function(lang, article) {
+    message("Fetching ", lang, "...")
+    result <- fetch_wiki_pageviews(lang, article)
+    Sys.sleep(0.5)
+    result
+  })
+  write_csv(wiki_data, WIKI_CACHE)
+}
+
+# Quality check
+quality <- wiki_data |>
+  group_by(lang) |>
+  summarise(
+    n_days = n(),
+    median_views = round(median(views)),
+    max_views = max(views),
+    peak_date = date[which.max(views)],
+    .groups = "drop"
+  ) |>
+  arrange(desc(median_views))
+
+n_langs_collected <- n_distinct(wiki_data$lang)
+greek_baseline <- quality |> filter(lang == "el") |> pull(median_views)
+greek_peak <- quality |> filter(lang == "el") |> pull(max_views)
+greek_peak_date <- quality |> filter(lang == "el") |> pull(peak_date)
+```
+
+Συλλέχθηκαν ημερήσια δεδομένα από **`r n_langs_collected` ευρωπαϊκές γλώσσες**, καλύπτοντας την περίοδο Ιανουαρίου 2022 – Απριλίου 2026. Το άρθρο «Εικονικό ιδιωτικό δίκτυο» στην ελληνική Wikipedia έχει baseline **`r greek_baseline` αναγνώσεις/ημέρα** (διάμεσος τιμή), με peak **`r greek_peak` αναγνώσεις** στις `r format(greek_peak_date, "%d %B %Y")` — λίγες εβδομάδες μετά τη δημοσίευση του νόμου.
+
+Η περίοδος ανάλυσης ξεκινά τον Ιανουάριο 2023 (εξασφαλίζοντας ~2 έτη pre-intervention δεδομένων) και εκτείνεται έως τα μέσα Απριλίου 2026, επιτρέποντας **περισσότερο από ένα έτος** post-intervention παρατηρήσεων — σημαντικά μεγαλύτερο παράθυρο από ό,τι θα επέτρεπαν βραχύβιες πηγές όπως τα Google Trends.
+
+### Η εικόνα μιλά μόνη της
+
+Πριν εφαρμόσουμε οποιαδήποτε στατιστική μέθοδο, αξίζει να δούμε τα ωμά δεδομένα. Στο @fig-all-languages, κάθε γραμμή αντιπροσωπεύει μια γλώσσα, κανονικοποιημένη ως προς τον δικό της μέσο όρο πριν το 2025. Η κόκκινη γραμμή είναι η Ελλάδα.
+
+```{r}
+#| label: fig-all-languages
+#| fig-cap: "Wikipedia VPN pageviews: Ελλάδα vs ευρωπαϊκές γλώσσες. Κάθε γραμμή κανονικοποιημένη ως προς pre-2025 baseline. Η Ελλάδα (κόκκινο) ξεχωρίζει με σαφές spike αμέσως μετά τις 20 Φεβ 2025, ενώ καμία άλλη γλώσσα δεν ακολουθεί αντίστοιχη πορεία."
+
+# Αποκλεισμός problematic γλωσσών για αυτό το plot
+problematic <- c("en", "sl", "fr", "tr")
+
+viz_data <- wiki_data |>
+  filter(!lang %in% problematic) |>
+  group_by(lang) |>
+  mutate(
+    baseline = median(views[date < "2025-01-01"]),
+    views_norm = views / baseline
+  ) |>
+  ungroup() |>
+  filter(date >= "2024-06-01") |>
+  mutate(week = floor_date(date, "week", week_start = 1)) |>
+  group_by(lang, week) |>
+  summarise(views_norm = round(mean(views_norm), 3), .groups = "drop")
+
+# Highchart: μία γραμμή ανά γλώσσα
+hc <- highchart() |>
+  hc_chart(zoomType = "x") |>
+  hc_title(text = "Η Ελλάδα ξεχωρίζει από κάθε άλλη γλώσσα") |>
+  hc_subtitle(text = "Wikipedia VPN pageviews, κανονικοποιημένα σε pre-2025 baseline (log scale)") |>
+  hc_xAxis(
+    type = "datetime",
+    plotLines = list(
+      list(
+        value = datetime_to_timestamp(intervention_date),
+        color = "#E63946", width = 2, dashStyle = "Solid",
+        zIndex = 5,
+        label = list(
+          text = "Ν. 5179/2025",
+          style = list(color = "#E63946", fontWeight = "700",
+                       fontSize = "11px"),
+          rotation = 0, y = -10
+        )
+      )
+    )
+  ) |>
+  hc_yAxis(
+    title = list(text = "Αναγνώσεις σε σχέση με baseline"),
+    type = "logarithmic",
+    min = 0.1
+  ) |>
+  hc_tooltip(
+    shared = FALSE,
+    xDateFormat = "%d %b %Y",
+    pointFormat = '<span style="color:{series.color}">\u25CF</span> {series.name}: <b>{point.y:.2f}×</b><br/>'
+  ) |>
+  hc_legend(enabled = FALSE) |>
+  hc_plotOptions(
+    spline = list(
+      marker = list(enabled = FALSE),
+      states = list(hover = list(lineWidth = 3))
+    )
+  )
+
+# Πρόσθεσε κάθε γλώσσα ως spline
+other_langs <- setdiff(unique(viz_data$lang), "el")
+
+for (lg in other_langs) {
+  lg_data <- viz_data |> filter(lang == lg)
+  hc <- hc |>
+    hc_add_series(
+      name = lg,
+      type = "spline",
+      data = list_parse2(data.frame(
+        x = datetime_to_timestamp(lg_data$week),
+        y = lg_data$views_norm
+      )),
+      color = "rgba(153,153,153,0.4)",
+      lineWidth = 1,
+      enableMouseTracking = TRUE
+    )
+}
+
+# Τελευταία η Ελλάδα (πάνω από όλα)
+el_data <- viz_data |> filter(lang == "el")
+hc <- hc |>
+  hc_add_series(
+    name = "Ελλάδα (el)",
+    type = "spline",
+    data = list_parse2(data.frame(
+      x = datetime_to_timestamp(el_data$week),
+      y = el_data$views_norm
+    )),
+    color = col_greece,
+    lineWidth = 2.5,
+    zIndex = 10
+  )
+
+hc
+```
+
+Το πρότυπο είναι οπτικά ξεκάθαρο: η Ελλάδα ακολουθούσε τη μάζα των γλωσσών μέχρι τις 20 Φεβρουαρίου 2025. Αμέσως μετά, **εκτοξεύεται** — ενώ καμία άλλη γλώσσα δεν κάνει αντίστοιχη κίνηση. Αυτή η παρατήρηση αποκλείει ένα παγκόσμιο confounder (π.χ. data breach, viral marketing VPN, παγκόσμιο γεγονός) ως εξήγηση. Αυτή η εικόνα, αν και πειστική, δεν αρκεί — χρειαζόμαστε **ποσοτική εκτίμηση** του εφέ και **στατιστική σημαντικότητα**.
+
+## Μεθοδολογία
+
+### Τι είναι το counterfactual;
+
+Η θεμελιώδης πρόκληση στην αιτιακή εκτίμηση είναι ότι δεν μπορούμε να παρατηρήσουμε **τι θα γινόταν αν ο νόμος δεν είχε ψηφιστεί**. Αυτό το υποθετικό σενάριο λέγεται *counterfactual*, και κάθε μέθοδος αιτιακής εκτίμησης ουσιαστικά προσπαθεί να το κατασκευάσει. Μια απλή σύγκριση «πριν-μετά» δεν αρκεί γιατί αγνοεί ερωτήματα όπως: «Μήπως το ενδιαφέρον θα αυξανόταν ούτως ή άλλως;» ή «Μήπως αυξάνεται κάθε Φεβρουάριο;». Χρειαζόμαστε ένα μοντέλο που λαμβάνει υπόψη τάσεις, εποχικότητα, και εξωγενείς παράγοντες.
+
+### Μέθοδος 1: Synthetic Control
+
+Η μέθοδος Synthetic Control (Abadie et al., 2010) κατασκευάζει μια **«συνθετική Ελλάδα»**: έναν σταθμισμένο μέσο όρο άλλων γλωσσικών εκδόσεων της Wikipedia που ταιριάζει όσο το δυνατόν καλύτερα στο ιστορικό πρότυπο των ελληνικών pageviews πριν τον νόμο. Τα βάρη επιλέγονται αυτόματα μέσω ελαχιστοποίησης της pre-intervention απόκλισης. Η διαφορά μεταξύ της **πραγματικής Ελλάδας** και της **συνθετικής Ελλάδας** κατά την post-intervention περίοδο αποτελεί την εκτίμηση του αιτιακού αποτελέσματος.
+
+Η εγκυρότητα της μεθόδου ελέγχεται μέσω **placebo tests**: εφαρμόζουμε την ίδια μέθοδο σε κάθε γλώσσα του donor pool σαν να ήταν η «treated». Αν η Ελλάδα κατατάσσεται εμφανώς πρώτη (μεγαλύτερο post-/pre-period MSPE ratio), τότε το εφέ δεν αντιπροσωπεύει τυπική διακύμανση.
+
+### Μέθοδος 2: CausalImpact
+
+Η μέθοδος CausalImpact (Brodersen et al., 2015) λειτουργεί σε τρία στάδια. Κατά το πρώτο στάδιο (pre-intervention period), ένα **Bayesian Structural Time Series (BSTS)** μοντέλο εκπαιδεύεται στη σχέση μεταξύ της χρονοσειράς-στόχου (ελληνικές αναγνώσεις) και των χρονοσειρών-ελέγχου (αναγνώσεις στις υπόλοιπες γλώσσες). Το μοντέλο αποτελείται από τρία συστατικά: ένα τοπικό επίπεδο (local level) που αποτυπώνει τη βασική πορεία της σειράς, μια εποχική συνιστώσα (seasonality) που αιχμαλωτίζει εβδομαδιαία/ετήσια πρότυπα, και ένα regression με **spike-and-slab prior**, το οποίο επιτρέπει στο μοντέλο να επιλέξει αυτόματα ποιες μεταβλητές ελέγχου εξηγούν αποτελεσματικά τη μεταβλητότητα του target. Κατά το δεύτερο στάδιο (post-intervention), το εκπαιδευμένο μοντέλο παράγει προβλέψεις χρησιμοποιώντας μόνο τα controls: το counterfactual. Κατά το τρίτο στάδιο, η διαφορά μεταξύ παρατηρούμενων και προβλεπόμενων τιμών — μαζί με τα αντίστοιχα **posterior credible intervals** — αποτελεί την εκτίμηση του αιτιακού αποτελέσματος.
+
+### Κοινά δεδομένα και υποθέσεις
+
+Και οι δύο μέθοδοι εφαρμόζονται στα **ίδια δεδομένα**: εβδομαδιαία Wikipedia pageviews του άρθρου VPN σε ευρωπαϊκές γλώσσες (Ιαν 2023 – Απρ 2026), σε log-transformed μορφή ώστε τα αποτελέσματα να ερμηνεύονται ως ποσοστιαίες μεταβολές και να σταθεροποιηθεί η διακύμανση. Αποκλείστηκαν 4 γλώσσες λόγω ακραίων idiosyncratic spikes (σλοβενικά, γαλλικά, τουρκικά) ή δυσανάλογα μεγάλης κλίμακας (αγγλικά).
+
+Η εγκυρότητα των μεθόδων στηρίζεται σε τέσσερις βασικές υποθέσεις, καθεμία από τις οποίες ελέγχεται ρητά: (α) η σχέση μεταξύ target και controls πρέπει να παραμένει σταθερή πριν και μετά την παρέμβαση — αν ο νόμος επηρέασε και τα controls, η εκτίμηση ακυρώνεται· (β) δεν πρέπει να υπάρξει αντίδραση πριν τη θέση σε ισχύ· (γ) τα controls δεν πρέπει να έχουν επηρεαστεί ταυτόχρονα από εξωγενή γεγονότα — ελέγχεται μέσω placebo tests σε ψεύτικες ημερομηνίες· (δ) η δομή του μοντέλου πρέπει να αποτυπώνει σωστά τάσεις και εποχικότητα — ελέγχεται μέσω pre-intervention fit diagnostics.
+
+```{r}
+#| label: data-preparation
+#| include: false
+
+problematic_langs <- c("en", "sl", "fr", "tr")
+
+wiki_clean <- wiki_data |>
+  filter(!lang %in% problematic_langs) |>
+  filter(date >= as.Date("2023-01-01"))
+
+# Wide format
+wiki_wide <- wiki_clean |>
+  select(date, lang, views) |>
+  pivot_wider(names_from = lang, values_from = views) |>
+  arrange(date) |>
+  drop_na()
+
+# Weekly aggregation
+wiki_weekly <- wiki_wide |>
+  mutate(week = floor_date(date, "week", week_start = 1)) |>
+  group_by(week) |>
+  summarise(across(where(is.numeric), mean), .groups = "drop") |>
+  rename(date = week)
+
+n_pre  <- sum(wiki_weekly$date < intervention_date)
+n_post <- sum(wiki_weekly$date >= intervention_date)
+n_donors <- ncol(wiki_weekly) - 2  # -date, -el
+```
+
+Μετά τον καθαρισμό, το δείγμα αποτελείται από **`r n_pre` εβδομάδες** pre-intervention και **`r n_post` εβδομάδες** post-intervention, με **`r n_donors` γλώσσες donor pool**. Αυτή η ασυμμετρία (μακρά pre-period, σύντομη αλλά επαρκής post-period) ακολουθεί τις συστάσεις των Brodersen et al. (2015) και Abadie et al. (2010).
+
+## Αποτελέσματα
+
+### Synthetic Control
+
+```{r}
+#| label: synthetic-control
+#| cache: true
+#| message: false
+#| warning: false
+
+# Long format
+panel_data <- wiki_weekly |>
+  pivot_longer(cols = -date, names_to = "lang", values_to = "views") |>
+  mutate(views_log = log1p(views))
+
+# Pre-period dates
+pre_dates <- panel_data |>
+  filter(date < intervention_date) |>
+  pull(date) |>
+  unique() |>
+  sort()
+
+# Synthetic Control
+synth_out <- panel_data |>
+  synthetic_control(
+    outcome = views_log,
+    unit = lang,
+    time = date,
+    i_unit = "el",
+    i_time = intervention_date,
+    generate_placebos = TRUE
+  ) |>
+  generate_predictor(
+    time_window = pre_dates,
+    mean_views = mean(views_log, na.rm = TRUE),
+    sd_views = sd(views_log, na.rm = TRUE),
+    median_views = median(views_log, na.rm = TRUE)
+  ) |>
+  generate_weights(optimization_window = pre_dates) |>
+  generate_control()
+
+# Donor weights
+synth_weights <- synth_out |>
+  grab_unit_weights() |>
+  arrange(desc(weight))
+
+# Period-specific effects
+synth_series <- synth_out |> grab_synthetic_control()
+
+period_effects <- synth_series |>
+  filter(time_unit >= intervention_date) |>
+  mutate(
+    period = case_when(
+      time_unit < as.Date("2025-05-01") ~ "Peak (Φεβ–Απρ)",
+      time_unit < as.Date("2025-09-01") ~ "Σταθεροποίηση (Μάι–Αυγ)",
+      TRUE ~ "Μακροπρόθεσμα (Σεπ+)"
+    ),
+    period = factor(period, levels = c("Peak (Φεβ–Απρ)",
+                                        "Σταθεροποίηση (Μάι–Αυγ)",
+                                        "Μακροπρόθεσμα (Σεπ+)"))
+  ) |>
+  group_by(period) |>
+  summarise(
+    n_weeks = n(),
+    actual_log = round(mean(real_y), 2),
+    synth_log = round(mean(synth_y), 2),
+    diff_log = round(actual_log - synth_log, 3),
+    rel_change_pct = round((exp(diff_log) - 1) * 100, 1),
+    .groups = "drop"
+  )
+
+# Significance
+sc_sig <- synth_out |> grab_significance()
+sc_rank <- sc_sig |> filter(unit_name == "el") |> pull(rank)
+sc_p <- sc_sig |> filter(unit_name == "el") |> pull(fishers_exact_pvalue)
+sc_z <- sc_sig |> filter(unit_name == "el") |> pull(z_score)
+sc_mspe <- sc_sig |> filter(unit_name == "el") |> pull(mspe_ratio)
+```
+
+Η «συνθετική Ελλάδα» συντίθεται κυρίως από δύο γλώσσες: **`r synth_weights$unit[1]`** (`r round(synth_weights$weight[1]*100)`%) και **`r synth_weights$unit[2]`** (`r round(synth_weights$weight[2]*100)`%). Η επιλογή βγάζει νόημα: η Βουλγαρία κατατάσσεται πρώτη στην Ευρώπη σε πειρατεία οπτικοακουστικού περιεχομένου — με την Ελλάδα δεύτερη — ενώ η Δανία έχει παρόμοιο μέγεθος Wikipedia κοινότητας με την ελληνική.
+
+```{r}
+#| label: fig-synthetic-phases
+#| fig-cap: "Synthetic Control: Ελλάδα (κόκκινο) vs σύνθεση ευρωπαϊκών γλωσσών (μπλε). Διακρίνονται τρεις φάσεις αντίδρασης — Peak, Σταθεροποίηση, Μακροπρόθεσμη."
+
+# Prep data for highcharter
+ss_data <- synth_series |>
+  mutate(
+    ts = datetime_to_timestamp(time_unit),
+    real_y = round(real_y, 4),
+    synth_y = round(synth_y, 4)
+  )
+
+# Extract rel changes for annotations
+rel_peak <- period_effects$rel_change_pct[1]
+rel_stab <- period_effects$rel_change_pct[2]
+rel_long <- period_effects$rel_change_pct[3]
+
+highchart() |>
+  hc_chart(zoomType = "x") |>
+  hc_title(text = "Τρεις φάσεις αντίδρασης στον Ν. 5179/2025") |>
+  hc_subtitle(text = sprintf("Synthetic Control | %d donors | κύρια βάρη: %s (%d%%) + %s (%d%%)",
+                               n_donors,
+                               synth_weights$unit[1], round(synth_weights$weight[1]*100),
+                               synth_weights$unit[2], round(synth_weights$weight[2]*100))) |>
+  hc_xAxis(
+    type = "datetime",
+    plotLines = list(
+      list(value = datetime_to_timestamp(intervention_date),
+           color = "#E63946", width = 2, dashStyle = "Solid",
+           zIndex = 5,
+           label = list(text = "Ν. 5179/2025",
+                        style = list(color = "#E63946", fontWeight = "700",
+                                     fontSize = "11px"),
+                        y = -10))
+    ),
+    plotBands = list(
+      list(
+        from = datetime_to_timestamp(intervention_date),
+        to = datetime_to_timestamp(as.Date("2025-05-01")),
+        color = "rgba(230,57,70,0.06)",
+        label = list(
+          text = sprintf("Peak<br/>%+.0f%%", rel_peak),
+          style = list(fontSize = "11px", color = "#E63946", fontWeight = "700"),
+          y = 25, useHTML = TRUE
+        )
+      ),
+      list(
+        from = datetime_to_timestamp(as.Date("2025-05-01")),
+        to = datetime_to_timestamp(as.Date("2025-09-01")),
+        color = "rgba(231,111,81,0.06)",
+        label = list(
+          text = sprintf("Σταθεροποίηση<br/>%+.0f%%", rel_stab),
+          style = list(fontSize = "11px", color = "#E76F51", fontWeight = "700"),
+          y = 25, useHTML = TRUE
+        )
+      ),
+      list(
+        from = datetime_to_timestamp(as.Date("2025-09-01")),
+        to = datetime_to_timestamp(max(synth_series$time_unit)),
+        color = "rgba(29,53,87,0.06)",
+        label = list(
+          text = sprintf("Μακροπρόθεσμα<br/>%+.0f%%", rel_long),
+          style = list(fontSize = "11px", color = "#1D3557", fontWeight = "700"),
+          y = 25, useHTML = TRUE
+        )
+      )
+    )
+  ) |>
+  hc_yAxis(
+    title = list(text = "log(views + 1)"),
+    gridLineColor = "#f0f0f0"
+  ) |>
+  hc_tooltip(
+    shared = TRUE, xDateFormat = "%d %b %Y", valueDecimals = 3
+  ) |>
+  hc_add_series(
+    name = "Πραγματικά (Ελλάδα)",
+    data = list_parse2(data.frame(x = ss_data$ts, y = ss_data$real_y)),
+    type = "spline", color = col_greece, lineWidth = 2.5,
+    marker = list(enabled = FALSE), zIndex = 3
+  ) |>
+  hc_add_series(
+    name = "Συνθετική Ελλάδα",
+    data = list_parse2(data.frame(x = ss_data$ts, y = ss_data$synth_y)),
+    type = "spline", color = col_synth, lineWidth = 1.8,
+    dashStyle = "ShortDash",
+    marker = list(enabled = FALSE), zIndex = 2
+  ) |>
+  hc_legend(
+    layout = "horizontal", align = "center", verticalAlign = "bottom"
+  )
+```
+
+Τα αποτελέσματα αποκαλύπτουν **τρεις διακριτές φάσεις** αντίδρασης:
+
+```{r}
+#| label: tbl-phases
+#| tbl-cap: "Synthetic Control: αιτιακό αποτέλεσμα ανά φάση."
+
+knitr::kable(
+  period_effects |>
+    mutate(
+      `Σχετική μεταβολή` = paste0(ifelse(rel_change_pct > 0, "+", ""),
+                                    rel_change_pct, "%")
+    ) |>
+    select(Φάση = period, Εβδομάδες = n_weeks,
+           `Πραγματικά (log)` = actual_log,
+           `Counterfactual (log)` = synth_log,
+           `Σχετική μεταβολή`),
+  align = c("l", "r", "r", "r", "r")
+)
+```
+
+**Φάση 1 — Peak (Φεβ–Απρ 2025)**: Οι αναγνώσεις **υπερδιπλασιάστηκαν** (+`r rel_peak`%) σε σχέση με ό,τι θα αναμενόταν χωρίς τον νόμο. Αυτή η φάση αντιστοιχεί χρονικά με το κύμα ειδήσεων και το viral TikTok content.
+
+**Φάση 2 — Σταθεροποίηση (Μάι–Αυγ 2025)**: Η υπεραπόδοση μειώθηκε αλλά παρέμεινε σημαντικά θετική (+`r rel_stab`%). Ίσως αντικατοπτρίζει residual ενδιαφέρον λόγω της έκδοσης της ΚΥΑ εφαρμογής (Αύγουστος 2025), που ενεργοποίησε νέα δημοσιογραφική κάλυψη.
+
+**Φάση 3 — Μακροπρόθεσμα (Σεπ 2025+)**: Οι αναγνώσεις υποχώρησαν **κάτω** από το counterfactual (`r rel_long`%). Αυτό υποδηλώνει **φαινόμενο κορεσμού** (saturation): όσοι ενδιαφέρθηκαν, διάβασαν το άρθρο νωρίς και δεν έχουν λόγο να επιστρέψουν.
+
+### Placebo tests (Synthetic Control)
+
+Για να αξιολογήσουμε αν το ελληνικό αποτέλεσμα είναι στατιστικά ιδιαίτερο, εφαρμόζουμε **placebo tests**: η ίδια μέθοδος εφαρμόζεται σε κάθε γλώσσα του donor pool σαν να ήταν η «treated». Αν η Ελλάδα ξεχωρίζει εμφανώς, τότε το εφέ δεν αντιπροσωπεύει τυπική διακύμανση.
+
+```{r}
+#| label: fig-placebos
+#| fig-cap: "Placebo tests. Κάθε γραμμή δείχνει τη διαφορά πραγματικής − συνθετικής σειράς όταν εφαρμόζουμε Synthetic Control σε κάθε γλώσσα. Η Ελλάδα (κόκκινο) ξεχωρίζει σαφώς από κάθε άλλη χώρα στην post-intervention περίοδο."
+
+# Εξαγωγή placebo data από tidysynth
+placebo_data <- synth_out |> grab_synthetic_control(placebo = TRUE)
+
+placebo_viz <- placebo_data |>
+  mutate(
+    diff = real_y - synth_y,
+    ts = datetime_to_timestamp(time_unit),
+    is_greek = .id == "el"
+  )
+
+hc_placebo <- highchart() |>
+  hc_chart(zoomType = "x") |>
+  hc_title(text = sprintf("Placebo Tests: Η Ελλάδα κατατάσσεται %dη από %d χωρών",
+                            sc_rank, nrow(sc_sig))) |>
+  hc_subtitle(text = sprintf("Fisher's exact p = %.4f | z-score = %.2f | MSPE ratio = %.2f",
+                               sc_p, sc_z, sc_mspe)) |>
+  hc_xAxis(
+    type = "datetime",
+    plotLines = list(
+      list(value = datetime_to_timestamp(intervention_date),
+           color = "#E63946", width = 1.5, dashStyle = "Dash",
+           zIndex = 5)
+    )
+  ) |>
+  hc_yAxis(
+    title = list(text = "Διαφορά (πραγματικά − συνθετικά, log scale)"),
+    plotLines = list(
+      list(value = 0, color = "#999", width = 1, dashStyle = "Dash")
+    )
+  ) |>
+  hc_tooltip(
+    shared = FALSE,
+    xDateFormat = "%d %b %Y",
+    pointFormat = '<b>{series.name}</b>: {point.y:.3f}'
+  ) |>
+  hc_legend(enabled = FALSE) |>
+  hc_plotOptions(
+    spline = list(
+      marker = list(enabled = FALSE),
+      states = list(hover = list(lineWidth = 3))
+    )
+  )
+
+# Placebos (γκρι)
+placebo_langs <- unique(placebo_viz$.id)
+placebo_langs <- setdiff(placebo_langs, "el")
+
+for (lg in placebo_langs) {
+  lg_data <- placebo_viz |> filter(.id == lg)
+  hc_placebo <- hc_placebo |>
+    hc_add_series(
+      name = lg,
+      type = "spline",
+      data = list_parse2(data.frame(
+        x = lg_data$ts,
+        y = round(lg_data$diff, 4)
+      )),
+      color = "rgba(153,153,153,0.35)",
+      lineWidth = 1
+    )
+}
+
+# Ελλάδα (κόκκινο, πάνω)
+el_plac <- placebo_viz |> filter(.id == "el")
+hc_placebo <- hc_placebo |>
+  hc_add_series(
+    name = "Ελλάδα (el)",
+    type = "spline",
+    data = list_parse2(data.frame(
+      x = el_plac$ts,
+      y = round(el_plac$diff, 4)
+    )),
+    color = col_greece,
+    lineWidth = 2.5,
+    zIndex = 10
+  )
+
+hc_placebo
+```
+
+Η Ελλάδα κατατάσσεται **`r sc_rank`η από `r nrow(sc_sig)`** γλώσσες — το **μεγαλύτερο εφέ** σε ολόκληρο τον donor pool. Ο δείκτης MSPE ratio (αναλογία post-/pre-period σφάλματος) είναι **`r round(sc_mspe, 2)`**, ενώ ο z-score **`r round(sc_z, 2)`** υποδηλώνει ότι η ελληνική απόκλιση βρίσκεται σημαντικά πάνω από τις συνήθεις τυπικές αποκλίσεις.
+
+### CausalImpact (επιβεβαίωση & credible intervals)
+
+Ως δεύτερη μέθοδο, εφαρμόζουμε CausalImpact στα ίδια δεδομένα. Εστιάζουμε στο **peak window (Φεβ–Απρ 2025)** για άμεση σύγκριση με το Synthetic Control, και στη συνέχεια παρουσιάζουμε και την ανάλυση πλήρους περιόδου.
+
+```{r}
+#| label: causal-impact
+#| cache: true
+#| message: false
+#| warning: false
+
+# Zoo object — el πρώτη στήλη (target)
+ts_matrix <- wiki_weekly |> select(el, everything(), -date) |> as.matrix()
+ts_data <- zoo(ts_matrix, order.by = wiki_weekly$date)
+log_ts <- log1p(ts_data)
+
+# Peak period CausalImpact
+peak_end <- as.Date("2025-04-30")
+log_peak <- log_ts[index(log_ts) <= peak_end]
+
+ci_peak <- CausalImpact(
+  log_peak,
+  pre.period = c(min(wiki_weekly$date), intervention_date - 1),
+  post.period = c(intervention_date, peak_end),
+  model.args = list(niter = 5000, nseasons = 52,
+                    prior.level.sd = 0.1, standardize.data = TRUE)
+)
+
+ci_rel   <- round(ci_peak$summary["Average", "RelEffect"] * 100, 1)
+ci_lo    <- round(ci_peak$summary["Average", "RelEffect.lower"] * 100, 1)
+ci_hi    <- round(ci_peak$summary["Average", "RelEffect.upper"] * 100, 1)
+ci_p     <- ci_peak$summary["Average", "p"]
+ci_abs   <- round(ci_peak$summary["Average", "AbsEffect"], 3)
+
+# Full period CausalImpact
+ci_full <- CausalImpact(
+  log_ts,
+  pre.period = c(min(wiki_weekly$date), intervention_date - 1),
+  post.period = c(intervention_date, max(wiki_weekly$date)),
+  model.args = list(niter = 5000, nseasons = 52,
+                    prior.level.sd = 0.1, standardize.data = TRUE)
+)
+
+ci_full_rel <- round(ci_full$summary["Average", "RelEffect"] * 100, 1)
+ci_full_lo  <- round(ci_full$summary["Average", "RelEffect.lower"] * 100, 1)
+ci_full_hi  <- round(ci_full$summary["Average", "RelEffect.upper"] * 100, 1)
+ci_full_p   <- ci_full$summary["Average", "p"]
+```
+
+```{r}
+#| label: fig-causal-impact
+#| fig-cap: "CausalImpact (πλήρης περίοδος): Πραγματικά vs counterfactual με 95% πιστοτικό διάστημα. Το counterfactual αποτυπώνει τι θα συνέβαινε χωρίς τον νόμο, με βάση την ιστορική σχέση μεταξύ ελληνικής Wikipedia και controls."
+
+impact_series <- ci_full$series
+impact_dates <- index(impact_series)
+
+obs_ci   <- as.numeric(impact_series[, "response"])
+pred_ci  <- as.numeric(impact_series[, "point.pred"])
+pred_lo_ci <- as.numeric(impact_series[, "point.pred.lower"])
+pred_hi_ci <- as.numeric(impact_series[, "point.pred.upper"])
+
+point_eff_ci    <- as.numeric(impact_series[, "point.effect"])
+point_eff_lo_ci <- as.numeric(impact_series[, "point.effect.lower"])
+point_eff_hi_ci <- as.numeric(impact_series[, "point.effect.upper"])
+
+ts_ms_ci <- datetime_to_timestamp(as.Date(impact_dates))
+
+highchart() |>
+  hc_chart(zoomType = "x") |>
+  hc_title(text = "CausalImpact — Πραγματικές vs Counterfactual") |>
+  hc_subtitle(text = sprintf("BSTS μοντέλο με %d controls | Ν. 5179/2025", n_donors)) |>
+  hc_xAxis(
+    type = "datetime",
+    plotLines = list(
+      list(value = datetime_to_timestamp(intervention_date),
+           color = "#E63946", width = 2, dashStyle = "Solid",
+           zIndex = 5,
+           label = list(text = "Ν. 5179/2025",
+                        style = list(color = "#E63946", fontSize = "10px",
+                                     fontWeight = "700"),
+                        y = -5))
+    )
+  ) |>
+  hc_yAxis(title = list(text = "log(views + 1)")) |>
+  hc_tooltip(shared = TRUE, xDateFormat = "%d %b %Y", valueDecimals = 3) |>
+  hc_add_series(
+    name = "95% CI Counterfactual",
+    type = "arearange",
+    data = list_parse(data.frame(x = ts_ms_ci,
+                                  low = pred_lo_ci, high = pred_hi_ci)),
+    color = "#457B9D", fillOpacity = 0.15, lineWidth = 0,
+    zIndex = 0, enableMouseTracking = FALSE
+  ) |>
+  hc_add_series(
+    name = "Counterfactual",
+    data = list_parse2(data.frame(x = ts_ms_ci, y = round(pred_ci, 3))),
+    type = "spline", color = "#457B9D", dashStyle = "ShortDash",
+    lineWidth = 1.5, marker = list(enabled = FALSE), zIndex = 2
+  ) |>
+  hc_add_series(
+    name = "Παρατηρούμενα",
+    data = list_parse2(data.frame(x = ts_ms_ci, y = round(obs_ci, 3))),
+    type = "spline", color = "#1a1a2e", lineWidth = 2,
+    marker = list(enabled = FALSE), zIndex = 3
+  )
+```
+
+### Σύγκριση των δύο μεθόδων
+
+```{r}
+#| label: tbl-comparison
+#| tbl-cap: "Σύγκριση αποτελεσμάτων Synthetic Control και CausalImpact στο peak window (Φεβ–Απρ 2025)."
+
+sc_peak_rel <- period_effects |>
+  filter(period == "Peak (Φεβ–Απρ)") |>
+  pull(rel_change_pct)
+
+sc_peak_diff <- period_effects |>
+  filter(period == "Peak (Φεβ–Απρ)") |>
+  pull(diff_log)
+
+comparison_table <- tibble(
+  Μέθοδος = c("Synthetic Control", "CausalImpact"),
+  `Εκτίμηση effect` = c(
+    paste0("+", sc_peak_rel, "%"),
+    paste0("+", ci_rel, "%")
+  ),
+  `Διάστημα/Σημαντικότητα` = c(
+    sprintf("Rank %d/%d, Fisher's p=%.4f", sc_rank, nrow(sc_sig), sc_p),
+    sprintf("[%+.0f%%, %+.0f%%], p=%.4f", ci_lo, ci_hi, ci_p)
+  ),
+  `Log difference` = c(sc_peak_diff, ci_abs)
+)
+
+knitr::kable(comparison_table, align = c("l", "r", "l", "r"))
+```
+
+Η φαινομενική διαφορά στα ποσοστά (+`r sc_peak_rel`% vs +`r ci_rel`%) οφείλεται σε **διαφορετικό τρόπο υπολογισμού**: το Synthetic Control μετρά ποσοστιαία μεταβολή σε **φυσικές μονάδες** (μέσω exp(diff)−1), ενώ το CausalImpact μετρά σε **log scale** (διαφορά log προβλεπόμενης–πραγματικής). Οι **log differences** — **`r sc_peak_diff` vs `r ci_abs`** — είναι σχεδόν ταυτόσημες.
+
+Σε φυσικές μονάδες, και οι δύο μέθοδοι εκτιμούν ότι τα Wikipedia VPN pageviews στην Ελλάδα **περίπου διπλασιάστηκαν** κατά τις πρώτες 11 εβδομάδες μετά τη δημοσίευση του νόμου. Η σύγκλιση δύο ανεξάρτητων μεθόδων — μίας panel-based (SC) και μίας time-series-based (CI) — αποτελεί ισχυρή ένδειξη εγκυρότητας του ευρήματος.
+
+Για την πλήρη post-intervention περίοδο, το CausalImpact εκτιμά μέση αύξηση `r ci_full_rel`% (95% CI: [`r ci_full_lo`%, `r ci_full_hi`%], p=`r format(ci_full_p, digits=3)`), το οποίο αντανακλά τη σταδιακή αποσβένηση του αποτελέσματος μετά το peak.
+
+### Χρονική δυναμική: Shock → Decay → Saturation
+
+Το πρότυπο τριών φάσεων που αναδεικνύουν οι αναλύσεις είναι χαρακτηριστικό του Streisand Effect στη βιβλιογραφία. Το παρακάτω γράφημα απεικονίζει το εβδομαδιαίο αιτιακό αποτέλεσμα (διαφορά πραγματικής από συνθετική Ελλάδα), με τάση LOESS για εξομάλυνση.
+
+```{r}
+#| label: fig-decay
+#| fig-cap: "Χρονική δυναμική του αιτιακού αποτελέσματος. Κάθε μπάρα = εβδομαδιαία διαφορά (Ελλάδα − Συνθετική Ελλάδα). Η σταδιακή αποσβένηση ακολουθεί κλασικό shock → decay → saturation πρότυπο."
+
+synth_diffs <- synth_series |>
+  filter(time_unit >= intervention_date) |>
+  mutate(
+    diff = real_y - synth_y,
+    ts = datetime_to_timestamp(time_unit),
+    color_bar = ifelse(diff > 0, col_greece, col_synth)
+  )
+
+# LOESS fit
+loess_fit <- loess(diff ~ as.numeric(time_unit), data = synth_diffs, span = 0.4)
+synth_diffs$loess_y <- round(predict(loess_fit), 4)
+
+highchart() |>
+  hc_chart(zoomType = "x") |>
+  hc_title(text = "Shock → Decay → Saturation") |>
+  hc_subtitle(text = "Εβδομαδιαίο αιτιακό αποτέλεσμα (πραγματικά − συνθετικά, log scale)") |>
+  hc_xAxis(
+    type = "datetime",
+    plotBands = list(
+      list(
+        from = datetime_to_timestamp(intervention_date),
+        to = datetime_to_timestamp(as.Date("2025-05-01")),
+        color = "rgba(230,57,70,0.05)",
+        label = list(text = "Shock", style = list(fontSize = "10px",
+                                                     color = "#E63946",
+                                                     fontWeight = "700"))
+      ),
+      list(
+        from = datetime_to_timestamp(as.Date("2025-05-01")),
+        to = datetime_to_timestamp(as.Date("2025-09-01")),
+        color = "rgba(231,111,81,0.04)",
+        label = list(text = "Decay", style = list(fontSize = "10px",
+                                                     color = "#E76F51",
+                                                     fontWeight = "700"))
+      ),
+      list(
+        from = datetime_to_timestamp(as.Date("2025-09-01")),
+        to = datetime_to_timestamp(max(synth_diffs$time_unit)),
+        color = "rgba(29,53,87,0.04)",
+        label = list(text = "Saturation", style = list(fontSize = "10px",
+                                                          color = "#1D3557",
+                                                          fontWeight = "700"))
+      )
+    )
+  ) |>
+  hc_yAxis(
+    title = list(text = "Αιτιακό αποτέλεσμα (log)"),
+    plotLines = list(
+      list(value = 0, color = "#999", width = 1, dashStyle = "Dash")
+    )
+  ) |>
+  hc_tooltip(xDateFormat = "%d %b %Y", valueDecimals = 3) |>
+  hc_add_series(
+    name = "Εβδομαδιαίο εφέ",
+    data = lapply(seq_len(nrow(synth_diffs)), function(i) {
+      list(x = synth_diffs$ts[i],
+           y = round(synth_diffs$diff[i], 4),
+           color = synth_diffs$color_bar[i])
+    }),
+    type = "column", borderRadius = 2, opacity = 0.7
+  ) |>
+  hc_add_series(
+    name = "Τάση (LOESS)",
+    data = list_parse2(data.frame(x = synth_diffs$ts, y = synth_diffs$loess_y)),
+    type = "spline", color = col_greece, lineWidth = 2.5,
+    marker = list(enabled = FALSE)
+  )
+```
+
+**1. Shock** (εβδομάδες 1–10): Ραγδαία αύξηση, με κορύφωση λίγες εβδομάδες μετά τον νόμο. Η καθυστέρηση αντικατοπτρίζει τον **media cascade**: νόμος → πρώτες ειδήσεις → viral TikTok content → mainstream coverage → peak awareness.
+
+**2. Decay** (εβδομάδες 11–28): Σταδιακή αποσβένηση αλλά παραμονή πάνω από το counterfactual. Η ΚΥΑ εφαρμογής (Αύγουστος 2025) πιθανώς επιβράδυνε τη φθορά προκαλώντας δεύτερο — μικρότερο — κύμα κάλυψης.
+
+**3. Saturation** (εβδομάδες 29+): Υποχώρηση κάτω από το αναμενόμενο. Ερμηνεία: όσοι ενδιαφέρθηκαν, διάβασαν ήδη το άρθρο. Δεν υπάρχει λόγος επανεπίσκεψης.
+
+Αυτή η δυναμική είναι πολύ κοντά σε ό,τι βρήκαν οι Trevisan et al. (2019) μετά τη ρωσική απαγόρευση του Telegram: αρχικό σοκ, γρήγορη αποσβένηση, σταθεροποίηση σε νέο (αλλά κοντινό στο αρχικό) baseline.
+
+### Κλίμακα προστίμων σε πλαίσιο
+
+Η @fig-fines απεικονίζει τη δομή των προστίμων όπως θεσπίστηκαν από τον Ν. 5179/2025, σε σύγκριση με ενδεικτικά μηνιαία κόστη νόμιμων υπηρεσιών streaming. Η αντιπαράθεση αναδεικνύει ένα εντυπωσιακό εύρημα: ακόμη και το χαμηλότερο πρόστιμο (750€) αντιστοιχεί σε περίπου 15 μήνες νόμιμων συνδρομών, ενώ τα ανώτερα πρόστιμα για εμπορική εκμετάλλευση (10.000€) ξεπερνούν τα 16 χρόνια.
+
+```{r}
+#| label: fig-fines
+#| fig-cap: "Κλίμακα προστίμων Ν. 5179/2025 και σύγκριση με μηνιαίο κόστος νόμιμων συνδρομών (~50€/μήνα)."
+
+fines_data <- data.frame(
+  category = c("Οικιακός χρήστης\n(1η παράβαση)",
+                "Οικιακός χρήστης\n(υποτροπή)",
+                "Δημόσια προβολή\n(ελάχιστο)",
+                "Δημόσια προβολή\n(μέγιστο)",
+                "Εμπορική εκμετ.\n(ελάχιστο)",
+                "Εμπορική εκμετ.\n(μέγιστο)"),
+  amount = c(750, 1500, 1500, 3000, 5000, 10000),
+  months_equiv = c(15, 30, 30, 60, 100, 200)
+)
+
+highchart() |>
+  hc_chart(type = "bar") |>
+  hc_title(text = "Κλίμακα Προστίμων — Ν. 5179/2025") |>
+  hc_subtitle(
+    text = "Σε σύγκριση με μηνιαίο κόστος νόμιμων συνδρομών (~50€)"
+  ) |>
+  hc_xAxis(
+    categories = fines_data$category,
+    labels = list(style = list(fontSize = "11px"))
+  ) |>
+  hc_yAxis(
+    title = list(text = "Ευρώ (€)"),
+    labels = list(format = "€{value:,.0f}")
+  ) |>
+  hc_tooltip(
+    pointFormat = paste0(
+      '<b>€{point.y:,.0f}</b><br/>',
+      '\u2248 {point.months} μήνες νόμιμων συνδρομών'
+    )
+  ) |>
+  hc_plotOptions(
+    bar = list(
+      borderRadius = 4,
+      dataLabels = list(
+        enabled = TRUE,
+        format = "€{y:,.0f}",
+        style = list(fontSize = "11px", fontWeight = "600")
+      )
+    )
+  ) |>
+  hc_add_series(
+    name = "Πρόστιμο",
+    data = lapply(1:nrow(fines_data), function(i) {
+      list(y = fines_data$amount[i], months = fines_data$months_equiv[i])
+    }),
+    colorByPoint = TRUE,
+    colors = c("#A8DADC", "#457B9D", "#E9C46A", "#E76F51",
+               "#E63946", "#9B2226"),
+    showInLegend = FALSE
+  )
+```
+
+### Σύνοψη αποτελεσμάτων
+
+```{r}
+#| label: tbl-summary
+#| tbl-cap: "Συγκεντρωτικός πίνακας βασικών ευρημάτων από τις δύο μεθόδους."
+
+summary_tbl <- tibble(
+  Εύρημα = c(
+    "Peak effect (Φεβ–Απρ 2025)",
+    "Μέθοδοι σύγκλισης",
+    "Σχετική αύξηση (peak)",
+    "CausalImpact p-value (peak)",
+    "SC placebo rank",
+    "SC Fisher's p-value",
+    "SC z-score",
+    "Μακροπρόθεσμο εφέ (Σεπ 2025+)",
+    "Κύριοι donors (SC)"
+  ),
+  Αποτέλεσμα = c(
+    "Wikipedia VPN views ~2× counterfactual",
+    "SC & CI συμφωνούν σε log scale",
+    sprintf("+%s%% (SC) / +%s%% (CI)", sc_peak_rel, ci_rel),
+    sprintf("%.4f", ci_p),
+    sprintf("1 από %d χώρες", nrow(sc_sig)),
+    sprintf("%.4f", sc_p),
+    sprintf("%.2f", sc_z),
+    sprintf("%s%% (saturation)", rel_long),
+    sprintf("%s (%d%%) + %s (%d%%)",
+            synth_weights$unit[1], round(synth_weights$weight[1]*100),
+            synth_weights$unit[2], round(synth_weights$weight[2]*100))
+  )
+)
+
+knitr::kable(summary_tbl, align = c("l", "l"))
+```
+
+

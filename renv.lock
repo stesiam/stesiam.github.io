@@ -30,6 +30,93 @@
       "Maintainer": "Dirk Eddelbuettel <edd@debian.org>",
       "Repository": "CRAN"
     },
+    "Boom": {
+      "Package": "Boom",
+      "Version": "0.9.16",
+      "Source": "Repository",
+      "Date": "2025-09-02",
+      "Title": "Bayesian Object Oriented Modeling",
+      "Authors@R": "c(person( given = c(\"Steven\", \"L.\"), family = \"Scott\", role = c(\"aut\", \"cre\"), email = \"steve.the.bayesian@gmail.com\"))",
+      "Description": "A C++ library for Bayesian modeling, with an emphasis on Markov chain Monte Carlo.  Although boom contains a few R utilities (mainly plotting functions), its primary purpose is to install the BOOM C++ library on your system so that other packages can link against it.",
+      "License": "LGPL-2.1 | file LICENSE",
+      "Depends": [
+        "R(>= 4.5.0)"
+      ],
+      "Imports": [
+        "MASS"
+      ],
+      "Suggests": [
+        "testthat"
+      ],
+      "Encoding": "UTF-8",
+      "SystemRequirements": "GNU Make",
+      "NeedsCompilation": "yes",
+      "Author": "Steven L. Scott [aut, cre]",
+      "Maintainer": "Steven L. Scott <steve.the.bayesian@gmail.com>",
+      "Repository": "CRAN"
+    },
+    "BoomSpikeSlab": {
+      "Package": "BoomSpikeSlab",
+      "Version": "1.2.7",
+      "Source": "Repository",
+      "Date": "2025-09-03",
+      "Title": "MCMC for Spike and Slab Regression",
+      "Authors@R": "c(person( given=c(\"Steven\", \"L.\"), family = \"Scott\", role = c(\"aut\", \"cre\"), email = \"steve.the.bayesian@gmail.com\"))",
+      "Description": "Spike and slab regression with a variety of residual error distributions corresponding to Gaussian, Student T, probit, logit, SVM, and a few others.  Spike and slab regression is Bayesian regression with prior distributions containing a point mass at zero.  The posterior updates the amount of mass on this point, leading to a posterior distribution that is actually sparse, in the sense that if you sample from it many coefficients are actually zeros.  Sampling from this posterior distribution is an elegant way to handle Bayesian variable selection and model averaging.  See <DOI:10.1504/IJMMNO.2014.059942> for an explanation of the Gaussian case.",
+      "License": "LGPL-2.1 | file LICENSE",
+      "Depends": [
+        "Boom (>= 0.9.16)",
+        "R (>= 4.5.0)"
+      ],
+      "LinkingTo": [
+        "Boom(>= 0.9.16)"
+      ],
+      "Suggests": [
+        "MASS",
+        "testthat",
+        "mlbench",
+        "igraph"
+      ],
+      "Encoding": "UTF-8",
+      "NeedsCompilation": "yes",
+      "Author": "Steven L. Scott [aut, cre]",
+      "Maintainer": "Steven L. Scott <steve.the.bayesian@gmail.com>",
+      "Repository": "CRAN"
+    },
+    "CausalImpact": {
+      "Package": "CausalImpact",
+      "Version": "1.4.1",
+      "Source": "Repository",
+      "Title": "Inferring Causal Effects using Bayesian Structural Time-Series Models",
+      "Date": "2025-09-24",
+      "Authors@R": "c(person(given = c(\"Kay\", \"H.\"), family = \"Brodersen\", role = \"aut\", email = \"kbrodersen@google.com\"), person(given = \"Alain\", family = \"Hauser\", role = c(\"aut\", \"cre\"), email = \"alhauser@google.com\"))",
+      "Maintainer": "Alain Hauser <alhauser@google.com>",
+      "URL": "https://google.github.io/CausalImpact/",
+      "Description": "Implements a Bayesian approach to causal impact estimation in time series, as described in Brodersen et al. (2015) <DOI:10.1214/14-AOAS788>. See the package documentation on GitHub <https://google.github.io/CausalImpact/> to get started.",
+      "Copyright": "Copyright (C) 2014-2025 Google, Inc.",
+      "VignetteBuilder": "knitr",
+      "License": "Apache License 2.0 | file LICENSE",
+      "Imports": [
+        "assertthat (>= 0.2.0)",
+        "Boom",
+        "ggplot2",
+        "zoo"
+      ],
+      "Depends": [
+        "bsts (>= 0.9.0)"
+      ],
+      "Config/testthat/edition": "3",
+      "Suggests": [
+        "covr",
+        "knitr",
+        "rmarkdown",
+        "testthat",
+        "vdiffr"
+      ],
+      "NeedsCompilation": "no",
+      "Author": "Kay H. Brodersen [aut], Alain Hauser [aut, cre]",
+      "Repository": "CRAN"
+    },
     "DBI": {
       "Package": "DBI",
       "Version": "1.2.3",
@@ -1462,6 +1549,34 @@
       "NeedsCompilation": "no",
       "Author": "Carson Sievert [aut, cre] (<https://orcid.org/0000-0002-4958-2844>), Joe Cheng [aut], Garrick Aden-Buie [aut] (<https://orcid.org/0000-0002-7111-0077>), Posit Software, PBC [cph, fnd], Bootstrap contributors [ctb] (Bootstrap library), Twitter, Inc [cph] (Bootstrap library), Javi Aguilar [ctb, cph] (Bootstrap colorpicker library), Thomas Park [ctb, cph] (Bootswatch library), PayPal [ctb, cph] (Bootstrap accessibility plugin)",
       "Maintainer": "Carson Sievert <carson@posit.co>",
+      "Repository": "CRAN"
+    },
+    "bsts": {
+      "Package": "bsts",
+      "Version": "0.9.11",
+      "Source": "Repository",
+      "Date": "2025-09-04",
+      "Title": "Bayesian Structural Time Series",
+      "Authors@R": "c(person( given=c(\"Steven\", \"L.\"), family = \"Scott\", role = c(\"aut\", \"cre\"), email = \"steve.the.bayesian@gmail.com\"))",
+      "Description": "Time series regression using dynamic linear models fit using MCMC. See Scott and Varian (2014) <DOI:10.1504/IJMMNO.2014.059942>, among many other sources.",
+      "Depends": [
+        "BoomSpikeSlab (>= 1.2.7)",
+        "zoo (>= 1.8)",
+        "xts",
+        "Boom (>= 0.9.16)",
+        "R(>= 4.5.0)"
+      ],
+      "Suggests": [
+        "testthat"
+      ],
+      "LinkingTo": [
+        "Boom (>= 0.9.16)"
+      ],
+      "License": "LGPL-2.1 | MIT + file LICENSE",
+      "Encoding": "UTF-8",
+      "NeedsCompilation": "yes",
+      "Author": "Steven L. Scott [aut, cre]",
+      "Maintainer": "Steven L. Scott <steve.the.bayesian@gmail.com>",
       "Repository": "CRAN"
     },
     "butcher": {
@@ -5582,6 +5697,29 @@
       "Maintainer": "Hao Zhu <haozhu233@gmail.com>",
       "Repository": "CRAN"
     },
+    "kernlab": {
+      "Package": "kernlab",
+      "Version": "0.9-33",
+      "Source": "Repository",
+      "Title": "Kernel-Based Machine Learning Lab",
+      "Authors@R": "c(person(\"Alexandros\", \"Karatzoglou\", role = c(\"aut\", \"cre\"), email = \"alexandros.karatzoglou@gmail.com\"), person(\"Alex\", \"Smola\", role = \"aut\"), person(\"Kurt\", \"Hornik\", role = \"aut\", email = \"Kurt.Hornik@R-project.org\", comment = c(ORCID = \"0000-0003-4198-9911\")), person(\"National ICT Australia (NICTA)\", role = \"cph\"), person(c(\"Michael\", \"A.\"), \"Maniscalco\", role = c(\"ctb\", \"cph\")), person(c(\"Choon\", \"Hui\"), \"Teo\", role = \"ctb\"))",
+      "Description": "Kernel-based machine learning methods for classification, regression, clustering, novelty detection, quantile regression and dimensionality reduction.  Among other methods 'kernlab' includes Support Vector Machines, Spectral Clustering, Kernel PCA, Gaussian Processes and a QP solver.",
+      "Depends": [
+        "R (>= 2.10)"
+      ],
+      "Imports": [
+        "methods",
+        "stats",
+        "grDevices",
+        "graphics"
+      ],
+      "LazyLoad": "Yes",
+      "License": "GPL-2",
+      "NeedsCompilation": "yes",
+      "Author": "Alexandros Karatzoglou [aut, cre], Alex Smola [aut], Kurt Hornik [aut] (<https://orcid.org/0000-0003-4198-9911>), National ICT Australia (NICTA) [cph], Michael A. Maniscalco [ctb, cph], Choon Hui Teo [ctb]",
+      "Maintainer": "Alexandros Karatzoglou <alexandros.karatzoglou@gmail.com>",
+      "Repository": "CRAN"
+    },
     "kknn": {
       "Package": "kknn",
       "Version": "1.4.1",
@@ -6460,6 +6598,33 @@
       "Maintainer": "R Core Team <R-core@R-project.org>",
       "Repository": "CRAN"
     },
+    "nloptr": {
+      "Package": "nloptr",
+      "Version": "2.2.1",
+      "Source": "Repository",
+      "Type": "Package",
+      "Title": "R Interface to NLopt",
+      "Authors@R": "c(person(\"Jelmer\", \"Ypma\", role = \"aut\", email = \"uctpjyy@ucl.ac.uk\"), person(c(\"Steven\", \"G.\"), \"Johnson\", role = \"aut\", comment = \"author of the NLopt C library\"), person(\"Aymeric\", \"Stamm\", role = c(\"ctb\", \"cre\"), email = \"aymeric.stamm@cnrs.fr\", comment = c(ORCID = \"0000-0002-8725-3654\")), person(c(\"Hans\", \"W.\"), \"Borchers\", role = \"ctb\", email = \"hwborchers@googlemail.com\"), person(\"Dirk\", \"Eddelbuettel\", role = \"ctb\", email = \"edd@debian.org\"), person(\"Brian\", \"Ripley\", role = \"ctb\", comment = \"build process on multiple OS\"), person(\"Kurt\", \"Hornik\", role = \"ctb\", comment = \"build process on multiple OS\"), person(\"Julien\", \"Chiquet\", role = \"ctb\"), person(\"Avraham\", \"Adler\", role = \"ctb\",  email = \"Avraham.Adler@gmail.com\", comment = c(ORCID = \"0000-0002-3039-0703\")), person(\"Xiongtao\", \"Dai\", role = \"ctb\"), person(\"Jeroen\", \"Ooms\", role = \"ctb\", email = \"jeroen@berkeley.edu\"), person(\"Tomas\", \"Kalibera\", role = \"ctb\"), person(\"Mikael\", \"Jagan\", role = \"ctb\"))",
+      "Description": "Solve optimization problems using an R interface to NLopt. NLopt is a  free/open-source library for nonlinear optimization, providing a common interface for a number of different free optimization routines available online as well as original implementations of various other algorithms. See <https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/> for more information on the available algorithms. Building from included sources  requires 'CMake'. On Linux and 'macOS', if a suitable system build of  NLopt (2.7.0 or later) is found, it is used; otherwise, it is built  from included sources via 'CMake'. On Windows, NLopt is obtained through  'rwinlib' for 'R <= 4.1.x' or grabbed from the appropriate toolchain for 'R >= 4.2.0'.",
+      "License": "LGPL (>= 3)",
+      "SystemRequirements": "cmake (>= 3.2.0) which is used only on Linux or macOS systems when no system build of nlopt (>= 2.7.0) can be found.",
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.3.2",
+      "Suggests": [
+        "knitr",
+        "rmarkdown",
+        "covr",
+        "tinytest"
+      ],
+      "VignetteBuilder": "knitr",
+      "URL": "https://github.com/astamm/nloptr, https://astamm.github.io/nloptr/",
+      "BugReports": "https://github.com/astamm/nloptr/issues",
+      "NeedsCompilation": "yes",
+      "UseLTO": "yes",
+      "Author": "Jelmer Ypma [aut], Steven G. Johnson [aut] (author of the NLopt C library), Aymeric Stamm [ctb, cre] (<https://orcid.org/0000-0002-8725-3654>), Hans W. Borchers [ctb], Dirk Eddelbuettel [ctb], Brian Ripley [ctb] (build process on multiple OS), Kurt Hornik [ctb] (build process on multiple OS), Julien Chiquet [ctb], Avraham Adler [ctb] (<https://orcid.org/0000-0002-3039-0703>), Xiongtao Dai [ctb], Jeroen Ooms [ctb], Tomas Kalibera [ctb], Mikael Jagan [ctb]",
+      "Maintainer": "Aymeric Stamm <aymeric.stamm@cnrs.fr>",
+      "Repository": "CRAN"
+    },
     "nnet": {
       "Package": "nnet",
       "Version": "7.3-20",
@@ -6581,6 +6746,46 @@
       "NeedsCompilation": "yes",
       "Author": "Jeroen Ooms [aut, cre] (ORCID: <https://orcid.org/0000-0002-4035-0289>), Oliver Keyes [ctb]",
       "Maintainer": "Jeroen Ooms <jeroenooms@gmail.com>",
+      "Repository": "CRAN"
+    },
+    "optimx": {
+      "Package": "optimx",
+      "Version": "2025-4.9",
+      "Source": "Repository",
+      "Date": "2025-04-09",
+      "Title": "Expanded Replacement and Extension of the 'optim' Function",
+      "Authors@R": "c( person(given = c(\"John\", \"C\"), family = \"Nash\", role = c(\"aut\", \"cre\"), email = \"profjcnash@gmail.com\"), person(given = \"Ravi\", family = \"Varadhan\", role = \"aut\", email = \"RVaradhan@jhmi.edu\"), person(given = \"Hans W\", family = \"Borchers\", role = \"ctb\", email =  \"hwborchers@gmail.com\"),   person(given = \"Gabor\", family = \"Grothendieck\", role = \"ctb\", email = \"ggrothendieck@gmail.com\") )",
+      "Maintainer": "John C Nash <profjcnash@gmail.com>",
+      "Description": "Provides a replacement and extension of the optim() function to call to several function minimization codes in R in a single statement. These methods handle smooth, possibly box constrained functions  of several or many parameters. Note that function 'optimr()' was prepared to simplify the incorporation of minimization codes going forward. Also implements some utility codes and some extra solvers, including safeguarded Newton methods. Many methods previously separate are now included here. This is the version for CRAN.",
+      "License": "GPL-2",
+      "URL": "https://github.com/nashjc/optimx",
+      "BugReports": "https://github.com/nashjc/optimx/issues",
+      "LazyLoad": "Yes",
+      "Imports": [
+        "numDeriv",
+        "nloptr",
+        "pracma"
+      ],
+      "NeedsCompilation": "no",
+      "Suggests": [
+        "knitr",
+        "rmarkdown",
+        "setRNG",
+        "BB",
+        "ucminf",
+        "minqa",
+        "dfoptim",
+        "lbfgsb3c",
+        "lbfgs",
+        "subplex",
+        "marqLevAlg",
+        "testthat (>= 3.0.0)",
+        "R.rsp"
+      ],
+      "VignetteBuilder": "R.rsp",
+      "Config/testthat/edition": "3",
+      "Config/build/clean-inst-doc": "false",
+      "Author": "John C Nash [aut, cre], Ravi Varadhan [aut], Hans W Borchers [ctb], Gabor Grothendieck [ctb]",
       "Repository": "CRAN"
     },
     "otel": {
@@ -7029,6 +7234,36 @@
       "NeedsCompilation": "no",
       "Author": "Paul-Christian Bürkner [aut, cre], Jonah Gabry [aut], Matthew Kay [aut], Aki Vehtari [aut], Måns Magnusson [ctb], Rok Češnovar [ctb], Ben Lambert [ctb], Ozan Adıgüzel [ctb], Jacob Socolar [ctb], Noa Kallioinen [ctb]",
       "Maintainer": "Paul-Christian Bürkner <paul.buerkner@gmail.com>",
+      "Repository": "CRAN"
+    },
+    "pracma": {
+      "Package": "pracma",
+      "Version": "2.4.6",
+      "Source": "Repository",
+      "Type": "Package",
+      "Date": "2025-10-20",
+      "Title": "Practical Numerical Math Functions",
+      "Authors@R": "person(\"Hans W.\", \"Borchers\",  email=\"hwborchers@googlemail.com\",  role=c(\"aut\", \"cre\"))",
+      "Depends": [
+        "R (>= 3.1.0)"
+      ],
+      "Imports": [
+        "graphics",
+        "grDevices",
+        "stats",
+        "utils"
+      ],
+      "Suggests": [
+        "NlcOptim",
+        "quadprog"
+      ],
+      "Description": "Provides a large number of functions from numerical analysis and linear algebra, numerical optimization, differential equations, time series, plus some well-known special mathematical functions. Uses 'MATLAB' function names where appropriate to simplify porting.",
+      "License": "GPL (>= 3)",
+      "ByteCompile": "true",
+      "LazyData": "yes",
+      "NeedsCompilation": "no",
+      "Author": "Hans W. Borchers [aut, cre]",
+      "Maintainer": "Hans W. Borchers <hwborchers@googlemail.com>",
       "Repository": "CRAN"
     },
     "prettyunits": {
@@ -8201,6 +8436,28 @@
       "NeedsCompilation": "no",
       "Author": "Jennifer Bryan [aut, cre] (<https://orcid.org/0000-0002-6983-2759>), Jim Hester [aut] (<https://orcid.org/0000-0002-2739-7082>), David Robinson [aut], Hadley Wickham [aut] (<https://orcid.org/0000-0003-4757-117X>), Christophe Dervieux [aut] (<https://orcid.org/0000-0003-4474-2498>), Posit Software, PBC [cph, fnd]",
       "Maintainer": "Jennifer Bryan <jenny@posit.co>",
+      "Repository": "CRAN"
+    },
+    "rgenoud": {
+      "Package": "rgenoud",
+      "Version": "5.9-0.11",
+      "Source": "Repository",
+      "Date": "2024-10-03",
+      "Title": "R Version of GENetic Optimization Using Derivatives",
+      "Authors@R": "c( person(\"Walter\", \"R. Mebane, Jr\", role = \"aut\", email = \"wmebane@umich.edu\"), person(\"Jasjeet\", \"Singh Sekhon\", role = c(\"aut\",\"cre\"), email = \"jas.sekhon@yale.edu\"), person(\"Theo\", \"Saarinen\", role = \"aut\", email = \"theo_s@berkeley.edu\") )",
+      "Maintainer": "Jasjeet Singh Sekhon <jas.sekhon@yale.edu>",
+      "Description": "A genetic algorithm plus derivative optimizer.",
+      "Depends": [
+        "R (>= 2.15)",
+        "utils"
+      ],
+      "Suggests": [
+        "testthat"
+      ],
+      "License": "GPL-3",
+      "URL": "https://github.com/JasjeetSekhon/rgenoud",
+      "NeedsCompilation": "yes",
+      "Author": "Walter R. Mebane, Jr [aut], Jasjeet Singh Sekhon [aut, cre], Theo Saarinen [aut]",
       "Repository": "CRAN"
     },
     "rjson": {
@@ -10148,6 +10405,41 @@
       "NeedsCompilation": "yes",
       "Author": "Lionel Henry [aut, cre], Hadley Wickham [aut], Posit Software, PBC [cph, fnd]",
       "Maintainer": "Lionel Henry <lionel@posit.co>",
+      "Repository": "CRAN"
+    },
+    "tidysynth": {
+      "Package": "tidysynth",
+      "Version": "0.2.1",
+      "Source": "Repository",
+      "Title": "A Tidy Implementation of the Synthetic Control Method",
+      "Authors@R": "person(given = \"Eric\", family = \"Dunford\", role = c(\"aut\", \"cre\"), email = \"ed769@georgetown.edu\", comment = c(ORCID = \"0000-0003-3056-8687\"))",
+      "Description": "A synthetic control offers a way of evaluating the effect of an intervention in comparative case studies. The package makes a number of improvements when implementing the method in R. These improvements allow users to inspect, visualize, and tune the synthetic control more easily. A key benefit of a tidy implementation is that the entire preparation process for building the synthetic control can be accomplished in a single pipe.",
+      "License": "MIT + file LICENSE",
+      "Encoding": "UTF-8",
+      "LazyData": "true",
+      "RoxygenNote": "7.3.2",
+      "Depends": [
+        "R (>= 3.5.0)"
+      ],
+      "Imports": [
+        "magrittr",
+        "tibble",
+        "dplyr",
+        "ggplot2",
+        "tidyr",
+        "forcats",
+        "rlang",
+        "kernlab",
+        "rgenoud",
+        "optimx",
+        "stats"
+      ],
+      "Suggests": [
+        "testthat"
+      ],
+      "NeedsCompilation": "no",
+      "Author": "Eric Dunford [aut, cre] (<https://orcid.org/0000-0003-3056-8687>)",
+      "Maintainer": "Eric Dunford <ed769@georgetown.edu>",
       "Repository": "CRAN"
     },
     "tidyverse": {
