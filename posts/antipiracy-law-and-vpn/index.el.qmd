@@ -815,8 +815,7 @@ highchart() |>
 #| label: tbl-phases
 #| tbl-cap: "Synthetic Control: αιτιακό αποτέλεσμα ανά φάση."
 
-knitr::kable(
-  period_effects |>
+period_effects |>
     mutate(
       `Σχετική μεταβολή` = paste0(ifelse(rel_change_pct > 0, "+", ""),
                                     rel_change_pct, "%")
@@ -824,9 +823,8 @@ knitr::kable(
     select(Φάση = period, Εβδομάδες = n_weeks,
            `Πραγματικά (log)` = actual_log,
            `Counterfactual (log)` = synth_log,
-           `Σχετική μεταβολή`),
-  align = c("l", "r", "r", "r", "r")
-)
+           `Σχετική μεταβολή`) |>
+  gt_custom(head_max = Inf, use_labels = FALSE)
 ```
 
 **Φάση 1 — Peak (Φεβ–Απρ 2025)**: Οι αναγνώσεις **υπερδιπλασιάστηκαν** (+`r rel_peak`%) σε σχέση με ό,τι θα αναμενόταν χωρίς τον νόμο. Αυτή η φάση αντιστοιχεί χρονικά με το κύμα ειδήσεων και το viral TikTok content.
@@ -1058,7 +1056,8 @@ comparison_table <- tibble(
   `Log difference` = c(sc_peak_diff, ci_abs)
 )
 
-knitr::kable(comparison_table, align = c("l", "r", "l", "r"))
+comparison_table |>
+  gt_custom(use_labels = FALSE)
 ```
 
 Η φαινομενική διαφορά στα ποσοστά (+`r sc_peak_rel`% vs +`r ci_rel`%) οφείλεται σε **διαφορετικό τρόπο υπολογισμού**: το Synthetic Control μετρά ποσοστιαία μεταβολή σε **φυσικές μονάδες** (μέσω exp(diff)−1), ενώ το CausalImpact μετρά σε **log scale** (διαφορά log προβλεπόμενης–πραγματικής). Οι **log differences** — **`r sc_peak_diff` vs `r ci_abs`** — είναι σχεδόν ταυτόσημες.
@@ -1186,7 +1185,8 @@ summary_tbl <- tibble(
   )
 )
 
-knitr::kable(summary_tbl, align = c("l", "l"))
+summary_tbl |>
+  gt_custom(head_max = Inf, use_labels = FALSE)
 ```
 
 

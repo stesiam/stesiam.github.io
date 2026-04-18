@@ -16,6 +16,170 @@ execute:
 
 ### Supermarket Sales
 
+```{ojs}
+//| echo: false
+brands = [
+  { name: "Sklavenitis", nameGr: "Σκλαβενίτης", sales: 5.35, color: "#C8A96E", accent: "#E8D5A8" },
+  { name: "LIDL",        nameGr: "LIDL",        sales: 2.00, color: "#2B6CB0", accent: "#4A8FD4" },
+  { name: "AB",          nameGr: "AB Βασιλόπουλος", sales: 1.94, color: "#2D9B78", accent: "#3CC49A" },
+  { name: "Metro",       nameGr: "Μέτρο",       sales: 1.65, color: "#D04A3C", accent: "#E8665A" },
+  { name: "Masoutis",    nameGr: "Μασούτης",     sales: 1.15, color: "#3B5198", accent: "#5570B8" },
+  { name: "Kritikos",    nameGr: "Κρητικός",     sales: 0.78, color: "#943333", accent: "#B84444" },
+  { name: "Other",       nameGr: "Άλλο",         sales: 1.93, color: "#888890", accent: "#AAAAB4" }
+]
+smTotal = 14.8
+mutable hoveredBrand = null
+```
+
+```{ojs}
+//| echo: false
+supermarketChart = {
+  const BS = {
+    text: "var(--bs-body-color)", muted: "var(--bs-secondary-color)",
+    emphasis: "var(--bs-emphasis-color)", bg: "var(--bs-body-bg)",
+    border: "var(--bs-border-color)", tertBg: "var(--bs-tertiary-bg)",
+    secBg: "var(--bs-secondary-bg)"
+  };
+  const GOLD = "#C8A96E";
+
+  const wrapper = d3.create("div")
+    .style("max-width","960px").style("margin","0 auto").style("padding","32px 24px 24px")
+    .style("font-family","'DM Sans', sans-serif").style("color", BS.text);
+
+  // Header
+  const header = wrapper.append("div").style("text-align","center").style("margin-bottom","8px");
+  header.append("div").style("font-size","11px").style("letter-spacing","4px")
+    .style("text-transform","uppercase").style("color",GOLD).style("margin-bottom","10px")
+    .style("font-weight","500").text("Market Analysis · 2022");
+  header.append("div").style("font-family","'DM Serif Display', serif")
+    .style("font-size","clamp(26px, 4vw, 38px)").style("font-weight","400")
+    .style("margin","0 0 12px").style("line-height","1.15").style("color", BS.emphasis)
+    .text("Πωλήσεις Σουπερμάρκετ στην Ελλάδα");
+  header.append("div").style("font-size","14px").style("color", BS.muted)
+    .style("max-width","560px").style("margin","0 auto").style("line-height","1.7").style("font-weight","300")
+    .html(`Οι συνολικές πωλήσεις ανέρχονται στα <strong style="color:${GOLD};font-weight:600;">€14.8 δις</strong>. Ο <strong style="color:${GOLD};font-weight:600;">Σκλαβενίτης</strong> κυριαρχεί με μερίδιο <strong style="font-weight:600;">36.1%</strong> και τζίρο €5.35 δις.`);
+
+  const body = wrapper.append("div")
+    .style("display","flex").style("align-items","center").style("justify-content","center")
+    .style("gap","32px").style("flex-wrap","wrap").style("margin-top","16px");
+
+  // Donut
+  const w = 340, h = 340, outerR = 135, innerR = 82, cx = w/2, cy = h/2;
+  const svg = body.append("div").style("flex-shrink","0").append("svg")
+    .attr("viewBox",`0 0 ${w} ${h}`).attr("width",w).attr("height",h).style("overflow","visible");
+
+  const pie = d3.pie().value(d => d.sales).sort(null).padAngle(0.025);
+  const arcs = pie(brands);
+  const arcGen = d3.arc().innerRadius(innerR).outerRadius(outerR).cornerRadius(4);
+  const arcHover = d3.arc().innerRadius(innerR-3).outerRadius(outerR+8).cornerRadius(5);
+
+  // Glow
+  svg.append("g").attr("transform",`translate(${cx},${cy})`).attr("aria-hidden","true")
+    .selectAll("path").data(arcs).join("path")
+    .attr("d", d3.arc().innerRadius(outerR).outerRadius(outerR+4).cornerRadius(2))
+    .style("fill", d => d.data.color).style("opacity",0.15);
+
+  const arcGroup = svg.append("g").attr("transform",`translate(${cx},${cy})`);
+  const paths = arcGroup.selectAll("path").data(arcs).join("path")
+    .attr("d", arcGen).style("fill", d => d.data.color).style("stroke", BS.bg)
+    .style("stroke-width",2).style("cursor","pointer")
+    .on("mouseenter", function(ev, d) {
+      d3.select(this).transition().duration(200).attr("d", arcHover(d))
+        .style("fill", d.data.accent).style("filter",`drop-shadow(0 4px 14px ${d.data.color}55)`);
+      mutable hoveredBrand = d.data; updateCenter(d.data); updateLegend(d.data.name);
+    })
+    .on("mouseleave", function(ev, d) {
+      d3.select(this).transition().duration(300).attr("d", arcGen(d))
+        .style("fill", d.data.color).style("filter","none");
+      mutable hoveredBrand = null; updateCenter(null); updateLegend(null);
+    });
+
+  // Center
+  const centerG = svg.append("g").attr("transform",`translate(${cx},${cy})`);
+  centerG.append("text").attr("y",-10).attr("text-anchor","middle").attr("font-size",22).text("🛒");
+  const centerValue = centerG.append("text").attr("y",18).attr("text-anchor","middle")
+    .attr("font-family","'JetBrains Mono'").attr("font-size",22).attr("font-weight",700)
+    .style("fill", BS.emphasis).text("€14.8B");
+  const centerLabel = centerG.append("text").attr("y",36).attr("text-anchor","middle")
+    .attr("font-family","'DM Sans'").attr("font-size",9).attr("letter-spacing","2.5px")
+    .style("fill", BS.muted).text("ΣΥΝΟΛΟ ΠΩΛΗΣΕΩΝ");
+
+  function updateCenter(b) {
+    if (b) {
+      centerValue.text(`€${b.sales.toFixed(2)}B`).style("fill", b.accent);
+      centerLabel.text(`${b.name.toUpperCase()} · ${(b.sales/smTotal*100).toFixed(1)}%`);
+    } else {
+      centerValue.text("€14.8B").style("fill", BS.emphasis);
+      centerLabel.text("ΣΥΝΟΛΟ ΠΩΛΗΣΕΩΝ");
+    }
+  }
+
+  // Legend
+  const legend = body.append("div").style("display","flex").style("flex-direction","column")
+    .style("gap","4px").style("min-width","280px");
+
+  const items = legend.selectAll("div.lr").data(brands).join("div")
+    .style("display","flex").style("align-items","center").style("gap","14px")
+    .style("padding","10px 16px").style("border-radius","8px").style("cursor","pointer")
+    .style("border","1px solid transparent").style("transition","all 0.25s ease")
+    .on("mouseenter", function(ev, d) {
+      arcGroup.selectAll("path").transition().duration(200)
+        .attr("d", (dd,i) => brands[i].name===d.name ? arcHover(arcs[i]) : arcGen(arcs[i]))
+        .style("fill", (dd,i) => brands[i].name===d.name ? brands[i].accent : brands[i].color)
+        .style("filter", (dd,i) => brands[i].name===d.name ? `drop-shadow(0 4px 14px ${brands[i].color}55)` : "none");
+      mutable hoveredBrand = d; updateCenter(d); updateLegend(d.name);
+    })
+    .on("mouseleave", function() {
+      arcGroup.selectAll("path").transition().duration(300)
+        .attr("d", (dd,i) => arcGen(arcs[i])).style("fill", (dd,i) => brands[i].color).style("filter","none");
+      mutable hoveredBrand = null; updateCenter(null); updateLegend(null);
+    });
+
+  items.append("div").attr("data-role","dot").style("width","10px").style("height","10px")
+    .style("border-radius","3px").style("flex-shrink","0").style("background", d => d.color).style("transition","all 0.3s");
+  items.append("div").attr("data-role","name").style("flex","1").style("font-size","13px")
+    .style("color", BS.muted).style("transition","all 0.3s").text(d => d.nameGr);
+  items.append("div").attr("data-role","val").style("font-family","'JetBrains Mono'")
+    .style("font-size","12px").style("color", BS.muted).style("transition","color 0.3s")
+    .text(d => `€${d.sales.toFixed(2)}B`);
+
+  const bars = items.append("div").style("width","56px").style("height","4px").style("border-radius","2px")
+    .style("background", BS.secBg).style("overflow","hidden");
+  bars.append("div").attr("data-role","bar").style("height","100%").style("border-radius","2px")
+    .style("opacity","0.6").style("transition","opacity 0.3s")
+    .style("width", d => `${(d.sales/smTotal*100).toFixed(1)}%`)
+    .style("background", d => `linear-gradient(90deg, ${d.color}, ${d.accent})`);
+  items.append("div").style("font-family","'JetBrains Mono'").style("font-size","11px")
+    .style("color", BS.muted).style("width","42px").style("text-align","right")
+    .text(d => `${(d.sales/smTotal*100).toFixed(1)}%`);
+
+  function updateLegend(name) {
+    items.each(function(d) {
+      const el = d3.select(this), active = d.name === name;
+      el.style("background", active ? BS.tertBg : "transparent")
+        .style("border-color", active ? BS.border : "transparent")
+        .style("transform", active ? "translateX(4px)" : "none");
+      el.select("[data-role=dot]").style("background", active ? d.accent : d.color)
+        .style("box-shadow", active ? `0 0 10px ${d.color}` : "none");
+      el.select("[data-role=name]").style("color", active ? BS.emphasis : BS.muted)
+        .style("font-weight", active ? "600" : "400");
+      el.select("[data-role=val]").style("color", active ? GOLD : BS.muted);
+      el.select("[data-role=bar]").style("opacity", active ? "1" : "0.6");
+    });
+  }
+
+  // Footer
+  const footer = wrapper.append("div").style("margin-top","24px").style("padding-top","16px")
+    .style("border-top",`1px solid ${BS.border}`).style("display","flex")
+    .style("justify-content","space-between").style("flex-wrap","wrap").style("gap","8px")
+    .style("font-size","11px").style("color", BS.muted);
+  footer.append("div").html("<strong>Δεδομένα:</strong> ΙΕΛΚΑ — Πανόραμα Ελληνικών Σουπερμάρκετ, selfservice.gr");
+  footer.append("div").html(`30 Day Chart Challenge · Day 1 (2024) · <span style="color:${GOLD}">stesiam</span>`);
+
+  return wrapper.node();
+}
+```
+
 
 ```{r}
 #| echo: false
@@ -33,6 +197,7 @@ library(jsonlite)
 #| echo: false
 #| warning: false
 #| message: false
+#| eval: false
 
 sm_sales = 14.8
 data = data.frame(
