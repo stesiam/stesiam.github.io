@@ -1486,7 +1486,7 @@ tibble(
 
 ```{r}
 #| label: fig-sc-prefit
-#| fig-cap: !expr sprintf("Synthetic Control: Πραγματική vs Συνθετική Ελλάδα. Pre-period RMSPE = %.4f log-units. Post/Pre MSPE ratio = %.1f× (permutation p = %.3f). Το σκιασμένο εμβαδόν αντιπροσωπεύει το εκτιμώμενο αιτιακό αποτέλεσμα.", rmspe_pre, mspe_ratio, p_value_sc)
+#| fig-cap: !expr 'sprintf("Synthetic Control: Πραγματική vs Συνθετική Ελλάδα. Pre-period RMSPE = %.4f log-units. Post/Pre MSPE ratio = %.1f× (permutation p = %.3f). Το σκιασμένο εμβαδόν αντιπροσωπεύει το εκτιμώμενο αιτιακό αποτέλεσμα.", rmspe_pre, mspe_ratio, p_value_sc)'
 
 sc_viz   <- synth_series |> mutate(ts = datetime_to_timestamp(time_unit))
 gap_post <- sc_viz |> filter(time_unit >= intervention_date)
@@ -4020,7 +4020,7 @@ tibble(
 
 ```{r}
 #| label: fig-results-sc
-#| fig-cap: !expr sprintf("Synthetic Control: Πραγματική vs Συνθετική Ελλάδα (2023–2026). Μέσο post-intervention εφέ: +%.1f%%. Peak: +%.1f%% στις %s.", sc_att_pct, sc_peak_pct, format(sc_peak_date, "%d %b %Y"))
+#| fig-cap: !expr 'sprintf("Synthetic Control: Πραγματική vs Συνθετική Ελλάδα (2023–2026). Μέσο post-intervention εφέ: +%.1f%%. Peak: +%.1f%% στις %s.", sc_att_pct, sc_peak_pct, format(sc_peak_date, "%d %b %Y"))'
 
 sc_viz_full <- synth_series |>
   mutate(
