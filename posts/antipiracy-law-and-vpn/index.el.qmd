@@ -57,6 +57,7 @@ library(zoo)
 library(scales)
 library(gt)
 library(car)
+library(stringr)
 ```
 
 ```{r}
@@ -1031,35 +1032,44 @@ $\hat{Y}_{it}(0) = X_{it}' \hat{\beta} + \hat{\mathbf{\lambda}}_i' \hat{\mathbf{
 γλώσσες λόγω ακραίων ιδιοσυγκρασιακών αιχμών (σλοβενικά, γαλλικά, τουρκικά) ή
 δυσανάλογα μεγάλης κλίμακας (αγγλικά).
 
+
 ```{r}
-#| label: data-preparation-methods
+#| label: data-preparation-methods1
 #| include: false
 
-# Κοινή προετοιμασία για όλες τις μεθόδους
+# Καθαρισμός donor pool
+problematic_langs <- c("en", "sl", "fr", "tr")
+
+wiki_clean <- wiki_data |>
+  filter(!lang %in% problematic_langs) |>
+  filter(date >= as.Date("2023-01-01"))
+
+# Wide format
+wiki_wide <- wiki_clean |>
+  select(date, lang, views) |>
+  pivot_wider(names_from = lang, values_from = views) |>
+  arrange(date) |>
+  drop_na()
+
+# Weekly aggregation
+wiki_weekly <- wiki_wide |>
+  mutate(week = floor_date(date, "week", week_start = 1)) |>
+  group_by(week) |>
+  summarise(across(where(is.numeric), mean), .groups = "drop") |>
+  rename(date = week)
+
+# Log-transformed
 wiki_log <- wiki_weekly |>
   mutate(across(-date, ~log1p(.)))
 
 pre_log_df <- wiki_log |> filter(date < intervention_date)
 
-# Για SDID: μήτρα units × time με Ελλάδα στην τελευταία γραμμή
-panel_long <- wiki_log |>
-  pivot_longer(-date, names_to = "lang", values_to = "y") |>
-  mutate(lang = factor(lang,
-                        levels = c(setdiff(unique(lang), "el"), "el")))
-
-Y <- panel_long |>
-  pivot_wider(names_from = date, values_from = y) |>
-  column_to_rownames("lang") |>
-  as.matrix()
-
-N  <- nrow(Y)
-N0 <- N - 1
-T0 <- sum(wiki_weekly$date < intervention_date)
-
-n_pre    <- T0
-n_post   <- nrow(wiki_weekly) - T0
-n_donors <- N0
+# Παράμετροι δείγματος
+n_pre    <- sum(wiki_weekly$date < intervention_date)
+n_post   <- sum(wiki_weekly$date >= intervention_date)
+n_donors <- length(setdiff(names(wiki_weekly), c("date", "el")))
 ```
+
 
 Μετά τον καθαρισμό, το δείγμα αποτελείται από **`r n_pre` εβδομάδες** πριν
 την παρέμβαση και **`r n_post` εβδομάδες** μετά, με **`r n_donors`
@@ -1344,6 +1354,14 @@ hull_check <- wiki_weekly |>
   ungroup()
 
 pct_inside <- round(mean(hull_check$inside) * 100, 1)
+
+el_log_mean   <- mean(hull_check$log_el)
+donor_means   <- wiki_log |>
+  filter(date < intervention_date) |>
+  select(all_of(donor_langs)) |>
+  summarise(across(everything(), mean)) |>
+  unlist()
+position_pct  <- pct_inside  # ή ξεχωριστός υπολογισμός αν θες κάτι άλλο
 ```
 
 Ελέγχουμε αν η ελληνική σειρά βρίσκεται εντός του εύρους των δοτών κατά την
@@ -1992,8 +2010,8 @@ tibble(
 cusum_df <- tibble(
   date  = pre_log_df$date,
   cusum = as.numeric(cusum_model$process)[-1],        # αφαίρεσε το πρώτο (= 0)
-  upper = as.numeric(boundary(cusum_model, alpha = 0.05))[-1],
-  lower = -as.numeric(boundary(cusum_model, alpha = 0.05))[-1],
+  upper = as.numeric(strucchange::boundary(cusum_model, alpha = 0.05))[-1],
+  lower = -as.numeric(strucchange::boundary(cusum_model, alpha = 0.05))[-1],
   ts    = datetime_to_timestamp(date)
 )
 
@@ -2130,9 +2148,14 @@ season_stability <- anova(fit_additive, fit_interaction)
 p_season <- round(season_stability$`Pr(>F)`[2], 4)
 
 # Stationarity
+# Υπάρχει ήδη:
 adf_result <- adf.test(el_pre, alternative = "stationary")
 p_adf      <- round(adf_result$p.value, 4)
 adf_stat   <- round(adf_result$statistic, 3)
+
+# Πρόσθεσε αμέσως μετά:
+kpss_result <- kpss.test(el_pre, null = "Level")
+p_kpss      <- round(kpss_result$p.value, 4)
 ```
 
 ```{r}
@@ -3888,6 +3911,12 @@ sc_peak_date <- sc_post$time_unit[which.max(sc_post$pct_effect)]
 
 # === DiD: ATT ===
 # Εκτίμηση DiD regression
+did_panel <- panel_data |>
+  mutate(
+    y       = views_log,
+    treated = lang == "el"
+  )
+
 did_reg <- lm(
   y ~ lang + factor(date_num) + D,
   data = did_panel |>
@@ -3902,6 +3931,11 @@ did_se_log  <- summary(did_reg)$coefficients["DTRUE", "Std. Error"]
 did_ci_lower <- round((exp(did_att_log - 1.96 * did_se_log) - 1) * 100, 1)
 did_ci_upper <- round((exp(did_att_log + 1.96 * did_se_log) - 1) * 100, 1)
 did_p        <- round(summary(did_reg)$coefficients["DTRUE", "Pr(>|t|)"], 4)
+
+did_coef_name <- names(coef(did_reg))[grepl("^D", names(coef(did_reg)))]
+did_att_log   <- coef(did_reg)[did_coef_name]
+did_se_log    <- summary(did_reg)$coefficients[did_coef_name, "Std. Error"]
+did_p         <- round(summary(did_reg)$coefficients[did_coef_name, "Pr(>|t|)"], 4)
 
 # === SDID: ATT ===
 sdid_att_log <- as.numeric(tau_sdid)
