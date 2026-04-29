@@ -275,10 +275,11 @@ highchart() %>%
 #| title: "Σύνδεσμος ΕΛΣΤΑΤ δεδομένων φοιτητών ανά έτη φοίτησης"
 #| echo: false
 
-url = "https://www.statistics.gr/el/statistics?p_p_id=documents_WAR_publicationsportlet_INSTANCE_VBZOni0vs5VJ&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_cacheability=cacheLevelPage&p_p_col_id=column-2&p_p_col_count=4&p_p_col_pos=2&_documents_WAR_publicationsportlet_INSTANCE_VBZOni0vs5VJ_javax.faces.resource=document&_documents_WAR_publicationsportlet_INSTANCE_VBZOni0vs5VJ_ln=downloadResources&_documents_WAR_publicationsportlet_INSTANCE_VBZOni0vs5VJ_documentID=563442&_documents_WAR_publicationsportlet_INSTANCE_VBZOni0vs5VJ_locale=el"
 
-work_dir = here::here("posts", "statistics-studies-in-greece")
-download.file(url = url, destfile = "undergrads_by_year.xls")
+# url = "https://www.statistics.gr/el/statistics?p_p_id=documents_WAR_publicationsportlet_INSTANCE_VBZOni0vs5VJ&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_cacheability=cacheLevelPage&p_p_col_id=column-2&p_p_col_count=4&p_p_col_pos=2&_documents_WAR_publicationsportlet_INSTANCE_VBZOni0vs5VJ_javax.faces.resource=document&_documents_WAR_publicationsportlet_INSTANCE_VBZOni0vs5VJ_ln=downloadResources&_documents_WAR_publicationsportlet_INSTANCE_VBZOni0vs5VJ_documentID=563442&_documents_WAR_publicationsportlet_INSTANCE_VBZOni0vs5VJ_locale=el"
+# 
+# work_dir = here::here("..", "..", "..")
+# download.file(url = url, destfile = "undergrads_by_year.xls")
 ```
 
 
@@ -287,7 +288,9 @@ download.file(url = url, destfile = "undergrads_by_year.xls")
 #| title: "Φιλτράρισμα δεδομένων φοιτητών υπερβαίνουν 6 έτη"
 #| message: false
 
-undergrads_by_year <- read_excel(here::here(work_dir, "undergrads_by_year.xls")) %>%
+
+data = read_excel(path = "../../assets/data/data_students_gr_unis.xls")
+undergrads_by_year <- data %>%
   dplyr::select(c(3,4,25)) %>%
   setNames(c("Dept", "StudentsUnEq6", "studentsOv6")) %>%
   tidyr::drop_na(Dept) %>%
