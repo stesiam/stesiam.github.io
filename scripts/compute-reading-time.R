@@ -51,17 +51,15 @@ set_field <- function(file, label) {
   cat(sprintf("  [reading-time] %s -> %s\n", file, label))
 }
 
-process <- function(file, lang) {
+process <- function(file) {
   words   <- tryCatch(count_prose_words(file), error = function(e) 0L)
   minutes <- max(1L, ceiling(words / WPM))
-  label   <- if (lang == "el") paste(minutes, "λεπτά ανάγνωσης")
-             else               paste(minutes, "min read")
-  set_field(file, label)
+  set_field(file, as.character(minutes))
 }
 
 # Glob one level deep inside posts/ (avoids picking up posts/index.qmd)
 en_files <- Sys.glob("posts/*/index.qmd")
 el_files <- Sys.glob("posts/*/index.el.qmd")
 
-for (f in en_files) process(f, "en")
-for (f in el_files) process(f, "el")
+for (f in en_files) process(f)
+for (f in el_files) process(f)
