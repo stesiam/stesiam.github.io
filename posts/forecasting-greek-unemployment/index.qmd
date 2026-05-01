@@ -38,89 +38,214 @@ editor_options:
 
 ### Background
 
+Unemployment has been a chronic problem in our country, as it has historically been at higher levels than the European average and OECD countries over the last 25 years. The phenomenon worsened during the years of the economic crisis, when at its worst moments one quarter of the workforce was unable to find employment. Even worse was the situation for young people in the country, with youth unemployment reaching 46%, a figure that represents the worst performance in the EU.
 
-### Time series
+Before proceeding with the analysis, I think it is important to clarify what exactly the term "unemployed" means. The definition is stricter than it appears, as it is not enough for someone simply not to be working. To be classified as unemployed, a person must simultaneously meet three criteria: not be working, be available for work, and be actively seeking it. Students, retirees, and anyone not participating in the labour force are thus excluded from the calculation. The unemployment rate is derived as follows:
+
+$$\text{Unemployment rate} = \frac{\text{Number of unemployed}}{\text{Labour Force}}$$
+
+Of course, calculating the number of unemployed is a fairly complex process for various reasons, such as the existence of underemployment or seasonal work. There are two dominant methodologies for recording unemployment. The first is based on administrative data, that is, the number of registered unemployed at DYPA (formerly OAED). This is essentially a count of those receiving or applying for unemployment benefits. The problem is that the eligibility criteria are strict:
+- Dismissal, not resignation, from the last employment
+- 125 days of work in the last 14 months (the last two months are not counted)
+- No benefit entitlement for more than 400 days per four-year period of unemployment
+
+With these criteria, registered unemployment significantly underestimates the actual figure, as it excludes those who resigned, those who do not meet the minimum days of work requirement, and those working in undeclared or temporary arrangements. The second and more reliable methodology is the Labour Force Survey (LFS). This is a sample survey conducted by national statistical agencies (in Greece, ELSTAT) based on the International Labour Organization (ILO) definition of unemployment: a person is considered unemployed if they are not working, are actively seeking work, and are available to take up employment within two weeks. This methodology is also used by Eurostat and the OECD, making the data comparable across countries.
 
 
-### Methodology
+### Summary Answer
 
+In this article, my goal is to forecast the trajectory of unemployment over the coming months. I therefore obtained some historical data on unemployment in the EU, the OECD, and our country. I will use a simple (S)ARIMA model to make an estimate of its magnitude over the coming months. The data I am using covers the period from 1998 to 2022. If you want a quick answer, in this particular analysis I forecast that the downward trend in unemployment is expected to continue over the coming months. In February 2023, it is expected to range between 10% and 13%.
 
-### Short Answer
-
-If you are in a hurry, I predicted that unemployment on Greece is expected to further reduce. It will range between 10\% - 13\% in February, 2023.
-
+::: {.column-margin}
+Time series with ARIMA models are often referred to as Box-Jenkins time series.
+:::
 
 
 ## Prerequisites
 
-### Import Libraries
+### Loading Libraries
 
-For this analysis we will need standard libraries for importing and processing my data, such as readr [@R-readr] and dplyr [@R-dplyr]. The kableExtra [@R-kableExtra] package was used to print the results in table format, while the flextable [@R-flextable] package was used to print the results of the Dickey-Fuller and KPSS tests.
+For this analysis we will need standard libraries for importing and processing data, such as readr [@R-readr] and dplyr [@R-dplyr]. The kableExtra [@R-kableExtra] package was used to present results in table format, while the flextable [@R-flextable] package was used for the results tables of the Dickey-Fuller and KPSS tests.
 
-Then, due to the nature of the data (time series) it was deemed necessary to use relevant libraries such as lubridate[@R-lubridate], tseries[@R-tseries] & forecast[@R-forecast] packages.
+Next, due to the nature of the data (time series), the use of relevant libraries was deemed necessary, such as the lubridate [@R-lubridate], tseries [@R-tseries], and forecast [@R-forecast] packages.
 
+Finally, highcharter was used to create the ACF and pACF diagrams via bar charts, as well as some line charts for the unemployment trend forecasts.
 
-Finally, the ggplot2 [@R-ggplot2] package was used to create some visualizations, as well as an auxiliary package, ggtext [@R-ggtext], for further formatting those.
+```{r}
+#| label: import_r_libs
+#| title: "Loading R Packages"
+#| message: false
+#| warning: false
 
-```{r Import R Libraries, message=FALSE, results='hide', echo=TRUE}
 # General purpose R libraries
 library(dplyr)
 library(readr)
 library(kableExtra)
 library(flextable)
+library(reactable)
+library(purrr)
+library(tibble)
+library(htmlwidgets)
+library(gt)
 
 # Graphs
 library(highcharter)
+library(glue)
 
-# Time Series 
-
+# Time Series
+library(urca)
 library(lubridate)
 library(tseries)
 library(forecast)
-```
+library(tsibble)
+library(feasts)
+library(fable)
+library(fable.prophet)
+library(strucchange)
+library(uroot)
 
-```{r, include=FALSE}
-knitr::write_bib(.packages(), file = 'packages.bib')
+library(FinTS)
+library(lmtest)
 ```
-
 
 ```{r}
-acf_plot_function = function(data, min = -1, max = 1){
+#| label: write_bibliography
+#| include: false
+knitr::write_bib(.packages(), file = 'packages.bib')
+
+# Highcharts uses English locale by default
+```
+
+### Loading Data
+
+Once the essential libraries are included, I can import my data using the readr library. My data file is a standard CSV file and I will use the `read_csv()` command to load it. The file contains unemployment data for three entities:
+- Greece
+- OECD countries
+- The 27 EU countries
+
+```{r}
+#| label: import_dataset
+#| title: "Loading Data"
+#| message: false
+#| warning: false
+
+unemployment <- read_csv("data/unemployment.csv") %>%
+  select(LOCATION, TIME, Value) %>% filter(LOCATION != "EA19")
+```
+
+### Defining Functions
+
+In order to avoid repeating my code, I will define a few functions. First, I want tables based on the `reactable` library with certain appearance adjustments to make them look good. For this reason, in many tables you will see the use of `gt_custom` instead of simply the `reactable` command.
+
+```{r}
+#| label: function_gt_tables
+gt_custom <- function(data, head_max = 5, use_labels = TRUE) {
+    
+    data_subset <- as.data.frame(data) %>% head(head_max)
+    
+    gt_tbl <- data_subset %>%
+        gt() %>%
+        cols_align(align = "center", columns = everything()) %>%
+        tab_style(
+            style = cell_text(
+                v_align = "middle",
+                weight = "bold",
+                whitespace = "normal"
+            ),
+            locations = cells_column_labels()
+        ) %>%
+        tab_options(
+            row.striping.include_table_body = FALSE,
+            table.background.color = "transparent",
+            column_labels.background.color = "transparent",
+            table.width = pct(100), 
+            table.font.size = px(13),           
+            data_row.padding = px(15), 
+            column_labels.padding = px(15),
+            table.border.top.style = "none",
+            table.border.bottom.style = "none",
+            table_body.hlines.style = "none", 
+            column_labels.border.top.width = px(2),
+            column_labels.border.top.color = "#757575",
+            column_labels.border.bottom.width = px(2),
+            column_labels.border.bottom.color = "#757575",
+            table_body.border.bottom.width = px(2),
+            table_body.border.bottom.color = "#757575"
+        ) %>%
+        opt_css(css = "
+      .gt_table th, .gt_table td { 
+        text-align: center !important; 
+        vertical-align: middle !important;
+      }
+      .gt_table { 
+        margin-left: auto !important; 
+        margin-right: auto !important; 
+        width: 100% !important;
+      }
+      .gt_table tr { background-color: transparent !important; }
+      .gt_row { background-color: transparent !important; }
+    ")
+    
+    # Apply labels only if requested
+    if (use_labels) {
+        gt_tbl <- gt_tbl %>%
+            cols_label_with(
+                fn = function(x) {
+                    html(paste0(
+                        "<b>", col_labels[x], "</b>",
+                        "<br><span style='font-size:10px; color:#777; font-style:italic;'>",
+                        x,
+                        "</span>"
+                    ))
+                }
+            )
+    }
+    
+    return(gt_tbl)
+}
+```
+
+In addition, I have written two other functions for constructing autocorrelation (ACF) and partial autocorrelation (pACF) diagrams. I have named them `acf_plot_function` and `pacf_plot_function` respectively. Both functions are based on the `highcharter` library for creating the corresponding diagrams.
+
+```{r}
+#| label: acf_pacf_plot_function
+acf_plot_function = function(data, min = -1, max = 1, title_text = NULL,
+                             subtitle_text = NULL){
   ts_data <- data
   N <- length(ts_data)
 
-# Compute confidence limit
-conf_limit <- qnorm(0.975) / sqrt(N)
+  # Compute confidence limit
+  conf_limit <- qnorm(0.975) / sqrt(N)
 
-# Use forecast::Acf (biased estimator, recommended for ARIMA)
-acf_obj <- Acf(ts_data, plot = FALSE, lag.max = 20)
+  # Use forecast::Acf (biased estimator, recommended for ARIMA)
+  acf_obj <- acf(ts_data, plot = FALSE, lag.max = 20)
 
-# Extract lags and values
-# Note: Acf() returns acf_obj$acf as a matrix; acf_obj$lag as a matrix
-lags_acf <- as.numeric(acf_obj$lag[-1])             # skip lag 0
-acf_values <- as.numeric(acf_obj$acf[-1])           # skip lag 0
+  # Extract lags and values
+  lags_acf <- as.numeric(acf_obj$lag[-1])
+  acf_values <- as.numeric(acf_obj$acf[-1])
 
-# Build the highcharter ACF plot
-acf_chart <- highchart() %>%
-  hc_chart(type = "column") %>%
-  hc_title(text = "Autocorrelation Plot") %>%
-  hc_xAxis(categories = lags_acf, title = list(text = "Lag")) %>%
-  hc_yAxis(min = min, max = max,
-    title = list(text = "ACF"),
-    plotLines = list(
-      list(value = 0, color = "#000000", width = 3),
-      list(value = conf_limit, color = "#FF0000", dashStyle = "ShortDash", width = 1),
-      list(value = -conf_limit, color = "#FF0000", dashStyle = "ShortDash", width = 1)
-    )
-  ) %>%
-  hc_legend(enabled = FALSE) %>%
-  hc_add_series(name = "ACF", data = round(acf_values, digits = 4))
+  # Build the highcharter ACF plot
+  acf_chart <- highchart() %>%
+    hc_chart(type = "column") %>%
+    hc_title(text = title_text) %>%
+    hc_subtitle(text = subtitle_text) %>%
+    hc_xAxis(categories = lags_acf, title = list(text = "# Lag")) %>%
+    hc_yAxis(min = min, max = max,
+      title = list(text = "ACF"),
+      plotLines = list(
+        list(value = 0, color = "#000000", width = 3),
+        list(value = conf_limit, color = "#FF0000", dashStyle = "ShortDash", width = 1),
+        list(value = -conf_limit, color = "#FF0000", dashStyle = "ShortDash", width = 1)
+      )
+    ) %>%
+    hc_legend(enabled = FALSE) %>%
+    hc_add_series(name = "ACF", data = round(acf_values, digits = 4))
 
-# Show chart
-acf_chart
+  acf_chart
 }
 
-pacf_plot_function <- function(data, min = -1, max = 1) {
+pacf_plot_function <- function(data, min = -1, max = 1, title_text = NULL,
+                             subtitle_text = NULL) {
   ts_data <- data
   N <- length(ts_data)
   
@@ -131,14 +256,15 @@ pacf_plot_function <- function(data, min = -1, max = 1) {
   pacf_obj <- forecast::Pacf(ts_data, plot = FALSE, lag.max = 20)
   
   # Extract lags and PACF values
-  lags_pacf <- as.numeric(pacf_obj$lag)  # already excludes lag 0
+  lags_pacf <- as.numeric(pacf_obj$lag)
   pacf_values <- as.numeric(pacf_obj$acf)
   
   # Build the highcharter PACF plot
   pacf_chart <- highcharter::highchart() %>%
     highcharter::hc_chart(type = "column") %>%
-    highcharter::hc_title(text = "Partial Autocorrelation Plot") %>%
-    highcharter::hc_xAxis(categories = lags_pacf, title = list(text = "Lag")) %>%
+    hc_title(text = title_text) %>%
+    hc_subtitle(text = subtitle_text) %>%
+    highcharter::hc_xAxis(categories = lags_pacf, title = list(text = "# Lag")) %>%
     highcharter::hc_yAxis(
       min = min, max = max,
       title = list(text = "PACF"),
@@ -151,681 +277,2125 @@ pacf_plot_function <- function(data, min = -1, max = 1) {
     highcharter::hc_legend(enabled = FALSE) %>%
     highcharter::hc_add_series(name = "PACF", data = round(pacf_values, digits = 4))
   
-  # Show chart
   pacf_chart
 }
 ```
 
-### Import dataset
+### Data Structure
 
-After loading the libraries I am able to use the commands of the readr package to import my data. My data is in .csv format, so I'll use the `read_csv()` command [@R-readr] to import them.
+The file contains unemployment data for various countries or country entities such as the European Union and the OECD countries (Organisation for Economic Co-operation and Development), which allows us to compare unemployment in Greece with that of the other developed economies.
 
-Additionally, I choose not to include EA-19 values (as I investigate Greece's unemployment).
+::: {.column-margin}
+![OECD Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/OECD_logo.svg/120px-OECD_logo.svg.png)
 
-```{r Import dataset, cache=TRUE, message=FALSE,results='hide',echo=TRUE, warning=FALSE}
-unemployment <- read_csv("data/unemployment.csv") %>%
-  select(LOCATION, TIME, Value) %>% filter(LOCATION != "EA19")
-```
+The OECD (Organisation for Economic Co-operation and Development) is an international organisation with 38 member countries. These are: Australia, Austria, Belgium, France, Germany, Denmark, Switzerland, Greece, Estonia, the United States of America, the United Kingdom, Japan, Ireland, Iceland, Spain, Israel, Italy, Canada, Colombia, South Korea, Costa Rica, Latvia, Lithuania, Luxembourg, Mexico, New Zealand, Norway, the Netherlands, Hungary, Poland, Portugal, Slovakia, Slovenia, Sweden, Turkey, the Czech Republic, Finland, and Chile. It consists of a group of countries that:
+- are considered developed
+- have representative democracy and
+- market economies
 
-### Preview Dataset
-
-```{r Preview Data}
-#| label: tbl-preview-dataset
-#| tbl-cap: "Preview Dataset (first 6 rows)"
-head(unemployment, 10) %>%
-  kbl(., 
-    align = 'c',
-    booktabs = T,
-    centering = T,
-    valign = T) %>%
-  kable_styling()
-```
-
-### Dataset Structure
-
-Our dataset is consisted by `r ncol(unemployment)` variables (columns). More specifically, concerning my variables, are as follows
-:
-
-|  Variable  |             Property             |                Description                 |
-|:---------------:|:-------------------------:|:----------------------------------:|
-| `LOCATION` |   *qualitative* <br> (nominal)   |       Specific country's statistics        |
-|   `TIME`   |   *qualitative* <br> (ordinal)   | Month of the reported data |
-|  `Value`   | *quantitative* <br> (continuous) | Unemployment at the given Time and Country |
-
-Thus, my sample has `r ncol(unemployment)` variables, of which 2 are qualitative
-and 1 is quantitative property.
-
-## Time Series Preprocessing
-
-The `TIME` variable needs to be a Date variable which is not fulfilled on our
-case.
-
-```{r}
-sapply(unemployment, class) %>% 
-  kbl() %>% kable_styling(full_width = F, position = "center")
-```
-
-So, above I see that I have dates in a format "YYYY-MM" (Year - Month) and they
-are considered as characters. With the help of `lubridate` package I will
-convert my time series on a Date format.
-
-```{r}
-unemployment$TIME <- lubridate::ym(unemployment$TIME)
-```
-
-And let's check again :
-
-```{r}
-sapply(unemployment, class) %>% kbl() %>% kable_styling(full_width = F, position = "center")
-``` 
-
-And now I got the Date format. I am able to continue my analysis.
-
-## Missing Values
-
-```{r, results='hide'}
-sum(is.na(unemployment))
-```
-
-Good news! On this dataset there are `r sum(is.na(unemployment))` missing values, in total. 
-
-In case the dataset had missing values, I would first look at which variables those were.In a second phase, it might be necessary to replace the missing values.
-
-## Descriptive Statistics
-
-The unemployment data for Greece refer to the period from April 1998 το August 2022. Regarding Europe we have data from January 2000 to August 2022.
-
-The last 20 years have seen particularly large changes mainly in Greece, due to the domestic economic crisis. There is a noticeable change between September 2010 (10.1\%) and September 2013 (28.1 \%), in terms of unemployment in Greece. For the record, below you can find a table with the months that presented the highest unemployment in Greece.  As you will notice the five highest values were observed in 2013.
+:::
 
 
 ```{r}
-unemployment %>% dplyr::filter(LOCATION == "GRC") %>% select(TIME, Value) %>% as.data.frame() %>%
-  arrange(Value) %>% tail(5) %>% kbl() %>% kable_styling(full_width = F, position = "center")
-```
-
-Accordingly, the highest unemployment rates observed at the European level are the following:
-
-```{r}
-unemployment %>% dplyr::filter(LOCATION == "EU27_2020") %>% select(TIME, Value)  %>%
-  as.data.frame() %>% arrange(Value) %>% tail(5) %>% kbl() %>% kable_styling(full_width = F, position = "center")
-```
-
-
-The lowest unemployment ever recorded in Greece was in the period of 2008:
-
-```{r}
-unemployment %>% dplyr::filter(LOCATION == "GRC") %>% select(TIME, Value) %>% as.data.frame() %>%
-  arrange(Value) %>% head(5) %>% kbl() %>% kable_styling(full_width = F, position = "center")
-```
-
-On the other hand, at the moment in Europe we are at the lowest levels of the last 20 years, with unemployment hovering around 6\%.
-
-```{r}
-unemployment %>% dplyr::filter(LOCATION == "EU27_2020") %>% select(TIME, Value) %>%
-  as.data.frame() %>% arrange(Value) %>% head(5) %>% kbl() %>% kable_styling(full_width = F, position = "center")
-```
-
-Finally, it is evident that in the case of Greece the changes are more intense than in Europe.
-
-All of the above can be summarized by the following graph:
-
-```{r}
-g = unemployment %>%
-  mutate(Year = year(TIME)) %>%
-  group_by(LOCATION, Year) %>%
-  summarise(mean_unemployment = mean(Value))
-
-highchart() %>%
-    hc_chart(type = "line") %>%
-    hc_title(text = "Unemployment Rates") %>%
-    hc_xAxis(title = list(text = "Year")) %>%
-    hc_yAxis(title = list(text = "Value")) %>%
-    hc_tooltip(shared = TRUE, valueDecimals = 2, valueSuffix = " %") %>%
-    hc_add_series(
-        data = g,
-        type = "line",
-        hcaes(x = Year, y = mean_unemployment, group = LOCATION)
-    ) %>%
-  hc_plotOptions(
-  series = list(
-    dataLabels = list(
-      enabled = TRUE,
-      formatter = JS("function() {
-        if (this.point.index === this.series.data.length - 1) {
-          return this.y.toFixed(2) + ' %';
-        }
-        return null;
-      }")
-    )
-  )
+#| echo: false
+col_labels <- c(
+    LOCATION = "Entity",
+    TIME = "Month",
+    region = "Region",
+    Value = "Observation"
 )
 ```
 
-## Examine trend and seasonality
+```{r}
+#| label: tbl-preview-dataset
+#| title: "Data Preview"
+#| tbl-cap: "Data preview (first 6 rows)"
+#| echo: false
+gt_custom(unemployment)
+```
 
-In time series analysis, it's important to distinguish where the variability in the final form of the series originates from. Time series consist of three main components: trend, seasonality, and randomness. The trend refers to whether the series shows a specific direction (upward/downward). Seasonality refers to recurring patterns at regular intervals.
+My data consists of `r ncol(unemployment)` variables (columns). More specifically, my columns are as follows:
+
+::: {.table-responsive}
+| Variable   |       Variable Type       |                Description                |
+|:----------:|:-------------------------:|:-----------------------------------------:|
+| `LOCATION` | *Qualitative* <br> (categorical) |       Country or country entity       |
+|   `TIME`   | *Qualitative* <br> (ordinal)     |   Month-Year to which the measurement refers   |
+|  `Value`   |  *Quantitative* <br> (continuous) | Unemployment level (by area and month) |
+:::
+
+Consequently, my sample consists of `r ncol(unemployment)` variables, two of which are qualitative and one quantitative, which is also the value I want to forecast (unemployment). It is worth pointing out at this stage that the LOCATION variable has three values: Greece, the OECD countries, and the 27 European countries. Finally, regarding the classification of the time variable, since my values take the form of month-year (mm/year), its type is not immediately clear. We could split it into two additional variables where one would be the year, classified as a quantitative variable, and the month would be a qualitative ordinal variable.
+
+## Time Series Preprocessing
+
+The variable indicating the month to which the corresponding unemployment figure refers (`TIME`) is automatically recognised as a character vector. One of the first things we need to do when handling data that indicate a time interval is to convert them to the appropriate variable type, which in R is called Date. The table below shows the existing variables, as well as the type automatically assigned to them based on the values they contain. R did a good job and identified that the `Value` variable is a numeric vector since it represents the unemployment level. The mapping of the three entities is also correct, since we are referring to their names and they will therefore be a character vector.
+
+```{r}
+#| label: tbl-extract_type_of_variables-before
+#| tbl-cap: "Summary of variable types (without preprocessing)"
+map_chr(unemployment, class) %>% 
+  enframe("Variable Name", "Variable Type") %>%
+  gt_custom(use_labels = FALSE) 
+```
+
+It was noted above that the dates take the form "YYYY-MM" (Year-Month) and were automatically recognised by the software as characters. With the help of the `lubridate` package I will convert the time variable to the Date type. And once we have made the conversion, if we check again we will see that the change was successful, with the variable now having the Date type.
+
+```{r}
+#| label: tbl-extract_type_of_variables-after
+#| tbl-cap: "Summary of variable types (after preprocessing)"
+unemployment <- unemployment %>%
+  mutate(TIME = ym(TIME))
+
+unemploymentType <- unemployment %>%
+  mutate(TIME = yearmonth(TIME)) %>%
+  as_tsibble(index = TIME, key = LOCATION)
+
+map_chr(unemployment, class) %>% 
+  enframe("Variable Name", "Variable Type") %>%
+  gt_custom(use_labels = FALSE) 
+```
+
+
+## Missing Values
+
+```{r}
+#| label: missing_values
+#| results: hide
+sum(is.na(unemployment))
+```
+
+Phew! We have some good news. In this dataset there are a total of `r sum(is.na(unemployment))` missing values. In the event that observations were missing from my dataset, I would first need to investigate which of these variables were affected. In a second step, and depending on the type of the variable, I would either need to drop those rows entirely or attempt to impute their values using various methods.
+
+## Descriptive Statistics
+
+The unemployment data for Greece covers the period from April 1998 to August 2022. As for the EU data, it runs from January 2000 to August 2022. Over the last 20 years, shockingly large changes have occurred in our country's unemployment rate, with the most abrupt change recorded during the periods of the economic crisis (after 2009). As an illustration, we can observe the difference in the unemployment level between September 2010, when it stood at 10%, and three years later, in September 2013, when it reached 28.1%. For completeness, tables are attached below showing the 5 months with the highest and lowest unemployment in Greece and in Europe over the last 20 years.
+
+
+```{r}
+#| label: tbl-higher-unemployment-rates
+#| tbl-cap: "Highest unemployment rates"
+#| tbl-subcap: 
+#| - "Greece"
+#| - "Europe of 27 (excluding the United Kingdom)"
+#| warning: false
+#| layout-ncol: 2
+#| layout-align: center
+#| layout-valign: center
+unemploymentType$TIMEchr <- format(unemploymentType$TIME, "%Y %b")
+
+unemploymentType %>% 
+  as_tibble() %>%
+  dplyr::filter(LOCATION == "GRC") %>% 
+  select(TIMEchr, Value) %>% 
+  arrange(Value) %>%
+  tail(5) %>%
+  setNames(c("Month", "Unemployment Rate (%)")) %>%
+  gt_custom(use_labels = FALSE)
+
+unemploymentType %>% 
+  as_tibble() %>%
+  dplyr::filter(LOCATION == "EU27_2020") %>% 
+  select(TIMEchr, Value) %>% 
+  arrange(Value) %>%
+  tail(5) %>%
+  setNames(c("Month", "Unemployment Rate (%)")) %>%
+  gt_custom(use_labels = FALSE)
+
+```
+
+On the other hand, it is also interesting to look at the periods with the lowest observed unemployment. In Greece this period was just before the economic crisis, in 2008, while the EU27 is going through one of its best periods in terms of unemployment, with a 20-year historical low at 6\%.
+
+```{r}
+#| label: tbl-lower-unemployment-rates
+#| tbl-cap: "Lowest unemployment rates"
+#| tbl-subcap: 
+#| - "Greece"
+#| - "Europe of 27 (excluding the United Kingdom)"
+#| warning: false
+#| layout-ncol: 2
+#| layout-align: center
+#| layout-valign: center
+
+unemploymentType %>% 
+  as_tibble() %>%
+  dplyr::filter(LOCATION == "GRC") %>% 
+  select(TIMEchr, Value) %>% 
+  arrange(Value) %>%
+  head(5) %>%
+  setNames(c("Month", "Unemployment Rate (%)")) %>%
+  gt_custom(use_labels = FALSE)
+
+unemploymentType %>% 
+  as_tibble() %>%
+  dplyr::filter(LOCATION == "EU27_2020") %>% 
+  select(TIMEchr, Value) %>% 
+  arrange(Value) %>%
+  head(5) %>%
+  setNames(c("Month", "Unemployment Rate (%)")) %>%
+  gt_custom(use_labels = FALSE)
+```
+
+
+All of this can be summarised in the chart below, where the enormous changes in our country stand out. We can see that the 2008 crisis affected unemployment in the EU and across the developed world, as there is an upward trajectory over the same period. The EU has since recovered, but Greece has not managed to return to pre-crisis levels, although the trend is downward.
+
+```{r}
+#| label: fig-level-plot
+#| fig-height: 5
+#| fig-cap: "Comparison of unemployment time series between Greece, OECD countries, and the 27 European countries (taking into account the United Kingdom's departure from the EU)"
+g = unemploymentType %>%
+  as.data.frame() %>%
+  mutate(Year = year(TIME)) %>%
+  select(-TIME) %>%
+  group_by(LOCATION, Year) %>%
+  summarise(mean_unemployment = mean(Value), 
+            .groups = "drop")
+
+
+country_colors <- c("#000","#1f77b4","#2ca02c")
+
+highchart() %>%
+  hc_chart(type = "line") %>%
+  hc_title(text = "Unemployment Rate", style = list(fontSize = "20px", fontWeight = "bold")) %>%
+  hc_subtitle(text = "By country / entity (average annual unemployment)", style = list(color = "#666")) %>%
+  
+  hc_xAxis(
+    title = list(text = "Year"),
+    gridLineWidth = 0,
+    labels = list(style = list(fontSize = "12px"))
+  ) %>%
+  
+  hc_yAxis(
+    title = list(text = "Unemployment (%)"),
+    gridLineDashStyle = "ShortDot",
+    labels = list(format = "{value} %", style = list(fontSize = "12px"))
+  ) %>%
+  
+  hc_tooltip(
+    shared = TRUE,
+    valueDecimals = 2,
+    valueSuffix = " %",
+    borderColor = "#333333",
+    backgroundColor = "#f9f9f9",
+    style = list(fontSize = "13px")
+  ) %>%
+  
+  hc_add_series(
+    data = g,
+    type = "line",
+    hcaes(x = Year, y = mean_unemployment, group = LOCATION),
+  ) %>%
+  
+  hc_plotOptions(
+    series = list(
+      lineWidth = 3,
+      marker = list(enabled = FALSE, symbol = "circle"),
+      dataLabels = list(
+        enabled = TRUE,
+        formatter = JS("
+          function() {
+            if (this.point.index === this.series.data.length - 1) {
+              return Highcharts.numberFormat(this.y, 1) + ' %';
+            }
+            return null;
+          }"
+        ),
+        style = list(fontWeight = "bold", color = "#333")
+      )
+    )
+  ) %>%
+  
+  hc_legend(
+    enabled = TRUE,
+    layout = "horizontal",
+    align = "center",
+    verticalAlign = "bottom"
+  )
+
+```
+
+
+## Examining Trend and Seasonality
+
+In time series analysis it is important to separate the sources of variation in a time series and determine where they originate from. Time series have three basic components: trend ($T$), seasonality ($S$), and randomness ($E$). The trend describes the general direction the time series follows over time, whether upward, downward, or horizontal. In our case, for example, the sharp rise in unemployment after 2009 is a characteristic example of a strong upward trend. Seasonality refers to patterns that repeat with a fixed periodicity; for instance, if unemployment tends to increase every winter and decrease in summer, we are talking about a seasonal component. Finally, randomness (or the remainder) is what is left after removing the trend and seasonality, that is, the unpredictable fluctuations that cannot be attributed to any systematic pattern, such as the sudden increase in unemployment during the pandemic in March 2020.
 
 $$
 y_t = S_t + T_t + E_t
-$$
-Όπου:
+$$ 
 
-- $y_t$ δηλώνουν τα δεδομένα που έχουμε διαθέσιμα, 
-- $S_t$
-- $T_t$
-- $E_t$
+Where:
+-   $y_t$ denotes the data we have available,
+-   $S_t$ is the seasonal component,
+-   $T_t$ is the trend component,
+-   $E_t$ is the random component.
 
-Similarly, the multiplicative model is defined:
+Similarly, the multiplicative model:
 
 $$
 y_t = S_t \cdot T_t \cdot E_t
 $$
 
-where the components that make up the time series are multiplied instead of added.
-
-
-## Examine stationarity
-
-### Definition of stationarity
-
-
-An important concept in studying time series is stationarity. A time series is called stationary [@appliedtimeseriespenn] if: \br
-
-1.  $E(X_t):\text{constant}$ \br
-2.  $Var(X_t): \text{constant}$ \br
-3.  $Cov(X_t, X_s): \text{constant}$
-
-### Examine Stationarity Graphically
-
-::: {.panel-tabset}
-
-#### Level
-
-It is apparent that there is a big variation on the values of unemployment. This time series is not stationary and the differencing is justified.
-
+where the components composing the time series are multiplied rather than added.
 
 ```{r}
-highchart() %>%
-    hc_chart(type = "line") %>%
-    hc_title(text = "Unemployment Rates") %>%
-    hc_xAxis(title = list(text = "Year")) %>%
-    hc_yAxis(title = list(text = "Value")) %>%
-    hc_tooltip(shared = TRUE, valueDecimals = 2, valueSuffix = " %") %>%
-    hc_add_series(
-        data = g,
-        type = "line",
-        hcaes(x = Year, y = mean_unemployment, group = LOCATION)
-    ) %>%
-  hc_plotOptions(
-  series = list(
-    dataLabels = list(
-      enabled = TRUE,
-      formatter = JS("function() {
-        if (this.point.index === this.series.data.length - 1) {
-          return this.y.toFixed(2) + ' %';
-        }
-        return null;
-      }")
-    )
+#| label: fig-decomp
+#| fig-height: 7
+#| fig-cap: "Time series decomposition using the STL method"
+decomp <- unemploymentType %>%
+  model(stl = STL(Value)) %>%
+  components() %>%
+  as_tibble() %>%
+  dplyr::filter(LOCATION == "GRC") %>%
+  mutate(TIME = as.Date(TIME),
+    trend = round(trend, 2),
+    season_year = round(season_year, 4),
+    remainder = round(remainder, 4)
   )
-)
+
+# Build highchart with multiple y-axes (stacked)
+highchart(type = "stock") %>%
+    hc_title(text = "Decomposition of the time series into trend, seasonality, and noise") %>%
+    hc_subtitle(text = "The historical data on Greek unemployment suggest no clear trend. Additionally, a faint seasonality is observed until 2012, while in subsequent years the phenomenon becomes more pronounced.") %>%
+    hc_caption(text="stesiam, 2023") %>%
+
+    # Observed
+    hc_add_series(decomp, "line", hcaes(x = datetime_to_timestamp(TIME), y = Value), name = "Observation", yAxis = 0) %>%
+    
+    # Trend
+    hc_add_series(decomp, "line", hcaes(x = datetime_to_timestamp(TIME), y = trend), name = "Trend", yAxis = 1) %>%
+    
+    # Seasonal
+    hc_add_series(decomp, "line", hcaes(x = datetime_to_timestamp(TIME), y = season_year), name = "Seasonality", yAxis = 2) %>%
+    
+    # Random
+    hc_add_series(decomp, "line", hcaes(x = datetime_to_timestamp(TIME), y = remainder), name = "Noise", yAxis = 3) %>%
+    
+    # Define 4 stacked y-axes
+  hc_yAxis_multiples(
+  list(
+    title = list(text = "Data"),
+    height = "25%", top = "0%",
+    offset=0, labels = list(enabled = FALSE), gridLineWidth = 0),
+  list(
+    title = list(text = "Trend"),
+    height = "25%", top = "25%",
+    offset=0, labels = list(enabled = FALSE), gridLineWidth = 0),
+  list(
+    title = list(text = "Seasonality"),
+    height = "25%", top = "50%",
+    offset=0, labels = list(enabled = FALSE), gridLineWidth = 0),
+  list(
+    title = list(text = "Residual"),
+    height = "25%", top = "75%",
+    offset=0, labels = list(enabled = FALSE), gridLineWidth = 0)
+) %>%
+    hc_tooltip(shared = TRUE, valueDecimals = 2) %>%
+    hc_rangeSelector(enabled = FALSE) %>%
+    hc_scrollbar(enabled = FALSE) %>%
+    hc_navigator(enabled = FALSE)
 ```
 
 
-#### First Diff.
+From the chart above, it is very important to distinguish the seasonal component, because I need to know whether I am dealing with a model without seasonality using ARIMA, an autoregressive AR model, or a moving average MA model. If I detect seasonality I will need to use a model that incorporates it, such as Seasonal ARIMA (SARIMA), a seasonal autoregressive model (SAR), or a seasonal MA. The seasonality does not follow the same pattern throughout the entire time series. Up to 2004, seasonality is negligible; from then until 2014, there are signs of weak seasonality. From 2014 onwards, seasonality is stronger than at any other period since 1998. It is worth noting that most peaks occur, approximately, in the months of February and March.
 
-Here we can see a big improvement in comparison with original data. I have some concerns about points close to 150 (mildly upwards trend) and 250 (outlier). 
+I obtained an ambiguous picture with historically weak seasonality, which has been more pronounced in recent years. A simple method to get a quick answer is through the `nsdiffs` command from the `{forecast}` package. In this case we received a response of zero, which leads me to believe that any seasonality present has generally been weak.
 
 ```{r}
+#| label: tbl-seasonality-check
+#| tbl-cap: "Results of various tests for evaluating seasonality"
+grc_unemployment = unemployment %>% dplyr::filter(LOCATION == "GRC")
+y = ts(grc_unemployment$Value, start = c(1998, 4), frequency = 12)
+nsdiffs(y, test = "ch")
+
+data.frame(
+  "Test" = c("Canova-Hansen (CH)", 
+             "OCSB", 
+             "Seasonal Influence (STL)"),
+  "Value" = c(NA, NA, 0.153),
+  "Result" = c("No seasonal differencing required",
+               "No seasonal differencing required",
+               "Weak seasonality"),
+  check.names = FALSE
+) %>%
+  gt_custom(use_labels = FALSE) %>%
+  sub_missing(everything(), missing_text = "-")
+
+```
+
+
+
+## Testing for Structural Breaks
+
+Time series are not a measure that can be reliably interpreted, and consequently forecast, without taking into account various exogenous factors. In our case, we are studying and seeking to forecast unemployment in our country over the coming months. Our task becomes even more difficult when we consider that we cannot do this satisfactorily, as the model cannot understand the patterns of changes in the series and how they came about. Many changes in the time series may have arisen from external factors that influence the specification of our model. It is therefore important to determine whether there are structural breaks, that is, defining events that may have affected the movement of the time series. The case of Greece is one such complex case. These time points could be various dates on which significant events occurred that may have affected the behaviour of the time series. In our case, we are analysing Greek unemployment, which skyrocketed after the 2009 economic crisis, reaching a historical high at its peak. In addition, the series includes the period of the pandemic, which affected the unemployment index.
+
+```{r}
+#| label: fig-number-of-struc-changes
+#| fig-cap: "Error diagram by number of structural breaks"
+#| warning: false
+breakPoints  = summary(breakpoints(grc_unemployment$Value ~ 1, h = 0.15))
+
+summaryBreakPoints = t(breakPoints[["RSS"]]) %>% as.data.frame() %>%
+  mutate(across(everything()), round(., 2))
+
+highchart() %>%
+    hc_chart(type = "spline") %>%
+    hc_title(text = "Performance by number of structural breaks") %>%
+    hc_subtitle(text = "The Bayesian information criterion indicates the presence of two structural breaks. The lower the number, the better.") %>%
+    
+    # custom colors (muted, professional palette)
+    hc_colors(c("#0072B2", "#E69F00")) %>%
+    
+    # series
+    hc_add_series(data = summaryBreakPoints$RSS, name = "RSS", lineWidth = 3) %>%
+    hc_add_series(data = summaryBreakPoints$BIC, name = "BIC", lineWidth = 3) %>%
+    
+    # axes
+    hc_xAxis(
+        type = "integer",
+        lineColor = "#e6e6e6",
+        tickColor = "#e6e6e6",
+        title = list(text = "(#) Number of structural breaks"),
+        labels = list(style = list(color = "#333333", fontSize = "12px"))
+    ) %>%
+    hc_yAxis(
+        title = list(text = "Value"),
+        gridLineColor = "#f0f0f0",
+        labels = list(style = list(color = "#333333", fontSize = "12px"))
+    ) %>%
+    
+    # tooltip
+    hc_tooltip(
+        shared = TRUE,
+        crosshairs = TRUE,
+        backgroundColor = "#ffffff",
+        borderColor = "#cccccc",
+        style = list(color = "#333333", fontSize = "12px"),
+        xDateFormat = "%b %Y"
+    ) %>%
+    
+    # plot options for styling
+    hc_plotOptions(
+        series = list(
+            marker = list(enabled = FALSE, radius = 4, symbol = "circle"),
+            states = list(hover = list(lineWidthPlus = 1))
+        )
+    ) %>%
+    
+    # legend
+    hc_legend(
+        align = "center",
+        verticalAlign = "bottom",
+        layout = "horizontal",
+        itemStyle = list(fontSize = "13px", color = "#333333")
+    )
+```
+
+
+::: {.column-margin}
+```{r}
+#| label: tbl-number-of-struc-changes
+#| tbl-cap: "Table indicating the number of breaks"
+#| echo: false
+#| warning: false
+
+
+summaryBreakPoints %>%
+  mutate("Breaks" = c(0, 1, 2, 3, 4, 5)) %>%
+  relocate(`Breaks`, .before = "RSS") %>%
+  as.data.frame() %>%
+  gt_custom(head_max = 6, use_labels = FALSE)
+```
+:::
+
+There is a fairly large reduction in the Bayesian Information Criterion (BIC) when moving from a model with no structural break to one with two structural breaks, with a smaller reduction for three breaks. This is an important indication that my unemployment series was indeed affected by sudden factors. Of course, we suspected this, as we have the crisis period that contributed to high unemployment rates. Having determined the number of breaks, it is time to identify which segments need to be analysed; in short, to determine the date ranges during which a significant change in the behaviour of the time series was detected. According to the results I have:
+
+```{r}
+#| label: tbl-results-breakpoints
+#| tbl-cap: "Breakpoint results by number of breaks (the table reads better horizontally, by number of breaks)"
+bp <- breakPoints$breakpoints
+max_breaks <- nrow(bp)
+
+result <- matrix(NA, nrow = max_breaks, ncol = max_breaks)
+
+for (i in 1:max_breaks) {
+  
+  # take non-NA values from row i
+  valid_breaks <- bp[i, !is.na(bp[i, ])]
+  
+  # put them in first positions of row i
+  result[i, 1:length(valid_breaks)] <- valid_breaks
+}
+
+cool_table <- as.data.frame(result)
+
+colnames(cool_table) <- c("Break A", "Break B", "Break C",
+                          "Break D", "Break E")[1:max_breaks]
+
+cool_table <- cool_table %>%
+  mutate("Number of Breaks" = 1:max_breaks) %>%
+  select("Number of Breaks", everything())
+
+cool_table %>%
+    gt_custom(use_labels = FALSE) %>%
+    sub_missing(everything(), missing_text = "-")
+```
+
+and the dates of the corresponding breaks:
+
+```{r}
+#| label: tbl-results-breakpoints-dates
+#| tbl-cap: "Dates of breakpoints by number of breaks (the table reads better horizontally, by number of breaks)"
+
+start_date <- min(unemployment$TIME)
+
+date_table <- cool_table %>%
+    mutate(across(
+        starts_with("Break"),
+        function(x) {
+            
+            # create empty Date vector
+            out <- as.Date(rep(NA, length(x)))
+            
+            # convert only non-NA entries
+            idx <- which(!is.na(x))
+            
+            out[idx] <- start_date %m+% months(x[idx])
+            
+            return(out)
+        }
+    ))
+
+date_table %>%
+  gt_custom(use_labels = FALSE) %>%
+  sub_missing(everything(), missing_text = "-")
+```
+
+
+Based on the error results, I will choose either 2 or 3 structural breaks, given that there is a significant reduction in the BIC criterion at that number. At the third break there is a small reduction, while at the fourth it increases. Let us examine the proposed breaks individually. On the one hand, the 2-break model proposes breaks in June 2011 and March 2018; on the other hand, the 3-break model proposes breaks also in June 2011, June 2015, and January 2019. I deliberated at length over whether I could decide on my own which was a defining moment of the crisis, as this is potentially a somewhat subjective judgement, which is why I prefer to let the model calculate it. Furthermore, the entire period was quite turbulent and full of negative developments, meaning that in reality one cannot pinpoint a single clear break.
+
+Looking at the dates, the three-break model may be the one that makes the most sense to observers. 2011 saw problems that were already showing up in the unemployment index; 2015 was a period of uncertainty; and January 2019 marks the country's recovery, with the exit from the memoranda announced a few months earlier, in August 2018.
+
+
+## Stationarity Testing
+
+### Definition of Stationarity
+
+An important concept in time series is **stationarity**. A time series is called stationary [@appliedtimeseriespenn] if: <br>
+
+1.  $E(X_t):\text{constant}$
+2.  $Var(X_t): \text{constant}$
+3.  $Cov(X_t, X_s): \text{constant}$
+
+### Examining Stationarity Graphically
+
+From [Figure @fig-level-plot] it is very evident that our series does not move around any specific value, violating the first condition for a time series to be considered stationary. This indicates the need to use first-order differences for Greek unemployment. From the first difference ($\Delta y = y_t - y_{t-1}$) I observe a great improvement, as we no longer have the enormous deviations seen in the previous chart. The values mostly show no trend and move around values relatively close to zero. This is a good sign, though I have a mild concern as there are two points in the time series with relatively large deviations from zero. The first is between points 120 and 170, where the fluctuation around zero has deviated slightly, referring to the period between 2008 and 2012 (the crisis and deterioration of economic indicators). Another slightly problematic point is the 266th, referring to March-April 2020 and the imposition of movement restrictions to curb the spread of coronavirus when the first cases were detected in our country.
+
+```{r}
+#| label: fig-diff1-plot
+#| fig-cap: "First-order difference time series of unemployment in Greece"
 grc_unemployment = unemployment %>% dplyr::filter(LOCATION == "GRC")
 grc_unemployment_diff1 <- diff(grc_unemployment$Value, differences = 1)
 
 highchart() %>%
     hc_chart(type = "line") %>%
-    hc_title(text = "Unemployment Rates") %>%
-    hc_xAxis(title = list(text = "Year")) %>%
-    hc_yAxis(title = list(text = "Value")) %>%
+    hc_title(text = "First differences of unemployment in Greece") %>%
+    hc_subtitle(text = "Differences hover around 0, with the exception of the early years of the Greek debt crisis and the movement restrictions due to COVID-19.") %>%
+    hc_xAxis(title = list(text = "Time Point")) %>%
+    hc_yAxis(title = list(text = "Unemployment Difference")) %>%
     hc_tooltip(shared = TRUE, valueDecimals = 2, valueSuffix = " %") %>%
     hc_add_series(
         data = grc_unemployment_diff1
-    )
+    ) %>%
+  hc_legend(enabled = FALSE)
 ```
 
 
-#### Second Diff.
-
-
-Given the concerns of above, I made also a second difference plot. It seems to solve the problem on points close to 150.
+Taking into account the above concerns, I also computed the second differences ($\Delta^2y = \Delta y - \Delta_{y-1}$) and visualised them. The chart is almost identical, with values fluctuating around zero even at the problematic point near the 150th observation. In the second differences I observe a more consistent fluctuation around zero, but at the same time there is an even larger deviation at the onset of COVID-19 measures in our country (3.6% versus 2.6% for the first differences).
 
 ```{r}
+#| label: fig-diff2-plot
+#| fig-cap: "Second-order difference time series of unemployment in Greece"
 
 grc_unemployment_diff2<- diff(grc_unemployment$Value, differences = 2)
 
 highchart() %>%
     hc_chart(type = "line") %>%
-    hc_title(text = "Unemployment Rates") %>%
-    hc_xAxis(title = list(text = "Year")) %>%
-    hc_yAxis(title = list(text = "Value")) %>%
+    hc_title(text = "Second differences of unemployment") %>%
+    hc_subtitle(text = "A time series with more stable fluctuation around zero, but with fairly large deviations from it at certain points.") %>%
+    hc_xAxis(title = list(text = "Time Point")) %>%
+    hc_yAxis(title = list(text = "Unemployment Difference (2nd order)")) %>%
     hc_tooltip(shared = TRUE, valueDecimals = 2, valueSuffix = " %") %>%
     hc_add_series(
         data = grc_unemployment_diff2
+    ) %>%
+    hc_legend(enabled = FALSE)
+
+```
+
+### Examining Stationarity with Statistical Tests
+
+Graphical examination of stationarity is a fairly easy way to identify the presence of trends or whether our series has generally stable behaviour. Except in some very clear-cut cases, there will be times when many people may disagree on the stationarity of a series simply from its trajectory. This is understandable given that as a measure of evaluation it is somewhat subjective, being based on the personal opinion and interpretation each person gives to the movement of the time series. The use of this method alone may therefore lead to inconsistent or unstable decisions, since one person may consider a slight upward trend that reverts as stationary, while another may interpret the pattern as a faint but real trend. By analogy with normality tests, which include both graphical (quantile-quantile plot) and statistical tests (Kolmogorov-Smirnov test, Shapiro-Wilk test), we have similar alternatives for testing stationarity. This way we can have a more objective criterion for whether our series are stationary or not. Some of the best-known stationarity tests, which are also known as unit root tests, are as follows:
+
+-   The **DF test** (Dickey-Fuller)
+-   The **ADF test** (Augmented Dickey-Fuller)
+-   The **ADF-GLS test**
+-   The **PP test** (Phillips-Perron)
+-   The **KPSS test** (Kwiatkowski-Phillips-Schmidt-Shin) and
+-   The **ZA test** (Zivot-Andrews)
+
+And this is where the chaos begins, which I started to realise when I began learning R. When using a programming language we do not have nice menus and tick boxes with options for each test. In R, as in other languages such as Python, there are packages that add functions and capabilities to each language. For stationarity tests, quite a few R packages have been built that serve a similar purpose. Some fairly well-known packages offering stationarity tests are:
+
+-   tseries
+-   urca
+
+OK. But which one should I choose? Do they differ? We need to study our options carefully. In ready-made software the program makes certain sensible decisions for us or gives us the option to select certain values or tests. When we make this transition to a programming language, we have the freedom to see how that result was produced (by studying the corresponding package code). This increased freedom of movement comes with increased responsibilities on the part of the analyst, who will need to check what each package computes, what its capabilities and limitations are. In this case both packages, tseries and urca, are promoted as packages providing stationarity tests, that is, similar functionality. In brief, the `tseries` package, which I am most familiar with, is quite restrictive. Despite the fact that many guides use this package, I realised that I could not set the lags for the tests or set characteristics of the time series, such as whether it has an upward or downward trend. The `urca` package, on the other hand, addresses these limitations by allowing users to set the number of lags as well as time series characteristics. The only drawback of the `urca` package is that it does not provide a p-value in the test results, which is the most widely known measure for interpreting tests. For the hypothesis test, the test statistic is computed and compared against the corresponding critical value; if the test statistic exceeds the critical value, the test is rejected at the corresponding significance level.
+
+#### Summary of Results
+
+Summarising the results of the statistical stationarity tests, I conclude that the unemployment observations in Greece cannot be characterised as stationary. Furthermore, all classical tests agree on the presence of stationarity in the first- and second-order differences.
+
+
+```{r}
+#| label: tbl-general-results
+#| tbl-cap: "Summary of stationarity test results"
+#| echo: false
+summary_stationarity_results <- data.frame(
+  "Test" = c("ADF", "PP", "KPSS", "ZA", "LS"),
+  "Result" = c("I(1)", "I(1)","I(1)", "I(1)", "I(1)"),
+  "Stationarity achieved at..." = c("first difference", "first difference",
+                                    "first difference", "first difference", "first difference"),
+  check.names = FALSE
+)
+
+
+summary_stationarity_results  %>% gt_custom(head_max = 7, use_labels = FALSE)
+```
+
+#### DF Test
+
+The Dickey-Fuller test is one of the simplest unit root tests for determining the stationarity of a time series. This test is based on the first-order autoregressive model, $\text{AR}(1)$:
+
+::: {.column-margin}
+![(Sir) Gilbert Walker](walker.webp)
+
+(Sir) Gilbert Thomas Walker (United Kingdom, 1868-1958) was a physicist and statistician who studied at Trinity College, University of Cambridge, where he emerged as the top undergraduate student in 1889. During his tenure at the Indian Meteorological Service, he developed the Yule-Walker equations (together with George Udny Yule), which today constitute a fundamental tool for autoregressive (AR) models. With these methods he successfully predicted monsoon patterns.<br>
+
+**Photo source:** Wikimedia Commons, 2021. Licence: Public Domain (published in 1925). For the original photograph please follow this [link](https://commons.wikimedia.org/wiki/File:Gilbert_Walker.jpg).
+:::
+
+$$
+y_t = \phi y_{t-1} + e_t
+$$
+
+Where $y_t$ is the value of the time series and $e_t$ is the error term. That is, it is a time series whose values are influenced by, and depend on, previous values of the series.
+
+$$
+\begin{equation}
+\begin{split}
+y_t & = \rho y_{t-1} + e_t \\ \\
+y_t - y_{t-1}& = \rho y_{t-1} - y_{t-1} + e_t \\ \\
+\Delta y_t & = (\rho - 1) y_{t-1} + e_t \\ \\
+\Delta y_t & = \gamma y_{t-1} + e_t
+\end{split}
+\end{equation}
+$$
+
+The test has specific variants based on the behaviour of the time series in question. More precisely, there are three variants:
+
+-   Without a constant and without a trend, where the series moves around zero and takes the form written above:
+    $$\Delta y_t = \gamma y_{t-1} + e_t$$
+-   With a constant, when the series moves around a fixed value (different from zero):
+    $$\Delta y_t = \alpha + \gamma y_{t-1} + e_t$$
+-   With a constant and trend, when the series appears to follow a downward or upward trajectory over time:
+    $$\Delta y_t = \alpha + \beta t + \gamma y_{t-1} + e_t$$
+    
+This particular test has some problems in application, as it makes a series of assumptions:
+
+- our series follows an autoregressive model with $p=1$,
+- the errors are homoskedastic, and
+- the errors are uncorrelated.
+
+The series is clearly non-stationary in the original observations, while the trend disappears in the first-order differences. I will therefore check the assumptions of the Dickey-Fuller test, simply to confirm in practice that this test has some significant weaknesses. First, I will build a regression model based on the DF formulas and then check the aforementioned assumptions, such as that of autocorrelated errors. In the case of the first differences I have eliminated the trend, and the constant is also around zero. I will therefore build a model of the first case:
+
+$$
+\Delta y_t = \gamma y_{t-1} + e_t
+$$
+
+
+```{r}
+#| label: tbl-check_autocorrlation
+#| tbl-cap: "Testing error assumptions (autocorrelation and homoskedasticity)"
+
+y = grc_unemployment$Value
+dy <- diff(y)
+
+# DF regression without intercept (because Δy ~ 0)
+y_lag <- y[-length(y)]       # y_{t-1} aligned with dy
+mod <- lm(dy ~ y_lag + 0)    # 0 = no intercept
+
+Tdy <- length(dy)
+h <- floor(sqrt(Tdy))
+res_ljung = Box.test(residuals(mod), type="Ljung-Box", lag=h)
+dwtest_res = dwtest(mod)
+arch_res = ArchTest(residuals(mod), lags = 12)  
+
+result_table <- data.frame(
+    "Test" = c("Ljung-Box","Durbin-Watson", "ARCH Test"),
+    "Test Statistic" = c(round(res_ljung[["statistic"]][[1]], 3),
+                         round(dwtest_res[["statistic"]][[1]], 3),
+                         round(arch_res[["statistic"]][[1]], 3)),
+    "Degrees of Freedom" = c(res_ljung$parameter, 
+                             "-",
+                             arch_res$parameter),
+    "p value" = c("<0.0001",
+                  round(dwtest_res$p.value, 4),
+                  round(arch_res$p.value, 6)),
+    check.names = FALSE
+)
+
+result_table %>% gt_custom(use_labels = FALSE)
+```
+
+From the Ljung-Box and Durbin-Watson tests, I reject the hypothesis that the errors are uncorrelated. Finally, the ARCH test shows that the errors are not homoskedastic (they have varying variance). From these results it is clear that the DF test is not reliable and is generally not used, as its assumptions are quite restrictive and are typically violated. Tests such as the ADF and PP address this error behaviour in various ways to obtain valid results when assessing the stationarity of a series.
+
+
+#### ADF Test
+
+One of the most widely used unit root and stationarity tests is the **Augmented Dickey-Fuller (ADF) test**, which is a generalisation of the simple Dickey-Fuller test, as it is based on a higher-order autoregressive model ($\rho > 1$). That is, the value of the time series does not depend only on its previous value but also on other $\rho$ preceding ones. An autoregressive model of order $\rho$ takes the following form:
+
+$$y_t = \phi_1 y_{t-1} + \phi_2 y_{t-2} + \cdots + \phi_p y_{t-p} + \epsilon_t$$
+
+Analogously with the simple Dickey-Fuller test, variants are defined based on the behaviour of the time series in question:
+
+-   Without a constant and without a trend, where the series moves around zero:
+    $$\Delta y_t = \gamma y_{t-1} + \sum\limits_{i=1}^{p} \delta_i \Delta y_{t-i}+ u_t$$
+-   With a constant, when the series moves around a fixed value (different from zero):
+
+$$
+    \begin{aligned}
+      \Delta y_t & = \alpha + \gamma y_{t-1} + \\ \\
+       &\quad  + \sum\limits_{i=1}^{p} \delta_i \Delta y_{t-i}+ u_t
+    \end{aligned}
+$$
+
+-   With a constant and trend, when the series appears to follow a downward or upward trajectory over time:
+$$
+    \begin{aligned}
+      \Delta y_t & = \alpha + \beta_t + \gamma y_{t-1} + \\ \\
+       &\quad  + \sum\limits_{i=1}^{p} \delta_i \Delta y_{t-i}+ u_t
+    \end{aligned}
+$$
+
+The **ADF test** has the following hypothesis structure:
+$$
+H_0 : \gamma  = 0  \textsf{, the series is not stationary}\\
+H_1 : \gamma \neq 0 \text{, the series is stationary}
+$$
+
+That is, if our results reject the null hypothesis, this indicates that the time series is stationary. Let us apply the above test to unemployment in Greece and Europe. However, before doing so I need to determine how many time lags to include. First, I need to set the maximum number of lags, $p_{max}$. This can be derived empirically from the form of my data: if they are quarterly I would set $p_{max} = 4$, or if they are monthly it is recommended to set $p_{max} = 12$. A more widespread approach is Schwert's rule, which is based on the number of observations:
+
+$$
+\begin{equation}
+\begin{split}
+p_{max} & = \left[12 \cdot \left(  \frac{T}{100}\right)^{0.25} \right] \\ \\
+& = \left[ 12 \cdot \left(  \frac{293}{100}\right)^{0.25} \right]\\ \\
+& = \left[ 15.7  \right] \\ \\
+& = 15 \text{ lags}
+\end{split}
+\end{equation}
+$$
+
+The literature also contains a more conservative method for determining the maximum number of lags, with a factor of 4 instead of 12:
+
+\begin{equation}
+\begin{split}
+p_{max} & = \left[4 \cdot \left(  \frac{T}{100}\right)^{0.25} \right] \\ \\
+& = \left[ 4 \cdot \left(  \frac{293}{100}\right)^{0.25} \right]\\ \\
+& = \left[ 5.23  \right] \\ \\
+& = 5 \text{ lags}
+\end{split}
+\end{equation}
+
+To avoid any coincidence, at this stage I have not yet determined the exact lags to use for the Augmented Dickey-Fuller test. I set the upper bound based on Schwert's rule, $p_{max}$. That is, the number of lags $\rho$ is an integer between 1 and 15, which can be expressed as follows:
+
+$$
+\rho \in \mathbb{Z}, 1 \leq \rho \leq \rho_{max} = 15
+$$
+
+Enough of that, though. It is time to find the ideal lags. There are two ways to determine them:
+
+-   Sequential t-testing, or
+-   Using various information criteria, such as AIC and BIC.
+
+I am now in a position to run the Augmented Dickey-Fuller test via the urca package using the `ur.df()` command, setting the *lags* parameter equal to the maximum lag value $p_{max} = 12$. Do not be misled by the parameter name: you are not setting the lags but the maximum number of them.
+
+```{r}
+#| label: tbl-adf-results
+#| tbl-cap: "Augmented Dickey-Fuller (ADF) test results"
+types <- c("none", "drift", "trend")
+
+# run ur.df for each case
+results <- lapply(types, function(t) {
+    ur.df(grc_unemployment$Value, type = t, lags = 15, selectlags = "AIC")
+})
+
+result_table <- data.frame(
+    "Test" = c("ADF (none)", "ADF (drift)", "ADF (trend)"),
+    "Test Statistic" = c(round(results[[1]]@teststat[1], 3),
+                         round(results[[2]]@teststat[1], 3),
+                         round(results[[3]]@teststat[1], 3)),
+    "Lag" = c(results[[1]]@testreg$coefficients[,1] %>% length() - 1, 
+              results[[2]]@testreg$coefficients[,1] %>% length() - 2,
+              results[[3]]@testreg$coefficients[,1] %>% length() - 3),
+    "Critical Value (1%)" = c(results[[1]]@cval[1,1],
+                              results[[2]]@cval[1,1],
+                              results[[3]]@cval[1,1]),
+    "Critical Value (5%)" = c(results[[1]]@cval[1,2],
+                              results[[2]]@cval[1,2],
+                              results[[3]]@cval[1,2]),
+    check.names = FALSE
+)
+
+result_table %>% gt_custom(use_labels = FALSE)
+```
+
+Given that the results in [Table @tbl-adf-results] are not statistically significant, I can conclude that my time series is not stationary. The use of differenced observations therefore makes sense, and they should be re-tested for stationarity. It is worth recalling that these differences are shown in [Figure @fig-diff1-plot], where we observe that both the trend and the clustering of observations at values far from zero have been eliminated. The most appropriate course of action in this case is to evaluate the test under the simplest model, with neither a constant (drift) nor any form of trend. For completeness, all cases are included in the results below.
+
+```{r}
+#| label: tbl-adf-results-diff1
+#| tbl-cap: "Augmented Dickey-Fuller (ADF) test results on the differences of the original observations"
+types <- c("none", "drift", "trend")
+
+# run ur.df for each case
+results <- lapply(types, function(t) {
+    ur.df(diff(grc_unemployment$Value, 1), type = t, lags = 10, selectlags = "Fixed")
+})
+
+result_table <- data.frame(
+    "Test" = c("ADF (none)", "ADF (drift)", "ADF (trend)"),
+    "Test Statistic" = c(glue(round(results[[1]]@teststat[1], 3), "*"),
+                         round(results[[2]]@teststat[1], 3),
+                         round(results[[3]]@teststat[1], 3)),
+    "Lag" = c(results[[1]]@testreg$coefficients[,1] %>% length() - 1, 
+              results[[2]]@testreg$coefficients[,1] %>% length() - 2,
+              results[[3]]@testreg$coefficients[,1] %>% length() - 3),
+    "Critical Value (1%)" = c(results[[1]]@cval[1,1],
+                              results[[2]]@cval[1,1],
+                              results[[3]]@cval[1,1]),
+    "Critical Value (5%)" = c(results[[1]]@cval[1,2],
+                              results[[2]]@cval[1,2],
+                              results[[3]]@cval[1,2]),
+    check.names = FALSE
+)
+
+result_table %>% gt_custom(use_labels = FALSE)
+```
+
+Since the test statistic (-2.119) is smaller than the corresponding critical value (-1.95), we can reject the null hypothesis of non-stationarity for the differences of the original Greek unemployment observations, at the 5% significance level.
+
+```{r}
+#| label: tbl-adf-final
+#| tbl-cap: "Augmented Dickey-Fuller (ADF) test results on the differences of the original observations"
+types <- c("none", "drift", "trend")
+
+results_diff <- lapply(types, function(t) {
+  ur.df(diff(grc_unemployment$Value,1), type = t, lags = 10, selectlags = "Fixed")
+})
+
+
+results_level <- lapply(types, function(t) {
+  ur.df(grc_unemployment$Value, type = t, lags = 15, selectlags = "AIC")
+})
+
+
+result_table <- data.frame(
+  
+  "Series Form" = c(
+    rep("In levels", length(types)),
+    rep("First differences", length(types))
+  ),
+  
+  "Specification" = c(
+    "None", "Drift", "Trend",
+    "None", "Drift", "Trend"
+  ),
+  
+  "ADF Statistic" = c(
+    round(results_level[[1]]@teststat[1], 3),
+    round(results_level[[2]]@teststat[1], 3),
+    round(results_level[[3]]@teststat[1], 3),
+    round(results_diff[[1]]@teststat[1], 3),
+    round(results_diff[[2]]@teststat[1], 3),
+    round(results_diff[[3]]@teststat[1], 3)
+  ),
+  
+  "Lag (in regression)" = c(
+    length(results_level[[1]]@testreg$coefficients)-1,
+    length(results_level[[2]]@testreg$coefficients)-2,
+    length(results_level[[3]]@testreg$coefficients)-3,
+    length(results_diff[[1]]@testreg$coefficients)-1,
+    length(results_diff[[2]]@testreg$coefficients)-2,
+    length(results_diff[[3]]@testreg$coefficients)-3
+  ),
+  
+  "Critical Value (1%)" = c(
+    results_level[[1]]@cval[1,1],
+    results_level[[2]]@cval[1,1],
+    results_level[[3]]@cval[1,1],
+    results_diff[[1]]@cval[1,1],
+    results_diff[[2]]@cval[1,1],
+    results_diff[[3]]@cval[1,1]
+  ),
+  
+  "Critical Value (5%)" = c(
+    results_level[[1]]@cval[1,2],
+    results_level[[2]]@cval[1,2],
+    results_level[[3]]@cval[1,2],
+    results_diff[[1]]@cval[1,2],
+    results_diff[[2]]@cval[1,2],
+    results_diff[[3]]@cval[1,2]
+  ),
+  
+  check.names = FALSE
+)
+
+# render with gt_custom and source note
+result_table %>%
+  gt_custom(use_labels = FALSE) %>%
+  tab_source_note(
+    source_note = "Note: The null hypothesis of the ADF test is the presence of a unit root. The lag refers to the number of lags used in the regression."
+  )
+```
+
+
+#### PP Test
+
+Another stationarity test is the Phillips-Perron test, which is based on the simple Dickey-Fuller. The logic is the same as the ADF and the hypothesis structure is identical, but they differ significantly in how they handle autocorrelation of the errors. The PP test does not add lags to reduce error autocorrelation (as the ADF does); instead, it attempts to modify the test statistic by estimating the long-run variance $\hat{\lambda}$.
+
+The only term that cannot be determined in advance is the long-run variance, as its summation depends on a parameter $q$. That is, we have not decided how many terms to include in the computation and estimation of the long-run variance $\hat{\lambda}$. For the bandwidth parameter $q$ of the long-run variance, there are some simple calculation rules that coincide with those for the maximum lag number in the ADF test. For small samples:
+
+$$
+q_{\text{small}} = \left[4\cdot \left(  \frac{T}{100}\right)^{0.25} \right] 
+$$
+
+and for larger samples:
+
+$$
+q_{\text{large}} = \left[12 \cdot \left(  \frac{T}{100}\right)^{0.25} \right] 
+$$
+
+The hypothesis structure takes the same form as the tests mentioned above, with the null hypothesis assuming non-stationarity of our time series.
+
+$$
+H_0 : \text{The series is not stationary} \\
+H_1 : \text{The series is stationary} 
+$$
+
+The Phillips-Perron test can be executed via the urca package with the `ur.pp` command. It accepts as parameters our time series, the test statistic we wish to compute, and the type of series (with trend, without trend). Finally, a parameter that can be set is the maximum number of terms to use for estimating the long-run variance, referred to as `lags` in the package. This is nothing other than the $q$ we discussed above. The package gives us two options: either set our own value via the `use.lag` parameter, or use one of two options (`short` or `long`) via the `lags` parameter. Reading the `ur.pp` source code reveals that if we choose the automatic determination of $q$ through the two options provided, the formulas are identical to those defined above for $q_{\text{small}}$ and $q_{\text{large}}$.
+
+```{r}
+#| label: tbl-pp-results
+#| tbl-cap: "Phillips-Perron test results for the original observations and the first differences"
+#| warning: false
+
+types <- c("constant", "trend")
+results_level <- lapply(types, function(t) {
+  ur.pp(grc_unemployment$Value,
+        type = "Z-tau",
+        model = t,
+        lags = "long")
+})
+
+results_diff <- lapply(types, function(t) {
+  ur.pp(diff(grc_unemployment$Value,1),
+        type = "Z-tau",
+        model = t,
+        lags = "long")
+})
+
+result_table <- data.frame(
+  "Variable" = c("Levels", "Levels",
+                 "First Differences", "First Differences"),
+  
+  "Specification" = c("Constant", "Trend",
+                      "Constant", "Trend"),
+  
+  "Test Statistic" = c(
+    round(results_level[[1]]@teststat[1], 3),
+    round(results_level[[2]]@teststat[1], 3),
+    round(results_diff[[1]]@teststat[1], 3),
+    round(results_diff[[2]]@teststat[1], 3)
+  ),
+  
+  "Lag (Newey-West)" = c(
+    results_level[[1]]@lag,
+    results_level[[2]]@lag,
+    results_diff[[1]]@lag,
+    results_diff[[2]]@lag
+  ),
+  
+  "Critical Value (1%)" = c(
+    round(results_level[[1]]@cval[1,1], 3),
+    round(results_level[[2]]@cval[1,1], 3),
+    round(results_diff[[1]]@cval[1,1], 3),
+    round(results_diff[[2]]@cval[1,1], 3)
+  ),
+  
+  "Critical Value (5%)" = c(
+    round(results_level[[1]]@cval[1,2], 3),
+    round(results_level[[2]]@cval[1,2], 3),
+    round(results_diff[[1]]@cval[1,2], 3),
+    round(results_diff[[2]]@cval[1,2], 3)
+  ),
+  
+  check.names = FALSE
+)
+
+result_table %>% gt_custom(use_labels = FALSE)
+
+```
+
+
+Consequently, we have a failure to reject the null hypothesis ($H_0$) for the original data and a rejection for the first differences. This means that the Greek unemployment observations were not stationary, but their differences were. The PP test thus confirms the findings of the ADF test.
+
+#### KPSS Test
+
+Another unit root test is the KPSS test. Although the aim of the test is the same, it has the opposite logic compared to the previous tests: its null hypothesis is stationarity, as opposed to non-stationarity.
+
+$$
+H_0 : \text{The series is stationary} \\
+H_1 : \text{The series is not stationary} 
+$$
+
+```{r}
+#| label: tbl-kpss-results
+#| tbl-cap: "KPSS test results for the observations and the first differences"
+#| warning: false
+
+
+kpss_level  <- ur.kpss(grc_unemployment$Value, type = "mu", lags = "long")
+kpss_diff1  <- ur.kpss(diff(grc_unemployment$Value,1), type = "mu", lags = "long")
+kpss_diff2  <- ur.kpss(diff(grc_unemployment$Value,2), type = "mu", lags = "long")
+
+result_table <- data.frame(
+  
+  "Series Form" = c("In levels",
+                    "First differences",
+                    "Second differences"),
+  
+  "KPSS Statistic" = c(
+    round(kpss_level@teststat[1], 3),
+    round(kpss_diff1@teststat[1], 3),
+    round(kpss_diff2@teststat[1], 3)
+  ),
+  
+  "Lag" = c(
+    kpss_level@lag,
+    kpss_diff1@lag,
+    kpss_diff2@lag
+  ),
+  
+  "Critical Value (1%)" = c(
+    round(kpss_level@cval[1,4], 3),
+    round(kpss_diff1@cval[1,4], 3),
+    round(kpss_diff2@cval[1,4], 3)
+  ),
+  
+  "Critical Value (5%)" = c(
+    round(kpss_level@cval[1,2], 3),
+    round(kpss_diff1@cval[1,2], 3),
+    round(kpss_diff2@cval[1,2], 3)
+  ),
+  
+  check.names = FALSE
+)
+
+result_table %>%
+  gt_custom(use_labels = FALSE) %>%
+  tab_source_note(
+    source_note = "Note: The null hypothesis of KPSS is stationarity. The lag is used for the estimation of the long-run variance."
+  )
+```
+
+My null hypothesis assumed stationarity, which is rejected by the KPSS test at the 1% significance level. Furthermore, the test cannot reject stationarity for the differenced observations. These results confirm both the PP test and the ADF test.
+
+#### ZA and LS Tests
+
+Finally, another stationarity test is the Zivot-Andrews (ZA) test. This particular test statistic differs from the previous ones in that it takes into account certain points at which the time series changes behaviour. These time points could be various dates on which significant events occurred that may have affected the behaviour of the time series. It is evident that the debt crisis constitutes a time point that affected the behaviour of the time series. The use of specialised tests with structural breaks is deemed necessary for our case.
+
+The best-known tests for stationarity in time series with structural breaks are:
+
+-   The Zivot-Andrews (ZA) test, if there is only one structural break, and
+-   The Lee-Strazicich (LS) test, if there are two structural breaks.
+
+But how many breaks are there in a time series?
+
+
+For completeness I will include the Zivot-Andrews test, which is not optimal since it assumes only one structural break. Above, two were found. Here, however, another problem arises. Although for classical tests, and for structural break tests such as Zivot-Andrews, there are packages and commands that compute the test statistic, no equivalent commands exist for the Lee-Strazicich test. Fortunately, instead of relying on a statistical package (e.g. EViews), I found a relevant [repository](https://github.com/hannes101/LeeStrazicichUnitRoot) on GitHub, where user [hannes101](https://github.com/hannes101/) has written a series of functions for this specific test that follow a logic similar to those in the urca package. At this point I should note that the simple test takes quite a few minutes to run; on my machine it took 5 minutes. The only problem with this procedure is that the object returned by the function does not include critical values. This means that I will need to look up the critical value tables for my specific case from the original Lee-Strazicich paper.
+
+
+```{r}
+#| label: tbl-results-struc-change-test
+#| tbl-cap: "Stationarity test results with structural breaks"
+#| cache: true
+source("https://raw.githubusercontent.com/hannes101/LeeStrazicichUnitRoot/refs/heads/master/LeeStrazicichUnitRootTest.R")
+g = summary(ur.za(grc_unemployment$Value, model = "both"))
+g1 = summary(ur.za(diff(grc_unemployment$Value, differences = 1), model = "both"))
+
+data.frame("Test" = c("Zivot-Andrews", "Zivot-Andrews", "Lee-Strazicich", "Lee-Strazicich"), 
+           "Variable" = c("Unempl", "Δ Unempl", "Unempl", "Δ Unempl"), 
+           "Test Statistic" = c(g@teststat, g1@teststat, -4.71, -7.72), 
+           "Critical Value (5%)" = c(g@cval[2], g1@cval[2], -5.65, -5.65),
+           check.names = FALSE) %>% 
+  mutate(across(c(3:4), ~ round(., 2))) %>%
+  gt_custom(use_labels = FALSE)
+```
+
+
+## Model Identification
+
+Above I concluded that the unemployment observations are not stationary; however, their first differences constitute a stationary time series. At this point I would like to investigate which (S)ARIMA(p, d, q) model is appropriate for my case. For this reason I will construct autocorrelation and partial autocorrelation diagrams in order to identify the ideal values of $p$ and $q$. Finally, it is worth recalling that in an ARIMA model, $d$ represents the order of differencing, which in our case is 1.
+
+
+### Original Observations
+
+::: {.column-margin}
+```{r}
+#| echo: false
+#| label: tbl-results-acf-pacf-values-lv
+#| tbl-cap: "Autocorrelation results for the original observations, first 12 lags"
+acf_lv = acf(grc_unemployment$Value, plot = FALSE)
+pacf_lv = pacf(grc_unemployment$Value, plot = FALSE)
+
+data.frame(
+  "Lag" = c(0:24),
+  "ACF" = acf_lv$acf,
+  "pACF" = c(1, pacf_lv$acf)) %>%
+  gt_custom(head_max = 12, use_labels = FALSE)  %>%
+  fmt_number(decimals = 3, drop_trailing_zeros = TRUE)
+```
+:::
+
+For completeness, we will start with the given unemployment observations. We already know that they are not stationary, but there are specific patterns that we need to observe in the autocorrelation diagrams in order to confirm this. The autocorrelation diagram decreases at an extremely slow rate, which is a strong indication of non-stationarity of the series.
+
+::: grid
+::: {.g-col-12 .g-col-md-6}
+```{r}
+#| label: fig-acf-hc-lv
+#| fig-cap: "Autocorrelation diagram"
+#| fig-height: 3
+acf_plot_function(grc_unemployment$Value, min= - 0.25, max = 1)
+```
+
+:::
+
+::: {.g-col-12 .g-col-md-6}
+```{r}
+#| label: fig-pacf-hc-lv
+#| fig-cap: "Partial autocorrelation diagram"
+#| fig-height: 3
+pacf_plot_function(grc_unemployment$Value, min=-0.25, max=1)
+```
+
+:::
+:::
+
+
+
+### First Difference
+
+::: {.column-margin}
+```{r}
+#| echo: false
+#| label: tbl-results-acf-pacf-values-d1
+#| tbl-cap: "Autocorrelation results for the first differences, first 12 lags"
+acf_diff1 = acf(grc_unemployment_diff1, plot = FALSE)
+pacf_diff1 = pacf(grc_unemployment_diff1, plot = FALSE)
+
+data.frame(
+  "Lag" = c(0:24),
+  "ACF" = acf_diff1$acf,
+  "pACF" = c(1, pacf_diff1$acf)) %>%
+  gt_custom(head_max = 12, use_labels = FALSE)  %>%
+  fmt_number(decimals = 3, drop_trailing_zeros = TRUE)
+```
+:::
+
+The non-stationarity of my data, confirmed countless times above, compels us to take the first differences and obtain the corresponding autocorrelation diagrams. I observe a rather difficult-to-interpret situation from the diagrams, as there are significant fluctuations in both diagrams that make it hard to decide on the appropriate ARIMA model. Normally, to determine the right lag orders I look for a sharp drop within the red region, but there are quite a few statistically significant exceedances. After the 10th lag this tendency diminishes or disappears significantly, so my model likely has parameters $p$ and $q$ somewhere between 1 and 10.
+
+::: grid
+::: {.g-col-12 .g-col-md-6}
+```{r}
+#| label: fig-acf-hc-first-diffs
+#| fig-cap: "Autocorrelation diagram of first-order differences"
+#| fig-height: 3
+acf_plot_function(grc_unemployment_diff1, min=-0.2, max = 0.5)
+```
+:::
+
+
+::: {.g-col-12 .g-col-md-6}
+```{r}
+#| label: fig-pacf-hc-first-diffs
+#| fig-cap: "Partial autocorrelation diagram of first-order differences"
+#| fig-height: 3
+pacf_plot_function(grc_unemployment_diff1, min=-0.2, max=0.5)
+```
+
+:::
+:::
+
+
+## Model Building
+
+### Splitting the Time Series
+
+Forecasting future unemployment requires us to build a model. Established methods include ARIMA models and Exponential Smoothing (ETS) models. Simply running a model says very little unless we evaluate its parameters. More generally, in work where we try to build predictive models we want to evaluate the model's power, and for this reason we typically split our data into two parts. One part is used for training the model (train set) and the remainder for evaluating it (test set). The usual split is 70/30 or 80/20 respectively. This approach generally works well for classical machine learning problems such as classification and regression.
+
+```{mermaid}
+%%| echo: false
+%%| label: fig-diagram-split-data-simple
+%%| fig-cap: "Diagram of data split into training and evaluation sets (train / test split)"
+%%| fig-align: center
+flowchart LR
+    A[Full Dataset <br> <small>1998-2022 <br> 293 observations</small>]
+
+    A --> B[Training <br> 1998-2015]
+    A --> C[Evaluation <br> 2015-2022]
+```
+
+
+However, if we have time series problems, things are not so straightforward. Let us first suppose we want to apply the same logic to these. We would then end up with a model that ignores one fifth of the observations, specifically the most recent ones, which may well influence the variability of the time series. For this reason, other methods have been proposed for time series.
+
+
+```{mermaid}
+%%| echo: false
+%%| label: fig-diagram-split-data-rolling-ts
+%%| fig-cap: "Diagram of data splitting for time series"
+%%| fig-align: center
+flowchart LR
+   C[Full Time Series <br> <small>293 observations</small>]
+
+    C --> F[1st Fold <br> <small>Training: 1998-2010 <br> Forecast: 2011</small>]
+    C --> G[2nd Fold <br> <small>Training: 1998-2011 <br> Forecast: 2012</small>]
+    C --> H[3rd Fold <br> <small>Training: 1998-2012 <br> Forecast: 2013</small>]
+    C --> I[k-th Fold]
+    C --> J[N-th Fold <br> <small>Training: 1998-2021 <br> Forecast: 2022</small>]
+```
+
+```{r}
+#| warning: false
+#| message: false
+
+unemployment_ts = read_csv("data/unemployment.csv") |>
+  select(LOCATION, TIME, Value) |>
+  mutate(TIME = yearmonth(TIME)) |>
+  dplyr::filter(LOCATION == "GRC") |>
+  as_tsibble(index = TIME)
+
+
+break1 = breakPoints$breakdates[2,][3]
+break2 = breakPoints$breakdates[2,][5]
+
+n_obs <- nrow(unemployment_ts)
+break_position_1 <- round(n_obs * break1)
+break_position_2 <- round(n_obs * break2)
+
+break_date_1 <- unemployment_ts$TIME[break_position_1]
+break_date_2 <- unemployment_ts$TIME[break_position_2]
+
+unemployment_ts <- unemployment_ts %>%
+  mutate(
+    break1 = if_else(TIME >= break_date_1, 1L, 0L),
+    break2 = if_else(TIME >= break_date_2, 1L, 0L)
+  ) |>
+   mutate(lockdown = if_else(
+    (TIME >= yearmonth("2020 Mar") & TIME <= yearmonth("2020 May")) |
+    (TIME >= yearmonth("2020 Nov") & TIME <= yearmonth("2021 Feb")),
+    1L, 0L)
+  ) 
+
+
+cv <- unemployment_ts %>%
+  stretch_tsibble(.init = 200, .step = 5)
+```
+
+
+All of this may sound somewhat complicated. I am not entirely sure whether the diagram above fully conveys the concept of time series cross-validation. I have included an interactive application for you to try for yourselves, so that the difference is clear and you can see how the various options affect the result.
+
+
+```{=html}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Sora:wght@300;500;700&display=swap');
+
+  /* Light theme */
+  :root,
+  [data-bs-theme="light"] {
+    --dropped:         #dde1e7;
+    --training:        #2d3a4a;
+    --forecast:        #f59e0b;
+    --cv-bg:           transparent;
+    --cv-text:         #1a1f2e;
+    --cv-subtext:      #6b7280;
+    --cv-border:       #e0ddd8;
+    --avail-bg:        #e8e5e0;
+    --avail-text:      #9ca3af;
+    --btn-active-bg:   #1a1f2e;
+    --btn-active-fg:   #ffffff;
+    --tooltip-bg:      #1a1f2e;
+    --tooltip-fg:      #ffffff;
+    --shadow-fc:       rgba(245,158,11,.35);
+  }
+
+  /* Dark theme */
+  [data-bs-theme="dark"] {
+    --dropped:         #2e3a4e;
+    --training:        #7fa8cc;
+    --forecast:        #f59e0b;
+    --cv-bg:           transparent;
+    --cv-text:         #e2e8f0;
+    --cv-subtext:      #94a3b8;
+    --cv-border:       #334155;
+    --avail-bg:        #1e2a3a;
+    --avail-text:      #475569;
+    --btn-active-bg:   #e2e8f0;
+    --btn-active-fg:   #1a1f2e;
+    --tooltip-bg:      #e2e8f0;
+    --tooltip-fg:      #1a1f2e;
+    --shadow-fc:       rgba(245,158,11,.45);
+  }
+
+  .cv-widget {
+    font-family: 'Sora', sans-serif;
+    color: var(--cv-text);
+    background: var(--cv-bg);
+    max-width: 100%;
+    padding: 1.4rem 0 1rem;
+    transition: color .3s, background .3s;
+  }
+
+  .cv-widget .mode-toggle { display: flex; gap: .5rem; margin-bottom: 1.3rem; }
+
+  .cv-widget .mode-btn {
+    padding: .32rem .8rem;
+    border-radius: 20px;
+    border: 1.5px solid var(--cv-border);
+    background: transparent;
+    font-family: 'Sora', sans-serif;
+    font-size: .71rem;
+    font-weight: 500;
+    color: var(--cv-subtext);
+    cursor: pointer;
+    transition: all .2s;
+  }
+
+  .cv-widget .mode-btn.active {
+    background: var(--btn-active-bg);
+    border-color: var(--btn-active-bg);
+    color: var(--btn-active-fg);
+  }
+
+  .cv-widget .controls {
+    display: flex;
+    gap: 1.2rem;
+    margin-bottom: 1.6rem;
+    flex-wrap: wrap;
+    align-items: flex-end;
+  }
+
+  .cv-widget .ctrl-group { display: flex; flex-direction: column; gap: .28rem; }
+
+  .cv-widget .ctrl-group label {
+    font-size: .65rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    color: var(--cv-subtext);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+
+  .cv-widget .ctrl-group input[type=range] {
+    -webkit-appearance: none;
+    width: 130px; height: 4px;
+    border-radius: 2px;
+    background: var(--cv-border);
+    outline: none; cursor: pointer;
+    transition: background .3s;
+  }
+
+  .cv-widget .ctrl-group input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--forecast);
+    cursor: pointer;
+    transition: transform .15s;
+  }
+
+  .cv-widget .ctrl-group input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.25); }
+
+  .cv-widget .ctrl-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .72rem;
+    color: var(--forecast);
+    font-weight: 600;
+  }
+
+  .cv-widget .axis-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: .45rem;
+    padding-left: 62px;
+  }
+
+  .cv-widget .axis-label {
+    font-size: .63rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--cv-subtext);
+    text-transform: uppercase;
+    letter-spacing: .07em;
+  }
+
+  .cv-widget .axis-arrow {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--cv-border), var(--cv-text));
+    position: relative;
+    margin: 0 .5rem;
+  }
+
+  .cv-widget .axis-arrow::after {
+    content: '';
+    position: absolute;
+    right: 0; top: -3px;
+    border: 4px solid transparent;
+    border-left: 7px solid var(--cv-text);
+    transition: border-color .3s;
+  }
+
+  .cv-widget .axis-end {
+    font-size: .63rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    color: var(--cv-text);
+    text-transform: uppercase;
+    letter-spacing: .07em;
+  }
+
+  .cv-widget .folds { display: flex; flex-direction: column; gap: 8px; }
+
+  .cv-widget .fold-row {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    opacity: 0;
+    transform: translateY(6px);
+    animation: cvFadeUp .38s ease forwards;
+  }
+
+  @keyframes cvFadeUp { to { opacity: 1; transform: none; } }
+
+  .cv-widget .fold-label {
+    width: 54px;
+    text-align: right;
+    font-size: .67rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    color: var(--cv-subtext);
+    flex-shrink: 0;
+  }
+
+  .cv-widget .fold-bar {
+    flex: 1;
+    height: 38px;
+    position: relative;
+  }
+
+  .cv-widget .seg {
+    position: absolute;
+    top: 0; height: 100%;
+    border-radius: 3px;
+    min-width: 3px;
+    transition: left .42s cubic-bezier(.4,0,.2,1),
+                width .42s cubic-bezier(.4,0,.2,1),
+                background .3s;
+  }
+
+  .cv-widget .seg-dropped  { background: var(--dropped); }
+  .cv-widget .seg-training { background: var(--training); }
+  .cv-widget .seg-forecast {
+    background: var(--forecast);
+    box-shadow: 2px 0 10px var(--shadow-fc);
+  }
+
+  .cv-widget .fold-bar:hover .fold-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-2px);
+  }
+
+  .cv-widget .fold-tooltip {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%) translateY(5px);
+    background: var(--tooltip-bg);
+    color: var(--tooltip-fg);
+    padding: .28rem .55rem;
+    border-radius: 4px;
+    font-size: .62rem;
+    font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .18s, transform .18s, background .3s, color .3s;
+    z-index: 20;
+  }
+
+  .cv-widget .avail-row {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    margin-top: .7rem;
+  }
+
+  .cv-widget .avail-spacer { width: 54px; flex-shrink: 0; }
+
+  .cv-widget .avail-bar {
+    flex: 1; height: 20px;
+    background: var(--avail-bg);
+    border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .3s;
+  }
+
+  .cv-widget .avail-bar span {
+    font-size: .61rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    color: var(--avail-text);
+    text-transform: uppercase;
+    letter-spacing: .07em;
+  }
+
+  .cv-widget .legend {
+    display: flex;
+    gap: 1.4rem;
+    margin-top: 1.2rem;
+    flex-wrap: wrap;
+  }
+
+  .cv-widget .legend-item {
+    display: flex; align-items: center; gap: .38rem;
+    font-size: .68rem;
+    color: var(--cv-subtext);
+    font-weight: 300;
+  }
+
+  .cv-widget .legend-swatch {
+    width: 13px; height: 13px;
+    border-radius: 2px;
+    transition: background .3s;
+  }
+</style>
+
+<div class="cv-widget" id="cvWidget">
+
+  <div class="mode-toggle">
+    <button class="mode-btn active" onclick="cvSetMode('expanding',this)">Expanding Window</button>
+    <button class="mode-btn"        onclick="cvSetMode('sliding',this)">Sliding Window</button>
+  </div>
+
+  <div class="controls">
+    <div class="ctrl-group">
+      <label>Folds</label>
+      <input type="range" id="cvFolds" min="3" max="8" value="5" oninput="cvUpdate()">
+      <span class="ctrl-val" id="cvFoldsVal">5</span>
+    </div>
+    <div class="ctrl-group">
+      <label>Forecast Horizon</label>
+      <input type="range" id="cvHorizon" min="1" max="5" value="2" oninput="cvUpdate()">
+      <span class="ctrl-val" id="cvHorizonVal">2</span>
+    </div>
+    <div class="ctrl-group" id="cvWindowWrap" style="display:none">
+      <label>Window Size</label>
+      <input type="range" id="cvWinSize" min="3" max="10" value="6" oninput="cvUpdate()">
+      <span class="ctrl-val" id="cvWinSizeVal">6</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="axis-row">
+      <span class="axis-label">Time</span>
+      <div class="axis-arrow"></div>
+      <span class="axis-end">Today</span>
+    </div>
+    <div class="folds" id="cvFoldsContainer"></div>
+    <div class="avail-row">
+      <div class="avail-spacer"></div>
+      <div class="avail-bar"><span>Available Historical Data</span></div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item" id="cvLegendDropped" style="display:none">
+      <div class="legend-swatch" style="background:var(--dropped)"></div>
+      <span>Dropped</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:var(--training)"></div>
+      <span>Model Training</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:var(--forecast)"></div>
+      <span>Forecast</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  let cvMode = 'expanding';
+
+  function syncTheme() {
+    const root = document.documentElement;
+    const isDark =
+      root.getAttribute('data-bs-theme') === 'dark' ||
+      root.classList.contains('quarto-dark');
+    document.getElementById('cvWidget')
+      .setAttribute('data-bs-theme', isDark ? 'dark' : 'light');
+  }
+
+  syncTheme();
+  new MutationObserver(syncTheme).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-bs-theme', 'class']
+  });
+
+  window.cvSetMode = function(m, btn) {
+    cvMode = m;
+    document.querySelectorAll('.cv-widget .mode-btn')
+      .forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('cvWindowWrap').style.display =
+      m === 'sliding' ? '' : 'none';
+    document.getElementById('cvLegendDropped').style.display =
+      m === 'sliding' ? '' : 'none';
+    cvUpdate();
+  };
+
+  window.cvUpdate = function() {
+    const nFolds  = +document.getElementById('cvFolds').value;
+    const horizon = +document.getElementById('cvHorizon').value;
+    const winSize = +document.getElementById('cvWinSize').value;
+
+    document.getElementById('cvFoldsVal').textContent   = nFolds;
+    document.getElementById('cvHorizonVal').textContent = horizon;
+    document.getElementById('cvWinSizeVal').textContent = winSize;
+
+    const MIN_TRAIN = 3;
+    let total = 0;
+    for (let i = 0; i < nFolds; i++) {
+      const dropped  = cvMode === 'expanding' ? 0 : i;
+      const trainLen = cvMode === 'expanding' ? MIN_TRAIN + i : winSize;
+      const end      = dropped + trainLen + horizon;
+      if (end > total) total = end;
+    }
+
+    const container = document.getElementById('cvFoldsContainer');
+    container.innerHTML = '';
+
+    for (let i = 0; i < nFolds; i++) {
+      const dropped  = cvMode === 'expanding' ? 0 : i;
+      const trainLen = cvMode === 'expanding' ? MIN_TRAIN + i : winSize;
+
+      const pDrop     = (dropped  / total) * 100;
+      const pTrain    = (trainLen / total) * 100;
+      const pForecast = (horizon  / total) * 100;
+
+      const tip = cvMode === 'expanding'
+        ? `Train&nbsp;${trainLen}&nbsp;·&nbsp;Forecast&nbsp;${horizon}`
+        : `Drop&nbsp;${dropped}&nbsp;·&nbsp;Train&nbsp;${trainLen}&nbsp;·&nbsp;Forecast&nbsp;${horizon}`;
+
+      const row = document.createElement('div');
+      row.className = 'fold-row';
+      row.style.animationDelay = (i * 72) + 'ms';
+      row.innerHTML = `
+        <div class="fold-label">Fold ${i + 1}</div>
+        <div class="fold-bar">
+          ${dropped > 0
+            ? `<div class="seg seg-dropped" style="left:0;width:${pDrop.toFixed(3)}%"></div>`
+            : ''}
+          <div class="seg seg-training"
+               style="left:${pDrop.toFixed(3)}%;width:${pTrain.toFixed(3)}%"></div>
+          <div class="seg seg-forecast"
+               style="left:${(pDrop+pTrain).toFixed(3)}%;width:${pForecast.toFixed(3)}%"></div>
+          <div class="fold-tooltip">${tip}</div>
+        </div>`;
+      container.appendChild(row);
+    }
+  };
+
+  cvUpdate();
+})();
+</script>
+```
+
+
+### Specifying ARIMA Models
+
+For the simple ARIMA model I need to determine my three parameters. I know that $d = 1$, since I achieved stationarity with the first differences. For the determination of $p$ I suspect 1, 6, and 10, as there was a large sharp drop in the partial autocorrelation diagram of the first differences after these values. Finally, for $q$ I suspect 1, 3, 6, and 10. From the diagram I cannot draw a safe conclusion about their values, as there are quite a few significant autocorrelations at least up to the 10th lag. The graphical determination of $p$ and $q$ is quite subjective and provides uncertain conclusions. For this reason it would be good to evaluate a range of parameter combinations for the ARIMA time series models in order to find the model with the optimal parameters.
+
+::: {.column-margin}
+![George Box](box.png)
+
+George E.P. Box (United Kingdom, 1919-2013) was a statistician with very significant contributions to the field of time series. George Box, in collaboration with Gwylim Jenkins (United Kingdom, 1932-1982), created the methodology for ARIMA time series. In many textbooks this methodology is referred to as Box-Jenkins. Beyond this, in collaboration with the Finnish-American statistician Greta M. Ljung (Finland, 1941-2014), he created the test for autocorrelation of errors known as the Ljung-Box test, which we will need later on.<br>
+
+**Photo source:** Wikimedia Commons, 2011. Licence: [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/). For the original photograph please follow this [link](https://commons.wikimedia.org/wiki/File:GeorgeEPBox_(cropped).jpg).
+:::
+
+```{r}
+#| warning: false
+#| message: false
+#| label: tbl-aic-arima-models
+#| tbl-cap: "ARIMA model results based on the Akaike information criterion"
+
+
+models <- unemployment_ts %>%
+    model(
+        "ARIMA (1,1,0)" = fable::ARIMA(Value ~ pdq(1,1,0)),
+        "ARIMA (0,1,1)" = fable::ARIMA(Value ~ pdq(0,1,1)),
+        "ARIMA (1,1,1)" = fable::ARIMA(Value ~ pdq(1,1,1)),
+        "ARIMA (2,1,0)" = fable::ARIMA(Value ~ pdq(2,1,0)),
+        "ARIMA (2,1,1)" = fable::ARIMA(Value ~ pdq(2,1,1)),
+        "ARIMA (0,1,2)" = fable::ARIMA(Value ~ pdq(0,1,2)),
+        "ARIMA (1,1,2)" = fable::ARIMA(Value ~ pdq(1,1,2)),
+        "ARIMA (2,1,2)" = fable::ARIMA(Value ~ pdq(2,1,2)),
+        "ARIMA (3,1,0)" = fable::ARIMA(Value ~ pdq(3,1,0)),
+        "ARIMA (3,1,1)" = fable::ARIMA(Value ~ pdq(3,1,1)),
+        "ARIMA (3,1,2)" = fable::ARIMA(Value ~ pdq(3,1,2)),
+        "ARIMA (0,1,3)" = fable::ARIMA(Value ~ pdq(0,1,3)),
+        "ARIMA (1,1,3)" = fable::ARIMA(Value ~ pdq(1,1,3)),
+        "ARIMA (2,1,3)" = fable::ARIMA(Value ~ pdq(2,1,3)),
+        "ARIMA (3,1,3)" = fable::ARIMA(Value ~ pdq(3,1,3))
+    )
+
+glance(models) %>%
+  dplyr::select(.model, AIC, AICc, BIC) %>%
+  dplyr::arrange(BIC) %>%
+  dplyr::rename("Model" = .model) %>%
+  dplyr::relocate(BIC, .before = "AIC") %>%
+  gt_custom(head_max = 20, use_labels = FALSE) %>%
+  fmt_number(decimals = 1)
+```
+
+
+Older guides or articles would likely have suggested using `auto.arima` to find the best ARIMA. Well, this article did exactly that until I realised that the `{fable}` library gives us the necessary information in a more organised way, so using the `model` command with various parameter combinations for ARIMA models gives us a ready-made table with:
+
+- the Akaike information criteria (AIC),
+- the corrected Akaike information criterion (AICc), and
+- the Bayesian information criterion (BIC).
+
+But what should we be looking for? This is very important because, as you can see, each criterion gives a different model as the best. For example, based on the AIC and AICc criteria I should choose the ARIMA(3,1,2) model, while BIC proposes the ARIMA(1,1,1) model. In general, we look for the model that gives the smallest numbers on these criteria. I have thus identified certain models that are clearly unsuitable for this particular time series, such as ARIMA(0,1,2), which performs poorly on all criteria. The ideal model is ARIMA(1,1,1) as it achieves the best performance on the BIC criterion, has good performance on the AIC and AICc criteria with a small gap from the optimal suggestion on those, and finally the AIC criteria proposed models with a marginal improvement but with 5 parameters, compared to 2-parameter models that may generalise better to the data and the behaviour of the time series.
+
+
+### Specifying the ETS Model
+
+The Exponential Smoothing method is an equally popular method for forecasting time series. Its great advantage is that it does not require the tests we performed for the ARIMA models. Despite its flexible methodology, we need to examine the time series graphically to observe its properties (trend, seasonality, cyclicality) so that I can specify the ETS model that suits our case.
+
+
+$$
+ETS(\text{Error}, \text{Trend}, \text{Seasonality})
+$$
+The smoothing model I will use is based on these characteristics.
+
+
+```{r}
+#| warning: false
+#| message: false
+#| label: tbl-aic-ets-models
+#| tbl-cap: "ETS model results based on the BIC, AIC, AICc information criteria"
+models <- unemployment_ts %>%
+    model(
+        "A-N-N" = fable::ETS(Value ~ error("A") + trend("N") + season("N")),
+        "A-A-N" = fable::ETS(Value ~ error("A") + trend("A") + season("N")),
+        "A-Ad-N" = fable::ETS(Value ~ error("A") + trend("Ad") + season("N")),
+        "A-A-A" = fable::ETS(Value ~ error("A") + trend("A") + season("A")),
+        "A-A-M" = fable::ETS(Value ~ error("A") + trend("A") + season("M")),
+        "M-A-N" = fable::ETS(Value ~ error("M") + trend("A") + season("N")),
+        "M-Ad-N" = fable::ETS(Value ~ error("M") + trend("Ad") + season("N")),
+        "M-N-N" = fable::ETS(Value ~ error("M") + trend("N") + season("N")),
+        "M-Ad-M" = fable::ETS(Value ~ error("M") + trend("Ad") + season("M")),
+    )
+
+glance(models) %>%
+  dplyr::select(.model, AIC, AICc, BIC) %>%
+  dplyr::arrange(BIC) %>%
+  dplyr::rename("Model" = .model) %>%
+  dplyr::relocate(BIC, .before = "AIC") %>%
+  gt_custom(head_max = 20, use_labels = FALSE) %>%
+  fmt_number(decimals = 1)
+```
+
+The table shows that the ETS(M,A,N) model, that is, with multiplicative error, linear trend, and no seasonality, has the best performance on the BIC criterion. Very close behind is ETS(M,Ad,N), which differs only in that the trend damps gradually rather than continuing linearly. The absence of a seasonal component (N) from the best-performing models confirms the findings of the seasonality section: seasonality in Greek unemployment is weak and does not improve the models. By contrast, models with a seasonal component (A-A-A, M-Ad-M, A-A-M) sit at the bottom of the table, with the added complexity not offset by better fit.
+
+### Prophet Model
+
+The solutions above are potentially quite complex and require deep theoretical knowledge as well as basic statistical programming skills. An easy alternative for quick time series forecasting is the Prophet algorithm. It was created by Facebook in 2017 and is a fairly popular forecasting method. The eponymous R package, with the `prophet()` command, gives us an estimate in a single line of code. One point worth noting is that it requires data in data frame format. For smooth application, you should rename your columns appropriately so that it understands which columns it needs to analyse.
+
+```{r}
+#| warning: false
+#| message: false
+
+prophet_df = grc_unemployment %>%
+  rename(ds = TIME,
+         y = Value)
+
+prophet_res = prophet::prophet(df = prophet_df)
+```
+
+Unlike ARIMA and ETS models, Prophet does not require explicit stationarity testing or parameter specification because it automatically decomposes the time series into trend, seasonality, and holidays. This ease of use makes it popular in industry applications, but it does not guarantee better performance. In the comparison table that follows we will see how it performs relative to the classical models.
+
+## Model Comparison
+
+Up to now I used the AIC and BIC criteria to select the best parameters within each model type, for example, which ARIMA is the best among the other ARIMAs. These criteria cannot, however, tell me whether an ARIMA is better than an ETS or Prophet, because each model type computes them in a different way and they are not directly comparable across types. For this reason I need a common basis for comparison. The logic is simple: each model makes forecasts for months for which I already know the actual unemployment figure, and I measure how far off it was. The smaller the error, the better the model. The metrics I will use are three:
+
+$$
+MAE = \frac{1}{n} \sum_{i=1}^{n} |y_i - \hat{y_i}|
+$$
+
+$$
+MSE = \frac{1}{n} \sum_{i=1}^n (y_i - \hat{y}_i) ^2 
+$$
+
+::: {.column-margin}
+$y_i$ : actual value, that is, the unemployment figure for the given month <br>
+$\hat{y}_i$ : estimated value, that is, the unemployment figure forecast by my model
+
+$$
+RMSE = \sqrt{MSE} = \sqrt{\frac{1}{n} \sum_{i=1}^n (y_i - \hat{y}_i) ^2 }
+$$
+:::
+
+
+```{r}
+#| label: tbl-rmse-models-2mths
+#| tbl-cap: "Comparison of errors across different models for a 2-month forecast"
+#| cache: true
+#| warning: false
+fit <- cv %>%
+  model(
+    "Auto ARIMA"   = fable::ARIMA(Value),
+    "ARIMAX (1,1,1) - 2 breaks" = fable::ARIMA(Value ~ pdq(1,1,1) + break1 + break2),
+    "ARIMAX (1,1,1) - 1 break" = fable::ARIMA(Value ~ pdq(1,1,1) + break1),
+    "ARIMA (1,1,1)" = fable::ARIMA(Value ~ pdq(1,1,1)),
+    "ARIMA (2,1,1)" = fable::ARIMA(Value ~ pdq(2,1,1)),
+    "ARIMA (1,1,2)" = fable::ARIMA(Value ~ pdq(1,1,2)),
+    "ETS (M-Ad-N)" = fable::ETS(Value ~ error("M") + trend("Ad") + season("N")),
+    "ETS (M-A-N)" = fable::ETS(Value ~ error("M") + trend("A") + season("N")),
+    Prophet = prophet(Value),
+    Naive = fable::NAIVE(Value),
+    SNaive = fable::SNAIVE(Value)
+  )
+
+# Forecast h months ahead
+fc <- fit %>%
+  forecast(h = 2)
+
+# Compute accuracy
+acc <- accuracy(fc, unemployment_ts)
+
+acc %>%
+  select(.model, RMSE, MAE) %>%
+  rename("Model" = ".model") %>%
+  arrange(RMSE) %>%
+  gt_custom(head_max = 10, use_labels = FALSE) %>%
+  fmt_number(decimals = 4)
+```
+
+
+
+```{r}
+#| label: tbl-rmse-models-6mths
+#| tbl-cap: "Comparison of errors across different models for a 6-month forecast"
+#| cache: true
+#| warning: false
+
+# Forecast h months ahead
+fc <- fit %>%
+  forecast(h = 6)
+
+# Compute accuracy
+acc <- accuracy(fc, unemployment_ts)
+
+acc %>%
+  select(.model, RMSE, MAE) %>%
+  rename("Model" = ".model") %>%
+  arrange(RMSE) %>%
+  gt_custom(head_max = 10, use_labels = FALSE) %>%
+  fmt_number(decimals = 4)
+```
+
+
+From the tables above it emerges that for short-term forecasts ($h \leq 6$ months) the ARIMAX model, which includes two exogenous variables representing the structural changes (breaks), performs best. The ARIMA(1,1,1) model also performs well for both the 2-month and 6-month forecasts. What stands out in our results is the significant difference in errors between the ARIMA models and the Naive model. This potentially indicates that our models identify the various patterns of the time series better, and therefore justify their existence. One point that requires particular attention is the differences in errors: while differences clearly exist, it should be investigated whether they are statistically significant. To study this, the Diebold-Mariano test will be used, which tests whether the errors of the compared models are statistically significant:
+
+```{r}
+#| label: tbl-db-test
+#| tbl-cap: "Diebold-Mariano tests for the best-performing models for a 2-month forecast"
+fit <- unemployment_ts %>%
+    model(
+        "ARIMAX (1,1,1) - 2 breaks" = fable::ARIMA(Value ~ pdq(1,1,1) + break1 + break2),
+        "ARIMAX (1,1,1) - 1 break" = fable::ARIMA(Value ~ pdq(1,1,1) + break1),
+        "ARIMA (1,1,1)" = fable::ARIMA(Value ~ pdq(1,1,1)),
+        Naive = fable::NAIVE(Value),
+    )
+
+aug = fit %>%
+  augment()
+
+e1 <- aug %>% filter(.model == "ARIMAX (1,1,1) - 2 breaks") %>% arrange(TIME) %>% pull(.resid)
+e2 <- aug %>% filter(.model == "ARIMAX (1,1,1) - 1 break") %>% arrange(TIME) %>% pull(.resid)
+e3 <- aug %>% filter(.model == "ARIMA (1,1,1)") %>% arrange(TIME) %>% pull(.resid)
+e4 <- aug %>% filter(.model == "Naive") %>% arrange(TIME) %>% pull(.resid)
+
+
+t12 <- dm.test(e1, e2, alternative = "two.sided", h = 2, power = 2)
+t13 <- dm.test(e1, e3, alternative = "two.sided", h = 2, power = 2)
+t14 <- dm.test(e1, e4, alternative = "two.sided", h = 2, power = 2)
+t23 <- dm.test(e2, e3, alternative = "two.sided", h = 2, power = 2)
+t24 <- dm.test(e2, e4, alternative = "two.sided", h = 2, power = 2)
+t34 <- dm.test(e3, e4, alternative = "two.sided", h = 2, power = 2)
+
+dm_results <- tribble(
+  ~"Model 1",          ~"Model 2",           ~"DM Statistic",  ~"p-value",
+  "ARIMAX(1,1,1) 2br.", "ARIMAX(1,1,1) 1br.", t12$statistic,   t12$p.value,
+  "ARIMAX(1,1,1) 2br.", "ARIMA (1,1,1)",      t13$statistic,   t13$p.value,
+  "ARIMAX(1,1,1) 2br.", "Naive",              t14$statistic,   t14$p.value,
+  "ARIMAX(1,1,1) 1br.", "ARIMA (1,1,1)",      t23$statistic,   t23$p.value,
+  "ARIMAX(1,1,1) 1br.", "Naive",              t24$statistic,   t24$p.value,
+  "ARIMA (1,1,1)",      "Naive",              t34$statistic,   t34$p.value
+) %>%
+  mutate(
+    "DM Statistic" = round(`DM Statistic`, 4),
+    "p-value"      = round(`p-value`, 4),
+    "Conclusion"   = ifelse(`p-value` < 0.05, "Statistically Significant", "No Difference")
+  )
+
+dm_results %>%
+  gt_custom(head_max = 10, use_labels = FALSE) %>%
+  tab_header(
+    title    = "Diebold-Mariano Test",
+    subtitle = "Comparing Forecast Accuracy of Models"
+  ) %>%
+  tab_style(
+    style     = cell_fill(color = "#e8f5e9"),
+    locations = cells_body(rows = `p-value` >= 0.05, columns = "Conclusion")
+  ) %>%
+  tab_style(
+    style     = cell_fill(color = "#fde8e8"),
+    locations = cells_body(rows = `p-value` < 0.05,  columns = "Conclusion")
+  ) %>%
+  fmt_number(columns = c("DM Statistic", "p-value"), decimals = 4)
+```
+
+According to the test, I found that the selected ARIMA models have statistically significant differences from the Naive model, demonstrating their value for forecasting future unemployment, at least in the short term. A further finding from the combinations of tests is that the selected ARIMA models do not have statistically significant differences among themselves. That is, the ARIMAX model using one or two breaks does not have significant differences at the 5% significance level from a simple ARIMA(1,1,1) model.
+
+## Wait, Where Are the Assumptions?
+
+> Hey, where are the assumption tests? We want our money back.
+
+Well, I have some good news and some bad news. The good news is that not only has the article not ended, but I also need to check whether the best models satisfy the assumptions we discussed, namely that the errors must be:
+
+- uncorrelated ($Cov(\epsilon_t, \epsilon_{t-1}) = 0$),
+- homoskedastic ($Var(\epsilon_t) = \sigma^2$), and
+- follow the normal distribution.
+
+```{r}
+#| echo: false
+col_labels <- c(
+    .model = "Model",
+    lb_stat = "Ljung-Box Statistic",
+    lb_pvalue = "Ljung-Box p-value",
+    arch_stat = "ARCH Statistic",
+    arch_pvalue = "ARCH p-value",
+    jb_stat = "Jarque-Bera Statistic",
+    jb_pvalue = "Jarque-Bera p-value",
+    AIC = "AIC",
+    BIC = "BIC"
+)
+```
+
+
+```{r}
+#| warning: false
+
+jb_test <- function(x) {
+  test <- tseries::jarque.bera.test(x)
+  tibble(
+    jb_stat   = as.numeric(test$statistic),
+    jb_pvalue = test$p.value
+  )
+}
+res = fit %>%
+  augment()
+
+res %>%
+  features(.innov, ljung_box, lag = 20, dof = 2) %>%
+    left_join(
+        res %>%
+            features(.innov^2, ljung_box, lag = 20) %>%
+            rename(arch_stat = lb_stat, arch_pvalue = lb_pvalue),
+        by = ".model"
+    ) %>%
+    left_join(
+        res %>%
+            features(.innov, jb_test),
+        by = ".model"
+    ) %>%
+    left_join(
+        glance(fit) %>%
+            select(.model, AIC, BIC),
+        by = ".model"
+    ) %>%
+  gt_custom(use_labels = TRUE) %>%
+    cols_align(align = "center", columns = everything()) %>%
+    tab_style(
+        style = cell_text(weight = "bold"),
+        locations = cells_column_labels()
+    ) %>%
+  fmt_number()
+```
+
+
+The results are not ideal for any of the models. The Ljung-Box test rejects the null hypothesis of uncorrelated errors for all models ($p < 0.01$), indicating that the errors retain some structure that the models fail to fully explain. The ARCH test is also rejected everywhere, indicating heteroskedasticity (the variance of the errors is not constant over time), something expected in a time series that passed through a debt crisis and a pandemic. Finally, the Jarque-Bera test rejects normality, with extremely high test statistics suggesting heavy tails in the error distribution. These findings mean that the confidence intervals produced by the models should be interpreted with caution, as they may be narrower or wider than the true underlying uncertainty. However, the violation of these assumptions does not automatically invalidate the point forecasts. ARIMA models are known to produce reliable point estimates even when the distributional assumptions are not fully satisfied, particularly over a short-term horizon. The main implication concerns the quantification of uncertainty, not the direction of the forecast.
+
+## Forecasting Future Unemployment
+
+All of this was somewhat tiring, but the moment has finally arrived for all of it to make sense. I found the best model and, using it, I will forecast the level of unemployment in Greece for the next 12 months. My data end in August 2022 (unemployment at 12.2%), so any estimate will be made for the months from September 2022 through to August 2023.
+
+
+```{r}
+#| label: fig-forecasting
+#| warning: false
+#| fig-cap: "Unemployment time series with forecast of future unemployment"
+
+best_fit <- unemployment_ts %>%
+  model(
+    "Best Model" = fable::ARIMA(Value ~ pdq(1,1,1) + break1 + break2)
+  )
+
+fc_final <- best_fit %>%
+  forecast(h = 6)
+
+# Prepare historical data
+historical <- unemployment_ts %>%
+    as_tibble() %>%
+    mutate(TIME = as.Date(TIME))
+
+# Prepare forecast data
+forecast_tbl <- fc_final %>%
+    hilo(level = c(80, 95)) %>%
+    unpack_hilo(c("80%", "95%")) %>%
+    as_tibble() %>%
+    mutate(TIME = as.Date(TIME)) %>%
+    select(TIME, .mean, `80%_lower`, `80%_upper`, `95%_lower`, `95%_upper`)
+
+highchart(type = "stock") %>%
+    hc_title(text = "Unemployment Forecast for Greece - 6 Months") %>%
+    hc_xAxis(type = "datetime") %>%
+    hc_yAxis(title = list(text = "Unemployment Rate (%)")) %>%
+    
+    # Historical line
+    hc_add_series(
+        data = historical,
+        type = "line",
+        hcaes(x = datetime_to_timestamp(TIME), y = Value),
+        name = "Historical Data",
+        color = "#2c3e50",
+        lineWidth = 2,
+        marker = list(enabled = FALSE)
+    ) %>%
+    
+    # Point forecast line
+    hc_add_series(
+        data = forecast_tbl,
+        type = "line",
+        hcaes(x = datetime_to_timestamp(TIME), y = round(.mean, 2)),
+        name = "Forecast",
+        color = "#e74c3c",
+        lineWidth = 2,
+        dashStyle = "Dash",
+        marker = list(enabled = FALSE)
+    ) %>%
+    
+    # 95% interval (arearange)
+    hc_add_series(
+        data = forecast_tbl,
+        type = "arearange",
+        hcaes(x = datetime_to_timestamp(TIME),
+              low = round(`95%_lower`, 2),
+              high = round(`95%_upper`, 2)),
+        name = "95% CI",
+        color = "#e74c3c",
+        fillOpacity = 0.15,
+        lineWidth = 0,
+        linkedTo = ":previous"
+    ) %>%
+    
+    # 80% interval (arearange)
+    hc_add_series(
+        data = forecast_tbl,
+        type = "arearange",
+        hcaes(x = datetime_to_timestamp(TIME),
+              low = round(`80%_lower`, 2),
+              high = round(`80%_upper`, 2)),
+        name = "80% CI",
+        color = "#e74c3c",
+        fillOpacity = 0.25,
+        lineWidth = 0,
+        linkedTo = ":previous"
+    ) %>%
+    
+    hc_tooltip(shared = TRUE, valueDecimals = 2) %>%
+    hc_navigator(enabled = FALSE) %>%
+    hc_scrollbar(enabled = FALSE) %>%
+    hc_rangeSelector(
+      enabled = TRUE,
+      selected = 2,
+      buttons = list(
+        list(type = "month", count = 6,  text = "6 months"),
+        list(type = "year",  count = 1,  text = "1 year"),
+        list(type = "year",  count = 2,  text = "2 years"),
+        list(type = "all",               text = "All")
+      )
     )
 
 ```
 
 
-:::
-
-
-### Examine Stationarity with Statistical tests
-
-
-The graphical interpretation of stationarity can be beneficial for a quick assessment on topic of stationarity. However it can be considered a subjective metric, which leads on a non consistent decision (someone may consider the second figure as stationary and some others not. 
-
-
-Thankfully, there are some statistical tests which can help us on our decisions. Some commonly used are :
-
-- **Augmented Dickey-Fuller** (ADF) test
-- **Phillips- Perron** (PP) test
-- **Kwiatkowski-Phillips-Schmidt-Shin** (KPSS) test
-- **Zivot-Andrews** (ZA) test 
-
-But an other problem arises. We are not in a fancy IDE with menus and checkboxes. We use R and its packages. There are many packages that have already write functions to study stationarity with the aforementioned tests. Some of them are:
-
-- tseries
-- urca
-- CADFtest
-
-We should carefully evaluate our choices, as these packages advertise similar functionality but differ significantly in the scope of their functions and, more importantly, in the level of flexibility they offer for handling time series characteristics. In short, the `tseries` package is the one I'm most familiar with, but it is also the most limited in terms of configurable parameters. Although many tutorials use this package, I found that I couldn’t set the number of lags for tests or specify characteristics like trends when applicable. On the other hand, the `urca` package addresses these limitations by allowing users to specify both the trend component and the number of lags in the respective tests. One minor drawback of urca, however, is that it only provides critical values, not p-values.
-
-
-#### Summary
-
+And the corresponding table with forecasts:
 
 ```{r}
-summary_stationarity_results <- data.frame(
-                             "Type" = c("levels", "Diff(GRC)", "Diff2(GRC)"),
-                             "ADF test" = c("Non Stationary", "Stationary", "Stationary"),
-                              "PP test" = c("Non Stationary", "Stationary", "Stationary"),
-                             "KPSS test" =c("Non Stationary", "Non Stationary", "Stationary")
-)
-
-
-summary_stationarity_results  %>% kbl() %>% kable_styling() 
+#| label: tbl-results-predictions
+#| tbl-cap: "Unemployment forecasts for Greece for the next 6 months with corresponding confidence intervals"
+fc_final %>%
+  hilo(level = c(80, 95)) %>%
+  unpack_hilo(c("80%", "95%")) %>%
+  select(TIME, .mean, `80%_lower`, `80%_upper`, `95%_lower`, `95%_upper`) %>%
+  mutate(across(where(is.numeric), ~ round(., 2))) %>%
+  mutate("80% CI" = glue("[{`80%_lower`}, {`80%_upper`}]")) %>%
+  mutate("95% CI" = glue("[{`95%_lower`}, {`95%_upper`}]")) %>%
+  rename("Month" = TIME,
+         "Forecast" = .mean) %>%
+  select("Month", "Forecast", "80% CI", "95% CI") %>%
+  gt_custom(head_max = 8, use_labels = FALSE)
 ```
 
+Based on the best-performing model, the downward trend in Greek unemployment is expected to continue over the next six months. The point estimate for February 2023 is 11.4%, with an 80% confidence interval between 10.1% and 12.8% (and a 95% interval between 9.3% and 13.5%). If confirmed, this would represent a continuation of the steady deceleration that began after the historical high of 2013.
 
-#### ADF test
+However, it is worth highlighting certain limitations of this analysis. ARIMA models rest on the assumption that the future structure of the time series will resemble its historical one. An unforeseen event, such as a new geopolitical crisis or an energy shock, could overturn the forecast. In addition, unemployment is influenced by variables not included in the model, such as the trajectory of GDP, inflation, and fiscal policy. Finally, the confidence intervals should be interpreted with caution, given that the assumption tests revealed heteroskedasticity and non-normality in the errors.
 
-One of the most
-
-
-$$
-H_0 : \text{The time series has a unit root} \\
-H_1 : \text{The time series has not a unit root} 
-$$
-Selecting the lags
-
-```{r}
-library(vars)
-G = VARselect(grc_unemployment$Value, lag.max = 20, type = "const")
-
-
-```
-
-
-
-```{r}
-get_adf_results = function(variable){
-
-    # Ensure variable is numeric (e.g., a time series or numeric vector)
-    if (!is.numeric(variable)) {
-        stop("Input variable must be numeric.")
-    }
-    
-    # Perform ADF tests
-    adf_orig = adf.test(variable)
-    adf_diff1 = adf.test(diff(variable, differences = 1))
-    adf_diff2 = adf.test(diff(variable, differences = 2))
-    
-    # Extract results
-    adf_table = data.frame(
-        "Transformation" = c("Level", "1st Difference", "2nd Difference"),
-        "Dickey-Fuller" = c(
-            adf_orig$statistic[["Dickey-Fuller"]],
-            adf_diff1$statistic[["Dickey-Fuller"]],
-            adf_diff2$statistic[["Dickey-Fuller"]]
-        ),
-        "Lag Order" = c(
-            adf_orig$parameter[["Lag order"]],
-            adf_diff1$parameter[["Lag order"]],
-            adf_diff2$parameter[["Lag order"]]
-        ),
-        "p-value" = c(
-            adf_orig$p.value,
-            adf_diff1$p.value,
-            adf_diff2$p.value
-        )
-    ) %>%
-        kbl(digits = 5) %>%
-        kable_styling(full_width = FALSE)
-    
-    return(adf_table)
-}
-```
-
-```{r, warning = FALSE}
-#| tbl-cap: "Augmented Dickey-Fuller test results"
-get_adf_results(grc_unemployment$Value)
-```
-
-Συνεπώς, είναι προφανές από τα αποτελέσματα του
-στατιστικού ελέγχου Dickey Fuller ότι η χρονοσειρά μου δεν είναι στάσιμη. Θα πρέπει να εφαρμόσω τον έλεγχο Dickey-Fuller στις δοαφορές.
-
-
-#### PP  test
-
-$$
-H_0 : \text{The time series has a unit root} \\
-H_1 : \text{The time series has not a unit root} 
-$$
-
-```{r}
-get_pp_results = function(variable){
-
-    # Ensure variable is numeric (e.g., a time series or numeric vector)
-    if (!is.numeric(variable)) {
-        stop("Input variable must be numeric.")
-    }
-    
-    # Perform ADF tests
-    pp_orig = pp.test(variable)
-    pp_diff1 = pp.test(diff(variable, differences = 1))
-    pp_diff2 = pp.test(diff(variable, differences = 2))
-    
-    # Extract results
-    pp_table = data.frame(
-        "Transformation" = c("Level", "1st Difference", "2nd Difference"),
-        "Phillips-Perron" = c(
-            pp_orig$statistic[["Dickey-Fuller Z(alpha)"]],
-            pp_diff1$statistic[["Dickey-Fuller Z(alpha)"]],
-            pp_diff2$statistic[["Dickey-Fuller Z(alpha)"]]
-        ),
-        "Lag Order" = c(
-            pp_orig[["parameter"]][["Truncation lag parameter"]],
-            pp_diff1[["parameter"]][["Truncation lag parameter"]],
-            pp_diff2[["parameter"]][["Truncation lag parameter"]]
-        ),
-        "p-value" = c(
-            pp_orig$p.value,
-            pp_diff1$p.value,
-            pp_diff2$p.value
-        )
-    ) %>%
-        kbl(digits = 5) %>%
-        kable_styling(full_width = FALSE)
-    
-    return(pp_table)
-}
-```
-
-```{r, warning = FALSE}
-#| tbl-cap: "Phillips-Perron test results"
-#| warning: false
-get_pp_results(grc_unemployment$Value)
-```
-
-
-#### KPSS test
-
-$$
-H_0 : \text{The time series has not a unit root} \\
-H_1 : \text{Alternatively} 
-$$
-
-
-```{r}
-get_kpss_results = function(variable){
-
-    # Ensure variable is numeric (e.g., a time series or numeric vector)
-    if (!is.numeric(variable)) {
-        stop("Input variable must be numeric.")
-    }
-    
-    # Perform ADF tests
-    kpss_orig = kpss.test(variable)
-    kpss_diff1 = kpss.test(diff(variable, differences = 1))
-    kpss_diff2 = kpss.test(diff(variable, differences = 2))
-    
-    # Extract results
-    pp_table = data.frame(
-        "Transformation" = c("Level", "1st Difference", "2nd Difference"),
-        "KPSS" = c(
-            kpss_orig[["statistic"]][["KPSS Level"]],
-            kpss_diff1[["statistic"]][["KPSS Level"]],
-            kpss_diff2[["statistic"]][["KPSS Level"]]
-        ),
-        "Lag Order" = c(
-            kpss_orig[["parameter"]][["Truncation lag parameter"]],
-            kpss_diff1[["parameter"]][["Truncation lag parameter"]],
-            kpss_diff2[["parameter"]][["Truncation lag parameter"]]
-        ),
-        "p-value" = c(
-            kpss_orig$p.value,
-            kpss_diff1$p.value,
-            kpss_diff2$p.value
-        )
-    ) %>%
-        kbl(digits = 5) %>%
-        kable_styling(full_width = FALSE)
-    
-    return(pp_table)
-}
-```
-
-```{r, warning = FALSE}
-#| tbl-cap: "KPSS test results"
-get_kpss_results(grc_unemployment$Value)
-```
-
-
-## Identify Model
-
-::: {.panel-tabset}
-
-
-
-### Levels
-
-::: grid
-::: {.g-col-12 .g-col-md-6}
-```{r, fig.height=4}
-acf_plot_function(unemployment$Value, min=-0.2, max=1)
-```
-:::
-::: {.g-col-12 .g-col-md-6}
-```{r, fig.height=4}
-pacf_plot_function(unemployment$Value, min=-0.2, max=1)
-```
-:::
-:::
-
-### First Diff.
-
-::: grid
-::: {.g-col-12 .g-col-md-6}
-```{r, fig.height=4}
-acf_plot_function(grc_unemployment_diff1, min=-0.1, max = 0.6)
-```
-:::
-::: {.g-col-12 .g-col-md-6}
-```{r, fig.height=4}
-pacf_plot_function(grc_unemployment_diff1, min=-0.2, max=0.5)
-```
-:::
-:::
-
-### Second Diff.
-
-::: grid
-::: {.g-col-12 .g-col-md-6}
-```{r, fig.height=4}
-acf_plot_function(grc_unemployment_diff2, min=-0.5, max = 0.5)
-```
-:::
-::: {.g-col-12 .g-col-md-6}
-```{r, fig.height=4}
-pacf_plot_function(grc_unemployment_diff2, min=-0.5, max = 0.5)
-```
-:::
-:::
-
-:::
-
-## Build Time Series Model
-
-::: {.panel-tabset}
-
-### Automated model
-
-```{r}
-auto_model <- auto.arima(grc_unemployment$Value, trace = T,seasonal = TRUE)
-auto_model 
-```
-
-
-### ARIMA candidate 1
-
-```{r}
-arimaModel_1=arima(grc_unemployment$Value, order=c(0,1,2))
-arimaModel_1
-```
-
-
-### ARIMA candidate 2
-
-```{r}
-arimaModel_2=arima(grc_unemployment$Value, order=c(1,1,2))
-arimaModel_2
-```
-
-
-### ARIMA candidate 3
-
-```{r}
-arimaModel_3=arima(grc_unemployment$Value, order=c(9,2,1))
-arimaModel_3
-```
-
-:::
-
-## Compare Models
-
-After building some ARIMA models, I should
-decide which is the best one to make my estimations. One metric to evaluate those models is **AIC** (Akaike Information Criterion). The lower the value of AIC, the better my model.
-
-
-
-```{r}
-accuracy_table <- data.frame(
-                             "Name of Model" = c("Auto Model", "ARIMA Candidate #1", "ARIMA Candidate #2", "ARIMA Candidate #3"),
-                             Model = c("ARIMA(0,2,1)", "ARIMA(0,1,2)", "ARIMA(1,1,2)", "ARIMA(9,2,1)"),
-                             AIC =c(auto_model$aic, arimaModel_1$aic, arimaModel_2$aic, arimaModel_3$aic)
-)
-
-
-accuracy_table %>% kbl() %>% kable_styling()
-```
-
-So, the best model is the Auto Model (ARIMA(9,2,1)), which has the lowest AIC value. 
-
-
-## Checking best models
-
-
-
-
-## Forecast Future Unemployment
-
-Previously, I identify which is the best model. Now, I will use this model in order to predict unemployment for the next 6 months. It should be recalled that the last available value was from August of 2022 (12.2\%). Therefore, I will make a prediction for unemployment in Greece until February 2023.
-
-### ARIMA (0,2,1) forecasts
-
-```{r}
-s = forecast(auto_model,20)
-
-month = seq(max(grc_unemployment$TIME) %m+% months(1),  # start at next month
-              by = "1 month",
-              length.out = 20)
-
-highchart() %>%
-    hc_title(text = "Prediction of Unemployment with ARIMA(0,2,1)") %>%
-    hc_xAxis(type = "datetime")  %>%
-    hc_yAxis(title = list(text="Unemployment (%)")) %>%
-  hc_add_series(name="Historic Data",
-    data = list_parse2(data.frame(x = datetime_to_timestamp(grc_unemployment$TIME), y = grc_unemployment$Value)),
-    type = "line"
-  )  %>%
-  hc_add_series(name = "Forecast",
-                  data = list_parse2(data.frame(
-                      x = datetime_to_timestamp(month),
-                      y = round(s$mean, digits=2)
-                  )),
-                  type = "line",
-                  color = "#d62728") %>%
-    hc_add_series(name = "Confidence Interval",
-                data = list_parse2(data.frame(
-                  x = datetime_to_timestamp(month),
-                  low = round(s$lower[, "80%"], digits=2),
-                  high = round(s$upper[, "80%"], digits=2)
-                )),
-                type = "arearange",
-                color = hex_to_rgba("#d62728", 0.2),
-                linkedTo = ":previous")
-
-
-```
-
-### ARIMA (9,2,1) forecasts
-
-```{r}
-s1 = forecast(arimaModel_3,20)
-
-month = seq(max(grc_unemployment$TIME) %m+% months(1),  # start at next month
-              by = "1 month",
-              length.out = 20)
-
-highchart() %>%
-    hc_title(text = "Prediction of Unemployment with ARIMA(0,2,1)") %>%
-    hc_xAxis(type = "datetime")  %>%
-    hc_yAxis(title = list(text="Unemployment (%)")) %>%
-  hc_add_series(name="Historic Data",
-    data = list_parse2(data.frame(x = datetime_to_timestamp(grc_unemployment$TIME), y = grc_unemployment$Value)),
-    type = "line"
-  )  %>%
-  hc_add_series(name = "Forecast",
-                  data = list_parse2(data.frame(
-                      x = datetime_to_timestamp(month),
-                      y = round(s1$mean, digits=2)
-                  )),
-                  type = "line",
-                  color = "#d62728") %>%
-    hc_add_series(name = "Confidence Interval",
-                data = list_parse2(data.frame(
-                  x = datetime_to_timestamp(month),
-                  low = round(s1$lower[, "80%"], digits=2),
-                  high = round(s1$upper[, "80%"], digits=2)
-                )),
-                type = "arearange",
-                color = hex_to_rgba("#d62728", 0.2),
-                linkedTo = ":previous")
-```
-
-## Results
-
-Given the diagram as well as the forecast table (of the best performing model, candidate #3), I conclude that a reduction in unemployment in Greece is expected in the next period of time (in the next six months). More specifically, **Greece's unemployment** in **February 2023** will range between **10\%** (9.4\%) and **13\%** (14\%) with an **80\%** (95\%) probability (based on **ARIMA(9,2,1)** model).
+Despite these limitations, the direction of the forecast (continuation of the downward trend) is consistent across all models examined, which reinforces the credibility of the conclusion. Greece appears to be moving steadily towards lower unemployment, but remains at levels significantly above the European average (approximately 6% in the same month), a reminder that the full recovery from the 2010 crisis has not yet been completed.
 
 ## Acknowledgements {.appendix .unlisted}
 
-Image by <a href="https://pixabay.com/users/roszie-6000120/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=7386581">Rosy / Bad Homburg / Germany</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=7386581">Pixabay</a>
-
+Photo by <a href="https://pixabay.com/el/users/roszie-6000120/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=7386581">Rosy / Bad Homburg / Germany</a> from <a href="https://pixabay.com/el//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=7386581">Pixabay</a>.
