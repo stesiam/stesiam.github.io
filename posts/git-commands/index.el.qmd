@@ -34,27 +34,26 @@ editor_options:
 
 ## Εισαγωγή
 
-### Τι είναι το Version Control System
+### Τι είναι το Version Control System;
 
-Ένα σύστημα ελέγχου εκδόσεων (Version Control System - VCS) είναι ένας εργαλείο διαχείρισης και παρακολούθησης αλλαγών στον κώδικα μας Καθώς αναπτύσσουμε μία εφαρμογή, προσθέτουμε λειτουργίες, διορθώνουμε σφάλματα με αποτέλεσμα να διορθώνουμε το κώδικά μας συνεχώς. Το VCS μας επιτρέπει να αποθηκεύουμε «στιγμιότυπα» (snapshots) σε διάφορες στάδια υλοποίσης του κώδικά μας, ώστε ανά πάσα στιγμή να δούμε τι άλλαξε, πότε και από ποιον.
+Ένα σύστημα ελέγχου εκδόσεων (Version Control System ή VCS) είναι ένα εργαλείο διαχείρισης και παρακολούθησης αλλαγών στον κώδικά μας. Καθώς αναπτύσσουμε μία εφαρμογή, προσθέτουμε λειτουργίες και διορθώνουμε σφάλματα, τροποποιώντας τον κώδικά μας συνεχώς. Το VCS μας επιτρέπει να αποθηκεύουμε «στιγμιότυπα» (snapshots) σε διάφορα στάδια υλοποίησης, ώστε ανά πάσα στιγμή να βλέπουμε τι άλλαξε, πότε και από ποιον.
 
-![Workflow without Version Control](images/workflow_without_vcs.png)
+![Ροή εργασίας χωρίς Version Control](images/workflow_without_vcs.png)
 
-Τα πιο γνωστά συστήματα ελέγχου εκδόσεων πηγαίου κώδικα είναι τα εξής :
+Τα πιο γνωστά συστήματα ελέγχου εκδόσεων πηγαίου κώδικα είναι τα εξής:
 
-* Git
-* Apache Subversion (SVN)
-* Mercurial
-* Bazaar
+- Git
+- Apache Subversion (SVN)
+- Mercurial
+- Bazaar
 
 
 ### Δημοφιλία VCS
 
-Έχοντας περιγράψει τι είναι το VCS, θα ήταν χρήσιμο να μελετήσουμε ποιο ήταν το πιο γνωστό ή πιο χρησιμοποιούμενο διαχρονικά. Για να απαντήσουμε, θα ανατρέξουμε στα ιστορικά δεδομένα αναζητήσεων στη μηχανή αναζήτησης της Google και πιο συγκεκριμένα από τη πλατφόρμα  [Google Trends](https://trends.google.com/trends/) που διατηρεί δεδομένα τάσεων αναζητήσεων δημοφιλών όρων.
+Έχοντας περιγράψει τι είναι το VCS, αξίζει να εξετάσουμε ποιο από αυτά έχει κυριαρχήσει διαχρονικά. Για να απαντήσουμε, ανατρέχουμε στα ιστορικά δεδομένα αναζητήσεων μέσω της πλατφόρμας [Google Trends](https://trends.google.com/trends/), που καταγράφει τις τάσεις ενδιαφέροντος για δημοφιλείς όρους.
 
 ```{r}
 #| label: import_r_libs
-#| title: "Εισαγωγή R πακέτων"
 #| warning: false
 #| message: false
 
@@ -66,125 +65,123 @@ library(highcharter)
 
 ```{r}
 #| label: further_settings
-#| title: "Εισάγω βιβλιογραφία από φορτωμένα πακέτα"
 #| include: false
 
-options(digits=4) # print only 4 decimals
-options(warn = -1)
-
+options(digits = 4)
 knitr::write_bib(.packages(), file = 'packages.bib')
 ```
 
-
 ```{r}
 #| label: import_data
-#| title: "Import data"
 #| echo: false
 #| message: false
 #| warning: false
 
-trends_vcs <- read_csv("multiTimeline.csv", 
-    skip = 2) %>%
+trends_vcs <- read_csv("multiTimeline.csv", skip = 2) %>%
   mutate(Date = lubridate::ym(Month)) %>%
   mutate(Year = lubridate::year(Date)) %>%
   select(-c(Month, Date))
 
-trends_vcs_tidy = tidyr::pivot_longer(trends_vcs, !Year, names_to = "VCS", values_to = "counts") %>%
+trends_vcs_tidy <- tidyr::pivot_longer(
+    trends_vcs,
+    !Year,
+    names_to  = "VCS",
+    values_to = "counts"
+  ) %>%
   group_by(Year, VCS) %>%
-  summarize(AVG = sum(counts)/n()) %>%
+  summarize(AVG = sum(counts) / n(), .groups = "drop") %>%
   mutate(AVG = round(AVG, digits = 1))
 ```
 
-
 ```{r}
 #| label: fig-vcs-trends
-#| fig-cap: "Χρονοσειρές σύγκρισης των τάσεων μεταξύ λογισμικών ελέγχου εκδόσεων κώδικα (Version Control Systems - VCS)"
-avgPercentageGit = trends_vcs_tidy %>% dplyr::filter(VCS == "git: (Worldwide)") %>% pull(AVG)
-avgPercentageSVN = trends_vcs_tidy %>% dplyr::filter(VCS == "svn: (Worldwide)") %>% pull(AVG)
+#| fig-cap: "Χρονοσειρές σύγκρισης των τάσεων μεταξύ λογισμικών ελέγχου εκδόσεων κώδικα (VCS)"
+
+avgPercentageGit <- trends_vcs_tidy %>%
+  dplyr::filter(VCS == "git: (Worldwide)") %>%
+  pull(AVG)
+
+avgPercentageSVN <- trends_vcs_tidy %>%
+  dplyr::filter(VCS == "svn: (Worldwide)") %>%
+  pull(AVG)
 
 highchart() %>%
   hc_title(text = "Τάσεις στα λογισμικά διαχείρισης εκδόσεων κώδικα (VCS)") %>%
-  hc_subtitle(text = "<span style='display: inline-block; align-items: center; text-align: center;'>Σύγκριση τάσεων μεταξύ του  <img height='16' style='margin: 0px 6px;' src='https://git-scm.com/images/logos/downloads/Git-Icon-1788C.png'> Git και του <img height='16' style='margin: 0px 6px;' src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Apache_Subversion_logo.svg/250px-Apache_Subversion_logo.svg.png '> SVN (Subversion) από το 2004 μέχρι το 2022</span>", useHTML= TRUE) %>%
+  hc_subtitle(
+    text    = "<span style='text-align:center;'>Σύγκριση τάσεων μεταξύ <img height='16' style='margin:0 6px;' src='https://git-scm.com/images/logos/downloads/Git-Icon-1788C.png'> Git και <img height='16' style='margin:0 6px;' src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Apache_Subversion_logo.svg/250px-Apache_Subversion_logo.svg.png'> SVN (Subversion) από το 2004 έως το 2022</span>",
+    useHTML = TRUE
+  ) %>%
   hc_caption(
     useHTML = TRUE,
-    text = '<b>Πηγή: </b> <a href="https://trends.google.com/trends/" target="_blank">Google Trends</a>') %>%
-  hc_plotOptions(
-    series = list(
-      marker = list(
-        enabled = FALSE
-      )
-    )
+    text    = '<b>Πηγή:</b> <a href="https://trends.google.com/trends/" target="_blank">Google Trends</a>'
   ) %>%
- hc_annotations(list(
-  labels = list(
-    list(
-      point = list(x = 12, y = 70, xAxis = 0, yAxis = 0),
-      text = "Git",
-      rotation = -30,
-      backgroundColor = "rgba(255,255,255,0.7)",
-      borderColor = "black",
-      style = list(
-        fontSize = "12px"
+  hc_plotOptions(series = list(marker = list(enabled = FALSE))) %>%
+  hc_annotations(list(
+    labels = list(
+      list(
+        point          = list(x = 12, y = 70, xAxis = 0, yAxis = 0),
+        text           = "Git",
+        rotation       = -30,
+        backgroundColor = "rgba(255,255,255,0.7)",
+        borderColor    = "black",
+        style          = list(fontSize = "12px")
+      ),
+      list(
+        point          = list(x = 12, y = 10, xAxis = 0, yAxis = 0),
+        text           = "Subversion (SVN)",
+        rotation       = 0,
+        backgroundColor = "rgba(255,255,255,0.7)",
+        borderColor    = "black",
+        style          = list(fontSize = "12px")
       )
-    ),
-    list(
-      point = list(x = 12, y = 10, xAxis = 0, yAxis = 0),
-      text = "Subversion (SVN)",
-      rotation = 0,
-      backgroundColor = "rgba(255,255,255,0.7)",
-      borderColor = "black",
-      style = list(
-        fontSize = "12px"
-        )
     )
-  )
-)) %>%
+  )) %>%
   hc_xAxis(categories = unique(trends_vcs_tidy$Year)) %>%
-  hc_yAxis(title = list(text = "Τάση αναζήτησης"),
-           max = 90) %>%
+  hc_yAxis(title = list(text = "Τάση αναζήτησης"), max = 90) %>%
   hc_add_series(name = "Git", data = avgPercentageGit, type = "line", color = "orange") %>%
-  hc_add_series(name = "SVN", data = avgPercentageSVN, type = "line", color = "steelblue") %>%
+  hc_add_series(name = "SVN",  data = avgPercentageSVN,  type = "line", color = "steelblue") %>%
   hc_tooltip(shared = TRUE)
 ```
 
-Το διάγραμμα [@fig-vcs-trends] ξεκαθαρίζει ως κυρίαρχο εργαλείο για την διαχείριση των εκδόσεων (VCS) του κώδικά μας, το Git. Το Subversion (SVN) ήταν δημοφιλέστερο του Git μέχρι και το 2010, αλλά από τότε ακολούθησε πτωτική πορεία από την οποία δεν ανέκαμψε ποτέ. Σήμερα, το Git αποτελεί το de facto λογισμικό για τη διαχείριση του κώδικα και μαζί του κυριαρχούν πλατφόρμες που υποστηρίζουν τη φιλοξενεία κώδικα στο διαδίκτυο όπως το GitHub και το GitLab.
+Το διάγραμμα @fig-vcs-trends ξεκαθαρίζει το Git ως κυρίαρχο εργαλείο διαχείρισης εκδόσεων. Το Subversion (SVN) ήταν δημοφιλέστερο μέχρι και το 2010, ακολουθώντας έκτοτε σταθερά πτωτική πορεία από την οποία δεν ανέκαμψε ποτέ. Σήμερα, το Git αποτελεί το *de facto* πρότυπο για τη διαχείριση πηγαίου κώδικα, και γύρω του έχει αναπτυχθεί ένα ευρύ οικοσύστημα πλατφορμών φιλοξενίας, όπως το **GitHub** και το **GitLab**.
 
 
 ### Πλεονεκτήματα
 
-> Για ποιο λόγο να χρησιμοποιήσω ένα τέτοιο λογισμικό; 
+> Γιατί να χρησιμοποιήσω ένα τέτοιο εργαλείο;
 
-- **Εύκολη επαναφορά:** Αν μια αλλαγή δημιουργήσει πρόβλημα, μπορούμε να επιστρέψουμε σε προηγούμενη (λειτουργική) έκδοση του κώδικα με μια εντολή
-- **Εξοικονόμηση χρόνου:** Αντί να ψάχνουμε χειροκίνητα για να διαπιστώσω τι δεν λειτουργεί, το Git μας υποδεικνύει ακριβώς τι άλλαξε και πότε
-- **Συνεργασία:** Διευκολύνει τη συνεργασία με άλλους προγραμματιστές, ειδικά μέσω πλατφορμών όπως το GitHub
+- **Εύκολη επαναφορά:** Αν μια αλλαγή δημιουργήσει πρόβλημα, μπορούμε να επιστρέψουμε σε προηγούμενη, λειτουργική έκδοση του κώδικα με μία μόνο εντολή.
+- **Εξοικονόμηση χρόνου:** Αντί να ψάχνουμε χειροκίνητα τι σταμάτησε να λειτουργεί, το Git μας υποδεικνύει ακριβώς τι άλλαξε και πότε.
+- **Συνεργασία:** Διευκολύνει σημαντικά την κοινή εργασία με άλλους προγραμματιστές, ιδίως μέσω πλατφορμών όπως το GitHub.
 
 
 ### Αδυναμίες
 
-> Εντάξει, τα πλεονεκτήματα είναι σαφή. Υπάρχει όμως και άλλη μεριά;
+> Εντάξει, τα πλεονεκτήματα είναι σαφή — υπάρχει όμως και η άλλη πλευρά;
 
-- **Νέο εργαλείο:** Προσθέτει ένα ακόμα βήμα στη ροή της εργασίας μας και συνεπακόλουθα τη κάνει ελαφρώς πιο πολύπλοκλη
-- **Καμπύλη εκμάθησης:** Χρειάζεται να αφιερωθεί σημαντικός χρόνος για τη ν εξοικείωση μας με το Git, ιδίως για προχωρημένες λειτουργίες (branching, merging, rebasing). Ωστόσο, τα βασικά μαθαίνονται γρήγορα.
+- **Ένα επιπλέον εργαλείο:** Το Git προσθέτει ένα βήμα στη ροή εργασίας μας, κάνοντάς τη ελαφρώς πιο σύνθετη στην αρχή.
+- **Καμπύλη εκμάθησης:** Χρειάζεται χρόνος για να εξοικειωθούμε με προχωρημένες λειτουργίες (branching, merging, rebasing). Τα βασικά, ωστόσο, μαθαίνονται γρήγορα.
 
 
 ### Φιλοξενία κώδικα
 
-Αναφέραμε ήδη μερικά από τα πιο σημαντικά εργαλεία ελέγχου εκδόσεων κώδικα. Αυτά, όμως, διαχειρίζονται τον κώδικα τοπικά, στην δική μας συσκευή (του χρήστη - προγραμματιστή). Αν θέλουμε να μοιραστούμε τον κώδικα μας ή να συνεργαστούμε με άλλους, είναι απαραίτητη μία υπηρεσία φιλοξενίας του κώδικα στο διαδίκτυο. Οι πιο γνωστές υπηρεσίες φιλοξενίας κώδικα είναι το **GitHub**, το **GitLab** και το **Bitbucket**. 
+Τα εργαλεία που περιγράψαμε διαχειρίζονται τον κώδικα τοπικά, στη δική μας συσκευή. Αν θέλουμε να μοιραστούμε την εργασία μας ή να συνεργαστούμε με άλλους, χρειαζόμαστε μία υπηρεσία απομακρυσμένης φιλοξενίας. Οι πιο διαδεδομένες επιλογές είναι το **GitHub**, το **GitLab** και το **Bitbucket**.
 
-Αν καμία από αυτές τις επιλογές δεν μας ικανοποιεί (π.χ. ανησυχία σχετικά με τους όρους χρήσης τους), υπάρχει και η επιλογή να φιλοξενήσουμε τον κώδικα εμείς οι ίδιοι. Εργαλεία όπως το [Gitea](https://gitea.io/en-us/) μας δίνουν τη δυνατότητα να στήσουμε τη δική μας «πλατφόρμα» σε έναν δικό μας server. Με απλά λόγια ένα δικό μας GitHub, χωρίς εξάρτηση από τις προαναφερόμενες πλατφόρμες. Αυτή η επιλογή αν και ακούγεται καλή, στην πράξη είναι αρκετά σύνθετη και αποκόπτεσαι από τη μεγάλη πλειοψηφία των devs.
+Αν καμία από αυτές δεν μας ικανοποιεί, μπορούμε να φιλοξενήσουμε τον κώδικά μας οι ίδιοι. Εργαλεία όπως το [Gitea](https://gitea.io/en-us/) ή το ενεργό του fork, [Forgejo](https://forgejo.org/), μας επιτρέπουν να στήσουμε τη δική μας πλατφόρμα σε έναν ιδιωτικό server, ουσιαστικά το δικό μας GitHub, χωρίς εξάρτηση από τρίτες υπηρεσίες. Αν και ακούγεται ελκυστικό, η αυτο-φιλοξενία συνεπάγεται σημαντική λειτουργική πολυπλοκότητα και μας απομακρύνει από την ευρύτερη κοινότητα των προγραμματιστών.
+
 
 ## Ρυθμίσεις του Git
 
-Αποφάσισες να χρησιμοποιήσεις το Git, ώστε να το δοκιμάσεις σε κάποια απλά project ή απλά να κρατάς αρχείο εκδόσεων για τις εργασίες σου; Είσαι σε καλό δρόμο. 
+Αποφασίσαμε να δοκιμάσουμε το Git σε ένα μικρό project, ή απλά θέλουμε να κρατάμε αρχείο εκδόσεων για την εργασία μας. Ας δούμε πώς να το ρυθμίσουμε σωστά από την αρχή.
 
 ### Ορισμός ονόματος και email
 
-Όταν χρησιμοποιήσεις το Git για πρώτη φορά θα σου ζητήσει να θέσεις ένα όνομα και ένα email. Χωρίς αυτά, δεν μας επιτρέπει να καταγράψουμε καμία αλλάγή. Αυτό συμβαίνει διότι κάθε «στιγμιότυπο» του κώδικά μας συνοδεύεται από τα στοιχεία αυτού που το δημιούργησε.
+Την πρώτη φορά που θα χρησιμοποιήσουμε το Git, θα μας ζητήσει να δηλώσουμε ένα όνομα και μια διεύθυνση email. Χωρίς αυτά, δεν μας επιτρέπει να καταγράψουμε καμία αλλαγή. Αυτό συμβαίνει διότι κάθε στιγμιότυπο που δημιουργούμε συνοδεύεται από τα στοιχεία του δημιουργού του.
 
 ::: {.column-margin}
-![Φωτογραφία του Linus Torvalds το 2018](images/linus.webp)
+![Φωτογραφία του Linus Torvalds, 2018](images/linus.webp)
 
-**Πηγή φωτογραφίας: **Wikimedia Commons, 2021 - Άδεια χρήσης: [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/). Για τη πρωτότυπη φωτογραφία μπορείτε να πατήσετε τον [σύνδεσμο](https://commons.wikimedia.org/wiki/File:Gilbert_Walker.jpg)
+**Πηγή:** Από τον LFAsia μέσω Wikimedia Commons, 2018 — Άδεια: [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/). Δείτε την [πρωτότυπη φωτογραφία](https://commons.wikimedia.org/wiki/File:Lc3_2018_(263682303).jpeg).
 :::
 
 ```{.bash filename="Terminal"}
@@ -193,67 +190,261 @@ git config --global user.email your_email
 ```
 
 :::{.callout-note}
-Αν σχεδιάζεις να φιλοξενήσεις τον κώδικά σου στο GitHub, ίσως να έχει νόημα να κρύψεις τη προσωπική σου διεύθυνση email. Σε αυτήν την περίπτωση, το GitHub προσφέρει ένα *noreply* email προκειμένου να μην την εκτίθεται η πραγματική σου διεύθυνση στο διαδίκτυο. Αν επιθυμείτε, μπορείτε να διαβάσετε περισσότερα για αυτό το θέμα [στον ακόλουθο σύνδεσμο](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address).
+Αν σχεδιάζουμε να φιλοξενήσουμε τον κώδικά μας στο GitHub, ίσως αξίζει να αποκρύψουμε την προσωπική μας διεύθυνση email. Το GitHub προσφέρει για τον σκοπό αυτό μία *noreply* διεύθυνση, ώστε η πραγματική μας να μην εκτίθεται δημόσια. Μπορείτε να διαβάσετε περισσότερα στην [τεκμηρίωση του GitHub](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address).
 :::
 
-### Πρόγραμμα επεξεργασίας
+### Πρόγραμμα επεξεργασίας κειμένου
 
-Όταν γράφουμε μηνύματα commit (μήνυμα που εξηγεί τι είδους αλλαγές κάναμε), το Git ανοίγει ένα πρόγραμμα επεξεργασίας κειμένου. Σε πολλά συστήματα (π.χ. Ubuntu) η προεπιλογή είναι το Vim. Ο τελευταίος είναι αρκετά αξιόλογος editor, αλλά με απότομη καμπύλη εκμάθησης. Αν δεν είμαστε εξοικειωμένοι με τον προεπιλγμένο editor μπορούμε να τον αλλάξουμε σε κάποιον που μας είναι πιο γνώριμος.
+### Πρόγραμμα επεξεργασίας κειμένου
+
+Πριν μιλήσουμε για τον editor, αξίζει να εξηγήσουμε τι είναι ένα **commit**.
+Κάθε φορά που θέλουμε να «αποθηκεύσουμε» την τρέχουσα κατάσταση του κώδικά μας,
+δημιουργούμε ένα commit. Στην ουσία δημιουργούμε ένα στιγμιότυπο που καταγράφει ακριβώς ποια αρχεία
+άλλαξαν και με ποιον τρόπο. Κάθε commit συνοδεύεται υποχρεωτικά από ένα σύντομο
+μήνυμα που περιγράφει τι αλλάξαμε και γιατί, ώστε να μπορούμε αργότερα να
+καταλαβαίνουμε την ιστορία του project μας με μια ματιά.
+
+Για να γράψουμε αυτό το μήνυμα, το Git ανοίγει αυτόματα έναν text editor. Σε
+πολλά συστήματα (π.χ. Ubuntu) ο προεπιλεγμένος είναι το **Vim**. Ο Vim είναι
+ένας ισχυρός editor, αλλά με απότομη καμπύλη εκμάθησης για κάποιον που τον
+συναντά για πρώτη φορά. Αν δεν είμαστε εξοικειωμένοι μαζί του, μπορούμε να τον αλλάξουμε σε κάτι πιο οικείο.
 
 ```{.bash filename="Terminal"}
 git config --global core.editor "editor_name"
 ```
 
-| Editor     | Command | 
-| :---        |    :----:   |
-| Visual Studio Code   | `git config --global core.editor "code --wait"` |
-| Atom     | `git config --global core.editor "atom --wait"` |
-| Nano   | `git config --global core.editor "nano"` |
+| Editor             | Εντολή                                                        |
+| :----------------- | :------------------------------------------------------------ |
+| Visual Studio Code | `git config --global core.editor "code --wait"`               |
+| Atom               | `git config --global core.editor "atom --wait"`               |
+| Nano               | `git config --global core.editor "nano"`                      |
 
-Το Visual Studio Code είναι σήμερα ο πιο δημοφιλής editor σύμφωνα με την [έρευνα προγραμματιστών του Stack Overflow](https://insights.stackoverflow.com/survey/2021#section-most-popular-technologies-integrated-development-environment), οπότε αποτελεί μία ασφαλή επιλογή αν δεν έχεις ιδιαίτερη προτίμηση.
+Το Visual Studio Code είναι σήμερα ο πιο δημοφιλής editor σύμφωνα με την [έρευνα του Stack Overflow για προγραμματιστές](https://insights.stackoverflow.com/survey/2021#section-most-popular-technologies-integrated-development-environment), οπότε αποτελεί ασφαλή επιλογή αν δεν έχουμε κάποια συγκεκριμένη προτίμηση.
 
-### Προεπιλεγμένο όνομα κλαδου (branch)
+### Προεπιλεγμένο όνομα κλάδου (branch)
 
-Τον Οκτώβριο του 2020, το GitHub [ανακοίνωσε](https://github.blog/changelog/2020-10-01-the-default-branch-for-newly-created-repositories-is-now-main/) ότι αλλάζει το προεπιλεγμένο όνομα του αρχικού κλάδου (branch) από `master` σε `main`.
+Ένα **branch** (κλάδος) είναι μια ανεξάρτητη «γραμμή ανάπτυξης» του κώδικά μας.
+Φανταστείτε το σαν ένα παράλληλο αντίγραφο του project μας, στο οποίο μπορούμε
+να πειραματιστούμε ή να αναπτύξουμε μια νέα λειτουργία, χωρίς να επηρεάζουμε
+τον κύριο κώδικα. Όταν είμαστε ικανοποιημένοι με τις αλλαγές μας, μπορούμε να
+τις συγχωνεύσουμε (merge) πίσω στον κύριο κλάδο. Κάθε Git repository ξεκινά
+πάντα με έναν αρχικό κλάδο, ο οποίος παραδοσιακά ονομαζόταν `master`.
 
-> The default branch name for new repositories is now main. <br>
-      [GitHub.blog - October 1,2020]{style="float:right"}
+Τον Οκτώβριο του 2020, το GitHub
+[ανακοίνωσε](https://github.blog/changelog/2020-10-01-the-default-branch-for-newly-created-repositories-is-now-main/)
+ότι αλλάζει το προεπιλεγμένο όνομα αυτού του κλάδου από `master` σε `main`.
+Η αλλαγή αυτή έγινε στο πλαίσιο μιας ευρύτερης συζήτησης στον χώρο της
+τεχνολογίας για την αποφυγή ορολογίας με αρνητικές ιστορικές συνδηλώσεις
+(master/slave), και υιοθετήθηκε σταδιακά από την πλειοψηφία των εργαλείων
+και πλατφορμών.
 
-Καλό είναι να κάνουμε την ίδια αλλαγή και τοπικά, ώστε να υπάρχει συνέπεια:
+> The default branch name for new repositories is now main.  
+> [GitHub.blog — 1 Οκτωβρίου 2020]{style="float:right"}
+
+Καλό είναι να κάνουμε την ίδια αλλαγή και τοπικά, ώστε τα αποθετήριά μας να
+παραμένουν συνεπή με αυτά που ανεβάζουμε στο GitHub και να αποφύγουμε
+προβλήματα σύνδεσης μεταξύ τοπικού και απομακρυσμένου αποθετηρίου.
 
 ```{.bash filename="Terminal"}
 git config --global init.defaultBranch main
 ```
 
+### Μέθοδος συγχώνευσης (merge strategy)
 
-### Μέθοδος συγχώνευσης (merge)
+Μία ρύθμιση που δεν είναι απολύτως απαραίτητη, αλλά αξίζει να εξετάσουμε,
+αφορά τον τρόπο με τον οποίο το Git χειρίζεται τις συγχωνεύσεις. Ας
+υποθέσουμε ότι δημιουργούμε ένα `feature` branch για να αναπτύξουμε μια νέα
+λειτουργία. Όταν τελειώσουμε και θέλουμε να φέρουμε τις αλλαγές μας πίσω
+στο `main`, η συμπεριφορά του Git εξαρτάται από το αν ο κλάδος `main` έχει
+δεχθεί νέα commits εν τω μεταξύ.
 
-One change that is not exactly necessary but helps me is to change the defaults regarding merge. Let's say that I want to add a new feature in my application. Most of the times I will make a branch on which I will start developing my new feature. When I implement this function and I'm ready to merge my changes into the main code there are two situations.
+**Περίπτωση 1 — Fast-forward merge**
 
-**1. There are commits to main branch **
+Αν κανείς δεν έχει κάνει νέα commits στο `main` από τότε που φτιάξαμε το
+`feature` branch, το ιστορικό μοιάζει ως εξής:
 
-The predefined action is to merge. The branch is visible. Our setting has not any effect on this case.
+```{ojs}
+d3 = require("https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js")
 
-**2. There are no commits to main branch**
+CLR = ({
+  b: { line:'#185FA5', fill:'#E6F1FB', text:'#0C447C' },
+  g: { line:'#0F6E56', fill:'#E1F5EE', text:'#085041' },
+})
 
-The predefined action of Git is to take the feature branch and paste it on the top of main branch. By making the setting above I am telling Git to keep the branch and react like the first case. The branch is visible again.
+function gitGraph(W, cfg) {
+  const sm = W < 480;
+  const dt = sm ? cfg.narrow : cfg.wide;
+  const R=sm?13:10, SW=sm?2.5:2, laneH=sm?60:70;
+  const labelW=sm?0:88, padX=sm?16:18;
+  const padTop=sm?66:52, padBot=sm?36:50;
+  const fId=sm?13:11, fSub=sm?11:12, fTitle=sm?12:13;
 
-With simple words, I am forcing Git to keep branch, regardless of changes to main branch.
+  const maxS  = d3.max(dt.commits, c => c.s);
+  const startX = labelW ? labelW+padX : padX;
+  const avail  = W - startX - padX;
+  const cx = s => startX + (s-1)/(maxS-1)*avail;
+  const cy = l => padTop + l*laneH;
+  const H  = padTop + (cfg.lanes.length-1)*laneH + padBot;
+
+  const svg = d3.create('svg')
+    .attr('viewBox',`0 0 ${W} ${H}`)
+    .style('width','100%').style('height','auto').style('display','block');
+
+  // Title
+  svg.append('text')
+    .attr('x', sm ? W/2 : padX).attr('y', 14)
+    .attr('text-anchor', sm ? 'middle' : 'start')
+    .attr('dominant-baseline','hanging')
+    .style('font',`500 ${fTitle}px ${sm?'sans-serif':'monospace'}`)
+    .attr('fill','currentColor').attr('opacity',.48)
+    .text(sm ? cfg.titleN : cfg.titleW);
+
+  // Legend (narrow) or pills (wide)
+  if (sm) {
+    const ox = (W - cfg.lanes.length*88)/2;
+    cfg.lanes.forEach((l,i) => {
+      const lx = ox + i*88;
+      svg.append('circle').attr('cx',lx+6).attr('cy',40).attr('r',5)
+        .attr('fill',l.c.fill).attr('stroke',l.c.line).attr('stroke-width',1.5);
+      svg.append('text').attr('x',lx+16).attr('y',40)
+        .attr('dominant-baseline','central')
+        .style('font','500 12px monospace').attr('fill',l.c.text).text(l.name);
+    });
+  } else {
+    cfg.lanes.forEach((l,i) => {
+      const y = cy(i);
+      svg.append('rect').attr('x',padX-4).attr('y',y-13)
+        .attr('width',labelW-14).attr('height',26).attr('rx',6)
+        .attr('fill',l.c.fill).attr('stroke',l.c.line).attr('stroke-width',.5);
+      svg.append('text').attr('x',padX+(labelW-14)/2-4).attr('y',y)
+        .attr('text-anchor','middle').attr('dominant-baseline','central')
+        .style('font','500 13px monospace').attr('fill',l.c.text).text(l.name);
+    });
+  }
+
+  // Segments
+  dt.segs.forEach(({s1,l1,s2,l2,c}) => {
+    const x1=cx(s1),y1=cy(l1),x2=cx(s2),y2=cy(l2),dx=x2-x1;
+    const d = y1===y2 ? `M${x1},${y1}L${x2},${y2}`
+      : `M${x1},${y1}C${x1+dx*.6},${y1} ${x2-dx*.4},${y2} ${x2},${y2}`;
+    svg.append('path').attr('d',d).attr('fill','none')
+      .attr('stroke',c.line).attr('stroke-width',SW).attr('stroke-linecap','round');
+  });
+
+  // Commits
+  dt.commits.forEach(({id,s,l,note,merge}) => {
+    const x=cx(s),y=cy(l),col=cfg.lanes[l].c,r=merge?R+3:R;
+    svg.append('circle').attr('cx',x).attr('cy',y).attr('r',r)
+      .attr('fill',col.fill).attr('stroke',col.line)
+      .attr('stroke-width',merge?SW+1:SW);
+    svg.append('text').attr('x',x).attr('y',y)
+      .attr('text-anchor','middle').attr('dominant-baseline','central')
+      .style('font',`400 ${fId}px monospace`).attr('fill',col.text).text(id);
+    if (note && !sm)
+      svg.append('text').attr('x',x).attr('y',y+r+14)
+        .attr('text-anchor','middle').attr('dominant-baseline','hanging')
+        .style('font',`400 ${fSub}px sans-serif`)
+        .attr('fill','currentColor').attr('opacity',.45).text(note);
+  });
+
+  // Caption
+  svg.append('text').attr('x',W/2).attr('y',H-10)
+    .attr('text-anchor','middle')
+    .style('font',`400 ${fSub}px sans-serif`)
+    .attr('fill','currentColor').attr('opacity',.45).text(cfg.caption);
+
+  return svg.node();
+}
+
+// ── data ──────────────────────────────────────────────────────────────────────
+ffCfg = ({
+  titleW:'Περίπτωση 1 — Fast-forward merge', titleN:'Fast-forward merge',
+  caption:'Το main μετακινείται απευθείας — το branch εξαφανίζεται από το ιστορικό',
+  lanes:[{name:'main',c:CLR.b},{name:'feature',c:CLR.g}],
+  wide:{
+    commits:[{id:'A',s:1,l:0},{id:'B',s:2,l:0},{id:'C',s:3,l:1},{id:'D',s:4,l:1,note:'main → D'}],
+    segs:[{s1:1,l1:0,s2:2,l2:0,c:CLR.b},{s1:2,l1:0,s2:3,l2:1,c:CLR.g},{s1:3,l1:1,s2:4,l2:1,c:CLR.g}],
+  },
+  narrow:{
+    commits:[{id:'A',s:1,l:0},{id:'B',s:2,l:0},{id:'C',s:3,l:1},{id:'D',s:4,l:1}],
+    segs:[{s1:1,l1:0,s2:2,l2:0,c:CLR.b},{s1:2,l1:0,s2:3,l2:1,c:CLR.g},{s1:3,l1:1,s2:4,l2:1,c:CLR.g}],
+  },
+})
+
+mergeCfg = ({
+  titleW:'Περίπτωση 2 — Merge commit', titleN:'Merge commit',
+  caption:'Το ιστορικό διατηρεί τον κλάδο ορατό — φαίνεται πότε δημιουργήθηκε και συγχωνεύθηκε',
+  lanes:[{name:'main',c:CLR.b},{name:'feature',c:CLR.g}],
+  wide:{
+    commits:[{id:'A',s:1,l:0},{id:'B',s:2,l:0},{id:'C',s:3,l:1},{id:'D',s:4,l:1},{id:'E',s:4,l:0},{id:'M',s:5,l:0,merge:true,note:'merge'}],
+    segs:[{s1:1,l1:0,s2:2,l2:0,c:CLR.b},{s1:2,l1:0,s2:3,l2:1,c:CLR.g},{s1:3,l1:1,s2:4,l2:1,c:CLR.g},{s1:2,l1:0,s2:4,l2:0,c:CLR.b},{s1:4,l1:0,s2:5,l2:0,c:CLR.b},{s1:4,l1:1,s2:5,l2:0,c:CLR.g}],
+  },
+  narrow:{
+    commits:[{id:'A',s:1,l:0},{id:'B',s:2,l:0},{id:'C',s:3,l:1},{id:'D',s:4,l:1},{id:'M',s:5,l:0,merge:true}],
+    segs:[{s1:1,l1:0,s2:2,l2:0,c:CLR.b},{s1:2,l1:0,s2:3,l2:1,c:CLR.g},{s1:3,l1:1,s2:4,l2:1,c:CLR.g},{s1:2,l1:0,s2:5,l2:0,c:CLR.b},{s1:4,l1:1,s2:5,l2:0,c:CLR.g}],
+  },
+})
+
+// ── render (reactive to width) ────────────────────────────────────────────────
+gitGraph(width, ffCfg)
+```
+
+
+Σε αυτήν την περίπτωση, το Git εκτελεί από προεπιλογή *fast-forward* merge:
+αντί να δημιουργήσει ένα νέο merge commit, μετακινεί απλώς τον δείκτη του
+`main` μέχρι την κορυφή του `feature` branch.
+
+```
+main:    A --- B --- C --- D
+```
+
+Το αποτέλεσμα είναι ένα «καθαρό», γραμμικό ιστορικό — σαν να μην υπήρξε
+ποτέ ξεχωριστός κλάδος. Αυτό μπορεί να φαίνεται τακτοποιημένο, αλλά χάνουμε
+την πληροφορία ότι οι αλλαγές αναπτύχθηκαν σε ξεχωριστό branch.
+
+**Περίπτωση 2 — Merge commit (χωρίς fast-forward)**
+
+Αν έχουν γίνει νέα commits στο `main` εν τω μεταξύ, το fast-forward δεν είναι
+δυνατό και το Git δημιουργεί αυτόματα ένα νέο **merge commit** που ενώνει τους
+δύο κλάδους:
+
+```{ojs}
+gitGraph(width, mergeCfg)
+```
+
+Εδώ το `M` είναι το merge commit. Το ιστορικό δείχνει ξεκάθαρα ότι υπήρξε
+ένας ξεχωριστός κλάδος ανάπτυξης, πότε δημιουργήθηκε και πότε
+συγχωνεύθηκε — κάτι πολύ χρήσιμο όταν δουλεύουμε σε ομάδα ή θέλουμε να
+παρακολουθούμε την εξέλιξη του project μας.
+
+**Η ρύθμιση `merge.ff false`**
+
+Ορίζοντας αυτήν την επιλογή, λέμε στο Git να δημιουργεί **πάντα** ένα merge
+commit, ακόμα και όταν το fast-forward θα ήταν εφικτό (Περίπτωση 1). Έτσι
+εξασφαλίζουμε ότι το ιστορικό των κλάδων μας παραμένει πάντα ορατό και
+συνεπές, ανεξάρτητα από το πότε αποφασίσαμε να κάνουμε merge.
+
 ```{.bash filename="Terminal"}
 git config --global merge.ff false
 ```
 
+:::{.callout-note}
+Το αν προτιμάμε fast-forward ή merge commits εξαρτάται από τη φιλοσοφία του
+project. Σε μεγάλες ομάδες, τα merge commits θεωρούνται καλή πρακτική γιατί
+διατηρούν ένα πλήρες ιστορικό αποφάσεων. Σε μικρά προσωπικά project, το
+γραμμικό ιστορικό του fast-forward μπορεί να είναι πιο ευανάγνωστο.
+:::
 
-### Auto-sign your commits
+### Αυτόματη υπογραφή commits
 
-In a previous [article](https://stesiam.github.io/blog/2022-10-03-Verified-Commits/2022-10-03-Verified-Commits.html) we saw how to sign our commits as well as the reasons for doing so. In short, we made a PGP key which we added to our GitHub account. From that moment to sign my commits I had to write `git commit -S -m "something"`, instead of `git commit -m "something"`. Of course, that method is a little bit problematic. It is a little bit longer, little different in comparison to what I am used to type and most importantly I may forget some times to sign it manually. The last one happened to me A LOT. Thankfully, there is a way to be carefree about that anymore. I can set git config in a way that my commits will be signed automatically.
+Σε προηγούμενο [άρθρο](https://stesiam.github.io/blog/2022-10-03-Verified-Commits/2022-10-03-Verified-Commits.html) ανέλυσα πώς να υπογράφουμε τα commits με ένα PGP κλειδί και γιατί αξίζει να το κάνουμε. Εν ολίγοις, δημιούργησα ένα GPG κλειδί και το συνέδεσα με τον λογαριασμό μου στο GitHub. Από εκείνη τη στιγμή, η υπογραφή ενός commit απαιτούσε `git commit -S -m "μήνυμα"` αντί για το συνηθισμένο `git commit -m "μήνυμα"`. Στην πράξη, αυτό το επιπλέον `-S` είναι εύκολο να το ξεχάσουμε — και το ξέχναγα συχνά. Ευτυχώς, μπορούμε να ρυθμίσουμε το Git ώστε να υπογράφει τα commits αυτόματα, χωρίς να χρειάζεται να το σκεφτόμαστε.
 
 :::{.callout-warning}
-If you do not have already a GPG key, you can have a look in this [guide](https://docs.github.com/en/authentication/managing-commit-signature-verification/generating-a-new-gpg-key) in order to generate one. Also, depending your hosting platform for your code, you can link your GPG with your account : <br>
+Αν δεν διαθέτουμε ακόμα GPG κλειδί, μπορούμε να ακολουθήσουμε τον [οδηγό του GitHub](https://docs.github.com/en/authentication/managing-commit-signature-verification/generating-a-new-gpg-key) για να δημιουργήσουμε ένα. Στη συνέχεια, μπορούμε να το συνδέσουμε με την πλατφόρμα φιλοξενίας μας:
 
-* [GitHub and GPG keys](https://docs.github.com/en/authentication/managing-commit-signature-verification/adding-a-gpg-key-to-your-github-account) <br>
-* [BitBucket and GPG keys](https://confluence.atlassian.com/bitbucketserver/using-gpg-keys-913477014.html) <br>
-* [GitLab and GPG keys](https://docs.gitlab.com/ee/user/project/repository/gpg_signed_commits/)
+* [GitHub και GPG κλειδιά](https://docs.github.com/en/authentication/managing-commit-signature-verification/adding-a-gpg-key-to-your-github-account)
+* [Bitbucket και GPG κλειδιά](https://confluence.atlassian.com/bitbucketserver/using-gpg-keys-913477014.html)
+* [GitLab και GPG κλειδιά](https://docs.gitlab.com/ee/user/project/repository/gpg_signed_commits/)
 :::
 
 ```{.bash filename="Terminal"}
@@ -262,27 +453,23 @@ git config user.signingkey key_id
 git config commit.gpgsign true
 ```
 
+### Έλεγχος των ρυθμίσεων
 
-### Ελέγχοντας τις ρυθμίσεις του Git
-
-Making the above settings, we can have a summary of those with the corresponding command:
+Αφού ολοκληρώσουμε τις παραπάνω ρυθμίσεις, μπορούμε να τις ανασκοπήσουμε όλες μαζί με την εξής εντολή:
 
 ```{.bash filename="Terminal"}
 git config --list
 ```
 
-Here is the output on my machine :
+![Έξοδος της εντολής git config --list](images/git_config_output.png)
 
+Η παραπάνω εικόνα μας δίνει μια πλήρη εικόνα των ρυθμίσεων του Git. Κάθε χρήστης έχει διαφορετικές ανάγκες, οπότε αν θέλουμε να εξερευνήσουμε περαιτέρω επιλογές, η επίσημη [τεκμηρίωση του git-config](https://git-scm.com/docs/git-config) είναι το καλύτερο σημείο εκκίνησης.
 
-![Output of git-config command](images/git_config_output.png)
+---
 
-The image above sums up the settings of Git. Although, each user has different needs and for that reason it would be good in case you want to learn more about `git config` to see their [documentation page](https://git-scm.com/docs/git-config).
+## Σύνοψη
 
-
-
-## Συνοψίζοντας
-
-Μία σύνοψη των εντολών που χρησιμοποιήσαμε για τη ρύθμιση του Git.
+Μια γρήγορη αναφορά όλων των εντολών που χρησιμοποιήσαμε για τη ρύθμιση του Git:
 
 ```{.bash filename="Terminal"}
 git config --global user.name "YourName"
@@ -291,21 +478,19 @@ git config --global core.editor "editor_name"
 git config --global init.defaultBranch main
 git config --global merge.ff false
 
-# Add PGP key to your commits
-
+# Υπογραφή commits με GPG κλειδί
 gpg --list-secret-keys --keyid-format LONG
 git config user.signingkey key_id
 git config commit.gpgsign true
 
-# check git config settings
-
+# Έλεγχος όλων των ρυθμίσεων και της προέλευσής τους
 git config --list --show-origin
 ```
 
-Of course you can access your git config file on your Home directory (at least on Ubuntu installation). 
+Όλες αυτές οι ρυθμίσεις αποθηκεύονται στο αρχείο `.gitconfig`, που βρίσκεται στον αρχικό κατάλογο (home directory) του συστήματός μας.
 
 :::{.callout-warning}
-Note that the .gitconfig file, which contains our settings, may not be visible in the Home directory. In general, files whose names begin with a period are not displayed. However, if everything has been done correctly, it's probably there. For example, in Ubuntu you should choose to show hidden files.
+Το αρχείο `.gitconfig` μπορεί να μην είναι ορατό με την πρώτη ματιά, καθώς τα αρχεία που ξεκινούν με τελεία είναι κρυφά εξ ορισμού στα Unix-based συστήματα. Αν δεν το βλέπουμε, αρκεί να ενεργοποιήσουμε την εμφάνιση κρυφών αρχείων στον file manager μας (στο Ubuntu: `Ctrl + H` στο Nautilus).
 :::
 
 
