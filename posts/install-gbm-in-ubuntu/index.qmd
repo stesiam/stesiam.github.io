@@ -33,20 +33,31 @@ editor_options:
 
 ## Introduction
 
-When someone starts with Machine Learning he usually starts to build some simple models as logistic regression, naive Bayes, linear regression etc. And those alone are already enough for most use cases, as their simplicity is productivity-friendly and comes up with adequate accuracy. However, in enterprise level, accuracy can be important for a lot of reasons. Gradient Boosting Machines are some algorithms which outperform the aforementioned methods and are not complex enough to use them. Of course, before we build the model with (e.g. tidymodels) we have to install them. Thus, on this article I gather all that information.
+Working with machine learning is an interesting but lengthy journey. Most
+people start by picking up some fundamental concepts and then try to apply
+them using straightforward methods. One of the first approaches we encounter —
+whether in learning guides or at university — is logistic and linear regression.
+These are techniques that are easy to understand in terms of how they work, and
+they offer an acceptable level of accuracy. When it comes to prediction
+problems, however, there are now strong alternatives with higher predictive
+power. One of them is Gradient Boosting Machines (GBMs), which substantially
+improve our model's predictions without being particularly demanding to use.
 
-| Installation Guides | Source |
-| :---: |   :---:    |
-| LightGBM |  [Link](https://lightgbm.readthedocs.io/en/v3.3.2/Installation-Guide.html)  |
-| CatBoost |  [Link](https://catboost.ai/en/docs/concepts/installation)  |
-| XGBoost  |  [Link](https://xgboost.readthedocs.io/en/stable/install.html)  |
-: Documentation - Installation of GBMs {#tbl-documentation-list-gbm}
+Before we can use them — for example through the `{tidymodels}` package — we
+need to install the corresponding software. In this article we summarise the
+installation instructions for each one.
 
+| Model    | Documentation |
+| :------: | :-----------: |
+| LightGBM | [Link](https://lightgbm.readthedocs.io/en/v3.3.2/Installation-Guide.html) |
+| CatBoost | [Link](https://catboost.ai/en/docs/concepts/installation) |
+| XGBoost  | [Link](https://xgboost.readthedocs.io/en/stable/install.html) |
+: Boosting algorithms and their documentation pages {#tbl-documentation-list-gbm}
 
 ```{r}
 #| label: fig-trends-gbm
-#| fig-cap: "Time series of trends in Gradient Boosting Algrithms"
-#| fig-cap-location: margin
+#| fig-cap: "Search interest trends for GBMs over time"
+#| fig-cap-location: bottom
 #| warning: false
 #| message: false
 #| eval: false
@@ -54,52 +65,66 @@ When someone starts with Machine Learning he usually starts to build some simple
 library(highcharter)
 library(gtrendsR)
 library(dplyr)
-googleTrendsData = gtrendsR::gtrends(keyword = c("LightGBM", "CatBoost", "XGBoost"), gprop = "web", onlyInterest = TRUE)
 
-interestOverTime = googleTrendsData[["interest_over_time"]] %>%
+googleTrendsData <- gtrendsR::gtrends(
+  keyword      = c("LightGBM", "CatBoost", "XGBoost"),
+  gprop        = "web",
+  onlyInterest = TRUE
+)
+
+interestOverTime <- googleTrendsData[["interest_over_time"]] %>%
   dplyr::mutate(date = lubridate::ymd(date)) %>%
   dplyr::mutate(Year = lubridate::year(date)) %>%
   select(Year, keyword, hits) %>%
   group_by(Year, keyword) %>%
-  summarise(Average = round(mean(hits), digits = 1))
-  
+  summarise(Average = round(mean(hits), digits = 1), .groups = "drop")
 
 highchart() %>%
-    hc_chart(type = "line") %>%
-    hc_title(text = "Search Interest of various GBMs") %>%
-    hc_xAxis(categories = unique(interestOverTime$Year)) %>%
-    hc_yAxis(title = list(text = "Average")) %>%
-    hc_add_series(
-        name = "XGBoost",
-        data = interestOverTime %>% filter(keyword == "XGBoost") %>% pull(Average)
-    ) %>%
-    hc_add_series(
-        name = "CatBoost",
-        data = interestOverTime %>% filter(keyword == "CatBoost") %>% pull(Average)
-    ) %>%
-    hc_add_series(
-        name = "LightGBM",
-        data = interestOverTime %>% filter(keyword == "LightGBM") %>% pull(Average)
-    )
-
+  hc_chart(type = "line") %>%
+  hc_title(text = "Search engine interest over time") %>%
+  hc_subtitle(text = "Comparing search trends across Gradient Boosting Machine algorithms (GBMs).") %>%
+  hc_xAxis(categories = unique(interestOverTime$Year)) %>%
+  hc_yAxis(title = list(text = "Trend")) %>%
+  hc_add_series(
+    name = "XGBoost",
+    data = interestOverTime %>% filter(keyword == "XGBoost") %>% pull(Average)
+  ) %>%
+  hc_add_series(
+    name = "CatBoost",
+    data = interestOverTime %>% filter(keyword == "CatBoost") %>% pull(Average)
+  ) %>%
+  hc_add_series(
+    name = "LightGBM",
+    data = interestOverTime %>% filter(keyword == "LightGBM") %>% pull(Average)
+  )
 ```
 
 ## LightGBM
 
-### Option 1. Install R Package
+LightGBM was developed by Microsoft and released in 2016. Its main advantage
+is speed and low memory consumption. This makes it an ideal choice when working
+with very large datasets, where other implementations may become slow or exhaust
+the available memory.
 
-If you are reading this blog, the most possible scenario in that you are using R too. The most easy way to install the corresponding R package :
+### Option 1 — Installing the R package
 
-```{.r filename="R code"}
-start_time_lightgbm <- Sys.time()
-install.packages("lightgbm", repos = "https://cran.r-project.org")
-end_time_lightgbm <- Sys.time()
+The simplest way to install LightGBM for R users is through the corresponding
+`{lightgbm}` package, directly from CRAN:
+
+```{r}
+#| label: install-lightgbm
+#| eval: false
+
+elapsed_lightgbm <- system.time(
+  install.packages("lightgbm", repos = "https://cran.r-project.org")
+)[["elapsed"]]
 ```
 
+### Option 2 — Installing via CMake
 
-### Option 2. CMAKE
-
-The LightGBM [documentation](https://lightgbm.readthedocs.io/en/latest/Installation-Guide.html#linux) are referring to this method of installation. 
+If we prefer to build from source, the LightGBM
+[documentation page](https://lightgbm.readthedocs.io/en/latest/Installation-Guide.html#linux)
+covers the process in detail. The basic commands for Linux are as follows:
 
 ```{.bash filename="Terminal"}
 sudo apt install cmake
@@ -115,41 +140,88 @@ make -j4
 ```
 
 
-
 ## CatBoost
 
-Their [realeases](https://github.com/catboost/catboost/releases).
+CatBoost was developed by Yandex and released in 2017. It differs from the
+other implementations mainly in how it handles **categorical features**: whereas
+these typically require preprocessing (e.g. one-hot encoding), CatBoost can
+work with them directly, without any transformation. This makes it particularly
+useful for datasets with many categorical variables, as is often the case in
+commercial and financial applications. It also tends to require less
+hyperparameter fine-tuning compared to the alternatives.
 
-```{.r filename="R code"}
-install.packages("devtools")
+CatBoost is not available on CRAN, so we use the `install_url()` function from
+`{devtools}`, passing a link from the
+[official releases page](https://github.com/catboost/catboost/releases) on
+GitHub.
+
+:::{.callout-warning}
+When installing `{devtools}`, an error may appear due to the missing system
+libraries `libharfbuzz-dev` and `libfribidi-dev`. If we encounter this issue
+(which is common on Ubuntu 22), installing them and restarting RStudio is
+enough to resolve it:
+
+```{.bash filename="Terminal"}
+sudo apt install libharfbuzz-dev libfribidi-dev
 ```
+:::
 
-On my occassion, when I tried to install `devtools` had an error status. According to my error status I had to add packages `libharfbuzz-dev` and `libfribidi-dev`. After that, my devtools installation completed without errors.
+![Error message when installing devtools](images/error_message_devtools_install.png)
 
-![](images/error_message_devtools_install.png) 
+```{r}
+#| label: install-catboost
+#| eval: false
 
-```{.r filename="R code"}
-start_time_catboost <- Sys.time()
-devtools::install_url("https://github.com/catboost/catboost/releases/download/v1.1.1/catboost-R-Linux-1.1.1.tgz"[, INSTALL_opts = c("--no-multiarch", "--no-test-load")])
-end_time_catboost <- Sys.time()
+elapsed_catboost <- system.time(
+  devtools::install_url(
+    "https://github.com/catboost/catboost/releases/download/v1.1.1/catboost-R-Linux-1.1.1.tgz",
+    INSTALL_opts = c("--no-multiarch", "--no-test-load")
+  )
+)[["elapsed"]]
 ```
 
 
 ## XGBoost
 
+XGBoost (*Extreme Gradient Boosting*) was developed by Tianqi Chen and
+introduced in 2016. It is historically the most widely adopted GBM
+implementation: it won dozens of Kaggle competitions and became almost
+synonymous with the term "gradient boosting" for several years. It consistently
+outperforms classical methods (logistic/linear regression, Naive Bayes, etc.)
+and offers a rich set of hyperparameter tuning options. It is worth noting that
+on very large datasets it may fall behind LightGBM in terms of speed.
 
-```{.r filename="R code"}
-start_time_xgboost <- Sys.time()
-install.packages("xgboost")
-end_time_xgboost <- Sys.time()
+Installation is just as straightforward as with `{lightgbm}`:
+
+```{r}
+#| label: install-xgboost
+#| eval: false
+
+elapsed_xgboost <- system.time(
+  install.packages("xgboost")
+)[["elapsed"]]
 ```
 
 
+## Summary
 
-## Summary 
+Gradient Boosting Machines offer higher predictive power compared to classical
+machine learning methods, and installing them in R is a relatively
+straightforward process.
 
-| ML Model | Method |  Installation time |
-| :---: | :---: | :---:    |
-| LightGBM | R package  | 7.79 min.  |
-| CatBoost | R package (w/o devtools)  | 2.1 min.  |
-| XGBoost  | R package  |6.16 min. |
+As a small experiment, we timed the installation of each package using the
+`system.time()` function. The results are summarised in the table below:
+
+:::{.callout-note}
+The times were measured on a specific system and network connection. They may
+vary depending on hardware, R version, and internet speed.
+:::
+
+:::{.table-responsive}
+| Model    | Installation method   | Installation time |
+| :------: | :-------------------: | :---------------: |
+| LightGBM | R package             | 7.79 minutes      |
+| CatBoost | Release link          | 2.1 minutes       |
+| XGBoost  | R package             | 6.16 minutes      |
+: Installation times for common Gradient Boosting algorithms {#tbl-install-times}
+:::

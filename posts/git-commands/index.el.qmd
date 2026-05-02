@@ -56,6 +56,7 @@ editor_options:
 #| label: import_r_libs
 #| warning: false
 #| message: false
+#| echo: false
 
 library(readr)
 library(dplyr)
@@ -96,6 +97,7 @@ trends_vcs_tidy <- tidyr::pivot_longer(
 ```{r}
 #| label: fig-vcs-trends
 #| fig-cap: "Χρονοσειρές σύγκρισης των τάσεων μεταξύ λογισμικών ελέγχου εκδόσεων κώδικα (VCS)"
+#| echo: false
 
 avgPercentageGit <- trends_vcs_tidy %>%
   dplyr::filter(VCS == "git: (Worldwide)") %>%
@@ -108,7 +110,7 @@ avgPercentageSVN <- trends_vcs_tidy %>%
 highchart() %>%
   hc_title(text = "Τάσεις στα λογισμικά διαχείρισης εκδόσεων κώδικα (VCS)") %>%
   hc_subtitle(
-    text    = "<span style='text-align:center;'>Σύγκριση τάσεων μεταξύ <img height='16' style='margin:0 6px;' src='https://git-scm.com/images/logos/downloads/Git-Icon-1788C.png'> Git και <img height='16' style='margin:0 6px;' src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Apache_Subversion_logo.svg/250px-Apache_Subversion_logo.svg.png'> SVN (Subversion) από το 2004 έως το 2022</span>",
+    text    = "<span style='text-align:center;'>Σύγκριση τάσεων μεταξύ <b>Git</b> και <b>SVN</b> (Subversion) από το 2004 έως το 2022</span>",
     useHTML = TRUE
   ) %>%
   hc_caption(
@@ -193,7 +195,6 @@ git config --global user.email your_email
 Αν σχεδιάζουμε να φιλοξενήσουμε τον κώδικά μας στο GitHub, ίσως αξίζει να αποκρύψουμε την προσωπική μας διεύθυνση email. Το GitHub προσφέρει για τον σκοπό αυτό μία *noreply* διεύθυνση, ώστε η πραγματική μας να μην εκτίθεται δημόσια. Μπορείτε να διαβάσετε περισσότερα στην [τεκμηρίωση του GitHub](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address).
 :::
 
-### Πρόγραμμα επεξεργασίας κειμένου
 
 ### Πρόγραμμα επεξεργασίας κειμένου
 
@@ -258,12 +259,13 @@ git config --global init.defaultBranch main
 στο `main`, η συμπεριφορά του Git εξαρτάται από το αν ο κλάδος `main` έχει
 δεχθεί νέα commits εν τω μεταξύ.
 
-**Περίπτωση 1 — Fast-forward merge**
-
-Αν κανείς δεν έχει κάνει νέα commits στο `main` από τότε που φτιάξαμε το
+Η **πρώτη περίπτωση** είναι το Fast-forward merge. Αν κανείς δεν έχει κάνει νέα commits στο `main` από τότε που φτιάξαμε το
 `feature` branch, το ιστορικό μοιάζει ως εξής:
 
 ```{ojs}
+//| fig-cap: "Fast-forward merge: το main μετακινείται απευθείας στο D, ο κλάδος feature εξαφανίζεται από το ιστορικό."
+//| echo: false
+
 d3 = require("https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js")
 
 CLR = ({
@@ -274,141 +276,174 @@ CLR = ({
 function gitGraph(W, cfg) {
   const sm = W < 480;
   const dt = sm ? cfg.narrow : cfg.wide;
-  const R=sm?13:10, SW=sm?2.5:2, laneH=sm?60:70;
-  const labelW=sm?0:88, padX=sm?16:18;
-  const padTop=sm?66:52, padBot=sm?36:50;
-  const fId=sm?13:11, fSub=sm?11:12, fTitle=sm?12:13;
 
-  const maxS  = d3.max(dt.commits, c => c.s);
-  const startX = labelW ? labelW+padX : padX;
+  const scale  = sm ? 1 : Math.min(Math.max(W / 520, 1), 1.8);
+  const R      = sm ? 13 : 10 * scale;
+  const SW     = sm ? 2.5 : 2 * scale;
+  const laneH  = sm ? 60 : 70 * scale;
+  const labelW = sm ? 0 : 88 * scale;
+  const padX   = sm ? 16 : 18 * scale;
+  const padTop = sm ? 52 : 24 * scale;
+  const padBot = sm ? 16 : 18 * scale;
+  const fScale = sm ? 1 : Math.min(Math.max(W / 520, 1), 1.4); // ← πιο αργή αύξηση
+  
+  const fId    = sm ? 13 : 11 * fScale;
+  const fSub   = sm ? 11 : 12 * fScale;
+  const fTitle = sm ? 12 : 13 * fScale;
+
+  const maxS   = d3.max(dt.commits, c => c.s);
+  const startX = labelW ? labelW + padX : padX;
   const avail  = W - startX - padX;
-  const cx = s => startX + (s-1)/(maxS-1)*avail;
-  const cy = l => padTop + l*laneH;
-  const H  = padTop + (cfg.lanes.length-1)*laneH + padBot;
+  const cx = s => startX + (s - 1) / (maxS - 1) * avail;
+  const cy = l => padTop + l * laneH;
+  const H  = padTop + (cfg.lanes.length - 1) * laneH + padBot;
 
   const svg = d3.create('svg')
-    .attr('viewBox',`0 0 ${W} ${H}`)
-    .style('width','100%').style('height','auto').style('display','block');
+    .attr('viewBox', `0 0 ${W} ${H}`)
+    .style('width', '100%').style('height', 'auto').style('display', 'block');
 
-  // Title
-  svg.append('text')
-    .attr('x', sm ? W/2 : padX).attr('y', 14)
-    .attr('text-anchor', sm ? 'middle' : 'start')
-    .attr('dominant-baseline','hanging')
-    .style('font',`500 ${fTitle}px ${sm?'sans-serif':'monospace'}`)
-    .attr('fill','currentColor').attr('opacity',.48)
-    .text(sm ? cfg.titleN : cfg.titleW);
 
   // Legend (narrow) or pills (wide)
   if (sm) {
-    const ox = (W - cfg.lanes.length*88)/2;
-    cfg.lanes.forEach((l,i) => {
-      const lx = ox + i*88;
-      svg.append('circle').attr('cx',lx+6).attr('cy',40).attr('r',5)
-        .attr('fill',l.c.fill).attr('stroke',l.c.line).attr('stroke-width',1.5);
-      svg.append('text').attr('x',lx+16).attr('y',40)
-        .attr('dominant-baseline','central')
-        .style('font','500 12px monospace').attr('fill',l.c.text).text(l.name);
+    const ox = (W - cfg.lanes.length * 88) / 2;
+    cfg.lanes.forEach((l, i) => {
+      const lx = ox + i * 88;
+      svg.append('circle').attr('cx', lx + 6).attr('cy', padTop / 2).attr('r', 5)
+        .attr('fill', l.c.fill).attr('stroke', l.c.line).attr('stroke-width', 1.5);
+      svg.append('text').attr('x', lx + 16).attr('y', padTop / 2)
+        .attr('dominant-baseline', 'central')
+        .style('font', '500 12px monospace').attr('fill', l.c.text).text(l.name);
     });
   } else {
-    cfg.lanes.forEach((l,i) => {
+    cfg.lanes.forEach((l, i) => {
       const y = cy(i);
-      svg.append('rect').attr('x',padX-4).attr('y',y-13)
-        .attr('width',labelW-14).attr('height',26).attr('rx',6)
-        .attr('fill',l.c.fill).attr('stroke',l.c.line).attr('stroke-width',.5);
-      svg.append('text').attr('x',padX+(labelW-14)/2-4).attr('y',y)
-        .attr('text-anchor','middle').attr('dominant-baseline','central')
-        .style('font','500 13px monospace').attr('fill',l.c.text).text(l.name);
+      svg.append('rect').attr('x', padX - 4).attr('y', y - 13 * scale)
+        .attr('width', labelW - 14 * scale).attr('height', 26 * scale).attr('rx', 6 * scale)
+        .attr('fill', l.c.fill).attr('stroke', l.c.line).attr('stroke-width', .5 * scale);
+      svg.append('text').attr('x', padX + (labelW - 14 * scale) / 2 - 4).attr('y', y)
+        .attr('text-anchor', 'middle').attr('dominant-baseline', 'central')
+        .style('font', `500 ${fTitle}px monospace`).attr('fill', l.c.text).text(l.name);
     });
   }
 
   // Segments
-  dt.segs.forEach(({s1,l1,s2,l2,c}) => {
-    const x1=cx(s1),y1=cy(l1),x2=cx(s2),y2=cy(l2),dx=x2-x1;
-    const d = y1===y2 ? `M${x1},${y1}L${x2},${y2}`
-      : `M${x1},${y1}C${x1+dx*.6},${y1} ${x2-dx*.4},${y2} ${x2},${y2}`;
-    svg.append('path').attr('d',d).attr('fill','none')
-      .attr('stroke',c.line).attr('stroke-width',SW).attr('stroke-linecap','round');
+  dt.segs.forEach(({ s1, l1, s2, l2, c }) => {
+    const x1 = cx(s1), y1 = cy(l1), x2 = cx(s2), y2 = cy(l2), dx = x2 - x1;
+    const d = y1 === y2 ? `M${x1},${y1}L${x2},${y2}`
+      : `M${x1},${y1}C${x1 + dx * .6},${y1} ${x2 - dx * .4},${y2} ${x2},${y2}`;
+    svg.append('path').attr('d', d).attr('fill', 'none')
+      .attr('stroke', c.line).attr('stroke-width', SW).attr('stroke-linecap', 'round');
   });
 
   // Commits
-  dt.commits.forEach(({id,s,l,note,merge}) => {
-    const x=cx(s),y=cy(l),col=cfg.lanes[l].c,r=merge?R+3:R;
-    svg.append('circle').attr('cx',x).attr('cy',y).attr('r',r)
-      .attr('fill',col.fill).attr('stroke',col.line)
-      .attr('stroke-width',merge?SW+1:SW);
-    svg.append('text').attr('x',x).attr('y',y)
-      .attr('text-anchor','middle').attr('dominant-baseline','central')
-      .style('font',`400 ${fId}px monospace`).attr('fill',col.text).text(id);
+  dt.commits.forEach(({ id, s, l, note, merge }) => {
+    const x = cx(s), y = cy(l), col = cfg.lanes[l].c, r = merge ? R + 3 * scale : R;
+    svg.append('circle').attr('cx', x).attr('cy', y).attr('r', r)
+      .attr('fill', col.fill).attr('stroke', col.line)
+      .attr('stroke-width', merge ? SW + 1 * scale : SW);
+    svg.append('text').attr('x', x).attr('y', y)
+      .attr('text-anchor', 'middle').attr('dominant-baseline', 'central')
+      .style('font', `400 ${fId}px monospace`).attr('fill', col.text).text(id);
     if (note && !sm)
-      svg.append('text').attr('x',x).attr('y',y+r+14)
-        .attr('text-anchor','middle').attr('dominant-baseline','hanging')
-        .style('font',`400 ${fSub}px sans-serif`)
-        .attr('fill','currentColor').attr('opacity',.45).text(note);
+      svg.append('text').attr('x', x).attr('y', y + r + 14 * scale)
+        .attr('text-anchor', 'middle').attr('dominant-baseline', 'hanging')
+        .style('font', `400 ${fSub}px sans-serif`)
+        .attr('fill', 'currentColor').attr('opacity', .45).text(note);
   });
 
-  // Caption
-  svg.append('text').attr('x',W/2).attr('y',H-10)
-    .attr('text-anchor','middle')
-    .style('font',`400 ${fSub}px sans-serif`)
-    .attr('fill','currentColor').attr('opacity',.45).text(cfg.caption);
 
   return svg.node();
 }
 
 // ── data ──────────────────────────────────────────────────────────────────────
 ffCfg = ({
-  titleW:'Περίπτωση 1 — Fast-forward merge', titleN:'Fast-forward merge',
-  caption:'Το main μετακινείται απευθείας — το branch εξαφανίζεται από το ιστορικό',
-  lanes:[{name:'main',c:CLR.b},{name:'feature',c:CLR.g}],
-  wide:{
-    commits:[{id:'A',s:1,l:0},{id:'B',s:2,l:0},{id:'C',s:3,l:1},{id:'D',s:4,l:1,note:'main → D'}],
-    segs:[{s1:1,l1:0,s2:2,l2:0,c:CLR.b},{s1:2,l1:0,s2:3,l2:1,c:CLR.g},{s1:3,l1:1,s2:4,l2:1,c:CLR.g}],
+  titleW: 'Περίπτωση 1 — Fast-forward merge', titleN: 'Fast-forward merge',
+  caption: 'Το main μετακινείται απευθείας — το branch εξαφανίζεται από το ιστορικό',
+  lanes: [{ name: 'main', c: CLR.b }, { name: 'feature', c: CLR.g }],
+  wide: {
+    commits: [{ id: 'A', s: 1, l: 0 }, { id: 'B', s: 2, l: 0 }, { id: 'C', s: 3, l: 1 }, { id: 'D', s: 4, l: 1, note: 'main → D' }],
+    segs: [{ s1: 1, l1: 0, s2: 2, l2: 0, c: CLR.b }, { s1: 2, l1: 0, s2: 3, l2: 1, c: CLR.g }, { s1: 3, l1: 1, s2: 4, l2: 1, c: CLR.g }],
   },
-  narrow:{
-    commits:[{id:'A',s:1,l:0},{id:'B',s:2,l:0},{id:'C',s:3,l:1},{id:'D',s:4,l:1}],
-    segs:[{s1:1,l1:0,s2:2,l2:0,c:CLR.b},{s1:2,l1:0,s2:3,l2:1,c:CLR.g},{s1:3,l1:1,s2:4,l2:1,c:CLR.g}],
+  narrow: {
+    commits: [{ id: 'A', s: 1, l: 0 }, { id: 'B', s: 2, l: 0 }, { id: 'C', s: 3, l: 1 }, { id: 'D', s: 4, l: 1 }],
+    segs: [{ s1: 1, l1: 0, s2: 2, l2: 0, c: CLR.b }, { s1: 2, l1: 0, s2: 3, l2: 1, c: CLR.g }, { s1: 3, l1: 1, s2: 4, l2: 1, c: CLR.g }],
   },
 })
 
 mergeCfg = ({
-  titleW:'Περίπτωση 2 — Merge commit', titleN:'Merge commit',
-  caption:'Το ιστορικό διατηρεί τον κλάδο ορατό — φαίνεται πότε δημιουργήθηκε και συγχωνεύθηκε',
-  lanes:[{name:'main',c:CLR.b},{name:'feature',c:CLR.g}],
-  wide:{
-    commits:[{id:'A',s:1,l:0},{id:'B',s:2,l:0},{id:'C',s:3,l:1},{id:'D',s:4,l:1},{id:'E',s:4,l:0},{id:'M',s:5,l:0,merge:true,note:'merge'}],
-    segs:[{s1:1,l1:0,s2:2,l2:0,c:CLR.b},{s1:2,l1:0,s2:3,l2:1,c:CLR.g},{s1:3,l1:1,s2:4,l2:1,c:CLR.g},{s1:2,l1:0,s2:4,l2:0,c:CLR.b},{s1:4,l1:0,s2:5,l2:0,c:CLR.b},{s1:4,l1:1,s2:5,l2:0,c:CLR.g}],
+  titleW: 'Περίπτωση 2 — Merge commit', titleN: 'Merge commit',
+  caption: 'Το ιστορικό διατηρεί τον κλάδο ορατό — φαίνεται πότε δημιουργήθηκε και συγχωνεύθηκε',
+  lanes: [{ name: 'main', c: CLR.b }, { name: 'feature', c: CLR.g }],
+  wide: {
+    commits: [{ id: 'A', s: 1, l: 0 }, { id: 'B', s: 2, l: 0 }, { id: 'C', s: 3, l: 1 }, { id: 'D', s: 4, l: 1 }, { id: 'E', s: 4, l: 0 }, { id: 'M', s: 5, l: 0, merge: true, note: 'merge' }],
+    segs: [{ s1: 1, l1: 0, s2: 2, l2: 0, c: CLR.b }, { s1: 2, l1: 0, s2: 3, l2: 1, c: CLR.g }, { s1: 3, l1: 1, s2: 4, l2: 1, c: CLR.g }, { s1: 2, l1: 0, s2: 4, l2: 0, c: CLR.b }, { s1: 4, l1: 0, s2: 5, l2: 0, c: CLR.b }, { s1: 4, l1: 1, s2: 5, l2: 0, c: CLR.g }],
   },
-  narrow:{
-    commits:[{id:'A',s:1,l:0},{id:'B',s:2,l:0},{id:'C',s:3,l:1},{id:'D',s:4,l:1},{id:'M',s:5,l:0,merge:true}],
-    segs:[{s1:1,l1:0,s2:2,l2:0,c:CLR.b},{s1:2,l1:0,s2:3,l2:1,c:CLR.g},{s1:3,l1:1,s2:4,l2:1,c:CLR.g},{s1:2,l1:0,s2:5,l2:0,c:CLR.b},{s1:4,l1:1,s2:5,l2:0,c:CLR.g}],
+  narrow: {
+    commits: [{ id: 'A', s: 1, l: 0 }, { id: 'B', s: 2, l: 0 }, { id: 'C', s: 3, l: 1 }, { id: 'D', s: 4, l: 1 }, { id: 'M', s: 5, l: 0, merge: true }],
+    segs: [{ s1: 1, l1: 0, s2: 2, l2: 0, c: CLR.b }, { s1: 2, l1: 0, s2: 3, l2: 1, c: CLR.g }, { s1: 3, l1: 1, s2: 4, l2: 1, c: CLR.g }, { s1: 2, l1: 0, s2: 5, l2: 0, c: CLR.b }, { s1: 4, l1: 1, s2: 5, l2: 0, c: CLR.g }],
   },
 })
 
 // ── render (reactive to width) ────────────────────────────────────────────────
 gitGraph(width, ffCfg)
+
 ```
+
 
 
 Σε αυτήν την περίπτωση, το Git εκτελεί από προεπιλογή *fast-forward* merge:
 αντί να δημιουργήσει ένα νέο merge commit, μετακινεί απλώς τον δείκτη του
 `main` μέχρι την κορυφή του `feature` branch.
 
-```
-main:    A --- B --- C --- D
+```{ojs}
+//| fig-cap: "Fast-forward merge: το main μετακινείται απευθείας στο D — γραμμικό ιστορικό χωρίς ίχνος του feature branch."
+//| echo: false
+
+ffResultCfg = ({
+  lanes: [{ name: 'main', c: CLR.b }],
+  wide: {
+    commits: [
+      { id: 'A', s: 1, l: 0 },
+      { id: 'B', s: 2, l: 0 },
+      { id: 'C', s: 3, l: 0 },
+      { id: 'D', s: 4, l: 0, note: 'main → D' },
+    ],
+    segs: [
+      { s1: 1, l1: 0, s2: 2, l2: 0, c: CLR.b },
+      { s1: 2, l1: 0, s2: 3, l2: 0, c: CLR.b },
+      { s1: 3, l1: 0, s2: 4, l2: 0, c: CLR.b },
+    ],
+  },
+  narrow: {
+    commits: [
+      { id: 'A', s: 1, l: 0 },
+      { id: 'B', s: 2, l: 0 },
+      { id: 'C', s: 3, l: 0 },
+      { id: 'D', s: 4, l: 0 },
+    ],
+    segs: [
+      { s1: 1, l1: 0, s2: 2, l2: 0, c: CLR.b },
+      { s1: 2, l1: 0, s2: 3, l2: 0, c: CLR.b },
+      { s1: 3, l1: 0, s2: 4, l2: 0, c: CLR.b },
+    ],
+  },
+})
+
+gitGraph(width, ffResultCfg)
 ```
 
-Το αποτέλεσμα είναι ένα «καθαρό», γραμμικό ιστορικό — σαν να μην υπήρξε
+Το αποτέλεσμα είναι ένα «καθαρό», γραμμικό ιστορικό σαν να μην υπήρξε
 ποτέ ξεχωριστός κλάδος. Αυτό μπορεί να φαίνεται τακτοποιημένο, αλλά χάνουμε
 την πληροφορία ότι οι αλλαγές αναπτύχθηκαν σε ξεχωριστό branch.
 
-**Περίπτωση 2 — Merge commit (χωρίς fast-forward)**
 
-Αν έχουν γίνει νέα commits στο `main` εν τω μεταξύ, το fast-forward δεν είναι
-δυνατό και το Git δημιουργεί αυτόματα ένα νέο **merge commit** που ενώνει τους
-δύο κλάδους:
+Ενώ, η **δεύτερη περίτπωση** είναι Merge commit (χωρίς fast-forward), Αν έχουν γίνει νέα commits στο `main` εν τω μεταξύ, το fast-forward δεν είναι
+δυνατό και το Git δημιουργεί αυτόματα ένα νέο **merge commit** που ενώνει τους δύο κλάδους:
 
 ```{ojs}
+//| fig-cap: "Merge commit: ο κλάδος feature συγχωνεύεται στο main με νέο commit M, διατηρώντας το ιστορικό και των δύο κλάδων."
+//| echo: false
+
 gitGraph(width, mergeCfg)
 ```
 
@@ -435,9 +470,47 @@ project. Σε μεγάλες ομάδες, τα merge commits θεωρούντα
 γραμμικό ιστορικό του fast-forward μπορεί να είναι πιο ευανάγνωστο.
 :::
 
+### Στρατηγική λήψης αλλαγών (pull strategy)
+
+Όταν δουλεύουμε με ένα απομακρυσμένο αποθετήριο (π.χ. στο GitHub), συχνά
+θέλουμε να «κατεβάσουμε» τις αλλαγές που έχουν κάνει άλλοι στο project. Αυτό
+γίνεται με την εντολή `git pull`. Αυτό που ίσως αγνοούμε είναι ότι το
+`git pull` δεν κατεβάζει απλώς τις αλλαγές, αλλά ταυτόχρονα αποφασίζει και πώς
+θα τις **ενσωματώσει** στο τοπικό μας αντίγραφο.
+
+Από το Git 2.27 και μετά, αν δεν έχουμε ορίσει ρητά αυτή τη συμπεριφορά,
+το Git εμφανίζει μια προειδοποίηση κάθε φορά που τρέχουμε `git pull`. Για
+να την αποφύγουμε αρκεί να ορίσουμε τη στρατηγική που προτιμάμε.
+
+Οι δύο κύριες επιλογές είναι:
+
+| Στρατηγική | Εντολή | Πότε να τη χρησιμοποιούμε |
+| :--------- | :--------------------- | :------------------------------------ |
+| Merge      | `pull.rebase false`    | Ασφαλής επιλογή για αρχάριους — δημιουργεί merge commit |
+| Rebase     | `pull.rebase true`     | Κρατά το ιστορικό γραμμικό, αλλά απαιτεί εξοικείωση |
+
+Για αρχή, η στρατηγική **merge** είναι η πιο ασφαλής επιλογή:
+
+```{.bash filename="Terminal"}
+git config --global pull.rebase false
+```
+
+:::{.callout-note}
+Η διαφορά μεταξύ merge και rebase είναι ένα θέμα που αξίζει ξεχωριστή
+ανάλυση. Για τώρα, αρκεί να γνωρίζουμε ότι και οι δύο επιτυγχάνουν τον
+ίδιο τελικό στόχο — να έχουμε τις αλλαγές των άλλων στον υπολογιστή μας —
+αλλά με διαφορετικό τρόπο. Αν ξεκινάμε με Git, η επιλογή `false` (merge)
+είναι αυτή που θα συναντάμε πιο συχνά σε οδηγούς και tutorials.
+:::
+
 ### Αυτόματη υπογραφή commits
 
-Σε προηγούμενο [άρθρο](https://stesiam.github.io/blog/2022-10-03-Verified-Commits/2022-10-03-Verified-Commits.html) ανέλυσα πώς να υπογράφουμε τα commits με ένα PGP κλειδί και γιατί αξίζει να το κάνουμε. Εν ολίγοις, δημιούργησα ένα GPG κλειδί και το συνέδεσα με τον λογαριασμό μου στο GitHub. Από εκείνη τη στιγμή, η υπογραφή ενός commit απαιτούσε `git commit -S -m "μήνυμα"` αντί για το συνηθισμένο `git commit -m "μήνυμα"`. Στην πράξη, αυτό το επιπλέον `-S` είναι εύκολο να το ξεχάσουμε — και το ξέχναγα συχνά. Ευτυχώς, μπορούμε να ρυθμίσουμε το Git ώστε να υπογράφει τα commits αυτόματα, χωρίς να χρειάζεται να το σκεφτόμαστε.
+Όταν ανεβάζουμε commits στο GitHub, η πλατφόρμα δεν έχει τρόπο να επαληθεύσει ότι ο αποστολέας είναι πράγματι αυτός που ισχυρίζεται ότι είναι. Ο καθένας μπορεί να γράψει οποιοδήποτε όνομα και email στη ρύθμιση `user.name`/`user.email`. Η υπογραφή commits με ένα κρυπτογραφικό κλειδί λύνει αυτό το πρόβλημα. Το GitHub επαληθεύει την ταυτότητά μας και εμφανίζει μια πράσινη ένδειξη **Verified** δίπλα σε κάθε υπογεγραμμένο commit.
+
+Υπάρχουν δύο τρόποι υπογραφής:
+
+- **GPG κλειδί** — η παραδοσιακή προσέγγιση, πιο ισχυρή αλλά και πιο σύνθετη στη ρύθμιση.
+- **SSH κλειδί** — απλούστερη εναλλακτική που υποστηρίζεται από το GitHub από το 2022. Αν χρησιμοποιούμε ήδη SSH για authentication, το ίδιο κλειδί μπορεί να χρησιμεύσει και για υπογραφή.
 
 :::{.callout-warning}
 Αν δεν διαθέτουμε ακόμα GPG κλειδί, μπορούμε να ακολουθήσουμε τον [οδηγό του GitHub](https://docs.github.com/en/authentication/managing-commit-signature-verification/generating-a-new-gpg-key) για να δημιουργήσουμε ένα. Στη συνέχεια, μπορούμε να το συνδέσουμε με την πλατφόρμα φιλοξενίας μας:
@@ -447,8 +520,15 @@ project. Σε μεγάλες ομάδες, τα merge commits θεωρούντα
 * [GitLab και GPG κλειδιά](https://docs.gitlab.com/ee/user/project/repository/gpg_signed_commits/)
 :::
 
+Χωρίς επιπλέον ρύθμιση, η υπογραφή ενός commit απαιτεί το flag `-S`:
+
 ```{.bash filename="Terminal"}
-gpg --list-secret-keys --keyid-format LONG
+git commit -S -m "μήνυμα"
+```
+
+Αυτό είναι εύκολο να το ξεχάσουμε. Για αυτό το λόγο μπορούμε να ρυθμίσουμε το Git ώστε να υπογράφει αυτόματα κάθε commit:
+
+```{.bash filename="Terminal"}
 git config user.signingkey key_id
 git config commit.gpgsign true
 ```
@@ -465,7 +545,6 @@ git config --list
 
 Η παραπάνω εικόνα μας δίνει μια πλήρη εικόνα των ρυθμίσεων του Git. Κάθε χρήστης έχει διαφορετικές ανάγκες, οπότε αν θέλουμε να εξερευνήσουμε περαιτέρω επιλογές, η επίσημη [τεκμηρίωση του git-config](https://git-scm.com/docs/git-config) είναι το καλύτερο σημείο εκκίνησης.
 
----
 
 ## Σύνοψη
 
@@ -477,6 +556,7 @@ git config --global user.email your_email
 git config --global core.editor "editor_name"
 git config --global init.defaultBranch main
 git config --global merge.ff false
+git config --global pull.rebase false
 
 # Υπογραφή commits με GPG κλειδί
 gpg --list-secret-keys --keyid-format LONG

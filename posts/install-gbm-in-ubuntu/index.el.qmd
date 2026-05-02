@@ -32,13 +32,28 @@ editor_options:
 
 ## Εισαγωγή
 
-Η ενασχόληση με τη μηχανική μάθηση είναι ένας αρκετά ενδιαφέρον αλλά μακρύς δρόμος. Οι περισσότεροι μαθαίνουν κάποιες βασικές έννοιες και στη συνέχεια προσπαθούν να μάθουν - εφαρμόσουν με κάποια απλή μέθοδο. Μία από τις πρώτες προσεγγίσεις που συναντάμε είτε σε οδηγούς εκμάθησης, είτε στη σχολή είναι η λογιστική παλινδρόμηση, γραμμική παλινδρόμηση κ.α. Αυτά είναι κάποιες απλές τεχνικές που γίνονται εύκολα αντιληπτές για το πώς δουλεύουν και προσφέρουν μία αποδεκτή ακρίβεια. Πλέον σπάνια χρησιμοποιούνται από μόνες τους για να εξάγουμε κάποια συμπεράσματα, μιας και υπάρχουν αξιόλογες εναλλακτικές που μπορούν να μας δώσουν μεγαλύτερα ποσοστά ακρίβειας.  Μία από αυτές είναι οι αλγορίθμοι ενίσχυσης βαθμίδας (Gradient Boosting Machines - GBMs). Οι συγκεκριμένοι αλγόριθμοι βελτιώνουν σε μεγάλο βαθμό το μοντέλο μας και δεν είναι ιδιαίτερα δύσκολη η χρήση αυτών. Φυσικά πριν κάνουμε χρήση των μοντέλων αυτών (π.χ. με το πακέτο tidymodels), θα πρέπει να εγκαταστήσουμε τα σχετικά λογισμικά. Επομένως, σε αυτό το άρθρο θα συνοψίσω όλες τις σχετικές πληροφορίες για την εγκατάσταση αυτών. 
+Η ενασχόληση με τη μηχανική μάθηση είναι ένας ενδιαφέρων αλλά μακρύς δρόμος.
+Οι περισσότεροι ξεκινούν με κάποιες βασικές έννοιες και στη συνέχεια προσπαθούν
+να τις εφαρμόσουν με απλές μεθόδους. Μία από τις πρώτες προσεγγίσεις που
+συναντάμε είτε σε οδηγούς εκμάθησης, είτε στο πανεπιστήμιο είναι η
+λογιστική και η γραμμική παλινδρόμηση. Πρόκειται για τεχνικές εύκολα
+κατανοητές ως προς τη λειτουργία τους, που προσφέρουν ένα αποδεκτό επίπεδο
+ακρίβειας. Σε προβλήματα πρόβλεψης όμως, υπάρχουν πλέον αξιόλογες
+εναλλακτικές με υψηλότερη προβλεπτική ικανότητα. Μία από αυτές είναι οι
+αλγόριθμοι ενίσχυσης βαθμίδας (Gradient Boosting Machines — GBMs), οι οποίοι
+βελτιώνουν σε μεγάλο βαθμό τις προβλέψεις του μοντέλου μας, χωρίς να είναι
+ιδιαίτερα απαιτητικοί στη χρήση τους.
 
-| Μοντέλο | Πηγή |
-| :---: |   :---:    |
-| LightGBM |  [Σύνδεσμος](https://lightgbm.readthedocs.io/en/v3.3.2/Installation-Guide.html)  |
-| CatBoost |  [Σύνδεσμος](https://catboost.ai/en/docs/concepts/installation)  |
-| XGBoost  |  [Σύνδεσμος](https://xgboost.readthedocs.io/en/stable/install.html)  |
+Πριν τους χρησιμοποιήσουμε (π.χ. μέσω του πακέτου `{tidymodels}`)
+θα πρέπει να εγκαταστήσουμε τα αντίστοιχα λογισμικά. Σε αυτό το άρθρο
+συνοψίζουμε τις οδηγίες εγκατάστασης για καθέναν από αυτούς.
+
+
+| Μοντέλο  | Τεκμηρίωση |
+| :------: | :--------: |
+| LightGBM | [Σύνδεσμος](https://lightgbm.readthedocs.io/en/v3.3.2/Installation-Guide.html) |
+| CatBoost | [Σύνδεσμος](https://catboost.ai/en/docs/concepts/installation) |
+| XGBoost  | [Σύνδεσμος](https://xgboost.readthedocs.io/en/stable/install.html) |
 : Αλγόριθμοι Boosting και ιστοσελίδες τεκμηρίωσης {#tbl-documentation-list-gbm}
 
 ```{r}
@@ -52,53 +67,61 @@ editor_options:
 library(highcharter)
 library(gtrendsR)
 library(dplyr)
-googleTrendsData = gtrendsR::gtrends(keyword = c("LightGBM", "CatBoost", "XGBoost"), gprop = "web", onlyInterest = TRUE)
 
-interestOverTime = googleTrendsData[["interest_over_time"]] %>%
+googleTrendsData <- gtrendsR::gtrends(
+  keyword      = c("LightGBM", "CatBoost", "XGBoost"),
+  gprop        = "web",
+  onlyInterest = TRUE
+)
+
+interestOverTime <- googleTrendsData[["interest_over_time"]] %>%
   dplyr::mutate(date = lubridate::ymd(date)) %>%
   dplyr::mutate(Year = lubridate::year(date)) %>%
   select(Year, keyword, hits) %>%
   group_by(Year, keyword) %>%
-  summarise(Average = round(mean(hits), digits = 1))
-  
+  summarise(Average = round(mean(hits), digits = 1), .groups = "drop")
 
 highchart() %>%
-    hc_chart(type = "line") %>%
-    hc_title(text = "Ενδιαφέρον αναζήτησης σε μηχανές αναζήτησης") %>%
-    hc_subtitle(text = "Ποιος από τους αλγόριθμούς ενίσχυσης βαθμίδας (GBMs) έχει περισσότερες
-                αναζητήσεις.") %>%
-    hc_xAxis(categories = unique(interestOverTime$Year)) %>%
-    hc_yAxis(title = list(text = "Τάση")) %>%
-    hc_add_series(
-        name = "XGBoost",
-        data = interestOverTime %>% filter(keyword == "XGBoost") %>% pull(Average)
-    ) %>%
-    hc_add_series(
-        name = "CatBoost",
-        data = interestOverTime %>% filter(keyword == "CatBoost") %>% pull(Average)
-    ) %>%
-    hc_add_series(
-        name = "LightGBM",
-        data = interestOverTime %>% filter(keyword == "LightGBM") %>% pull(Average)
-    )
+  hc_chart(type = "line") %>%
+  hc_title(text = "Ενδιαφέρον αναζήτησης στις μηχανές αναζήτησης") %>%
+  hc_subtitle(text = "Σύγκριση τάσεων μεταξύ των αλγόριθμων ενίσχυσης βαθμίδας (GBMs).") %>%
+  hc_xAxis(categories = unique(interestOverTime$Year)) %>%
+  hc_yAxis(title = list(text = "Τάση")) %>%
+  hc_add_series(
+    name = "XGBoost",
+    data = interestOverTime %>% filter(keyword == "XGBoost") %>% pull(Average)
+  ) %>%
+  hc_add_series(
+    name = "CatBoost",
+    data = interestOverTime %>% filter(keyword == "CatBoost") %>% pull(Average)
+  ) %>%
+  hc_add_series(
+    name = "LightGBM",
+    data = interestOverTime %>% filter(keyword == "LightGBM") %>% pull(Average)
+  )
 ```
 
 ## LightGBM
 
-### Επιλογή 1. Εγκατάσταση του πακέτου R
+Το LightGBM αναπτύχθηκε από τη Microsoft και κυκλοφόρησε το 2016. Το βασικό του πλεονέκτημα είναι η ταχύτητα και η χαμηλή κατανάλωση μνήμης. Αυτό το κάνει ιδανική επιλογή όταν εργαζόμαστε με πολύ μεγάλα σύνολα δεδομένων, όπου άλλες υλοποιήσεις μπορεί να γίνουν αργές ή να εξαντλήσουν τη διαθέσιμη μνήμη.
 
-Αν διαβάζετε αυτή την ιστοσελίδα πιθανότατα γνωρίζετε ήδη ότι προγραμματίζω κυρίως με R. Είναι προφανές ότι θα ξεκινήσω με μία λύση για τους R χρήστες. Στη συγκεκριμένη περίπτωση εγκαθιστώ το αντίστοιχο πακέτο της R, lightgbm, έτσι ώστε να το χρησιμοποιήσουμε.
+### Επιλογή 1 — Εγκατάσταση του πακέτου R
 
-```{.r filename="R code"}
-start_time_lightgbm <- Sys.time()
-install.packages("lightgbm", repos = "https://cran.r-project.org")
-end_time_lightgbm <- Sys.time()
+Ο απλούστερος τρόπος εγκατάστασης για χρήστες R είναι μέσω του αντίστοιχου πακέτου `{lightgbm}`, απευθείας από το CRAN:
+
+```{r}
+#| label: install-lightgbm
+#| eval: false
+
+elapsed_lightgbm <- system.time(
+  install.packages("lightgbm", repos = "https://cran.r-project.org")
+)[["elapsed"]]
 ```
 
+### Επιλογή 2 — Εγκατάσταση μέσω CMake
 
-### Επιλογή 2. Εγκατάσταση μέσω του CMAKE
-
-Στη σελίδα [τεκμηρίωσης](https://lightgbm.readthedocs.io/en/latest/Installation-Guide.html#linux) του LightGBM αναφέρονται περισσότερες λεπτομέρειες, ωστόσο οι βασικές εντολές για εγκατάσταση μέσω του terminal είναι οι εξής:
+Αν προτιμάμε να κάνουμε build από τον πηγαίο κώδικα, η σελίδα
+[τεκμηρίωσης](https://lightgbm.readthedocs.io/en/latest/Installation-Guide.html#linux) του LightGBM περιγράφει τη διαδικασία αναλυτικά. Οι βασικές εντολές για Linux είναι οι εξής:
 
 ```{.bash filename="Terminal"}
 sudo apt install cmake
@@ -116,40 +139,87 @@ make -j4
 
 ## CatBoost
 
-Για το CatBoost μπορούμε να βρούμε [εδώ τις εκδόσεις του λογισμικού](https://github.com/catboost/catboost/releases). Στη δική μου περίπτωση όταν προσπάθησα να εγκαταστήσω τη βιβλιοθήκη `devtools` προέκυψε ένα σφάλμα που δεν μου επέτρεψε την εγκατάσταση του πακέτου. Σύμφωνα με το μήνυμα σφάλματος στον υπολογιστή μου (στον οποίο τρέχω Ubuntu 22) μου έλειπαν οι βιβλιοθήκες `libharfbuzz-dev` και `libfribidi-dev`. Αφού πρόσθεσα τα παραπάνω πακέτα και επανεκκίνησα το RStudio, η  διαδικασία ολοκληρώθηκε κανονικά. Αφού εγκαταστήσω το `{devtools}` μπορώ να χρησιμοποιήσω την εντολή `install_url`, καθώς δεν υπάρχει (ή τουλάχιστον δεν γνωρίζω) αντίστοιχη βιβλιοθήκη στο CRAN. Έτσι χρησιμοποιώ έναν σύνδεσμο αναλόγως της έκδοσης που χρειάζομαι από την επίσημη σελίδα του CatBoost project στο GitHub.
+Το CatBoost αναπτύχθηκε από την Yandex και κυκλοφόρησε το 2017. Διαφέρει από τις άλλες υλοποιήσεις κυρίως στον τρόπο με τον οποίο χειρίζεται τα
+**κατηγορικά χαρακτηριστικά** (*categorical features*): ενώ συνήθως απαιτείται
+προεπεξεργασία (π.χ. one-hot encoding), το CatBoost μπορεί να τα διαχειριστεί
+απευθείας, χωρίς μετατροπή. Αυτό το καθιστά ιδιαίτερα χρήσιμο σε σύνολα
+δεδομένων με πολλές κατηγορικές μεταβλητές, όπως συχνά συμβαίνει σε
+εμπορικές και οικονομικές εφαρμογές. Επιπλέον, τείνει να απαιτεί λιγότερο
+fine-tuning υπερπαραμέτρων σε σχέση με τις εναλλακτικές.
 
-![](images/error_message_devtools_install.png) 
+Για το CatBoost δεν υπάρχει αντίστοιχο πακέτο στο CRAN, οπότε χρησιμοποιούμε
+τη συνάρτηση `install_url()` του `{devtools}`, περνώντας έναν σύνδεσμο από την
+[επίσημη σελίδα εκδόσεων](https://github.com/catboost/catboost/releases) στο
+GitHub.
 
-```{.r filename="R code"}
-start_time_catboost <- Sys.time()
-devtools::install_url("https://github.com/catboost/catboost/releases/download/v1.1.1/catboost-R-Linux-1.1.1.tgz"[, INSTALL_opts = c("--no-multiarch", "--no-test-load")])
-end_time_catboost <- Sys.time()
+:::{.callout-warning}
+Κατά την εγκατάσταση του `{devtools}` ενδέχεται να εμφανιστεί σφάλμα λόγω
+απουσίας των βιβλιοθηκών συστήματος `libharfbuzz-dev` και `libfribidi-dev`.
+Αν αντιμετωπίσουμε αυτό το πρόβλημα (που παρατηρείται συχνά σε Ubuntu 22),
+αρκεί να τις εγκαταστήσουμε και να επανεκκινήσουμε το RStudio:
+
+```{.bash filename="Terminal"}
+sudo apt install libharfbuzz-dev libfribidi-dev
+```
+:::
+
+![Μήνυμα σφάλματος κατά την εγκατάσταση του devtools](images/error_message_devtools_install.png)
+
+```{r}
+#| label: install-catboost
+#| eval: false
+
+elapsed_catboost <- system.time(
+  devtools::install_url(
+    "https://github.com/catboost/catboost/releases/download/v1.1.1/catboost-R-Linux-1.1.1.tgz",
+    INSTALL_opts = c("--no-multiarch", "--no-test-load")
+  )
+)[["elapsed"]]
 ```
 
 
 ## XGBoost
 
-Τέλος, μας έχει απομείνει πιθανώς το πιο γνωστό πακέτο μεταξύ των gradient boosting. Η συγκεκριμένη υλοποίηση είναι ίσως αυτή που βελτιώνει περισσότερο τις εκτιμήσεις μας σε μεθόδους μηχανικής μάθησης. Σταθερά σε πάρα πολλά προβλήματα ξεπερνάει σε απόδοση τις υπόλοιπες συμβατές μεθόδους (λογιστική / γραμμική παλινδρόμηση, Naive Bayes κτλ.). Βέβαια όταν προσπαθήσω να κατασκευάσω ένα μοντέλο μηχανικής μάθησης με το XGBoost, ενδεχομένως να είναι το πιο χρονοβόρο σε σχέση με τις υπόλοιπες υλοποιήσεις. Η προσθήκη βιβλιοθηκών είναι αντίστοιχα εύκολη με αυτή του `{lightgbm}`, μέσω του `{xgboost}`.
+Το XGBoost (*Extreme Gradient Boosting*) αναπτύχθηκε από τον Tianqi Chen και
+παρουσιάστηκε το 2016. Είναι ιστορικά η πιο διαδεδομένη υλοποίηση μεταξύ
+των GBMs: κέρδισε δεκάδες διαγωνισμούς στο Kaggle και έγινε σχεδόν συνώνυμο
+με τον όρο «gradient boosting» για αρκετά χρόνια. Ξεπερνά συστηματικά τις
+κλασικές μεθόδους (λογιστική/γραμμική παλινδρόμηση, Naive Bayes κ.ά.) και
+προσφέρει πλούσιες επιλογές ρύθμισης υπερπαραμέτρων. Αξίζει να σημειωθεί
+ότι σε προβλήματα με πολύ μεγάλα δεδομένα μπορεί να
+υστερεί σε ταχύτητα έναντι του LightGBM.
 
+Η εγκατάσταση είναι εξίσου απλή με αυτή του `{lightgbm}`:
 
-```{.r filename="R code"}
-start_time_xgboost <- Sys.time()
-install.packages("xgboost")
-end_time_xgboost <- Sys.time()
+```{r}
+#| label: install-xgboost
+#| eval: false
+
+elapsed_xgboost <- system.time(
+  install.packages("xgboost")
+)[["elapsed"]]
 ```
 
 
+## Σύνοψη
 
-## Σύνοψη 
+Οι αλγόριθμοι ενίσχυσης βαθμίδας προσφέρουν αυξημένη προβλεπτική ικανότητα
+σε σχέση με τις κλασικές μεθόδους μηχανικής μάθησης, και η εγκατάστασή τους
+στην R είναι σχετικά απλή υπόθεση.
 
-Οι αλγόριθμοι ενίσχυσης βαθμίδας μας δίνουν προβλεπτικά μοντέλα με αυξημένη απόδοση (προβλεπτική ικανότητα) σε σχέση με άλλες συμβατικές μεθόδους μηχανικής μάθησης. Σε αυτό το άρθρο διαπιστώθηκε ότι η R κατά κύριο λόγο έχει εύκολους τρόπους για να εγκαταστήσουμε και εν τέλει να χρησιμοποιήσουμε σχετικούς αλγόριθμους. Θα ήθελα να κλείσω με ένα μικρό πείραμα που έκανα. Παρατήρησα ότι η εγκατάσταση αυτών των πακέτων είναι ιδιαίτερα χρονοβόρα και σκέφτηκα να χρονομετρήσω τη διάρκεια. Έτσι λοιπόν, κατέγραψα ότι η εγκατάσταση του πακέτου LightGBM διήρκησε περισσότερο, κάνοντας σχεδόν 8 λεπτά, ακολουθούμενο από το XGBoost, και τέλος το CatBoost, με μόλις 2 λεπτά!
+Ως μικρό πείραμα, χρονομετρήσαμε την εγκατάσταση κάθε πακέτου με τη συνάρτηση
+`system.time()`. Τα αποτελέσματα συνοψίζονται στον παρακάτω πίνακα:
 
-:::{.table-responsive}
-| Μοντέλο | Μέθοδος εγκατάστασης |  Χρόνος εγκατάστασης |
-| :---: | :---: | :---:    |
-| LightGBM | R πακέτο  | 7.79 λεπτά  |
-| CatBoost | Σύνδεσμος έκδοσης | 2.1 λεπτά  |
-| XGBoost  | R πακέτο  |6.16 λεπτά |
-: Χρόνοι εγκατάστασης γνωστών αλγόριθμων ενίσχυσης βαθμίδας {#tbl-install-times}
+:::{.callout-note}
+Οι χρόνοι μετρήθηκαν σε συγκεκριμένο σύστημα και σύνδεση δικτύου. Ενδέχεται
+να διαφέρουν ανάλογα με το hardware, την έκδοση R και την ταχύτητα internet.
 :::
 
+:::{.table-responsive}
+| Μοντέλο  | Μέθοδος εγκατάστασης  | Χρόνος εγκατάστασης |
+| :------: | :-------------------: | :-----------------: |
+| LightGBM | R πακέτο              | 7.79 λεπτά          |
+| CatBoost | Σύνδεσμος έκδοσης     | 2.1 λεπτά           |
+| XGBoost  | R πακέτο              | 6.16 λεπτά          |
+: Χρόνοι εγκατάστασης αλγόριθμων ενίσχυσης βαθμίδας {#tbl-install-times}
+:::

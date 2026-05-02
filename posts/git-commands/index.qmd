@@ -34,30 +34,29 @@ editor_options:
 
 ## Introduction
 
-### What is Version Control System
+### What is a Version Control System?
 
-A Version Control System (VCS) is a way to manage and track code changes. As we build an application, we add functions, change frontend features, fix bugs. We will need to edit the code many times. So we need a way to manage these changes. The tracking of every change to our code is the key point of VCS.
+A Version Control System (VCS) is a tool for managing and tracking changes to our code. As we develop an application, we add features and fix bugs, continuously modifying our codebase. A VCS allows us to save "snapshots" at various stages of development, so we can always see what changed, when, and by whom.
 
 ![Workflow without Version Control](images/workflow_without_vcs.png)
 
+The most well-known version control systems for source code are:
 
-Some popular Version Control Software are the following :
-
-* Git
-* Apache Subversion (SVN)
-* Mercurial
-* Bazaar
+- Git
+- Apache Subversion (SVN)
+- Mercurial
+- Bazaar
 
 
-### Popularity of VCS
+### VCS Popularity
 
-Having seen what a VCS is, it would be interesting to see which one is the most widely used. In order to study which VCS is the most popular, I pulled data from [Google Trends](https://trends.google.com/trends/).
+Having described what a VCS is, it is worth examining which of these has dominated over time. To answer this, we turn to historical search data from [Google Trends](https://trends.google.com/trends/), which tracks interest trends for popular terms.
 
 ```{r}
 #| label: import_r_libs
-#| title: "Import R libraries"
 #| warning: false
 #| message: false
+#| echo: false
 
 library(readr)
 library(dplyr)
@@ -67,118 +66,125 @@ library(highcharter)
 
 ```{r}
 #| label: further_settings
-#| title: "Εισάγω βιβλιογραφία από φορτωμένα πακέτα"
 #| include: false
 
-options(digits=4) # print only 4 decimals
-options(warn = -1)
-
+options(digits = 4)
 knitr::write_bib(.packages(), file = 'packages.bib')
 ```
 
 ```{r}
 #| label: import_data
-#| title: "Import data"
 #| echo: false
 #| message: false
 #| warning: false
 
-trends_vcs <- read_csv("multiTimeline.csv", 
-    skip = 2) %>%
+trends_vcs <- read_csv("multiTimeline.csv", skip = 2) %>%
   mutate(Date = lubridate::ym(Month)) %>%
   mutate(Year = lubridate::year(Date)) %>%
   select(-c(Month, Date))
 
-trends_vcs_tidy = tidyr::pivot_longer(trends_vcs, !Year, names_to = "VCS", values_to = "counts") %>%
+trends_vcs_tidy <- tidyr::pivot_longer(
+    trends_vcs,
+    !Year,
+    names_to  = "VCS",
+    values_to = "counts"
+  ) %>%
   group_by(Year, VCS) %>%
-  summarize(AVG = sum(counts)/n()) %>%
+  summarize(AVG = sum(counts) / n(), .groups = "drop") %>%
   mutate(AVG = round(AVG, digits = 1))
 ```
 
-
 ```{r}
 #| label: fig-vcs-trends
-#| fig-cap: "Time series of trends on Version Control Systems"
-avgPercentageGit = trends_vcs_tidy %>% dplyr::filter(VCS == "git: (Worldwide)") %>% pull(AVG)
-avgPercentageSVN = trends_vcs_tidy %>% dplyr::filter(VCS == "svn: (Worldwide)") %>% pull(AVG)
+#| fig-cap: "Time series comparing search trends across version control systems (VCS)"
+#| echo: false
+
+avgPercentageGit <- trends_vcs_tidy %>%
+  dplyr::filter(VCS == "git: (Worldwide)") %>%
+  pull(AVG)
+
+avgPercentageSVN <- trends_vcs_tidy %>%
+  dplyr::filter(VCS == "svn: (Worldwide)") %>%
+  pull(AVG)
 
 highchart() %>%
-  hc_title(text = "Trends on Version Control Systems") %>%
-  hc_subtitle(text = "<span style='display: inline-block; align-items: center; text-align: center;'>Compare trends of Git <img height='16' style='margin: 0px 6px;' src='https://git-scm.com/images/logos/downloads/Git-Icon-1788C.png'> and SVN <img height='16' style='margin: 0px 6px;' src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Apache_Subversion_logo.svg/250px-Apache_Subversion_logo.svg.png '> (Subversion) from 2004 to 2022</span>", useHTML= TRUE) %>%
+  hc_title(text = "Trends in Version Control Systems (VCS)") %>%
+  hc_subtitle(
+    text    = "<span style='text-align:center;'>Comparing trends between <b>Git</b> and <b>SVN</b> (Subversion) from 2004 to 2022</span>",
+    useHTML = TRUE
+  ) %>%
   hc_caption(
     useHTML = TRUE,
-    text = '<b>Source:</b> <a href="https://trends.google.com/trends/" target="_blank">Google Trends</a>') %>%
-  hc_plotOptions(
-    series = list(
-      marker = list(
-        enabled = FALSE
-      )
-    )
+    text    = '<b>Source:</b> <a href="https://trends.google.com/trends/" target="_blank">Google Trends</a>'
   ) %>%
- hc_annotations(list(
-  labels = list(
-    list(
-      point = list(x = 12, y = 70, xAxis = 0, yAxis = 0),
-      text = "Git",
-      rotation = -30,
-      backgroundColor = "rgba(255,255,255,0.7)",
-      borderColor = "black",
-      style = list(
-        fontSize = "12px"
+  hc_plotOptions(series = list(marker = list(enabled = FALSE))) %>%
+  hc_annotations(list(
+    labels = list(
+      list(
+        point          = list(x = 12, y = 70, xAxis = 0, yAxis = 0),
+        text           = "Git",
+        rotation       = -30,
+        backgroundColor = "rgba(255,255,255,0.7)",
+        borderColor    = "black",
+        style          = list(fontSize = "12px")
+      ),
+      list(
+        point          = list(x = 12, y = 10, xAxis = 0, yAxis = 0),
+        text           = "Subversion (SVN)",
+        rotation       = 0,
+        backgroundColor = "rgba(255,255,255,0.7)",
+        borderColor    = "black",
+        style          = list(fontSize = "12px")
       )
-    ),
-    list(
-      point = list(x = 12, y = 10, xAxis = 0, yAxis = 0),
-      text = "Subversion (SVN)",
-      rotation = 0,
-      backgroundColor = "rgba(255,255,255,0.7)",
-      borderColor = "black",
-      style = list(
-        fontSize = "12px"
-        )
     )
-  )
-)) %>%
+  )) %>%
   hc_xAxis(categories = unique(trends_vcs_tidy$Year)) %>%
-  hc_yAxis(title = list(text = "Search Interest"),
-           max = 90) %>%
+  hc_yAxis(title = list(text = "Search interest"), max = 90) %>%
   hc_add_series(name = "Git", data = avgPercentageGit, type = "line", color = "orange") %>%
-  hc_add_series(name = "SVN", data = avgPercentageSVN, type = "line", color = "steelblue") %>%
+  hc_add_series(name = "SVN",  data = avgPercentageSVN,  type = "line", color = "steelblue") %>%
   hc_tooltip(shared = TRUE)
 ```
 
-
-The figure above makes clear the dominance of Git as a version control tool. Also, we notice that Subversion (SVN) was quite popular and a capable competitor of Git until 2010. After that period there is a continuous decline in SVN's interest and the exact opposite for Git. Today, in 2022, the difference is chaotic between them.
-
-
-### Benefits
-
-> Why should I use VCS ? 
-
-- Easy transition between versions
-- More productive, Time saver if a version produces error
-- Enables cooperation with other developers (especially with a hosting service like GitHub).
+The chart @fig-vcs-trends establishes Git as the dominant version control tool. Subversion (SVN) was more popular up until 2010, after which it entered a steady decline from which it never recovered. Today, Git is the *de facto* standard for source code management, and around it has grown a broad ecosystem of hosting platforms such as **GitHub** and **GitLab**.
 
 
-### Drawbacks
+### Advantages
 
-> Ok. There are some good points. But where is the catch ?
+> Why should I use such a tool?
 
-- We are adding a new tool to our workflow (Git) 
-- Kind of steep learning curve.
+- **Easy rollback:** If a change introduces a problem, we can revert to a previous, working version of the code with a single command.
+- **Time savings:** Instead of manually hunting down what broke, Git tells us exactly what changed and when.
+- **Collaboration:** It greatly simplifies working alongside other developers, especially through platforms like GitHub.
 
 
-### Hosting platforms
+### Disadvantages
 
-We have mentioned some of the most important programs for managing the code of an application. Of course, there are not a few times when we want to save the progress of our application somewhere else to enable developers communicate their code commits to each other. The solution is some code hosting services. The best known are **GitHub**, **GitLab** and **Bitbucket**. Finally, in case none of the options outlined earlier satisfy us, there is also the self-host solution. For example, if I had concerns about the terms of the above services, I could host [Gitea](https://gitea.io/en-us/) on my own server or even to rent a cloud server. That way I would have my own "GitHub", without depending on a third party service. 
+> Fair enough — but is there another side to this?
 
-## Git settings
+- **One more tool to manage:** Git adds a step to our workflow, making it slightly more complex at first.
+- **Learning curve:** Getting comfortable with advanced features (branching, merging, rebasing) takes time. The basics, however, are quick to pick up.
 
-### Set up Name & Email
 
-So, you decided to start Git without setting Name and Email? 
+### Code Hosting
 
-You may think of it again. In case you try to commit without setting a Name and email. Git will not commit your changes, without prior setting those.
+The tools we have described manage code locally, on our own machine. If we want to share our work or collaborate with others, we need a remote hosting service. The most widely used options are **GitHub**, **GitLab**, and **Bitbucket**.
+
+If none of these suits us, we can host our code ourselves. Tools such as [Gitea](https://gitea.io/en-us/) or its active fork, [Forgejo](https://forgejo.org/), allow us to set up our own platform on a private server — essentially our own GitHub, free from third-party dependencies. Appealing as it sounds, self-hosting comes with significant operational complexity and distances us from the broader developer community.
+
+
+## Git Configuration
+
+We have decided to try Git on a small project, or simply want to keep a version history of our work. Let us look at how to set it up properly from the start.
+
+### Setting a Name and Email
+
+The first time we use Git, it will ask us to provide a name and an email address. Without these, it will not allow us to record any changes. This is because every snapshot we create is accompanied by the details of whoever made it.
+
+::: {.column-margin}
+![Photo of Linus Torvalds, 2018](images/linus.webp)
+
+**Source:** By LFAsia via Wikimedia Commons, 2018 — License: [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/). View the [original photo](https://commons.wikimedia.org/wiki/File:Lc3_2018_(263682303).jpeg).
+:::
 
 ```{.bash filename="Terminal"}
 git config --global user.name "YourName"
@@ -186,96 +192,494 @@ git config --global user.email your_email
 ```
 
 :::{.callout-note}
-If you are planning to host your repository on GitHub, you may want to hide your casual email. In that case GitHub offers a `noreply` email for this purpose. You can read more [here](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address).
+If we plan to host our code on GitHub, it is worth hiding our personal email address. GitHub provides a *noreply* address for this purpose, so our real address is never exposed publicly. You can read more in the [GitHub documentation](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address).
 :::
 
 
-### Set editor
+### Text Editor
 
-A part that I considered a little bit hard is editing Git commits. By default, Ubuntu has installed Vim, so this was my first editor for my commits. I think this choice is good if you are writing short commit messages or you are acquainted with Vim options/shortcuts. In case you are in a hurry, the use of an alterantive (most familiar) IDE is justified. 
+Before we talk about the editor, it is worth explaining what a **commit** is.
+Every time we want to "save" the current state of our code, we create a commit.
+In essence, we are creating a snapshot that records exactly which files changed
+and how. Every commit must include a short message describing what we changed
+and why, so we can later understand the history of our project at a glance.
+
+To write that message, Git automatically opens a text editor. On many systems
+(e.g. Ubuntu) the default is **Vim**. Vim is a powerful editor, but with a
+steep learning curve for someone encountering it for the first time. If we are
+not comfortable with it, we can switch to something more familiar.
 
 ```{.bash filename="Terminal"}
 git config --global core.editor "editor_name"
 ```
 
-Most notable is Visual Studio Code, which is the most popular IDE, according to [recent Stackoveflow's survey](https://insights.stackoverflow.com/survey/2021#section-most-popular-technologies-integrated-development-environment).
+| Editor             | Command                                                       |
+| :----------------- | :------------------------------------------------------------ |
+| Visual Studio Code | `git config --global core.editor "code --wait"`               |
+| Atom               | `git config --global core.editor "atom --wait"`               |
+| Nano               | `git config --global core.editor "nano"`                      |
 
-| Editor     | Command | 
-| :---        |    :----:   |
-| Atom     | git config --global core.editor "atom --wait" |
-| Visual Studio Code   | git config --global core.editor "code --wait" |
+Visual Studio Code is currently the most popular editor according to the [Stack Overflow Developer Survey](https://insights.stackoverflow.com/survey/2021#section-most-popular-technologies-integrated-development-environment), making it a safe choice if we do not have a strong preference.
 
-### Default branch name to main
+### Default Branch Name
 
-In October of 2020, GitHub [announced](https://github.blog/changelog/2020-10-01-the-default-branch-for-newly-created-repositories-is-now-main/) that will change the default name of initial branch from `master` to `main`. <br>
+A **branch** is an independent "line of development" of our code. Think of it
+as a parallel copy of our project, where we can experiment or develop a new
+feature without affecting the main codebase. Once we are satisfied with our
+changes, we can merge them back into the main branch. Every Git repository
+always starts with an initial branch, which was traditionally called `master`.
 
-> The default branch name for new repositories is now main. <br>
-      [GitHub.blog - October 1,2020]{style="float:right"}
+In October 2020, GitHub
+[announced](https://github.blog/changelog/2020-10-01-the-default-branch-for-newly-created-repositories-is-now-main/)
+that it was changing the default name of this branch from `master` to `main`.
+This change was part of a broader conversation in the tech community about
+avoiding terminology with negative historical connotations (master/slave), and
+was gradually adopted by the majority of tools and platforms.
 
-Therefore, it would be good to make this change in our local environment as well, as follows :
+> The default branch name for new repositories is now main.  
+> [GitHub.blog — October 1, 2020]{style="float:right"}
+
+It is good practice to make the same change locally, so our repositories stay
+consistent with what we push to GitHub and we avoid connection issues between
+the local and remote repository.
 
 ```{.bash filename="Terminal"}
 git config --global init.defaultBranch main
 ```
 
+### Merge Strategy
 
-### Merge method
+One setting that is not strictly necessary but worth considering relates to how
+Git handles merges. Suppose we create a `feature` branch to develop a new
+feature. When we are done and want to bring our changes back into `main`, Git's
+behaviour depends on whether `main` has received any new commits in the meantime.
 
-One change that is not exactly necessary but helps me is to change the defaults regarding merge. Let's say that I want to add a new feature in my application. Most of the times I will make a branch on which I will start developing my new feature. When I implement this function and I'm ready to merge my changes into the main code there are two situations.
+The **first case** is a Fast-forward merge. If no new commits have been made
+to `main` since we created the `feature` branch, the history looks like this:
 
-**1. There are commits to main branch **
+```{ojs}
+//| fig-cap: "Fast-forward merge: main moves directly to D, the feature branch disappears from history."
+//| echo: false
 
-The predefined action is to merge. The branch is visible. Our setting has not any effect on this case.
+d3 = require("https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js")
 
-**2. There are no commits to main branch**
+CLR = ({
+  b: { line:'#185FA5', fill:'#E6F1FB', text:'#0C447C' },
+  g: { line:'#0F6E56', fill:'#E1F5EE', text:'#085041' },
+})
 
-The predefined action of Git is to take the feature branch and paste it on the top of main branch. By making the setting above I am telling Git to keep the branch and react like the first case. The branch is visible again.
+function gitGraph(W, cfg) {
+  const sm = W < 480;
+  const dt = sm ? cfg.narrow : cfg.wide;
 
-With simple words, I am forcing Git to keep branch, regardless of changes to main branch.
+  const scale  = sm ? 1 : Math.min(Math.max(W / 520, 1), 1.8);
+  const R      = sm ? 13 : 10 * scale;
+  const SW     = sm ? 2.5 : 2 * scale;
+  const laneH  = sm ? 60 : 70 * scale;
+  const labelW = sm ? 0 : 88 * scale;
+  const padX   = sm ? 16 : 18 * scale;
+  const padTop = sm ? 52 : 24 * scale;
+  const padBot = sm ? 16 : 18 * scale;
+  const fScale = sm ? 1 : Math.min(Math.max(W / 520, 1), 1.4);
+  
+  const fId    = sm ? 13 : 11 * fScale;
+  const fSub   = sm ? 11 : 12 * fScale;
+  const fTitle = sm ? 12 : 13 * fScale;
+
+  const maxS   = d3.max(dt.commits, c => c.s);
+  const startX = labelW ? labelW + padX : padX;
+  const avail  = W - startX - padX;
+  const cx = s => startX + (s - 1) / (maxS - 1) * avail;
+  const cy = l => padTop + l * laneH;
+  const H  = padTop + (cfg.lanes.length - 1) * laneH + padBot;
+
+  const svg = d3.create('svg')
+    .attr('viewBox', `0 0 ${W} ${H}`)
+    .style('width', '100%').style('height', 'auto').style('display', 'block');
+
+  // Legend (narrow) or pills (wide)
+  if (sm) {
+    const ox = (W - cfg.lanes.length * 88) / 2;
+    cfg.lanes.forEach((l, i) => {
+      const lx = ox + i * 88;
+      svg.append('circle').attr('cx', lx + 6).attr('cy', padTop / 2).attr('r', 5)
+        .attr('fill', l.c.fill).attr('stroke', l.c.line).attr('stroke-width', 1.5);
+      svg.append('text').attr('x', lx + 16).attr('y', padTop / 2)
+        .attr('dominant-baseline', 'central')
+        .style('font', '500 12px monospace').attr('fill', l.c.text).text(l.name);
+    });
+  } else {
+    cfg.lanes.forEach((l, i) => {
+      const y = cy(i);
+      svg.append('rect').attr('x', padX - 4).attr('y', y - 13 * scale)
+        .attr('width', labelW - 14 * scale).attr('height', 26 * scale).attr('rx', 6 * scale)
+        .attr('fill', l.c.fill).attr('stroke', l.c.line).attr('stroke-width', .5 * scale);
+      svg.append('text').attr('x', padX + (labelW - 14 * scale) / 2 - 4).attr('y', y)
+        .attr('text-anchor', 'middle').attr('dominant-baseline', 'central')
+        .style('font', `500 ${fTitle}px monospace`).attr('fill', l.c.text).text(l.name);
+    });
+  }
+
+  // Segments
+  dt.segs.forEach(({ s1, l1, s2, l2, c }) => {
+    const x1 = cx(s1), y1 = cy(l1), x2 = cx(s2), y2 = cy(l2), dx = x2 - x1;
+    const d = y1 === y2 ? `M${x1},${y1}L${x2},${y2}`
+      : `M${x1},${y1}C${x1 + dx * .6},${y1} ${x2 - dx * .4},${y2} ${x2},${y2}`;
+    svg.append('path').attr('d', d).attr('fill', 'none')
+      .attr('stroke', c.line).attr('stroke-width', SW).attr('stroke-linecap', 'round');
+  });
+
+  // Commits
+  dt.commits.forEach(({ id, s, l, note, merge }) => {
+    const x = cx(s), y = cy(l), col = cfg.lanes[l].c, r = merge ? R + 3 * scale : R;
+    svg.append('circle').attr('cx', x).attr('cy', y).attr('r', r)
+      .attr('fill', col.fill).attr('stroke', col.line)
+      .attr('stroke-width', merge ? SW + 1 * scale : SW);
+    svg.append('text').attr('x', x).attr('y', y)
+      .attr('text-anchor', 'middle').attr('dominant-baseline', 'central')
+      .style('font', `400 ${fId}px monospace`).attr('fill', col.text).text(id);
+    if (note && !sm)
+      svg.append('text').attr('x', x).attr('y', y + r + 14 * scale)
+        .attr('text-anchor', 'middle').attr('dominant-baseline', 'hanging')
+        .style('font', `400 ${fSub}px sans-serif`)
+        .attr('fill', 'currentColor').attr('opacity', .45).text(note);
+  });
+
+  return svg.node();
+}
+
+// ── data ──────────────────────────────────────────────────────────────────────
+ffCfg = ({
+  lanes: [{ name: 'main', c: CLR.b }, { name: 'feature', c: CLR.g }],
+  wide: {
+    commits: [{ id: 'A', s: 1, l: 0 }, { id: 'B', s: 2, l: 0 }, { id: 'C', s: 3, l: 1 }, { id: 'D', s: 4, l: 1, note: 'main → D' }],
+    segs: [{ s1: 1, l1: 0, s2: 2, l2: 0, c: CLR.b }, { s1: 2, l1: 0, s2: 3, l2: 1, c: CLR.g }, { s1: 3, l1: 1, s2: 4, l2: 1, c: CLR.g }],
+  },
+  narrow: {
+    commits: [{ id: 'A', s: 1, l: 0 }, { id: 'B', s: 2, l: 0 }, { id: 'C', s: 3, l: 1 }, { id: 'D', s: 4, l: 1 }],
+    segs: [{ s1: 1, l1: 0, s2: 2, l2: 0, c: CLR.b }, { s1: 2, l1: 0, s2: 3, l2: 1, c: CLR.g }, { s1: 3, l1: 1, s2: 4, l2: 1, c: CLR.g }],
+  },
+})
+
+mergeCfg = ({
+  lanes: [{ name: 'main', c: CLR.b }, { name: 'feature', c: CLR.g }],
+  wide: {
+    commits: [{ id: 'A', s: 1, l: 0 }, { id: 'B', s: 2, l: 0 }, { id: 'C', s: 3, l: 1 }, { id: 'D', s: 4, l: 1 }, { id: 'E', s: 4, l: 0 }, { id: 'M', s: 5, l: 0, merge: true, note: 'merge' }],
+    segs: [{ s1: 1, l1: 0, s2: 2, l2: 0, c: CLR.b }, { s1: 2, l1: 0, s2: 3, l2: 1, c: CLR.g }, { s1: 3, l1: 1, s2: 4, l2: 1, c: CLR.g }, { s1: 2, l1: 0, s2: 4, l2: 0, c: CLR.b }, { s1: 4, l1: 0, s2: 5, l2: 0, c: CLR.b }, { s1: 4, l1: 1, s2: 5, l2: 0, c: CLR.g }],
+  },
+  narrow: {
+    commits: [{ id: 'A', s: 1, l: 0 }, { id: 'B', s: 2, l: 0 }, { id: 'C', s: 3, l: 1 }, { id: 'D', s: 4, l: 1 }, { id: 'M', s: 5, l: 0, merge: true }],
+    segs: [{ s1: 1, l1: 0, s2: 2, l2: 0, c: CLR.b }, { s1: 2, l1: 0, s2: 3, l2: 1, c: CLR.g }, { s1: 3, l1: 1, s2: 4, l2: 1, c: CLR.g }, { s1: 2, l1: 0, s2: 5, l2: 0, c: CLR.b }, { s1: 4, l1: 1, s2: 5, l2: 0, c: CLR.g }],
+  },
+})
+
+gitGraph(width, ffCfg)
+```
+
+In this case, Git performs a *fast-forward* merge by default: instead of
+creating a new merge commit, it simply moves the `main` pointer forward to
+the tip of the `feature` branch.
+
+```{ojs}
+//| fig-cap: "Fast-forward merge result: main moves directly to D — a linear history with no trace of the feature branch."
+//| echo: false
+
+ffResultCfg = ({
+  lanes: [{ name: 'main', c: CLR.b }],
+  wide: {
+    commits: [
+      { id: 'A', s: 1, l: 0 },
+      { id: 'B', s: 2, l: 0 },
+      { id: 'C', s: 3, l: 0 },
+      { id: 'D', s: 4, l: 0, note: 'main → D' },
+    ],
+    segs: [
+      { s1: 1, l1: 0, s2: 2, l2: 0, c: CLR.b },
+      { s1: 2, l1: 0, s2: 3, l2: 0, c: CLR.b },
+      { s1: 3, l1: 0, s2: 4, l2: 0, c: CLR.b },
+    ],
+  },
+  narrow: {
+    commits: [
+      { id: 'A', s: 1, l: 0 },
+      { id: 'B', s: 2, l: 0 },
+      { id: 'C', s: 3, l: 0 },
+      { id: 'D', s: 4, l: 0 },
+    ],
+    segs: [
+      { s1: 1, l1: 0, s2: 2, l2: 0, c: CLR.b },
+      { s1: 2, l1: 0, s2: 3, l2: 0, c: CLR.b },
+      { s1: 3, l1: 0, s2: 4, l2: 0, c: CLR.b },
+    ],
+  },
+})
+
+gitGraph(width, ffResultCfg)
+```
+
+The result is a "clean", linear history — as though the separate branch never
+existed. This may look tidy, but we lose the information that the changes were
+developed on a separate branch.
+
+The **second case** is a Merge commit (without fast-forward). If new commits
+have been made to `main` in the meantime, a fast-forward is not possible and
+Git automatically creates a new **merge commit** that joins the two branches:
+
+```{ojs}
+//| fig-cap: "Merge commit: the feature branch is merged into main with a new commit M, preserving the history of both branches."
+//| echo: false
+
+gitGraph(width, mergeCfg)
+```
+
+Here `M` is the merge commit. The history clearly shows that a separate
+development branch existed, when it was created, and when it was merged — which
+is very useful when working in a team or when we want to track the evolution
+of our project.
+
+**The `merge.ff false` setting**
+
+By setting this option, we tell Git to **always** create a merge commit, even
+when a fast-forward would be possible (Case 1). This ensures that our branch
+history is always visible and consistent, regardless of when we decide to merge.
+
 ```{.bash filename="Terminal"}
 git config --global merge.ff false
 ```
 
+:::{.callout-note}
+Whether we prefer fast-forward or merge commits depends on the philosophy of
+the project. In large teams, merge commits are considered good practice because
+they preserve a complete decision history. In small personal projects, the
+linear history of fast-forward may be easier to read.
+:::
 
-### Auto-sign your commits
+### Pull Strategy
 
-In a previous [article](https://stesiam.github.io/blog/2022-10-03-Verified-Commits/2022-10-03-Verified-Commits.html) we saw how to sign our commits as well as the reasons for doing so. In short, we made a PGP key which we added to our GitHub account. From that moment to sign my commits I had to write `git commit -S -m "something"`, instead of `git commit -m "something"`. Of course, that method is a little bit problematic. It is a little bit longer, little different in comparison to what I am used to type and most importantly I may forget some times to sign it manually. The last one happened to me A LOT. Thankfully, there is a way to be carefree about that anymore. I can set git config in a way that my commits will be signed automatically.
+When working with a remote repository (e.g. on GitHub), we often want to
+"download" changes that others have made to the project. This is done with the
+`git pull` command. What we may not realise is that `git pull` does not simply
+download the changes — it simultaneously decides how to **integrate** them into
+our local copy.
+
+From Git 2.27 onwards, if we have not explicitly defined this behaviour, Git
+displays a warning every time we run `git pull`. To avoid it, we simply need to
+declare our preferred strategy.
+
+The two main options are:
+
+| Strategy | Command               | When to use it                                              |
+| :------- | :-------------------- | :---------------------------------------------------------- |
+| Merge    | `pull.rebase false`   | Safe choice for beginners — creates a merge commit          |
+| Rebase   | `pull.rebase true`    | Keeps history linear, but requires more familiarity         |
+
+To illustrate the difference, let us assume that after a shared commit `B`,
+the remote repository received a new commit `C`, while we made a local commit
+`D`. The two histories have now **diverged**:
+
+```{ojs}
+//| fig-cap: "Starting point: the remote and local repository have diverged after B."
+//| echo: false
+
+pullInitCfg = ({
+  lanes: [
+    { name: 'origin/main', c: CLR.b },
+    { name: 'local/main',  c: CLR.g }
+  ],
+  wide: {
+    commits: [
+      { id: 'A', s: 1, l: 0 },
+      { id: 'B', s: 2, l: 0 },
+      { id: 'C', s: 3, l: 0, note: 'new on remote' },
+      { id: 'D', s: 3, l: 1, note: 'local commit'  },
+    ],
+    segs: [
+      { s1: 1, l1: 0, s2: 2, l2: 0, c: CLR.b },
+      { s1: 2, l1: 0, s2: 3, l2: 0, c: CLR.b },
+      { s1: 2, l1: 0, s2: 3, l2: 1, c: CLR.g },
+    ],
+  },
+  narrow: {
+    commits: [
+      { id: 'A', s: 1, l: 0 },
+      { id: 'B', s: 2, l: 0 },
+      { id: 'C', s: 3, l: 0 },
+      { id: 'D', s: 3, l: 1 },
+    ],
+    segs: [
+      { s1: 1, l1: 0, s2: 2, l2: 0, c: CLR.b },
+      { s1: 2, l1: 0, s2: 3, l2: 0, c: CLR.b },
+      { s1: 2, l1: 0, s2: 3, l2: 1, c: CLR.g },
+    ],
+  },
+})
+
+gitGraph(width, pullInitCfg)
+```
+
+**`pull.rebase false` — Merge commit**
+
+With this option, Git creates a new **merge commit** `M` that joins the two
+diverged histories. The history retains both "paths" as visible:
+
+```{ojs}
+//| fig-cap: "pull.rebase false: a merge commit M is created — history preserves both branches."
+//| echo: false
+
+pullMergeCfg = ({
+  lanes: [
+    { name: 'origin/main', c: CLR.b },
+    { name: 'local/main',  c: CLR.g }
+  ],
+  wide: {
+    commits: [
+      { id: 'A', s: 1, l: 0 },
+      { id: 'B', s: 2, l: 0 },
+      { id: 'C', s: 3, l: 0 },
+      { id: 'D', s: 3, l: 1 },
+      { id: 'M', s: 4, l: 0, merge: true, note: 'merge commit' },
+    ],
+    segs: [
+      { s1: 1, l1: 0, s2: 2, l2: 0, c: CLR.b },
+      { s1: 2, l1: 0, s2: 3, l2: 0, c: CLR.b },
+      { s1: 2, l1: 0, s2: 3, l2: 1, c: CLR.g },
+      { s1: 3, l1: 0, s2: 4, l2: 0, c: CLR.b },
+      { s1: 3, l1: 1, s2: 4, l2: 0, c: CLR.g },
+    ],
+  },
+  narrow: {
+    commits: [
+      { id: 'A', s: 1, l: 0 },
+      { id: 'B', s: 2, l: 0 },
+      { id: 'C', s: 3, l: 0 },
+      { id: 'D', s: 3, l: 1 },
+      { id: 'M', s: 4, l: 0, merge: true },
+    ],
+    segs: [
+      { s1: 1, l1: 0, s2: 2, l2: 0, c: CLR.b },
+      { s1: 2, l1: 0, s2: 3, l2: 0, c: CLR.b },
+      { s1: 2, l1: 0, s2: 3, l2: 1, c: CLR.g },
+      { s1: 3, l1: 0, s2: 4, l2: 0, c: CLR.b },
+      { s1: 3, l1: 1, s2: 4, l2: 0, c: CLR.g },
+    ],
+  },
+})
+
+gitGraph(width, pullMergeCfg)
+```
+
+**`pull.rebase true` — Rebase**
+
+With this option, Git "replays" our local commit `D` *on top of* `C`, as
+though we had written it after pulling the remote changes. The result is a
+clean, linear history with no merge commit:
+
+```{ojs}
+//| fig-cap: "pull.rebase true: D is replayed on top of C — a linear history with no merge commit."
+//| echo: false
+
+pullRebaseCfg = ({
+  lanes: [{ name: 'main', c: CLR.b }],
+  wide: {
+    commits: [
+      { id: 'A',  s: 1, l: 0 },
+      { id: 'B',  s: 2, l: 0 },
+      { id: 'C',  s: 3, l: 0 },
+      { id: "D'", s: 4, l: 0, note: 'D replayed' },
+    ],
+    segs: [
+      { s1: 1, l1: 0, s2: 2, l2: 0, c: CLR.b },
+      { s1: 2, l1: 0, s2: 3, l2: 0, c: CLR.b },
+      { s1: 3, l1: 0, s2: 4, l2: 0, c: CLR.b },
+    ],
+  },
+  narrow: {
+    commits: [
+      { id: 'A',  s: 1, l: 0 },
+      { id: 'B',  s: 2, l: 0 },
+      { id: 'C',  s: 3, l: 0 },
+      { id: "D'", s: 4, l: 0 },
+    ],
+    segs: [
+      { s1: 1, l1: 0, s2: 2, l2: 0, c: CLR.b },
+      { s1: 2, l1: 0, s2: 3, l2: 0, c: CLR.b },
+      { s1: 3, l1: 0, s2: 4, l2: 0, c: CLR.b },
+    ],
+  },
+})
+
+gitGraph(width, pullRebaseCfg)
+```
+
+For beginners, the **merge** strategy is the safer choice:
+
+```{.bash filename="Terminal"}
+git config --global pull.rebase false
+```
+
+:::{.callout-note}
+The difference between merge and rebase is a topic that deserves a dedicated
+discussion. For now, it is enough to know that both achieve the same end goal —
+getting others' changes onto our machine — but in different ways. If we are just
+starting out with Git, the `false` (merge) option is the one we will encounter
+most often in guides and tutorials.
+:::
+
+### Automatic Commit Signing
+
+When we push commits to GitHub, the platform has no way of verifying that the
+sender is actually who they claim to be. Anyone can write any name and email in
+the `user.name`/`user.email` settings. Signing commits with a cryptographic key
+solves this problem. GitHub verifies our identity and displays a green
+**Verified** badge next to each signed commit.
+
+There are two ways to sign:
+
+- **GPG key** — the traditional approach, more robust but also more involved to set up.
+- **SSH key** — a simpler alternative supported by GitHub since 2022. If we already use SSH for authentication, the same key can also serve for signing.
 
 :::{.callout-warning}
-If you do not have already a GPG key, you can have a look in this [guide](https://docs.github.com/en/authentication/managing-commit-signature-verification/generating-a-new-gpg-key) in order to generate one. Also, depending your hosting platform for your code, you can link your GPG with your account : <br>
+If we do not yet have a GPG key, we can follow [GitHub's guide](https://docs.github.com/en/authentication/managing-commit-signature-verification/generating-a-new-gpg-key) to generate one. We can then link it to our hosting platform:
 
-* [GitHub and GPG keys](https://docs.github.com/en/authentication/managing-commit-signature-verification/adding-a-gpg-key-to-your-github-account) <br>
-* [BitBucket and GPG keys](https://confluence.atlassian.com/bitbucketserver/using-gpg-keys-913477014.html) <br>
+* [GitHub and GPG keys](https://docs.github.com/en/authentication/managing-commit-signature-verification/adding-a-gpg-key-to-your-github-account)
+* [Bitbucket and GPG keys](https://confluence.atlassian.com/bitbucketserver/using-gpg-keys-913477014.html)
 * [GitLab and GPG keys](https://docs.gitlab.com/ee/user/project/repository/gpg_signed_commits/)
 :::
 
+Without any additional configuration, signing a commit requires the `-S` flag:
+
 ```{.bash filename="Terminal"}
-gpg --list-secret-keys --keyid-format LONG
+git commit -S -m "message"
+```
+
+This is easy to forget. For this reason, we can configure Git to sign every
+commit automatically:
+
+```{.bash filename="Terminal"}
 git config user.signingkey key_id
 git config commit.gpgsign true
 ```
 
+### Reviewing the Configuration
 
-### Check your settings
-
-Making the above settings, we can have a summary of those with the corresponding command:
+Once we have completed the settings above, we can review them all at once with
+the following command:
 
 ```{.bash filename="Terminal"}
 git config --list
 ```
 
-Here is the output on my machine :
+![Output of the git config --list command](images/git_config_output.png)
+
+The output gives us a complete picture of our Git configuration. Every user has
+different needs, so if we want to explore further options, the official
+[git-config documentation](https://git-scm.com/docs/git-config) is the best
+starting point.
 
 
-![Output of git-config command](images/git_config_output.png)
+## Summary
 
-The image above sums up the settings of Git. Although, each user has different needs and for that reason it would be good in case you want to learn more about `git config` to see their [documentation page](https://git-scm.com/docs/git-config).
-
-
-
-## To sum up
-
-A summary of the commands we used to configure Git :
+A quick reference of all the commands we used to configure Git:
 
 ```{.bash filename="Terminal"}
 git config --global user.name "YourName"
@@ -283,30 +687,28 @@ git config --global user.email your_email
 git config --global core.editor "editor_name"
 git config --global init.defaultBranch main
 git config --global merge.ff false
+git config --global pull.rebase false
 
-# Add PGP key to your commits
-
+# Signing commits with a GPG key
 gpg --list-secret-keys --keyid-format LONG
 git config user.signingkey key_id
 git config commit.gpgsign true
 
-# check git config settings
-
+# Review all settings and their origin
 git config --list --show-origin
 ```
 
-Of course you can access your git config file on your Home directory (at least on Ubuntu installation). 
+All of these settings are stored in the `.gitconfig` file, located in our
+system's home directory.
 
 :::{.callout-warning}
-Note that the .gitconfig file, which contains our settings, may not be visible in the Home directory. In general, files whose names begin with a period are not displayed. However, if everything has been done correctly, it's probably there. For example, in Ubuntu you should choose to show hidden files.
+The `.gitconfig` file may not be immediately visible, as files beginning with a
+dot are hidden by default on Unix-based systems. If we cannot see it, we simply
+need to enable the display of hidden files in our file manager (on Ubuntu:
+`Ctrl + H` in Nautilus).
 :::
-
-In case you open that file you will see probably something like the above :
-
-<script src="https://gist.github.com/stesiam/c4c1541fd57dad0cafdb3c8be9b95a12.js"></script>
-
 
 
 ## Acknowledgements {.appendix .unlisted}
 
-Image by <a href="https://pixabay.com/users/skorec-16694100/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=7522129">Daniel Skovran</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=7522129">Pixabay</a>
+Photo by <a href="https://pixabay.com/users/skorec-16694100/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=7522129">Daniel Skovran</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=7522129">Pixabay</a>
