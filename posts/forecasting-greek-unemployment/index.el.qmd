@@ -692,6 +692,7 @@ highchart(type = "stock") %>%
 ```{r}
 #| label: tbl-seasonality-check
 #| tbl-cap: "Αποτελέσματα διάφορων ελέγχων για αξιολόγηση εποχικότητας"
+#| results: hide
 grc_unemployment = unemployment %>% dplyr::filter(LOCATION == "GRC")
 y = ts(grc_unemployment$Value, start = c(1998, 4), frequency = 12)
 nsdiffs(y, test = "ch")
