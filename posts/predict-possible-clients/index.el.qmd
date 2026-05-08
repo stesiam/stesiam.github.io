@@ -105,10 +105,13 @@ library(bonsai)    # LightGBM μέσω tidymodels
 library(themis)    # SMOTE για ανισόρροπα δεδομένα
 library(stacks)    # Ensemble stacking
 library(probably)
+library(discrim)
 
 # Επιμέρους αλγόριθμοι
 library(kknn)
 library(ranger)
+library(naivebayes)
+library(kernlab)
 library(vip)       # Σπουδαιότητα μεταβλητών
 ```
 
@@ -1279,6 +1282,23 @@ rf_model <- parsnip::rand_forest(
   set_engine("ranger") %>%
   set_mode("classification")
 
+# --- Naive Bayes ---
+
+nb_model <- naive_Bayes(
+  smoothness = tune(),
+  Laplace    = tune()
+) %>%
+  set_engine("naivebayes") %>%
+  set_mode("classification")
+
+# --- SVM ---
+
+svm_model <- parsnip::svm_linear(
+  cost = tune()
+) %>%
+  set_engine("kernlab") %>%
+  set_mode("classification")
+
 # --- XGBoost ---
 xgb_model <- parsnip::boost_tree(
   trees      = 200,
@@ -1302,6 +1322,8 @@ lgbm_model <- parsnip::boost_tree(
 log_wf  <- workflow() %>% add_recipe(linear_recipe) %>% add_model(log_reg_model)
 knn_wf  <- workflow() %>% add_recipe(linear_recipe) %>% add_model(knn_model)
 rf_wf   <- workflow() %>% add_recipe(tree_recipe)   %>% add_model(rf_model)
+nb_wf  <- workflow() %>% add_recipe(linear_recipe) %>% add_model(nb_model)
+svm_wf <- workflow() %>% add_recipe(linear_recipe) %>% add_model(svm_model)
 xgb_wf  <- workflow() %>% add_recipe(tree_recipe)   %>% add_model(xgb_model)
 lgbm_wf <- workflow() %>% add_recipe(tree_recipe)   %>% add_model(lgbm_model)
 ```
@@ -1340,6 +1362,22 @@ rf_results <- tune_grid(
   control = ctrl_grid
 )
 
+nb_results <- tune_grid(
+  nb_wf,
+  resamples = cv_folds,
+  grid      = 10,
+  metrics   = metric_set(roc_auc, accuracy),
+  control   = ctrl_grid
+)
+
+svm_results <- tune_grid(
+  svm_wf,
+  resamples = cv_folds,
+  grid      = 10,
+  metrics   = metric_set(roc_auc, accuracy),
+  control   = ctrl_grid
+)
+
 # XGBoost — tune_bayes
 xgb_results <- tune_bayes(
   xgb_wf,
@@ -1365,23 +1403,36 @@ lgbm_results <- tune_bayes(
 Πέρα από τη μεμονωμένη αξιολόγηση κάθε μοντέλου, εφαρμόζουμε και μια τεχνική που ονομάζεται stacking. Η ιδέα πίσω από το stacking είναι ότι αντί να επιλέξουμε ένα μόνο μοντέλο ως τελικό, συνδυάζουμε τις προβλέψεις πολλών μοντέλων σε ένα μετα-μοντέλο που μαθαίνει ποιο αποδίδει καλύτερα και σε ποιες περιπτώσεις. Στην πράξη, τα μοντέλα που εκπαιδεύσαμε προηγουμένως (Λογιστική Παλινδρόμηση, KNN, Random Forest, XGBoost, LightGBM) τροφοδοτούν τις προβλέψεις τους σε ένα δεύτερο επίπεδο, όπου ένα γραμμικό μοντέλο με L1 κανονικοποίηση αναλαμβάνει να καθορίσει το βάρος που θα δοθεί στο κάθε ένα ή ακόμα και να το αποκλείσει εντελώς αν δεν συνεισφέρει. Με αυτόν τον τρόπο αξιοποιούμε τα πλεονεκτήματα κάθε αλγορίθμου χωρίς να δεσμευόμαστε σε μία μόνο προσέγγιση. Για την υλοποίηση αυτής της τεχνικής χρησιμοποιώ το πακέτο `{stacks}`, το οποίο ενσωματώνεται ομαλά στο οικοσύστημα `{tidymodels}`.
 
 ```{r}
-bank_stack <- stacks() %>%
-  add_candidates(log_results) %>%
-  add_candidates(knn_results) %>%
-  add_candidates(rf_results) %>%
-  add_candidates(xgb_results) %>%
+bank_stack_v1 <- stacks() %>%
+  add_candidates(log_results)  %>%
+  add_candidates(knn_results)  %>%
+  add_candidates(rf_results)   %>%
+  add_candidates(xgb_results)  %>%
   add_candidates(lgbm_results)
+
+bank_stack_v2 <- bank_stack_v1 %>%
+    add_candidates(nb_results)   %>%
+    add_candidates(svm_results)
 
 # Υπολογισμός βαρών για κάθε μοντέλο
 set.seed(123)
-bank_stack_model <- bank_stack %>%
+bank_stack_model_v1 <- bank_stack_v1 %>%
+  blend_predictions(
+    penalty = 10^(-2:0),       # L1 regularization για επιλογή μοντέλων
+    metric  = metric_set(roc_auc)
+  )
+
+bank_stack_model_v2 <- bank_stack_v2 %>%
   blend_predictions(
     penalty = 10^(-2:0),       # L1 regularization για επιλογή μοντέλων
     metric  = metric_set(roc_auc)
   )
 
 # Εκπαίδευση των επιλεγμένων μοντέλων
-bank_stack_fit <- bank_stack_model %>%
+bank_stack_fit_v1 <- bank_stack_model_v1 %>%
+  fit_members()
+
+bank_stack_fit_v2 <- bank_stack_model_v2 %>%
   fit_members()
 ```
 
@@ -1472,19 +1523,33 @@ get_oof_threshold <- function(tune_results, model_name) {
 thresholds_individual <- bind_rows(
   get_oof_threshold(lgbm_results, "LightGBM"),
   get_oof_threshold(xgb_results,  "XGBoost"),
-  get_oof_threshold(log_results,  "Λογιστική Παλινδρόμηση")
+  get_oof_threshold(log_results,  "Λογιστική Παλινδρόμηση"),
+  get_oof_threshold(rf_results, "Random Forest"),
+  get_oof_threshold(nb_results, "Naive Bayes"),
+  get_oof_threshold(svm_results, "SVM")
 )
 
 # Προβλέψεις στο bank_val — το stack δεν το έχει δει
-stack_val_preds <- predict(bank_stack_fit,
+## Για πρώτο stack
+stack_val_preds_v1 <- predict(bank_stack_fit_v1,
                            bank_val,
                            type = "prob") %>%
   bind_cols(bank_val %>% select(y))
 
-upper_bound_stack <- max(stack_val_preds$.pred_ναι, 
+upper_bound_stack_v1 <- max(stack_val_preds_v1$.pred_ναι, 
                          na.rm = TRUE) * 0.95
 
-stack_threshold <- stack_val_preds %>%
+## Για δεύτερο stack
+
+stack_val_preds_v2 <- predict(bank_stack_fit_v2,
+                           bank_val,
+                           type = "prob") %>%
+  bind_cols(bank_val %>% select(y))
+
+upper_bound_stack_v2 <- max(stack_val_preds_v2$.pred_ναι, 
+                         na.rm = TRUE) * 0.95
+
+stack_threshold_v1 <- stack_val_preds_v1 %>%
   threshold_perf(
     truth      = y,
     estimate   = .pred_ναι,
@@ -1495,13 +1560,30 @@ stack_threshold <- stack_val_preds %>%
   filter(.metric == "f_meas", !is.na(.estimate)) %>%
   slice_max(.estimate, n = 1, with_ties = FALSE) %>%
   transmute(
-    model     = "Stack Ensemble",
+    model     = "Stack Ensemble (v1)",
+    threshold = .threshold,
+    f1_oof    = round(.estimate, 3)
+  )
+
+stack_threshold_v2 <- stack_val_preds_v2 %>%
+  threshold_perf(
+    truth      = y,
+    estimate   = .pred_ναι,
+    thresholds = seq(0.005, upper_bound_stack_v2, length.out = 200),
+    event_level = "second",
+    metrics    = metric_set(f_meas)
+  ) %>%
+  filter(.metric == "f_meas", !is.na(.estimate)) %>%
+  slice_max(.estimate, n = 1, with_ties = FALSE) %>%
+  transmute(
+    model     = "Stack Ensemble (v2)",
     threshold = .threshold,
     f1_oof    = round(.estimate, 3)
   )
 
 all_thresholds <- bind_rows(thresholds_individual,
-                            stack_threshold)
+                            stack_threshold_v1,
+                            stack_threshold_v2)
 
 all_thresholds %>%
   arrange(desc(f1_oof)) %>%
@@ -1538,7 +1620,9 @@ final_results <- list(
   "kNN"                 = knn_results,
   "Random Forest"       = rf_results,
   "XGBoost"             = xgb_results,
-  "LightGBM"            = lgbm_results
+  "LightGBM"            = lgbm_results,
+  "Naive Bayes"         = nb_results,
+  "SVM"                 = svm_results
 ) %>%
   purrr::imap_dfr(function(res, name) {
     best <- select_best(res, metric = "roc_auc")
@@ -1547,7 +1631,9 @@ final_results <- list(
       "kNN"                 = knn_wf,
       "Random Forest"       = rf_wf,
       "XGBoost"             = xgb_wf,
-      "LightGBM"            = lgbm_wf
+      "LightGBM"            = lgbm_wf,
+      "Naive Bayes"         = nb_wf,
+      "SVM"                 = svm_wf
     )
     last_fit(finalize_workflow(wf, best), split = bank_dataset_split,
              metrics = metric_set(roc_auc, accuracy, f_meas)) %>%
@@ -1556,21 +1642,35 @@ final_results <- list(
   })
 
 # Stack predictions στο test set
-stack_preds <- bank_test %>%
-  bind_cols(predict(bank_stack_fit, bank_test, type = "prob")) %>%
-  bind_cols(predict(bank_stack_fit, bank_test))
+stack_preds_v1 <- bank_test %>%
+  bind_cols(predict(bank_stack_fit_v1, bank_test, type = "prob")) %>%
+  bind_cols(predict(bank_stack_fit_v1, bank_test))
 
-stack_metrics <- stack_preds %>%
+stack_metrics_v1 <- stack_preds_v1 %>%
   metric_set(roc_auc, accuracy, f_meas)(
     truth       = y,
     estimate    = .pred_class,
     .pred_ναι,
     event_level = "second"
   ) %>%
-  mutate(model = "Stack Ensemble")
+  mutate(model = "Stack Ensemble (v1)")
+
+# Stack predictions στο test set
+stack_preds_v2 <- bank_test %>%
+  bind_cols(predict(bank_stack_fit_v2, bank_test, type = "prob")) %>%
+  bind_cols(predict(bank_stack_fit_v2, bank_test))
+
+stack_metrics_v2 <- stack_preds_v2 %>%
+  metric_set(roc_auc, accuracy, f_meas)(
+    truth       = y,
+    estimate    = .pred_class,
+    .pred_ναι,
+    event_level = "second"
+  ) %>%
+  mutate(model = "Stack Ensemble (v2)")
 
 # Σύγκριση όλων σε έναν πίνακα
-bind_rows(final_results, stack_metrics) %>%
+bind_rows(final_results, stack_metrics_v1, stack_metrics_v2) %>%
   select(model, .metric, .estimate) %>%
   pivot_wider(names_from = .metric, values_from = .estimate) %>%
   arrange(desc(roc_auc)) %>%
@@ -1579,7 +1679,7 @@ bind_rows(final_results, stack_metrics) %>%
          "Μοντέλο" = model,
          "Ακρίβεια" = accuracy,
          "ROC AUC" = roc_auc) %>%
-  gt_custom(head_max = 8, use_labels = FALSE)
+  gt_custom(head_max = 10, use_labels = FALSE)
 ```
 
 ## Αποτελέσματα
@@ -1607,23 +1707,38 @@ get_preds <- function(fitted_wf, model_name) {
 best_lgbm <- select_best(lgbm_results, metric = "roc_auc")
 best_lr   <- select_best(log_results,  metric = "roc_auc")
 best_xgb  <- select_best(xgb_results,  metric = "roc_auc")
+best_rf  <- select_best(rf_results,  metric = "roc_auc")
+best_nb  <- select_best(nb_results,  metric = "roc_auc")
+best_svm  <- select_best(svm_results,  metric = "roc_auc")
 
 # Finalize και εκπαίδευση στο πλήρες train set
 final_lgbm_wf <- finalize_workflow(lgbm_wf, best_lgbm) %>% fit(data = bank_train)
 final_lr_wf   <- finalize_workflow(log_wf,  best_lr)   %>% fit(data = bank_train)
 final_xgb_wf  <- finalize_workflow(xgb_wf,  best_xgb)  %>% fit(data = bank_train)
+final_rf_wf  <- finalize_workflow(rf_wf,  best_rf)  %>% fit(data = bank_train)
+final_nb_wf  <- finalize_workflow(nb_wf,  best_nb)  %>% fit(data = bank_train)
+final_svm_wf  <- finalize_workflow(svm_wf,  best_svm)  %>% fit(data = bank_train)
 
-stack_preds <- predict(bank_stack_fit, bank_test, type = "prob") %>%
-  bind_cols(predict(bank_stack_fit, bank_test)) %>%
+stack_preds_v1 <- predict(bank_stack_fit_v1, bank_test, type = "prob") %>%
+  bind_cols(predict(bank_stack_fit_v1, bank_test)) %>%
   bind_cols(bank_test %>% select(y)) %>%
-  mutate(model = "Stack Ensemble")
+  mutate(model = "Stack Ensemble (v1)")
+
+stack_preds_v2 <- predict(bank_stack_fit_v2, bank_test, type = "prob") %>%
+  bind_cols(predict(bank_stack_fit_v2, bank_test)) %>%
+  bind_cols(bank_test %>% select(y)) %>%
+  mutate(model = "Stack Ensemble (v2)")
 
 # Παραγωγή προβλέψεων στο test set για όλα τα μοντέλα
 all_preds <- bind_rows(
   get_preds(final_lgbm_wf, "LightGBM"),
   get_preds(final_lr_wf,   "Λογιστική Παλινδρόμηση"),
   get_preds(final_xgb_wf,  "XGBoost"),
-  stack_preds                      
+  get_preds(final_rf_wf, "Random Forest"),
+  get_preds(final_nb_wf, "Naive Bayes"),
+  get_preds(final_svm_wf, "SVM"),
+  stack_preds_v1,
+  stack_preds_v2
 )
 
 lgbm_preds <- all_preds %>% filter(model == "LightGBM")
@@ -1698,19 +1813,21 @@ y %>%
 ```{r}
 #| label: roc-comparison
 #| echo: true
-model_order <- c("LightGBM", "Λογιστική Παλινδρόμηση", "XGBoost", "Stack Ensemble")
+model_order <- c("Λογιστική Παλινδρόμηση", "XGBoost",
+                 "Stack Ensemble (v1)", "Stack Ensemble (v2)")
 
 roc_all <- all_preds %>%
   mutate(model = factor(model, levels = model_order)) %>%
   group_by(model) %>%
   roc_curve(truth = y, .pred_ναι, event_level = "second") %>%
-  ungroup()
+  ungroup() %>%
+  drop_na(model)
 
 colors <- c(
-  "LightGBM"               = "#2196F3",
-  "Λογιστική Παλινδρόμηση" = "#4CAF50",
-  "XGBoost"                = "#FF5722",
-  "Stack Ensemble"         = "#9C27B0"
+  "Λογιστική Παλινδρόμηση" = "#009E73",
+  "XGBoost"                = "#D55E00",
+  "Stack Ensemble (v1)"    = "#CC79A7",
+  "Stack Ensemble (v2)"    = "#E69F00"
 )
 
 hchart(roc_all, type = "line",
@@ -1744,7 +1861,9 @@ pr_all <- all_preds %>%
     mutate(model = factor(model, levels = model_order)) %>%
     group_by(model) %>%
     pr_curve(truth = y, .pred_ναι, event_level = "second") %>%
-    ungroup()
+    ungroup() %>%
+    drop_na(model)
+
 
 # Baseline = ποσοστό θετικών στο test set
 baseline <- mean(bank_test$y == "ναι")
@@ -1774,7 +1893,7 @@ hchart(pr_all, type = "line",
 
 ```{r}
 threshold_lookup <- setNames(
-    all_thresholds$threshold,        # ← το σωστό όνομα
+    all_thresholds$threshold,
     all_thresholds$model
 )
 
