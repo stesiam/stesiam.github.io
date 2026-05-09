@@ -25,7 +25,7 @@ order: 1
 <i class="bi bi-list-ol"></i> `# of observations - rows`: 5093 <br>
 <i class="bi bi-list-ol"></i> `# of variables - columns`: 9 <br>
 <i class="bi bi-translate"></i> `Languages`:  🇬🇧  / 🇬🇷 <br>
-<i class="bi bi-activity"></i> `Frequency `: Μη επαναλαμβανόμενο
+<i class="bi bi-activity"></i> `Frequency `: Non-repeating
 :::
 
 
@@ -36,8 +36,11 @@ order: 1
 ```
 :::
 
-## Dataset variables
+## Dataset Variables
 
+The database consists of two tables in total. The first contains the scraped job listing data, while since version 1.3 a second table has been added, which classifies each listing according to various types of discrimination, leveraging the `{ellmer}` package and a large language model.
+
+The scraped data contains the following variables:
 
 ```{r}
 #| echo: false
@@ -52,15 +55,31 @@ url = "https://github.com/stesiam/scraping-job-postings-xe/releases/download/v1.
 
 | Variable | Type | Description |
 |:---------|:-----|:------------|
-| `spc` | ποιοτική | Ονοματεπώνυμο βουλευτή |
-| `type` | ποιοτική | Κόμμα εκπροσώπησης βουλευτή (τέλος θητείας) |
-| `wage` | ποιοτική | Εκλογική περιφέρεια βουλευτή |
-| `loc` | ποιοτική (διατάξιμη) | Περίοδος εκλογής  |
-| `exp` | ποιοτική (διατάξιμη) | Ημερολογιακό διάστημα θητείας (όχι μεμονομένου βουλευτή)  |
-| `descr` | ποιοτική | Εκτιμώμενο φύλο του αντίστοιχου βουλευτή με βάση το όνομά του |
-| `link` | ποιοτική | Εκτιμώμενο φύλο του αντίστοιχου βουλευτή με βάση το όνομά του |
+| `spc` | qualitative | Occupation |
+| `type` | qualitative | Employment terms |
+| `wage` | mixed | Salary / Salary range |
+| `loc` | qualitative | Location |
+| `exp` | qualitative (ordinal) | Required work experience |
+| `descr` | qualitative | Job listing text |
+| `p_date` | qualitative | Publication date |
+| `link` | qualitative | Listing URL (no longer verifiable) |
+
+: Job listings dataset variables {.table .table-sm .table-borderless}
 
 : {.table .table-sm .table-borderless}
+
+While the job listing assessment table:
+
+| Variable | Type | Description |
+|:---------|:-----|:------------|
+| `has_age_discrimination` | binary | Was age discrimination detected? |
+| `has_gender_discrimination` | binary | Was gender discrimination detected? |
+| `has_appearance_discrimination` | binary | Was appearance discrimination detected? |
+| `is_policy_related` | binary | Discrimination attributable to employment programs |
+| `has_racial_discrimination` | binary | Was racial discrimination detected? |
+| `reasoning` | qualitative | Explanation of classifications for each observation / listing |
+
+: Assessment dataset variables {.table .table-sm .table-borderless}
 
 
 ## Preview dataset

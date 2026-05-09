@@ -33,107 +33,213 @@ editor_options:
     wrap: 80
 ---
 
-# Introduction
+## Introduction
 
-On this article, I will make a ML model, in order to predict the costumers of a bank that are interested on having a term deposit. To achieve this goal I will use some Boosting algorithms (XGBoost and LightGBM). The data is from UCI website [@Dua2019] and the dataset that I worked with is "Bank Marketing" [@moro2014data].
+In this article we build a machine learning model with the goal of predicting which customers of a bank are interested in opening a term deposit account. For this purpose we compare seven classification algorithms, with emphasis on Boosting models (XGBoost and LightGBM). The data come from the "UCI Machine Learning Repository" [@Dua2019] and specifically from the [Bank Marketing](https://archive.ics.uci.edu/dataset/222/bank+marketing) dataset [@moro2014data].
 
-But first let's explain some things.
+Before the analysis, let us define some basic concepts.
 
-> What is a term deposit ?
+> **What is a term deposit?**
 
-Generally, we are saving our money in a bank account but we are promising to not withdraw them for a specific amount of time. 
+It is a type of bank account where the customer commits to not making withdrawals for a predetermined period of time (e.g., one year). In return, the bank offers higher interest rates compared to regular savings or current accounts.
+
+For reference:
+
+- **Bank of Piraeus** offers double the interest rate on its term deposit accounts.
+- **Eurobank** offers zero interest on current accounts, 0.01%-0.35% on savings accounts, and 0.1%-1% on term deposits, depending on the program and deposit amount.
+- According to a recent report by the **Bank of Greece**, term deposit interest rates range between 1.2% and 1.4%, compared to just 0.03% for typical household accounts.
+
+The appropriate profile for these products generally involves individuals with significant savings balances and without heavy financial obligations (loans, overdue debts).
 
 
-> And why someone to do that ?
+## Prerequisites
 
-It is apparent that term deposits have a major disadvantage over regular ones in terms of capital availability. Of course, people will not have motive to do that without anything in return. For that reason, the banks usually offer higher interest for that kind of accounts. For example, Piraeus Bank (a bank in Greece) offers double interest rate on term deposits compared to regular ones.
+### Loading Libraries
 
-So, we can assume that there will be a serious interest for that product mostly on people with significant amount of savings ($>1000$) and do not have large, extraordinary expenses (loan, kids, etc.). 
-
-# Prerequisites
-
-## Import libraries
-
-For this analysis we will need standard libraries for importing and processing my data, such as readr [@R-readr] and dplyr [@R-dplyr]. The kableExtra [@R-kableExtra] package was used to print the results in table format. Concerning general purpose R libraries, I also used gridExtra in order to show ggplot items side to side. 
-
-On its basis this analysis is about to predict if someone is interested or not to have a term deposit. Thus, we need to build a ML model. The all-in-one solution package tidymodels is crucial to this. Although, there are some concerns about our data (imbalanced predicted value and our implementation of LightGBM. Thankfully, these are solved by bonsai and treesnip packages, respectively.
-
-Finally, the ggplot2 [@R-ggplot2] package was used to create some visualizations, as well as an auxiliary package, ggtext [@R-ggtext], for further formatting those.
+For this analysis we will need standard R libraries for importing data, via the readr package [@R-readr], and formatting it with the dplyr package [@R-dplyr]. The kableExtra package [@R-kableExtra] is a useful addition for printing results in table format. An important part of the workflow is data visualization. I initially used the ggplot2 package to create charts, which is limiting for a website since ggplot2 produces static graphics. So for my articles I use the highcharter package [@R-highcharter], which enables responsive charts that work well on all screen sizes. Finally, this analysis aims to classify bank customers based on their interest in a banking product, so the tidymodels package [@R-tidymodels] is essential, as we will need a classification model.
 
 ```{r}
-#| label: import_r_libs
-#| title: "Import R Libraries"
+#| label: import-libs
+#| code-summary: "Load libraries"
 #| message: false
 #| results: hide
 #| echo: true
 
+# General data processing
 library(readr)
 library(dplyr)
 library(forcats)
-library(kableExtra)
-library(highcharter)
+library(tidyr)
 library(glue)
+
+# Results presentation
+library(kableExtra)
 library(reactable)
+library(gt)
 
-# Build ML models
+# Interactive charts
+library(highcharter)
 
+# Machine learning models
 library(tidymodels)
-library(bonsai)
-library(themis)
+library(bonsai)    # LightGBM via tidymodels
+library(themis)    # SMOTE for imbalanced data
+library(stacks)    # Ensemble stacking
+library(probably)
+library(discrim)
+
+# Individual algorithms
+library(kknn)
+library(ranger)
+library(naivebayes)
+library(kernlab)
+library(vip)       # Variable importance
 ```
 
 ```{r}
-#| label: futher_settings
-#| title: "Further settings"
+#| label: settings
 #| include: false
 
-options(digits=4)
+options(digits = 4)
 options(warn = -1)
-knitr::write_bib(.packages(), file = 'packages.bib')
+knitr::write_bib(.packages(), file = "packages.bib")
 ```
 
-## Import dataset
 
-After loading R libraries, then I will load my data. The initial source of my dataset has various versions of the same dataset. I will use the smaller one, as the fitting process on Boosting algorithms it is more time consuming in comparison with other methods (e.g. Logistic Regression, k-Nearest Neighbours etc.).
+### Importing Data
+
+After loading the necessary libraries, we need to import our data. There are several versions of the same dataset, a larger and a more compact one, differing only in the number of observations. For this article I will choose the more compact version since fitting Boosting models is particularly time-consuming compared to simpler classification models (e.g., Logistic Regression, k-Nearest Neighbors).
 
 ```{r}
-#| label: import_data
-#| title: "Import dataset"
+#| label: import_dataset
 #| message: false
 #| results: hide
 #| echo: true
 
-bank_dataset <- read_delim("bank_dataset_files/bank.csv",  delim = ";", escape_double = FALSE, trim_ws = TRUE)
+bank_dataset <- read_delim("bank_dataset_files/bank.csv",  
+                           delim = ";", 
+                           escape_double = FALSE, 
+                           trim_ws = TRUE)
 
 bank_dataset = bank_dataset %>% tibble::rowid_to_column("ID")
 ```
 
+### Data Preview
 
-## Preview dataset
+Below we present a small sample of the dataset (the first 6 observations) to understand its structure and variable types.
 
-Here we can see a small chunk of my dataset (first 10 rows / observations) just to understand the dataset's structure and type of variables.
+```{r}
+#| label: recoding_vars
+#| title: "Variable recoding"
+#| echo: false
+
+bank_dataset$job <- bank_dataset$job |>
+  fct_recode(
+    "Administrative"  = "admin.",
+    "Blue Collar"     = "blue-collar",
+    "Entrepreneur"    = "entrepreneur",
+    "Housemaid"       = "housemaid",
+    "Management"      = "management",
+    "Retired"         = "retired",
+    "Self-Employed"   = "self-employed",
+    "Services"        = "services",
+    "Student"         = "student",
+    "Technician"      = "technician",
+    "Unemployed"      = "unemployed",
+    "Unknown"         = "unknown"
+  )
+
+bank_dataset$marital <- bank_dataset$marital |>
+  fct_recode(
+    "Divorced" = "divorced",
+    "Married"  = "married",
+    "Single"   = "single"
+  )
+
+bank_dataset$education <- bank_dataset$education |>
+  fct_recode(
+    "Primary"   = "primary",
+    "Secondary" = "secondary",
+    "Tertiary"  = "tertiary",
+    "Unknown"   = "unknown"
+  )
+
+bank_dataset$default <- bank_dataset$default |>
+  fct_recode(
+    "No"  = "no",
+    "Yes" = "yes"
+  )
+
+bank_dataset$housing <- bank_dataset$housing |>
+  fct_recode(
+    "No"  = "no",
+    "Yes" = "yes"
+  )
+
+bank_dataset$loan <- bank_dataset$loan |>
+  fct_recode(
+    "No"  = "no",
+    "Yes" = "yes"
+  )
+
+bank_dataset$contact <- bank_dataset$contact |>
+  fct_recode(
+    "Landline" = "telephone",
+    "Mobile"   = "cellular",
+    "Unknown"  = "unknown"
+  )
+
+bank_dataset$month <- bank_dataset$month |>
+  fct_recode(
+    "April"     = "apr",
+    "August"    = "aug",
+    "December"  = "dec",
+    "February"  = "feb",
+    "January"   = "jan",
+    "July"      = "jul",
+    "June"      = "jun",
+    "March"     = "mar",
+    "May"       = "may",
+    "November"  = "nov",
+    "October"   = "oct",
+    "September" = "sep"
+  )
+
+bank_dataset$poutcome <- bank_dataset$poutcome |>
+  fct_recode(
+    "Failure" = "failure",
+    "Other"   = "other",
+    "Success" = "success",
+    "Unknown" = "unknown"
+  )
+
+bank_dataset$y <- bank_dataset$y |>
+  fct_recode(
+    "No"  = "no",
+    "Yes" = "yes"
+  )
+```
 
 ```{r}
 #| label: tbl-preview-dataset
-#| title: "Preview Data"
-#| tbl-cap: "Preview dataset (first six rows)"
+#| tbl-cap: "Data preview (first 6 observations)"
 #| tbl-cap-location: top
 
 preview_bank_dataset = head(bank_dataset, 6)
 reactable(
   preview_bank_dataset,
-  bordered = FALSE,     # No borders (booktabs style)
-  striped = FALSE,      # No stripes for a clean look
-  highlight = FALSE,    # No hover highlighting
+  bordered = FALSE,
+  striped = FALSE,
+  highlight = FALSE,
   defaultColDef = colDef(align = "center"),
   style = list(fontSize = "14px", border = "none"),
   theme = reactableTheme(
-    borderColor = "transparent", # Remove border
+    borderColor = "transparent",
     cellStyle = list(
-      borderBottom = "transparent"  # Subtle line between rows
+      borderBottom = "transparent"
     ),
     headerStyle = list(
-      borderBottom = "2px solid rgb(117, 117, 117)", # Thick top rule
+      borderBottom = "2px solid rgb(117, 117, 117)",
       borderTop = "2px solid rgb(117, 117, 117)",
       fontWeight = "bold"
     )
@@ -141,95 +247,154 @@ reactable(
 )
 ```
 
-Before we do any analysis we have to define what kind of data we have available. We can assess this type of information by looking on the values of each variable. Generally, we can classify our variables, depending their values, as follows :
+Before performing any analysis it is good to identify the type of data we have available. For the most part we can learn this by looking at the values a variable takes. In general, variables can be classified based on the values they take as follows:
 
 <center>
+
 ```{mermaid}
 %%| echo: false
 %%| label: fig-diagram-var-types
-%%| title: "Diagram about type of variables"
-%%| fig-cap: Type of variables based on its values
+%%| title: "Variable types diagram"
+%%| fig-cap: Variable classification based on their values
 graph TD;
-  A(Type of variables) --> B(Quantitative)
-  A(Type of variables) --> C(Qualitative)
+  A(Variable Types) --> B(Quantitative)
+  A(Variable Types) --> C(Qualitative)
   B --> D(Discrete)
   B --> E(Continuous)
-  C --> J(Nominal)
+  C --> J(Categorical)
   C --> G(Ordinal)
 ```
 </center>
 
-Our dataset is consisted by `r ncol(bank_dataset)` variables (columns) and `r length(bank_dataset$y)` observations (rows). More specifically, concerning my variables, are as follows :
+:::{.table-responsive}
 
-| Variable    | Property                           | Description     |
-| :----:      |    :----:                          |    :----: |
-| `Age`       | *quantitative*  <br> (continuous)  | The age of the respondent  |
-| `Job`       | *qualitative*   <br> (nominal)     | The sector of employment of the respondent |
-| `Marital`   | *qualitative*   <br> (nominal)     | The marital status of the respondent      |
-| `Education` | *qualitative*   <br> (ordinal)     | The higher education level that the respondent has ever reached  |
-| `Default`   | *qualitative*   <br> (nominal)     | has credit in default? |
-| `Balance`   | *quantitative*  <br> (continuous)  | Average yearly balance, in euros |
-| `Housing`   | *qualitative*   <br> (nominal)     | Has housing loan? |
-| `Loan`      | *qualitative*   <br> (nominal)     | Has personal loan? |
-| `Contact`   | *qualitative*   <br> (nominal)     | Contact communication type |
-| `Month`     | *qualitative*    <br> (ordinal)    | Last contact day of the month|
-| `Duration`  | *quantitative*   <br> (continuous) | Last contact duration, in seconds (numeric)|
-| `Campaign`  | *quantitative* |  Number of contacts performed during this campaign and for this client |
-| `pdays`     | *quantitative*  | Number of days that passed by after the client was last contacted from a previous campaign |
-| `pprevious` | *quantitative*  |  Number of contacts performed before this campaign and for this client |
-| `poutcome`  | *qualitative*  (nominal)  | Outcome of the previous marketing campaign |
-| `Deposit`   | *qualitative*  <br> (nominal)  | Has the client subscribed a term deposit? |
+: Variable summary {#tbl-preview-dataset1}
 
-Thus, my sample has `r ncol(bank_dataset)` variables, of which 7 are quantitative and 10 are quantitative properties, of which 8 are nominal and the rest ones (`Education`, `Month`) are ordinal.
+| Variable | Type | Description |
+|:-------------------------:|:-------------------------:|:-------------------------:|
+| `Age` | *quantitative* <br> (continuous) | Individual's age |
+| `Job` | *qualitative* <br> (categorical) | Employment sector |
+| `Marital` | *qualitative* <br> (categorical) | Marital status |
+| `Education` | *qualitative* <br> (ordinal) | Highest level of education |
+| `Default` | *qualitative* <br> (categorical) | Has credit in default? |
+| `Balance` | *quantitative* <br> (continuous) | Average annual account balance (in euros) |
+| `Housing` | *qualitative* <br> (categorical) | Has a housing loan? |
+| `Loan` | *qualitative* <br> (categorical) | Has a personal loan? |
+| `Contact` | *qualitative* <br> (categorical) | Contact method |
+| `Month` | *qualitative* <br> (ordinal) | Month of most recent contact |
+| `Duration` | *quantitative* <br> (continuous) | Duration (in seconds) of last call |
+| `Campaign` | *quantitative* | Number of contacts during this campaign |
+| `pdays` | *quantitative* | Days since last contact from a previous campaign |
+| `pprevious` | *quantitative* | Number of contacts before this campaign |
+| `poutcome` | *qualitative* (nominal) | Outcome of previous marketing campaign |
+| `Deposit` | *qualitative* <br> (nominal) | Did the client subscribe to a term deposit? |
 
+:::
+
+
+The dataset consists of `r ncol(bank_dataset)` variables (columns), of which 7 are quantitative and the remaining 10 are qualitative. Of the qualitative variables, 8 are categorical and only two are ordinal (month of contact and education level).
+
+### Defining Functions
+
+> Ok, we have seen some basic characteristics of the data and their structure. Can I now start my analysis?
+
+It depends. If we want a quick analysis to extract a specific result, it is probably fine. However, most of the time a more careful study design is required. A common mistake I have made in the past is the risk of repeating certain procedures. To prevent writing the same things multiple times, writing reusable functions is essential. For example, in this exercise we observed in the previous section the presence of variables of the same type, both qualitative and quantitative. Why write similar code 10 times when we can encapsulate the core logic into a single function?
+
+Consequently, we define two functions. First, `univariateQualitativePlot`, which is used for creating pie charts and bar charts for the qualitative variables.
 
 ```{r}
-#| label: response_var_to_factor
-#| title: "Convert response variable to factor"
-bank_dataset$y = as.factor(bank_dataset$y)
+gt_custom <- function(data, head_max = 5, use_labels = TRUE) {
+    
+    data_subset <- as.data.frame(data) %>% head(head_max)
+    
+    gt_tbl <- data_subset %>%
+        gt::gt(groupname_col = "model") %>%
+        cols_align(align = "center", columns = everything()) %>%
+        tab_style(
+            style = cell_text(
+                v_align = "middle",
+                weight = "bold",
+                whitespace = "normal"
+            ),
+            locations = cells_column_labels()
+        ) %>%
+        tab_options(
+            row.striping.include_table_body = FALSE,
+            table.background.color = "transparent",
+            column_labels.background.color = "transparent",
+            table.width = pct(100), 
+            table.font.size = px(13),           
+            data_row.padding = px(15), 
+            column_labels.padding = px(15),
+            table.border.top.style = "none",
+            table.border.bottom.style = "none",
+            table_body.hlines.style = "none", 
+            column_labels.border.top.width = px(2),
+            column_labels.border.top.color = "#757575",
+            column_labels.border.bottom.width = px(2),
+            column_labels.border.bottom.color = "#757575",
+            table_body.border.bottom.width = px(2),
+            table_body.border.bottom.color = "#757575"
+        ) %>%
+        opt_css(css = "
+      .gt_table th, .gt_table td { 
+        text-align: center !important; 
+        vertical-align: middle !important;
+      }
+      .gt_table { 
+        margin-left: auto !important; 
+        margin-right: auto !important; 
+        width: 100% !important;
+      }
+      .gt_table tr { background-color: transparent !important; }
+      .gt_row { background-color: transparent !important; }
+    ")
+    
+    if (use_labels) {
+        gt_tbl <- gt_tbl %>%
+            cols_label_with(
+                fn = function(x) {
+                    html(paste0(
+                        "<b>", col_labels[x], "</b>",
+                        "<br><span style='font-size:10px; color:#777; font-style:italic;'>",
+                        x,
+                        "</span>"
+                    ))
+                }
+            )
+    }
+    
+    return(gt_tbl)
+}
 ```
 
-
-## Custom functions
-
-> So, I have a basic idea about my data. Can we start analyzing our data?
-
-It depends. If you want to do a simple analysis then yes. Although most of the times this is not the case. Probably there is the need for repetitive actions. In order to not repeat ourselves we need to define some actions, prior to our analysis.
-
-On this occasion, I found beneficial the definition of a function for qualitative data.
-
 ```{r}
-#| label: function_plot_qual_vars
-#| title: "Function: Create single variable plots - Qualitative"
+#| label: function_qualitative_plots
+#| title: "Function: Create chart for a qualitative variable"
 univariateQualitativePlot <- function(data, column, title, subtitle, chart_type = "bar") {
-  library(dplyr)
-  library(highcharter)
 
-  # Compute frequency table
   freq_table <- data %>%
     count({{ column }}, name = "Frequency") %>%
     arrange(desc(Frequency)) %>%
-    rename(Variable = {{ column }})
+    rename(Variable = {{ column }}) %>%
+    mutate(pct = round((Frequency / sum(Frequency) * 100), digits = 1))
 
-  # Define common chart properties
   hc <- highchart() %>%
     hc_title(text = title) %>%
     hc_subtitle(text = subtitle) %>%
     hc_tooltip(pointFormat = "{point.name}: {point.y}") %>%
-    hc_legend(enabled = chart_type == "pie")  # Enable legend only for pie chart
+    hc_legend(enabled = chart_type == "pie")
 
-  # Choose chart type
   hc <- if (chart_type == "bar") {
     hc %>%
       hc_chart(type = "bar") %>%
-      hc_xAxis(categories = freq_table$Variable, title = list(text = "Job Category")) %>%
+      hc_xAxis(categories = freq_table$Variable, title = list(text = "Category")) %>%
       hc_yAxis(title = list(text = "Frequency")) %>%
       hc_series(list(name = "Frequency", data = freq_table$Frequency))
   } else if (chart_type == "pie") {
     pie_data <- lapply(1:nrow(freq_table), function(i) {
       list(name = freq_table$Variable[i], y = freq_table$Frequency[i])
     })
-    
     hc %>%
       hc_chart(type = "pie") %>%
       hc_series(list(name = "Frequency", data = pie_data))
@@ -239,186 +404,303 @@ univariateQualitativePlot <- function(data, column, title, subtitle, chart_type 
 
   return(hc)
 }
+
+univariateQualitative <- function(data, column) {
+
+  freq_table <- data %>%
+    count({{ column }}, name = "Frequency") %>%
+    arrange(desc(Frequency)) %>%
+    rename(Variable = {{ column }}) %>%
+    mutate(pct = round((Frequency / sum(Frequency) * 100), digits = 1))
+
+  return(freq_table)
+}
 ```
 
+Similarly, we will define the `univariateQuantitativePlot` function for building histograms for our quantitative variables. Both functions build interactive charts using the `{highcharter}` package.
 
-I will do the same for univariate numeric data. 
+## Descriptive Analysis
 
-[EDITTING]
-
-
-# EDA with R
-
-## Missing Values
+### Missing Values
 
 ```{r}
-#| label: how_many_na_values
-#| title: "How many NAs do I have"
+#| label: missing_values
+#| title: "Missing value check"
 #| results: hide
 how_many_nas = sum(is.na(bank_dataset))
 ```
 
-On this dataset there are `r how_many_nas` missing values, in total. So, there is no need for imputation.
+The dataset contains a total of `r how_many_nas` missing values. This is of course a rare and ideal situation. Otherwise, we would need to impute the missing values using some estimation method.
 
+### Univariate Analysis
 
-## Univariate analysis
+Next it is important to study our variables, their values and their distributions. This is a critical step to understand the sample and to take additional context into account when building the model.
 
-### Qualitative variables
-
-::: {.panel-tabset}
-
-#### Job
+Regarding the employment sector, the sample shows significant participation from individuals with jobs likely associated with higher education and consequently higher earnings, such as management executives, administrative employees, and entrepreneurs. About 40% of the bank's customers work in blue-collar jobs, which are most often associated with a reduced willingness to commit capital. Finally, in the bank's customer base there is a share of around 10% from population groups who, for various reasons, would not benefit from creating a term deposit account: the unemployed, students who are in a financially vulnerable period with high expenses and limited income, and retirees who may need to cover unexpected healthcare costs. For retirees specifically, who make up 5% of customers, there are other financial instruments available for securing their retirement, such as reverse mortgages.
 
 ```{r}
 #| label: fig-job
-#| title: "Figure : Job"
-#| fig-cap: "Figure: Job"
+#| title: "Chart: Employment sector"
+#| fig-align: center
+#| fig-cap: "Bar chart of employment sectors of bank customers"
+
 univariateQualitativePlot(bank_dataset, job, 
-                          title = "Sector of employment of the respondent?", 
-                          subtitle = "Number and (%) of total respondents")
+                          title = "Employment Sector", 
+                          subtitle = "Absolute count and percentage (%) of all customers")
 ```
 
+::: {.column-margin}
+```{r}
+#| label: tbl-job
+#| tbl-cap: "Employment sector of bank customers"
+#| echo: false
 
-####  Marital status
+univariateQualitative(bank_dataset, job) %>%
+  rename(
+    "Occupation" = Variable,
+    "Frequency"  = Frequency,
+    "Percentage" = pct
+  ) %>%
+  gt_custom(head_max = Inf, use_labels = FALSE)
+```
+:::
+
+
+Another available piece of information is marital status, which may be associated with increased household needs and expenses. A married customer may have higher household expenses (e.g., due to children). Alternatively, married individuals may also have greater financial stability. In general, the interpretation of this indicator is not clear-cut a priori. In any case, in the sample under examination about 60% of individuals are married, one quarter are single, and the rest are divorced.
 
 ```{r}
-#| label: fig-marital-status
-#| title: "Figure : Marital Status"
-#| fig-cap: "Figure : Marital Status"
+#| label: fig-marital
+#| title: "Chart: Marital Status"
+#| fig-align: center
+#| fig-cap: "Pie chart of marital status of bank customers"
+
 univariateQualitativePlot(bank_dataset, marital, 
                           title = "What is your marital status?", 
-                          subtitle = "Most of the participants are married.", "pie")
-```
-
-
-
-
-
-#### Education
-
-```{r Figure : Education, fig.align='center'}
-univariateQualitativePlot(bank_dataset, education, title = "Type of your education", subtitle = "")
-```
-
-#### Default
-
-```{r Figure : Default, fig.align='center'}
-univariateQualitativePlot(bank_dataset, default, 
-                          title = "Has credit in default?", 
-                          subtitle = "(%) of respondents that have failed to meet their payment obligations",                            "pie")
-```
-
-####  Housing 
-
-```{r Figure : Housing, fig.align='center'}
-univariateQualitativePlot(bank_dataset, housing, 
-                          title = "Has housing loan?", 
-                          subtitle = "(%) of respondents who have acquired a housing loan",                            "pie")
-```
-
-
-#### Loan 
-
-```{r Figure : Loan, fig.align='center'}
-univariateQualitativePlot(bank_dataset, loan, 
-                          title = "Has personal loan?", 
-                          subtitle = "(%) of respondents who have acquired a personal loan",                            "pie")
-```
-
-
-#### Contact
-
-```{r Figure : Contact , fig.align='center'}
-univariateQualitativePlot(bank_dataset, contact, 
-                          title = "Type of Contact", 
-                          subtitle = "Vast majority of apporaches are via cellular phones.", "pie")
-```
-
-
-#### Month
-
-```{r Διάγραμμα: Μήνας τελευταίας προσέγγισης}
-#| label: fig-last-month
-#| fig-cap: "Κυκλικό διάγραμμα τρόπων προσέγγισης ατόμων - πελατών"
-univariateQualitativePlot(bank_dataset, month, 
-                          title = "Μέσο επικοινωνίας", 
-                          subtitle = "Η προώθηση μέσω κινητού είναι πιο εκτεταμένη σε σχέση με το σταθερό")
-```
-
-
-#### poutcome
-
-```{r Figure : poutcome}
-univariateQualitativePlot(bank_dataset, poutcome, 
-                          title = "Which was the outcome of the previous approaches?", 
-                          subtitle = "For every five failed approaches there was one succussful.", "pie")
-```
-
-#### Deposit 
-
-
-```{r Figure : Output Variable (Deposit Account (Y/N)), fig.align='center'}
-univariateQualitativePlot(bank_dataset, y, 
-                          title = "How many people made a deposit account?", 
-                          subtitle = "(%) of respondents who have decided to open a deposit account
-                                      as a result of the current approach",
+                          subtitle = "The majority are married.",
                           "pie")
 ```
 
+::: {.column-margin}
+```{r}
+#| label: tbl-marital
+#| tbl-cap: "Marital status of bank customers"
+#| echo: false
+
+univariateQualitative(bank_dataset, marital) %>%
+  rename(
+    "Marital Status" = Variable,
+    "Frequency"      = Frequency,
+    "Percentage"     = pct
+  ) %>%
+  gt_custom(head_max = Inf, use_labels = FALSE)
+```
 :::
 
-### Quantitative variables
 
-::: {.panel-tabset}
+A variable that, at least intuitively, can be among the most important is the customer's highest level of education. It is logical that someone with higher-level education can work in jobs requiring specialization that is rewarded accordingly given its reduced supply. This indirectly determines professional opportunities and consequently the salary one can command and the amount left over for savings. In this particular dataset only 30% have university-level education.
+
+```{r}
+#| label: fig-educ
+#| title: "Chart: Education level"
+#| fig-align: center
+#| fig-cap: "Bar chart of educational background of bank customers"
+
+univariateQualitativePlot(bank_dataset, 
+                          education, 
+                          title = "Highest level of education",
+                          subtitle = "")
+```
+
+::: {.column-margin}
+```{r}
+#| label: tbl-educ
+#| tbl-cap: "Education level"
+#| echo: false
+
+univariateQualitative(bank_dataset, education) %>%
+  rename(
+    "Education"  = Variable,
+    "Frequency"  = Frequency,
+    "Percentage" = pct
+  ) %>%
+  gt_custom(head_max = Inf, use_labels = FALSE)
+```
+:::
+
+Beyond education, which is a strong indicator, the customer's financial obligations also play an important role. These can be examined through three variables:
+
+- whether the customer has credit in default
+- whether the customer has a housing loan
+- whether the customer has a personal loan
+
+It is obvious that a customer with outstanding debts is unlikely to consider saving rather than paying off what they owe. In the sample only 76 individuals, corresponding to 1.6% of customers, fall into this category, which is encouraging for the vast majority.
+
+```{r}
+#| label: fig-default
+#| title: "Chart: How many respondents have outstanding debts"
+#| fig-align: center
+#| fig-cap: "Pie chart of customers by credit default status"
+
+univariateQualitativePlot(bank_dataset, default, 
+                          title = "Do you have any credit in default?", 
+                          subtitle = "Percentage (%) of individuals who have not fulfilled their credit obligations",  
+                          "pie")
+```
+
+::: {.column-margin}
+```{r}
+#| label: tbl-default
+#| tbl-cap: "How many have outstanding debts?"
+#| echo: false
+
+univariateQualitative(bank_dataset, default) %>%
+  rename(
+    "Default"    = Variable,
+    "Frequency"  = Frequency,
+    "Percentage" = pct
+  ) %>%
+  gt_custom(head_max = Inf, use_labels = FALSE)
+```
+:::
+
+Furthermore, a significant share of the bank's customers already carry substantial obligations, both short-term and long-term. More than half have taken out a housing loan, which represents a fixed, long-term commitment that cannot be defaulted on since it is often secured against the property itself. On the other hand, one could argue that having a housing loan means the household has already budgeted for housing costs rather than paying rent. What may be the more important barrier is the presence of a personal or consumer loan. These loans are typically taken out to cover short-term unexpected needs and are known for their high interest rates, making them expensive. Paying them off first is the sensible priority, and opening a term deposit is not a logical step in that context. In our case about 15% have a personal loan, which is mildly encouraging since it leaves 85% without this particular obstacle.
+
+```{r}
+#| label: fig-housing-personal-loan
+#| tbl-cap: "Types of loans held by bank customers"
+#| tbl-subcap: 
+#|   - "Housing loan"
+#|   - "Personal loan"
+#| layout-ncol: 2
+
+univariateQualitative(bank_dataset, housing) %>%
+    rename("Housing Loan?" = Variable,
+           "Frequency"     = Frequency,
+           "Percentage"    = pct) %>%
+    gt_custom(head_max = Inf, use_labels = FALSE)
+
+univariateQualitative(bank_dataset, loan) %>%
+    rename("Personal Loan?" = Variable,
+           "Frequency"      = Frequency,
+           "Percentage"     = pct) %>%
+    gt_custom(head_max = Inf, use_labels = FALSE)
+```
 
 
-#### Age 
+Another piece of information available is the contact method used to reach customers. More than half (64%) have indicated a mobile phone as their preferred contact method.
 
-```{r Figure : Age, fig.align='center'}
-subtitle_text = glue("The meadian age is <b>{median(bank_dataset$age)}</b>.")
+```{r}
+#| label: fig-contact
+#| title: "Chart: Contact method"
+#| fig-cap: "Pie chart of contact methods used to reach customers"
+univariateQualitativePlot(bank_dataset, contact, 
+                          title = "Contact method", 
+                          subtitle = "Mobile contact is more widespread than landline",
+                          "pie")
+```
 
+::: {.column-margin}
+```{r}
+#| label: tbl-contact
+#| tbl-cap: "Contact method"
+#| echo: false
+
+univariateQualitative(bank_dataset, contact) %>%
+  rename(
+    "Contact Method" = Variable,
+    "Frequency"      = Frequency,
+    "Percentage"     = pct
+  ) %>%
+  gt_custom(head_max = Inf, use_labels = FALSE)
+```
+:::
+
+Another interesting variable is the last month in which a customer was contacted. Most recent contacts appear to have occurred during the summer months. This detail requires careful interpretation, however, as the data may have been collected in September, which would naturally make summer months the most recent for most customers. A bivariate analysis in the next section, looking at successful contacts by month, will help examine this more precisely.
+
+```{r}
+#| label: fig-last-month
+#| fig-cap: "Bar chart of contacts by month"
+univariateQualitativePlot(bank_dataset, month, 
+                          title = "Contacts by month", 
+                          subtitle = "(#) Absolute number of contacts per month")
+```
+
+According to the data and its description, the bank had previously run similar campaigns promoting term deposit accounts. As a result, we have records of customers who subscribed in previous campaigns, which may be useful since a notable share could be interested in re-subscribing. The previous campaigns resulted in 129 customers having subscribed, while the status of many others is unknown.
+
+```{r}
+#| label: fig-poutcome
+#| title: "Chart: Response to previous campaigns"
+#| fig-cap: "Pie chart of customer responses in previous term deposit campaigns"
+univariateQualitativePlot(bank_dataset, poutcome, 
+                          title = "What was the outcome of the previous contact?", 
+                          subtitle = "For every five unsuccessful contacts (failure or other), there is one successful one", "pie")
+```
+
+
+Here we essentially have the outcome we are trying to predict. These figures are known from the current campaign. Based on them and the previous variables, we will build a prediction model, and those models will be evaluated against these observed outcomes.
+
+```{r}
+#| label: fig-outcome
+#| title: "Chart: Response to current campaign"
+#| fig-cap: "Pie chart of customer responses to the current term deposit campaign"
+univariateQualitativePlot(bank_dataset, y, 
+                          title = "How many decided to open a term deposit?", 
+                          subtitle = "Percentage of customers who decided to open a term deposit as a result of the current campaign.",
+                          "pie")
+```
+
+The bank's customers are predominantly younger, with the vast majority under 60. The histogram appears to have a bell shape resembling a normal distribution, but with a slight positive skew.
+
+```{r}
+#| label: fig-age
+#| title: "Chart: Respondent age"
+#| fig-cap: "Histogram of age distribution of bank customers"
 hchart(bank_dataset$age) %>%
     hc_title(text = "Age Distribution") %>%
-    hc_subtitle(text = subtitle_text) %>%
+    hc_subtitle(text = glue("The median age is <b>{median(bank_dataset$age)}</b> years.")) %>%
     hc_caption(text = "Bank Marketing Dataset from UCI") %>%
     hc_tooltip(pointFormat = "{point.name}: {point.y}") %>%
     hc_legend(enabled = FALSE)
 ```
 
 
-#### Balance
-
-```{r Figure : Balance, fig.align='center'}
+```{r}
+#| label: fig-balance
+#| title: "Chart: Account balance"
+#| fig-cap: "Histogram of account balance distribution of bank customers"
 hchart(bank_dataset$balance) %>%
     hc_title(text = "Balance Distribution") %>%
-    hc_subtitle(text = glue("The most prevalent group is the one with balance between 0$ and 200$. The median balance is {median(bank_dataset$balance)}")) %>%
+    hc_subtitle(text = glue("Most balances range between $0 and $200. The median account balance is {median(bank_dataset$balance)}. The 75th percentile is $1,480, meaning one quarter of customers have balances above this amount. Balances range from {min(bank_dataset$balance)} to {max(bank_dataset$balance)}.")) %>%
     hc_caption(text = "Bank Marketing Dataset from UCI") %>%
     hc_tooltip(pointFormat = "{point.name}: {point.y}") %>%
     hc_legend(enabled = FALSE) %>%
     hc_xAxis(
-    title = list(text = "Balance in $"),
+    title = list(text = "Account balance in USD"),
       max = 10000
 )
 ```
 
-
-####  Διάρκεια κλήσης
+Another variable of interest is the duration of the last call. Intuitively, a very short call suggests the customer is not interested, while a longer interaction between the agent and the customer likely signals greater interest in the banking product.
 
 ```{r}
+#| label: fig-call-duration
+#| title: "Chart: Call duration"
+#| fig-cap: "Histogram of total call duration (in seconds)"
 hchart(bank_dataset$duration) %>%
-    hc_title(text = "Διάρκεια κλήσης") %>%
-    hc_subtitle(text = glue("Οι περισσότερες καταθέσεις κυμαίνονται μεταξύ των 0$ και 200$ δολαρίων. Το διάμεσο υπόλοιπο λογαριασμού είναι {median(bank_dataset$balance)} $. Το 75ο τεταρτημόριο είναι τα 1480$, άρα το ένα τέταρτο των πελατών έχει καταθέσεις υψηλότερες αυτού του ποσού. Τα ύψη των λογαριασμών κυμαίνονται από {min(bank_dataset$balance)} μέχρι και τα {max(bank_dataset$balance)} $")) %>%
+    hc_title(text = "Call Duration") %>%
+    hc_subtitle(text = glue("The average call duration is 4.4 minutes, while the median is 3 minutes.")) %>%
     hc_caption(text = "Bank Marketing Dataset from UCI") %>%
     hc_tooltip(pointFormat = "{point.name}: {point.y}") %>%
     hc_legend(enabled = FALSE) %>%
     hc_xAxis(
-    title = list(text = "Διάρκεια κλήσης (σε δευτερόλεπτα)"),
+    title = list(text = "Call duration (in seconds)"),
     max = 1000)
 ```
 
-####  Campaign
 
 ```{r}
+#| label: recoding_campaign_variable
+#| title: "Recoding: Contacts in this campaign"
 s = bank_dataset %>%
   mutate(category = case_when(
     campaign >= 1 & campaign <= 7 ~ as.character(campaign),
@@ -426,51 +708,55 @@ s = bank_dataset %>%
     TRUE                   ~ NA_character_
   )) %>%
   mutate(category = factor(category, levels = c(as.character(1:7), "8+"), ordered = TRUE))
-
 ```
 
-
-```{r Figure : Campaign - Num of Approaches to specific person, fig.align='center'}
+```{r}
+#| label: fig-times-of-promoting
+#| title: "Chart: Number of contacts per customer"
+#| fig-cap: "Bar chart of total number of contacts made with each customer"
 hchart(s$category) %>%
-    hc_title(text = "Αριθμός προσεγγίσεων") %>%
-    hc_subtitle(text = glue("Οι περισσότερες καταθέσεις κυμαίνονται μεταξύ των 0€ και 200€ ευρώ. Το διάμεσο υπόλοιπο λογαριασμού είναι {median(bank_dataset$balance)} €. Το 75ο τεταρτημόριο είναι τα 1480€, άρα το ένα τέταρτο των πελατών έχει καταθέσεις υψηλότερες αυτού του ποσού. Τα ύψη των λογαριασμών κυμαίνονται από {min(bank_dataset$balance)} μέχρι και τα {max(bank_dataset$balance)} $")) %>%
+    hc_title(text = "Number of Contacts") %>%
+    hc_subtitle(text = glue("How many times was the same customer contacted")) %>%
     hc_caption(text = "Bank Marketing Dataset from UCI") %>%
     hc_legend(enabled = FALSE) %>%
     hc_xAxis(
-    title = list(text = "Ύψος καταθέσεων σε ευρώ €")
+    title = list(text = "Number of contacts")
 )
 ```
 
+::: {.column-margin}
+```{r}
+#| label: tbl-times-of-promoting
+#| tbl-cap: "Number of contacts per customer"
+#| echo: false
+
+table(s$category) %>% 
+  as.data.frame() %>%
+  rename(
+    "Contacts (#)" = Var1,
+    "Frequency"    = Freq
+  ) %>%
+  gt_custom(head_max = Inf, use_labels = FALSE)
+```
 :::
 
 
+### Bivariate Analysis
 
-## Bivariate analysis
+In the previous sub-section we examined some basic descriptive statistics per variable, giving us a sense of the bank's customer base. Looking at these figures individually may not be sufficient to draw meaningful conclusions, and a bivariate analysis (comparing two variables at a time) becomes necessary. One approach would be to investigate the correlation between quantitative variables and the association between qualitative ones. In this case, it is particularly useful to compare the previous variables against the response variable, namely the customer's interest in opening a term deposit.
 
-On the previous section I learned a lot about my dataset. Now, I have to reveal relationships between my variables. Visualizing those relationships will make it even easier to explain our results. In order to make the right plots on the right occasions I used the book "Datavis with R" ([Chapter 4 : Bivariate Graphs](https://rkabacoff.github.io/datavis/Bivariate.html)). 
+An important comparison is the customer's employment sector against their final decision. The chart below shows that blue-collar workers have the lowest positive response rate, while retirees have the highest.
 
-
-### Qualitative variables
-
-::: {.panel-tabset}
-
-#### Job
-
-
-```{r, warning=FALSE, message=FALSE}
+```{r}
+#| label: fig-bi-job-deposit
+#| title: "Chart: Current campaign responses by employment sector"
+#| fig-cap: "Bar chart of campaign outcomes by occupation"
 plotjob <- bank_dataset %>%
   group_by(job, y) %>%
-  summarize(n = n()) %>% 
+  summarize(n = n(), .groups = "drop_last") %>% 
   mutate(pct = round(100*(n/sum(n)), digits = 1),
          lbl = scales::percent(pct)) %>%
   arrange(desc(pct))
-
-#categories <- unique(plotjob$job)
-
-# series_data <- plotjob %>%
-#     group_by(y) %>%
-#     summarise(series = list(list(name = first(y), data = pct))) %>%
-#     pull(series)
 
 highchart() %>%
   hc_chart(type = "column") %>%
@@ -491,40 +777,55 @@ highchart() %>%
     )
   ) %>%
   hc_series(
-    list(name = "No", data = plotjob$pct[plotjob$y == "no"], color = "#FF5733"),
-    list(name = "Yes", data = sort(plotjob$pct[plotjob$y == "yes"]), color = "#33FF57")
+    list(name = "No",  data = plotjob$pct[plotjob$y == "No"], color = "#AA5733"),
+    list(name = "Yes", data = sort(plotjob$pct[plotjob$y == "Yes"]), color = "#33bb57")
   ) %>%
   hc_tooltip(pointFormat = "<b>{series.name}</b>: {point.y}%") %>%
-  hc_title(text = "Job of Respondent by Interest to Term Deposit") %>%
-  hc_subtitle(text = "Students and retirees are the population groups with a proportionally lower interest in term deposits compared to other groups.") %>%
+  hc_title(text = "Current Campaign Responses by Occupation") %>%
+  hc_subtitle(text = "Students and retirees are the groups with the highest proportional subscription rates.") %>%
   hc_responsive(
     rules = list(
       list(
-        condition = list(
-          maxWidth = 500 # Hide labels when screen width is ≤500px
-        ),
+        condition = list(maxWidth = 500),
         chartOptions = list(
           plotOptions = list(
-            column = list(
-              dataLabels = list(enabled = FALSE) # Disable labels
-            )
+            column = list(dataLabels = list(enabled = FALSE))
           )
         )
       )
     )
 )
-
 ```
 
-#### Marital status
+::: {.column-margin}
+```{r}
+#| label: tbl-bi-job-deposit
+#| tbl-cap: "Campaign success rates by occupation"
+#| echo: false
 
-```{r, warning=FALSE, message=FALSE}
+plotjob |> 
+  select(job, y, pct) %>% 
+  ungroup(job) %>% 
+  tidyr::pivot_wider(names_from = y, values_from = pct) %>%
+  rename("Occupation" = job) %>%
+  gt_custom(head_max = Inf, use_labels = FALSE)
+```
+:::
+
+These results may have been partially expected when considering the likely financial situation of each group. The case of retirees is particularly interesting: while we initially assumed they would not be an ideal target due to potential unexpected expenses, the data show that they respond positively at a higher rate. This can be explained by the fact that many retirees have a stable income with few new financial obligations, making them suitable candidates for committing capital.
+
+There are also variables where the answer is less obvious, such as marital status. The chart shows that individuals who are alone (either single or divorced) subscribe proportionally more than married individuals.
+
+```{r}
+#| label: fig-bi-marital-deposit
+#| title: "Chart: Current campaign responses by marital status"
+#| fig-cap: "Bar chart of campaign outcomes by marital status"
 plotmarital <- bank_dataset %>%
   group_by(marital, y) %>%
-  summarize(n = n()) %>% 
-  mutate(pct = n/sum(n),
-         lbl = pct *100 ) |>
- arrange(y)
+  summarize(n = n(), .groups = "drop_last") %>% 
+  mutate(pct = round(100*(n/sum(n)), digits = 1),
+         lbl = scales::percent(pct)) %>%
+  arrange(desc(pct))
 
 highchart() %>%
   hc_chart(type = "column") %>%
@@ -545,23 +846,19 @@ highchart() %>%
     )
   ) %>%
   hc_series(
-    list(name = "Όχι", data = plotmarital$lbl[plotmarital$y == "Όχι"], color = "#FF5733"),
-    list(name = "Ναι", data = plotmarital$lbl[plotmarital$y == "Ναι"], color = "#33FF57")
+    list(name = "No",  data = plotmarital$pct[plotmarital$y == "No"], color = "#AA5733"),
+    list(name = "Yes", data = sort(plotmarital$pct[plotmarital$y == "Yes"]), color = "#33bb57")
   ) %>%
-  hc_tooltip(pointFormat = "<b>{series.name}</b>: {point.y:.2f}%") %>%
-  hc_title(text = "Marital Status by Interest to Term Deposit") %>%
-  hc_subtitle(text = "Couples are less interested in comparison to singles / divorced people in term deposit accounts. The increased expenses of a hpusehold may averts people from maintaining a term deposit.") %>%
+  hc_tooltip(pointFormat = "<b>{series.name}</b>: {point.y}%") %>%
+  hc_title(text = "Responses by Marital Status") %>%
+  hc_subtitle(text = "Single and divorced individuals show proportionally greater interest in term deposits compared to married customers.") %>%
   hc_responsive(
     rules = list(
       list(
-        condition = list(
-          maxWidth = 500 # Hide labels when screen width is ≤500px
-        ),
+        condition = list(maxWidth = 500),
         chartOptions = list(
           plotOptions = list(
-            column = list(
-              dataLabels = list(enabled = FALSE) # Disable labels
-            )
+            column = list(dataLabels = list(enabled = FALSE))
           )
         )
       )
@@ -569,626 +866,831 @@ highchart() %>%
 )
 ```
 
+A summary of the above can also be visualised with the following Sankey diagram. The first column shows the distribution across marital statuses combined with educational background, and we end at the third column which is the customer's final response (whether they are interested in opening a term deposit).
 
-#### Education
+```{r}
+custom_df = 
+  tibble(
+    r = bank_dataset$education,
+    t = bank_dataset$marital,
+    m = bank_dataset$y
+  )
 
-```{r, message=FALSE, warning=FALSE}
-educdata = bank_dataset %>%
-  group_by(education, y) %>%
-  summarize(n = n()) %>% 
-  mutate(pct = n/sum(n)*100) %>%
-  arrange(y)
+df_sankey = custom_df %>%
+  group_by(r, t, m) %>%
+  summarise(weight = n(), .groups = "drop")
 
+links2 = df_sankey %>%
+  group_by(t, r) %>%
+  summarise(weight = sum(weight), .groups = "drop") %>%
+  rename(from = t, to = r)
+
+links3 = df_sankey %>%
+  group_by(r, m) %>%
+  summarise(weight = sum(weight), .groups = "drop") %>%
+  rename(from = r, to = m)
+
+links_all <- bind_rows(links2, links3)
 
 highchart() %>%
-  hc_chart(type = "column") %>%
-  hc_xAxis(categories = educdata$education) %>%
-  hc_yAxis(
-    min = 0,
-    max = 100,
-    title = list(text = "Percentage"),
-    labels = list(format = "{value}%")
+  hc_chart(type = "sankey") %>%
+  hc_title(text = "Marital Status -> Education -> Outcome") %>%
+  hc_subtitle(text = "Flow of customers by combination of demographic characteristics and final decision") %>%
+  hc_add_series(
+    keys = c("from", "to", "weight"),
+    data = list_parse(links_all),
+    name = "Flow"
   ) %>%
-  hc_plotOptions(
-    column = list(
-      stacking = "percent",
-      dataLabels = list(
-        enabled = TRUE,
-        format = "{point.y:.0f}%"
-      )
-    )
-  ) %>%
-  hc_series(
-    list(name = "No", data = educdata$pct[educdata$y == "no"], color = "#FF5733"),
-    list(name = "Yes", data = educdata$pct[educdata$y == "yes"], color = "#33FF57")
-  ) %>%
-  hc_tooltip(pointFormat = "<b>{series.name}</b>: {point.y:.2f}%") %>%
-  hc_title(text = "Education Level & Interest to Term Deposit") %>%
-  hc_subtitle(text = "The more educated people tend to be more interested to new bank/finanial products. ") %>%
-  hc_responsive(
-    rules = list(
-      list(
-        condition = list(
-          maxWidth = 500 # Hide labels when screen width is ≤500px
-        ),
-        chartOptions = list(
-          plotOptions = list(
-            column = list(
-              dataLabels = list(enabled = FALSE) # Disable labels
-            )
-          )
-        )
-      )
-    )
-)
+  hc_tooltip(pointFormat = "{point.from} -> {point.to}: <b>{point.weight}</b>")
 ```
 
-
-#### Housing
+I also wanted to compare the difference between previous and current campaign outcomes, to understand where subscribers come from. Did customers re-subscribe, or did the bank succeed in expanding its reach to new clients? The bank retains significant loyalty from previous subscribers, with 64% of those who had previously agreed to open a term deposit doing so again in the new campaign. The key figure in this bivariate analysis is the rate at which those who previously declined were converted. This rate approaches 13%, which is a reasonably satisfying result given that they had previously refused.
 
 ```{r}
-plot_housing2 = bank_dataset %>%
-  group_by(housing, y) %>%
-  summarize(n = n()) %>% 
-  mutate(pct = n/sum(n)*100) %>%
-  arrange(y)
+custom_df = 
+  tibble(
+    t = bank_dataset$poutcome,
+    l = bank_dataset$y
+  )
 
+df_sankey = custom_df %>%
+  group_by(t, l) %>%
+  summarise(weight = n(), .groups = "drop")
+
+links3 = df_sankey %>%
+  group_by(t, l) %>%
+  summarise(weight = sum(weight), .groups = "drop") %>%
+  rename(from = t, to = l)
+
+links_all <- bind_rows(links3)
 
 highchart() %>%
-  hc_chart(type = "column") %>%
-  hc_xAxis(categories = plot_housing2$housing) %>%
-  hc_yAxis(
-    min = 0,
-    max = 100,
-    title = list(text = "Percentage"),
-    labels = list(format = "{value}%")
+  hc_chart(type = "sankey") %>%
+  hc_title(text = "Sankey Diagram: Previous vs Current Campaign") %>%
+  hc_subtitle(text = "The diagram highlights the improved results of the current campaign (second column) compared to previous ones. Approximately 12% (63 individuals) who previously declined were persuaded to subscribe in the current campaign.") %>%
+  hc_add_series(
+    keys = c("from", "to", "weight"),
+    data = list_parse(links_all),
+    name = "Flow"
   ) %>%
-  hc_plotOptions(
-    column = list(
-      stacking = "percent",
-      dataLabels = list(
-        enabled = TRUE,
-        format = "{point.y:.0f}%"
-      )
-    )
-  ) %>%
-  hc_series(
-    list(name = "No", data = plot_housing2$pct[plot_housing2$y == "no"], color = "#FF5733"),
-    list(name = "Yes", data = plot_housing2$pct[plot_housing2$y == "yes"], color = "#33FF57")
-  ) %>%
-  hc_tooltip(pointFormat = "<b>{series.name}</b>: {point.y:.2f}%") %>%
-  hc_title(text = "Do you have housing loan?") %>%
-  hc_subtitle(text = "People without loans tend to open more willingly deposit accounts.") %>%
-  hc_responsive(
-    rules = list(
-      list(
-        condition = list(
-          maxWidth = 500 # Hide labels when screen width is ≤500px
-        ),
-        chartOptions = list(
-          plotOptions = list(
-            column = list(
-              dataLabels = list(enabled = FALSE) # Disable labels
-            )
-          )
-        )
-      )
-    )
-)
+  hc_tooltip(pointFormat = "{point.from} -> {point.to}: <b>{point.weight}</b>")
 ```
 
-#### Loan
+
+## Building the Model
+
+In R there are two widely used frameworks for building models: [caret](https://topepo.github.io/caret/) and [tidymodels](https://www.tidymodels.org/). On one hand, the caret package is fairly easy to use and has a large body of guides and tutorials. On the other hand, tidymodels is an all-in-one solution, a meta-package (a collection of packages) that provides a comprehensive workflow, though with somewhat less documentation since it is more recent.
+
+### Splitting the Dataset
+
+The first step is to split the original dataset. In this analysis we use a **three-way split**:
+
+- **Training set** (`bank_train`): used for training all models and cross-validation.
+- **Validation set** (`bank_val`): a small portion of the training set held aside exclusively for selecting the optimal classification threshold for the Stack Ensemble.
+- **Test set** (`bank_test`): used **only** for the final evaluation, and not touched at any other stage.
 
 ```{r}
-plot_loan = bank_dataset %>%
-  group_by(loan, y) %>%
-  summarize(n = n()) %>% 
-  mutate(pct = n/sum(n)*100) %>%
-  arrange(y)
-```
+#| label: split_data_train_test
+#| title: "Dataset split"
 
-
-```{r}
-highchart() %>%
-  hc_chart(type = "column") %>%
-  hc_xAxis(categories = plot_loan$loan) %>%
-  hc_yAxis(
-    min = 0,
-    max = 100,
-    title = list(text = "Percentage"),
-    labels = list(format = "{value}%")
-  ) %>%
-  hc_plotOptions(
-    column = list(
-      stacking = "percent",
-      dataLabels = list(
-        enabled = TRUE,
-        format = "{point.y:.0f}%"
-      )
-    )
-  ) %>%
-  hc_series(
-    list(name = "No", data = plot_loan$pct[plot_loan$y == "no"], color = "#FF5733"),
-    list(name = "Yes", data = plot_loan$pct[plot_loan$y == "yes"], color = "#33FF57")
-  ) %>%
-  hc_tooltip(pointFormat = "<b>{series.name}</b>: {point.y:.2f}%") %>%
-  hc_title(text = "Do you have personal loan?") %>%
-  hc_subtitle(text = "People without loans tend to open more willingly deposit accounts.") %>%
-  hc_responsive(
-    rules = list(
-      list(
-        condition = list(
-          maxWidth = 500 # Hide labels when screen width is ≤500px
-        ),
-        chartOptions = list(
-          plotOptions = list(
-            column = list(
-              dataLabels = list(enabled = FALSE) # Disable labels
-            )
-          )
-        )
-      )
-    )
-)
-```
-
-
-#### Contact
-
-
-
-
-#### Month
-
-
-
-#### poutcome
-
-
-:::
-
-
-### Quantitative variables
-
-::: {.panel-tabset}
-
-#### Age 
-
-```{r}
-dat <- data_to_boxplot(bank_dataset, age, y)
-highchart() %>%
-    hc_xAxis(type = "category") %>%
-    hc_add_series_list(dat) %>%
-    hc_title(text = "Age & Desire of Bank Deposit Account") %>%
-    hc_subtitle(text = "There are not significant demographic differences concerning people that choose to open term deposit accounts.")  %>%
-    hc_legend(enabled = FALSE)
-```
-
-#### Balance
-
-```{r, warning=FALSE, message=FALSE}
-dat <- data_to_boxplot(bank_dataset, balance, y)
-
-highchart() %>%
-    hc_xAxis(type = "category") %>%
-    hc_add_series_list(dat) %>%
-    hc_title(text = "Balance & Desire of Bank Deposit Account") %>%
-    hc_subtitle(text = "")  %>%
-    hc_legend(enabled = FALSE)
-```
-
-
-#### Duration
-
-```{r}
-
-```
-
-
-#### Campaign
-
-```{r}
-
-```
-:::
-
-# Building model
-
-In R there are two fairly well-known libraries when it comes to model generation, [caret](https://topepo.github.io/caret/) and [tidymodels](https://www.tidymodels.org/). On one hand, caret is pretty simple to use, has lots of sources, guides, explanatory articles. On the other hand, tidymodels is an all-in-one solution but has less documentation, articles compared to caret.
-
-
-## Split train/test dataset
-
-
-Our first step is to split our dataset on 2 parts. Each of those will be used for a different purpose. The first part's (train dataset) purpose is to build our model. The other part (test dataset) will be used to evaluate our model's performance. 
-
-
-```{r}
 set.seed(123)
+
+# Main split: 75% train, 25% test
 bank_dataset_split <- initial_split(bank_dataset,
-                                prop = 0.75,
+                                    prop   = 0.75,
+                                    strata = y)
+bank_trainval <- training(bank_dataset_split)
+bank_test     <- testing(bank_dataset_split)
+
+# Secondary split: from trainval we produce
+# bank_train (80%) and bank_val (20%)
+set.seed(123)
+trainval_split <- initial_split(bank_trainval,
+                                prop   = 0.80,
                                 strata = y)
-
-# Create training data
-bank_train <- bank_dataset_split %>%
-                    training()
-
-# Create testing data
-bank_test <- bank_dataset_split %>%
-                    testing()
+bank_train <- training(trainval_split)
+bank_val   <- testing(trainval_split)
 ```
 
 <center>
-```{mermaid, echo = FALSE}
+
+```{mermaid}
+%%| echo: false
+%%| label: fig-diagram-split
+%%| fig-cap: "Three-way data split"
+
 graph TD;
-  A(Data) --> B(Train Dataset <br> 3390 obs.)
-  A(Data) --> C(Test  Dataset <br> 1131 obs.)
+  A(Full Dataset <br> 4521 observations) --> B(bank_trainval <br> 3390 observations)
+  A --> C(bank_test <br> 1131 observations)
+  B --> D(bank_train <br> 2712 observations)
+  B --> E(bank_val <br> 678 observations)
+  D --> F(Model Training)
+  D --> G(Cross-validation)
+  E --> H(Stack Ensemble Threshold)
+  C --> I(Final Evaluation)
 ```
+
 </center>
 
+The `bank_val` set contains approximately 678 observations, enough to give a reliable threshold estimate without removing a significant portion of the training data.
 
+In our example we have, as mentioned, 4521 observations. The most common split is 75% (or 80%) for training and 25% (or 20%) for evaluation. We therefore end up with two subsets with the same number of variables: the training set with 3390 observations and the evaluation set with 1131.
 
-::: {.panel-tabset}
-
-### Train dataset
+#### Training Data
 
 ```{r}
-head(bank_train) %>%
-  kbl(toprule = T,align = 'c',booktabs = T)  %>%
-  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
+#| echo: false
+col_labels <- c(
+    ID       = "ID",
+    age      = "Age",
+    job      = "Occupation",
+    marital  = "Marital Status",
+    education = "Education",
+    default  = "Credit Default",
+    balance  = "Balance",
+    housing  = "Housing Loan",
+    loan     = "Personal Loan",
+    contact  = "Contact Method",
+    day      = "",
+    month    = "Month",
+    duration = "Call Duration",
+    campaign = "Number of Calls",
+    pdays    = "Days Since Last Call",
+    poutcome = "Previous Outcome",
+    Deposit  = "Subscribed?"
+)
 ```
 
-
-### Test dataset
-
 ```{r}
-head(bank_test) %>%
-  kbl(toprule = T,align = 'c',booktabs = T)  %>%
-  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
+#| label: tbl-preview-train-dataset
+#| title: "Training data preview"
+#| tbl-cap: "Preview of the model training subset (train dataset)"
+bank_train %>%
+  gt_custom(.)
 ```
 
-:::
-
-## Recipes
-
-An important part in the process of model building is preprocessing.
-Depending of model type and data structure, I have to do the necessary changes. The *tidymodels* offers some ready-made preprocessing functions which make the whole process piece of cake.
-
-
-In instance, the dataset I am working right now has imbalanced response variable (term deposit interest). For that reason, I used the recipe `step_smote()` from *themis* package. 
-
+#### Evaluation Data
 
 ```{r}
-bank_recipe <- recipes::recipe(y~., 
-                               data = bank_train) %>%
-  step_rm(poutcome, ID) %>%
+#| label: tbl-preview-test-dataset
+#| title: "Evaluation data preview"
+#| tbl-cap: "Preview of the model evaluation subset (test dataset)"
+
+bank_test %>%
+  gt_custom(.)
+```
+
+### Data Preprocessing
+
+Building models is not straightforward. Between splitting the dataset and fitting the models comes the data preprocessing stage. The steps involved are not fixed and vary depending on the type of problem (classification or regression) and the model chosen. Fortunately, the `tidymodels` package provides ready-made tools to make this stage easier, particularly the recipes package, which forms part of tidymodels. There are also additional packages that address common dataset issues. For example, our data are expected to be imbalanced, as the vast majority of customers did not subscribe to a term deposit. A dataset is considered imbalanced when the target variable has a large disparity between classes (e.g., 90% "No" / 10% "Yes"). In this case we use the `step_smote()` function from the *themis* package to balance the target variable.
+
+```{r}
+#| label: building_recipe
+#| title: "Data preprocessing"
+# Recipe for tree-based models (RF, XGBoost, LightGBM)
+tree_recipe <- recipe(y ~., data = bank_train) %>%
+  step_rm(poutcome, ID, duration) %>%
   step_corr(all_numeric(), threshold = 0.75) %>%
-  step_dummy(all_nominal(), -all_outcomes()) %>% prep() %>%
-  step_smote(y) %>%
-  prep()
+  step_dummy(all_nominal(), -all_outcomes()) %>%
+  step_smote(y)
+
+# Recipe for distance/linear models (Logistic Regression, KNN)
+linear_recipe <- recipe(y ~., data = bank_train) %>%
+  step_rm(poutcome, ID, duration) %>%
+  step_corr(all_numeric(), threshold = 0.75) %>%
+  step_dummy(all_nominal(), -all_outcomes()) %>%
+  step_normalize(all_numeric_predictors()) %>%  # <-- additional step
+  step_smote(y)
 ```
 
-Let's preview our dataset after applying our recipes :
+It is worth noting that the `duration` variable (call duration) was deliberately removed from the models. Its value is only known after the call has ended, that is, after the event we are trying to predict. Including it would create a data leakage problem, making the model artificially accurate but practically useless. The `poutcome` variable was also removed, for a different reason: it concerns previous campaigns for which data are unavailable for the large majority of customers, limiting its usefulness as a predictor.
+
+Here is a preview of the dataset after applying the preprocessing steps for linear models:
 
 ```{r}
-#| label: tbl-recipes-df
-#| tbl-cap: "Dataset after `recipes`"
+#| label: tbl-recipes-df-after-recipes
+#| tbl-cap: "Dataset after applying `recipes` for linear models"
+#| tbl-cap-location: top
 
-bank_recipe %>%
+linear_recipe %>%
   prep() %>%
   juice() %>%
   head() %>%
-  kbl() %>%
-  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
+  gt_custom()
 ```
 
-## Create validation set
-
-> So, how good is the model? Not so fast...
-
-We could actually build the model and evaluate its performance. The problem with that approach is the sample. 
+And a preview after applying the steps for tree-based models:
 
 ```{r}
-cv_folds <- recipes::bake(
-  bank_recipe,
-  new_data = bank_train) %>%
-  rsample::vfold_cv(v = 5, strata = y)
-```
-
-## Specify models
-
-
-Next, parsnip helps us to specify our models. Initially, I will define a LightGBM model,
-
-```{r}
-lightgbm_model<- parsnip::boost_tree(
- mode = "classification",
- trees = 50,
- min_n = tune(),
- learn_rate = tune(),
- tree_depth = tune()) %>%
-set_engine("lightgbm", loss_function = "squarederror")
-```
-
-and an XGBoost one.
-
-```{r}
-xgboost_model<- parsnip::boost_tree(
- mode = "classification",
- trees = 50,
- min_n = tune(),
- learn_rate = tune(),
- tree_depth = tune()) %>%
- set_engine("xgboost")
-```
-
-
-## Hyperparameters tuning
-
-Now, we are specifying the hyperpaterers' values and a grid to check which combination of those are performing better according to our desired metric (in our case ROC). This has to be done for both, LightGBM 
-
-```{r}
-lightgbm_params <- dials::parameters(
- min_n(),
- tree_depth(range = c(4,10)),
- learn_rate() # learning rate
-)
-```
-
-```{r}
-lightgbm_grid <- dials::grid_max_entropy(
- lightgbm_params,
- size = 10)
-
-head(lightgbm_grid) %>%
-  kbl(toprule = T,align = 'c',booktabs = T)  %>%
-  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
-```
-
-and XGBoost.
-
-
-```{r}
-xgboost_params <- dials::parameters(
- min_n(),
- tree_depth(range = c(4,10)),
- learn_rate() # learning rate
-)
-```
-
-```{r}
-xgboost_grid <- dials::grid_max_entropy(
-  xgboost_params,
-  size = 10
-)
-
-head(xgboost_grid) %>%
-  kbl(toprule = T,align = 'c',booktabs = T)  %>%
-  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
-```
-
-
-
-## Fit resamples
-
-
-```{r}
-# build workflow for LightGBM
-
-lightgbm_workflow <- workflows::workflow() %>%
- add_model(lightgbm_model) %>%
- add_formula(y ~.)
-```
-
-```{r}
-# build workflow for XGBoost
-
-xgboost_workflow <- workflows::workflow() %>%
-  add_model(xgboost_model) %>%
-  add_formula(y~.)
-```
-
-Finally, we can build the LightGBM model by combining :
-
-- The workflows we set it up above
-- The resamples
-- Grid of values (hyperparameters)
-- Metric based on which we will evaluate our model's performance
-
-```{r, cache=TRUE}
-start_time_lightgbm <- Sys.time()
-
-lightgbm_tuned_model <- tune::tune_grid(
- object = lightgbm_workflow,
- resamples = cv_folds,
- metrics = metric_set(roc_auc, accuracy),
- grid = lightgbm_grid,
- control = tune::control_grid(verbose = FALSE) # set this to TRUE to see
- # in what step of the process you are. But that doesn't look that well in
- # a blog.
-)
-
-end_time_lightgbm <- Sys.time()
-
-time_lightgbm = difftime(end_time_lightgbm,start_time_lightgbm,units = "secs")
-
-```
-
-Similarly, for XGBoost. 
-
-```{r, cache=TRUE}
-start_time_xgboost <- Sys.time()
-
-xgboost_tuned_model <- tune::tune_grid(
- object = xgboost_workflow,
- resamples = cv_folds,
- metrics = metric_set(roc_auc, accuracy),
- grid = xgboost_grid,
- control = tune::control_grid(verbose = FALSE) # set this to TRUE to see
- # in what step of the process you are. But that doesn't look that well in
- # a blog.
-)
-
-end_time_xgboost <- Sys.time()
-
-time_xgboost= difftime(end_time_xgboost,start_time_xgboost,units = "secs")
-
-```
-
-## Evaluate model
-
-Our first results based on resamples for LightGBM
-
-```{r}
-lightgbm_tuned_model %>%
-  show_best(., metric = "roc_auc", n = 5) %>% 
-  kbl(toprule = T,align = 'c',booktabs = T)  %>%
-  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
-```
-
-and XGBoost
-```{r}
-xgboost_tuned_model %>%
-  show_best(., metric = "roc_auc", n = 5) %>% 
-  kbl(toprule = T,align = 'c',booktabs = T)  %>%
-  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
-```
-
-## Last fit
-
-By now we can assess which is the best combination of values. Given those I will assess my model's performance on unknown (to my model) data. LightGBM model has 0.8469 ROC-value
-
-```{r}
-last_fit_lightgbm_model = parsnip::boost_tree(
- mode = "classification",
- trees = 100,
- min_n = 33,
- learn_rate = 0.0787,
- tree_depth = 4) %>%
-set_engine("lightgbm")
-```
-
-```{r}
-
-## TODO
-# options(digits = 4)
-# 
-# last_fit_workflow <- lightgbm_workflow %>% 
-#   update_model(last_fit_lightgbm_model)
-# 
-# last_lightgbm_fit <- 
-#   last_fit_workflow %>% 
-#   last_fit(bank_dataset_split)
-# 
-# last_lightgbm_fit %>% 
-#   collect_metrics() %>%
-#   kbl(toprule = T,align = 'c',booktabs = T)  %>%
-#   kable_styling(full_width = F, position = "center", html_font = "Cambria") 
-```
-
-
-and XGBoost, 0.8736.
-
-
-```{r}
-last_fit_xgboost_model = parsnip::boost_tree(
- mode = "classification",
- trees = 100,
- min_n = 21,
- learn_rate = 0.0472,
- tree_depth = 5) %>%
-set_engine("xgboost")
-```
-
-```{r}
-options(digits = 4)
-
-last_fit_xgboost_workflow <- xgboost_workflow %>% 
-  update_model(last_fit_xgboost_model)
-
-last_xgboost_fit <- 
-  last_fit_xgboost_workflow %>% 
-  last_fit(bank_dataset_split)
-
-last_xgboost_fit %>% 
-  collect_metrics() %>%
-  kbl(toprule = T,align = 'c',booktabs = T)  %>%
-  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
-```
-
-
-# Results
-
-
-It seems that my model has a really good predictive value even if I applied a relatively simple model. If an increased accuracy is justified we can apply a more powerful model (e.g., XGBoost, CatBoost, etc..).
-
-To summarize, 
-
-| Model    | Time to build  | ROC value (test)  | ROC value (CV) |
-| :----:   |    :----:   |    :----:    | :----: | 
-| LightGBM | `r sprintf("%.2f sec.", time_lightgbm)` | 0.8469  | 0.903 |
-| XGBoost  | `r sprintf("%.2f sec.", time_xgboost)`  | 0.8736  | 0.881 |
-
-In conclusion LightGBM model is less time consuming in comparison with XGBoost. On the other hand, XGBoost model needed more time to be built (which was expected) but outperformed LightGBM. 
-
-So, we got some results, so what? The main question is still unanswered. All this modelling was about to find out who is interested to a term deposit. Usually, I would use predict function with the corresponding data to mark my predictions. However, I wasn't able to do that as I received an error about class. Nevermind, the function collect_predictions() does the same. 
-
-```{r}
-pr = last_xgboost_fit %>% collect_predictions()
-```
-
-Now, I will select the predicted value and the result and I will paste them on my test data. 
-
-```{r}
-pr = pr %>% select(.pred_class, y) %>% rename(prediction = .pred_class) 
-
-final = cbind(pr, bank_test)
-```
-
-And now let's say that I want to give a list of only the interested ones. I will filter pred class to show only "Yes" values. We should also take into consideration that the dataset does not include any personal information, so I will also include  an ID.
-
-```{r}
-final %>% 
+#| label: tbl-recipes-df-after-recipes-tree
+#| tbl-cap: "Dataset after applying `recipes` for tree-based models"
+#| tbl-cap-location: top
+
+tree_recipe %>%
+  prep() %>%
+  juice() %>%
   head() %>%
-  kbl(toprule = T,align = 'c',booktabs = T)  %>%
-  kable_styling(full_width = F, position = "center", html_font = "Cambria") 
-
-interested_clients = final %>% select(ID, prediction) %>%
-  filter(prediction == "yes") %>% 
-  kbl(toprule = T,align = 'c',booktabs = T)  %>%
-  kable_styling(full_width = F, position = "center", html_font = "Cambria") %>%
-  scroll_box(width = "100%", height = "200px")
-
-interested_clients
+  gt_custom()
 ```
 
-So, from 1131 possible clients, I finally got 75 that are actually interested. So, I reduced the required phone calls by 93 \% (and therefore the working hours allocated to this task). But at what cost ? 
+### Cross-Validation
+
+> Ok, is it time to build our model now?
+
+Not so fast. Theoretically we could proceed, but the recommended approach is not to rely on a single two-way split, since the evaluation results depend heavily on how that split happened and which observations ended up where. To get a more reliable estimate of model performance, we build subsets of our data to estimate, on average across 5 or 10 sub-samples, which parameters consistently lead to better accuracy.
+
+Cross-validation is a technique in which the training set is divided into k equal subsets (folds). In each iteration, one fold is used as the validation set and the remaining k-1 folds are used for training. The process is repeated k times and the results are averaged, giving us a more reliable estimate of model performance. In our case we used 5-fold cross-validation with stratification, so that the ratio of subscribers to non-subscribers is preserved in each fold.
+
+```{r}
+set.seed(123)
+cv_folds <- vfold_cv(bank_train, v = 5, strata = y)
+
+# Control objects
+ctrl_grid  <- control_stack_grid()
+ctrl_bayes <- control_stack_bayes() # instead of control_grid(), for stacking
+```
+
+
+### Building the Model
+
+With the `{parsnip}` package we can define the characteristics of various models. In this case we want to evaluate several models and compare their performance. We will therefore define:
+
+-   k-Nearest Neighbors
+-   Logistic Regression
+-   Random Forest
+-   LightGBM
+-   XGBoost
+
+The `{parsnip}` package provides a unified interface for specifying predictive models. In the framework of this analysis, seven different classification models were developed and compared using the `{tidymodels}` ecosystem in R: Logistic Regression, K-Nearest Neighbors (KNN), Random Forest, Naive Bayes, SVM, XGBoost, and LightGBM. For Logistic Regression, a regularized implementation via the glmnet library was used, allowing hyperparameter tuning of the regularization strength (penalty) and the mixing ratio (mixture), corresponding to Ridge and Lasso regularization. The KNN model was based on the kknn algorithm, with tuning of the number of neighbors and the distance weighting function (weight_func). For Random Forest, the ranger implementation was used with 200 decision trees, with hyperparameter tuning of the number of variables examined at each split (mtry) and the minimum number of observations per node (min_n). The two gradient boosting methods, XGBoost and LightGBM, were both defined with 200 trees, with tuning of tree depth (tree_depth), learning rate (learn_rate), and minimum observations per node (min_n). Hyperparameters marked with tune() were optimized to find the combination that maximizes predictive performance. Finally, each model is paired with the appropriate preprocessing recipe. For linear models (Logistic Regression and KNN), the linear recipe is used. For tree-based models (XGBoost, LightGBM, and Random Forest), the tree recipe is applied.
+
+```{r}
+#| label: define_models_and_workfl
+#| title: "Model and workflow definitions"
+# --- Logistic Regression ---
+log_reg_model <- parsnip::logistic_reg(
+  penalty = tune(),
+  mixture = tune()
+) %>%
+  set_engine("glmnet") %>%
+  set_mode("classification")
+
+# --- K-Nearest Neighbors ---
+knn_model <- parsnip::nearest_neighbor(
+  neighbors = tune(),
+  weight_func = tune()
+) %>%
+  set_engine("kknn") %>%
+  set_mode("classification")
+
+# --- Random Forest ---
+rf_model <- parsnip::rand_forest(
+  trees = 200,
+  mtry  = tune(),
+  min_n = tune()
+) %>%
+  set_engine("ranger") %>%
+  set_mode("classification")
+
+# --- Naive Bayes ---
+nb_model <- naive_Bayes(
+  smoothness = tune(),
+  Laplace    = tune()
+) %>%
+  set_engine("naivebayes") %>%
+  set_mode("classification")
+
+# --- SVM ---
+svm_model <- parsnip::svm_linear(
+  cost = tune()
+) %>%
+  set_engine("kernlab") %>%
+  set_mode("classification")
+
+# --- XGBoost ---
+xgb_model <- parsnip::boost_tree(
+  trees      = 200,
+  min_n      = tune(),
+  learn_rate = tune(),
+  tree_depth = tune()
+) %>%
+  set_engine("xgboost") %>%
+  set_mode("classification")
+
+# --- LightGBM ---
+lgbm_model <- parsnip::boost_tree(
+  trees      = 200,
+  min_n      = tune(),
+  learn_rate = tune(),
+  tree_depth = tune()
+) %>%
+  set_engine("lightgbm") %>%
+  set_mode("classification")
+
+log_wf  <- workflow() %>% add_recipe(linear_recipe) %>% add_model(log_reg_model)
+knn_wf  <- workflow() %>% add_recipe(linear_recipe) %>% add_model(knn_model)
+rf_wf   <- workflow() %>% add_recipe(tree_recipe)   %>% add_model(rf_model)
+nb_wf   <- workflow() %>% add_recipe(linear_recipe) %>% add_model(nb_model)
+svm_wf  <- workflow() %>% add_recipe(linear_recipe) %>% add_model(svm_model)
+xgb_wf  <- workflow() %>% add_recipe(tree_recipe)   %>% add_model(xgb_model)
+lgbm_wf <- workflow() %>% add_recipe(tree_recipe)   %>% add_model(lgbm_model)
+```
+
+### Fitting the Models
+
+Having defined the models and their corresponding workflows, we proceed to hyperparameter optimization. For the simpler models (Logistic Regression, KNN, Naive Bayes, SVM, and Random Forest) we use grid search (`tune_grid()`), systematically testing various hyperparameter combinations. For the gradient boosting models (XGBoost and LightGBM), which have more hyperparameters and are more computationally expensive per run, I opt for Bayesian optimization (`tune_bayes()`). In this approach, the algorithm learns from previous trials and selects the next parameter combination more intelligently, saving time compared to an exhaustive search.
+
+```{r}
+#| message: false
+set.seed(123)
+
+log_results <- tune_grid(
+  log_wf,
+  resamples = cv_folds,
+  grid = 10,
+  metrics = metric_set(roc_auc, accuracy),
+  control = ctrl_grid
+)
+
+# KNN -- tune_grid
+knn_results <- tune_grid(
+  knn_wf,
+  resamples = cv_folds,
+  grid = 10,
+  metrics = metric_set(roc_auc, accuracy),
+  control = ctrl_grid
+)
+
+# Random Forest -- tune_grid (moderate cost)
+rf_results <- tune_grid(
+  rf_wf,
+  resamples = cv_folds,
+  grid = 15,
+  metrics = metric_set(roc_auc, accuracy),
+  control = ctrl_grid
+)
+
+nb_results <- tune_grid(
+  nb_wf,
+  resamples = cv_folds,
+  grid      = 10,
+  metrics   = metric_set(roc_auc, accuracy),
+  control   = ctrl_grid
+)
+
+svm_results <- tune_grid(
+  svm_wf,
+  resamples = cv_folds,
+  grid      = 10,
+  metrics   = metric_set(roc_auc, accuracy),
+  control   = ctrl_grid
+)
+
+# XGBoost -- tune_bayes
+xgb_results <- tune_bayes(
+  xgb_wf,
+  resamples = cv_folds,
+  initial = 5,
+  iter = 25,
+  metrics = metric_set(roc_auc, accuracy),
+  control = ctrl_bayes
+)
+
+# LightGBM -- tune_bayes
+lgbm_results <- tune_bayes(
+  lgbm_wf,
+  resamples = cv_folds,
+  initial = 5,
+  iter = 25,
+  metrics = metric_set(roc_auc, accuracy),
+  control = ctrl_bayes
+)
+```
+
+
+Beyond evaluating each model individually, we also apply a technique called stacking. The idea behind stacking is that instead of selecting a single model as the final one, we combine the predictions of multiple models in a meta-model that learns which model performs best and in which situations. In practice, the models trained previously (Logistic Regression, KNN, Random Forest, XGBoost, LightGBM) feed their predictions into a second level, where a linear model with L1 regularization assigns weights to each and can exclude those that do not contribute. This way we leverage the strengths of each algorithm without committing to a single approach. We implement this technique using the `{stacks}` package, which integrates smoothly with the `{tidymodels}` ecosystem.
+
+```{r}
+bank_stack_v1 <- stacks() %>%
+  add_candidates(log_results)  %>%
+  add_candidates(knn_results)  %>%
+  add_candidates(rf_results)   %>%
+  add_candidates(xgb_results)  %>%
+  add_candidates(lgbm_results)
+
+bank_stack_v2 <- bank_stack_v1 %>%
+    add_candidates(nb_results)   %>%
+    add_candidates(svm_results)
+
+# Compute weights for each model
+set.seed(123)
+bank_stack_model_v1 <- bank_stack_v1 %>%
+  blend_predictions(
+    penalty = 10^(-2:0),       # L1 regularization for model selection
+    metric  = metric_set(roc_auc)
+  )
+
+bank_stack_model_v2 <- bank_stack_v2 %>%
+  blend_predictions(
+    penalty = 10^(-2:0),
+    metric  = metric_set(roc_auc)
+  )
+
+# Train the selected members
+bank_stack_fit_v1 <- bank_stack_model_v1 %>%
+  fit_members()
+
+bank_stack_fit_v2 <- bank_stack_model_v2 %>%
+  fit_members()
+```
+
+
+::: {.callout-note}
+**Note on the Stack Ensemble threshold**
+
+Unlike individual models (LightGBM, XGBoost, Logistic Regression) for which we can draw out-of-fold predictions from cross-validation, the Stack Ensemble does not have equivalent predictions. For this reason we created `bank_val` earlier: a subset of the training set that the model has not seen during training, used exclusively for threshold selection in the next section.
+:::
+
+### Threshold Selection
+
+Each model produces for each customer a **probability** of interest, not a direct decision. To move from probability to classification ("Yes" / "No") we need a **threshold**: if the probability exceeds it, the customer is classified as interested.
+
+The default value of 0.5 is rarely the optimal choice for imbalanced data. In our case only 11% of customers belong to the "Yes" class. Instead, we select the threshold that **maximizes the F1 score**, which balances the ability to detect interested customers (recall) with the reliability of positive predictions (precision).
+
+A common mistake is to find the threshold on the same test set used for final evaluation. This way the model indirectly "sees" the evaluation data, leading to optimistic results that do not reflect true performance. To avoid this we follow different approaches depending on the model:
+
+- For **individual models** (LightGBM, XGBoost, Logistic Regression) we use the **out-of-fold (OOF) predictions** from cross-validation. In each fold, predictions are made by a model that has not seen those observations, so the predictions are unbiased.
+- For the **Stack Ensemble** we use `bank_val`, which was set aside from the beginning exclusively for this purpose.
 
 
 ```{r}
-ds <- final %>%
-  select(prediction) %>%
-  dplyr::count(prediction) %>%
-  dplyr::mutate(pct = round(n/sum(n) * 100, digits = 2))
+#| label: tbl-all-thresholds
+#| tbl-cap: "Optimal threshold per model"
 
-ds %>%
-  hchart("pie", hcaes(x = prediction, y = pct))%>%
-    hc_title(text = "Expected number of clients") %>%
-    hc_subtitle(text = glue("From {nrow(final)}, only {nrow(interested_clients)} are interested to open a deposit account.")) %>%
-    hc_caption("stesiam, 2023")
+# Helper function: finds threshold from OOF predictions
+get_oof_threshold <- function(tune_results, model_name) {
+  
+  best_params <- select_best(tune_results, metric = "roc_auc")
+  
+  oof_preds <- tune_results %>%
+    collect_predictions(
+      summarize  = FALSE,
+      parameters = best_params
+    )
+  
+  # Dynamic upper bound: up to 95% of the maximum predicted probability
+  # Avoids threshold values where no one is predicted as "Yes"
+  upper_bound <- max(oof_preds$.pred_Yes, na.rm = TRUE) * 0.95
+  
+  oof_preds %>%
+    threshold_perf(
+      truth      = y,
+      estimate   = .pred_Yes,
+      thresholds = seq(0.005, upper_bound, length.out = 200),
+      event_level = "second",
+      metrics    = metric_set(f_meas)
+    ) %>%
+    filter(.metric == "f_meas", !is.na(.estimate)) %>%
+    slice_max(.estimate, n = 1, with_ties = FALSE) %>%
+    transmute(
+      model     = model_name,
+      threshold = .threshold,
+      f1_oof    = round(.estimate, 3)
+    )
+}
+
+thresholds_individual <- bind_rows(
+  get_oof_threshold(lgbm_results, "LightGBM"),
+  get_oof_threshold(xgb_results,  "XGBoost"),
+  get_oof_threshold(log_results,  "Logistic Regression"),
+  get_oof_threshold(rf_results,   "Random Forest"),
+  get_oof_threshold(nb_results,   "Naive Bayes"),
+  get_oof_threshold(svm_results,  "SVM")
+)
+
+# Predictions on bank_val -- the stack has not seen it
+## For first stack
+stack_val_preds_v1 <- predict(bank_stack_fit_v1,
+                           bank_val,
+                           type = "prob") %>%
+  bind_cols(bank_val %>% select(y))
+
+upper_bound_stack_v1 <- max(stack_val_preds_v1$.pred_Yes, 
+                         na.rm = TRUE) * 0.95
+
+## For second stack
+stack_val_preds_v2 <- predict(bank_stack_fit_v2,
+                           bank_val,
+                           type = "prob") %>%
+  bind_cols(bank_val %>% select(y))
+
+upper_bound_stack_v2 <- max(stack_val_preds_v2$.pred_Yes, 
+                         na.rm = TRUE) * 0.95
+
+stack_threshold_v1 <- stack_val_preds_v1 %>%
+  threshold_perf(
+    truth      = y,
+    estimate   = .pred_Yes,
+    thresholds = seq(0.005, upper_bound_stack_v1, length.out = 200),
+    event_level = "second",
+    metrics    = metric_set(f_meas)
+  ) %>%
+  filter(.metric == "f_meas", !is.na(.estimate)) %>%
+  slice_max(.estimate, n = 1, with_ties = FALSE) %>%
+  transmute(
+    model     = "Stack Ensemble (v1)",
+    threshold = .threshold,
+    f1_oof    = round(.estimate, 3)
+  )
+
+stack_threshold_v2 <- stack_val_preds_v2 %>%
+  threshold_perf(
+    truth      = y,
+    estimate   = .pred_Yes,
+    thresholds = seq(0.005, upper_bound_stack_v2, length.out = 200),
+    event_level = "second",
+    metrics    = metric_set(f_meas)
+  ) %>%
+  filter(.metric == "f_meas", !is.na(.estimate)) %>%
+  slice_max(.estimate, n = 1, with_ties = FALSE) %>%
+  transmute(
+    model     = "Stack Ensemble (v2)",
+    threshold = .threshold,
+    f1_oof    = round(.estimate, 3)
+  )
+
+all_thresholds <- bind_rows(thresholds_individual,
+                            stack_threshold_v1,
+                            stack_threshold_v2)
+
+all_thresholds %>%
+  arrange(desc(f1_oof)) %>%
+  rename(
+    "Model"          = model,
+    "Threshold"      = threshold,
+    "F1 (estimate)"  = f1_oof
+  ) %>%
+  gt_custom(head_max = Inf, use_labels = FALSE)
+```
+
+It is worth noting that thresholds differ considerably across models. This does not mean that any model is "wrong": each model simply calibrates its probabilities differently. What matters is that every threshold was found on data that the corresponding model **had not used during training**. Furthermore, the F1 values in the table above are estimates used for threshold selection and are not directly comparable across models. The individual models used OOF predictions (2712 observations) while the Stack Ensemble used bank_val (678 observations). The definitive comparison is made on the test set below.
+
+## Results
+
+```{r}
+#| label: finalize-models
+#| echo: true
+
+# Helper function for generating predictions
+get_preds <- function(fitted_wf, model_name) {
+  predict(fitted_wf, bank_test, type = "prob") %>%
+    bind_cols(predict(fitted_wf, bank_test)) %>%
+    bind_cols(bank_test %>% select(y)) %>%
+    mutate(model = model_name)
+}
+
+# Select best hyperparameters for each model
+best_lgbm <- select_best(lgbm_results, metric = "roc_auc")
+best_lr   <- select_best(log_results,  metric = "roc_auc")
+best_xgb  <- select_best(xgb_results,  metric = "roc_auc")
+best_rf   <- select_best(rf_results,   metric = "roc_auc")
+best_nb   <- select_best(nb_results,   metric = "roc_auc")
+best_svm  <- select_best(svm_results,  metric = "roc_auc")
+
+# Finalize and train on full training set
+final_lgbm_wf <- finalize_workflow(lgbm_wf, best_lgbm) %>% fit(data = bank_train)
+final_lr_wf   <- finalize_workflow(log_wf,  best_lr)   %>% fit(data = bank_train)
+final_xgb_wf  <- finalize_workflow(xgb_wf,  best_xgb)  %>% fit(data = bank_train)
+final_rf_wf   <- finalize_workflow(rf_wf,   best_rf)   %>% fit(data = bank_train)
+final_nb_wf   <- finalize_workflow(nb_wf,   best_nb)   %>% fit(data = bank_train)
+final_svm_wf  <- finalize_workflow(svm_wf,  best_svm)  %>% fit(data = bank_train)
+
+stack_preds_v1 <- predict(bank_stack_fit_v1, bank_test, type = "prob") %>%
+  bind_cols(predict(bank_stack_fit_v1, bank_test)) %>%
+  bind_cols(bank_test %>% select(y)) %>%
+  mutate(model = "Stack Ensemble (v1)")
+
+stack_preds_v2 <- predict(bank_stack_fit_v2, bank_test, type = "prob") %>%
+  bind_cols(predict(bank_stack_fit_v2, bank_test)) %>%
+  bind_cols(bank_test %>% select(y)) %>%
+  mutate(model = "Stack Ensemble (v2)")
+
+# Generate predictions on the test set for all models
+all_preds <- bind_rows(
+  get_preds(final_lgbm_wf, "LightGBM"),
+  get_preds(final_lr_wf,   "Logistic Regression"),
+  get_preds(final_xgb_wf,  "XGBoost"),
+  get_preds(final_rf_wf,   "Random Forest"),
+  get_preds(final_nb_wf,   "Naive Bayes"),
+  get_preds(final_svm_wf,  "SVM"),
+  stack_preds_v1,
+  stack_preds_v2
+)
 ```
 
 
-# Hypothesis
+### Variable Importance
 
-Let's suppose we have to launch a new campaign and inform the interested parties. There are two options. The traditional one, in which case we should call everyone (1131 people). On the other hand, we can use a machine learning (ML) model (given that I have some data) to 'interrupt' some of them. I am also assuming that a phone call lasts, on average, 4 minutes. Additionally, based on Eurostat, the average hourly wage is 30.5 euros.
-
-To call everyone, we would need 4,524 minutes, which corresponds to 75.4 working hours and therefore amounts to 2,300 euros. By using the model, we would only require 75 calls, equivalent to 5 working hours and 152.5 euros. Even in this simple example (with so few observations), we can see a significant benefit for the company. Last but not least, the company won't disappoint any customers by promoting something they are not interested in, potentially losing clients. Therefore, ML modeling will help not only financially but also in maintaining a healthy brand.
-
-# Acknowledgements {.appendix .unlisted}
-
-Image by <a href="https://pixabay.com/users/geralt-9301/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=563967">Gerd Altmann</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=563967">Pixabay</a>
+The variable importance analysis from the LightGBM model reveals that the most decisive factors for predicting interest in a term deposit are the presence of a housing loan (`housing_Yes`, 15.3%) and an unknown contact method (`contact_Unknown`, 14.0%), followed by married marital status (`marital_Married`, 11.7%). Noteworthy is also the contribution of the contact month, with May appearing as the most important month (8.2%), while education level also carries meaningful weight. These results largely align with the findings of the descriptive analysis, confirming that demographic characteristics such as marital status and educational background, along with operational parameters such as the contact method and timing, play a decisive role in a customer's decision.
 
 
-# References {.appendix .unlisted}
+```{r}
+#| echo: false
+
+y = final_lgbm_wf %>%
+  extract_fit_parsnip() %>%
+  vip::vi() %>%
+  arrange(desc(Importance)) %>%
+  head(10) %>%
+  mutate(
+    Variable = case_when(
+      Variable == "housing_Yes"      ~ "Housing Loan",
+      Variable == "contact_Unknown"  ~ "Unknown Contact Method",
+      Variable == "marital_Married"  ~ "Married",
+      Variable == "month_May"        ~ "Month: May",
+      Variable == "education_Tertiary"   ~ "Tertiary Education",
+      Variable == "education_Secondary"  ~ "Secondary Education",
+      Variable == "month_July"       ~ "Month: July",
+      Variable == "month_August"     ~ "Month: August",
+      Variable == "job_Blue.Collar"  ~ "Occupation: Blue Collar",
+      Variable == "month_November"   ~ "Month: November",
+      TRUE ~ Variable
+    ),
+    Importance = round(Importance * 100, 2)
+  )
+
+y %>%
+  arrange(desc(Importance)) %>%
+  head(10) %>%
+  mutate(Importance = round(Importance, 2)) %>%
+  hchart(type = "bar", hcaes(x = Variable, y = Importance)) %>%
+  hc_title(text = "Variable Importance") %>%
+  hc_subtitle(text = "Top 10 variables from the LightGBM model") %>%
+  hc_xAxis(title = list(text = "Variable")) %>%
+  hc_yAxis(
+    title = list(text = "Importance (%)"),
+    labels = list(format = "{value}%")
+  ) %>%
+  hc_tooltip(pointFormat = "<b>{point.x}</b>: {point.y}%") %>%
+  hc_colors("#2196F3") %>%
+  hc_legend(enabled = FALSE)
+```
+
+::: {.column-margin}
+```{r}
+#| label: tbl-vip
+#| tbl-cap: "Variable importance in descending order"
+#| echo: false
+y %>%
+    arrange(desc(Importance)) %>%
+    mutate(Importance = round(Importance, 4)) %>%
+    setNames(c("Variable", "Importance")) %>%
+    gt_custom(head_max = 10, use_labels = FALSE)
+```
+:::
+
+
+### Model Comparison
+
+Before moving on to the final evaluation, it is worth comparing graphically the predictive ability of the four selected models using ROC curves (Receiver Operating Characteristic curves). A ROC curve plots sensitivity against the false positive rate across all possible thresholds. The closer the curve is to the upper left corner, the better the model's overall predictive ability.
+
+```{r}
+#| label: roc-comparison
+#| echo: true
+model_order <- c("Logistic Regression", "XGBoost",
+                 "Stack Ensemble (v1)", "Stack Ensemble (v2)")
+
+roc_all <- all_preds %>%
+  mutate(model = factor(model, levels = model_order)) %>%
+  group_by(model) %>%
+  roc_curve(truth = y, .pred_Yes, event_level = "second") %>%
+  ungroup() %>%
+  drop_na(model)
+
+colors <- c(
+  "Logistic Regression" = "#009E73",
+  "XGBoost"             = "#D55E00",
+  "Stack Ensemble (v1)" = "#CC79A7",
+  "Stack Ensemble (v2)" = "#E69F00"
+)
+
+hchart(roc_all, type = "line",
+       hcaes(x = 1 - specificity, y = sensitivity, group = model)) %>%
+    hc_title(text = "ROC Curves") %>%
+    hc_subtitle(text = "Comparison of Logistic Regression, XGBoost, and Stack Ensemble models") %>%
+    hc_xAxis(title = list(text = "1 - Specificity (False Positive Rate)"),
+             min = 0, max = 1) %>%
+    hc_yAxis(title = list(text = "Sensitivity (True Positive Rate)"),
+             min = 0, max = 1) %>%
+    hc_colors(unname(colors)) %>%
+    hc_tooltip(headerFormat = "",
+               pointFormat = "<b>{series.name}</b><br>TPR: {point.y:.3f}<br>FPR: {point.x:.3f}") %>%
+    hc_add_series(
+        data = list(list(x = 0, y = 0), list(x = 1, y = 1)),
+        type = "line",
+        name = "Random model",
+        color = "#888888",
+        dashStyle = "Dash",
+        lineWidth = 1.5,
+        marker = list(enabled = FALSE),
+        enableMouseTracking = FALSE
+    )
+```
+
+
+The diagram clearly shows the superiority of the Stack Ensemble models over the other two.
+
+```{r}
+pr_all <- all_preds %>%
+    mutate(model = factor(model, levels = model_order)) %>%
+    group_by(model) %>%
+    pr_curve(truth = y, .pred_Yes, event_level = "second") %>%
+    ungroup() %>%
+    drop_na(model)
+
+# Baseline = proportion of positives in the test set
+baseline <- mean(bank_test$y == "Yes")
+
+hchart(pr_all, type = "line",
+       hcaes(x = recall, y = precision, group = model)) %>%
+    hc_title(text = "Precision-Recall Curves") %>%
+    hc_subtitle(text = "Model comparison on imbalanced data") %>%
+    hc_xAxis(title = list(text = "Recall"),
+             min = 0.05, max = 1) %>%
+    hc_yAxis(
+        title = list(text = "Precision"),
+        min = 0, max = 0.6,
+        plotLines = list(
+            list(value = baseline, color = "#888", dashStyle = "Dash", width = 1,
+                 label = list(text = paste0("Baseline: ", round(baseline, 3))))
+        )
+    ) %>%
+    hc_colors(unname(colors)) %>%
+    hc_tooltip(headerFormat = "",
+               pointFormat = "<b>{series.name}</b><br>Recall: {point.x:.3f}<br>Precision: {point.y:.3f}")
+```
+
+
+Overall, we observe that accuracy alone is misleading. XGBoost, which achieves one of the highest accuracy scores, has a near-zero F1. This happens because accuracy primarily rewards correct negative predictions, and in our imbalanced dataset, predicting "No" for the vast majority is easy. F1 is the more honest criterion here, penalizing false positives and false negatives equally. It is also worth noting the sensitivity of LightGBM: it identifies 51% of truly interested customers, a rate that the Stack Ensemble models do not match.
+
+```{r}
+threshold_lookup <- setNames(
+    all_thresholds$threshold,
+    all_thresholds$model
+)
+
+all_preds_custom <- all_preds %>%
+    mutate(
+        thr = threshold_lookup[model],
+        .pred_class = factor(
+            ifelse(.pred_Yes >= thr, "Yes", "No"),
+            levels = c("No", "Yes")
+        )
+    )
+
+all_preds_custom %>%
+  group_by(model) %>%
+  metric_set(accuracy, f_meas, sens, spec, precision)(
+    truth = y, estimate = .pred_class,
+    event_level = "second"
+  ) %>%
+  select(model, .metric, .estimate) %>%
+  pivot_wider(names_from = .metric, values_from = .estimate) %>%
+  mutate(across(where(is.numeric), ~ round(.x, 3))) %>%
+  dplyr::arrange(-f_meas) %>%
+  rename(
+  "Model"                        = model,
+  "Accuracy"                     = accuracy,
+  "F1"                           = f_meas,
+  "Sensitivity"                  = sens,
+  "Specificity"                  = spec,
+  "Positive Predictive Value"    = precision
+) %>%
+  gt_custom(head_max = Inf, use_labels = FALSE)
+```
+
+## Conclusions
+
+The second table translates the statistical figures into operational reality and reveals a different ranking from what the F1 score might have suggested. Stack Ensemble v1 emerges here as the most efficient option: with only 127 calls it achieves a success rate per call of 40.2%, meaning 4 in every 10 contacts result in a subscription. If the constrained resource is call center time, this model is the most respectful of it. The trade-off, however, is 80 missed subscribers. Of the 131 actually interested customers, we identified 51. Interestingly, the second ensemble model (Stack Ensemble v2) does not outperform the first, despite being a combination of seven individual models compared to the five in v1. It does produce a smaller total number of contacts, but at a lower efficiency rate relative to v1. Its main advantage is that it generates the fewest incorrect contacts among the top-performing models, which has its own operational value.
+
+LightGBM, on the other hand, identifies 67 subscribers, the most of any model, but requires 204 calls to do so, at a success rate of 32.8%. That is nearly 60% more calls than Stack Ensemble v1 to gain 16 additional true positives. Also notable are the results of Naive Bayes, which comes surprisingly close to the performance of the ensemble models. Finally, the most striking result is XGBoost, which correctly predicted only 3 out of 131 actual positive cases.
+
+```{r}
+all_preds_custom %>%
+  group_by(model) %>%
+  summarise(
+    `True Positives (TP)`        = sum(.pred_class == "Yes" & y == "Yes"),
+    `False Positives (FP)`       = sum(.pred_class == "Yes" & y == "No"),
+    `Missed Subscribers (FN)`    = sum(.pred_class == "No"  & y == "Yes"),
+    `Total Calls Made`           = sum(.pred_class == "Yes"),
+    `Success Rate (%)`           = round(100 * `True Positives (TP)` / `Total Calls Made`, 1),
+    .groups = "drop"
+  ) %>%
+  arrange(-`Success Rate (%)`) %>%
+  rename("Model" = model) %>%
+  gt_custom(head_max = Inf, use_labels = FALSE)
+```
+
+From the analysis above it becomes clear that there is no single "correct" or universally best model, but rather one that best fits our goal. If the bank's objective is to maximize revenue by promoting a new product, the answer is clear: LightGBM, as it identifies the most interested customers. If the goals are more conservative, for instance expanding services among existing customers while disturbing as few uninterested ones as possible, then Stack Ensemble v2 becomes ideal since it generates 21 fewer incorrect contacts. The same model is also ideal when campaign time is limited, as it leads to the lowest total number of calls. If the goal is a balanced approach between the number of contacts required and the expected campaign results, the winner is clearly Stack Ensemble v1.
+
+In conclusion, the ideal model is not determined solely by optimal parameters, but by the question being asked and the goals of the organization.
 

@@ -31,7 +31,7 @@ editor_options:
 
 ```{r}
 #| label: set_directory
-#| title: "Setting working directory of my article"
+#| title: "Set working directory for the article"
 #| include: false
 library(here)
 here::here("posts/tutorial-govgr-api")
@@ -39,56 +39,67 @@ here::here("posts/tutorial-govgr-api")
 
 ## Introduction
 
-In traditional data analysis, the analyst is usually asked to "cleanse" the
-data, to give it a suitable format in order to be analysed. This process implies
-that the data exists in concentrated form in a file. However, this is not always
-the case. The problem with analysing a dataset is that it does not take into
-account any new values. In this case I have to re-download the new data and
-rerun the analysis through R or whatever tool I'm using. This workflow is not
-productive. Where it becomes apparent the inefficiency of the above process is
-when there is a constant flow of data. In these cases the usefulness of the API
-is shown since it gives us the new values with relatively little effort. At the
-same time the use of the API favours the integration of new data, so if we build
-a predictive model its accuracy will remain at a satisfactory level. Finally,
-another positive contribution is in Shiny Apps in order to automate data
-analysis and the information is reliable and up-to-date for the visitor.
+In traditional data analysis, the analyst is usually tasked with "cleaning" the datasets
+and bringing them into a suitable format for analysis. This approach implies that the data
+already exists, consolidated in a single file. However, that is not always the case. The
+problem with analysing a static dataset is that it does not account for any new values
+that are recorded over time. In that scenario, we would need to retrieve the new data and
+re-run the analysis using R or whatever tool we are working with. As one might expect,
+this is unproductive, though when it only happens a few times a year it may not pose a
+particular problem.
 
-In general there are many APIs from which we can get important information. 
-For more details about the availability of free APIs you can see a relevant 
-[repository with a list of them](https://github.com/public-apis/public-apis). 
-In this article we will deal with Greek Government'sAPI available through
+Where the inefficiency of this approach becomes apparent is when there is a continuous
+stream of data, meaning the update cycle must be repeated on a daily basis. In these
+cases, the value of an API becomes clear, as it provides us with the latest values with
+relatively little effort. In addition, using an API makes it easier to incorporate new
+data, so if we are building a predictive model its accuracy will remain at a reliable
+level. Finally, APIs are also valuable in Shiny Apps or web applications more broadly,
+allowing data analysis to be automated and ensuring that the information presented to
+visitors remains up to date.
+
+There are a great many APIs from which we can draw useful information. For more details
+on the availability of free APIs, you can browse a relevant
+[list of them](https://github.com/public-apis/public-apis). In this article we will focus
+on the open data of Greece, made available through
 [data.gov.gr](data.gov.gr).
 
 ## Requesting an API Key
 
-However, like most APIs, this one requires us to register with the platform. 
-We can do this on the relevant page by filling in our details.
-All the fields of the form must be completed, as shown below:
+The Greek API (like most APIs) requires us to register on the platform. We submit a
+request on the corresponding page and fill in our details in **all** fields of the form,
+as shown below:
 
-![Preview request page for access to the API](images/datagovgr_api_request.png){.white_bg
+![Preview of the API access request page](images/datagovgr_api_request.png){.white_bg
 style="text-align:center; padding: 20px" width="500"}
 
-Next, you should check your e-mail because you will get a message
-with a Token through which the API will be used. Be sure to also check
-the spam folder. By the way, in case you lose the token and have deleted the mail and reapply (with the same mail) it will be resent to your email.
+After submitting, you should check your email, as a message will be sent containing a
+Token that grants access to the API. Make sure to also check your Spam folder. It is
+worth noting that if you lose the token or have deleted the message, you can submit a new
+request, even using the same email address, and the system will send it to you again.
 
-## Using API
+## Using the API
 
-Once we receive the Token, we need to somehow get the data. On the
-specific platform there are two ways.
+Once we have the Token, we need to use it to retrieve the data. On this particular
+platform there are two ways to do so.
 
-- Using API from the website:
-- Using API with R
+-   Using the API through the website
+-   Using the API with R
 
-One way (and probably the least efficient) is to request the
-data directly from the data.gov.gr website. This is on the one hand
-extremely simple, but on the other hand we are downloading a fixed version of the
-data and therefore if I want to update the data I have to download the
-data again.
+The first approach (and arguably the less efficient one) is to request the data directly
+from the data.gov.gr website. While this is straightforward, the downside is that we
+download a fixed snapshot of the data, meaning that if we want to update it with the most
+recent values we will need to download it again. Below, we walk through a real example of
+using the API with R. It is worth noting that the platform itself implicitly encourages
+this approach, as it provides examples in other popular programming languages (Python and
+JavaScript).
 
-## Just a use-case
+## Example
 
-Before completing this article, I decided it would be helpful to provide an example. At the time of writing, there are 49 databases to choose from. To demonstrate the usefulness of the API, I will select a database that is updated fairly frequently. One such dataset is that of [passengers travelling on ships](https://www.data.gov.gr/datasets/sailing_traffic/).
+Before wrapping up this article, we felt it was important to include a practical example.
+At the time of writing, there are a total of 49 datasets available to choose from. To
+highlight the benefits of using an API, we will select one that is updated fairly
+frequently. One such dataset is the one tracking passengers who
+[travel by ferry](https://www.data.gov.gr/datasets/sailing_traffic/).
 
 ```{r}
 #| label: import_r_libs
@@ -97,19 +108,24 @@ library(httr)
 library(jsonlite)
 ```
 
-I set the base url of my data. Given the fact that I am interested on sailing traffic I will use the respective endpoint:
+First, we store the base URL of the dataset in a variable. For this particular dataset,
+ferry passenger traffic, the URL is:
 
 ```{r}
 #| label: api_base_url
-#| title: "Setting base url of API"
+#| title: "Set base API URL"
 base = "https://data.gov.gr/api/v1/query/sailing_traffic"
 ```
 
-As the documentation points out, we need to set the date range we are interested in. It is worth noting that you cannot retrieve a large range with a single API call. Returning to the previous example, ship passenger traffic data starts in 2017 and goes up to the present day (2023). Let's assume that we don't mind that, and we want the data from the first four days of July in 2023.
+Next, as the platform's documentation specifies, we need to define the date range we are
+interested in. It is worth noting that you cannot retrieve a large date range with a
+single API call. The ferry traffic data goes back to 2017 and is available up to the
+present day (2023). For this example, we will request data for the first four days of
+July 2023.
 
 ```{r}
 #| label: api_call
-#| title: "Call API to get some data"
+#| title: "API call"
 date_from = "2023-07-01"
 date_to = "2023-07-04"
 
@@ -121,25 +137,31 @@ call = httr::GET(url = API_URL,
 )
 ```
 
-Where it refers to token_id, you should insert the token that was sent to you by data.gov.gr via email. So, after requesting the data through a GET request and waiting a bit, we receive a list with various pieces of information. What we are interested in is the data, so we look into the content category of the list. However, we notice that the information is in an unreadable format since it is in hexadecimal form.
+Where **token_id** should be replaced with the token sent to you by data.gov.gr. After
+making the GET request and waiting for the response, we receive a list containing various
+pieces of information. We are interested in the data itself, which we can find under the
+`content` field of the list. However, we notice that the values are not human-readable,
+as they are returned in hexadecimal format.
 
 ```{r}
 #| label: toReadableChars
-#| title: "Convert data to readable chars"
+#| title: "Convert data to readable format"
 data = base::rawToChar(call$content)
 ```
 
-Using rawToChar converts the response into readable characters but I still need to convert my data to tabular format in order to begin with my analysis.
+With the command above we convert the raw bytes into readable characters. The next step
+is to transform the result into a tabular format so that we can analyse it.
 
 ```{r}
 #| label: tabularize_data
-#| title: "Tabularize data"
-#data = jsonlite::fromJSON(data, flatten = T)
+#| title: "Convert data to tabular format"
+#data = jsonlite::fromJSON(data, flatten = TRUE)
 ```
 
-
-Finally, using the `jsonlite` package, I receive a data frame named as data which includes every destination, passenger/car count for the requested date.
+Finally, using the `{jsonlite}` package, we obtain a data frame named `data` that
+contains all destinations, passenger counts, and vehicle counts for each day we
+requested.
 
 ## Acknowledgements {.appendix .unlisted}
 
-Image by <a href="https://pixabay.com/users/kuszapro-369349/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=583537">Christopher Kuszajewski</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=583537">Pixabay</a>
+Photo by <a href="https://pixabay.com/el/users/kuszapro-369349/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=583537">Christopher Kuszajewski</a> from <a href="https://pixabay.com/el//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=583537">Pixabay</a>
