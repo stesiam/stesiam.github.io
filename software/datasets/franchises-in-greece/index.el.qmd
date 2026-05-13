@@ -4,9 +4,9 @@ imgSrc: "../../assets/images/chairs.webp"
 imgAlt: "Facade of Greek Parliament"
 description: "Λίστα εταιρειών που προσφέρουν δυνατότητα ανοίγματος franchise με την αντίστοιχη απαιτούμενη αρχική επένδυση, δικαιώματα δικαιόχρησης και λοιπά κόστη"
 periodText: "ΠΕΡΙΟΔΟΣ"
-period: "1981-2020"
+period: "2026"
 recordsText: "ΠΑΡΑΤΗΡΗΣΕΙΣ"
-records: "4 503"
+records: "421"
 languageText: "ΓΛΩΣΣΑ"
 languageAns: "Ελληνικά / Αγγλικά"
 exploreDatasetText: "Εξερεύνησε τα δεδομένα"
@@ -21,18 +21,79 @@ order: 4
 ::: {.text-center .lh-lg}
 <i class="bi bi-code-slash"></i> `Γλώσσα Προγραμματισμού`: R <br>
 <i class="bi bi-code-slash"></i> `Βασικό λογισμικό`: rvest <br>
-<i class="bi bi-database"></i> `Πηγή δεδομένων`: Ελληνικό Κοινοβούλιο ([Επίσημη ιστοσελίδα](https://www.hellenicparliament.gr/el/)) <br>
-<i class="bi bi-list-ol"></i> `Αριθμός παρατηρήσεων`: 4503
-<i class="bi bi-list-ol"></i> `Αριθμός μεταβλητών`: 4
+<i class="bi bi-database"></i> `Πηγή δεδομένων`:  ([Franchise Portal GR](https://franchiseportal.gr/)) <br>
+<i class="bi bi-list-ol"></i> `Αριθμός παρατηρήσεων`: 421
+<i class="bi bi-list-ol"></i> `Αριθμός μεταβλητών`: 23
 <i class="bi bi-translate"></i> `Γλώσσες`:  🇬🇧  / 🇬🇷 <br>
 <i class="bi bi-activity"></i> `Συχνότητα`: Μη επαναλαμβανόμενο
 :::
 
 :::{.d-flex .flex-column .flex-sm-row .justify-content-center .gap-3 .align-items-center .justify-content-center .p-2}
 ```{=html}
-<div><a href="https://stesiam.shinyapps.io/AgeingDashboard" class="btn btn-primary btn-md"><i class="bi bi-globe"></i> Εφαρμογή</a></div>
-<div><a href="https://github.com/stesiam/AgeingDashboard" class="btn btn-primary btn-md"><i class="bi bi-github"></i> Αποθετήριο</a></div>
-<div><a href="https://hub.docker.com/r/stesiam/ageing-dashboard" class="btn btn-primary btn-md"><i class="bi bi-box"></i> Dockerhub</a></div>
+<div><a href="https://github.com/stesiam/greek-franchise-tracker/releases/tag/v1.0.0" class="btn btn-primary btn-md"><i class="bi bi-globe"></i> Δεδομένα</a></div>
+<div><a href="https://github.com/stesiam/greek-franchise-tracker" class="btn btn-primary btn-md"><i class="bi bi-github"></i> Αποθετήριο</a></div>
 ```
 :::
 
+
+## Μεταβλητές συνόλου
+
+
+```{r}
+#| echo: false
+#| message: false
+library(dplyr)
+library(readr)
+library(gt)
+
+source("../../../posts/utils.R")
+url = "https://github.com/stesiam/greek-franchise-tracker/releases/download/v1.0.0/franchises_clean.csv"
+```
+
+| Μεταβλητή | Τύπος μεταβλητής | Περιγραφή |
+|:---------|:-----|:------------|
+| `name` | ποιοτική | Όνομα δικαιόχρησης (franchise) |
+| `category` | ποιοτική | Κατηγορία επιχείρησης δικαιόχρησης|
+| `img` | ποιοτική | Λογότυπο δικαιόχρησης |
+| `link` | ποιοτική | Σελίδα προφίλ της δικαιόχρησης στην ιστοσελίδα - πηγή |
+| `min_investment` | ποσοτική | Ελάχιστο απαιτούμενο ποσό επένδυσης |
+| `store_size_min` | ποσοτική | Ελάχιστος χώρος (σε τ.μ.) |
+| `store_size_max` | ποσοτική | Μέγιστος χώρος (σε τ.μ.) |
+| `entry_fee` | ποσοτική | Εφάπαξ ποσό για δικαίωμα δικαιόχρησης  |
+| `royalties` | ποιοτική | Δικαιώματα εκμετάλλευσης |
+| `branches_corp` | ποσοτική | Εταιρικά υποκαταστήματα |
+| `branches_franch` | ποσοτική | Καταστήματα διαφορετικού ιδιώτη (franchisee)  |
+| `total_branch` | ποσοτική | Σύνολο καταστημάτων |
+| `start_activity` | ποσοτική | Έναρξη δραστηριότητας |
+| `start_franchise` | ποσοτική | Έναρξη δραστηριοτήτων δικαιόχρησης |
+| `origin` | ποιοτική | Χώρα προέλευσης |
+| `experience` | ποιοτική | Είναι απαραίτητη η εμπειρία;  |
+| `self_employment` | ποιοτική | Είναι απαραίτητη η αυτοαπασχόληση; |
+| `franchise_agreement` | ποιοτική | Έναρξη δραστηριοτήτων δικαιόχρησης |
+| `headquarters` | ποιοτική | Έδρα εταιρείας |
+| `company_name` | ποιοτική | Επωνυμία εταιρείας  |
+| `phone` | ποιοτική | Αριθμός τηλεφώνου επικοινωνίας |
+| `fax` | ποιοτική | Αριθμός Fax επικοινωνίας |
+| `website` | ποιοτική | Ιστοσελίδα εταιρείας |
+
+: {.table .table-sm .table-borderless .table-responsive}
+
+
+## Προεπισκόπηση συνόλου δεδομένων
+
+```{r}
+#| echo: false
+#| message: false
+readr::read_csv(url) %>%
+  mutate(across(where(is.character), ~ifelse(nchar(.) > 80, paste0(substr(., 1, 30), "…"), .))) %>%
+  gt_custom(use_labels = FALSE, head_max = 20)
+```
+
+
+## Γρήγορη λήψη δεδομένων
+
+Σε περίπτωση που δεν ξέρετε ποιο από όλα να διαλέξετε, συνήθως το `csv` αρχείο είναι η πιο συνηθισμένη μορφή και πιο εύκολη να αναλυθεί από διάφορα προγράμματα.
+
+| Τύπος αρχείου | Σύνδεσμος λήψης αρχείου |
+|:---------|:-----|
+| `.csv` | [Λήψη csv](https://github.com/stesiam/greek-franchise-tracker/releases/download/v1.0.0/franchises_clean.csv) |

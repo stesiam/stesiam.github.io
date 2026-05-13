@@ -89,21 +89,27 @@ While the job listing assessment table:
 #| echo: false
 #| message: false
 readr::read_csv(url) %>%
-  mutate(across(where(is.character), ~ifelse(nchar(.) > 80, paste0(substr(., 1, 80), "…"), .))) %>%
-  gt_custom(use_labels = FALSE, head_max = 20)
+  mutate(across(where(is.character), ~ifelse(nchar(.) > 80, paste0(substr(., 1, 25), "…"), .))) %>%
+  gt_custom(use_labels = FALSE, head_max = 10)
 ```
 
 
-## Γρήγορη λήψη δεδομένων
+## Download data files
 
-Σε περίπτωση που δεν ξέρετε ποιο από όλα να διαλέξετε, συνήθως το `.csv` αρχείο είναι η πιο συνηθισμένη μορφή και πιο εύκολη να αναλυθεί από διάφορα προγράμματα.
+If you are unsure which format to choose, `CSV` is the most common format and is easier to analyze with a wide range of software tools.
 
-| Τύπος αρχείου | Σύνδεσμος λήψης αρχείου |
+For the file containing the job postings (`job-posts`):
+
+| File format | Download link |
 |:---------|:-----|
-| `.csv` | [Download csv](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.csv) |
-| `.rds` |  [Download rds](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.rds) |
-| `.json` |  [Download json](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.json) | 
-| `.parquet` |  [Download parquet](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.parquet) | 
-| `.feather` |  [Download feather](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.feather) | 
-| `.sqlite` |  [Download sqlite](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.sqlite) | 
+| `.csv` | [Λήψη csv](https://github.com/stesiam/scraping-job-postings-xe/releases/download/v1.3/job-posts.csv) |
+| `.rds` |  [Λήψη rds](https://github.com/stesiam/scraping-job-postings-xe/releases/download/v1.3/job-posts.rds) |
+| `.parquet` |  [Λήψη parquet](https://github.com/stesiam/scraping-job-postings-xe/releases/download/v1.3/job-posts.parquet) | 
+| `.feather` |  [Λήψη feather](https://github.com/stesiam/scraping-job-postings-xe/releases/download/v1.3/job-posts.feather) | 
+| `.sqlite` |  [Λήψη sqlite](https://github.com/stesiam/scraping-job-postings-xe/releases/download/v1.3/job-posts.sqlite) |
 
+The classification dataset (`llm-classification`) is available only in CSV format:
+
+| File format | Download link |
+|:---------|:-----|
+| `.csv` | [Λήψη csv](https://github.com/stesiam/scraping-job-postings-xe/releases/download/v1.3/llm_classification.csv) |

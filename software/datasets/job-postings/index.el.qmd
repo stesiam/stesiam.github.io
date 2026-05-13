@@ -96,8 +96,8 @@ readr::read_csv(url) %>%
 #| echo: false
 #| message: false
 readr::read_csv(url2) %>%
-  mutate(across(where(is.character), ~ifelse(nchar(.) > 80, paste0(substr(., 1, 80), "…"), .))) %>%
-  gt_custom(use_labels = FALSE, head_max = 20)
+  mutate(across(where(is.character), ~ifelse(nchar(.) > 80, paste0(substr(., 1, 25), "…"), .))) %>%
+  gt_custom(use_labels = FALSE, head_max = 10)
 ```
 
 
@@ -106,17 +106,17 @@ readr::read_csv(url2) %>%
 Σε περίπτωση που δεν ξέρετε ποιο από όλα να διαλέξετε, συνήθως το `.csv` αρχείο είναι η πιο συνηθισμένη μορφή και πιο εύκολη να αναλυθεί από διάφορα προγράμματα.
 
 
-Για το 
+Για το αρχείο με τις αγγελίες (`job-posts`):
+
 | Τύπος αρχείου | Σύνδεσμος λήψης αρχείου |
 |:---------|:-----|
 | `.csv` | [Λήψη csv](https://github.com/stesiam/scraping-job-postings-xe/releases/download/v1.3/job-posts.csv) |
 | `.rds` |  [Λήψη rds](https://github.com/stesiam/scraping-job-postings-xe/releases/download/v1.3/job-posts.rds) |
-| `.json` |  [Λήψη json](https://github.com/stesiam/scrape-greek-parl-members-26/releases/download/v1.1.0/parlMembers-el.json) | 
 | `.parquet` |  [Λήψη parquet](https://github.com/stesiam/scraping-job-postings-xe/releases/download/v1.3/job-posts.parquet) | 
 | `.feather` |  [Λήψη feather](https://github.com/stesiam/scraping-job-postings-xe/releases/download/v1.3/job-posts.feather) | 
 | `.sqlite` |  [Λήψη sqlite](https://github.com/stesiam/scraping-job-postings-xe/releases/download/v1.3/job-posts.sqlite) | 
 
-Το αρχείο ταξινομήσεων διατίθεται μόνο σε μορφή csv:
+Για το αρχείο ταξινομήσεων (`llm-classification`) διατίθεται μόνο σε μορφή csv:
 
 | Τύπος αρχείου | Σύνδεσμος λήψης αρχείου |
 |:---------|:-----|
