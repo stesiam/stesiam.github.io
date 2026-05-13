@@ -1,7 +1,7 @@
 ---
 title: "Franchises in Greece"
 imgSrc: "../../assets/images/chairs.webp"
-imgAlt: "Facade of Greek Parliament"
+imgAlt: "Modern minimalist conference room with a long white table, grey chairs, a wall-mounted TV"
 description: "A list of companies that offer franchise plans in Greece with respected required amount of investment, royalties and other fees"
 periodText: "PERIOD"
 period: "1981-2020"
@@ -16,3 +16,87 @@ comments: false
 lang: en
 order: 4
 ---
+
+::: {.text-center .lh-lg}
+<i class="bi bi-code-slash"></i> `Programming Language`: R <br>
+<i class="bi bi-code-slash"></i> `Software`: rvest <br>
+<i class="bi bi-database"></i> `Data Source`: [Franchise Portal GR](https://franchiseportal.gr/) <br>
+<i class="bi bi-list-ol"></i> `# of observations - rows`: 421 <br>
+<i class="bi bi-list-ol"></i> `# of variables - columns`: 23 <br>
+<i class="bi bi-translate"></i> `Languages`:  🇬🇧  / 🇬🇷 <br>
+<i class="bi bi-activity"></i> `Frequency `: Non-repeating
+:::
+
+:::{.d-flex .flex-column .flex-sm-row .justify-content-center .gap-3 .align-items-center .justify-content-center .p-2}
+```{=html}
+<div><a href="https://github.com/stesiam/greek-franchise-tracker/releases/tag/v1.0.0" class="btn btn-primary btn-md"><i class="bi bi-globe"></i> Δεδομένα</a></div>
+<div><a href="https://github.com/stesiam/greek-franchise-tracker" class="btn btn-primary btn-md"><i class="bi bi-github"></i> Αποθετήριο</a></div>
+```
+:::
+
+## Dataset variables
+
+
+```{r}
+#| echo: false
+#| message: false
+library(dplyr)
+library(readr)
+library(gt)
+
+source("../../../posts/utils.R")
+url = "https://github.com/stesiam/greek-franchise-tracker/releases/download/v1.0.0/franchises_clean.csv"
+```
+
+
+| Variable | Variable Type | Description |
+|:---------|:-----|:------------|
+| `name` | qualitative | Franchise name |
+| `category` | qualitative | Franchise business category |
+| `img` | qualitative | Franchise logo |
+| `link` | qualitative | Franchise profile page on the source website |
+| `min_investment` | quantitative | Minimum required investment amount |
+| `store_size_min` | quantitative | Minimum store size (in sq.m.) |
+| `store_size_max` | quantitative | Maximum store size (in sq.m.) |
+| `entry_fee` | quantitative | One-time franchise entry fee |
+| `royalties` | qualitative | Royalty fees |
+| `branches_corp` | quantitative | Corporate branches |
+| `branches_franch` | quantitative | Individual franchisee stores |
+| `total_branch` | quantitative | Total number of stores |
+| `start_activity` | quantitative | Start of business activity |
+| `start_franchise` | quantitative | Start of franchise operations |
+| `origin` | qualitative | Country of origin |
+| `experience` | qualitative | Is prior experience required? |
+| `self_employment` | qualitative | Is self-employment required? |
+| `franchise_agreement` | qualitative | Franchise agreement duration |
+| `headquarters` | qualitative | Company headquarters |
+| `company_name` | qualitative | Company legal name |
+| `phone` | qualitative | Contact phone number |
+| `fax` | qualitative | Contact fax number |
+| `website` | qualitative | Company website |
+
+: {.table .table-sm .table-borderless .table-responsive}
+
+
+## Preview dataset
+
+
+```{r}
+#| echo: false
+#| message: false
+readr::read_csv(url) %>%
+  mutate(across(where(is.character), ~ifelse(nchar(.) > 80, paste0(substr(., 1, 30), "…"), .))) %>%
+  gt_custom(use_labels = FALSE, head_max = 20)
+```
+
+
+
+## Download data files
+
+If you are unsure which format to choose, `csv` is the most common format and is easier to analyze with a wide range of software tools.
+
+
+| File format | Download link |
+|:---------|:-----|
+| `.csv` | [Download csv](https://github.com/stesiam/greek-franchise-tracker/releases/download/v1.0.0/franchises_clean.csv) |
+
