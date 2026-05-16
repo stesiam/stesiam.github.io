@@ -572,6 +572,7 @@ highchart() %>%
 ```{r}
 #| label: tbl-statistics-depts
 #| tbl-cap: "Ποσοστό φοιτητών που υπερβαίνουν το ν+2 στα τμήματα στατιστικής και πανελλήνια κατάταξη."
+gj <- read_excel("gj.xls")
 
 gj |>
     tidyr::drop_na(ΤΜΗΜΑ) |>
@@ -613,8 +614,6 @@ gj |>
 #| label: tbl-category-analysis
 #| tbl-cap: Κατανομή ποσοστού φοιτητών ν+2 ανά είδος σχολής
 
-
-gj <- read_excel("gj.xls")
 
 dept_data <- gj |>
   tidyr::drop_na(ΤΜΗΜΑ) |>
